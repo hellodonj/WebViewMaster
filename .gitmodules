@@ -1,0 +1,3 @@
+[submodule "ecourse-maker"]
+	path = ecourse-maker
+	url = git@gitserver:ecourse-maker.git
