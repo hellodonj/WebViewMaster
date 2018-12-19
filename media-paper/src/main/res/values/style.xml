@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="title_year_mon_week_text_style">
+        <item name="android:textSize">20px</item>
+        <item name="android:textColor">#9a9a9a</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="Theme.PageDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="paper_day_text_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#e7387b</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="paper_year_mon_week_text_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#9a9a9a</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="paper_title">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">#ff333333</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="paper_sub_title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ff333333</item>
+    </style>
+
+    <style name="paper_sub_small_title">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#ff999999</item>
+    </style>
+    <style name="Theme.mpPageDialogFullScreen" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/mp_transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="mpPageDialogFullScreen">
+        <item name="android:windowBackground">@drawable/mp_transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="CustomDialog" parent="android:style/Theme.Dialog">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <!-- 背景颜色及透明程度 -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- 是否有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="txt_mp_normal_black">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="txt_mp_normal_white">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+    <style name="Mp_AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/mp_push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/mp_push_bottom_out</item>
+    </style>
+</resources>

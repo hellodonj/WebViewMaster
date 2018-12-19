@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/study_task_root_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbar_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:minHeight="@dimen/item_height">
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/title"/>
+        <com.lqwawa.apps.views.ContainsEmojiEditText
+            android:id="@+id/study_task_title_text"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/item_small_height"
+            android:hint="@string/title_hint"
+            android:background="@drawable/comment_edit_bg"
+            android:layout_marginLeft="10dp"
+            android:text="" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c3c3c3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:minHeight="@dimen/item_height">
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/assign_date"/>
+        <TextView
+            android:id="@+id/study_task_start_date_text"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_small_height"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="2016-12-09"
+            android:padding="5dp"
+            android:drawableRight="@drawable/arrow_right"
+            android:drawablePadding="10dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c3c3c3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white"
+        android:minHeight="@dimen/item_height">
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/finish_date"/>
+        <TextView
+            android:id="@+id/study_task_end_date_text"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_small_height"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:text="2016-12-13"
+            android:drawableRight="@drawable/arrow_right"
+            android:drawablePadding="10dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c3c3c3"/>
+
+    <LinearLayout
+        android:id="@+id/commit_task_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/commit_task_view"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/need_student_to_commit"
+            android:drawableRight="@drawable/unselect"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/white"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#c3c3c3"/>
+
+    </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View style="@style/line_gray"/>
+    <!-- 确认取消布局-->
+    <LinearLayout
+        android:id="@+id/bottom_sub_layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:minHeight="40dp"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/txt_wawa_normal_green"
+            android:id="@+id/btn_bottom_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/confirm"/>
+
+        <ImageView
+            android:id="@+id/bottom_seg_line_1"
+            style="@style/line_gray_v"/>
+
+        <TextView
+            style="@style/txt_wawa_normal_green"
+            android:id="@+id/btn_bottom_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_course_notice">Notice</string>
+    <string name="title_class_notice">Notice</string>
+    <!--<string name="title_course_shop">Study Hall</string>-->
+    <string name="title_course_shop">Course Library</string>
+    <string name="title_listening_and_speaking">Listen-Read Course</string>
+    <string name="title_Reading_and_writing_single">Do Read-Write Task</string>
+    <string name="title_watch_history">View History</string>
+    <string name="title_join_school">Institutions</string>
+    <string name="title_class_course">Class Course</string>
+    <string name="title_related_course">Correlated Course</string>
+    <string name="title_basics_course">Basic Course</string>
+    <string name="title_my_timetable">My Timetable</string>
+
+</resources>

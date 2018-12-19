@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/toolbarSize"
+        android:orientation="vertical"
+        >
+        <FrameLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/include_lq_course_list_filtrate_layout"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabSelectedTextColor="@color/textAccent"
+                app:tabTextColor="@color/textSecond"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:tabMode="scrollable"
+                android:layout_marginRight="40dp">
+
+            </android.support.design.widget.TabLayout>
+
+            <ImageView
+                android:id="@+id/iv_slide_tab"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_right_accent_arrow"
+                android:layout_gravity="right|center_vertical"
+                android:foreground="@drawable/ic_touch_menu"
+                android:padding="8dp"
+                android:visibility="gone"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/lay_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+            <FrameLayout
+                android:id="@+id/recycler_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.lqwawa.intleducation.base.CourseEmptyView
+                    android:id="@+id/empty_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:empty_text_remind="@string/label_empty_content"
+                    app:empty_text_remind_visible="true"
+                    app:empty_text_loading="@string/label_course_empty_info_2"
+                    app:empty_text_loading_visible="false"
+                    app:empty_icon_drawable="@drawable/ic_course_empty"
+                    app:call_show="true"
+                    android:visibility="gone">
+
+                </com.lqwawa.intleducation.base.CourseEmptyView>
+
+                <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+                    android:id="@+id/refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"/>
+                </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+            </FrameLayout>
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

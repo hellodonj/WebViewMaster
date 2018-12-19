@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_task_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/comment_content_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textSize="16sp"
+        tools:text=""/>
+
+    <TextView
+        android:id="@+id/tv_start_time"
+        style="@style/comment_date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"
+        tools:text="布置时间:2017-01-01"/>
+
+    <TextView
+        android:id="@+id/tv_end_time"
+        style="@style/comment_date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_start_time"
+        tools:text="布置时间:2017-01-01"
+        />
+
+    <TextView
+        android:id="@+id/tv_finish_status"
+        style="@style/txt_wawa_small_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:visibility="visible"
+        tools:text="已完成(0)/未完成(1)"
+        />
+
+</LinearLayout>
+
+            

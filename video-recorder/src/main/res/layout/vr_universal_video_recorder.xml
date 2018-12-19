@@ -1,0 +1,34 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@android:color/black">
+
+    <com.lqwawa.libs.videorecorder.CameraView
+        android:id="@+id/vr_camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <ImageView
+        android:id="@+id/vr_toggle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
+        android:src="@drawable/vr_toggle"
+        android:scaleType="centerInside" />
+
+        <Button
+            android:id="@+id/vr_record_btn"
+            android:layout_width="@dimen/vr_record_button_size"
+            android:layout_height="@dimen/vr_record_button_size"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/vr_record_btn_bg"
+            android:textColor="@color/vr_green"
+            android:textSize="20sp"
+            android:text="@string/vr_click_to_record"/>
+
+</FrameLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="input_valid">Emoji characters are not inputted.</string>
+    <string name="input_max_len">More than %s characters is not allowed!</string>
+    <string name="elearing_lib_confirm">Confirm</string>
+    <string name="elearing_lib_cancel">Cancel</string>
+    <string name="collection">Favorite</string>
+    <string name="make_pic_book">Create course</string>
+    <string name="edit_course">Add click reading</string>
+    <string name="downloading">Loading, please wait…</string>
+    <string name="cs_loading_error">Loading error</string>
+</resources>

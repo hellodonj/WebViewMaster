@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/item_root"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/com_item_selector"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/course_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/course_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:id="@+id/organ_name"
+                style="@style/text_white_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/com_bg_light_trans_black"
+                android:gravity="left"
+                android:padding="3dp"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/teacher_name"
+            style="@style/text_black_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"/>
+    </LinearLayout>
+</LinearLayout>

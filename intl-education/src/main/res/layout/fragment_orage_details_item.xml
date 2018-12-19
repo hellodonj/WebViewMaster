@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_white"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.SuperGridView
+        android:id="@+id/super_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/com_item_space_xs"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/com_item_space"/>
+
+    <Button
+        android:id="@+id/more_bt"
+        style="@style/text_white"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/com_item_space"
+        android:background="@drawable/com_green_bt_bg"
+        android:paddingBottom="6dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="6dp"/>
+</LinearLayout>

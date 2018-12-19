@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/main_bg_color"
+                android:padding="5dp">
+
+    <com.galaxyschool.app.wawaschool.views.CircleImageView
+        android:id="@+id/comment_sender_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/comment_sender_name"
+        style="@style/comment_sender_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/comment_sender_icon"
+        android:singleLine="true"
+        android:text="Name"/>
+
+    <TextView
+        android:id="@+id/comment_date"
+        style="@style/comment_date_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comment_sender_name"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@id/comment_sender_icon"
+        android:singleLine="true"
+        android:text="Date"/>
+
+    <TextView
+        android:id="@+id/comment_content"
+        style="@style/comment_content_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comment_date"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/comment_sender_icon"
+        android:text="Content"
+        android:textSize="14sp"/>
+
+
+    <TextView
+        android:id="@+id/comment_praise"
+        style="@style/comment_praise_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/comment_sender_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:drawableRight="@drawable/btn_comment_praise"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="Praise"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <!--<include layout="@layout/contacts_header" />-->
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="#ffffffff"
+        >
+
+    <ImageView
+        android:id="@+id/header_left_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/sel_nav_backarrow"
+        android:background="@drawable/nav_blank_ico" />
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip
+                android:id="@+id/picker_tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/title_bar_height"
+                android:background="@color/white"
+                app:pstsTabTextSize="16sp"
+                app:pstsTabTextColor="@color/custom_tab_text"
+                app:pstsIndicatorColor="@color/green">
+            </com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip>
+        </RelativeLayout>
+
+        <TextView
+            android:textColor="@color/text_green"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:id="@+id/tv_share"
+            android:text="@string/share"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <com.galaxyschool.app.wawaschool.views.MyViewPager
+        android:id="@+id/picker_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>

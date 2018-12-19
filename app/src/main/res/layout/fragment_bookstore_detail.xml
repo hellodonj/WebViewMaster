@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <View
+        android:layout_height="10dp"
+        android:background="#E8E7E8"
+        android:layout_width="match_parent"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="8dp">
+            <FrameLayout
+                android:id="@+id/item_book_cover"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp">
+                <ImageView
+                    android:id="@+id/cover_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_book_cover"/>
+                <ImageView
+                    android:id="@+id/create_state_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left"
+                    android:src="@drawable/jsz_ico"
+                    />
+
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"
+                    android:textSize="@dimen/text_size_big"
+                    android:id="@+id/book_name_textview"/>
+                <TextView
+                    android:id="@+id/section_count_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"/>
+                <TextView
+                    android:id="@+id/store_count_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="7dp"/>
+                <TextView
+                    android:id="@+id/authority_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/store_textview"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:minWidth="90dp"
+                android:minHeight="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_big"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/enter_book_store_btn"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:minWidth="90dp"
+                android:minHeight="40dp"
+                android:layout_marginLeft="50dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_big"
+                android:visibility="invisible"
+                android:text="@string/enter_bookstore"/>
+        </LinearLayout>
+
+
+        <View
+            android:layout_height="10dp"
+            android:background="#E8E7E8"
+            android:layout_width="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/introduction_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/introduction_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Introduction"
+                    android:paddingBottom="7dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_big"/>
+                <View
+                    android:id="@+id/introduction_view"
+                    android:layout_width="40dp"
+                    android:layout_height="2dp"
+                    android:background="@color/green"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/catalog_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/catalog_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/catalog"
+                    android:paddingBottom="7dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_big"/>
+                <View
+                    android:id="@+id/catalog_view"
+                    android:layout_width="40dp"
+                    android:layout_height="2dp"
+                    android:background="@color/green"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+
+            android:layout_height="1dp"
+            android:background="#ebebeb"
+            android:layout_width="match_parent"/>
+        <com.galaxyschool.app.wawaschool.views.MyWebView
+            android:id="@+id/introduction_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            />
+        <com.galaxyschool.app.wawaschool.views.MyExpandListView
+            android:id="@+id/catlog_expand_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/line_gray"
+            android:dividerHeight="1dp"
+            android:childIndicatorLeft="5dp"
+            android:listSelector="@android:color/transparent" />
+    </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

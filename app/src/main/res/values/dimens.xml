@@ -1,0 +1,43 @@
+<resources>
+
+    <dimen name="title_bar_height">60dp</dimen>
+    
+    <dimen name="vertical_space">10dp</dimen>
+
+    <dimen name="item_height">40dp</dimen>
+    <dimen name="item_small_height">35dp</dimen>
+    <dimen name="text_size_default">14sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_big">16sp</dimen>
+    <dimen name="text_size_title">20sp</dimen>
+    
+    <dimen name="logo_size">40dp</dimen>
+    <dimen name="thumb_size">60dp</dimen>
+
+    <dimen name="register_btn_min_height">40dp</dimen>
+    <dimen name="account_edittext_min_height">40dp</dimen>
+    <dimen name="feedback_edittext_min_height">80dp</dimen>
+
+    <dimen name="userinfo_item_min_height">40dp</dimen>
+
+    <dimen name="standard_padding">8dip</dimen>
+    <dimen name="half_padding">4dip</dimen>
+
+    <dimen name="common_listview_item_h">60dp</dimen>
+
+    <dimen name="channel_view_item_size">50dp</dimen>
+    <dimen name="min_padding">5dp</dimen>
+    <dimen name="min_margin">5dp</dimen>
+
+    <dimen name="resource_gridview_padding">10dp</dimen>
+
+    <dimen name="gridview_spacing">5dp</dimen>
+    <dimen name="listview_divider_height">1dp</dimen>
+    <dimen name="separate_20dp">20dp</dimen>
+
+    <dimen name="topic_description_min_height">120dp</dimen>
+
+    <dimen name="course_list_item_height">80dp</dimen>
+
+</resources>

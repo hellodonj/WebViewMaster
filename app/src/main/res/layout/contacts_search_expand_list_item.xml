@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_list_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ebebeb"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/contacts_item_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contacts_item_header"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/text_green"
+            android:text="" />
+
+        <View style="@style/line_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contacts_item_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:background="@color/main_bg_color"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/contacts_item_icon"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/contacts_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/green"
+            android:layout_marginRight="10dp"
+            android:text="@string/title"
+            android:singleLine="true"
+            android:ellipsize="end"
+             />
+
+        <ImageView
+            android:id="@+id/contacts_item_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/list_exp_down"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        style="@style/line_gray"
+        android:visibility="gone"/>
+</LinearLayout>
+

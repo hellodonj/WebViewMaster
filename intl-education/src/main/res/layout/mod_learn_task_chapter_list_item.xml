@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/com_bg_light_white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/course_info_root_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/com_item_space"
+        android:paddingLeft="4dp"
+        android:paddingRight="@dimen/com_item_space"
+        android:paddingTop="4dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/course_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/com_item_space"/>
+
+        <TextView
+            android:id="@+id/course_name_tv"
+            style="@style/text_gray_l"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+
+        <ImageView
+            android:id="@+id/hide_lesson_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/com_item_space_s"
+            android:src="@drawable/arrow_up_gray_ico"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chapter_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/com_item_space"
+        android:paddingLeft="4dp"
+        android:paddingRight="@dimen/com_item_space"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/chapter_name_tv"
+            style="@style/text_gray_l"
+            android:paddingLeft="@dimen/com_item_space_xxs"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <RadioButton
+            android:padding="@dimen/com_item_space_xs"
+            android:id="@+id/select_rb"
+            android:button="@drawable/rb_icon_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

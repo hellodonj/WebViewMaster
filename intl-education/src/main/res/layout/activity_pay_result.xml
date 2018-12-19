@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+              android:gravity="center_horizontal"
+             android:id="@+id/pay_result_view"
+              android:orientation="vertical"
+              android:background="@color/com_bg_white"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@drawable/pay_result_ok"
+        android:id="@+id/pay_iv_result"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/pay_tv_result"
+        tools:text="支付成功"
+        android:textSize="20sp"
+        style="@style/text_black_xl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:id="@+id/pay_tolearn_btn"
+            style="@style/text_white_xl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_green_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:scaleType="center"
+            android:text="@string/to_learn"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/pay_goshop"
+            android:textSize="16sp"
+            android:textColor="#009039"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_green_stroke_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:scaleType="center"
+            android:text="@string/continue_goshop"/>
+
+    </LinearLayout>
+</LinearLayout>

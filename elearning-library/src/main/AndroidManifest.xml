@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lqwawa.apps" >
+
+    <uses-sdk android:minSdkVersion="14" />
+    <application>
+
+        <!--provider标签里的 android:name的值是固定的
+       android:authorities的值和FileProvider.getUriForFile方法使用的authorities必须保持一致。
+       exported:要求必须为false，为true则会报安全异常。
+       grantUriPermissions:true，表示授予 URI 临时访问权限。
+       <meta-data />标签里面是用来指定共享的路径。
+        android:resource="@xml/file_paths"就是我们的共享路径配置的xml文件
+   -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+    <!--<application-->
+        <!--android:name="com.lqwawa.apps.DemoApplication"-->
+        <!--android:allowBackup="true"-->
+        <!--android:icon="@drawable/app_icon"-->
+        <!--android:label="@string/app_name"-->
+        <!--android:theme="@android:style/Theme.Black.NoTitleBar" >-->
+        <!-- -->
+        <!--<activity-->
+            <!--android:name="com.lqwawa.apps.DemoActivity"-->
+            <!--android:label="@string/app_name" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--&lt;!&ndash; file downloader &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name="com.lqwawa.libs.filedownloader.DownloadService">-->
+        <!--</service>-->
+
+        <!--&lt;!&ndash; app updater &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name="com.lqwawa.libs.appupdater.UpdateActivity"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:theme="@android:style/Theme.Translucent.NoTitleBar">-->
+        <!--</activity>-->
+        <!--<service-->
+            <!--android:name="com.lqwawa.libs.appupdater.instance.DefaultUpdateService">-->
+        <!--</service>-->
+    <!--</application>-->
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+</manifest>

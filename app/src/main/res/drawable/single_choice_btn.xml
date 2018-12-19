@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+   <item android:state_window_focused="false" android:drawable="@drawable/my_detail_right_ico" android:state_enabled="true" android:state_checked="true"></item>
+   <item android:state_window_focused="false" android:drawable="@drawable/my_detail_right_off_ico" android:state_enabled="true" android:state_checked="false"></item>
+   <item android:drawable="@drawable/my_detail_right_ico" android:state_enabled="true" android:state_pressed="true" android:state_checked="true"></item>
+   <item android:drawable="@drawable/my_detail_right_off_ico" android:state_enabled="true" android:state_pressed="true" android:state_checked="false"></item>
+   <item android:state_focused="true" android:drawable="@drawable/my_detail_right_ico" android:state_enabled="true" android:state_checked="true"></item>
+   <item android:state_focused="true" android:drawable="@drawable/my_detail_right_off_ico" android:state_enabled="true" android:state_checked="false"></item>
+   <item android:drawable="@drawable/my_detail_right_off_ico" android:state_enabled="true" android:state_checked="false"></item>
+   <item android:drawable="@drawable/my_detail_right_ico" android:state_enabled="true" android:state_checked="true"></item>
+   <item android:state_window_focused="false" android:drawable="@drawable/my_detail_right_ico" android:state_checked="true"></item>
+   <item android:state_window_focused="false" android:drawable="@drawable/my_detail_right_off_ico" android:state_checked="false"></item>
+   <item android:state_focused="true" android:drawable="@drawable/my_detail_right_ico" android:state_checked="true"></item>
+   <item android:state_focused="true" android:drawable="@drawable/my_detail_right_off_ico" android:state_checked="false"></item>
+   <item android:drawable="@drawable/my_detail_right_off_ico" android:state_checked="false"></item>
+   <item android:drawable="@drawable/my_detail_right_ico" android:state_checked="true"></item>
+   <item android:drawable="@drawable/my_detail_right_off_ico" android:state_selected="false"></item>
+   <item android:drawable="@drawable/my_detail_right_ico" android:state_selected="true"></item>
+</selector>

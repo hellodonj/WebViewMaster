@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
+
+
+    <com.libs.gallery.ExtendedViewPager
+        android:layout_gravity="center"
+        android:id="@+id/gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.libs.gallery.ExtendedViewPager>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:background="#8000"
+        android:id="@+id/image_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/close_btn"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/nav_backarrow_ico"
+            android:background="@drawable/nav_blank_ico" />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:padding="5dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu_icon_more" />
+
+        <TextView
+            android:id="@+id/image_toolbar_title"
+            tools:text="热让发safhaf发发汗减肥法家发包方啊evhwere j vw wj v  jfw 方法"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:maxLength="50"
+            android:layout_toRightOf="@id/close_btn"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:textColor="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:padding="3dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="#8000"
+        android:id="@+id/image_toolbar_num"
+        android:visibility="gone"
+        android:textSize="20sp"
+        tools:text="3/8"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

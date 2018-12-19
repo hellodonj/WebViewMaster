@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color">
+
+    <include layout="@layout/contacts_header"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    style="@style/txt_mp_normal_white"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:src="@drawable/english_writing_change_icon"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_count_modify"
+                    style="@style/comment_date_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textColor="@color/english_writing_common_gray"
+                    android:maxWidth="80dp"
+                    android:text="0"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/btn_word"
+                style="@style/txt_mp_normal_white"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:src="@drawable/english_writing_word_icon"/>
+                <TextView
+                    android:id="@+id/tv_count_word"
+                    style="@style/comment_date_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    android:textColor="@color/english_writing_common_gray"
+                    android:maxWidth="80dp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0"
+                android:textSize="20sp"
+                android:textColor="@color/english_writing_red_score"/>
+        </LinearLayout>
+
+            <View
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                style="@style/line_gray"/>
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:minHeight="230dp"
+            android:textColor="@color/english_writing_gray_content"
+            android:text=""/>
+
+
+            <!--tab布局-->
+            <LinearLayout
+                android:id="@+id/layout_tab_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:enabled="false"
+                    android:id="@+id/left_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:minWidth="90dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/course_picker_tab_button_l"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/auto_comment"
+                    android:textColor="@color/english_writing_tab_txt_color"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:enabled="true"
+                    android:id="@+id/middle_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:minWidth="90dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/course_picker_tab_button_m"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/personal_comment"
+                    android:textColor="@color/english_writing_tab_txt_color"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:enabled="true"
+                    android:id="@+id/right_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:minWidth="90dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/course_picker_tab_button_r"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/composition_requirements"
+                    android:textColor="@color/english_writing_tab_txt_color"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                >
+
+                <!-- 自动点评-->
+                <LinearLayout
+                    android:id="@+id/layout_auto_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tv_title_auto_comment"
+                        style="@style/txt_wawa_normal_green"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textSize="16sp"
+                        android:text="句酷点评"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_content_auto_comment"
+                        style="@style/comment_content_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="16sp"
+                        />
+
+                </LinearLayout>
+
+                <!-- 人工点评-->
+                <LinearLayout
+                    android:id="@+id/layout_personal_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.galaxyschool.app.wawaschool.views.MyListView
+                        android:id="@+id/contacts_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@android:color/transparent"
+                        android:layout_marginBottom="10dp"
+                        android:dividerHeight="0dp"
+                        android:listSelector="@android:color/transparent"
+                        android:cacheColorHint="@android:color/transparent"
+                        />
+                    </LinearLayout>
+
+                <!-- 作文要求-->
+                <LinearLayout
+                    android:id="@+id/layout_article_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_title_article_request"
+                        style="@style/comment_content_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:textSize="16sp"
+                        android:padding="10dp"
+                        android:text=""
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_words_count"
+                        style="@style/comment_content_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        android:text=""
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+        <TextView
+            android:id="@+id/tv_comment_by_sentence"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/com_bg_circle_green_btn"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="bottom|right"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:text="@string/comment_by_sentence"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/com_bg_little_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/com_top_text"
+            style="@style/text_dark_gray_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:padding="@dimen/com_item_space_xl"
+            android:visibility="gone"/>
+
+        <include layout="@layout/com_search_and_filter_lay"/>
+
+        <include layout="@layout/com_page_load_failed"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+                android:id="@+id/pull_to_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="@color/com_bg_white"
+                    android:scrollbars="none"/>
+
+                <ScrollView
+                    android:id="@+id/scroll_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    android:fillViewport="true"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.lqwawa.intleducation.base.CourseEmptyView
+                            android:id="@+id/empty_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:empty_text_remind="@string/label_empty_content"
+                            app:empty_text_remind_visible="true"
+                            app:empty_text_loading="@string/label_course_empty_info_2"
+                            app:empty_text_loading_visible="false"
+                            app:empty_icon_drawable="@drawable/ic_course_empty"
+                            app:call_show="true"
+                            android:visibility="gone">
+
+                        </com.lqwawa.intleducation.base.CourseEmptyView>
+
+                        <com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView
+                            android:id="@+id/tab_empty_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:tab_empty_text_remind="@string/label_tab_course_empty_remind"
+                            app:tab_empty_text_action="@string/label_self_study_class"
+                            android:visibility="gone">
+
+                        </com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView>
+                    </LinearLayout>
+
+                </ScrollView>
+
+
+            </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+        </FrameLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/live_timetable_tv"
+        style="@style/text_white_l"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/com_bg_circle_green_btn"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:text="@string/timetable"/>
+</FrameLayout>

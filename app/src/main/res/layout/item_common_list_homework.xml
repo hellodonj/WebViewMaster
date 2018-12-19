@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/framelayout_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_corner_top"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_date_time_homework"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_start_day"
+                        style="@style/txt_wawa_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_start_weekday"
+                            style="@style/txt_wawa_small_lightgray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周二"
+                            android:textColor="@color/text_normal"
+                            android:textSize="10sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_start_date"
+                            style="@style/txt_wawa_small_lightgray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2016/05"
+                            android:textColor="@color/text_normal"
+                            android:textSize="10sp"
+                            />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/txt_wawa_normal_white"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/shape_corner_circle_gray"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/label_to"
+                        android:textSize="12sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_end_day"
+                        style="@style/txt_wawa_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="26"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_end_weekday"
+                            style="@style/txt_wawa_small_lightgray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周五"
+                            android:textColor="@color/text_normal"
+                            android:textSize="10sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_end_date"
+                            style="@style/txt_wawa_small_lightgray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2016/05"
+                            android:textColor="@color/text_normal"
+                            android:textSize="10sp"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_homework_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/layout_delete_homework"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top|right|center_vertical"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_delete_homework"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_delete_bg"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_corner_bottom"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_homework_title"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="一元二次方程的应用"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_homework_assigner"
+                    style="@style/txt_wawa_normal_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="数学张旭"
+                    android:visibility="visible"
+                    />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="5dp">
+
+
+                    <TextView
+                        android:id="@+id/tv_finish_status"
+                        style="@style/txt_wawa_small_green"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:singleLine="true"
+                        android:text="完成状态"
+                        android:visibility="visible"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_discuss_count"
+                        style="@style/txt_wawa_small_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:singleLine="true"
+                        android:text="讨论（0）"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/red_point"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="left|top"
+            android:scaleType="fitCenter"
+            android:src="@drawable/shape_corner_circle_red"
+            />
+
+        <ImageView
+            android:id="@+id/icon_need_to_commit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="50dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/need_to_commit"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+</LinearLayout>

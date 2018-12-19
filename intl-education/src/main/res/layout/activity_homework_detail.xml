@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_little_gray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:background="@color/com_bg_little_gray">
+
+        <include layout="@layout/com_page_load_failed"/>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/com_item_space">
+                        <TextView
+                            style="@style/text_black_l"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/question_count"/>
+
+                        <TextView
+                            android:id="@+id/exam_detail_tv"
+                            style="@style/text_gray_l"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/com_line_gray"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/com_item_space">
+                        <TextView
+                            style="@style/text_black_l"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/question_type"/>
+
+                        <TextView
+                            android:id="@+id/exam_type_tv"
+                            style="@style/text_gray_l"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/com_line_gray"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/com_item_space">
+                        <TextView
+                            style="@style/text_black_l"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_score_with_colon"/>
+
+                        <TextView
+                            android:id="@+id/total_score_tv"
+                            style="@style/text_gray_l"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/com_line_gray"/>
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/exam_result_score_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/com_item_space">
+                        <TextView
+                            style="@style/text_black_l"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/exam_score"/>
+
+                        <TextView
+                            android:id="@+id/exam_score_tv"
+                            style="@style/text_gray_l"
+                            android:textColor="@color/com_bg_blue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/com_line_gray"/>
+
+                    <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+                        android:id="@+id/exam_result_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:numColumns="4"
+                        android:padding="@dimen/com_item_space"/>
+                </LinearLayout>
+            </ScrollView>
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+    </LinearLayout>
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/done_bt"
+        style="@style/text_white_xl"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/com_btn_height_xl"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/com_item_space"
+        android:background="@drawable/com_btn_green_bg"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"/>
+</FrameLayout>
+

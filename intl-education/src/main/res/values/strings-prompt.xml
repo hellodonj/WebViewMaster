@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_empty">No data.</string>
+    <string name="prompt_error">Load Fail!</string>
+    <string name="prompt_loading">Loading...</string>
+</resources>

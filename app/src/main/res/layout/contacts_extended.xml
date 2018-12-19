@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffebebeb"
+    android:orientation="vertical" >
+
+    <include layout="@layout/contacts_header" />
+
+    <LinearLayout
+        android:id="@+id/contacts_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/title_bar_height"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:background="#ffffff">
+
+            <ImageView
+                android:id="@+id/contacts_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/sel_nav_backarrow"
+                android:background="@drawable/nav_blank_ico" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/title_bar_height"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
+
+                <TextView
+                    android:id="@+id/contacts_group"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/tab_button_l"
+                    android:minWidth="100dp"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/class_contacts"
+                    android:textColor="@color/curriculum_assignment_color"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/contacts_personal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/tab_button_m"
+                    android:minWidth="100dp"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/personal_contacts"
+                    android:textColor="@color/curriculum_assignment_color"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/contacts_family"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:background="@drawable/tab_button_r"
+                    android:minWidth="100dp"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/family_contacts"
+                    android:textColor="@color/curriculum_assignment_color"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView style="@style/line_gray"/>
+    </LinearLayout>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/contacts_body"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</FrameLayout>-->
+
+    <com.galaxyschool.app.wawaschool.views.MyViewPager
+        android:id="@+id/contacts_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <include
+        android:visibility="gone"
+        layout="@layout/contacts_picker_bar" />
+
+</LinearLayout>

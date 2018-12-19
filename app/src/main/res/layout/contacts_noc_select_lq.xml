@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/contacts_header_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/course_picker_back_btn"
+            android:layout_width="@dimen/title_bar_height"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/my_back_ico"
+            android:background="@drawable/nav_blank_ico"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/tab_left"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:minWidth="90dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:background="@drawable/course_picker_tab_button_l"
+                android:enabled="false"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/local_course_task"
+                android:textColor="@color/course_tab_txt_color"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tab_right"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:minWidth="90dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:background="@drawable/course_picker_tab_button_r"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/cloud"
+                android:textColor="@color/course_tab_txt_color"
+                android:textSize="16sp"
+                android:enabled="true"
+              />
+        </LinearLayout>
+
+        <TextView
+            style="@style/txt_wawa_big_white"
+            android:id="@+id/course_picker_commit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/nav_blank_ico"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="@string/confirm"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color">
+
+    <include layout="@layout/contacts_header"/>
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/white">
+
+        <com.galaxyschool.app.wawaschool.views.ArcProgressbar
+            android:id="@+id/myProgress"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/separate_20dp"
+            app:degree="0"
+            app:radiuss="85dp"
+            app:borderWidth="12dp"
+            app:progressStyle="arc"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_score_range"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/text_green"
+                android:text="分数排名：60 sssssssssssssssssssssssssssssssssssssss"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tv_count_person"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text_green"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tv_count_word"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text_green"
+                android:singleLine="true"
+                android:ellipsize="end"
+                />
+
+            <TextView
+                android:id="@+id/tv_count_commit"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text_green"
+                android:singleLine="true"
+                android:ellipsize="end"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/english_writing_common_black_title"
+        android:textSize="14sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="@string/comment_by_sentence"
+        android:background="@color/main_bg_color"
+        android:padding="10dp"
+        android:visibility="gone"/>
+
+    <com.galaxyschool.app.wawaschool.views.MyExpandListView
+        android:id="@+id/comment_by_sentence_expandable_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:layout_marginBottom="10dp"
+        android:dividerHeight="0dp"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        />
+
+            </LinearLayout>
+    </ScrollView>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+</LinearLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/role_info_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/userinfo_item_min_height"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/txt_wawa_big_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/role"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d2d2d2"
+            android:textSize="14sp"
+            android:text="*" />
+
+        <TextView
+            android:id="@+id/role_state_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d2d2d2"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:id="@+id/role_info_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:textColor="#6d6d6d"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/school_info_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/userinfo_item_min_height"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:layout_marginTop="1dp"
+        android:padding="10dp">
+
+        <TextView
+            style="@style/txt_wawa_big_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school"
+           />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d2d2d2"
+            android:textSize="14sp"
+            android:text="*" />
+
+        <TextView
+            android:id="@+id/school_state_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d2d2d2"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:id="@+id/school_info_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:textColor="#6d6d6d"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right" />
+    </LinearLayout>
+</LinearLayout>

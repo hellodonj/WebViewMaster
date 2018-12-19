@@ -1,0 +1,13 @@
+include ':app'
+include ':elearning-library'
+include ':onekey-share-lib'
+include ':video-recorder'
+include ':media-paper'
+include ':ecourse-maker'
+include ':robot-pen'
+include ':scanner-lib'
+include ':letv-sdk'
+include ':intl-education'
+include ':lqbase-lib'
+
+

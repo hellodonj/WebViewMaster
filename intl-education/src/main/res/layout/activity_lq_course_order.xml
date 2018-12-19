@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/topBarSize"
+        android:layout_marginBottom="48dp">
+
+        <FrameLayout
+            android:id="@+id/all_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:background="@color/colorLight"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_course_all_pay"
+                android:layout_gravity="left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_all_pay"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/textPrimary"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="50dp"/>
+
+            <CheckBox
+                android:id="@+id/cb_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:button="@null"
+                android:checked="true"
+                android:clickable="false"
+                android:background="@drawable/bg_course_pay_tag_selector"/>
+
+            <TextView
+                android:id="@+id/tv_all_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="30dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/textMoneyRed"
+                android:textSize="14sp" />
+
+        </FrameLayout>
+
+        <View
+            android:id="@+id/all_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
+
+        <FrameLayout
+            android:id="@+id/chapter_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:background="@color/colorLight">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_course_chapter_pay"
+                android:layout_gravity="left"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="50dp"
+                android:text="@string/label_chapter_pay"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cb_chapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:button="@null"
+                android:clickable="false"
+                android:background="@drawable/bg_course_pay_tag_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/textMoneyRed"
+                android:textSize="14sp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="30dp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <View
+            android:id="@+id/chapter_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
+
+        <LinearLayout
+            android:id="@+id/chapter_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_gravity="right|center_vertical"
+                android:gravity="right|center_vertical"
+                android:textSize="14sp"
+                android:textColor="@color/textAccent"
+                android:text="@string/label_all_select"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:background="@color/colorLight"/>
+
+            <View android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontalDividerHeight"
+                android:background="@color/divider_color"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorLight"
+        android:weightSum="2"
+        android:layout_gravity="bottom">
+        <FrameLayout
+            android:id="@+id/price_layout"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorLight"
+                android:gravity="center"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrayHighLight"/>
+
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_pay"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:textColor="@color/textLight"
+            android:foreground="@drawable/ic_touch_fg_gray"
+            android:gravity="center"
+            android:text="@string/label_to_pay"/>
+
+    </LinearLayout>
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+</FrameLayout>

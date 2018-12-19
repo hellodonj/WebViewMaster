@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+
+    <include layout="@layout/contacts_header"/>
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height">
+
+        <TextView
+            android:id="@+id/study_task_date"
+            style="@style/txt_wawa_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textSize="@dimen/text_size_title"
+            android:textColor="@color/text_green"
+            android:gravity="center"/>
+        <ImageView
+            android:id="@+id/study_task_prev_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_toLeftOf="@id/study_task_date"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_arrow_prev"/>
+
+        <ImageView
+            android:id="@+id/study_task_next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_toRightOf="@id/study_task_date"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_arrow_next"/>
+
+
+
+        <TextView
+            android:id="@+id/study_task_new_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/green_10dp_white"
+            android:gravity="center"
+            android:text="@string/create_new_task"
+            android:textColor="@color/text_green"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/back_to_today"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#47AC6E"
+            android:padding="15dp"
+            android:layout_alignParentRight="true"
+            android:textSize="16dp"
+            android:text="@string/today"/>
+    </RelativeLayout>
+
+    <ImageView style="@style/line_gray"/>
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_marginBottom="25dp"
+        android:visibility="gone">
+
+        <ExpandableListView
+            android:id="@+id/catlog_expand_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/line_gray"
+            android:dividerHeight="0dp"
+            android:childIndicatorLeft="5dp"
+            android:listSelector="@android:color/transparent"/>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+    <LinearLayout
+        android:id="@+id/no_tasks_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+       >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_task_tip_1"
+            android:textColor="#CCCCCC"
+            android:textSize="20dp"/>
+    </LinearLayout>
+</LinearLayout>

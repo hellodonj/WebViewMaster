@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_list_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white_bg"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/contacts_dialog_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/contacts_dialog_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:text="标题"
+                    style="@style/dialog_text"
+                    android:singleLine="true"/>
+
+            <ImageView style="@style/line_gray"/>
+        </LinearLayout>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            layout="@layout/contacts_dialog_list" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/contacts_dialog_cancel_button"
+        style="@style/txt_white_18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_white_bg"
+        android:gravity="center"
+        android:padding="10dp"
+        android:minHeight="@dimen/item_height"
+        android:text="@string/cancel"
+        android:textSize="16sp"
+        android:textColor="#ff584f"/>
+
+</LinearLayout>
+

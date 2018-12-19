@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popwindow_9patch"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.osastudio.common.utils.MyListView
+        android:id="@+id/pop_menu_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#E9E9E9"
+        android:dividerHeight="1dp">
+
+    </com.osastudio.common.utils.MyListView>
+
+    <ListView
+        android:id="@+id/lv_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#E9E9E9"
+        android:dividerHeight="1dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

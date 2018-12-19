@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 四周都是绿色边框，中间是白色填充的圆角矩形，-->
+    <solid android:color="@color/white"/>
+
+    <corners
+            android:radius="20dp"/>
+
+    <stroke
+            android:width="1dp"
+            android:color="@color/green"/>
+    <size android:width="40dp" android:height="20dp"></size>
+</shape>
+

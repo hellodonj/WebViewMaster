@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/userinfo_item_min_height"
+                android:text="@string/role"
+                android:padding="10dp" />
+
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:id="@+id/activity_roleinfo_role_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inputbox_pre_bg"
+                android:minHeight="@dimen/userinfo_item_min_height"
+                android:padding="10dp" />
+
+            <LinearLayout
+                android:id="@+id/activity_roleinfo_sub_layout0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/userinfo_item_min_height"
+                    android:text="@string/school"
+                    android:padding="10dp" />
+
+                <TextView
+                    style="@style/txt_wawa_big_black"
+                    android:id="@+id/activity_roleinfo_school_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/inputbox_pre_bg"
+                    android:minHeight="@dimen/userinfo_item_min_height"
+                    android:padding="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/activity_roleinfo_sub_layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/userinfo_item_min_height"
+                        android:text="@string/grade"
+                        android:padding="10dp" />
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:id="@+id/activity_roleinfo_grade_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/inputbox_pre_bg"
+                        android:minHeight="@dimen/userinfo_item_min_height"
+                        android:padding="10dp" />
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/userinfo_item_min_height"
+                        android:text="@string/classes"
+                        android:padding="10dp" />
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:id="@+id/activity_roleinfo_class_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/inputbox_pre_bg"
+                        android:minHeight="@dimen/userinfo_item_min_height"
+                        android:padding="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

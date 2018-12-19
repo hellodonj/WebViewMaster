@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_top_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_main"
+        android:paddingRight="5dp">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/my_back_ico"
+            android:background="@drawable/nav_blank_ico"/>
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/title_scan"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:maxLines="2"/>
+
+
+        <TextView
+            android:id="@+id/tv_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/photo"
+            android:layout_centerVertical="true"
+            android:padding="6dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+
+    </RelativeLayout>
+
+    <ImageView style="@style/line_gray" />
+
+</LinearLayout>
+

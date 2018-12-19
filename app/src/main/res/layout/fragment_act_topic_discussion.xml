@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/root_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.galaxyschool.app.wawaschool.views.MyExpandListView
+                    android:id="@+id/expandable_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_bg_color"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:childDivider="@color/white"
+                    android:divider="@color/line_gray"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="none"
+                    android:listSelector="@android:color/transparent"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+</LinearLayout>

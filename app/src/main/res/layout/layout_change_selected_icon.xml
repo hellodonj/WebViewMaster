@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topic_discussion_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/contacts_dialog_content_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:text="@string/str_delete_online_list_data_title"
+        android:textSize="18sp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/black"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_current_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/com_checkbox"
+            android:checked="true"
+            android:textColor="@color/text_green"
+            android:padding="5dp"
+            android:text="@string/str__delete_from_this_class"
+            android:textSize="16sp"/>
+
+        <RadioButton
+            android:id="@+id/rb_all_Class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/com_checkbox"
+            android:checked="false"
+            android:textColor="@color/text_green"
+            android:padding="5dp"
+            android:text="@string/str__delete_from_all_class"
+            android:textSize="16sp"/>
+    </RadioGroup>
+</LinearLayout>

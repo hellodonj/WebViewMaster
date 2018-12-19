@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/book_catalog_list_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical" >
+
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <include layout="@layout/contacts_header" />
+
+        <!--<include layout="@layout/book_catalog_list_header" />-->
+    <!--</FrameLayout>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/book_name"-->
+        <!--style="@style/txt_wawa_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="标题"-->
+        <!--android:ellipsize="middle"-->
+        <!--android:gravity="center"-->
+        <!--android:maxLines="2"/>-->
+
+    <ExpandableListView
+        android:id="@+id/contacts_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:childIndicatorLeft="5dp"
+        android:listSelector="@android:color/transparent" />
+
+</LinearLayout>

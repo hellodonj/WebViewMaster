@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="vr_press_and_hold_to_record">按住拍</string>
+    <string name="vr_release_to_finish_record">松手结束</string>
+    <string name="vr_record_time_too_short">录制时间太短啦，至少要%d秒哦</string>
+    <string name="vr_click_to_record">点击录制</string>
+    <string name="vr_click_to_stop_recording">点击结束</string>
+    <string name="vr_restart_recording">重新录制</string>
+    <string name="vr_complete_recording">完成录制</string>
+    <string name="vr_recording_error">录制有点问题哦，待会再试下吧</string>
+
+</resources>

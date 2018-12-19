@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="tab_menu_normal_color">#7a7a7a</color>
+    <color name="tab_menu_press_color">#009039</color>
+
+    <color name="text_normal">#ff6d6d6d</color>
+    <color name="text_black">#ff373636</color>
+    <color name="text_light_gray">#ffd2d2d2</color>
+    <color name="text_dark_gray">#7a7a7a</color>
+    <color name="text_green">#009039</color>
+    <color name="text_white">#ffffff</color>
+    
+    <color name="line_gray">#ffdcdcdc</color>
+    <color name="main_bg_color">#ebebeb</color>
+    
+    <!-- font color -->
+    <color name="font_color_black_a2">#a2a2a2</color>
+
+    <color name="popup_root_view_bg">#aa5e5e5e</color>
+    <color name="popup_view_bg">#0000</color>
+
+    <color name="request_agree_bg">#009039</color>
+    <color name="request_reject_bg">#fffc3b3b</color>
+    <color name="color_campus_patrol_resource_title">#56b37b </color>
+
+    <!-- english writing-->
+    <color name="english_writing_common_gray">#999999</color>
+    <color name="english_writing_common_light_gray">#666666</color>
+    <color name="english_writing_common_black_title">#333333</color>
+    <color name="english_writing_gray_content">#6f7179</color>
+    <color name="english_writing_red_score">#ee3333</color>
+    <!-- 省市区-->
+    <color name="province_line_border">#C7C7C7</color>
+    <!--页签选择器背景-->
+    <color name="psts_background_tab_pressed">#AAFFFFFF</color>
+    <color name="tab_text_selected">#009039</color>
+    <color name="tab_text_default">#7a7a7a</color>
+    <!-- 网页关闭区域背景 -->
+
+    <color name="tab_menu_txt_default_color">#646464</color>
+    <color name="toolbar_bg_color">#33ffffff</color>
+    <!-- 暗灰蓝色 -->
+    <color name="color_indian">#64646E</color>
+    <!--淡淡的红色-->
+    <color name="color_light_red">#f7475c</color>
+    <!--淡淡的灰色-->
+    <color name="color_light_gray">#dbdbdb</color>
+
+</resources>

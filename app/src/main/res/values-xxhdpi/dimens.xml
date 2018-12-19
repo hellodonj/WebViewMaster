@@ -1,0 +1,6 @@
+<resources>
+
+    <!--不同屏幕下不同的值start-->
+    <dimen name="title_12">12dp</dimen>
+
+</resources>

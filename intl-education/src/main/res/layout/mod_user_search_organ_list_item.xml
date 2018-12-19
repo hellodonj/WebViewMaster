@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/root_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/com_item_selector"
+              android:orientation="horizontal"
+              android:paddingLeft="6dp">
+
+    <ImageView
+        android:id="@+id/user_head_iv"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/com_item_space_xs"
+        android:src="@drawable/ic_new_friend"/>
+
+    <TextView
+        android:id="@+id/name_tv"
+        style="@style/text_dark_gray_xl"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/com_item_space_xxl"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="4dp"/>
+
+    <TextView
+        android:id="@+id/add_attention_tv"
+        style="@style/text_white"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/com_pink_bt_bg"
+        android:layout_marginRight="@dimen/com_item_space"
+        android:paddingLeft="@dimen/com_item_space_s"
+        android:paddingRight="@dimen/com_item_space_s"
+        android:paddingTop="@dimen/com_item_space_xxs"
+        android:paddingBottom="@dimen/com_item_space_xxs"
+        android:layout_width="wrap_content"
+        android:text="@string/add_attention"
+        android:clickable="true"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/has_attention_tv"
+        style="@style/text_gray"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/com_item_space"
+        android:paddingLeft="@dimen/com_item_space_s"
+        android:paddingRight="@dimen/com_item_space_s"
+        android:paddingTop="@dimen/com_item_space_xxs"
+        android:paddingBottom="@dimen/com_item_space_xxs"
+        android:layout_width="wrap_content"
+        android:text="@string/has_attention"
+        android:clickable="false"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

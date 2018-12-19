@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:background="@drawable/custom_dialog_bg"
+             android:layout_marginLeft="@dimen/com_item_space_xxxxl"
+             android:layout_marginRight="@dimen/com_item_space_xxxxl"
+             android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/custom_dialog_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/text_black_l"
+            android:layout_width="fill_parent"
+            android:layout_height="40.0dip"
+            android:text="@string/imput_authorization_title"
+            android:gravity="center_horizontal|bottom"/>
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:padding="@dimen/com_item_space_xxxxl"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.lqwawa.intleducation.lqpay.widget.GridPasswordView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                app:gpvPasswordLength = "6"
+                app:gpvPasswordType="numberPassword" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/com_line_gray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/negativeButton"
+                style="@style/text_gray_l"
+                android:layout_width="114.0dip"
+                android:layout_height="40.0dip"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:text= "@string/cancle"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/com_line_gray"/>
+
+            <Button
+                android:id="@+id/positiveButton"
+                android:textColor="@color/com_bg_sky_blue"
+                android:textSize="@dimen/com_font_size_4"
+                android:layout_width="114.0dip"
+                android:layout_height="40.0dip"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/confirm_ok"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

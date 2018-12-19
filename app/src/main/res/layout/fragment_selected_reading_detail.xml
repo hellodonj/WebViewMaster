@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+              android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--  新样式头部布局 -->
+            <include layout="@layout/item_assigned_homework"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#E8E7E8"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:visibility="gone">
+                <RelativeLayout
+                    android:id="@+id/task_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                >
+
+                    <ImageView
+                        android:id="@+id/course_image_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_cover"
+                    />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/play_ico"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/course_title_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <com.galaxyschool.app.wawaschool.views.MyGridView
+                android:id="@+id/botton_grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:cacheColorHint="#00000000"
+                android:gravity="center"
+                android:horizontalSpacing="15dp"
+                android:listSelector="#00000000"
+                android:numColumns="2"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="15dp"
+            />
+
+            <LinearLayout
+                android:id="@+id/layout_bottom_resource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#E8E7E8"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="20dp"
+                            android:background="@color/text_green">
+                        </View>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/task_student_need_finish"
+                            android:textSize="16dp"
+                        />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/student_task_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="10dp"
+                        android:text=""
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#E8E7E8"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@color/text_green">
+                    </View>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/discussion_text"
+                        android:textSize="16dp"
+                    />
+                </LinearLayout>
+                <com.galaxyschool.app.wawaschool.views.MyExpandListView
+                    android:id="@+id/catlog_expand_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:childIndicatorLeft="5dp"
+                    android:divider="@color/line_gray"
+                    android:dividerHeight="1dp"
+                    android:listSelector="@android:color/transparent"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <View
+        android:layout_height="10dp"
+        android:background="#E8E7E8"
+        android:layout_width="match_parent"
+        android:visibility="gone"/>
+    <!-- 发送评论布局 -->
+    <include
+        layout="@layout/include_bottom_send_layout"/>
+</LinearLayout>

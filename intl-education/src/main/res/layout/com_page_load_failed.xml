@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/load_failed_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/failed_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/page_load_faild"/>
+
+    <TextView
+        android:id="@+id/failed_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/failed_iv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/textGray"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/load_faild_tip"/>
+
+    <Button
+        android:id="@+id/reload_bt"
+        style="@style/text_white_s"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/com_btn_height_l"
+        android:paddingLeft="@dimen/com_item_space_xxxl"
+        android:paddingRight="@dimen/com_item_space_xxxl"
+        android:layout_below="@+id/failed_tv"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/com_green_bar_bg"
+        android:text="@string/reload"/>
+
+</RelativeLayout>

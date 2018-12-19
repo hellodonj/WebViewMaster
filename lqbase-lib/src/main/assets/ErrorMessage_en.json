@@ -1,0 +1,1088 @@
+{
+  "data": [
+    {
+      "errorCode": "00001",
+      "errorMessage": "Invalid account or password"
+    },
+    {
+      "errorCode": "00002",
+      "errorMessage": "News details not found"
+    },
+    {
+      "errorCode": "00003",
+      "errorMessage": "Check if input is blank"
+    },
+    {
+      "errorCode": "00004",
+      "errorMessage": "Password is blank"
+    },
+    {
+      "errorCode": "00005",
+      "errorMessage": "Class ID is blank"
+    },
+    {
+      "errorCode": "00006",
+      "errorMessage": "Grade is blank"
+    },
+    {
+      "errorCode": "00007",
+      "errorMessage": "School ID is blank"
+    },
+    {
+      "errorCode": "00008",
+      "errorMessage": "Username is blank"
+    },
+    {
+      "errorCode": "00009",
+      "errorMessage": "New password is blank"
+    },
+    {
+      "errorCode": "00010",
+      "errorMessage": "Old password is blank"
+    },
+    {
+      "errorCode": "00011",
+      "errorMessage": "Real name is blank"
+    },
+    {
+      "errorCode": "00012",
+      "errorMessage": "Email is blank"
+    },
+    {
+      "errorCode": "00013",
+      "errorMessage": "Mobile number is blank"
+    },
+    {
+      "errorCode": "00014",
+      "errorMessage": "Profile photo not set"
+    },
+    {
+      "errorCode": "00015",
+      "errorMessage": "Student's application ID is blank"
+    },
+    {
+      "errorCode": "00016",
+      "errorMessage": "Teacher's application ID is blank"
+    },
+    {
+      "errorCode": "00017",
+      "errorMessage": "Category is blank"
+    },
+    {
+      "errorCode": "00018",
+      "errorMessage": "Fuzzy search keyword is blank"
+    },
+    {
+      "errorCode": "00019",
+      "errorMessage": "Approving status is blank"
+    },
+    {
+      "errorCode": "00020",
+      "errorMessage": "Group ID is blank"
+    },
+    {
+      "errorCode": "00021",
+      "errorMessage": "Member info not found"
+    },
+    {
+      "errorCode": "00022",
+      "errorMessage": "Sorry but you are not a teacher in this school, please join school before joining class."
+    },
+    {
+      "errorCode": "00023",
+      "errorMessage": "Student info not found"
+    },
+    {
+      "errorCode": "00024",
+      "errorMessage": "Parent info not found"
+    },
+    {
+      "errorCode": "00025",
+      "errorMessage": "Class address book info not found"
+    },
+    {
+      "errorCode": "00026",
+      "errorMessage": "Friend info not found"
+    },
+    {
+      "errorCode": "00027",
+      "errorMessage": "Moments info not found"
+    },
+    {
+      "errorCode": "00028",
+      "errorMessage": "Feedback info not found"
+    },
+    {
+      "errorCode": "00029",
+      "errorMessage": "Invalid old password entered"
+    },
+    {
+      "errorCode": "00030",
+      "errorMessage": "Failed to change password"
+    },
+    {
+      "errorCode": "00031",
+      "errorMessage": "Email address used by multi-users"
+    },
+    {
+      "errorCode": "00032",
+      "errorMessage": "Email address not registered"
+    },
+    {
+      "errorCode": "00033",
+      "errorMessage": "Failed to change password"
+    },
+    {
+      "errorCode": "00034",
+      "errorMessage": "Username already exists"
+    },
+    {
+      "errorCode": "00035",
+      "errorMessage": "Email engaged"
+    },
+    {
+      "errorCode": "00036",
+      "errorMessage": "Registration to EaseMod failed"
+    },
+    {
+      "errorCode": "00037",
+      "errorMessage": "Cannot bind yourself"
+    },
+    {
+      "errorCode": "00038",
+      "errorMessage": "Please complete your profile: Real name & email address"
+    },
+    {
+      "errorCode": "00039",
+      "errorMessage": "Applied already, cannot re-apply"
+    },
+    {
+      "errorCode": "00040",
+      "errorMessage": "Corresponding school followed not found "
+    },
+    {
+      "errorCode": "00041",
+      "errorMessage": "Corresponding approval info not found"
+    },
+    {
+      "errorCode": "00042",
+      "errorMessage": "Available in Contacts"
+    },
+    {
+      "errorCode": "00043",
+      "errorMessage": "Friend request sent successfully"
+    },
+    {
+      "errorCode": "00044",
+      "errorMessage": "No personal address book available"
+    },
+    {
+      "errorCode": "00045",
+      "errorMessage": "Friend do not have personal address book"
+    },
+    {
+      "errorCode": "00046",
+      "errorMessage": "Approval failed"
+    },
+    {
+      "errorCode": "00047",
+      "errorMessage": "Info needs deletion not found"
+    },
+    {
+      "errorCode": "00048",
+      "errorMessage": "Corresponding QR Code info not found"
+    },
+    {
+      "errorCode": "00049",
+      "errorMessage": "School info not found"
+    },
+    {
+      "errorCode": "00050",
+      "errorMessage": "Class info not found"
+    },
+    {
+      "errorCode": "00051",
+      "errorMessage": "Grade info not found"
+    },
+    {
+      "errorCode": "00052",
+      "errorMessage": "Relationship not found"
+    },
+    {
+      "errorCode": "00053",
+      "errorMessage": "School introduction not found"
+    },
+    {
+      "errorCode": "00054",
+      "errorMessage": "Duplicate name found, please select your child from list"
+    },
+    {
+      "errorCode": "00055",
+      "errorMessage": "Joined already"
+    },
+    {
+      "errorCode": "00056",
+      "errorMessage": "Parent exists"
+    },
+    {
+      "errorCode": "00057",
+      "errorMessage": "Teacher exists in Contacts"
+    },
+    {
+      "errorCode": "00058",
+      "errorMessage": "Corresponding school or class not found"
+    },
+    {
+      "errorCode": "00059",
+      "errorMessage": "Current user not exists"
+    },
+    {
+      "errorCode": "00060",
+      "errorMessage": "Info not found"
+    },
+    {
+      "errorCode": "00061",
+      "errorMessage": "Corresponding school not found"
+    },
+    {
+      "errorCode": "00062",
+      "errorMessage": "Corresponding address book not found"
+    },
+    {
+      "errorCode": "00063",
+      "errorMessage": "Deletion failed"
+    },
+    {
+      "errorCode": "00064",
+      "errorMessage": "Corresponding friend not found"
+    },
+    {
+      "errorCode": "00065",
+      "errorMessage": "Cannot search new friends before logging in"
+    },
+    {
+      "errorCode": "00066",
+      "errorMessage": "Timetable not exists"
+    },
+    {
+      "errorCode": "00067",
+      "errorMessage": "News category not exists"
+    },
+    {
+      "errorCode": "00068",
+      "errorMessage": "Only approver can delete the record"
+    },
+    {
+      "errorCode": "00069",
+      "errorMessage": "User ID cannot be blank!"
+    },
+    {
+      "errorCode": "00070",
+      "errorMessage": "Weike ID cannot be blank!"
+    },
+    {
+      "errorCode": "00071",
+      "errorMessage": "Current user info not found!"
+    },
+    {
+      "errorCode": "00072",
+      "errorMessage": "Category cannot be blank!"
+    },
+    {
+      "errorCode": "00073",
+      "errorMessage": "Target not selected!"
+    },
+    {
+      "errorCode": "00074",
+      "errorMessage": "Outline not exists!"
+    },
+    {
+      "errorCode": "00075",
+      "errorMessage": "Chapter not exists!"
+    },
+    {
+      "errorCode": "00076",
+      "errorMessage": "Approval not exists!"
+    },
+    {
+      "errorCode": "00077",
+      "errorMessage": "Title cannot be blank"
+    },
+    {
+      "errorCode": "00078",
+      "errorMessage": "Incorrect notification parameter"
+    },
+    {
+      "errorCode": "00079",
+      "errorMessage": "Notification data not exists or deleted"
+    },
+    {
+      "errorCode": "00080",
+      "errorMessage": "Category info not found"
+    },
+    {
+      "errorCode": "00081",
+      "errorMessage": "Resource info not found"
+    },
+    {
+      "errorCode": "00082",
+      "errorMessage": "Commenter info not found"
+    },
+    {
+      "errorCode": "00083",
+      "errorMessage": "Current user ID cannot be blank"
+    },
+    {
+      "errorCode": "00084",
+      "errorMessage": "Comment ID cannot be blank"
+    },
+    {
+      "errorCode": "00085",
+      "errorMessage": "Class ID cannot be blank"
+    },
+    {
+      "errorCode": "00086",
+      "errorMessage": "Commenter cannot be blank"
+    },
+    {
+      "errorCode": "00087",
+      "errorMessage": "School ID cannot be blank"
+    },
+    {
+      "errorCode": "00088",
+      "errorMessage": "Person be commented cannot be blank"
+    },
+    {
+      "errorCode": "00089",
+      "errorMessage": "Outline ID and Chapter ID cannot be blank"
+    },
+    {
+      "errorCode": "00090",
+      "errorMessage": "Administrator is not allowed to log in to LQWaWa/WaWaWeike"
+    },
+    {
+      "errorCode": "00091",
+      "errorMessage": "Resource ID cannot be empty"
+    },
+    {
+      "errorCode": "00092",
+      "errorMessage": "Added already"
+    },
+    {
+      "errorCode": "00093",
+      "errorMessage": "Class administrator not exists, please contact school administrator."
+    },
+    {
+      "errorCode": "00094",
+      "errorMessage": "Learning stage already exists"
+    },
+    {
+      "errorCode": "00095",
+      "errorMessage": "Grade already exists"
+    },
+    {
+      "errorCode": "00096",
+      "errorMessage": "Easemob sync failure"
+    },
+    {
+      "errorCode": "00097",
+      "errorMessage": "You are not a teacher"
+    },
+    {
+      "errorCode": "00098",
+      "errorMessage": "Data source not found"
+    },
+    {
+      "errorCode": "00099",
+      "errorMessage": "Wrong author category entered, please check!"
+    },
+    {
+      "errorCode": "00100",
+      "errorMessage": "Corresponding author not found"
+    },
+    {
+      "errorCode": "00101",
+      "errorMessage": "Failed to reset password"
+    },
+    {
+      "errorCode": "00102",
+      "errorMessage": "Username can contain 3 to 20 digits or letters"
+    },
+    {
+      "errorCode": "00103",
+      "errorMessage": "Current user ID cannot be blank"
+    },
+    {
+      "errorCode": "00104",
+      "errorMessage": "Parent already exists"
+    },
+    {
+      "errorCode": "00105",
+      "errorMessage": "Favorite file ID cannot be blank"
+    },
+    {
+      "errorCode": "00106",
+      "errorMessage": "Source of the favorite file cannot be blank"
+    },
+    {
+      "errorCode": "00107",
+      "errorMessage": "Invalid mobile number"
+    },
+    {
+      "errorCode": "00108",
+      "errorMessage": "This mobile number has been registered, please log in."
+    },
+    {
+      "errorCode": "00109",
+      "errorMessage": "Username cannot be blank!"
+    },
+    {
+      "errorCode": "00110",
+      "errorMessage": "Password cannot be blank!"
+    },
+    {
+      "errorCode": "00111",
+      "errorMessage": "Mobile number cannot be blank!"
+    },
+    {
+      "errorCode": "00112",
+      "errorMessage": "Verification code input error!"
+    },
+    {
+      "errorCode": "00113",
+      "errorMessage": "Verification code failure, please refetch!"
+    },
+    {
+      "errorCode": "00114",
+      "errorMessage": "SMS verification failed!"
+    },
+    {
+      "errorCode": "00115",
+      "errorMessage": "Unbound mobile number!"
+    },
+    {
+      "errorCode": "00116",
+      "errorMessage": "This mobile number already bound other account!"
+    },
+    {
+      "errorCode": "00117",
+      "errorMessage": "Cannot add yourself as a friend"
+    },
+    {
+      "errorCode": "00118",
+      "errorMessage": "Cannot bind yourself as a parent"
+    },
+    {
+      "errorCode": "00119",
+      "errorMessage": "Message categary cannot be blank"
+    },
+    {
+      "errorCode": "00120",
+      "errorMessage": "Upload categary not found"
+    },
+    {
+      "errorCode": "00121",
+      "errorMessage": "Follower's or followee's member ID cannot be blank"
+    },
+    {
+      "errorCode": "00122",
+      "errorMessage": "Follower's or followee's member ID cannot be found"
+    },
+    {
+      "errorCode": "00123",
+      "errorMessage": "Follower's and followee's member ID cannot be the same"
+    },
+    {
+      "errorCode": "00124",
+      "errorMessage": "Channel ID cannot be blank"
+    },
+    {
+      "errorCode": "00125",
+      "errorMessage": "Followed already"
+    },
+    {
+      "errorCode": "00126",
+      "errorMessage": "Incorrect material category"
+    },
+    {
+      "errorCode": "00127",
+      "errorMessage": "File ID cannot be blank"
+    },
+    {
+      "errorCode": "00128",
+      "errorMessage": "Favorites category not found"
+    },
+    {
+      "errorCode": "00129",
+      "errorMessage": "Learning stage ID cannot be blank"
+    },
+    {
+      "errorCode": "00130",
+      "errorMessage": "Subject ID cannot be blank"
+    },
+    {
+      "errorCode": "00134",
+      "errorMessage": "Parameter cannot be blank"
+    },
+    {
+      "errorCode": "00135",
+      "errorMessage": "Abnormal parameter"
+    },
+    {
+      "errorCode": "00136",
+      "errorMessage": "The Happy Learning channel ID you would like to enable or disable is blank"
+    },
+    {
+      "errorCode": "00137",
+      "errorMessage": "Happy Learning channel not exists"
+    },
+    {
+      "errorCode": "00138",
+      "errorMessage": "Property value of this Happy Learning channel does not exist"
+    },
+    {
+      "errorCode": "00139",
+      "errorMessage": "This property value is not for this Happy Learning channel"
+    },
+    {
+      "errorCode": "00140",
+      "errorMessage": "Corresponding category not found"
+    },
+    {
+      "errorCode": "00141",
+      "errorMessage": "You already followed this school, cannot follow again"
+    },
+    {
+      "errorCode": "00142",
+      "errorMessage": "Resource uploaded already"
+    },
+    {
+      "errorCode": "00143",
+      "errorMessage": "Cannot unfollow a friend"
+    },
+    {
+      "errorCode": "00144",
+      "errorMessage": "Cannot join as a student since you are a teacher in this class"
+    },
+    {
+      "errorCode": "00145",
+      "errorMessage": "Cannot join as a student since you are a parent in this class"
+    },
+    {
+      "errorCode": "00146",
+      "errorMessage": "Outline ID cannot be blank"
+    },
+    {
+      "errorCode": "00147",
+      "errorMessage": "Notification ID cannot be blank"
+    },
+    {
+      "errorCode": "00148",
+      "errorMessage": "Notification has been read"
+    },
+    {
+      "errorCode": "00149",
+      "errorMessage": "Corresponding bookshelf info not found"
+    },
+    {
+      "errorCode": "00150",
+      "errorMessage": "Corresponding resource info not found"
+    },
+    {
+      "errorCode": "00151",
+      "errorMessage": "Material title already exists"
+    },
+    {
+      "errorCode": "00152",
+      "errorMessage": "This role already exists in class address book"
+    },
+    {
+      "errorCode": "00153",
+      "errorMessage": "Resource edit failed"
+    },
+    {
+      "errorCode": "00154",
+      "errorMessage": "Added already"
+    },
+    {
+      "errorCode": "00155",
+      "errorMessage": "Student in this class cannot be the head teacher"
+    },
+    {
+      "errorCode": "00156",
+      "errorMessage": "Outline info not found"
+    },
+    {
+      "errorCode": "00157",
+      "errorMessage": "Chapter ID cannot be blank"
+    },
+    {
+      "errorCode": "00158",
+      "errorMessage": "Chapter info not found"
+    },
+    {
+      "errorCode": "00159",
+      "errorMessage": "Bookshelf record not found"
+    },
+    {
+      "errorCode": "00160",
+      "errorMessage": "Course record not found"
+    },
+    {
+      "errorCode": "00161",
+      "errorMessage": "Bookshelf ID cannot be blank"
+    },
+    {
+      "errorCode": "00162",
+      "errorMessage": "Alternative headteacher cannot be blank"
+    },
+    {
+      "errorCode": "00163",
+      "errorMessage": "You are student in this class and can't join in as parents"
+    },
+    {
+      "errorCode": "00164",
+      "errorMessage": "You are student in this class and can't join in as teacher"
+    },
+    {
+      "errorCode": "00165",
+      "errorMessage": "Don't choose reporting information"
+    },
+    {
+      "errorCode": "00166",
+      "errorMessage": "Reporting item is inexistent"
+    },
+    {
+      "errorCode": "00167",
+      "errorMessage": "ID(username,school,class)can��t be empty"
+    },
+    {
+      "errorCode": "00168",
+      "errorMessage": "Object can't be empty"
+    },
+    {
+      "errorCode": "00169",
+      "errorMessage": "Province is inexistent"
+    },
+    {
+      "errorCode": "00170",
+      "errorMessage": "Question bank is inexistent"
+    },
+    {
+      "errorCode": "00171",
+      "errorMessage": "Difficulty level is inexistent"
+    },
+    {
+      "errorCode": "00172",
+      "errorMessage": "Test ID can't be empty"
+    },
+    {
+      "errorCode": "00173",
+      "errorMessage": "This test has been marked as a common one"
+    },
+    {
+      "errorCode": "00174",
+      "errorMessage": "Can't find this test from common test bank"
+    },
+    {
+      "errorCode": "00175",
+      "errorMessage": "Can't find this test"
+    },
+    {
+      "errorCode": "00176",
+      "errorMessage": "Question type can't be empty"
+    },
+    {
+      "errorCode": "00177",
+      "errorMessage": "Question stem can't be empty"
+    },
+    {
+      "errorCode": "00178",
+      "errorMessage": "Answer can't be empty"
+    },
+    {
+      "errorCode": "00179",
+      "errorMessage": "Type of test can't be empty"
+    },
+    {
+      "errorCode": "00180",
+      "errorMessage": "Scope of test can't be empty"
+    },
+    {
+      "errorCode": "00181",
+      "errorMessage": "Degree of difficulty can't be empty"
+    },
+    {
+      "errorCode": "00182",
+      "errorMessage": "Test paper ruler can't be empty"
+    },
+    {
+      "errorCode": "00183",
+      "errorMessage": "Can't find relative subject information"
+    },
+    {
+      "errorCode": "00184",
+      "errorMessage": "Can't add student as you are not the teacher in charge "
+    },
+    {
+      "errorCode": "00185",
+      "errorMessage": "Student ID can't be empty"
+    },
+    {
+      "errorCode": "00186",
+      "errorMessage": "Student is inexistent"
+    },
+    {
+      "errorCode": "00187",
+      "errorMessage": "Can't cancel the attention for you have joined this school"
+    },
+    {
+      "errorCode": "00188",
+      "errorMessage": "Added in download queue"
+    },
+    {
+      "errorCode": "00189",
+      "errorMessage": "Data is empty"
+    },
+    {
+      "errorCode": "00190",
+      "errorMessage": "Parameter of task type is empty, current effective value：0、1、2、3、4"
+    },
+    {
+      "errorCode": "00191",
+      "errorMessage": "Teacher ID is empty"
+    },
+    {
+      "errorCode": "00192",
+      "errorMessage": "Parameter of school and class is empty"
+    },
+    {
+      "errorCode": "00193",
+      "errorMessage": "Parameter of class and school are empty"
+    },
+    {
+      "errorCode": "00194",
+      "errorMessage": "Parameter of task title is empty"
+    },
+    {
+      "errorCode": "00195",
+      "errorMessage": "Parameter of setting time is empty"
+    },
+    {
+      "errorCode": "00196",
+      "errorMessage": "Prameter of finishing time is empty"
+    },
+    {
+      "errorCode": "00197",
+      "errorMessage": "Checking time is empty"
+    },
+    {
+      "errorCode": "00198",
+      "errorMessage": "Task ID is empty"
+    },
+    {
+      "errorCode": "00199",
+      "errorMessage": "Comment is empty"
+    },
+    {
+      "errorCode": "00200",
+      "errorMessage": "The observer ID is empty"
+    },
+    {
+      "errorCode": "00201",
+      "errorMessage": "Comment target is empty"
+    },
+    {
+      "errorCode": "00202",
+      "errorMessage": "Teacher ID is empty or inexistent"
+    },
+    {
+      "errorCode": "00203",
+      "errorMessage": "Student ID is empty"
+    },
+    {
+      "errorCode": "00204",
+      "errorMessage": "Task status value is wrong, current effective value: 0-unfinished, 1-finished"
+    },
+    {
+      "errorCode": "00205",
+      "errorMessage": "Task ID is empty"
+    },
+    {
+      "errorCode": "00206",
+      "errorMessage": "Release the class does not exist"
+    },
+    {
+      "errorCode": "00207",
+      "errorMessage": "Data is empty"
+    },
+    {
+      "errorCode": "00208",
+      "errorMessage": "Data has been updated,repeated operation "
+    },
+    {
+      "errorCode": "00209",
+      "errorMessage": "Homework title of submitting by student is empty"
+    },
+    {
+      "errorCode": "00210",
+      "errorMessage": "Illegal relations"
+    },
+    {
+      "errorCode": "00211",
+      "errorMessage": "Joining a history class is unexpected"
+    },
+    {
+      "errorCode": "00212",
+      "errorMessage": "Account and real name not matched"
+    },
+    {
+      "errorCode": "00213",
+      "errorMessage": "Illegal relations"
+    },
+    {
+      "errorCode": "00214",
+      "errorMessage": "Several roles for a student are not allowed in the class"
+    },
+    {
+      "errorCode": "00215",
+      "errorMessage": "Role is wrong or blank"
+    },
+    {
+      "errorCode": "00216",
+      "errorMessage": "ID or the related entity is blank"
+    },
+    {
+      "errorCode": "00217",
+      "errorMessage": "Authorization goes beyond limit"
+    },
+    {
+      "errorCode": "00218",
+      "errorMessage": "The start time cannot be set later than the end time"
+    },
+    {
+      "errorCode": "00219",
+      "errorMessage": "The content submitted is empty"
+    },
+    {
+      "errorCode": "00220",
+      "errorMessage": "The evaluation result is empty"
+    },
+    {
+      "errorCode": "00221",
+      "errorMessage": "Host parameter is blank"
+    },
+    {
+      "errorCode": "00222",
+      "errorMessage": "Live ID & on-demand ID cannot coexist or both be blank"
+    },
+    {
+      "errorCode": "00223",
+      "errorMessage": "Please upload either text or resource to Class Materials"
+    },
+    {
+      "errorCode": "00224",
+      "errorMessage": "ResUrl is blank"
+    },
+    {
+      "errorCode": "00225",
+      "errorMessage": "Audience is blank or class ID already exists"
+    },
+    {
+      "errorCode": "00226",
+      "errorMessage": "Invalid CheckState, 0:Pending approval 1:Approve 2:Decline"
+    },
+    {
+      "errorCode": "00227",
+      "errorMessage": "Likes limit, please wait for 3 seconds to thumb up again"
+    },
+    {
+      "errorCode": "00228",
+      "errorMessage": "Teacher or parent in this class cannot be added as a student"
+    },
+    {
+      "errorCode": "00229",
+      "errorMessage": "The student already exists in this class"
+    },
+    {
+      "errorCode": "00230",
+      "errorMessage": "Incorrect resource type"
+    },
+    {
+      "errorCode": "00231",
+      "errorMessage": "Resource thumbnail is blank"
+    },
+    {
+      "errorCode": "00232",
+      "errorMessage": "Invalid resource duration"
+    },
+    {
+      "errorCode": "00233",
+      "errorMessage": "Invalid watch duration"
+    },
+    {
+      "errorCode": "00234",
+      "errorMessage": "Invalid record duration"
+    },
+    {
+      "errorCode": "00235",
+      "errorMessage": "Failure to create E blackboard live broadcast"
+    },
+    {
+      "errorCode": "00236",
+      "errorMessage": "New mobile number cannot be the same as the current one！"
+    },
+    {
+      "errorCode": "00237",
+      "errorMessage": "There is already a bound mobile number！"
+    },
+    {
+      "errorCode": "00238",
+      "errorMessage": "Incorrect message type！"
+    },
+    {
+      "errorCode": "00239",
+      "errorMessage": "Unable to submit tasks assigned before you joined class！"
+    },
+    {
+      "errorCode": "00240",
+      "errorMessage": "Referee info not found！"
+    },
+    {
+      "errorCode": "00241",
+      "errorMessage": "Send amount exceeds limit！"
+    },
+    {
+      "errorCode": "00242",
+      "errorMessage": "Invalid grading standard！"
+    },
+    {
+      "errorCode": "00243",
+      "errorMessage": "No authorization！"
+    },
+    {
+      "errorCode": "00244",
+      "errorMessage": "New headteacher is the same as the present one！"
+    },
+    {
+      "errorCode": "00245",
+      "errorMessage": "Class name already exists ！"
+    },
+    {
+      "errorCode": "00246",
+      "errorMessage": "Unionid is blank！"
+    },
+    {
+      "errorCode": "00247",
+      "errorMessage": "3rd party login authorization is blank！"
+    },
+    {
+      "errorCode": "00248",
+      "errorMessage": "Unionid has been bound already！"
+    },
+    {
+      "errorCode": "00249",
+      "errorMessage": "Binding information not found!"
+    },
+    {
+      "errorCode": "00250",
+      "errorMessage": "Binding information already exists!"
+    },
+    {
+      "errorCode": "00251",
+      "errorMessage": "Correlated learning tasks not found!"
+    },
+    {
+      "errorCode": "00252",
+      "errorMessage": "Resource ID of the learning task submitted is blank!"
+    },
+    {
+      "errorCode": "00253",
+      "errorMessage": "Resource URL of the learning task submitted is blank!"
+    },
+    {
+      "errorCode": "00254",
+      "errorMessage": "Not online learning task!"
+    },
+    {
+      "errorCode": "00255",
+      "errorMessage": "Learning task already marked!"
+    },
+    {
+      "errorCode": "00256",
+      "errorMessage": "Marking not needed!"
+    },
+    {
+      "errorCode": "00257",
+      "errorMessage": "Correlated submission not found!"
+    },
+    {
+      "errorCode": "00258",
+      "errorMessage": "TaskScore parameter error!"
+    },
+    {
+      "errorCode": "00259",
+      "errorMessage": "ResId parameter error!"
+    },
+    {
+      "errorCode": "00260",
+      "errorMessage": "Parameter number error!"
+    },
+    {
+      "errorCode": "00261",
+      "errorMessage": "CreateId is blank!"
+    },
+    {
+      "errorCode": "00262",
+      "errorMessage": "CreateName is blank"
+    },
+    {
+      "errorCode": "00263",
+      "errorMessage": "EQId is blank"
+    },
+    {
+      "errorCode": "00264",
+      "errorMessage": "Invalid EQType"
+    },
+    {
+      "errorCode": "00265",
+      "errorMessage": "CommitTaskId is blank"
+    },
+    {
+      "errorCode": "00266",
+      "errorMessage": "Question info not found"
+    },
+    {
+      "errorCode": "00267",
+      "errorMessage": "Invalid EQState"
+    },
+    {
+      "errorCode": "00268",
+      "errorMessage": "TeacherId is blank"
+    },
+    {
+      "errorCode": "00269",
+      "errorMessage": "TeacherName is blank"
+    },
+    {
+      "errorCode": "00270",
+      "errorMessage": "EQScore is blank"
+    },
+    {
+      "errorCode": "00271",
+      "errorMessage": "Lecture with this live stream was ended/set as history, unable to delete!"
+    },
+    {
+      "errorCode": "00272",
+      "errorMessage": "CommitTaskOnlineId_Null is blank！"
+    },
+    {
+      "errorCode": "00273",
+      "errorMessage": "Zoom account not bound, unable to create Zoom live stream！"
+    },
+    {
+      "errorCode": "00274",
+      "errorMessage": "Failed to create Zoom live stream！"
+    }
+  ]
+}

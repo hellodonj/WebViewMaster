@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLight"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/colorLight">
+
+        <LinearLayout
+            android:id="@+id/search_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/tv_cancel"
+            android:background="@drawable/trans_search_text_bg">
+
+            <!--<com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/et_comment_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_course_detail_comment_radius_2"
+                android:ellipsize="end"
+                android:gravity="left|center_vertical"
+                android:hint="@string/label_course_comment_hint"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textDark"
+                android:textColorHint="@color/textFourth"
+                android:textSize="14sp" />-->
+
+            <com.lqwawa.intleducation.base.widgets.FaceInputFilterEditText
+                android:id="@+id/et_search"
+                android:textSize="14sp"
+                android:textColor="@color/textPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/search_hit"
+                android:inputType="text|textAutoComplete|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:focusable="true"
+                android:textColorHint="@color/com_text_light_gray"
+                android:textCursorDrawable="@null"
+                android:imeOptions="actionSearch"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="5dp"
+            android:src="@drawable/search_small"/>
+
+        <ImageView
+            android:id="@+id/search_clear_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/search_layout"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="8dp"
+            android:src="@drawable/search_clear"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:textSize="14sp"
+            android:textColor="@color/textSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:padding="6dp"
+            android:text="@string/cancel"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:textSize="14sp"
+                android:textColor="@color/textSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="8dp"
+                android:text="@string/recent_search"/>
+
+            <ImageView
+                android:id="@+id/iv_clear_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:padding="4dp"
+                android:src="@drawable/comment_delete"/>
+
+
+        </RelativeLayout>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+            android:id="@+id/history_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="@dimen/com_item_space"
+            android:numColumns="3"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:verticalSpacing="@dimen/com_item_space"/>
+
+    </LinearLayout>
+</LinearLayout>

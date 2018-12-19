@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorLight">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.github.jdsjlzx.recyclerview.LuRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.github.jdsjlzx.recyclerview.LuRecyclerView>
+
+        <!--<com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
+
+
+
+
+                </RelativeLayout>
+
+
+
+            </ScrollView>
+
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>-->
+
+
+        <TextView
+            android:id="@+id/tv_timetable"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:textSize="14sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorLight"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/com_bg_circle_green_btn"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/timetable"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_new_class"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/label_new_class"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="19dp"
+                app:gTouchEffect="ripple" />
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_complete_give_lessons"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_pink_radius_selector"
+                android:gravity="center"
+                android:text="@string/label_complete_give_lessons"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="19dp"
+                app:gTouchEffect="ripple" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

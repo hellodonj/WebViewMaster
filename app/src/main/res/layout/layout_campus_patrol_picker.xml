@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout_assign_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_date"
+                        android:gravity="left"
+                        android:layout_marginLeft="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/screening_start_date"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:background="@drawable/shape_corner_around_without_frames_main_bg_color"
+                        android:hint="@string/start_date"
+                        android:padding="5dp"
+                        />
+
+
+                </LinearLayout>
+                <ImageView
+                    style="@style/line_gray"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_finish_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/the_end_date"
+                        android:gravity="left"
+                        android:layout_marginLeft="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/screening_end_date"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:hint="@string/the_end_date"
+                        android:background="@drawable/shape_corner_around_without_frames_main_bg_color"
+                        android:padding="5dp"
+                        />
+
+
+                </LinearLayout>
+                <ImageView
+                    style="@style/line_gray"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/confirm_btn"
+        style="@style/txt_mp_normal_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_10dp_text_green"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:text="@string/ok"
+        />
+
+</LinearLayout>

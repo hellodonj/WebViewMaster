@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resource_list_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    android:padding="10dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/header_indicator"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="#009039"/>
+
+    <TextView
+        android:id="@+id/header_title"
+        style="@style/txt_wawa_big_black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="5dp"
+        android:text="@string/school_message" />
+
+    <TextView
+        android:id="@+id/header_more"
+        style="@style/txt_wawa_normal_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/more_indicator" />
+
+</LinearLayout>

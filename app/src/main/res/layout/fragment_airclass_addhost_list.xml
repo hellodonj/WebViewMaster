@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/contacts_friend_request_list_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        layout="@layout/contacts_list_select_all" />
+
+    <include layout="@layout/contacts_expand_list"
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="1" />
+
+    <include layout="@layout/contacts_picker_bar" />
+</LinearLayout>

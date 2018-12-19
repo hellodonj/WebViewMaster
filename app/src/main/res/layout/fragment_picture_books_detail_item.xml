@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/no_message_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="start"
+        android:textColor="@color/text_normal"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/send_comment_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            >
+
+
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:layout_marginLeft="15dp"
+                android:id="@+id/comment_edittext"
+                style="@style/txt_mp_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/gray_10dp_main_bg_color"
+                android:hint="@string/say_something"
+                android:imeOptions="actionDone"
+                android:maxLength="200"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:singleLine="true"/>
+
+            <TextView
+                android:layout_marginRight="15dp"
+                android:id="@+id/send_textview"
+                style="@style/txt_mp_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/green_10dp_text_green"
+                android:gravity="center"
+                android:minWidth="75dp"
+                android:padding="10dp"
+                android:text="@string/send"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+
+        <View
+            style="@style/line_gray"/>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_above="@id/send_comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.galaxyschool.app.wawaschool.views.MyListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/line_gray"
+            android:dividerHeight="1dp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+
+
+</RelativeLayout>
+

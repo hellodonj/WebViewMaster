@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_bottom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <include
+        android:id="@+id/personal_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/toolbar_bottom_item" />
+
+    <include
+        android:id="@+id/school_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/toolbar_bottom_item" />
+
+    <include
+        android:id="@+id/study_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/toolbar_bottom_item" />
+
+    <include
+        android:id="@+id/more_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/toolbar_bottom_item" />
+
+    <include
+        android:id="@+id/more_item"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/toolbar_bottom_item" />
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:clickable="true" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/share_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableTop="@drawable/sel_tab_user"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/personal_space"-->
+                <!--android:textColor="@drawable/btn_txt_color" />-->
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_tips4"-->
+            <!--android:layout_width="8dp"-->
+            <!--android:layout_height="8dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="6dp"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:background="@drawable/shape_round_indicator"-->
+            <!--android:gravity="center"-->
+            <!--android:text=""-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="10dp"-->
+            <!--android:visibility="visible" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:clickable="true" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/wawatong_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableTop="@drawable/sel_tab_institution"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/institution"-->
+                <!--android:textColor="@drawable/btn_txt_color" />-->
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_tips1"-->
+            <!--android:layout_width="8dp"-->
+            <!--android:layout_height="8dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:background="@drawable/shape_round_indicator"-->
+            <!--android:gravity="center"-->
+            <!--android:text=""-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="10dp"-->
+            <!--android:visibility="gone" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:clickable="true"-->
+        <!--android:visibility="gone" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/contacts_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableTop="@drawable/sel_tab_contacts"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/contacts"-->
+                <!--android:textColor="@drawable/btn_txt_color" />-->
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_tips2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="6dp"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:background="@drawable/shape_round_indicator"-->
+            <!--android:gravity="center"-->
+            <!--android:minWidth="16dp"-->
+            <!--android:text="99+"-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="10dp"-->
+            <!--android:visibility="gone" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:clickable="true" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/wawacourse_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableTop="@drawable/sel_tab_tv"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/wawatv"-->
+                <!--android:textColor="@drawable/btn_txt_color" />-->
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_tips3"-->
+            <!--android:layout_width="5dp"-->
+            <!--android:layout_height="5dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:background="@drawable/icon_alarm"-->
+            <!--android:gravity="center"-->
+            <!--android:text=""-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="10dp"-->
+            <!--android:visibility="gone" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:clickable="true" >-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical" >-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/my_btn"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableTop="@drawable/sel_tab_my"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/my"-->
+                <!--android:textColor="@drawable/btn_txt_color" />-->
+        <!--</LinearLayout>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/item_tips5"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginRight="9dp"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--android:background="@drawable/shape_round_indicator"-->
+            <!--android:gravity="center"-->
+            <!--android:minWidth="16dp"-->
+            <!--android:text="99+"-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="10dp"-->
+            <!--android:visibility="gone" />-->
+    <!--</RelativeLayout>-->
+
+</LinearLayout>

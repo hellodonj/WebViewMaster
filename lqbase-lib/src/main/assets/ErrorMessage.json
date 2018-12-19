@@ -1,0 +1,1083 @@
+{
+  "data": [
+    {
+      "errorCode": "00001",
+      "errorMessage": "账号或密码错误"
+    },
+    {
+      "errorCode": "00002",
+      "errorMessage": "未找到新闻详情信息"
+    },
+    {
+      "errorCode": "00003",
+      "errorMessage": "校验输入是否为空"
+    },
+    {
+      "errorCode": "00004",
+      "errorMessage": "密码为空"
+    },
+    {
+      "errorCode": "00005",
+      "errorMessage": "班级Id为空"
+    },
+    {
+      "errorCode": "00006",
+      "errorMessage": "年级为空"
+    },
+    {
+      "errorCode": "00007",
+      "errorMessage": "学校Id为空"
+    },
+    {
+      "errorCode": "00008",
+      "errorMessage": "登录名为空"
+    },
+    {
+      "errorCode": "00009",
+      "errorMessage": "新密码为空"
+    },
+    {
+      "errorCode": "00010",
+      "errorMessage": "旧密码为空"
+    },
+    {
+      "errorCode": "00011",
+      "errorMessage": "真实姓名为空"
+    },
+    {
+      "errorCode": "00012",
+      "errorMessage": "Email为空"
+    },
+    {
+      "errorCode": "00013",
+      "errorMessage": "电话为空"
+    },
+    {
+      "errorCode": "00014",
+      "errorMessage": "头像为空"
+    },
+    {
+      "errorCode": "00015",
+      "errorMessage": "学生申请Id为空"
+    },
+    {
+      "errorCode": "00016",
+      "errorMessage": "老师申请Id为空"
+    },
+    {
+      "errorCode": "00017",
+      "errorMessage": "类型为空"
+    },
+    {
+      "errorCode": "00018",
+      "errorMessage": "模糊查询关键字为空"
+    },
+    {
+      "errorCode": "00019",
+      "errorMessage": "审批状态为空"
+    },
+    {
+      "errorCode": "00020",
+      "errorMessage": "通讯群Id为空"
+    },
+    {
+      "errorCode": "00021",
+      "errorMessage": "会员信息未找到"
+    },
+    {
+      "errorCode": "00022",
+      "errorMessage": "你不是该学校的老师，加入班级前请先加入学校"
+    },
+    {
+      "errorCode": "00023",
+      "errorMessage": "学生信息未找到"
+    },
+    {
+      "errorCode": "00024",
+      "errorMessage": "家长信息未找到"
+    },
+    {
+      "errorCode": "00025",
+      "errorMessage": "班级通讯录信息未找到"
+    },
+    {
+      "errorCode": "00026",
+      "errorMessage": "个人好友信息未找到"
+    },
+    {
+      "errorCode": "00027",
+      "errorMessage": "随机随享信息未找到"
+    },
+    {
+      "errorCode": "00028",
+      "errorMessage": "反馈信息未找到"
+    },
+    {
+      "errorCode": "00029",
+      "errorMessage": "旧密码输入有误"
+    },
+    {
+      "errorCode": "00030",
+      "errorMessage": "修改密码失败"
+    },
+    {
+      "errorCode": "00031",
+      "errorMessage": "该邮箱多人使用"
+    },
+    {
+      "errorCode": "00032",
+      "errorMessage": "该邮箱未注册"
+    },
+    {
+      "errorCode": "00033",
+      "errorMessage": "密码修改失败"
+    },
+    {
+      "errorCode": "00034",
+      "errorMessage": "用户名已存在"
+    },
+    {
+      "errorCode": "00035",
+      "errorMessage": "邮箱已被占用"
+    },
+    {
+      "errorCode": "00036",
+      "errorMessage": "注册环信失败"
+    },
+    {
+      "errorCode": "00037",
+      "errorMessage": "自己不能绑定自己"
+    },
+    {
+      "errorCode": "00038",
+      "errorMessage": "请完善个人信息"
+    },
+    {
+      "errorCode": "00039",
+      "errorMessage": "已申请，不能重复申请"
+    },
+    {
+      "errorCode": "00040",
+      "errorMessage": "未找到对应的关注学校"
+    },
+    {
+      "errorCode": "00041",
+      "errorMessage": "未找到对应审核信息"
+    },
+    {
+      "errorCode": "00042",
+      "errorMessage": "已是好友"
+    },
+    {
+      "errorCode": "00043",
+      "errorMessage": "好友请求发送成功"
+    },
+    {
+      "errorCode": "00044",
+      "errorMessage": "没有个人通讯录"
+    },
+    {
+      "errorCode": "00045",
+      "errorMessage": "好友没有个人通讯录"
+    },
+    {
+      "errorCode": "00046",
+      "errorMessage": "审核失败"
+    },
+    {
+      "errorCode": "00047",
+      "errorMessage": "未找到要删除的信息"
+    },
+    {
+      "errorCode": "00048",
+      "errorMessage": "未找到对应的二维码信息"
+    },
+    {
+      "errorCode": "00049",
+      "errorMessage": "学校信息未找到"
+    },
+    {
+      "errorCode": "00050",
+      "errorMessage": "班级信息未找到"
+    },
+    {
+      "errorCode": "00051",
+      "errorMessage": "年级信息未找到"
+    },
+    {
+      "errorCode": "00052",
+      "errorMessage": "关系信息未找到"
+    },
+    {
+      "errorCode": "00053",
+      "errorMessage": "未找到学校简介"
+    },
+    {
+      "errorCode": "00054",
+      "errorMessage": "存在重名学生，请到个人扫一扫中添加绑定"
+    },
+    {
+      "errorCode": "00055",
+      "errorMessage": "已加入了本班级"
+    },
+    {
+      "errorCode": "00056",
+      "errorMessage": "家长已经存在"
+    },
+    {
+      "errorCode": "00057",
+      "errorMessage": "通讯录中已存在该老师"
+    },
+    {
+      "errorCode": "00058",
+      "errorMessage": "未找到对应的学校或班级"
+    },
+    {
+      "errorCode": "00059",
+      "errorMessage": "当前用户不存在"
+    },
+    {
+      "errorCode": "00060",
+      "errorMessage": "未找到信息"
+    },
+    {
+      "errorCode": "00061",
+      "errorMessage": "未找到对应的学校"
+    },
+    {
+      "errorCode": "00062",
+      "errorMessage": "未找到对应的通讯录"
+    },
+    {
+      "errorCode": "00063",
+      "errorMessage": "删除失败"
+    },
+    {
+      "errorCode": "00064",
+      "errorMessage": "未找到对应的好友"
+    },
+    {
+      "errorCode": "00065",
+      "errorMessage": "未登录不能搜索新朋友"
+    },
+    {
+      "errorCode": "00066",
+      "errorMessage": "课程表不存在"
+    },
+    {
+      "errorCode": "00067",
+      "errorMessage": "新闻类别不存在"
+    },
+    {
+      "errorCode": "00068",
+      "errorMessage": "必须审批人删除记录"
+    },
+    {
+      "errorCode": "00069",
+      "errorMessage": "用户ID不能为空！"
+    },
+    {
+      "errorCode": "00070",
+      "errorMessage": "微课ID不能为空！"
+    },
+    {
+      "errorCode": "00071",
+      "errorMessage": "未找到当前用户信息！"
+    },
+    {
+      "errorCode": "00072",
+      "errorMessage": "类型不能为空！"
+    },
+    {
+      "errorCode": "00073",
+      "errorMessage": "未选中要删除的对象！"
+    },{
+      "errorCode": "00074",
+      "errorMessage": "大纲不存在！"
+    },{
+      "errorCode": "00075",
+      "errorMessage": "章节不存在！"
+    },
+    {
+      "errorCode": "00076",
+      "errorMessage": "审核资源不存在！"
+    },
+    {
+      "errorCode": "00077",
+      "errorMessage": "标题不能为空"
+    },
+    {
+      "errorCode": "00078",
+      "errorMessage": "通知参数不正确"
+    },
+    {
+      "errorCode": "00079",
+      "errorMessage": "通知数据不存在或被删除"
+    },
+    {
+      "errorCode": "00080",
+      "errorMessage": "未找到类别信息"
+    },
+    {
+      "errorCode": "00081",
+      "errorMessage": "未找到资源信息"
+    },{
+      "errorCode": "00082",
+      "errorMessage": "未找到点评人信息"
+    },{
+      "errorCode": "00083",
+      "errorMessage": "当前用户ID不能为空"
+    },
+    {
+      "errorCode": "00084",
+      "errorMessage": "学生风采ID不能为空"
+    },
+    {
+      "errorCode": "00085",
+      "errorMessage": "班级ID不能为空"
+    },
+    {
+      "errorCode": "00086",
+      "errorMessage": "点评人不能为空"
+    },{
+      "errorCode": "00087",
+      "errorMessage": "学校ID不能为空"
+    },
+    {
+      "errorCode": "00088",
+      "errorMessage": "被点评人不能为空"
+    },
+    {
+      "errorCode": "00089",
+      "errorMessage": "大纲id, 节id不能为空"
+    },
+    {
+      "errorCode": "00090",
+      "errorMessage": "管理员不能登录两栖蛙蛙、蛙蛙微课HD"
+    },
+    {
+      "errorCode": "00091",
+      "errorMessage": "资源ID不能为空"
+    },
+    {
+      "errorCode": "00092",
+      "errorMessage": "已收藏"
+    },
+    {
+      "errorCode": "00093",
+      "errorMessage": "班级管理员不存在，请联系学校管理员维护"
+    },
+    {
+      "errorCode": "00094",
+      "errorMessage": "学段已存在"
+    },
+    {
+      "errorCode": "00095",
+      "errorMessage": "年级已存在"
+    },
+    {
+      "errorCode": "00096",
+      "errorMessage": "同步环信失败"
+    },
+    {
+      "errorCode": "00097",
+      "errorMessage": "你不是老师"
+    },
+    {
+      "errorCode": "00098",
+      "errorMessage": "找不到数据源"
+    },
+    {
+      "errorCode": "00099",
+      "errorMessage": "作者类型输入有误，请确认！"
+    },
+    {
+      "errorCode": "00100",
+      "errorMessage": "未找到对应的作者"
+    },
+    {
+      "errorCode": "00101",
+      "errorMessage": "重置密码失败"
+    },
+    {
+      "errorCode": "00102",
+      "errorMessage": "用户名必须为字母或字母数字组成且长度为3-20位"
+    },
+    {
+      "errorCode": "00103",
+      "errorMessage": "当前用户ID不能为空"
+    },
+    {
+      "errorCode": "00104",
+      "errorMessage": "家长已经存在"
+    },
+    {
+      "errorCode": "00105",
+      "errorMessage": "收藏的文件id不能为空值"
+    },
+    {
+      "errorCode": "00106",
+      "errorMessage": "收藏的文件来源不能为空"
+    },
+    {
+      "errorCode": "00107",
+      "errorMessage": "不符合手机号码标准"
+    },
+    {
+      "errorCode": "00108",
+      "errorMessage": "该手机已注册，请登录"
+    },
+    {
+      "errorCode": "00109",
+      "errorMessage": "用户名不能为空!"
+    },
+    {
+      "errorCode": "00110",
+      "errorMessage": "密码不能为空!"
+    },
+    {
+      "errorCode": "00111",
+      "errorMessage": "手机号码不能为空!"
+    },
+    {
+      "errorCode": "00112",
+      "errorMessage": "验证码错误!"
+    },
+    {
+      "errorCode": "00113",
+      "errorMessage": "验证码已失效，请重新获取!"
+    },
+    {
+      "errorCode": "00114",
+      "errorMessage": "短信验证失败!"
+    },
+    {
+      "errorCode": "00115",
+      "errorMessage": "该手机未绑定!"
+    },
+    {
+      "errorCode": "00116",
+      "errorMessage": "该手机已被其他账号绑定!"
+    },
+    {
+      "errorCode": "00117",
+      "errorMessage": "不能加自己为好友"
+    },
+    {
+      "errorCode": "00118",
+      "errorMessage": "学生不能绑定自己当家长"
+    },
+    {
+      "errorCode": "00119",
+      "errorMessage": "发送的短信类型不为空"
+    },
+    {
+      "errorCode": "00120",
+      "errorMessage": "上传类型找不到"
+    },
+    {
+      "errorCode": "00121",
+      "errorMessage": "关注人或被关注人会员ID不能为空"
+    },
+    {
+      "errorCode": "00122",
+      "errorMessage": "关注人或被关注人会员ID查不到"
+    },
+    {
+      "errorCode": "00123",
+      "errorMessage": "关注人和被关注人会员ID不能相同"
+    },
+    {
+      "errorCode": "00124",
+      "errorMessage": "栏目ID不能为空"
+    },
+    {
+      "errorCode": "00125",
+      "errorMessage": "你已经关注了他"
+    },
+    {
+      "errorCode": "00126",
+      "errorMessage": "素材类型不正确"
+    },
+    {
+      "errorCode": "00127",
+      "errorMessage": "文件ID不能为空"
+    },
+    {
+      "errorCode": "00128",
+      "errorMessage": "未找到收藏的类型"
+    },
+    {
+      "errorCode": "00129",
+      "errorMessage": "学段ID不能为空"
+    },
+    {
+      "errorCode": "00130",
+      "errorMessage": "学科ID不能为空"
+    },
+    {
+      "errorCode": "00134",
+      "errorMessage": "参数不能为空"
+    },
+    {
+      "errorCode": "00135",
+      "errorMessage": "参数异常"
+    },
+    {
+      "errorCode": "00136",
+      "errorMessage": "要启用或者禁用的快乐学习栏目ID是空"
+    },
+    {
+      "errorCode": "00137",
+      "errorMessage": "快乐学习栏目不存在"
+    },
+    {
+      "errorCode": "00138",
+      "errorMessage": "快乐学习栏目属性值不存在"
+    },
+    {
+      "errorCode": "00139",
+      "errorMessage": "添加未知不属于快乐学习当前分类的属性"
+    },
+    {
+      "errorCode": "00140",
+      "errorMessage": "未找到对应的类型"
+    },
+    {
+      "errorCode": "00141",
+      "errorMessage": "已经关注此学校，不能再关注"
+    },
+    {
+      "errorCode": "00142",
+      "errorMessage": "该资源已上传"
+    },
+    {
+      "errorCode": "00143",
+      "errorMessage": "好友不能取消关注"
+    },
+    {
+      "errorCode": "00144",
+      "errorMessage": "你是本班级的老师，不能以学生身份加入班级"
+    },
+    {
+      "errorCode": "00145",
+      "errorMessage": "你是本班级的家长，不能以学生身份加入班级"
+    },
+    {
+      "errorCode": "00146",
+      "errorMessage": "大纲ID不能为空"
+    },
+    {
+      "errorCode": "00147",
+      "errorMessage": "通知ID不能为空"
+    },
+    {
+      "errorCode": "00148",
+      "errorMessage": "通知已经阅读"
+    },
+    {
+      "errorCode": "00149",
+      "errorMessage": "未找到对应的书架信息"
+    },
+    {
+      "errorCode": "00150",
+      "errorMessage": "未找到对应的资源信息"
+    },
+    {
+      "errorCode": "00151",
+      "errorMessage": "素材标题已经存在"
+    },
+    {
+      "errorCode": "00152",
+      "errorMessage": "班级通讯录中存在该角色"
+    },
+    {
+      "errorCode": "00153",
+      "errorMessage": "资源编辑失败"
+    },
+    {
+      "errorCode": "00154",
+      "errorMessage": "已加入书架"
+    },
+    {
+      "errorCode": "00155",
+      "errorMessage": "该用户在该班已是学生角色，不能成为班主任"
+    },
+    {
+      "errorCode": "00156",
+      "errorMessage": "未找到大纲信息"
+    },
+    {
+      "errorCode": "00157",
+      "errorMessage": "章节ID不能为空"
+    },
+    {
+      "errorCode": "00158",
+      "errorMessage": "未找到节信息"
+    },
+    {
+      "errorCode": "00159",
+      "errorMessage": "未找到该书架记录"
+    },
+    {
+      "errorCode": "00160",
+      "errorMessage": "未找到该课程资源记录"
+    },
+    {
+      "errorCode": "00161",
+      "errorMessage": "书架IDd不能为空"
+    },
+    {
+      "errorCode": "00162",
+      "errorMessage": "要更换的班主任不能为空"
+    },
+    {
+      "errorCode": "00163",
+      "errorMessage": "你是本班级的学生，不能以家长身份加入班级"
+    },
+    {
+      "errorCode": "00164",
+      "errorMessage": "你是本班级的学生，不能以老师身份加入班级"
+    },
+    {
+      "errorCode": "00165",
+      "errorMessage": "未选择举报信息"
+    },
+    {
+      "errorCode": "00166",
+      "errorMessage": "举报项不存在"
+    },
+    {
+      "errorCode": "00167",
+      "errorMessage": "操作id（用户，学校，班级），不能为空"
+    },
+    {
+      "errorCode": "00168",
+      "errorMessage": "分页对象不能为空"
+    },
+    {
+      "errorCode": "00169",
+      "errorMessage": "省份不存在"
+    },
+    {
+      "errorCode": "00170",
+      "errorMessage": "题库不存在"
+    },
+    {
+      "errorCode": "00171",
+      "errorMessage": "难易度不存在"
+    },
+    {
+      "errorCode": "00172",
+      "errorMessage": "试题id不能为空"
+    },
+    {
+      "errorCode": "00173",
+      "errorMessage": "该试题已标注为常用题"
+    },
+    {
+      "errorCode": "00174",
+      "errorMessage": "常用题中未找到该试题"
+    },
+    {
+      "errorCode": "00175",
+      "errorMessage": "未找到该试题"
+    },
+    {
+      "errorCode": "00176",
+      "errorMessage": "题型id不能为空"
+    },
+    {
+      "errorCode": "00177",
+      "errorMessage": "题干不能为空"
+    },
+    {
+      "errorCode": "00178",
+      "errorMessage": "试题答案不能为空"
+    },
+    {
+      "errorCode": "00179",
+      "errorMessage": "试题类型不存在"
+    },
+    {
+      "errorCode": "00180",
+      "errorMessage": "试题范围不能为空"
+    },
+    {
+      "errorCode": "00181",
+      "errorMessage": "难度系数不能为空"
+    },
+    {
+      "errorCode": "00182",
+      "errorMessage": "组卷规则不能为空"
+    },
+    {
+      "errorCode": "00183",
+      "errorMessage": "未找到对应的学科信息"
+    },
+    {
+      "errorCode": "00184",
+      "errorMessage": "当前用户不是班主任不能新增学生"
+    },
+    {
+      "errorCode": "00185",
+      "errorMessage": "要添加的学生不能为空"
+    },
+    {
+      "errorCode": "00186",
+      "errorMessage": "要添加的学生不存在"
+    },
+    {
+      "errorCode": "00187",
+      "errorMessage": "已加入学校，不能取消关注"
+    },
+    {
+      "errorCode": "00188",
+      "errorMessage": "已加入下载队列"
+    },
+    {
+      "errorCode": "00189",
+      "errorMessage": "从客户端接受实体为空"
+    },
+    {
+      "errorCode": "00190",
+      "errorMessage": "任务类型参数不正确，目前有效值：0、1、2、3、4"
+    },
+    {
+      "errorCode": "00191",
+      "errorMessage": "任务创建者(老师)ID为空"
+    },
+    {
+      "errorCode": "00192",
+      "errorMessage": "学校班级参数集合为空"
+    },
+    {
+      "errorCode": "00193",
+      "errorMessage": "学校班级集合中学校班级参数有为空情况"
+    },
+    {
+      "errorCode": "00194",
+      "errorMessage": "任务标题参数为空"
+    },
+    {
+      "errorCode": "00195",
+      "errorMessage": "布置时间参数为空"
+    },
+    {
+      "errorCode": "00196",
+      "errorMessage": "任完成时间参数为空"
+    },
+    {
+      "errorCode": "00197",
+      "errorMessage": "前端传入的查询时间为空"
+    },
+    {
+      "errorCode": "00198",
+      "errorMessage": "任务ID为空"
+    },
+    {
+      "errorCode": "00199",
+      "errorMessage": "评论内容为空"
+    },
+    {
+      "errorCode": "00200",
+      "errorMessage": "评论人的ID或名称为空"
+    },
+    {
+      "errorCode": "00201",
+      "errorMessage": "当评论的对象是针对已存在的学生评论时评论对象为空"
+    },
+    {
+      "errorCode": "00202",
+      "errorMessage": "老师ids不存在或者为空"
+    },
+    {
+      "errorCode": "00203",
+      "errorMessage": "学生ID为空"
+    },
+    {
+      "errorCode": "00204",
+      "errorMessage": "任务状态值不正确，目前有效值为0-未完成，1-已完成"
+    },
+    {
+      "errorCode": "00205",
+      "errorMessage": "TaskComment表主键值不正确或不存在此ID的数据"
+    },
+    {
+      "errorCode": "00206",
+      "errorMessage": "发布班级不存在"
+    },
+    {
+      "errorCode": "00207",
+      "errorMessage": "根据前台传来的ID和参数在数据库中未拉取到相关数据，实体为空"
+    },
+    {
+      "errorCode": "00208",
+      "errorMessage": "更新操作时数据已被更新，重复操作"
+    },
+    {
+      "errorCode": "00209",
+      "errorMessage": "学生提交作业时作业标题为空"
+    },
+    {
+      "errorCode": "00210",
+      "errorMessage": "与当前已绑定关系不一致，请先解除已绑定关系后再绑定"
+    },
+    {
+      "errorCode": "00211",
+      "errorMessage": "不可加入历史班"
+    },
+    {
+      "errorCode": "00212",
+      "errorMessage": "帐号与姓名不匹配"
+    },
+    {
+      "errorCode": "00213",
+      "errorMessage": "与当前已绑定关系不一致，请先解除已绑定关系后再绑定"
+    },
+    {
+      "errorCode": "00214",
+      "errorMessage": "同一个班级内学生不允许有多重角色"
+    },
+    {
+      "errorCode": "00215",
+      "errorMessage": "角色为空或错误"
+    },
+    {
+      "errorCode": "00216",
+      "errorMessage": "ID为空或ID拉取的实体为空"
+    },
+    {
+      "errorCode": "00217",
+      "errorMessage": "授权数已超出上限"
+    },
+    {
+      "errorCode": "00218",
+      "errorMessage": "开始时间大于结束时间"
+    },
+    {
+      "errorCode": "00219",
+      "errorMessage": "提交的作业内容或字数为空"
+    },
+    {
+      "errorCode": "00220",
+      "errorMessage": "英文写作返回的批改结果为空"
+    },
+    {
+      "errorCode": "00221",
+      "errorMessage": "主持人参数为空"
+    },
+    {
+      "errorCode": "00222",
+      "errorMessage": "直播ID和点播ID不能同时传值或者同时为空"
+    },
+    {
+      "errorCode": "00223",
+      "errorMessage": "课堂资料文字和资源只能上传一个"
+    },
+    {
+      "errorCode": "00224",
+      "errorMessage": "ResUrl为空"
+    },
+    {
+      "errorCode": "00225",
+      "errorMessage": "发布对象集合为空或集合中classid重复"
+    },
+    {
+      "errorCode": "00226",
+      "errorMessage": "非法的CheckState值, 0:未审核  1:通过  2:拒绝"
+    },
+    {
+      "errorCode": "00227",
+      "errorMessage": "点赞限制,连续点赞需间隔三秒钟以上"
+    },
+    {
+      "errorCode": "00228",
+      "errorMessage": "添加的学生不能是本班的老师或家长"
+    },
+    {
+      "errorCode": "00229",
+      "errorMessage": "添加的学生在本班已存在"
+    },
+    {
+      "errorCode": "00230",
+      "errorMessage": "统计的资源类型不正确"
+    },
+    {
+      "errorCode": "00231",
+      "errorMessage": "资源缩略图为空"
+    },
+    {
+      "errorCode": "00232",
+      "errorMessage": "资源时长无效"
+    },
+    {
+      "errorCode": "00233",
+      "errorMessage": "观看时长无效"
+    },
+    {
+      "errorCode": "00234",
+      "errorMessage": "录制时长无效"
+    },
+    {
+      "errorCode": "00235",
+      "errorMessage": "创建E板书直播失败"
+    },
+    {
+      "errorCode": "00236",
+      "errorMessage": "更换后的手机号不能是现手机号！"
+    },
+    {
+      "errorCode": "00237",
+      "errorMessage": "已存在绑定手机号！"
+    },
+    {
+      "errorCode": "00238",
+      "errorMessage": "短信类型不正确！"
+    },
+    {
+      "errorCode": "00239",
+      "errorMessage": "加入班级前的学习任务，暂不支持提交！"
+    },
+    {
+      "errorCode": "00240",
+      "errorMessage": "未查询到推荐人信息！"
+    },
+    {
+      "errorCode": "00241",
+      "errorMessage": "发送数量超出限制！"
+    },
+    {
+      "errorCode": "00242",
+      "errorMessage": "非法的打分标准！"
+    },
+    {
+      "errorCode": "00243",
+      "errorMessage": "没有操作权限！"
+    },
+    {
+      "errorCode": "00244",
+      "errorMessage": "新班主任和旧班主任相同！"
+    },
+    {
+      "errorCode": "00245",
+      "errorMessage": "存在相同名称的班级了！"
+    },
+    {
+      "errorCode": "00246",
+      "errorMessage": "Unionid为空！"
+    },
+    {
+      "errorCode": "00247",
+      "errorMessage": "第三方登录授权来源为空！"
+    },
+    {
+      "errorCode": "00248",
+      "errorMessage": "Unionid已经被绑定了！"
+    },
+    {
+      "errorCode": "00249",
+      "errorMessage": "未找到相关的绑定信息！"
+    },
+    {
+      "errorCode": "00250",
+      "errorMessage": "绑定信息已存在！"
+    },
+    {
+      "errorCode": "00251",
+      "errorMessage": "未找到相关的学习任务！"
+    },
+    {
+      "errorCode": "00252",
+      "errorMessage": "学生提交作业时资源ID为空！"
+    },
+    {
+      "errorCode": "00253",
+      "errorMessage": "学生提交作业时资源URL为空！"
+    },
+    {
+      "errorCode": "00254",
+      "errorMessage": "不是在线学习任务！"
+    },
+    {
+      "errorCode": "00255",
+      "errorMessage": "该作业已经打分了！"
+    },
+    {
+      "errorCode": "00256",
+      "errorMessage": "该学习任务不需要打分！"
+    },
+    {
+      "errorCode": "00257",
+      "errorMessage": "为找到相关的提交作业！"
+    },
+    {
+      "errorCode": "00258",
+      "errorMessage": "TaskScore参数错误！"
+    },
+    {
+      "errorCode": "00259",
+      "errorMessage": "ResId参数错误！"
+    },
+    {
+      "errorCode": "00260",
+      "errorMessage": "参数个数错误！"
+    },
+    {
+      "errorCode": "00261",
+      "errorMessage": "CreateId为空！"
+    },
+    {
+      "errorCode": "00262",
+      "errorMessage": "CreateName为空"
+    },
+    {
+      "errorCode": "00263",
+      "errorMessage": "EQId为空"
+    },
+    {
+      "errorCode": "00264",
+      "errorMessage": "非法的EQType值"
+    },
+    {
+      "errorCode": "00265",
+      "errorMessage": "CommitTaskId为空"
+    },
+    {
+      "errorCode": "00266",
+      "errorMessage": "未找到相关的试题信息"
+    },
+    {
+      "errorCode": "00267",
+      "errorMessage": "非法的EQState值"
+    },
+    {
+      "errorCode": "00268",
+      "errorMessage": "TeacherId为空"
+    },
+    {
+      "errorCode": "00269",
+      "errorMessage": "TeacherName为空"
+    },
+    {
+      "errorCode": "00270",
+      "errorMessage": "EQScore为空"
+    },
+    {
+      "errorCode": "00271",
+      "errorMessage": "该直播所在的名师课程已完成授课/设成历史课，无法删除！"
+    },
+    {
+      "errorCode": "00272",
+      "errorMessage": "CommitTaskOnlineId_Null为空！"
+    },
+    {
+      "errorCode": "00273",
+      "errorMessage": "该账户未绑定Zoom账户，没有创建Zoom直播权限！"
+    },
+    {
+      "errorCode": "00274",
+      "errorMessage": "创建Zoom直播失败！"
+    }
+  ]
+}

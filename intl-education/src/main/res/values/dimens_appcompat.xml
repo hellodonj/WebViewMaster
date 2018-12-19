@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--状态栏高度-->
+    <dimen name="statusBarSize">25dp</dimen>
+    <!--Toolbar高度-->
+    <dimen name="toolbarSize">48dp</dimen>
+    <!--TopBar高度-->
+    <dimen name="topBarSize">51dp</dimen>
+    <!--状态栏和标题栏高度一起-->
+    <dimen name="actionBarWithStatusBarSize">73dp</dimen>
+
+    <dimen name="actionBarElevationValue">2dp</dimen>
+    <!--分割线高度-->
+    <dimen name="horizontalDividerHeight">1dp</dimen>
+
+    <!--名字字体的大小-->
+    <dimen name="fontNameSize">15sp</dimen>
+</resources>

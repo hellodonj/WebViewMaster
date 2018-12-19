@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/com_item_selector"
+        android:clickable="true"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/com_item_space"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:src="@drawable/title"/>
+
+        <TextView
+            android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dp"
+            android:text="测试"
+            style="@style/text_black_l"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/more"
+            style="@style/text_black_l"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/com_item_space"
+            android:paddingLeft="5dp"
+            android:src="@drawable/ic_right_arrow"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/com_bg_light_white"/>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+        android:id="@+id/item_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_light_white"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/com_item_space"
+        android:numColumns="3"
+        android:paddingTop="@dimen/com_item_space"
+        android:paddingLeft="@dimen/com_item_space"
+        android:paddingRight="@dimen/com_item_space"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/com_item_space"/>
+
+    <View
+        android:id="@+id/spliter_view"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/com_bg_light_white"/>
+</LinearLayout>

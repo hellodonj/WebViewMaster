@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">robot-pen-sdk</string>
+    <string name="confirm">确认</string>
+    <string name="no_connect_device">未连接设备！</string>
+    <string name="device_update">设备升级</string>
+    <string name="scanning_device">扫描设备</string>
+    <string name="disconnect_device">断开设备</string>
+    <string name="no_valid_device">没有可连接的设备！</string>
+    <string name="ble_not_open">蓝牙未打开！</string>
+    <string name="not_valid_device">设备不支持BLE协议！</string>
+    <string name="connected_devices">已连接设备：</string>
+    <string name="firmware_ver">固件版本：</string>
+    <string name="can_update">可升级</string>
+    <string name="canceled">取消</string>
+    <string name="connect">连接</string>
+    <string name="connecting">连接中…</string>
+    <string name="disconnect">断开连接</string>
+    <string name="ble_pen">蓝牙笔</string>
+    <string name="disconnect_device_please">请断开当前连接的设备!</string>
+    <string name="disconnect_usb_device_please">请先断开USB设备再进行蓝牙设备连接!</string>
+    <string name="note_sync_suc">笔迹同步成功!</string>
+    <string name="your_device_not_support_bt">对不起，您的设备不支持蓝牙!</string>
+    <string name="rescan">重新扫描</string>
+    <string name="update_firmware">升级固件</string>
+    <string name="get_data_failed">获取数据失败</string>
+    <string name="updating">升级中</string>
+    <string name="connect_network_failed">网络请求失败</string>
+    <string name="update_failed">升级失败！</string>
+    <string name="device_scan">扫码连设备</string>
+    <string name="pls_open_location_service">请打开定位服务，便于扫描到蓝牙笔设备。</string>
+</resources>

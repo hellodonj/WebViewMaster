@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resource_list_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+    <include layout="@layout/publicity_page"/>
+    <include layout="@layout/contacts_search_bar" />
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <GridView
+        android:id="@+id/resource_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:background="@color/white"
+        android:numColumns="2"
+        android:padding="10dp"
+        android:scrollbars="none"
+        android:scrollingCache="false"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"/>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+</LinearLayout>

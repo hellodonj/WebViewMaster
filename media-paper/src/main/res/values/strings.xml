@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name_mp">MediaPaper</string>
+
+    <string-array name="week_name">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+    <string-array name="month_name">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+
+    <string name="sdcard_full">Your SD card is full.</string>
+    <string name="sdcard_mount">Your device is being used as USB storage. Please disconnect USB and try again.</string>
+
+
+    <string name="error_audio_msg"> Sorry, this audio cannot be played. </string>
+    <string name="error_record_msg"> Sorry, Record audio failed. </string>
+    <string name="recordend">The recording should be less than one hour.</string>
+    <string name="record_in_preview_alart">"Please switch to Edit mode before recording."</string>
+    <string name="play_error">Playback failed. The file maybe damaged.</string>
+
+
+    <string name="waiting">Waiting</string>
+
+    <string name="no_title">Enter title</string>
+    <string name="reach_max">Maximum allowance for 30 multimedia files reached.</string>
+    <string name="Paper_homework_title">Homework Title:</string>
+    <string name="paper_homework_content">Homework Content:</string>
+
+
+    <string name="photolib">Image</string>
+    <string name="audio_lib">Audio</string>
+
+    <string name="save">Save</string>
+
+    <string name="praise">Praise</string>
+    <string name="share">Share</string>
+
+
+    <string name="start_record">Start Record</string>
+    <string name="stop_record">Stop Record</string>
+
+    <string name="mp_send">Send</string>
+
+    <string name="mp_completed">OK</string>
+
+    <string name="mp_chat_now">Chat</string>
+    <string name="mp_follow">Follow</string>
+    <string name="mp_collect">Collect</string>
+    <string name="mp_edit">Edit</string>
+    <string name="mp_should_have_path">The path cannot be empty</string>
+    <string name="mp_File_does_not_exist">File not exists</string>
+    <string name="mp_rerecord">Re-record</string>
+    <string name="mp_click_record">Record</string>
+    <string name="mp_finish_record">Finish</string>
+    <string name="mp_play_recodr">Playback</string>
+    <string name="mp_file_name">Filename</string>
+    <string name="mp_upload">Upload</string>
+    <string name="mp_cancel">Cancel</string>
+    <string name="mp_ok">Confirm</string>
+</resources>

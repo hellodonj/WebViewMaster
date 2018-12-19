@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/userinfo_parent_info_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/userinfo_add_parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/userinfo_item_min_height"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#b7b7b7"
+            android:textSize="16sp"
+            android:text="@string/bind"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:id="@+id/userinfo_add_parent_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#009039"
+            android:textSize="14sp"
+            android:text="@string/add_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.galaxyschool.app.wawaschool.views.slidelistview.SlideListView
+            xmlns:slide="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/userinfo_parent_info_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="2dp"
+            slide:slideAnimationTime="200"
+            slide:slideLeftAction="scroll"
+            slide:slideMode="right"
+            slide:slideRightAction="scroll"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/userinfo_parent_info_bind_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/userinfo_item_min_height"
+            android:gravity="center_vertical"
+            android:background="@android:color/white"
+            android:layout_marginTop="1dp"
+            android:clickable="true"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="@string/bind_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

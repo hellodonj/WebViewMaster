@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_course_empty"
+            />
+
+        <TextView
+            android:id="@+id/remind_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_course_empty_info_1"/>
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/label_course_empty_info_2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/call_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp"
+            android:padding="0dp"
+            android:text="@string/label_course_empty_remind_text1"/>
+
+        <TextView
+            android:id="@+id/tv_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/textAccent"
+            android:textSize="14sp"
+            android:padding="0dp"
+            android:layout_marginLeft="4dp"
+            android:text="@string/label_course_empty_remind_text2"/>
+
+    </LinearLayout>
+
+</FrameLayout>

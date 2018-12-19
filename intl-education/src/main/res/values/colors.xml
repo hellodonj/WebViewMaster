@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="com_line_gray">#e7e7e7</color>
+
+    <color name="com_bg_white">#ffffff</color>
+    <color name="com_bg_little_gray">#f6f6f6</color>
+    <color name="com_bg_gay">#cccccc</color>
+    <color name="com_bg_light_white">#efefef</color>
+    <color name="com_bg_trans_black">#ee000000</color>
+    <color name="com_bg_light_trans_black">#aa000000</color>
+    <color name="com_bg_black">#000000</color>
+    <color name="com_bg_dark_gray">#2e323a</color>
+    <color name="com_bg_dark_trans_black">#66000000</color>
+    <color name="com_bg_trans_white">#aaffffff</color>
+    <color name="com_bg_trans_gray">#aaaaaaaa</color>
+    <color name="com_bg_green">#007c32</color>
+    <color name="com_bg_trans_green">#8800cd00</color>
+    <color name="com_btn_green">#ee00913a</color>
+    <color name="com_bg_pink">#fa9162</color>
+    <color name="com_bg_dark_pink">#ed6492</color>
+    <color name="com_bg_trans_pink">#aafa9162</color>
+    <color name="com_bg_blue">#55d0e2</color>
+    <color name="com_bg_light_blue">#95ebf8</color>
+    <color name="com_bg_sky_blue">#33b3ef</color>
+    <color name="com_bg_flag_red">#f63b1c</color>
+
+
+    <color name="com_text_dark_gray">#ff373636</color>
+    <color name="com_text_gray">#666666</color>
+    <color name="com_text_light_gray">#aaaaaa</color>
+    <color name="com_text_green">#007c32</color>
+    <color name="com_text_white">#ffffff</color>
+    <color name="com_text_black">#000000</color>
+    <color name="com_text_red">#ff0000</color>
+    <color name="com_text_pink">#fa9162</color>
+    <color name="com_text_yellow">#fa8d0d</color>
+    <color name="com_text_lq_green">#009039</color>
+    <color name="com_text_yellow_small">#F9D300</color>
+    <color name="com_text_blue_small">#7ED6C2</color>
+    <color name="translation">#00000000</color>
+
+</resources>

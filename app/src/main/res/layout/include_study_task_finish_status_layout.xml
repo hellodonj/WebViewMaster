@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/finish_status_contacts_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/task_finish_layout"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:background="#ffffff"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/task_finish_count"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="已完成（4）"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="11dp"
+                style="@style/txt_wawa_normal_black"/>
+
+            <ImageView
+                android:id="@+id/finish_logo_view"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/list_exp_up"
+                android:scaleType="centerInside"/>
+
+        </LinearLayout>
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <com.galaxyschool.app.wawaschool.views.MyGridView
+        android:id="@+id/students_finish_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="0dp"/>
+
+    <LinearLayout
+        android:id="@+id/unfinish_status_contacts_list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/task_unfinish_layout"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:background="#ffffff"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/task_unfinish_count"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="11dp"
+                style="@style/txt_wawa_normal_black"
+                android:text="未完成（2）"/>
+
+            <ImageView
+                android:id="@+id/unfinish_logo_view"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/list_exp_up"
+                android:scaleType="centerInside"/>
+        </LinearLayout>
+        <View
+            style="@style/line_gray"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <com.galaxyschool.app.wawaschool.views.MyGridView
+        android:id="@+id/students_unfinish_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="0dp"/>
+
+</LinearLayout>

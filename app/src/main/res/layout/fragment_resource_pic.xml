@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/txt_wawa_normal_black"
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_all"
+        android:background="#ebebeb"
+        android:drawableLeft="@drawable/resource_uncheck"
+        android:gravity="center_vertical"
+        android:minHeight="40dp"
+        android:padding="10dp"
+        android:checked="false"
+        android:visibility="gone"/>
+
+    <include layout="@layout/common_gridview" />
+
+</LinearLayout>

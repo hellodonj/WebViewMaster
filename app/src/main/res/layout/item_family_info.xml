@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/contacts_user_basic_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_real_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/txt_wawa_normal_black"
+                android:text="昵称"/>
+
+            <TextView
+                android:id="@+id/user_account"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_marginTop="5dp"
+                android:text="账号"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/add_good_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/txt_wawa_normal_green"
+            android:background="@drawable/button_bg_with_round_sides"
+            android:gravity="center"
+            android:text="@string/plus_friend"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/txt_wawa_normal_green"
+            android:background="@drawable/button_bg_with_round_sides"
+            android:gravity="center"
+            android:text="@string/wawatong_menu_chat"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <View style="@style/line_gray"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/txt_wawa_normal_black"
+            android:text="@string/relation"/>
+
+        <TextView
+            android:id="@+id/relationship"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/txt_wawa_normal_black"
+            android:gravity="right"
+            android:text="阿拉伯的家长"/>
+    </LinearLayout>
+
+    <View style="@style/line_gray"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/txt_wawa_normal_black"
+            android:text="@string/contact_phone"/>
+
+        <TextView
+            android:id="@+id/telephone_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/txt_wawa_normal_black"
+            android:gravity="right"
+            android:text="11222222222222"/>
+    </LinearLayout>
+
+    <View style="@style/line_gray"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/txt_wawa_normal_black"
+            android:text="@string/mailbox"/>
+
+        <TextView
+            android:id="@+id/email_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            style="@style/txt_wawa_normal_black"
+            android:text="1122@qq.com"/>
+    </LinearLayout>
+
+    <View style="@style/line_gray"/>
+
+    <LinearLayout
+        android:id="@+id/layout_unbind"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/txt_wawa_normal_black"
+            android:textColor="@color/red"
+            android:text="@string/unbind"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_arrow_icon"
+            android:scaleType="fitCenter"
+            android:gravity="center"/>
+    </LinearLayout>
+</LinearLayout>

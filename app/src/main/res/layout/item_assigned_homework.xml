@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/layout_assign_homework"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:clickable="true"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="10dp">
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/green_border"
+        android:padding="1px">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="120dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_book_cover"
+            />
+
+        <ImageView
+            android:id="@+id/media_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/play_ico"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_full_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:background="@drawable/shape_corner_text_light_red_20_dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/str_achievement_statistic"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_right_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/comment_content_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textSize="16sp"
+            tools:text="哈哈哈哈合法化发黄发发发发发阿发哈发发发啊发发啊发奖金阿发大啊"
+            />
+
+        <TextView
+            android:id="@+id/tv_start_time"
+            style="@style/comment_date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            tools:text="布置时间:2017-01-01"/>
+
+        <TextView
+            android:id="@+id/tv_end_time"
+            style="@style/comment_date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_start_time"
+            tools:text="布置时间:2017-01-01"
+            />
+
+        <RelativeLayout
+            android:id="@+id/layout_completed_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tv_finish_status"
+                style="@style/txt_wawa_small_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:paddingTop="3dp"
+                android:singleLine="true"
+                android:visibility="gone"
+                tools:text="已完成(0)/未完成(1)"
+                />
+
+            <TextView
+                android:id="@+id/tv_access_details"
+                style="@style/txt_wawa_small_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:drawablePadding="3dp"
+                android:drawableRight="@drawable/jiaxiao_detail_rightarrow_ico"
+                android:gravity="center"
+                android:paddingTop="3dp"
+                android:text="@string/access_details"
+                android:textColor="@color/text_gray"
+                android:visibility="visible"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

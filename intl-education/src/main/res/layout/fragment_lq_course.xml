@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_light_white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.lqwawa.intleducation.base.widgets.BannerHeaderView
+                    android:id="@+id/banner_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/classify_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorLight">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/course_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LiveHolder
+                    android:id="@+id/live_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                </com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LiveHolder>
+
+                <com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.DiscoveryHolder
+                    android:id="@+id/discovery_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.DiscoveryHolder>
+
+
+            </LinearLayout>
+        </ScrollView>
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+    <TextView
+        android:id="@+id/tv_my_course"
+        android:textColor="@color/textLight"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/com_bg_circle_green_btn"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="2"
+        android:visibility="gone"
+        android:text="@string/label_my_course"/>
+
+</android.support.constraint.ConstraintLayout>

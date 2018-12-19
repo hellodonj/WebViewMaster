@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="vr_press_and_hold_to_record">PRESS and HOLD to record</string>
+    <string name="vr_release_to_finish_record">Release complete</string>
+    <string name="vr_record_time_too_short">Record time must be not less than %d seconds</string>
+    <string name="vr_click_to_record">CLICK to record</string>
+    <string name="vr_click_to_stop_recording">CLICK to stop</string>
+    <string name="vr_restart_recording">Restart record</string>
+    <string name="vr_complete_recording">Complete record</string>
+    <string name="vr_recording_error">Recording error, please try again later</string>
+
+</resources>

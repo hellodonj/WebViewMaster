@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/main_bg_color"
+                android:orientation="vertical">
+
+    <include
+            android:id="@+id/title"
+            layout="@layout/contacts_header"/>
+
+
+    <LinearLayout
+            android:id="@+id/layout_date"
+            android:layout_below="@id/title"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+                style="@style/txt_wawa_normal_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                />
+
+        <LinearLayout
+                android:id="@+id/layout_assign_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+            <TextView
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/assign_date"
+                    android:gravity="left"
+                    />
+
+            <TextView
+                    android:id="@+id/assign_date"
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:layout_marginRight="10dp"
+                    android:hint="@string/start_date"
+                    />
+
+        </LinearLayout>
+        <ImageView
+                style="@style/line_gray"/>
+
+        <LinearLayout
+                android:id="@+id/layout_finish_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+            <TextView
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finish_date"
+                    android:gravity="left"
+                    />
+
+            <TextView
+                    android:id="@+id/finish_date"
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:layout_marginRight="10dp"
+                    android:hint="@string/end_date"
+                    />
+
+        </LinearLayout>
+        <ImageView
+                style="@style/line_gray"/>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layout_top"
+        android:layout_below="@id/layout_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        layout="@layout/homework_picker_list_view"/>
+
+    <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/homework_picker_bar"/>
+
+</RelativeLayout>

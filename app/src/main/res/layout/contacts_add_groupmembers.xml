@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ffebebeb"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/contacts_class_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/contacts_class_members_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/layout_teacher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/contacts_teachers_title_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/contacts_teachers_title"
+                            style="@style/txt_wawa_normal_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:text="@string/teacher" />
+
+                        <ImageView
+                            android:visibility="gone"
+                            android:id="@+id/contacts_teachers_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/list_exp_up"
+                            android:scaleType="fitCenter" />
+
+                        <!--全选按钮-->
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/teacher_select_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                           >
+
+                            <ImageView
+                                android:id="@+id/teacher_select_all_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/contacts_item_selector"
+                                android:scaleType="centerInside"
+                                android:visibility="visible"/>
+                            <TextView
+                                android:layout_marginLeft="5dp"
+                                style="@style/txt_wawa_normal_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical|left"
+                                android:text="@string/select_all"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView style="@style/line_gray"/>
+
+                    <include
+                        android:id="@+id/contacts_teachers"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        layout="@layout/contacts_grid" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/contacts_students_title_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/contacts_students_title"
+                            style="@style/txt_wawa_normal_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:text="@string/student" />
+
+                        <ImageView
+                            android:visibility="gone"
+                            android:id="@+id/contacts_students_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/list_exp_up"
+                            android:scaleType="fitCenter" />
+                        <!--全选按钮-->
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/students_select_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:id="@+id/students_select_all_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/contacts_item_selector"
+                                android:scaleType="centerInside"
+                                android:visibility="visible"/>
+
+                            <TextView
+                                android:layout_marginLeft="5dp"
+                                style="@style/txt_wawa_normal_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical|left"
+                                android:text="@string/select_all"/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <ImageView style="@style/line_gray"/>
+
+                    <include
+                        android:id="@+id/contacts_students"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        layout="@layout/contacts_grid" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:background="@color/text_green"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:id="@+id/tv_dissolve_group"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="@string/str_dissolution_groups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/fl_bottom_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/contacts_picker_bar" />
+    </FrameLayout>
+
+</LinearLayout>
+

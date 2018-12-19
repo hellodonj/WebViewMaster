@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lqbase_network_unavailable">Network unavailable, please check your network
+        settings.</string>
+    <string name="lqbase_network_error">Network error</string>
+    <string name="lqbase_loading">Loading...</string>
+</resources>

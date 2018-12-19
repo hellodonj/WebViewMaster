@@ -1,0 +1,1735 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LQWaWa</string>
+    <string name="contacts">Contacts</string>
+    <string name="wawatv">Happy Learning</string>
+    <string name="createspace">LQ Tool</string>
+    <string name="personal_space">My Zone</string>
+    <string name="personal_resource_library">Personal Courses</string>
+    <string name="local_course_task">Local Course</string>
+    <string name="load_platform_outline">Reference platform outline</string>
+    <!-- register & login -->
+    <string name="register">Sign Up</string>
+    <string name="login">Log In</string>
+    <string name="meet_problem">Any questions, contact&#160;</string>
+    <string name="exit">Log Out</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="username">Username</string>
+    <string name="username_hint">Username(letters &amp; digits only)</string>
+    <string name="password">Password</string>
+    <string name="teacher">Teacher</string>
+    <string name="student">Student</string>
+    <string name="parent">Parent</string>
+    <string name="child">Child</string>
+    <string name="dad">Dad</string>
+    <string name="mum">Mum</string>
+    <string name="mailbox">Email Address</string>
+    <string name="mailbox_register">Email (optional), for recovering password</string>
+    <string name="mailbox_info">*Recommend to fill in (necessary for retrieving password).</string>
+    <string name="send">Send</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="user_account">Username</string>
+    <string name="user_account_hint">Please input 3 to 20 letters or letters+digits</string>
+    <string name="real_name">Real Name</string>
+    <string name="bind_phone_number">Bound Mobile Phone</string>
+    <string name="contact_phone">Telephone</string>
+    <string name="sex">Gender</string>
+    <string name="birthday">Birth Date</string>
+    <string name="role_info">Role Info</string>
+    <string name="add_role">Add Role</string>
+    <string name="about_wawatong">About</string>
+    <string name="wawachat_intro">LQWaWa Introduction</string>
+    <string name="wawachat_agency">Join Us</string>
+    <string name="enter_wawachat">Join LQWaWa</string>
+    <string name="share_to">Share</string>
+    <string name="share">Share</string>
+    <string name="collection">Favorite</string>
+    <string name="role">Role</string>
+    <string name="school">School</string>
+    <string name="bind_parent">Bind Parent</string>
+    <string name="add_parent">Add Parent</string>
+    <string name="bind">Bind</string>
+    <string name="apply">*Apply</string>
+    <string name="absolve">*Unbind</string>
+    <string name="unbind">Unbind</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="setting">Settings</string>
+    <string name="qrcode">QR Code</string>
+    <string name="modify_password">Change Password</string>
+    <string name="feedback">Feedback</string>
+    <string name="feedback_hint_text">Please enter your feedback, we will continue to optimize the
+        experience (Less than 200 words)
+    </string>
+    <string name="input_old_password">Enter old password</string>
+    <string name="input_new_password">Enter new password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="different_password">Passwords do not match</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="photo">Photo</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="pls_input_username">Please enter your username</string>
+    <string name="pls_input_password">Please enter your password</string>
+    <string name="pls_input_email">Please enter your email address</string>
+    <string name="pls_input_realname">Please enter your real name</string>
+    <string name="login_success">Login succeeded!</string>
+    <string name="wrong_email_format">Invalid email address</string>
+    <string name="password_not_same">Passwords do not match</string>
+    <string name="register_success">Registration succeeded</string>
+    <string name="wrong_phone_number">Invalid mobile number</string>
+    <string name="modify_password_success">Password changed!</string>
+    <string name="uploading">Uploading...</string>
+    <string name="parent_account">Parent\'s account</string>
+    <string name="parent_name">Parent\'s name</string>
+    <string name="pls_input_parent_account">Please enter parent\'s account</string>
+    <string name="pls_input_parent_name">Please enter parent\'s name</string>
+    <string name="email_send_success">Email has been sent, please check!</string>
+    <string name="pls_input_feedback">Please enter your feedback</string>
+    <string name="feedback_send_success">Feedback succeeded</string>
+    <string name="network_error">Network error</string>
+    <string name="delete">Delete</string>
+    <string name="add">Join</string>
+    <string name="qrcode_scanning">Scan</string>
+    <string name="user_qrcode">User QR Code</string>
+    <string name="name">Name</string>
+    <string name="input_rename_illegal">Input rename illegal</string>
+    <string name="remark">Remark</string>
+    <string name="personal_qrcode">Personal QR Code</string>
+    <string name="accept">Accept</string>
+    <string name="pass">Approve</string>
+    <string name="passed">Approved</string>
+    <string name="added">Added</string>
+    <string name="refuse">Decline</string>
+    <string name="refused">Declined</string>
+    <string name="search">Search</string>
+    <string name="pls_enter_keyword">Please enter keyword</string>
+    <string name="screening">Filter</string>
+    <string name="pls_enter_search_keyword">Please enter keyword to search</string>
+    <string name="no_data">No data</string>
+    <string name="attention_one_oriza">Followed %s!</string>
+    <string name="no_more_data">No more data</string>
+    <string name="search_account">Search Account</string>
+    <string name="school_name">Please enter school name</string>
+    <string name="new_friends">New friend</string>
+    <string name="add_friend">Add friend</string>
+    <string name="participate_class">Join Class</string>
+    <string name="personal_info">My Info</string>
+    <string name="personal_materials">My Profile</string>
+    <string name="school_qrcode">School QR code</string>
+    <string name="class_qrcode">Class QR code</string>
+    <string name="contacts_info">Contacts info</string>
+    <string name="assign_homework">Assign homework</string>
+    <string name="scan_task">Scan to identify tasks</string>
+    <string name="resource_not_exist">Course not exists!</string>
+    <string name="student_info">Student Info</string>
+    <string name="teacher_info">Teacher Info</string>
+    <string name="parent_info">Parent Info</string>
+    <string name="approve">Approve</string>
+    <string name="select_all">Select all</string>
+    <string name="confirm_to_delete_friend">Do you want to remove %s from Contacts?</string>
+    <string name="delete_friend_success">Deletion succeeded</string>
+    <string name="remark_friend_success">Remark successfully</string>
+    <string name="friend_request_agreed">Friend request was accepted</string>
+    <string name="friend_request_refused">Friend request was declined</string>
+    <string name="friend_request_send_success">Friend request sent successfully</string>
+    <string name="class_request_passed">Join request was approved</string>
+    <string name="class_request_refused">Join request was declined</string>
+    <string name="delete_request_failed">Failed to delete request</string>
+    <string name="delete_request_success">Request deleted successfully</string>
+    <string name="select_class">Select class</string>
+    <string name="select_teacher">Select teacher</string>
+    <string name="select_student">Select student</string>
+    <string name="select_parent">Select parent</string>
+    <string name="select_friend">Select friend</string>
+    <string name="select_my_children">Select child</string>
+    <string name="select_receiver">Select receiver</string>
+    <string name="pls_select_a_class_at_least">No class selected</string>
+    <string name="pls_select_a_student_at_least">No student selected</string>
+    <string name="pls_select_a_friend_at_least">No one selected</string>
+    <string name="add_as_friend">Add to Contacts</string>
+    <string name="send_message">Send message</string>
+    <string name="start_chat">Send message</string>
+    <string name="start_group_chat">Send group message</string>
+    <string name="take_photo">Camera</string>
+    <string name="not_work_here">Absence</string>
+    <string name="not_study_here">Absence</string>
+    <string name="conversation_list">Chat List</string>
+    <string name="header_teacher">Headteacher</string>
+    <string name="qrcode_verify_hint">Please enter validation message</string>
+    <string name="qrcode_subject_hint">Please enter subject</string>
+    <string name="exit_if_press_back_again">Press again to exit</string>
+    <string name="register_tab1">Register with phone number</string>
+    <string name="register_tab2">Register with username</string>
+    <string name="pls_input_phonenum">Mobile phone number</string>
+    <string name="user_name_not_containe_char">Username must be characters(a-z/A-Z)</string>
+    <string name="login_enter_hint">Phone Number/Username</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="pls_input_verification_code">Please enter verification code</string>
+    <string name="verification_code_error">Wrong verification code</string>
+    <string name="get_verification_code">Get</string>
+    <string name="change_verfication_code">Next</string>
+    <string name="retrieve_by_phone">Recover using mobile phone</string>
+    <string name="retrieve_by_mail">Recover using email</string>
+    <string name="retrieve_by_parent">Recover with parents\' help</string>
+    <string name="goto_wawashow">Go WaWaShow to have a look, plenty of interesting courses are
+        waiting for you!
+    </string>
+    <string name="to_wawashow">Go WaWaShow now</string>
+    <string name="refetch_vercode">Retrieve again</string>
+    <string name="recommend_app">Recommend this app</string>
+    <string name="re_set_pw">Reset Password</string>
+    <string name="change_pw_success">Password changed</string>
+    <string name="modify_success">Updated successfully</string>
+    <string name="contact_phone_wrong">Wrong phone number format</string>
+
+    <string-array name="role_check_state">
+        <item>Pending approval</item>
+        <item>Accept</item>
+        <item>Decline</item>
+    </string-array>
+    <string-array name="relation_check_state">
+        <item>Unbound</item>
+        <item>Bound</item>
+        <item>Decline</item>
+    </string-array>
+
+    <!-- edit_templates -->
+    <string name="confirm">Confirm</string>
+
+    <string name="title">Title</string>
+    <string name="classes">Class</string>
+    <string name="subject">Subject</string>
+    <string name="title_hint">Title</string>
+
+    <!-- jiaxiao top bar -->
+
+    <!-- wawatv top bar -->
+    <string name="public_course">School Courses</string>
+
+    <!-- curriculum -->
+    <string name="no_role">Please select role</string>
+    <string name="no_school">Please select school</string>
+    <string name="no_grade">Please select grade</string>
+    <string name="no_class">Please select class</string>
+
+    <!-- commit -->
+    <string name="upload_comment_success">Send successfully</string>
+    <string name="upload_comment_error">Comment failed.</string>
+
+    <!-- detail -->
+
+    <!-- pulltorefresh -->
+    <string name="pullToRefreshPullLabel_custom_str">Pull down to refresh</string>
+    <string name="pullToRefreshFooterPullLabel_custom_str">Pull up to load more</string>
+    <string name="pullToRefreshReleaseLabel_custom_str">Release to refresh</string>
+    <string name="pullToRefreshFooterReleaseLabel_custom_str">Release to load</string>
+    <string name="pullToRefreshRefreshingLabel_custom_str">Refresh\u2026</string>
+    <string name="pullToRefreshFooterRefreshingLabel_custom_str">Loading\u2026</string>
+
+    <!-- curriculum -->
+    <string name="select_school">Select school</string>
+    <string name="publish">Post</string>
+
+    <!-- assignment -->
+    <string name="today_assignment">Homework Today</string>
+    <string name="more">More</string>
+    <string name="more_indicator">More></string>
+    <string name="create">New</string>
+    <string name="online_count">Browse count: %s</string>
+    <string name="online_host">Online host</string>
+    <string name="online_host_point">Online host: %s</string>
+    <string name="teaching_materials">Teaching Materials</string>
+
+    <string name="actor_cast">Actor cast</string>
+    <string name="act_classroom_look_count">%s count look</string>
+    <string name="to_be_expected">To be expected...</string>
+    <string name="publish_object">Publish Object</string>
+    <string name="interaction">Interaction</string>
+    <string name="begin_online">Begin onine</string>
+    <string name="upload">Upload</string>
+    <string name="upload_success">Send successful</string>
+    <string name="server_connect_error">Server connect error,please retry later!</string>
+    <string name="no_students">No student in this class, unable to send homework!</string>
+
+    <string name="me">Me</string>
+    <string name="message">Message</string>
+
+    <!-- contacts -->
+    <string name="class_contacts">Class Address Book</string>
+    <string name="personal_contacts">Personal Address Book</string>
+    <string name="family_contacts">My Child</string>
+    <string name="clear">Clear</string>
+
+    <string name="downloading">Loading, please wait...</string>
+    <string name="loading">Loading...</string>
+    <string name="loading_and_wait">Loading, please wait...</string>
+
+    <string name="temp_no_content">Temp no content,pls go to personal
+        space/lq cloud course make production.
+    </string>
+    <string name="personal_library_no_content_video">Temp no content,
+        pls take the production of yours upload to the personal
+        space/personal library/video
+    </string>
+    <string name="personal_library_no_content_lq_course">Temp no content,
+        pls take the production of yours upload to the personal
+        space/personal library/Listen-Read Course
+    </string>
+
+    <string name="help">Service &#038; Help</string>
+
+    <string-array name="qrcode_titles">
+        <item>Join Class</item>
+        <item>Join School</item>
+        <item>Find Friends</item>
+        <item>Follow School</item>
+    </string-array>
+    <string-array name="qrcode_add_infos">
+        <item>Apply to join</item>
+        <item>Apply to join</item>
+        <item>Add to Contacts</item>
+        <item>Follow</item>
+    </string-array>
+
+    <string-array name="relation_types">
+        <item>Dad</item>
+        <item>Mom</item>
+        <item>Parent</item>
+    </string-array>
+
+    <string name="join">Join</string>
+    <string name="join_school">Join school</string>
+    <string name="join_class">Join class</string>
+
+    <string name="who_am_i">I am %s</string>
+    <string name="relation">Relationship</string>
+    <string name="stu_name">Student name</string>
+    <string name="apply_success">Applied successfully</string>
+    <string name="attend_success">Followed/Subscribed successfully</string>
+    <string name="scanning">Scanning...</string>
+    <string name="scanning_failed">Scanning failed!</string>
+    <string name="pls_input_subject">Please enter subject</string>
+    <string name="pls_input_name">Please enter name</string>
+    <string name="pls_input_student_name">Please enter student name</string>
+    <string name="pls_select_relation">Please select relationship</string>
+    <string name="whose_parent">%1$s\'s %2$s</string>
+    <string name="pls_input_relationship">Please enter your relationship with the student</string>
+
+    <!-- wawa tong tab -->
+    <string name="wawatong_menu_chat">chat</string>
+    <string name="wawatong_attention">Subscribe</string>
+
+    <!-- chat -->
+    <string name="text_ack_msg">Read</string>
+    <string name="text_delivered_msg">Sent</string>
+    <string name="back">Back</string>
+
+    <!--<string name="save">保存</string>-->
+    <string name="image_saved_to">Image saved in %s</string>
+    <string name="save_failed">Failed to save image</string>
+    <string name="button_pushtotalk">Hold to talk</string>
+    <string name="button_send">Send</string>
+    <string name="attach_picture">Image</string>
+    <string name="attach_take_pic">Camera</string>
+    <string name="attach_location">Location</string>
+    <string name="attach_file">File</string>
+    <string name="attach_video">Video</string>
+    <string name="attach_voice_call">Voice call</string>
+    <string name="attach_video_call">Video call</string>
+    <string name="move_up_to_cancel">Slide up to cancel</string>
+    <string name="release_to_cancel">Release to cancel</string>
+    <string name="send_fail">Failed to send messages,</string>
+    <string name="delete_message">Delete message</string>
+    <string name="copy_message">Copy message</string>
+    <string name="delete_voice">Delete voice</string>
+    <string name="delete_video">Delete video</string>
+
+    <!--<string name="delete">删除</string>-->
+    <string name="resend">Resend</string>
+    <string name="confirm_resend">Confirm to resend message?</string>
+    <string name="connect_failuer_toast">Please check your network settings or try again later
+    </string>
+    <string name="network_unavailable">Network unavailable, please check your network settings
+    </string>
+    <string name="copy">Copy</string>
+    <string name="forward">Forward</string>
+    <string name="button_uploadlog">Upload running log</string>
+    <string name="ok">Confirm</string>
+
+    <!--<string name="cancel">取消</string>-->
+    <string name="prompt">Tips</string>
+    <string name="location_recv">[%1$s\'s location]</string>
+    <string name="recording_video">Take video</string>
+    <string name="location_prefix">[My location]</string>
+    <string name="picture">[Image]</string>
+    <string name="video_msg">[Video]</string>
+    <string name="file_msg">[File]</string>
+    <string name="voice_call">[Voice Call]</string>
+    <string name="resource_msg">[Resource]</string>
+
+    <string name="resource_no_exist">Resource not exist!</string>
+    <!--<string name="button_cancel">Cancel</string>-->
+    <string name="button_save">Save</string>
+    <string name="button_search">Search</string>
+    <string name="button_add">Add</string>
+    <string name="search_header">Search</string>
+    <string name="recoding_fail">Recording failed, please try again!</string>
+    <string name="select_contacts">Select Contacts</string>
+    <string name="confirm_forward_to">Confirm forwarding to: %1$s ?</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_hint">This will not delete any data. You can still log in with this
+        account
+    </string>
+    <string name="exit_group_hint">You will no longer receive messages from this group chat if you
+        quit
+    </string>
+    <string name="dissolution_group_hint">This group will be dismissed if you quit</string>
+    <string name="exit_group">Log out</string>
+    <string name="connect_conflict">Your account was used to login on another device</string>
+    <string name="em_user_remove">This user was removed</string>
+    <string name="voice">Ring</string>
+
+    <!--<string name="setting">设置</string>-->
+    <string name="Application_and_notify">Request &amp; Notification</string>
+    <string name="save_new_nickname">Save</string>
+    <string name="nickname_description">After setting the nickname, when chatting with iOS App
+        (demo) users, the iOS device will show the nickname instead of the Easemod ID. This setting
+        is not applicable to Android App users.
+    </string>
+    <string name="group_chat">Group chat</string>
+    <string name="chat_room">Chat room</string>
+
+    <!--<string name="add_friend">添加好友</string>-->
+    <!--<string name="search">搜索</string>-->
+    <string name="black_item">Block List</string>
+    <string name="diagnose">Diagnosis/Debug</string>
+    <string name="push_nick">Nickname to receive iOS offline messages</string>
+    <string name="Current_version">Current version</string>
+    <string name="Not_Set">Not set</string>
+    <string name="Upload_the_log">Uploading running log</string>
+    <string name="The_new_group_chat">Create new group</string>
+    <string name="add_public_group_chat">Add public group</string>
+    <string name="add_public_chat_room">Add chat room</string>
+    <string name="group_name">Group name</string>
+    <string name="Group_chat_profile">Group introduction</string>
+    <string name="Whether_the_public">Public or not?</string>
+    <string name="Open_group_members_invited">Allow members to invite others</string>
+    <string name="Open_group_chat">Public group</string>
+    <string name="blacklist">Block List</string>
+    <string name="Empty_the_chat_record">Clear chat history</string>
+    <string name="Shielding_of_the_message">Blocked</string>
+    <string name="Select_the_contact">Select contacts</string>
+    <string name="Group_chat_information">Group info</string>
+    <string name="Group_of_Lord">Group owner</string>
+    <string name="Introduction">Introduction</string>
+    <string name="To_join_the_chat">Join group</string>
+    <!--<string name="login">登录</string>-->
+    <string name="user_name">Username</string>
+    <!--<string name="password">密码</string>-->
+    <!--<string name="register">注册</string>-->
+    <string name="downwaiting">Downloading files, please wait</string>
+    <string name="mute">Mute</string>
+    <string name="Hands_free">Speakerphone</string>
+    <string name="hang_up">Hang up</string>
+    <string name="answer">Answer</string>
+    <string name="newchat">Chat</string>
+    <string name="agree">Agree</string>
+    <string name="not_download">Not downloaded</string>
+    <string name="Please_enter_a_username">Please enter username</string>
+    <string name="is_down_please_wait">Downloading video, please wait</string>
+    <string name="Exit_the_group_chat">Quit group</string>
+    <string name="chat_service_not_works">Chat server failure, please close application and
+        relaunch
+    </string>
+    <string name="not_add_myself">Cannot add yourself as a friend</string>
+    <string name="This_user_is_already_your_friend">This user is already your friend</string>
+    <string name="Add_a_friend">Add to Contacts</string>
+    <string name="send_successful">Your request has been sent. Please wait for the contact to
+        reply
+    </string>
+    <string name="Request_add_buddy_failure">Failed to add friend:</string>
+    <string name="Removed_from_the_failure">Removing failed</string>
+    <string name="be_removing">Removing...</string>
+    <string name="call_duration">Holding time</string>
+    <string name="Refused">Declined</string>
+    <string name="The_other_party_has_refused_to">Your request was declined</string>
+    <string name="The_other_is_not_online">Contact is offline</string>
+    <string name="The_other_is_on_the_phone">The line is engaged</string>
+    <string name="The_other_party_did_not_answer">No response</string>
+    <string name="did_not_answer">No response</string>
+    <string name="Has_been_cancelled">Canceled</string>
+    <string name="unable_to_get_loaction">Cannot pinpoint your location</string>
+    <string name="not_connect_to_server">Server not connected, please try again later</string>
+    <string name="sd_card_does_not_exist">SD card unavailable, cannot take photo</string>
+    <string name="cant_find_pictures">No image found</string>
+    <string name="File_does_not_exist">File not exists</string>
+    <string name="The_file_is_not_greater_than_10_m">Files cannot be larger than 10M</string>
+    <string name="Whether_to_empty_all_chats">Clear all chat history?</string>
+    <string name="Send_voice_need_sdcard_support">Voice chat need the support of SD card</string>
+    <string name="Recording_without_permission">No right to record</string>
+    <string name="The_recording_time_is_too_short">Recording time is too short</string>
+    <string name="send_failure_please">Sending failed, please check server connection</string>
+    <string name="Move_into_blacklist_success">Moved into Block List</string>
+    <string name="Move_into_blacklist_failure">Failed to move into block list</string>
+    <string name="Delete_failed">Deletion failed:</string>
+    <string name="Is_moved_into_blacklist">Move into Block List</string>
+    <string name="Log_uploaded_successfully">Running log uploaded</string>
+    <string name="Log_Upload_failed">Failed to upload running log</string>
+    <string name="get_failed_please_check">Failed to obtain, please check your network settings or
+        try again later
+    </string>
+    <string name="people">People）</string>
+    <string name="being_added">Adding...</string>
+    <string name="is_quit_the_group_chat">Quitting group...</string>
+    <string name="chatting_is_dissolution">Dismissing group...</string>
+    <string name="are_empty_group_of_news">Clearing group chat history...</string>
+    <string name="is_modify_the_group_name">Modifying group name...</string>
+    <string name="Modify_the_group_name_successful">Group name changed</string>
+    <string name="change_the_group_name_failed_please">Failed to change group name, please check
+        your network settings or try again later
+    </string>
+    <string name="Are_moving_to_blacklist">Moving into Block List</string>
+    <string name="failed_to_move_into">Failed to move into Block List, please check your network
+        settings or try again later
+    </string>
+    <string name="Exit_the_group_chat_failure">Quit failed:</string>
+    <string name="Dissolve_group_chat_tofail">Dismission failed:</string>
+    <string name="Add_group_members_fail">Failed to add new member</string>
+    <string name="Is_unblock">Unblocking...</string>
+    <string name="remove_group_of">Failed to unblock, please check your network settings or try
+        again later
+    </string>
+    <string name="group_is_blocked">Unblocking group...</string>
+    <string name="group_of_shielding">Failed to unblock group, please check your network settings or
+        try again later
+    </string>
+    <string name="sure_to_empty_this">Confirm deletion of this group chat\'s history?</string>
+    <string name="The_delete_button_is_clicked">Delete button was tapped</string>
+    <string name="Add_a_button_was_clicked">Add button was tapped</string>
+    <string name="not_delete_myself">Can\'t delete yourself</string>
+    <string name="Are_removed">Removing...</string>
+    <string name="confirm_the_members">Confirm moving this contact into the block list of this
+        group？
+    </string>
+    <string name="Failed_to_get_group_chat_information">Failed to obtain group chat info:</string>
+    <string name="Is_sending_a_request">Sending request...</string>
+    <string name="Request_to_join">Request to join</string>
+    <string name="send_the_request_is">Request sent successfully, waiting for the administrator\'s
+        approval
+    </string>
+    <string name="Join_the_group_chat">Join successfully</string>
+    <string name="Failed_to_join_the_group_chat">Failed to join:</string>
+    <string name="temporary_does_not">Videos larger than 10M are not supported!</string>
+    <string name="Video_footage">Take video</string>
+    <string name="receive_the_passthrough">New message: action:</string>
+    <string name="Group_name_cannot_be_empty">Group name cannot be left blank</string>
+    <string name="Is_to_create_a_group_chat">Creating group...</string>
+    <string name="Failed_to_create_groups">Failed to create group:</string>
+    <string name="The_video_to_start">Start to take video</string>
+    <string name="Whether_to_send">Send?</string>
+    <string name="Open_the_equipment_failure">Failed to turn on device!</string>
+    <string name="Download_the_pictures">Download image: 0%</string>
+    <string name="Download_the_pictures_new">Download image:</string>
+    <string name="Failed_to_download_file">Failed to download file:</string>
+    <string name="Are_connected_to_each_other">Connecting...</string>
+    <string name="Is_not_yet_connected_to_the_server">Server not connected</string>
+    <string name="have_connected_with">Waiting for connection...</string>
+    <string name="In_the_call">In call...</string>
+    <string name="The_other_party_refused_to_accept">Your request was declined!...</string>
+    <string name="Connection_failure">Connection failed!...</string>
+    <string name="The_other_party_is_not_online">Contact is offline，please try again later...
+    </string>
+    <string name="The_other_is_on_the_phone_please">The line is engaged, please try again later
+    </string>
+    <string name="The_other_is_hang_up">Contact has hung up</string>
+    <string name="The_other_party_did_not_answer_new">No response</string>
+    <string name="Into_the_blacklist">Move into Block List</string>
+    <string name="Have_downloaded">Downloaded</string>
+    <string name="Did_not_download">Not downloaded</string>
+    <string name="Has_agreed_to_your_friend_request">accepted your friend request</string>
+    <string name="Request_to_add_you_as_a_friend">sent you a friend request</string>
+    <string name="Apply_to_the_group_of">Apply to join group:</string>
+    <string name="Has_agreed_to">Accepted</string>
+    <string name="Has_refused_to">Declined</string>
+    <string name="Are_agree_with">Accepting</string>
+    <string name="Agree_with_failure">Failed to accept</string>
+    <string name="Is_download_voice_click_later">Downloading voice, please tap later</string>
+    <string name="Send_the_following_pictures">Send images below?</string>
+    <string name="search_new">Search</string>
+    <string name="Change_the_group_name">Change group name</string>
+    <string name="The_dissolution_of_chatting_new">Dismiss Group</string>
+    <string name="gorup_not_found">Can\'t find this group</string>
+
+
+    <!-- subscription -->
+    <string name="subscription_recommend">Share/Recommend</string>
+    <string name="subs_school_introduction">School introduction</string>
+    <string name="subs_school_adrress">School address</string>
+    <string name="subs_school_phone">Contact number</string>
+
+    <!-- customer service -->
+    <string name="contact_customer_service">Customer Service</string>
+    <string name="customer_service_info">Hot-line、Chat now</string>
+    <string name="wawachat_service">Customer service</string>
+    <string name="wawachat_support">Service scope: business consulting, troubleshooting, suggestions
+        and feedback
+    </string>
+    <string name="wawachat_phonenumber">Hot-line: 4001077-727</string>
+    <string name="online_service">Chat Now</string>
+
+    <!-- comment -->
+    <string name="comment">Message</string>
+    <string name="say_something">Say something...</string>
+    <string name="reply">Reply</string>
+
+    <!-- create space -->
+    <string name="cs_cloud_post_bar">Cloud Post Bar</string>
+    <string name="cs_local_post_bar">Local Post Bar</string>
+    <string name="cs_preparation">Prepare Lessons</string>
+    <string name="cs_comment">Comment</string>
+    <string name="cs_update_time">Last Updated:</string>
+    <string name="cs_modify_time">Modification Time:</string>
+    <string name="cs_operation_publish">Post</string>
+    <string name="cs_operation_share">Share</string>
+    <string name="cs_operation_edit">Edit</string>
+    <string name="cs_delete_success">Deleted successfully</string>
+    <string name="cs_loading_wait">Loading,please wait</string>
+    <string name="cs_loading_error">Loading error</string>
+
+    <string name="search_and_search">Search</string>
+    <string name="start_to_search">Start to search</string>
+    <string name="all">All</string>
+    <string name="my_book_shelf">Private Course Pool</string>
+    <string name="my_courseware">My Courseware</string>
+    <string name="syllabus">Course book</string>
+    <string name="pls_select_catalog">Please select chapter</string>
+    <string name="search_course">Search Course</string>
+    <string name="search_course_hint">Find more courses that meet your requirements</string>
+    <string name="pls_enter_title">Please enter the title</string>
+    <string name="upload_failure">Send failure</string>
+    <string name="send_to_sp">Send to %s</string>
+    <string name="pub_course">Courses</string>
+
+    <!-- notice -->
+
+    <!-- WawaShow -->
+    <string name="n_viewcount">Views: %s</string>
+    <string name="collect_success">Collect successfully</string>
+    <string name="discard_save">Discard</string>
+    <string name="content_description">Description</string>
+    <string name="history_class">History Class</string>
+    <string name="present_class">Present Class</string>
+    <string name="scan_me">Scan</string>
+    <string name="search_school">Search school</string>
+    <string name="joined">Joined</string>
+    <string name="unjoined">Unjoined</string>
+    <string name="join_as_school_teacher">Do you want to join this school as a teacher?</string>
+    <string name="application_commit_success">Your application has been committed successfully.
+    </string>
+    <string name="application_commit_failure">Your application failed to commit.</string>
+    <string name="build_class">New</string>
+    <string name="class_management">Management</string>
+    <string name="class_name">Class Name</string>
+    <string name="modify_class_name">Modify Class Name</string>
+    <string name="class_status">Class Status</string>
+    <string name="change_headteacher">Change Headteacher</string>
+    <string name="select_headteacher">Select Headteacher</string>
+
+    <!--temp strings that will be replaced by english strings-->
+    <string name="use_for_getback_password">(For retrieving password)</string>
+    <string name="pls_input_user_info">Cannot join school/class before completing your profile,
+        Skip?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="pls_input_name_email">Please fill in your real name and email address via Me >
+        Basic Info.
+    </string>
+    <string name="input_user_info">Complete your profile</string>
+    <string name="pls_login">Please login</string>
+    <string name="ppt_pdf_not_have_pic">No picture for the time being</string>
+
+    <string name="forbid_chat">Forbit Chat</string>
+    <string name="forbid_class_chat">Forbit Class Chat</string>
+    <string name="allow_chat">Allow Chat</string>
+    <string name="forbid_chat_success">Forbid chat success</string>
+    <string name="allow_chat_success">Allow chat success</string>
+    <string name="chat_forbidden_alert">You have been forbidden to chat.</string>
+    <string name="operation_success">Operation success</string>
+    <string name="operation_failure">Operation failed</string>
+    <string name="operation_not_allowed">No member to forbid</string>
+    <string name="picture_download_failed">Picture download failed</string>
+    <string name="invite_parents_to_join_class">Invite someone to join this class</string>
+    <string name="add_reporterId_success">Add Success</string>
+    <string name="create_success">Create success</string>
+
+    <string name="school_intro">School Introduction</string>
+    <string name="cloud_classroom">Open Class</string>
+    <string name="class_info">Class Info</string>
+    <string name="school_message">School Messages</string>
+    <string name="personal_message">Messages</string>
+    <string name="send_to_cloud_classroom">Send to Open Class</string>
+    <string name="class_messages">Class Message</string>
+    <string name="platform_news">System News</string>
+    <string name="platform_notice">System Notice</string>
+    <string name="class_message_tips">[%s]</string>
+    <string name="recovery_original_resource_tips">Restoring will delete your note, Continue?
+    </string>
+    <string name="recovery_original_resource_success">Restore successfully</string>
+
+    <string name="class_request">Approve Join Requests</string>
+    <string name="create_class">Create Class</string>
+    <string name="customize">Customized</string>
+    <string name="customize_stage">Customized Stage</string>
+    <string name="customize_grade">Customized Grade</string>
+    <string name="customize_class">Customized Class</string>
+    <string name="create_class_success">Class created successfully</string>
+    <string name="create_class_failed">Failed to create class</string>
+    <string name="class_name_needed">Please select class name</string>
+    <string name="class_name_more_than_40_character">Class name cannot more than 40 character</string>
+    <string name="select_class_headteacher_success">New headteacher setup successfully</string>
+    <string name="modify_class_name_success">Class name changed</string>
+    <string name="modify_class_status_success">Class state changed</string>
+
+    <string name="save_to_local">Save to Local</string>
+    <string name="upload_and_wait">Uploading, please wait.</string>
+
+    <!-- join school -->
+    <string name="apply_join">Apply to join</string>
+    <string name="i_am">I\'m</string>
+
+    <!--campaign-->
+
+    <!--Note-->
+    <string name="n_comment">Comments(%s)</string>
+    <string name="n_praise">Like(%s)</string>
+    <string name="pls_input_comment_content">Please input your comment</string>
+    <string name="send_content_cannot_null">Send content cannot null</string>
+    <string name="n_max_comment_lenth">Within 200 characters</string>
+    <string name="anonym">Anonymity</string>
+    <string name="have_praised">Praised</string>
+    <string name="select_comments">Selected Comments</string>
+    <string name="more_comments">View more comments>></string>
+
+    <string name="send_success">Sent successfully！</string>
+    <string name="send_failure">Sent failed！</string>
+
+    <string name="post_bar">Cloud Post Bar</string>
+    <string name="user_introduction">Self-introduction</string>
+    <string name="user_location">Region</string>
+    <string name="follow">Follow</string>
+    <string name="plus_follow">Follow</string>
+    <string name="plus_friend">Add Friend</string>
+    <string name="cancel_follow">Unfollow</string>
+    <string name="n_read">Views: %d</string>
+    <string name="n_followed">%d followers</string>
+    <string name="n_subscribed">%d followees</string>
+    <string name="n_browse">Views: %d</string>
+
+    <string name="cloud_resources">Cloud Materials</string>
+    <string name="local_resources">Local Resources</string>
+    <string name="my_works">My Works</string>
+    <string name="collected_resources">Favorites</string>
+    <string name="no_resource_select">Please select import resources!</string>
+    <string name="no_note_update">No update required due to no changes to resources.</string>
+    <string name="update_success">Update succeeded</string>
+    <string name="update_failure">Update failed</string>
+    <string name="toggle_school">Switch</string>
+    <string name="word_number">Word number :</string>
+    <string name="pls_input_article_content">Please input article content</string>
+    <string name="reporter_permission">Reporter Permission</string>
+    <string name="subscribe">Subscription</string>
+    <string name="subscribed_person">Individual</string>
+    <string name="subscribed_school">Institution</string>
+    <string name="subscribe_school_tips">Please add to a school, you can get more wonderful
+        content！
+    </string>
+    <string name="subscribe_search_user_tips">Search by username</string>
+    <string name="subscribe_search_school_tips">Search by school name</string>
+    <string name="subscribe_search_user">Search user</string>
+    <string name="subscribe_search_school">Search school</string>
+    <string name="subscribe_success">Follow successful</string>
+    <string name="subscribe_failed">Follow failed</string>
+    <string name="subscribe_cancel_success">Unfollow successful</string>
+    <string name="subscribe_cancel_failed">Unfollow failed</string>
+    <string name="joined_school">Joined School</string>
+    <string name="subscribed">Followed</string>
+    <string name="sign_activity">Registration Activity</string>
+    <string name="vote_activity">Vote Activity</string>
+    <string name="school_style">School Style</string>
+    <string name="news">News</string>
+    <string name="resource_type_not_supported">Resource type not supported</string>
+    <string name="going">In Progress</string>
+    <string name="over">Over</string>
+    <string name="search_title">Search by title</string>
+    <string name="search_title_or_author">Search by title/author</string>
+    <string name="search_teacher">Search by teacher name</string>
+
+    <string name="back_or_not">Back?</string>
+    <string name="confirm_end_online">Confirm end online？</string>
+    <string name="confirm_delete">Confrim delete？</string>
+    <string name="confirm_delete_online">Confirm delete online %s?</string>
+    <string name="start_airclass_dialog_prompt">It has entered a live broadcast. Please use live TV for live broadcast</string>
+    <string name="record_video">Record</string>
+
+    <string name="local">Local</string>
+    <string name="cloud">Cloud</string>
+    <string name="pls_select_files">Please select files!</string>
+    <string name="microcourse">Listen-Read Course</string>
+    <string name="pictures">Image</string>
+    <string name="audios">Audio</string>
+    <string name="videos">Video</string>
+    <string name="media_num">(%s)</string>
+    <string name="n_upload_max_count">Can not upload more than %s files!</string>
+    <string name="n_rename_max_count">Can not rename more than %s files!</string>
+    <string name="n_pick_max_count">Do not select more than %s files!</string>
+
+    <string name="cloud_post_bar">Cloud Post Bar</string>
+    <string name="school_movement">School Status</string>
+    <string name="take_shoot">Take shoot</string>
+    <string name="notices">Announcements</string>
+    <string name="homeworks">Homework</string>
+    <string name="comments">Shows</string>
+    <string name="shows">Shows</string>
+    <string name="courses">Flipped Classroom</string>
+    <string name="lectures">E-school</string>
+    <string name="stage">Learning stage</string>
+    <string name="grade">Grade</string>
+
+    <string name="confirm_to_delete_reporter_id">Confirm to delete %s reporterId？</string>
+    <string name="delete_success">Deleted successfully</string>
+    <string name="delete_failure">Deletion failed</string>
+    <string name="delete_postbar">Delete post?</string>
+    <string name="delete_collection">Remove from favorites?</string>
+
+    <string name="split_course">Split</string>
+
+    <string name="auto_upload_resources">Auto upload to Creation Zone</string>
+
+    <string-array name="share_type">
+        <item>Share the current page</item>
+        <item>Share the whole course</item>
+    </string-array>
+
+    <string name="share_select_title">Select share mode</string>
+    <string name="success">Success</string>
+    <string name="failure">Failure</string>
+
+    <string name="rename_file">Rename this file</string>
+    <string name="rename_success">Rename success</string>
+    <string name="rename_failure">Rename failure</string>
+    <string name="cloud_resource_rename_exist">%s existed!</string>
+    <string name="cloud_resource_upload_exist">%s existed, please upload again after renaming
+        files
+    </string>
+    <string name="class_not_exist">Class not exists!</string>
+    <!--bellow add for book_store by renbao-->
+    <string name="read_room">E-reading</string>
+    <string name="latest_info">Latest Updates</string>
+    <string name="more_info">More</string>
+    <string name="catalog">Catalog</string>
+    <string name="finished">Complete</string>
+    <string name="unfinished">Uncompleted</string>
+    <string name="store_count">users already added the book to bookshelf</string>
+    <string name="class_right">Course permission:</string>
+    <string name="always_use">Recent</string>
+    <string name="source">From：</string>
+    <string name="previous_note">Previous chapter</string>
+    <string name="next_note">Next chapter</string>
+    <string name="check_catalog">Browse the catalog</string>
+    <string name="no_privous_note">Already the first chapter</string>
+    <string name="no_next_note">Already the last chapter</string>
+
+    <string name="save_file_exist">%sFile exist, please rename and save！</string>
+
+    <string name="cloud_wawaweike_info">There can receive Listen-Read Course which uploaded from special
+        making APP!
+    </string>
+    <string name="delete_school_message">Delete campus status？</string>
+    <string name="delete_school_course">Delete open classes ？</string>
+    <string name="delete_note">Delete notice？</string>
+    <string name="delete_show">Delete show？</string>
+    <string name="delete_course">Delete post？</string>
+    <string name="delete_homework">Delete homework？</string>
+
+    <string name="app_version">Version</string>
+    <string name="default_subscribe_search_school_tips">Search by school name</string>
+    <string name="school_class_book">School Course Pool</string>
+    <string name="choice_books">Choice Course Pool</string>
+    <string name="class_manage">Class management</string>
+    <string name="author">Author:</string>
+    <string name="toggle_class">Class Switch</string>
+    <string name="delete_mic_class">Delete microcourse？</string>
+    <string name="no_class_tip">Please join the class and you can get more content!</string>
+
+    <string name="switch_child">Switch</string>
+    <string name="clear_screening_case">clear data of screening condition</string>
+    <string name="date">Date</string>
+    <string name="publish_time">Publish time</string>
+    <string name="work_type">Homework type</string>
+    <string name="assign_date">Start time</string>
+    <string name="finish_date">Finish time</string>
+    <string name="study_task_type">Task type</string>
+    <string name="homework_state_type">Task status type</string>
+    <string name="cancel_to_select_all">Cancel</string>
+    <string name="commit_homework">Submit homework</string>
+    <string name="to">To</string>
+    <string name="look_through_courseware">Reading courseware</string>
+    <string name="discuss_topic">Topic of discussing</string>
+    <string name="english_writing">English Writing</string>
+    <string name="assign_date_string">Assian date: %s</string>
+    <string name="finish_date_string">Finish date: %s</string>
+    <string name="retell_course">Listen-Read Course</string>
+    <string name="other">Other</string>
+    <string name="introduction">Introduction course</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">Finish date</string>
+    <string name="article_title">Article Title :</string>
+    <string name="article_request">Article Request :</string>
+    <string name="score_formula">Score formula :</string>
+    <string name="article_limited_word">Article limite word</string>
+    <string name="date_empty">Please fill in information of date!</string>
+    <string name="date_above_cur_date">Date of setting and finishing homework can\'t be earlier
+        than current day
+    </string>
+    <string name="end_date_above_start_date">Date of setting homework can\'t be later than
+        finishing
+    </string>
+    <string name="publish_end_time_must_more_than_start_time">Publish end time must more
+        than start time
+    </string>
+
+    <string name="n_finish">Completed %s</string>
+    <string name="n_unfinish">UnCompleted %s</string>
+    <string name="n_finish_all">Completed All%s</string>
+    <string name="discussion">Discussion ( %s )</string>
+    <string name="homework_screening_result">Filtered homework</string>
+    <string name="finish_count">Completed %s</string>
+    <string name="unfinish_count">UnCompleted %s</string>
+    <string name="n_people_join">Joined（%s）</string>
+    <string name="n_person_join">Joined（%s）</string>
+
+    <string name="send_comment_success"> Send successfully</string>
+    <string name="want_to_delete_sb">Are you sure to delete %s？</string>
+    <string name="publish_course_ok">Send successfully</string>
+    <string name="publish_course_error">Fail</string>
+    <string name="scan_task_save_ok">Course has been saved in My Zone/Private Resource Pool/LQ
+        Course, material has been saved in My Zone/Creation Zone.
+    </string>
+    <string name="scan_task_send_ok">Send successfully, course has been back up in My
+        Zone/Private Resource Pool/Listen-Read Course, material has been back up in My Zone/Creation Zone.
+    </string>
+
+
+    <string name="add_sb">Add person</string>
+    <string name="add_authority">Add school</string>
+    <string name="myself">（myself）</string>
+    <string name="my_family">%s\'s family contacts</string>
+    <string name="want_to_unbind_sb">Confirm to unbind %s？</string>
+    <string name="unbind_success">Unbind success.</string>
+    <string name="personal_contacts_hint_tips">Search account/realname/remark</string>
+    <string name="create_student">Create Student</string>
+    <string name="add_student">Add Student</string>
+    <string name="import_student_from_address_book">Import from contacts</string>
+    <string name="search_student_account">Search student account</string>
+    <string name="create_student_success">Create student success</string>
+    <string name="out_of_class_success">Remove class success</string>
+    <string name="add_student_success">Add student success</string>
+    <string name="want_to_remove_sb_from_class">Confirm to remove %s from the class？</string>
+    <string name="out_of_class">Remove from the class</string>
+    <string name="create_student_input_user_name_hint_tips">Username (Letters/Letters and numbers)
+    </string>
+    <string name="create_student_input_real_name_optional_hint_tips">Realname（optional）</string>
+    <string name="create_student_hint_tips">Default pwd: 111111，please change it as soon sa possible
+        after logging in.
+    </string>
+
+
+    <string name="attended_schools">Schools</string>
+    <string name="excellent_course">Excellent Curriculum</string>
+    <string name="no_schools">No school</string>
+    <string name="no_book_class">No curriculum</string>
+    <string name="enter_bookstore">enter school courses</string>
+    <string name="online_consultation">Online consult</string>
+    <string name="exit_class">Quit class</string>
+    <string name="want_to_exit_class">Confirm to quit the class？</string>
+    <string name="exit_class_success">Quit the class success</string>
+    <string name="pls_select_bind_student_account">Please select a student account to bind.</string>
+    <string name="exists_multiple_student_with_the_same_name_tips">There are the same student,
+        please select different student account.
+    </string>
+
+    <string name="make_pic_book">Create course</string>
+    <string name="edit_course">Add click reading</string>
+    <string name="personal_cloudspace">Cloud space</string>
+    <string name="picturebook">Story House</string>
+    <string name="comment_person">%s Comments</string>
+    <string name="my_download_waiting">Waiting</string>
+    <string name="my_downloading">Downloading</string>
+    <string name="my_download_paused">Paused</string>
+    <string name="my_download_failed">Download Failed</string>
+    <string name="my_downloaded">Already downloaded</string>
+    <string name="my_download_courses">My Download</string>
+    <string name="read_person">read</string>
+    <string name="support_person">Like</string>
+    <string name="n_source">From: %s</string>
+    <string name="course_not_edit">Click reading cannot be add into the courseware!</string>
+    <string name="fetch_no_resources">No resource file is fetched!</string>
+    <string name="add_to_download_queue">Added to the download list, go to my downloads？</string>
+    <string name="sharescreen">Share Screen</string>
+    <string name="bluetooth_pen">Bluetooth Pen</string>
+    <string name="device_manager">Device Manager</string>
+    <string name="no_description">No profile</string>
+    <string name="no_comment">No comment</string>
+    <string name="back_home">Mainmenu</string>
+    <string name="my_family_contacts">Family Contacts</string>
+    <string name="myself_family_contacts">My family contacts</string>
+    <string name="already_was_friend">Already been a friend</string>
+
+    <string name="hint_school">Input a school name</string>
+    <string name="hint_class">Input a curriculum name</string>
+    <string name="hint_pic_book">Input story name</string>
+    <string name="class_list">Class list</string>
+    <string name="send_email">Send an E-mail</string>
+    <string name="discussion_text">Discussion</string>
+
+    <string name="no_course_images">Cannot get images from the microcourse！</string>
+
+    <string name="no_excellent_pic_book">No excellent story</string>
+    <string name="excellent_pic_book">Excellent Story</string>
+    <string name="hint_show_book">Show</string>
+
+    <string name="latest">Latest</string>
+    <string name="recommend">Recommend</string>
+    <string name="choice_picturebooks">Excellent story</string>
+
+    <string name="start_whiteboard">Whiteboard</string>
+    <string name="start_image">Gallery</string>
+    <string name="start_camera">Camera</string>
+
+    <string name="land">Landscape</string>
+    <string name="port">Portrai</string>
+    <string name="orientation_select_title">Select mode</string>
+    <string name="select_course_from">The courseware source selection</string>
+    <string name="select_course_type">Selection of courseware type</string>
+    <string name="n_teacher">%s teacher</string>
+    <string name="input_original_show_hint">Please enter Creative Show title</string>
+    <string name="avatar">Profile Photo</string>
+    <string name="has_subscribed_person">Individual</string>
+    <string name="has_subscribed_authority">Institution</string>
+    <string name="exit_account">Log Out</string>
+    <string name="my_institutions">My institutions</string>
+    <string name="school_and_class">Classes</string>
+    <string name="learning_tasks">Learning Tasks</string>
+    <string name="my_message">My Messages</string>
+    <string name="save_qrcode">Save QR Code</string>
+    <string name="authority_info">Institution Info</string>
+    <string name="school_adrress_suffix">School address:</string>
+    <string name="school_phone_suffix">Contact Number:</string>
+    <string name="remark_suffix">Alias:</string>
+    <string name="location_suffix">Region:</string>
+    <string name="personal_intro_suffix">Self-introduction:</string>
+    <string name="personal_details">Profile</string>
+    <string name="delete_friend">Delete Friend</string>
+    <string name="container_string">(%s)</string>
+    <string name="commit_task_list">Task List</string>
+    <string name="pls_select_homework">Please select a task!</string>
+
+    <!--Share Screen-->
+    <string name="searched_devices">Devices Discovered</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="n_connect_device">Confirm to connect to %s?</string>
+    <string name="n_disconnect_device">Confirm to disconnect from %s?</string>
+    <string name="n_current_device">Connected device %s</string>
+    <string name="sure_to_exit">Confirm to log out?</string>
+    <string name="modify_user_info">Modify profile</string>
+    <string name="default_look_through_count">Views: 0</string>
+    <string name="default_attention_count">0 follower</string>
+
+    <string name="course_is_not_watch">This course is intended for members in school only.</string>
+    <string name="resource_is_not_watch">This resource is intended for members in school only .</string>
+    <string name="course_is_not_authorize">This course is unauthorized, please contact your school
+        for authorization.
+    </string>
+
+    <string name="contacts_detail">Contact Details</string>
+    <string name="class_detail">Class Details</string>
+    <string name="act_classroom">Act Classroom</string>
+    <string name="my_course">My Courses</string>
+    <string name="show_split_course">View split pages</string>
+    <string name="broadcast_hall">Broadcast Hall</string>
+
+    <string name="title_step1">Open www.lqwawa.com in browser</string>
+    <string name="content_step1">Click \'Join Us\' to complete &amp; submit information.</string>
+    <string name="title_step2">Verify institution info</string>
+    <string name="content_step2">Please wait for qualification.</string>
+    <string name="title_step3">Approved</string>
+    <string name="content_step3">Join us to build your own institution zone, enjoy effective
+        interaction with parents and students, together enrich and share all the optimum education
+        resources.
+    </string>
+    <string name="tel_title">Hot-line: 400-1077-727</string>
+    <string name="need_student_to_commit">Submission required</string>
+    <string name="upload_exist">%s already exists!</string>
+    <string name="search_acccount">Search account</string>
+
+    <string name="save_to_lq_cloud">Listen-Read Course has been saved in My Zone/LQ Cloud.</string>
+
+    <string name="collect_to_my_course">Has been put into My Zone/Private Resource Pool/My
+        Course.
+    </string>
+    <string name="collect_to_lq_course">Has been collected to My Zone/Private Resource Pool/My
+        Course.
+    </string>
+    <string name="collect_to_yuntieba">Has been collected to My Zone/Cloud Post Bar.</string>
+    <string name="collect_different_to_personalLibrary">Has been collected to My Zone/Private
+        Resource Pool/%s
+    </string>
+    <string name="add_school">Join a school</string>
+    <string name="open_consultion_content">
+        LQWaWa\'s School Campus moment-Choice Course Pool is a good showcase for characteristic
+        kindergarten, primary school,
+        junior high school and senior high school courses as well as quality education resources.
+        Please contact our customer service for activating it.
+    </string>
+
+    <string name="now_has_not_school_attention">NowHasnotSchoolAttention</string>
+    <string name="attention_already_oraz">SchoolHasAlreadyAttention</string>
+
+    <string name="make_task">Read-Write Task</string>
+    <string name="ask_question">Ask question</string>
+    <string name="create_course">Create</string>
+    <string name="appoint_cousrse_cannot_null">Designated course cannot be blank</string>
+    <string name="title_cannot_null">Title cannot null</string>
+    <string name="online_time_limit">Online start time cannot more than end time</string>
+    <string name="online_start_time_limit">Online start time must more than current time</string>
+    <string name="forcedchoice">(Forcedchoice)</string>
+    <string name="chooseable">(Chooseable)</string>
+    <string name="introduction_title">Title:</string>
+    <string name="appoint_course">Appoint course:</string>
+    <string name="appoint_course_no_point">Appoint course</string>
+    <string name="appoint_course_point">Appoint course:</string>
+    <string name="add_title">Add title:</string>
+    <string name="add_host">Add host:</string>
+    <string name="add_host_no_point">Add host</string>
+    <string name="add_introduction">Add introduction:</string>
+    <string name="add_thumbnail">Add cover:</string>
+    <string name="online_time">Online time:</string>
+    <string name="add_publish_object">Add Publish object:</string>
+    <string name="add_publish_object_no_point">Add publish object</string>
+    <string name="student_should_complete_task">Student should complete task:</string>
+    <string name="open_consultion">Consult</string>
+    <string name="choice_pool_open_consultion">Consult on activating Choice Course Pool</string>
+    <string name="lqcourse_save_local">course has been back up in My Zone/Creation Zone.</string>
+    <string name="class_infos">Class Info</string>
+    <string name="contacts_infos">Contacts Info</string>
+    <string name="today">Today</string>
+    <string name="date_to_date">%1$s to %2$s</string>
+    <string name="delete_tip">Confirm deletion %s？</string>
+    <string name="no_file_select">No file select!</string>
+    <string name="n_create_task">New task-%s</string>
+    <string name="pls_input_title">Input title</string>
+    <string name="pls_input_article_title">Input article title</string>
+    <string name="pls_input_article_request">Input article request</string>
+    <string name="pls_input_description">Input description</string>
+    <string name="min_cannot_more_than_max">Min cannot more than Max</string>
+    <string name="assign_task">Arrange Task</string>
+    <string name="assign_task_line">Arrange Task</string>
+    <string name="topic_title_hint">Up to 40 words</string>
+    <string name="topic_discription">Input topic description：</string>
+    <string name="topic_description_hint">Up to 500 words</string>
+    <string name="commit_success">Commit success</string>
+    <string name="create_new_task">+&#160;New Task</string>
+    <string name="no_task_tip_1">No learning task</string>
+    <string name="discuss_content">%s discussion</string>
+    <string name="praise_fail">Like failure</string>
+    <string name="praise_success">Like success</string>
+    <string name="not_read_tip_success">Remind successfully</string>
+    <string name="not_read_tip_failure">Remind failed</string>
+    <string name="all_read">All readed</string>
+    <string name="un_read_tip">Unreading remind</string>
+    <string name="article_content_cannot_empty">Article content cannot empty</string>
+    <string name="reply_who">Reply %s:</string>
+    <string name="article_limited_word_point">Article limite word point</string>
+    <string name="invalid_characters">Special symbols are not supported!</string>
+    <string name="no_real_name_tip">Please enter your real name for authentication.</string>
+    <string name="consummate_personal_info">Complete your profile</string>
+    <string name="whose_homework">%s homework</string>
+    <string name="finish_time">%s finished</string>
+    <string name="who_reply_who">%1$s Reply %2$s</string>
+    <string name="time_assigned">Assignment Time: %s</string>
+    <string name="time_completed">Finish Time: %s</string>
+    <string name="delete_lecture">Delete this course under E-school?</string>
+    <string name="ppt_file">PPT</string>
+    <string name="DOC">DOC</string>
+    <string name="pdf_file">PDF</string>
+    <string name="course_amount">Resources:</string>
+    <string name="avoid_disturb">Do Not Disturb</string>
+    <string name="shake">Vibrate</string>
+    <string name="notice_avoid_disturb_tip">Specify preference to be notified by sound or vibration
+        when receiving new message.
+    </string>
+
+    <string name="no_share_play">Please connect to Sharebox</string>
+    <string name="connect_to_smarthub">Connect to Sharebox %s</string>
+    <string name="connect_to_smarthub_error">No sharebox detected, please check your tablet and the
+        sharebox are on the same LAN
+    </string>
+
+    <string name="campus_patrol">School Patrol</string>
+    <string name="according_to_teacher">Teachers</string>
+    <string name="according_to_class">Classes</string>
+    <string name="the_end_date">End Time</string>
+    <string name="txt_resource">Resources</string>
+    <string name="txt_ppt">PPT</string>
+    <string name="txt_pdf">PDF</string>
+    <string name="txt_end_date_early_than_start_date">The end time cannot be set earlier than the
+        start time
+    </string>
+    <string name="campus_now_direct">Campus Tv Show</string>
+    <string name="now_direct">Tv Show</string>
+    <string name="campus_live_show_nosupport">Android version is not yet supported</string>
+    <string name="campus_live_show_nosupport_title">Activate Campus Tv Show</string>
+
+    <string name="free_use">Trial</string>
+    <string name="free_use_address">http://m.womob.cn/m/wx/?db=lqwawa</string>
+    <string name="free_use_title">Tv Show of Qingdao Galaxy International School</string>
+    <string name="task_order">Read-Write Task</string>
+    <string name="single_task_show">Task Browsing</string>
+    <string name="selected_reading">Tutorial Task</string>
+    <string name="question">Quiz</string>
+    <string name="create_sth">Create</string>
+    <string name="watch_task">View Task</string>
+    <string name="task_student_need_finish">To-complete Tasks</string>
+    <string name="no_task_order">No task available</string>
+    <string name="retel_couese">Repeat Task</string>
+    <string name="start_writing">Write Now</string>
+
+    <string name="auto_comment">Automatic Review</string>
+    <string name="personal_comment">Manual Review</string>
+    <string name="composition_requirements">Writing requirements</string>
+    <string name="comment_by_sentence">Review sentence \n by sentence</string>
+    <string name="commit">Submit</string>
+    <string name="pid_num">Paragraph %s</string>
+    <string name="category_bracket">[%s]</string>
+    <string name="modify_text">Modify</string>
+    <string name="score">points</string>
+    <string name="word_num">Word count: %s</string>
+    <string name="commit_times">Submittal count: %s</string>
+    <string name="access_details">Details</string>
+    <string name="task_requirements">Task Requirements</string>
+    <string name="commit_list">Submittal List</string>
+    <string name="commit_task">Submit task</string>
+
+
+    <!--==================营养膳食==================-->
+    <string name="health_nutrition_recipes">Recipes</string>
+    <string name="health_growth_record">Growth Record</string>
+    <string name="health_vaccination">Vaccination</string>
+
+    <string name="entry_info_detail">
+        &#160;1.Competitors must take part in person and are not permitted to delegate to
+        others.\n\n
+        2.Information in the work declaration form can not be modified after the announcement of the
+        shortlist for nationwide final competition. Works in finalists shall not be modified or
+        replaced.\n\n
+        3.Works of a foreign language should be presented and explained in mandarin (Excluding in
+        necessary teaching and competing steps).\n\n
+        4.The award-winning works in other competitions are not acceptable.\n\n
+        5.All works must be created by the authors who shall confirm that they have exclusive
+        copyrights for their works. Work content must be positive, should not violate national
+        policies and legal rules and the length shall not be less than 30 seconds.\n
+        Competitors shall not borrow/copy other person\'s works. Those who violate the
+        above-mentioned rules, once found, will immediately invalidate their qualifications for
+        competition joining and prize-winning. Any legal dispute thus incurred shall be borne by the
+        authors themselves.\n
+        All relevant units will be informed as well.\n\n
+        6.Competitors agree that the organizing committee enjoys the use rights for their works and
+        can exhibit and spread them in any form.
+    </string>
+    <!--==================NOC 大赛==================-->
+    <string name="praise_count">Praised</string>
+    <string name="please_retry_for_resource">Resource is in preparation, Please try again later.
+    </string>
+    <string name="view_qrcode">View QR Code</string>
+    <string name="I_want_to_make_order">Do Read-Write Task</string>
+    <string name="course_qrcode">Course QR Code</string>
+    <string name="save_to_local_space">Save to local space</string>
+    <string name="words_count_over_limit">Word amount goes beyond limit</string>
+    <string name="join_game">Join In</string>
+    <string name="join_game_n">Join\nIn</string>
+    <string name="entry_info">【Competition regulation】</string>
+    <string name="noc_competition">Entries For NOC</string>
+    <string name="noc_agree_join_info">I have read and agree to the items mentioned above</string>
+    <string name="noc_name">* Name:</string>
+    <string name="noc_phone">* Contact Number:</string>
+    <string name="noc_mail">Email Address:</string>
+    <string name="noc_school">School name:</string>
+    <string name="noc_school_phone">School Tel.:</string>
+    <string name="noc_region">Region:</string>
+    <string name="noc_adress">Detailed address:</string>
+    <string name="noc_sure">OK</string>
+    <string name="please_select_school">Please select school</string>
+    <string name="please_finish_school">Please complete your school information</string>
+    <string name="please_finish_info">Please complete your personal information</string>
+    <string name="noc_upload_work">Upload your work:</string>
+    <string name="noc_work_type">Category：</string>
+    <string name="noc_csp_programme">CSP Creative text solution</string>
+    <string name="noc_work_describe">Description：</string>
+    <string name="noc_subject">Subject：</string>
+    <string name="noc_group">Group Division:</string>
+    <string name="noc_join_reason">Participating object：</string>
+    <string name="noc_join_reason_mechanism">Institution</string>
+    <string name="noc_join_reason_self">Individual</string>
+    <string name="noc_works_title">NOC Creative Reading Acting Competition</string>
+    <string name="noc_preschool_group">Pre-school group</string>
+    <string name="noc_primary_group">Primary school group</string>
+    <string name="noc_middle_group">Middle school group</string>
+    <string name="noc_teacher_group">Teacher group</string>
+    <string-array name="noc_group_types">
+        <item>Pre-school group</item>
+        <item>Primary school group</item>
+        <item>Middle school group</item>
+        <item>Teacher group</item>
+    </string-array>
+    <string-array name="noc_subject_types">
+        <item>Chinese</item>
+        <item>English</item>
+        <item>History</item>
+        <item>Biology</item>
+        <item>Geography</item>
+        <item>Science</item>
+        <item>Physics</item>
+        <item>Maths</item>
+        <item>Chemistry</item>
+    </string-array>
+    <string name="more_school">More institutions</string>
+    <string name="noc_num">No. %s</string>
+    <string name="noc_join_success">Apply successfully</string>
+    <string name="noc_join_failure">Apply failed</string>
+    <string name="str_colletc_pop">Add to favorite in My Resources</string>
+    <string name="str_ok">OK</string>
+    <string name="str_consultation">Consult</string>
+    <string name="noc_match_info_tip">Please refer to &#160; for more details</string>
+    <string name="activity_details">Activity Details</string>
+    <string name="max_descr_length">Up to 200 words</string>
+    <string name="chinese">Chinese</string>
+    <string name="pre_school_group">Pre-school group</string>
+    <string name="join_orizatination">Attention</string>
+    <string name="whiteboard_plus_voice">Whiteboard+Voice</string>
+    <string name="image_plus_voice">Gallery+Voice</string>
+    <string name="camera_plus_voice">Camera+Voice</string>
+
+    <string name="do_task">Do&#8194;Read-Write&#8194;Task</string>
+    <string name="appoint_task">Add homework:</string>
+    <string name="no_content">No content</string>
+    <string name="pls_add_task">Please add a task</string>
+    <string name="pls_add_work">Please add homework</string>
+    <string name="pls_add_work_task">Designated&#8194;Read-Write&#8194;Task</string>
+    <string name="pls_add_work_task_point">Designated&#8194;Read-Write&#8194;Task:</string>
+    <string name="noc_ctp_programme">CTP Creative performance solution</string>
+
+    <string name="comment_record_text">Review records</string>
+
+    <string name="principal_assistant">Principal Assistant</string>
+
+    <string name="course_ware_list">Courseware List</string>
+    <string name="course_ware_list_join_hint">(Listen-Read Course/Audio/Image/Video/PPT/PDF/DOC)</string>
+    <string name="course_ware_list_empty_tips">Courseware list cannot be blank!</string>
+
+    <string name="my_bookshelf_text">My Bookshelf</string>
+    <string name="collect_book_success">Added successfully</string>
+    <string name="store_to_bookshelf">Add to My Bookshelf</string>
+    <string name="stored_to_bookshelf">Available in My Bookshelf</string>
+    <string name="add_book_faliure">Added failed!</string>
+    <string name="delete_book_success">Deleted successfully!</string>
+    <string name="str_loadding">Compressing files, please wait...</string>
+
+    <string name="user_name_length_is_not_legal">Username should contain 3-20 characters</string>
+    <string name="real_name_length_is_not_legal">Real name should be within 20 characters</string>
+    <string name="associate_task_list">Correlative Tasks</string>
+    <string name="max_input_character_length">Within %d characters！</string>
+    <string name="nutrition_recipes">Nutrition &amp; Diet</string>
+
+    <string name="lq_excellent_program">LQ Quality Courses</string>
+    <string name="select_institution">Select Institution</string>
+
+    <string name="send_comment_failed">Comment failed</string>
+    <string name="have_been_collected">Added Already</string>
+
+    <string name="i_see">I See</string>
+    <string name="learn_more_course">Trailer ends，please attend Listen-Read Courses.</string>
+
+    <string name="txt_info_about">\t\t\t\tAs a new generation of intelligent teaching platform, LQWaWa provides characteristic and specialized courses such as English International, English Domestic, Minority Language, Basic Courses, etc. Supported by a great number of foreign and Chinese teachers with expertise, it fully utilizes the hottest webcast to offer an innovative study method, enabling a full followup of course preparation, live broadcast and review. It is really a best companion for K12 steudents and people going abroad. In addition, it allows teachers/students/parents to create diversified teaching resources including courses，coursewares, posts, tasks, etc. with text, image, video, audio or other multimedia elements and supports initiating discussion at any time. Relying on the diversified and three-dimensional teaching method, LQWaWa ensures a more effective and efficient learning experience in ease.</string>
+    <string name="txt_info_company">Copyright©2014-2017 Qingdao LQWAWA Information Technology Co., Ltd., All Rights Reserved</string>
+    <string name="lq_look_course">View\nCourse</string>
+    <string name="be_sure_to_commit">Submit?</string>
+
+
+    <string name="str_tips_markscores">Total score is 100,please re-grade.</string>
+
+    <string name="barcode_is_not_accept">Device unavailable, please scan the bar code of ROBOTPEN.</string>
+
+    <string name="str_check_update">Check for Updates</string>
+
+    <string name="str_achievement_statistic">Score Statistics</string>
+    <string name="str_achievement_statistics">Score\nStatistics</string>
+    <string name="str_check_mark">View\nMarks</string>
+    <string name="str_watch_mark">View Marks</string>
+    <string name="str_ismark">Grade?</string>
+    <string name="str_select_mark">Select grading system</string>
+    <string name="str_percentage_system">Hundred-mark system</string>
+    <string name="str_system_of_ten">Ten-rank system</string>
+    <string name="str_score">Score: &#8195;</string>
+    <string name="str_people">person</string>
+    <string name="str_scores">points</string>
+    <string name="str_less_than">Below</string>
+    <string name="str_no_data">No data</string>
+    <string name="no_choice_lib_permissions_tip">Please contact  LQWaWa Customer Service for more resource authorization.</string>
+    <string name="read_over">Mark</string>
+    <string name="mark">Grade</string>
+    <string name="commit_or_mot">Submit?</string>
+    <string name="str_manfei">(Total Score 100)</string>
+    <string name="hava_lq_course_permission">Resource is intended for members in school only</string>
+    <string name="choice_library_resource_over_date">Authorization expired, unable to view content in Choice Course Pool</string>
+
+    <string name="application_model">Application Scenario</string>
+    <string name="general_model">General Mode</string>
+    <string name="campus_model">Campus Mode</string>
+    <string name="general_model_des">Obtain LQWaWa data in any network environment</string>
+    <string name="campus_model_des">Obtain LQWaWa data via school server in shorter time</string>
+    <string name="campus_model_ip">School Server IP</string>
+    <string name="pls_input_complete_ip">Please enter a full school server IP</string>
+    <string name="check_ip_input_legal">Invalid %s. Please set a value between 0 and 255.</string>
+    
+    <string name="str_clean_cache">Clear Cache</string>
+    <string name="str_clear_cache">Clearing cache, please wait...</string>
+
+    <string name="account">Account</string>
+    <string name="pls_enter_email">Please enter email address</string>
+    <string name="pls_enter_password">Please enter password</string>
+    <string name="new_password">New password</string>
+    <string name="upload_file_sucess">Upload successful</string>
+    <string name="upload_file_failed">Upload failed</string>
+    <string name="uploading_file">Uploading files...</string>
+
+    <string-array name="new_attachment_type">
+        <item>Whiteboard+Voice</item>
+        <item>Camera+Voice</item>
+        <item>Gallery+Voice</item>
+    </string-array>
+
+    <string name="read_course">Read Course</string>
+    <string name="record_course">Record Course</string>
+    <string name="str_class_group">Class Group</string>
+    <string name="str_establish_group">Create Group</string>
+    <string name="str_modify_name">Rename</string>
+    <string name="str_exit_group">Quit Group</string>
+    <string name="str_add_group_member">Add member</string>
+    <string name="str_out_of_group">Remove from group</string>
+    <string name="str_input_group_name">Please enter group name</string>
+    <string name="str_group_delete">Only self-created groups are deletable</string>
+    <string name="str_remove_from_group">Remove %s from group?</string>
+    <string name="select_group">Select group</string>
+
+    <string name="preview_before_class">Preview</string>
+    <string name="after_before_class">Exercise</string>
+    <string name="str_exit_group_tips">Quit group</string>
+    <string name="str_already_clear_cache">Cache cleared</string>
+    <string name="str_rename_group">Rename</string>
+    <string name="pls_input_groupname">Please enter group name</string>
+    <string name="str_rename_group_error_tips">Old and new group names are consistent</string>
+    <string name="str_talent_cipher">Talent Code</string>
+    <string name="str_talent_contrast">Analysis\nReference</string>
+    <string name="str_talent_basic_data">Basic Info</string>
+    <string name="str_talent_multiple_intelligence">Multiple Intelligence</string>
+    <string name="str_talent_genetic_temperament">Genetic temperament</string>
+    <string name="str_talent_character_expression">Character trait</string>
+    <string name="str_talent_selection_of_interest_classes">Interest Class Selection</string>
+    <string name="str_talent_gene_intelligence">Genetic Intelligence</string>
+    <string name="str_talent_professional_tendencies">Major Inclination</string>
+    <string name="str_dissolution_group">Dissolve</string>
+    <string name="str_dissolution_groups">Dissolve Group</string>
+    <string name="str_dissolution_group_tips">Dissolve group?</string>
+    <string name="res_is_not_exist">Resource info not found</string>
+    <string name="send_to_the_whole_class">Send to All</string>
+    <string name="send_to">Send to %s</string>
+    <string name="evaluate_person">%s Comments</string>
+    <string name="str_talent_no_interpretation_tips">Reference file unavailable</string>
+    <string name="str_build_group_error_tips">A group of the same name already exists in class</string>
+    <string name="str_blackboard_live">EBoard</string>
+    <string name="str_video_live">Live Video</string>
+    <string name="str_live_type">Live Type:</string>
+    <string name="str_start_online_live_blackboard">Entered live mode, please launch LQ Education Platform to broadcast</string>
+    <string name="str_single_page_show">Paging Display</string>
+    <string name="retell_course_new">Retell Course</string>
+    <string name="join_count">%s joined</string>
+    <string name="str_class_member_list">Class Member</string>
+    <string name="str_online_num">(%d online)</string>
+    <string name="str_how_many_people_online">%d in class</string>
+    <string name="str_delete_publish_obj">Delete class</string>
+    <string name="str_confirm_delete_data">Remove %s from Audience list?</string>
+    <string name="str_online_time">Live Time</string>
+    <string name="str_start_time">Start Time</string>
+    <string name="str_finish_time">End Time</string>
+    <string name="str_online_type_no_point">Broadcast Type</string>
+    <string name="str_search_data_hint">Search by title/host</string>
+    <string name="str_pop_dialog_prompt_text">Sorry but Class Live is intended for class members only. </string>
+    <string name="str_ten_info">(Rank A+,A,A-,B+,B,B-,C+,C,C-,D)</string>
+    <string name="str_recalculate">Re-grade</string>
+    <string name="str_remove_address_book_prompt"> is headteacher of the following classes, please change headteacher before removing him/her from teacher list.</string>
+    <string name="str_remove_person_of_address">Remove from Address Book</string>
+    <string name="str_change_headMaster">Change Headteacher</string>
+    <string name="str_already_change_headMaster">Changed</string>
+    <string name="str_confirm_remove_master">Remove %s from teacher list?</string>
+    <string name="str_success_remove_master">Successfully removed %s from teacher list</string>
+    <string name="str_mark_ask">\'s Question</string>
+    <string name="str_mark_teacher">\'s Mark</string>
+    <string name="str_mark_watch">View</string>
+    <string name="str__delete_from_this_class">Remove from Current Class</string>
+    <string name="str__delete_from_all_class">Remove from All Classes</string>
+    <string name="str_delete_online_list_data_title">Remove live stream from current class or all classes?</string>
+    <string name="str_has_inspect_auth_permission_person">Unable to remove %s since he/she is also principal assistant</string>
+    <string name="str_delete_online_data">Delete Live Stream</string>
+    <string name="str_upload_resource">Upload Resource</string>
+    <string name="str_upload_to_public_resource">Upload to School Resources</string>
+    <string name="str_time">Time:</string>
+    <string name="str_i_am_teacher">I\'m a Teacher</string>
+    <string name="lesson_plan">Lesson Plan</string>
+    <string name="str_teaching_material">Smart Document</string>
+    <string name="str_listen_read_and_write">Integrated Task</string>
+    <string name="str_appoint_task_order_not_null">Designated task cannot be blank</string>
+
+    <string name="save_to_photo">Save</string>
+    <string name="str_look_more_comment">More</string>
+    <string name="ar_photo_desc">Scan image with AR Scan \n to watch video and enjoy augmentedreality experience</string>
+    <string name="qr_photo_desc">Save and scan QR Code \n to enjoy stereoscopic visualexperience</string>
+
+    <string name="making_course">Create courseware</string>
+    <string name="making_course_tips">
+        1. Touch the Record button above, then use the tools to create, finally, touch the End button to save or share with friends.\n\n
+        2. It is recommended to use an LQ handwriting tablet for better writing experience.
+        Please touch the Connect button at the upper right corner to connect and write with the tablet in ease.</string>
+    <string name="no_more_tips">Do not show again</string>
+    <string name="str_to_bo_school_teacher">Join as Teacher</string>
+    <string name="school_space">Online</string>
+    <string name="str_birthday_need_greater_than_today">Birth date cannot be set earlier than today</string>
+    <string name="str_super_task">Comprehensive Task</string>
+
+    <string-array name="str_array_task_num">
+        <item>Task 1:</item>
+        <item>Task 2:</item>
+        <item>Task 3:</item>
+        <item>Task 4:</item>
+        <item>Task 5:</item>
+        <item>Task 6:</item>
+    </string-array>
+
+    <string name="str_add_new_task">Add task:</string>
+    <string name="str_add_task">Add Task</string>
+    <string name="str_super_homework_total">Teacher\'s Homework-%d Tasks</string>
+    <string name="str_max_select_limit">Can not select more than 5 files</string>
+    <string name="str_homework_not_null">Homework cannot be blank</string>
+    <string name="add_teacher">Add Teacher</string>
+    <string name="add_teacher_success">Teacher added</string>
+    <string name="unable_to_add_teacher">Teacher already in class, cannot add again</string>
+    <string name="only_teacher_can_see_the_course">Teacher training courses are intended for teachers in school only</string>
+    <string name="str_task_content_not_null">Task content cannot be blank</string>
+    <string name="str_assign_start_time_above_end_time">The start assignment time cannot be set later than the end time</string>
+    <string name="str_finish_start_time_above_end_time">The start finish time cannot be set later than the end time</string>
+    <string name="str_assign_time_above_finish_time">Assignment time cannot be set later than the finish time</string>
+    <string name="confirm_to_remove_from_class">Remove from class?</string>
+    <string name="str_follow_people">%s follows</string>
+    <string name="Str_view_people">%s views</string>
+    <string name="follow_success_tips">Followed successfully, please enter Online School, then switch to each school you followed</string>
+    <string name="pls_input_real_name">Please enter your real name in profile</string>
+    <string name="pls_select_a_teacher">Please select teacher</string>
+    <string name="str_online_school_message">School Forum</string>
+
+    <string-array name="str_online_school_message_type">
+        <item>School Development</item>
+        <item>Resource Sharing</item>
+        <item>Teaching Discussion</item>
+        <item>Leisure Time</item>
+    </string-array>
+    <string name="str_choose_online_message_content_type">Please select post type:</string>
+    <string name="str_delete_online_school_message">Delete School Forum？</string>
+    <string name="str_online_class_message">Class Forum</string>
+    <string name="str_delete_class_message">Delete Class Forum？</string>
+    <string name="str_no_buy_lqCourse_shop_for_student">Task is from course 《%s》, please purchasethe course before submitting task.</string>
+    <string name="str_no_buy_lqCourse_shop_for_parent">Task is from course 《%1$s》, please usestudent account %2$s to purchase the course before submitting task.</string>
+    <string name="str_confirm_delete_comment">Delete comment？</string>
+    <string name="label_to">to</string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+    <string name="str_my_Lecture">My Coaching</string>
+    <string name="str_change_headmaster">Change headteacher？</string>
+    <string name="hand_write_input">Hand\nWrite</string>
+    <string name="lesson_book">Textbook</string>
+    <string name="voice_evaluating">Oral Test</string>
+    <!--5.10-->
+    <string name="str_associated_account">Associated Account</string>
+    <string name="str_weixin">WeChat</string>
+    <string name="str_qq">QQ</string>
+    <string name="str_associated_account_tips">After linking, you may log in with WeChat or QQ account.</string>
+    <string name="str_confirm_remove_associated">Are you sure you want to unlink?</string>
+    <string name="str_remove_associated_success">Unlinking succeeded</string>
+    <string name="str_remove_associated">Unlink</string>
+    <string name="str_remove_associated_tips">Unable to log in with %s after unlinking</string>
+    <string name="str_i_know">I See</string>
+    <string name="str_already_associated">Linked</string>
+    <string name="str_not_associated">Not Linked</string>
+    <string name="str_bind_auth_success">Linking succeeded</string>
+    <string name="str_other_way_login">More Options</string>
+    <string name="str_qq_login">QQ</string>
+    <string name="str_wx_login">WeChat</string>
+    <string name="lqwawa_login">Login with LQWaWa account</string>
+    <string name="qq_auth_login_info">Already have an LQWaWa account not linked to QQ?</string>
+    <string name="wx_auth_login_info">Already have an LQWaWa account not linked to WeChat?</string>
+    <string name="or">Or</string>
+    <string name="auto_mark">Oral Test</string>
+    <string name="learning_record">Learning Record</string>
+    <string name="average">Average</string>
+    <string name="max_score">Highest</string>
+    <string name="min_score">Lowest</string>
+    <string name="commit_and_all_person">Submitted/All: %s person</string>
+    <string name="str_class_lesson">Class Course</string>
+    <string name="str_show_text">Show Text</string>
+    <string name="str_fundamental_tone">Original</string>
+    <string name="str_record_err">Recording failed, please try again.</string>
+    <string name="str_evaluate_fail">Remarking failed, please resubmit.</string>
+    <string name="str_evaluate_success">Remarking succeeded</string>
+    <string name="str_recording">Recording...</string>
+    <string name="str_commit_evaluation_unfinish_tip">Page %s not recorded, continue recording? </string>
+    <string name="str_back_show_evaluation_tip">Submit?</string>
+    <string name="str_teacher_review">Remark</string>
+    <string name="str_immediately_review">Remark</string>
+    <string name="str_eval_test">Oral Test</string>
+    <string name="str_system_eval">System remark:</string>
+    <string name="str_teacher_comment">Teacher\'s comment:</string>
+    <string name="str_teacher_eval">Teacher remark:</string>
+    <string name="str_full_mark">(Total score: 100)</string>
+    <string name="str_score_not_null">Score cannot be blank</string>
+    <string name="str_eval_score">%s points</string>
+    <string name="str_score_more_than_hundred">Cannot exceed 100</string>
+    <string name="str_view_detail">View Details</string>
+    <string name="str_system_eval_page_score">System Remark by Page</string>
+    <string name="str_eval_no_comment">No comment</string>
+    <string name="str_show_select_lqcourse_mark_score_tip">Course from Course Library supports hundred-mark only.</string>
+    <string name="str_retell_list">Retelling List</string>
+    <string name="str_eval_list">Test List</string>
+    <string name="str_speed_of_read">Reading Speed</string>
+    <string-array name="str_speed_array">
+        <item>Slow</item>
+        <item>Intermediate</item>
+        <item>Rapid</item>
+    </string-array>
+    <string name="str_following_read">Reading...</string>
+    <string name="str_blackboard_live_overed">Video playback not available</string>
+    <string name="str_continue_eval">Resume</string>
+    <string name="str_send_comment_success">Posted successfully</string>
+
+    <!--5.11需求-->
+    <string name="str_my_performance">My Performance</string>
+    <string name="str_my">My</string>
+    <string name="str_source_from">From:%s</string>
+    <string name="str_personal">Personal</string>
+    <string name="str_pls_input_super_task_title">Please confirm task title (modifiable)</string>
+    <string name="str_and">and</string>
+    <string name="str_resources_tag">【%1$s】%2$s</string>
+    <string name="str_lqcourse_shop">Study Hall</string>
+    <string name="str_online_study">Lecture Hall</string>
+    <string name="air_classroom">Online Class</string>
+    <string name="str_display_source">From:</string>
+    <!--5.11.x需求-->
+    <string name="str_make_task_order_answer_tips">
+        1. Please enter your answer in the dotted box to ensure the answer is valid.\n\n2. Please enter in strict accordance with English writing standards under English input, such as entering \' under English input, leaving a space between words, etc.
+    </string>
+    <string name="str_task_order_handwriting_tips">It is recommended to use an LQ handwriting tablet for more efficient writing experience.</string>
+    <string name="str_begin_to_answer">Answer Now</string>
+    <string name="str_intro_of_answer_question">Guidelines</string>
+    <string name="str_answer_card">Answer Sheet</string>
+    <string name="str_revising">Correction</string>
+    <string name="str_handwriting_input">Handwrite</string>
+    <string name="str_space">Null</string>
+    <string name="str_last_question">Previous</string>
+    <string name="str_next_question">Next</string>
+    <string name="str_answer_parsing">Analysis</string>
+    <string name="str_question_title">Question:</string>
+    <string name="str_question_type">Type:</string>
+    <string name="str_reference_answer">Reference answer:</string>
+    <string name="str_common_mistakes">Common mistakes:</string>
+    <string-array name="array_question_type_name">
+        <item>Single Choice</item>
+        <item>Multiple Choice</item>
+        <item>True or False</item>
+        <item>Blank Filling</item>
+        <item>Listening-Single Choice</item>
+        <item>Listening-T/F</item>
+        <item>Listening-Blank Filling</item>
+        <item>Error Correction</item>
+        <item>Subjective Question</item>
+    </string-array>
+    <string name="str_no_analyse_tip">Null</string>
+    <string name="str_my_answer">My answer:</string>
+    <string name="str_objective_question">Objective Question</string>
+    <string name="str_subjective_problem">Subjective Question</string>
+    <string name="str_total_score">%s points</string>
+    <string name="sr_mark_score">Score %s</string>
+    <string name="str_full_marks">Total Score %s</string>
+    <string name="str_wrong_question_count">%s Wrong</string>
+    <string name="str_listen_question">Listening</string>
+    <string name="str_continue_answer">Answer</string>
+    <string name="str_unfinish_answer">Some questions not answered, resume?</string>
+    <string name="str_max_select_image_count">(%d images at most)</string>
+    <string name="str_max_select_image_count_limit">Can select %d images at most</string>
+    <string name="str_no_answer">Not Answered</string>
+    <string name="str_no_read_over">Unreviewed</string>
+    <string name="str_look_answer_parsing">View Analysis</string>
+    <string name="str_look_origin_question">View Question</string>
+    <string name="str_look_image">View Image</string>
+    <string name="str_answer_parsing_no_point">Analysis</string>
+    <string name="str_reference_answer_no_point">Reference Answer</string>
+    <string name="str_question_name">Question: %s</string>
+    <string name="str_single_question_total_score">Maximum score is %s, please re-grade!</string>
+    <string name="str_answer_analysis">Analyses</string>
+    <string-array name="array_sort_exercise_data">
+        <item>Sort by Question No.</item>
+        <item>Sort by Error Rate</item>
+        <item>Average Score</item>
+    </string-array>
+    <string name="str_answer_error_rate">Error rate: </string>
+    <string name="str_question_average_score">Average score: %s</string>
+    <string name="str_listen_article">Audioscript</string>
+    <string name="str_single_select_data">Option %s</string>
+    <string name="str_right_answer">(True)</string>
+    <string name="str_wrong_answer">(False)</string>
+    <string name="str_average_up">Above Average</string>
+    <string name="str_average_down">Below Average</string>
+    <string name="str_right">T</string>
+    <string name="str_wrong">F</string>
+    <string name="str_answer_right">Right</string>
+    <string name="str_answer_wrong">Wrong</string>
+    <string name="str_unit_percentage">Unit: Percentage</string>
+    <string name="str_answer_question_personal">Answered: %d students</string>
+    <string name="str_class_overview">General</string>
+    <string name="str_exercise_commit_number">Marked/All: %s</string>
+    <string name="str_full_score_string">Total Score</string>
+    <string name="str_add_schoollib_video">Add video from School Resources(Optional)</string>
+    <string name="str_some_body_answer">%s\'s answer:</string>
+    <string name="str_auto_mark">Auto Mark</string>
+    <string name="str_mark_score">Score </string>
+    <string name="str_teacher_comment_no_point">Teacher\'s comment</string>
+    <string name="str_later_review">Cancel</string>
+    <string name="str_comments_should_not_be_empty">Remark cannot be blank！</string>
+</resources>

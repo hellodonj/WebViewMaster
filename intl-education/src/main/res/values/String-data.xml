@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tip_not_find_ware_course_source">Course not found</string>
+    <!--<string name="tip_class_not_relevance_course">No related course</string>-->
+    <string name="tip_class_not_relevance_course">No correlated course</string>
+    <string name="tip_join_or_by_course">Please join/purchase course!</string>
+    <string name="tip_order_expire">Some/All products in this order were purchased already</string>
+    <string name="tip_attention_succeed">Followed</string>
+    <string name="tip_cancel_attention_succeed">Unfollowed</string>
+    <string name="tip_appoint_class_not_course">Course not available in this class</string>
+    <string name="tip_delete_succeed">Deleted successfully</string>
+</resources>

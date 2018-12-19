@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '27.0.3'
+
+    buildTypes {
+        debug {
+        }
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    //    compile project(':mooc-lib')
+    //compile 'com.android.support:multidex:1.0.1'
+    compile project(':ecourse-maker')
+    compile project(':letv-sdk')
+    compile project(':lqbase-lib')
+    compile 'com.android.support.constraint:constraint-layout:1.1.0'
+    compile 'net.qiujuer.genius:ui:2.0.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+    compile ('com.github.bumptech.glide:glide:4.8.0'){
+        exclude group: 'com.android.support', module: 'support-fragment'
+    }
+
+    compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    /*debugCompile 'me.ele:uetool:1.0.15'
+    releaseCompile 'me.ele:uetool-no-op:1.0.15'*/
+}
+
+
+repositories {
+    jcenter()
+}

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowsBackground"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/holder_top_search_layout"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+                android:id="@+id/refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/windowsBackground">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp">
+
+                        </android.support.v7.widget.RecyclerView>
+
+                        <com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView
+                            android:id="@+id/empty_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:tab_empty_text_remind="@string/label_new_tab_class_empty_remind"
+                            app:tab_empty_text_action="@string/label_new_go_online_study"
+                            android:visibility="gone">
+
+                        </com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView>
+
+                    </RelativeLayout>
+
+                </ScrollView>
+
+            </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+            <!--<com.lqwawa.intleducation.base.CourseEmptyView
+                android:id="@+id/empty_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:empty_text_remind="@string/label_empty_content"
+                app:empty_text_remind_visible="true"
+                app:empty_text_loading="@string/label_course_empty_info_2"
+                app:empty_text_loading_visible="false"
+                app:empty_icon_drawable="@drawable/ic_course_empty"
+                app:call_show="true"
+                android:visibility="gone">
+
+            </com.lqwawa.intleducation.base.CourseEmptyView>-->
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_timetable"
+        android:textColor="@color/textLight"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="bottom|right"
+        android:background="@drawable/com_bg_circle_green_btn"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/label_timetable"/>
+
+</FrameLayout>

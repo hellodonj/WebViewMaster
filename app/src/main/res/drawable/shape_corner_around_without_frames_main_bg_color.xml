@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 四周都是绿色填充的圆角矩形（不带边框）-->
+
+    <item>
+        <shape>
+            <solid android:color="@color/main_bg_color"/>
+            <corners android:radius="5dp"/>
+            <size android:width="40dp" android:height="20dp"></size>
+        </shape>
+    </item>
+</layer-list>

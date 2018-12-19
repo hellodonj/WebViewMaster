@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+    <include layout="@layout/contacts_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:minHeight="@dimen/userinfo_item_min_height"
+        android:clickable="true"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="@string/voice"/>
+
+        <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+            android:id="@+id/voice_switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:kswTintColor="@color/text_green"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_bg_color"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:minHeight="@dimen/userinfo_item_min_height"
+        android:clickable="true"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="@string/shake"/>
+
+        <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+            android:id="@+id/shake_switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:kswTintColor="@color/text_green"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/notice_avoid_disturb_tip"
+        android:textColor="@color/text_dark_gray"
+        android:textSize="14dp"
+        android:padding="10dp"/>
+</LinearLayout>

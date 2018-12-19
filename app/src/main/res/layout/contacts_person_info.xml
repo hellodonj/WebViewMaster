@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_person_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <LinearLayout
+        android:id="@+id/contacts_person_attrs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/contacts_user_basic_info" />
+
+        <Button
+                android:id="@+id/contacts_add_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:background="#f1765a"
+                android:text="加好友"
+                android:textColor="#ffffff"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+

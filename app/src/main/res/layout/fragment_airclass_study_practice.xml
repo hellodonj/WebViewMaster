@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/main_bg_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contacts_pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <GridView
+                xmlns:slide="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/contacts_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/main_bg_color"
+                android:padding="10dp"
+                android:dividerHeight="10dp"
+                android:horizontalSpacing="10dp"
+                android:verticalSpacing="10dp"
+                android:listSelector="@android:color/transparent"
+                slide:showFullHeight="false"
+                slide:slideAnimationTime="200"
+                slide:slideLeftAction="scroll"
+                slide:slideMode="right"
+                slide:slideRightAction="scroll"/>
+
+        </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+        <LinearLayout
+            android:id="@+id/layout_show_bind_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
+                    <com.galaxyschool.app.wawaschool.views.CircleImageView
+                        android:id="@+id/iv_bind_child_head"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitCenter"/>
+
+                    <TextView
+                        android:id="@+id/tv_bind_child_name"
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_switch_child"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_corner_around_switch_child"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/switch_child"
+                    android:textColor="@color/text_green"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_assign_homework"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/com_bg_circle_green_btn"
+        android:gravity="center"
+        android:text="@string/assign_homework"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        />
+
+</FrameLayout>

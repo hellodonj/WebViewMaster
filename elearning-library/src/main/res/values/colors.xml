@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="line_gray">#ffdcdcdc</color>
+    <color name="background">#efefef</color>
+
+    <color name="default_scv_selected_color">#009039</color>
+    <color name="default_scv_unselected_color">#FFFFFF</color>
+
+    <color name="uvv_black">#ff000000</color>
+    <color name="uvv_light_gray">#ffF0F0F0</color>
+    <color name="uvv_titlebar_bg">#7f000000</color>
+    <color name="uvv_green">#ff50b100</color>
+    <color name="uvv_gray">#ffbbbbbb</color>
+
+</resources>

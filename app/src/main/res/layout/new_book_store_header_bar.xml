@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#56b37b"
+                android:id="@+id/user_head_without_tab"
+                android:padding="10dp">
+
+    <FrameLayout
+        android:id="@+id/user_icon_layout"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp">
+
+        <com.galaxyschool.app.wawaschool.views.CircleImageView
+            android:id="@+id/user_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:border_width="2dp"
+            app:border_color="@android:color/white"
+            android:src="@drawable/default_avatar"
+            android:scaleType="fitCenter"/>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/user_icon_layout">
+
+        <TextView
+            android:id="@+id/user_name"
+            style="@style/txt_wawa_normal_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxWidth="240dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="18sp"
+            android:text=""/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_name_layout"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/user_followers_count"
+            style="@style/txt_wawa_normal_white"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:gravity="center|center_vertical"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/my_back_ico"
+        android:scaleType="fitCenter"
+       />
+
+
+    <TextView
+        android:id="@+id/attention_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
+</RelativeLayout>
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/au_update_dialog_bg"
+        android:paddingBottom="8dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/au_update_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/au_new_version_found"
+            android:textSize="20dp"
+            android:textColor="#009039" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#009039" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/au_update_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:focusable="true"
+                    android:text="更新内容"
+                    android:textSize="16dp"
+                    android:textColor="#212121" />
+            </LinearLayout>
+        </ScrollView>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/au_update_ignore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/au_update_button_cancel_bg_selector"
+                android:gravity="center"
+                android:padding="10dp"
+                android:focusable="true"
+                android:text="@string/au_ignore"
+                android:textSize="14dp"
+                android:textColor="#909090" />
+
+            <Button
+                android:id="@+id/au_update_now"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/au_update_button_ok_bg_selector"
+                android:gravity="center"
+                android:padding="10dp"
+                android:focusable="true"
+                android:text="@string/au_update_now"
+                android:textSize="14dp"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/au_update_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/au_update_button_cancel_bg_selector"
+                android:gravity="center"
+                android:padding="10dp"
+                android:focusable="true"
+                android:text="@string/au_not_now"
+                android:textSize="14dp"
+                android:textColor="#212121" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

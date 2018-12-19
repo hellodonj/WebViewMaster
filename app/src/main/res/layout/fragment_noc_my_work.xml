@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+    <include layout="@layout/contacts_header" />
+
+    <ImageView
+        style="@style/line_gray"
+        android:visibility="gone"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+                    android:id="@+id/pull_to_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <GridView
+                        android:id="@+id/grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:gravity="center"
+                        android:numColumns="2"
+                        android:stretchMode="columnWidth"
+                        android:background="@android:color/white"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="insideOverlay"
+                        android:fadingEdge="none"
+                        android:scrollingCache="false"
+                        android:horizontalSpacing="5dp"
+                        android:verticalSpacing="5dp"/>
+                </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+                <TextView
+                    android:id="@+id/btn_bottom_joingame"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:text="@string/join_game_n"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/com_bg_circle_green_btn"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                style="@style/line_gray"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e3e3e3"
+                android:padding="5dp">
+                <LinearLayout
+                    android:id="@+id/bottom_normal_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/txt_wawa_normal_green"
+                        android:id="@+id/btn_bottom_delete"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:text="@string/delete"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/bottom_edit_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/txt_wawa_normal_green"
+                        android:id="@+id/btn_bottom_select_all"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:text="@string/select_all"/>
+
+                    <ImageView
+                        android:id="@+id/bottom_seg_line_0"
+                        style="@style/line_gray_v"/>
+
+                    <TextView
+                        style="@style/txt_wawa_normal_green"
+                        android:id="@+id/btn_bottom_ok"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:text="@string/confirm"/>
+
+                    <ImageView
+                        android:id="@+id/bottom_seg_line_1"
+                        style="@style/line_gray_v"/>
+
+                    <TextView
+                        style="@style/txt_wawa_normal_green"
+                        android:id="@+id/btn_bottom_cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="center"
+                        android:text="@string/cancel"/>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>

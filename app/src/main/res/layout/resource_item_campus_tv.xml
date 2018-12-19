@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_gravity="center"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/layout_out"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/resource_frameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_round_image_shape"
+            >
+
+            <com.galaxyschool.app.wawaschool.views.RoundImageView
+                android:id="@+id/resource_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:src="@drawable/icon_cmapus_live_default_phone"
+                android:scaleType="centerCrop"/>
+
+            <FrameLayout
+                android:id="@+id/resource_thumbnail_cover_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/book_not_download_cover"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left"
+                    android:src="@drawable/my_not_download_label"
+                    android:scaleType="fitCenter"
+                    android:visibility="visible"/>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/item_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:paddingTop="5dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:src="@drawable/contacts_item_selector"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+              />
+
+            <ImageView
+                android:id="@+id/resource_indicator"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="top|left|center"
+                android:background="@drawable/shape_round_indicator_small"
+                android:scaleType="fitCenter"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/delete_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|top"
+                android:src="@drawable/delete_ico"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#e8e8e8"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/icon_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_star"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>
+        <TextView
+            android:id="@+id/resource_title"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="@dimen/min_padding"
+            android:paddingRight="@dimen/min_padding"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:text="微笑的鱼"
+            android:visibility="visible"/>
+            </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

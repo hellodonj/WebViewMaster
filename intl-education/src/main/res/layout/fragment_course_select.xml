@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/com_bg_white"
+    android:orientation="vertical">
+
+    <View android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLight"/>
+
+    <FrameLayout
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/textGray"
+            android:textSize="16sp"
+            android:text="@string/label_not_available_resource"/>
+
+    </FrameLayout>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/select_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.lqwawa.intleducation.base.widgets.SuperListView
+                android:id="@+id/course_select_listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:scrollbars="none"/>
+        </ScrollView>
+
+
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/select_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_user_attribute_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+            android:id="@+id/contacts_attribute_key"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:text="" />
+
+    <TextView
+        android:id="@+id/contacts_attribute_value"
+        style="@style/txt_wawa_normal_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text=""
+        android:visibility="gone"/>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layerType="software"
+        android:longClickable="false"
+        android:background="#ffffffff"
+        />
+
+    <ImageView
+        android:id="@+id/icon_modify_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:src="@drawable/icon_modify_remark"/>
+
+    <ImageView
+        android:id="@+id/contacts_attribute_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/jiaxiao_detail_rightarrow_ico"
+        android:scaleType="centerInside"
+        android:visibility="gone"/>
+
+</LinearLayout>
+

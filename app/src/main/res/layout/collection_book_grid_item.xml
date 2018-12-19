@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/book_grid_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <FrameLayout
+        android:id="@+id/item_book_cover"
+        android:layout_width="90dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:id="@+id/item_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+
+        <ImageView
+            android:id="@+id/item_course_flag"
+            android:src="@drawable/icon_course_flag"
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:id="@+id/item_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/contacts_item_selector"
+            android:scaleType="fitCenter"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/item_description"
+            style="@style/txt_wawa_normal_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:padding="2dp"
+            android:background="#009039"
+            android:gravity="center"
+            android:textSize="10sp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:text="描述"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/item_shelf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/book_shelf_m" />
+
+    <TextView
+        android:id="@+id/item_title"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center|top"
+        android:maxLines="2"
+        android:text="" />
+
+</LinearLayout>
+

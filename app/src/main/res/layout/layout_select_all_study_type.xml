@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_select_all_layout_study_type"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffffff"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:padding="10dp">
+
+    <ImageView
+            android:id="@+id/layout_select_all_layout_item_icon_study_type"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:visibility="gone"
+            android:scaleType="fitCenter"/>
+
+    <TextView
+            android:id="@+id/layout_select_all_layout_item_title_study_type"
+            style="@style/txt_wawa_normal_green"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="标题"/>
+
+    <TextView
+            android:id="@+id/layout_select_all_layout_select_all_title_study_type"
+            style="@style/txt_wawa_normal_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_all"
+            />
+
+    <ImageView
+            android:id="@+id/layout_select_all_layout_select_all_icon_study_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/contacts_item_selector"
+            android:scaleType="centerInside"
+            android:visibility="visible"/>
+
+</LinearLayout>
+

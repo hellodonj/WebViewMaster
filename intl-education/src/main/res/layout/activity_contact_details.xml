@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_light_white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:background="@color/com_bg_light_white"
+                      android:paddingBottom="@dimen/com_item_space_xxxxl"
+                      android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_white"
+                android:orientation="horizontal"
+                android:padding="@dimen/com_item_space_xxl">
+
+                <ImageView
+                    android:id="@+id/user_head_iv"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="@dimen/com_item_space_xs"
+                    android:src="@drawable/contact_head_def"/>
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    style="@style/text_dark_gray_l"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/com_item_space_xl"/>
+
+                <TextView
+                    android:id="@+id/see_teacher_page_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/com_item_selector"
+                    android:drawablePadding="@dimen/com_item_space_xs"
+                    android:drawableRight="@drawable/ic_right_arrow"
+                    android:gravity="center_vertical"
+                    android:text="@string/see_teacher_page"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_item_space_s"
+                android:background="@color/com_bg_white"
+                android:orientation="horizontal"
+                android:padding="@dimen/com_item_space_xxl">
+
+                <TextView
+                    android:id="@+id/personal_intro_title_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/personal_introduction"/>
+
+                <TextView
+                    android:id="@+id/personal_intro_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/city_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/com_bg_white"
+                android:orientation="horizontal"
+                android:padding="@dimen/com_item_space_xxl"
+                android:visibility="invisible">
+
+                <TextView
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/personal_position"/>
+
+                <TextView
+                    android:id="@+id/city_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/personal_introduction"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/chat_bt"
+                style="@style/text_white_xl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/com_btn_height_xxxl"
+                android:layout_marginLeft="@dimen/com_item_space_xxxxl"
+                android:layout_marginRight="@dimen/com_item_space_xxxxl"
+                android:layout_marginTop="@dimen/com_item_space_xxxxl"
+                android:background="@drawable/com_green_radio_bt_bg"
+                android:visibility="gone"
+                android:text="@string/chat"/>
+
+            <Button
+                android:id="@+id/delete_friend_bt"
+                style="@style/text_black_xl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/com_btn_height_xxxl"
+                android:layout_marginLeft="@dimen/com_item_space_xxxxl"
+                android:layout_marginRight="@dimen/com_item_space_xxxxl"
+                android:layout_marginTop="@dimen/com_item_space_xxxxl"
+                android:background="@drawable/com_white_radio_bt_bg"
+                android:visibility="gone"
+                android:text="@string/delete_friend"/>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

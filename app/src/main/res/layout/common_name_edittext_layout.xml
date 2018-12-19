@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qrcode_subject_layout"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@drawable/bg_middle_frame"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/name_edit_name"
+        style="@style/txt_wawa_big_black"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="name" />
+
+    <ImageView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="@android:color/darker_gray" />
+
+    <EditText
+        android:id="@+id/name_edit_edittext"
+        style="@style/txt_wawa_big_black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:background="@null"
+        android:hint="@string/pls_input_phonenum"
+        android:minHeight="@dimen/account_edittext_min_height"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textCursorDrawable="@null" />
+
+</LinearLayout>

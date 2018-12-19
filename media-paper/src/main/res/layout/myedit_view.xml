@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/text_frame">
+
+    <com.lqwawa.apps.views.ContainsEmojiEditText
+        android:id="@+id/edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+        android:lineSpacingMultiplier="1.1"
+        android:textColor="#ff333333"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/dele"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/mp_delete" />
+
+
+</RelativeLayout>

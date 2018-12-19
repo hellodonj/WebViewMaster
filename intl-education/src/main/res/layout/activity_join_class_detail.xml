@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".module.onclass.detail.notjoin.ClassDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLight">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_class_avatar"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintDimensionRatio="16:9"
+                    android:scaleType="fitXY"/>
+
+                <TextView
+                    android:id="@+id/tv_class_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/textLight"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:padding="4dp"
+                    android:background="@color/colorDarkAlpha"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_class_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/textPrimary"
+                    android:textAppearance="@style/TextAppearance.Title"/>
+
+                <!--<TextView
+                    android:id="@+id/tv_class_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginTop="6dp"
+                    android:gravity="left|center_vertical"
+                    android:textColor="@color/textSecond"
+                    android:visibility="gone"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_school"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="left|center_vertical"
+                        android:textColor="@color/textSecond"
+                        android:foreground="@drawable/ic_touch_fg_gray"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+                    <TextView
+                        android:id="@+id/tv_school_enter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textAccent"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:textSize="14sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/label_enter_school"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:background="@drawable/bg_rectangle_accent_radius_10"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp">
+
+                    <RatingBar
+                        android:id="@+id/grade_rating_bar"
+                        style="@style/RatingStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:numStars="5"
+                        android:layout_centerVertical="true"
+                        android:rating="0"
+                        android:stepSize="0.05"/>
+
+                    <TextView
+                        android:id="@+id/tv_grade_source"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/grade_rating_bar"
+                        android:textColor="@color/textSecond"
+                        android:layout_marginLeft="10dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+                    <!--<TextView
+                        android:id="@+id/tv_class_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:textColor="@color/textMoneyRed"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>-->
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_class_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:textColor="@color/colorPink"
+                        android:layout_gravity="left|center_vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+                    <!--立即购买-->
+                    <net.qiujuer.genius.ui.widget.Button
+                        android:id="@+id/btn_enter_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorLight"
+                        app:gTouchColor="@color/touch_color"
+                        app:gTouchEffect="ripple"
+                        app:gTouchCornerRadius="19dp"
+                        android:background="@drawable/btn_pink_radius_selector"
+                        android:textSize="14sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        tools:text="@string/app_name"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.lqwawa.intleducation.base.widgets.TopBar
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbarSize"
+            android:background="@drawable/bg_shape_gradient_gray_top">
+
+        </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorHeight="2dp"
+            app:tabTextColor="@color/textSecond"
+            app:tabSelectedTextColor="@color/textAccent"
+            android:background="@color/colorLight"
+            app:tabMode="fixed">
+
+        </android.support.design.widget.TabLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+            <TextView
+                android:id="@+id/tv_timetable"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:textSize="14sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorLight"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/com_bg_circle_green_btn"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/timetable"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

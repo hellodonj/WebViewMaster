@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/contacts_header" />
+    <com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip
+        android:id="@+id/school_resource_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:background="@color/main_bg_color"
+        app:pstsTabPaddingLeftRight="15dp"
+        app:pstsTabTextColor="@color/school_material_tab"
+        app:pstsIndicatorColor="@color/green">
+    </com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip>
+
+    <include layout="@layout/contacts_search_bar" />
+
+    <com.galaxyschool.app.wawaschool.views.MyViewPager
+        android:id="@+id/school_resource_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+       />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_bg_color"/>
+    <include layout="@layout/catalog_privous_next_all"
+        />
+</LinearLayout>

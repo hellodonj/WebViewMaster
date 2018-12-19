@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lqbase_network_unavailable">网络连接不可用，请检查网络</string>
+    <string name="lqbase_network_error">网络出错</string>
+    <string name="lqbase_loading">加载中……</string>
+</resources>

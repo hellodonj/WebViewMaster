@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+             >
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="vertical">
+
+                    <com.lqwawa.apps.views.ContainsEmojiEditText
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/common_content_edittext"
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/inputbox_pre_bg"
+                        android:padding="10dp"
+                        android:minHeight="@dimen/feedback_edittext_min_height"
+                        android:gravity="top|left"
+                        android:textCursorDrawable="@null" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

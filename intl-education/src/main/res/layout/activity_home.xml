@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:id="@+id/bottom_line_rl"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/com_line_gray"/>
+
+    <RadioGroup
+        android:id="@+id/rg_tab"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/com_bg_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <RadioButton
+            android:id="@+id/rb_discovery"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/tab_icon_discovery"
+            android:gravity="center"
+            android:text="@string/discovery"
+            android:textColor="@color/home_tab_text"
+            android:textSize="@dimen/com_font_size_3"/>
+
+        <RadioButton
+            android:id="@+id/rb_learn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/tab_icon_learn"
+            android:gravity="center"
+            android:text="@string/learn"
+            android:textColor="@color/home_tab_text"
+            android:textSize="@dimen/com_font_size_3"/>
+    </RadioGroup>
+</LinearLayout>

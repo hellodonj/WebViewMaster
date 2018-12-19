@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/making_course_title_bg"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:text="@string/making_course"
+        android:textColor="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/making_course_content_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="@string/making_course_tips"
+            android:textColor="#6a6a6a"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp">
+
+            <CheckBox
+                android:id="@+id/ignore_check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:checked="false"
+                android:button="@null"
+                android:drawableLeft="@drawable/ecourse_choice_btn"
+                android:drawablePadding="5dp"
+                android:text="@string/no_more_tips"
+                android:textSize="12sp"
+                android:textColor="#969696"/>
+
+            <TextView
+                android:id="@+id/confirm_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="30dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:background="@drawable/btn_green_bg"
+                android:textSize="14sp"
+                android:text="@string/i_see"
+                android:textColor="#ffffffff"/>
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

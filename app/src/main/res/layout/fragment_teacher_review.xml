@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topic_discussion_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_white"
+    android:orientation="vertical">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbar_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/text_white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="@dimen/separate_20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_system_eval"/>
+
+                    <TextView
+                        android:id="@+id/iv_system_score"
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text=""/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_teacher_eval"/>
+
+                    <FrameLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/topic_input_gray_bg">
+
+                        <LinearLayout
+                            android:id="@+id/fl_percent_score"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tv_ten_level_score"
+                                style="@style/txt_wawa_big_black"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:gravity="center"/>
+
+                            <ImageView
+                                android:id="@+id/iv_select_score"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="10dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/down_ico"/>
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/et_teacher_review_score"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:visibility="gone"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/score"/>
+
+                    <TextView
+                        android:id="@+id/tv_full_mark_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_normal"
+                        android:text="@string/str_full_mark"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+                <TextView
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/str_teacher_comment"/>
+
+
+                <com.lqwawa.apps.views.ContainsEmojiEditText
+                    android:id="@+id/et_teacher_comment"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/topic_input_gray_bg"
+                    android:gravity="top"
+                    android:hint="@string/topic_description_hint"
+                    android:maxLength="500"
+                    android:minHeight="115dp"
+                    android:padding="5dp"
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+</LinearLayout>

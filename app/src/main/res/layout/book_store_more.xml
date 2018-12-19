@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:gravity="center_vertical"
+              android:paddingLeft="12dp"
+              android:paddingRight="5dp"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:paddingTop="12dp"
+              android:paddingBottom="12dp"
+              android:background="@color/white"
+              android:id="@+id/bookstore_more_layout"
+
+        >
+
+    <View
+        android:id="@+id/header_indicator"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:background="#009039"/>
+
+    <TextView android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:textColor="#000000"
+              android:text="@string/latest_info"/>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="5dp"
+              android:textColor="#b8b8b8"
+              android:text="@string/more_info"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/jiaxiao_detail_rightarrow_pre_ico"
+            android:visibility="visible"/>
+</LinearLayout>
+

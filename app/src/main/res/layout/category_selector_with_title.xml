@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/category_selector_with_title_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/main_bg_color">
+
+    <include layout="@layout/contacts_header" />
+
+    <com.galaxyschool.app.wawaschool.fragment.category.CategorySelectorView
+        android:id="@+id/category_selector_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

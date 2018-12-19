@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/contacts_header_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="#ffffff">
+
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <ImageView
+            android:id="@+id/contacts_search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:src="@drawable/sel_nav_backarrow"
+            android:background="@drawable/nav_blank_ico" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                android:id="@+id/contacts_class"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:minWidth="90dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:background="@drawable/tab_button_l"
+                android:enabled="false"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/class_contacts"
+                android:textColor="@color/curriculum_assignment_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/contacts_personal"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:minWidth="90dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:background="@drawable/tab_button_r"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/personal_contacts"
+                android:textColor="@color/curriculum_assignment_color"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/contacts_more_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:src="@drawable/nav_more_icon"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/contacts_more_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical|right"
+                android:background="@drawable/nav_blank_ico"
+                android:gravity="center"
+                android:text="扫一扫"
+                android:textColor="#009039"
+                android:textSize="16sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <ImageView style="@style/line_gray"/>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/contacts_body"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</FrameLayout>-->
+
+    <com.galaxyschool.app.wawaschool.views.MyViewPager
+        android:id="@+id/contacts_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

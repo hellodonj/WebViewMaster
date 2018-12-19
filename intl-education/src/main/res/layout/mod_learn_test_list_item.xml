@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <View
+        android:id="@+id/exam_chapter_seg_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/com_item_space"
+        android:background="@color/com_line_gray"/>
+    
+    <TextView
+        android:id="@+id/exam_title_tv"
+        style="@style/text_dark_gray_l"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_white"
+        android:padding="@dimen/com_item_space"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/com_line_gray"/>
+
+    <LinearLayout
+        android:id="@+id/exam_content_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/com_item_space">
+
+        <TextView
+            android:id="@+id/exam_content_tv"
+            style="@style/text_gray"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/com_bg_white"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:padding="@dimen/com_item_space"
+            android:paddingBottom="@dimen/com_item_space_xxs"
+            android:paddingTop="@dimen/com_item_space_xxs"/>
+
+        <TextView
+            android:id="@+id/sort_tv"
+            style="@style/text_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/com_item_space"
+            android:gravity="center_vertical"/>
+        <TextView
+            style="@style/text_gray_l"
+            android:id="@+id/start_iv"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:padding="5dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/com_item_space"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/school_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <include layout="@layout/contacts_user_basic_info" />
+
+    <include
+        android:id="@+id/school_intro_attr"
+        layout="@layout/contacts_user_attribute" />
+
+    <ImageView style="@style/line_gray"/>
+
+    <include
+        android:id="@+id/school_qrcode_attr"
+        layout="@layout/contacts_user_attribute" />
+
+    <ImageView style="@style/line_gray"/>
+
+    <include
+        android:id="@+id/school_address_attr"
+        layout="@layout/contacts_user_attribute" />
+
+    <ImageView style="@style/line_gray"/>
+
+    <include
+        android:id="@+id/school_phone_attr"
+        layout="@layout/contacts_user_attribute" />
+
+</LinearLayout>
+

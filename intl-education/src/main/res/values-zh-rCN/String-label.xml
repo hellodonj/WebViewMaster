@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--LQ学程首页-->
+    <string name="label_english_international_course">英语国际课程</string>
+    <string name="label_english_inland_course">英语国内课程</string>
+    <string name="label_read_course">阅读课程</string>
+    <string name="label_minority_language">小语种课程</string>
+
+    <!--LQ学程课程筛选页面-->
+    <string name="label_course_empty_remind_text1">遇到问题？您可以</string>
+    <string name="label_course_empty_remind_text2">联系客服</string>
+    <string name="label_empty_data">暂无数据</string>
+    <string name="label_course_empty_info_1">我们正在努力建设中</string>
+    <string name="label_course_empty_info_2">敬请期待...</string>
+    <string name="label_course_filtrate_all">全部</string>
+
+    <!--筛选标题-->
+    <string name="label_age_bracket">年龄段</string>
+    <string name="label_category">类别</string>
+
+    <!--我的课程详情页-->
+    <!--<string name="label_course_outline">自主学习</string>-->
+    <string name="label_course_outline">课程大纲</string>
+    <string name="label_course_evaluation">课程评价</string>
+
+    <string name="label_course_progress_percent">%d%%</string>
+    <string name="label_course_detail_more">更多</string>
+
+    <string name="label_course_notice_default_text">暂无公告</string>
+    <string name="label_course_notice">公告：</string>
+
+    <!--课程评论-->
+    <string name="label_course_comment_send">发送</string>
+    <string name="label_course_comment_hint">说点什么</string>
+    <string name="label_course_comment_encryption_name">**</string>
+    <string name="label_has_score">已评分</string>
+
+    <!--课程介绍-->
+    <string name="label_course_scoring_criteria">评分标准</string>
+
+    <!--课程大纲-->
+    <string name="label_course_lesson_detail_live">直播：</string>
+
+    <!--听说读写页面-->
+    <string name="label_share">分享</string>
+    <string name="label_courseware_detail">课件详情</string>
+    <string name="label_check_the_marking">查看批阅</string>
+    <string name="label_have_read">已经批阅</string>
+    <string name="label_uploading_course_files">正在提交，请稍候...</string>
+    <string name="label_task_requirement">任务要求</string>
+
+    <!--任务要求页面-->
+    <string name="label_empty_content">暂无内容</string>
+
+    <string-array name="label_lesson_task_tab_array">
+        <item>任务要求</item>
+        <item>提交列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+
+    <string-array name="label_new_lesson_task_tab_array">
+        <item>任务要求</item>
+        <item>复述列表</item>
+        <item>评测列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+
+    <string name="label_course_learning_progress_percent">%d%%</string>
+
+    <!--占位图-->
+    <string name="label_net_error">您的手机不太顺畅哦~\n无法连接到相应的页面</string>
+
+    <!--在线课堂相关字符串资源-->
+    <string name="label_many_people_join_desc">%d人已报名</string>
+    <string name="label_online_class_search_hint">搜索培训班/授课老师</string>
+    <string name="label_online_class_detail_time">开课时间：</string>
+    <string name="label_online_class_detail_pay_desc">我要学习</string>
+    <string name="label_course_introduction">课堂简介</string>
+    <string name="label_teaching_goal">授课目标</string>
+    <string name="label_suit_object">适合对象</string>
+    <string name="label_lecturer">授课老师</string>
+    <string name="label_related_course">相关课程</string>
+    <string name="label_notification_read_count">%s次阅读</string>
+    <string name="label_notification_comment_count">评论(%s)</string>
+    <string name="label_notification_zan_count">赞(%s)</string>
+    <string name="label_add_attention">+关注</string>
+    <string name="label_yet_attention">已关注</string>
+    <string name="label_enter_school">进入机构</string>
+    <string name="label_delete_live_warning">确定要删除该直播吗？</string>
+    <string name="label_delete_notification_warning">确定要删除该通知吗？</string>
+    <string name="label_confirm_delete_online">确定删除直播%s吗?</string>
+    <string name="label_delete_live_succeed">删除直播成功。</string>
+    <string name="label_delete_live_failed">删除直播失败。</string>
+    <string name="label_delete_notification_succeed">删除通知成功。</string>
+    <string name="label_class_gratis">免费</string>
+    <string name="label_no_permission">您不是该班级成员，无查看权限</string>
+
+    <!--机构信息-->
+    <string name="label_online_course">在线课堂</string>
+    <string name="label_course">课程</string>
+    <!--学程馆改成自习课程-->
+    <string name="label_course_shop">学程馆</string>
+    <!--<string name="label_course_shop">自习课程</string>-->
+    <string name="label_space_school_function_class">开课班</string>
+    <string name="label_space_school_function_course">精品课程</string>
+    <!--学程馆改成自习课程-->
+    <string name="label_space_school_function_shop">学程馆</string>
+    <!--<string name="label_space_school_function_shop">自习课程</string>-->
+    <string name="label_space_school_function_teacher">名师堂</string>
+    <string name="label_space_school_function_choice_books">精品资源库</string>
+    <string name="label_space_school_function_principal_assistant">校长助手</string>
+    <string name="label_space_school_function_campus_patrol">校园巡查</string>
+    <string name="label_space_school_function_SCHOOL_FORUM">学校论坛</string>
+    <string name="label_space_school_relevance_course">关联习课程</string>
+    <string name="label_save_qrcode">保存二维码</string>
+    <string name="label_course_qrcode">课件二维码</string>
+    <string name="label_qrcode">二维码</string>
+    <string name="label_qr_photo_desc">保存并使用两栖蛙蛙APP扫一扫二维码\n即刻畅享立体视觉体验</string>
+    <!-- subscription -->
+    <string name="label_subscription_recommend">推荐给好友</string>
+    <string name="label_join_organ_teacher">成为机构老师</string>
+
+    <string name="label_apply_join">申请加入</string>
+
+    <string name="label_my_establish_course">我开设</string>
+    <string name="label_my_establish_live">我主持</string>
+    <string name="label_my_join_course">我参加</string>
+
+    <string name="str_delete_online_list_data_title">您希望将该直播从本班删除还是从所有班级删除？</string>
+    <string name="str__delete_from_this_class">从本班删除</string>
+    <string name="str__delete_from_all_class">从所有班级删除</string>
+
+    <!--关联学程选取资源-->
+    <string name="label_not_available_resource">暂无可选资源</string>
+    <string name="label_online_course_invalid">该班级已完成授课</string>
+
+    <!--空中学校文本-->
+    <string name="label_intro">简介</string>
+    <string name="label_many_attention">%d人关注</string>
+    <string name="label_request_authorization">获取授权</string>
+    <string name="label_more_course_line">更多学程</string>
+    <string name="label_please_request_authorization">请获取授权</string>
+    <string name="label_old_request_authorization">已经获取授权</string>
+    <string name="label_request_authorization_succeed">获取授权成功</string>
+    <string name="label_request_authorization_tip">请输入授权码获得授权</string>
+    <!--<string name="label_other_course">其它资源</string>-->
+    <string name="label_level">级别</string>
+    <string name="label_all_pay">全部购买</string>
+    <string name="label_buy_all">全部\n购买</string>
+    <string name="label_buy_number_chapter">已购\n%d章</string>
+    <string name="label_order_buy_number_chapter">购买\n%d章</string>
+    <string name="label_chapter_pay">按章购买</string>
+    <string name="label_all_select">全选</string>
+    <string name="label_un_select">取消全选</string>
+    <string name="label_selected_chapter">已选章节</string>
+    <string name="label_please_select_pay_chapter">请选择需要购买的章节</string>
+    <string name="label_yet_pay">已购</string>
+    <string name="label_total_money">合计：</string>
+    <string name="label_to_pay">去结算</string>
+    <string name="label_my_course">我的\n学程</string>
+    <string name="label_more_course">更多\n学程</string>
+    <string name="label_auto_mark">自动批阅</string>
+    <string name="label_voice_evaluating">语音评测</string>
+    <!--学程馆改成自习课程-->
+    <string name="label_organ_shop_permission_description">该机构暂无更多学程馆课程，敬请期待！</string>
+    <!--<string name="label_organ_shop_permission_description">该机构暂无更多自习课程，敬请期待！</string>-->
+
+    <string name="label_new_create">新建</string>
+    <string name="label_new_class">新开课</string>
+    <string name="label_complete_give_lessons">完成授课</string>
+    <!--<string name="label_tab_autonomously_study">我的自主学习</string>-->
+    <!--<string name="label_tab_autonomously_study">我的自习课程</string>-->
+    <string name="label_tab_autonomously_study">&#8195;我的学程&#8195;</string>
+    <string name="label_tab_online_study">我的在线课堂</string>
+    <string name="label_tab_give_course">&#8195;我开设的课程&#8195;</string>
+    <string name="label_tab_give_online_study">我开设的在线课堂</string>
+    <string name="label_online_study_latest_data">最新课堂</string>
+    <string name="label_online_study_hot_data">热门推荐</string>
+    <string name="label_online_study_organ_data">入驻机构</string>
+    <string name="label_my_join_d">我参加的</string>
+    <string name="label_class_detail">班级详情</string>
+    <string name="label_to_study">我要学习</string>
+    <string name="label_new_course_introduction">课程简介</string>
+    <string name="label_online_study_empty_first">进入</string>
+    <!--优选专业课程以翻转课堂形式-->
+    <string name="label_online_study_empty_text">进入\"%s-开课班\"全程在线导学跟学，学习更高效</string>
+    <string name="label_online_class_give_lessons_tip">确认已完成所有授课内容？</string>
+    <string name="label_image_saved_to">图片已保存至%s</string>
+    <string name="label_image_save_failed">图片保存失败</string>
+    <string name="label_image_save_to_photo">保存到相册</string>
+    <string name="label_tab_course_empty_remind">还没有参加课程学习？</string>
+    <string name="label_tab_class_empty_remind">还没有参加在线课堂？</string>
+    <!--学程馆改成自习课程-->
+    <!--<string name="label_go_course_shop">去学程馆</string>-->
+    <!--<string name="label_go_course_shop">去自习课程</string>-->
+    <string name="label_go_course_shop">去学程馆</string>
+    <string name="label_go_online_study">去在线课堂</string>
+
+    <string name="label_update_time">最后更新：</string>
+    <string name="label_empty_comment_remind">暂无评论，写点什么吧~</string>
+    <string name="label_not_study_course_for_me">不可以学习自己的课程</string>
+    <string name="label_search_school_hint">输入您要查找的学校名</string>
+    <!--V5.1.0需求字符串-->
+    <string name="label_watch_history">查看历史</string>
+    <string name="label_give_idle">即将开始</string>
+    <string name="label_new_give_idle">即将授课</string>
+    <string name="label_give_start">正在授课</string>
+    <string name="label_give_finish">授课结束</string>
+    <string name="label_recommend_course">推荐课程</string>
+    <string name="label_add_course">添加学程</string>
+    <string name="label_please_input_keyword_hint">请输入关键字</string>
+    <string name="label_confirm_add">确认添加</string>
+    <string name="label_speech_evaluation">语音评测</string>
+    <string name="label_statistical_scores">成绩统计</string>
+    <string name="label_voice_scores_format">%s分</string>
+    <string name="label_teacher_mark">老师点评</string>
+    <string name="label_immediate_review">立即点评</string>
+    <string name="label_course_in_class">指定学程所在班级</string>
+    <string name="label_old_in_class">已指定班级</string>
+    <string name="label_picker_class">选择班级</string>
+    <string name="label_cancel_order">取消订单</string>
+    <string name="label_watch_more_course">查看更多课程</string>
+    <string name="label_basics_course">基础课程</string>
+    <string name="label_class_notice_default_text">暂无通知</string>
+    <string name="label_committed_list">提交列表</string>
+    <string name="label_add_succeed">添加成功</string>
+    <string name="label_this_class_give_finish">该班级已完成授课</string>
+
+    <!--V5.10.X版本字符串-->
+    <string name="label_join_course">+我的学程</string>
+
+    <!--V5.11版本字符串-->
+    <string name="label_share_online_class_title">【两栖名师课程】</string>
+    <string name="label_share_course_title">【两栖习课程】</string>
+    <string name="label_timetable">课程表</string>
+    <string name="label_today">今天</string>
+    <string name="label_study_number">%d人报名</string>
+    <!--<string name="label_teach_class">名师课堂</string>-->
+    <string name="label_teach_class">名师课程</string>
+    <string name="label_teach_course">名师课程</string>
+    <!--<string name="label_tab_course_chapter">课程大纲</string>-->
+    <string name="label_tab_course_chapter">习课程</string>
+    <string name="label_study_course">习课程</string>
+    <string name="label_tab_new_study_course">我的习课程</string>
+    <string name="label_tab_new_teach_course">我的名师课程</string>
+    <string name="label_tab_new_give_study_course">我开设的习课程</string>
+    <string name="label_tab_new_give_teach_course">我开设的名师课程</string>
+    <string name="label_new_tab_class_empty_remind">还没有参加名师课程？</string>
+    <string name="label_new_go_online_study">去名师课程</string>
+    <!--<string name="label_new_go_online_study">去名师课堂</string>-->
+    <string name="label_watch_more_teach_course">查看更多名师课程</string>
+    <string name="label_history_give">历史授课</string>
+    <string name="label_give_complete">完成授课</string>
+    <string name="label_history_setting">设成历史课</string>
+    <string name="label_self_study_class">去100%习课程</string>
+    <string name="label_live_source">来源：%s</string>
+    <string name="label_online_class_give_history_tip">您正在将课程设成历史课，确认后，将不能再对课程进行开课、批阅等操作</string>
+    <string name="label_this_class_give_history">该班级已设成历史课</string>
+    <string name="label_delete_live_status_warning">该直播所在的名师课程已完成授课/设成历史课，无法删除</string>
+    <string name="label_search_course_name_hint">搜索课程名称</string>
+
+    <string name="label_colon_type">类型：</string>
+    <string name="label_colon_grade">年级：</string>
+    <string name="label_colon_subject">科目：</string>
+    <string name="label_colon_language">语言：</string>
+    <string name="label_colon_level">级别：</string>
+
+    <!--V5.11.X字符串-->
+    <string name="label_be_authorized">已授权</string>
+    <string name="label_be_authorized_container">(已授权)</string>
+    <string name="label_unauthorized">未授权</string>
+    <string name="label_unauthorized_container">(未授权)</string>
+    <string name="label_confirm">确认</string>
+    <string name="label_cancel">取消</string>
+    <string name="label_self_member">我自己</string>
+    <string name="label_other_member">其他人</string>
+    <string name="label_child_name">孩子姓名：</string>
+    <string name="label_child_account">孩子用户名：</string>
+    <string name="label_watch_name">查看姓名</string>
+    <string name="label_parent_pay_warning">您正在给您的孩子购买本课程，请确认信息</string>
+    <string name="label_parent_other_warning">您是家长身份，请确认此课程为谁购买</string>
+    <string name="label_pay_other_warning">请确认此课程为谁购买</string>
+    <string name="label_self_buyer_who">买给%s</string>
+    <string name="label_who_buyer_self">%s买给我</string>
+    <string name="label_account">账号：</string>
+    <string name="label_name">姓名：</string>
+    <string name="label_course_buy_warning">该课程/课堂无法购买</string>
+    <string name="label_choice_other_null">请确认此课程为谁购买</string>
+    <string name="label_online_member_in_class_warning">此用户已参加该名师课程</string>
+    <string name="label_not_have_realname">暂未设置真实姓名</string>
+    <string name="label_other_order_disabled">该订单他人已付款，无法参加，请重新下单</string>
+    <string name="label_task_complete">【已完成】</string>
+    <string name="label_task_starting">【未完成】</string>
+    <string name="label_total_gradle">满分%s</string>
+    <string name="label_answer_tips">
+        1.为保证答题内容有效，请在读写单中标记的虚线框内书写答案。\n\n2. 请在英文输入下，严格按照英文书写规范输入录入，比如输入英文\', 相邻单词间留一个空格等。
+    </string>
+    <string name="label_answer_writing_tips">推荐使用LQ手写板作答，书写输入更高效</string>
+    <string name="label_begin_to_answer">开始作答</string>
+    <string name="label_intro_of_answer_question">答题须知</string>
+    <string name="label_no_tips">不再提示</string>
+
+    <!--V5.12字符串-->
+    <string name="label_give_money">转赠他人</string>
+
+    <string-array name="label_online_class_details_tabs">
+        <item>课堂简介</item>
+        <item>授课计划</item>
+        <item>学员评论</item>
+        <item>通知</item>
+    </string-array>
+
+    <string-array name="label_new_online_class_details_tabs">
+        <item>课堂简介</item>
+        <item>授课计划</item>
+        <item>学员评论</item>
+        <!--<item>相关课程</item>-->
+        <item>习课程</item>
+    </string-array>
+
+    <string-array name="label_lesson_sourse_tabs">
+        <item>看课件</item>
+        <item>听读课</item>
+        <item>读写单</item>
+    </string-array>
+
+    <string-array name="label_course_shop_tabs">
+        <item>最新</item>
+        <item>热门</item>
+        <item>价格</item>
+    </string-array>
+
+    <string-array name="label_online_class_tabs">
+        <item>最新</item>
+        <item>热门</item>
+        <item>价格</item>
+    </string-array>
+
+    <string name="voice_evaluating">语音评测</string>
+</resources>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--LQ学程首页-->
+    <string name="label_english_international_course">English International</string>
+    <string name="label_english_inland_course">English Domestic</string>
+    <string name="label_read_course">Reading Course</string>
+    <string name="label_minority_language">Minority Language</string>
+
+    <!--LQ学程课程筛选页面-->
+    <string name="label_course_empty_remind_text1">Any questions? Please</string>
+    <string name="label_course_empty_remind_text2">contact customer service</string>
+    <string name="label_empty_data">No data</string>
+    <string name="label_course_empty_info_1">Under construction</string>
+    <string name="label_course_empty_info_2">Coming soon...</string>
+    <string name="label_course_filtrate_all">All</string>
+
+    <!--筛选标题-->
+    <string name="label_age_bracket">Age</string>
+    <string name="label_category">Category</string>
+
+    <!--我的课程详情页-->
+    <string name="label_course_outline">Outline</string>
+    <string name="label_course_evaluation">Reviews</string>
+
+    <string name="label_course_progress_percent">%d%%</string>
+    <string name="label_course_detail_more">More</string>
+
+    <string name="label_course_notice_default_text">No notice</string>
+    <string name="label_course_notice">Notice：</string>
+
+    <!--课程评论-->
+    <string name="label_course_comment_send">Send</string>
+    <string name="label_course_comment_hint">Say something</string>
+    <string name="label_course_comment_encryption_name">**</string>
+    <string name="label_has_score">Rated</string>
+
+    <!--课程介绍-->
+    <string name="label_course_scoring_criteria">Rating Scales</string>
+
+    <!--课程大纲-->
+    <string name="label_course_lesson_detail_live">Live Stream:</string>
+
+    <!--听说读写页面-->
+    <string name="label_share">Share</string>
+    <string name="label_courseware_detail">Details</string>
+    <string name="label_check_the_marking">View Marks</string>
+    <string name="label_have_read">Marked</string>
+
+    <!--任务要求页面-->
+    <string name="label_empty_content">No content</string>
+    <string name="label_uploading_course_files">Uploading, please wait...</string>
+    <string name="label_task_requirement">Requirement</string>
+
+    <string-array name="label_lesson_task_tab_array">
+        <item>Requirement</item>
+        <item>Submittal List</item>
+        <item>Discussion</item>
+    </string-array>
+
+    <string-array name="label_new_lesson_task_tab_array">
+        <item>Requirement</item>
+        <!--<item>Submittal List</item>-->
+        <item>Retelling List</item>
+        <item>Test List</item>
+        <item>Discussion</item>
+    </string-array>
+
+
+    <string name="label_course_learning_progress_percent">%d%%</string>
+    <!--占位图-->
+    <string name="label_net_error">Load fail~\nPage unaccessible</string>
+
+    <!--在线课堂相关字符串资源-->
+    <string name="label_many_people_join_desc">%d attended</string>
+    <string name="label_online_class_search_hint">Search by class/teacher</string>
+    <string name="label_online_class_detail_time">Class time:</string>
+    <string name="label_online_class_detail_pay_desc">Learn</string>
+    <string name="label_course_introduction">Introduction</string>
+    <string name="label_teaching_goal">Teaching Goal</string>
+    <string name="label_suit_object">Target Student</string>
+    <string name="label_lecturer">Teacher</string>
+    <string name="label_related_course">Correlated Course</string>
+    <string name="label_notification_read_count">Views: %s</string>
+    <string name="label_notification_comment_count">Comment(%s)</string>
+    <string name="label_notification_zan_count">Like(%s)</string>
+    <string name="label_add_attention">Follow</string>
+    <string name="label_yet_attention">Followed</string>
+    <string name="label_enter_school">Enter</string>
+    <string name="label_delete_live_warning">Delete live stream?</string>
+    <string name="label_delete_notification_warning">Delete notice?</string>
+    <string name="label_confirm_delete_online">Confirm delete online %s?</string>
+    <string name="label_delete_live_succeed">Deleted</string>
+    <string name="label_delete_live_failed">Deletion failed.</string>
+    <string name="label_delete_notification_succeed">Deleted</string>
+    <string name="label_class_gratis">Free</string>
+    <string name="label_no_permission">Unable to enter since you aren\'t a member in class</string>
+
+    <!--机构信息-->
+    <string name="label_online_course">Online Class</string>
+    <string name="label_course">Course</string>
+    <!--<string name="label_course_shop">Study Hall</string>-->
+    <string name="label_course_shop">Course Library</string>
+    <string name="label_space_school_function_class">Classes</string>
+    <string name="label_space_school_function_course">Courses</string>
+    <!--<string name="label_space_school_function_shop">Study Hall</string>-->
+    <string name="label_space_school_function_shop">Course Library</string>
+    <string name="label_space_school_function_teacher">Teachers</string>
+    <string name="label_space_school_relevance_course">Correlated Course</string>
+    <!--<string name="label_space_school_function_choice_books">Quality Resources</string>-->
+    <string name="label_space_school_function_choice_books">Choice Course Pool</string>
+    <string name="label_space_school_function_principal_assistant">Principal Assistant</string>
+    <string name="label_space_school_function_SCHOOL_FORUM">School Forum</string>
+    <string name="label_space_school_function_campus_patrol">School Patrol</string>
+    <string name="label_my_establish_course">Teaching</string>
+    <string name="label_my_establish_live">Hosting</string>
+    <string name="label_my_join_course">Joined</string>
+    <string name="label_save_qrcode">Save QR Code</string>
+    <string name="label_qrcode">QR Code</string>
+    <string name="label_course_qrcode">Course QR Code</string>
+    <string name="label_qr_photo_desc">Save and scan QR Code \n to enjoy stereoscopic visualexperience</string>
+    <!-- subscription -->
+    <string name="label_subscription_recommend">Share/Recommend</string>
+    <string name="label_join_organ_teacher">Join as Teacher</string>
+
+
+    <string name="label_apply_join">Join</string>
+
+
+    <string name="str__delete_from_all_class">Remove from All Classes</string>
+    <string name="str__delete_from_this_class">Remove from Current Class</string>
+    <string name="str_delete_online_list_data_title">Remove live stream from current class or all classes?</string>
+    <!--关联学程选取资源-->
+    <string name="label_not_available_resource">No suitable resource</string>
+    <string name="label_online_course_invalid">Class ended</string>
+
+    <!--空中学校文本-->
+    <string name="label_intro">Introduction</string>
+    <string name="label_many_attention">%d followers</string>
+    <string name="label_request_authorization">Obtain Authorization</string>
+    <string name="label_more_course_line">More Courses</string>
+    <string name="label_please_request_authorization">Obtain Authorization</string>
+    <string name="label_old_request_authorization">Got authorization</string>
+    <string name="label_request_authorization_succeed">Got authorization</string>
+    <string name="label_request_authorization_tip">Please enter authorization code</string>
+    <!--<string name="label_other_course">其它资源</string>-->
+    <string name="label_level">Level</string>
+    <string name="label_all_pay">Buy All</string>
+    <string name="label_buy_all">Bought\nAll</string>
+    <string name="label_buy_number_chapter">Bought\n%d chapters</string>
+    <string name="label_order_buy_number_chapter">Buy\n%d chapters</string>
+    <string name="label_chapter_pay">Buy Chapter</string>
+    <string name="label_all_select">Select All</string>
+    <string name="label_un_select">Cancel</string>
+    <string name="label_selected_chapter">Selected Chapter</string>
+    <string name="label_please_select_pay_chapter">Please select chapter</string>
+    <string name="label_yet_pay">Bought</string>
+    <string name="label_total_money">Amount payable：</string>
+    <string name="label_to_pay">Order</string>
+    <string name="label_my_course">My\nCourses</string>
+    <string name="label_more_course">More\nCourses</string>
+    <string name="label_auto_mark">Auto Mark</string>
+    <string name="label_voice_evaluating">Oral Test</string>
+    <string name="label_organ_shop_permission_description">No course available now, please wait!</string>
+
+    <string name="label_new_create">New</string>
+    <string name="label_new_class">New Lesson</string>
+    <string name="label_complete_give_lessons">End Class</string>
+    <string name="label_tab_autonomously_study">Self-study</string>
+    <string name="label_tab_online_study">Classes Attended</string>
+    <string name="label_tab_give_course">Courses</string>
+    <string name="label_tab_give_online_study">Classes</string>
+    <string name="label_online_study_latest_data">Latest</string>
+    <string name="label_online_study_hot_data">Popular</string>
+    <string name="label_online_study_organ_data">Institutions</string>
+    <string name="label_my_join_d">Attended</string>
+    <string name="label_class_detail">Class Details</string>
+    <string name="label_to_study">Learn</string>
+    <string name="label_new_course_introduction">Introduction</string>
+    <string name="label_online_study_empty_first">Enter</string>
+    <string name="label_online_study_empty_text">Enter \"%s-Online Class\" with a selection of specialized courses to achieve effective online tutoring and learning in the form of flipped classroom</string>
+    <!--<string name="label_online_study_empty_text">Enter \"%s-Online Class\" to obtain guidance and learn more effectively online</string>-->
+    <string name="label_online_class_give_lessons_tip">End the class?</string>
+    <string name="label_image_saved_to">Image saved in %s</string>
+    <string name="label_image_save_failed">Failed to save image</string>
+    <string name="label_image_save_to_photo">Save</string>
+    <string name="label_tab_course_empty_remind">No course attended</string>
+    <string name="label_tab_class_empty_remind">No class attended</string>
+    <string name="label_go_course_shop">Enter Study Hall</string>
+    <string name="label_go_online_study">Enter Online Class</string>
+
+    <string name="label_update_time">Last Updated:</string>
+    <string name="label_empty_comment_remind">No comment,say something?</string>
+    <string name="label_not_study_course_for_me">Unable to learn your own course</string>
+    <string name="label_search_school_hint">Search by school name</string>
+
+    <!--V5.1.0需求字符串-->
+    <string name="label_watch_history">View History</string>
+    <string name="label_give_idle">Upcoming</string>
+    <string name="label_new_give_idle">Upcoming</string>
+    <string name="label_give_start">Ongoing</string>
+    <string name="label_give_finish">Ended</string>
+    <string name="label_recommend_course">Recommend Course</string>
+    <string name="label_add_course">Add Course</string>
+    <string name="label_please_input_keyword_hint">Please enter keywords</string>
+    <string name="label_confirm_add">Add</string>
+    <string name="label_speech_evaluation">Oral Test</string>
+    <string name="label_statistical_scores">Score Statistics</string>
+    <string name="label_voice_scores_format">%s points</string>
+    <string name="label_teacher_mark">Remark</string>
+    <string name="label_immediate_review">Remark</string>
+    <string name="label_course_in_class">Assign Course to Class</string>
+    <string name="label_old_in_class">Assigned already</string>
+    <string name="label_picker_class">Select Class</string>
+    <string name="label_cancel_order">Cancel Order</string>
+    <string name="label_watch_more_course">View More Courses</string>
+    <string name="label_basics_course">Basic Course</string>
+    <string name="label_class_notice_default_text">No notice</string>
+    <string name="label_committed_list">Submittal List</string>
+    <string name="label_add_succeed">Added successfully</string>
+    <string name="label_this_class_give_finish">Class ended</string>
+
+    <!--V5.10.X版本字符串-->
+    <string name="label_join_course">+My Courses</string>
+
+    <!--V5.11版本字符串-->
+    <string name="label_share_online_class_title">【LQ Lecture】</string>
+    <string name="label_share_course_title">【LQ Course】</string>
+    <string name="label_timetable">Timetable</string>
+    <string name="label_today">Today</string>
+    <string name="label_study_number">%d attended</string>
+    <!--<string name="label_teach_class">Lecture Hall</string>-->
+    <string name="label_teach_class">Lecture Hall</string>
+    <string name="label_teach_course">Lecture</string>
+    <!--<string name="label_tab_course_chapter">Outline</string>-->
+    <string name="label_tab_course_chapter">Course</string>
+    <string name="label_study_course">Course</string>
+    <string name="label_tab_new_study_course">My Course</string>
+    <string name="label_tab_new_teach_course">My Lecture</string>
+    <string name="label_tab_new_give_study_course">Course</string>
+    <string name="label_tab_new_give_teach_course">Lecture</string>
+    <string name="label_new_tab_class_empty_remind">No lecture attended?</string>
+    <string name="label_new_go_online_study">Enter Lecture Hall</string>
+    <!--<string name="label_new_go_online_study">Enter Lecture Hall</string>-->
+    <string name="label_watch_more_teach_course">More Lectures</string>
+    <string name="label_history_give">History</string>
+    <string name="label_give_complete">Ended</string>
+    <string name="label_history_setting">Set as History</string>
+    <string name="label_self_study_class">Enter Study Hall</string>
+    <string name="label_live_source">From: %s</string>
+    <string name="label_online_class_give_history_tip">You are now setting the lecture as history and will not be able to create new live stream or mark learning tasks, etc.</string>
+    <string name="label_this_class_give_history">Lecture has been set as history</string>
+    <string name="label_delete_live_status_warning">Lecture with this live stream was ended/set as history, unable to delete</string>
+    <string name="label_search_course_name_hint">Search by lecture title</string>
+
+    <string name="label_colon_type">Type:</string>
+    <string name="label_colon_grade">Grade:</string>
+    <string name="label_colon_subject">Subject:</string>
+    <string name="label_colon_language">Language:</string>
+    <string name="label_colon_level">Level:</string>
+
+    <!--V5.11.X字符串-->
+    <string name="label_be_authorized">Authorized</string>
+    <string name="label_be_authorized_container">(Authorized)</string>
+    <string name="label_unauthorized">Unauthorized</string>
+    <string name="label_unauthorized_container">(Unauthorized)</string>
+    <string name="label_confirm">OK</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_self_member">Me</string>
+    <string name="label_other_member">Others</string>
+    <string name="label_child_name">Child name：</string>
+    <string name="label_child_account">Child account：</string>
+    <string name="label_watch_name">Check Name</string>
+    <string name="label_parent_pay_warning">Buy course for child, please confirm information</string>
+    <string name="label_parent_other_warning">Parent, please select whom you will buy the course/lecture for</string>
+    <string name="label_pay_other_warning">Buy course/lecture for</string>
+    <string name="label_self_buyer_who">(Buy for %s)</string>
+    <string name="label_who_buyer_self">(%s bought)</string>
+    <string name="label_account">Account:</string>
+    <string name="label_name">Name:</string>
+    <string name="label_course_buy_warning">Unable to buy the course/lecture</string>
+    <string name="label_choice_other_null">Buy course/lecture for</string>
+    <string name="label_online_member_in_class_warning">User already attended the lecture</string>
+    <string name="label_not_have_realname">Real name not found</string>
+    <string name="label_other_order_disabled">Order paid by others, please re-purchase</string>
+    <string name="label_task_complete">[Finished]</string>
+    <string name="label_task_starting">[Unfinished]</string>
+    <string name="label_total_gradle">Total Score %s</string>
+    <string name="label_answer_tips">
+        1. Please enter your answer in the dotted box to ensure the answer is valid.\n\n2. Please enter in strict accordance with English writing standards under English input, such as entering \' under English input, leaving a space between words, etc.
+    </string>
+    <string name="label_answer_writing_tips">It is recommended to use an LQ handwriting tablet for more efficient writing experience.</string>
+    <string name="label_begin_to_answer">Answer Now</string>
+    <string name="label_intro_of_answer_question">Guidelines</string>
+    <string name="label_no_tips">Do not show again</string>
+
+    <!--V5.12字符串-->
+    <string name="label_give_money">转赠他人</string>
+
+    <string-array name="label_online_class_details_tabs">
+        <item>Introduction</item>
+        <item>Schedule</item>
+        <item>Comment</item>
+        <item>Notice</item>
+    </string-array>
+
+    <string-array name="label_new_online_class_details_tabs">
+        <item>Introduction</item>
+        <item>Schedule</item>
+        <item>Comment</item>
+        <!--<item>Correlated Course</item>-->
+        <item>Course</item>
+    </string-array>
+
+    <string-array name="label_lesson_sourse_tabs">
+        <item>Reading courseware</item>
+        <item>Listen-Read Course</item>
+        <item>Read-Write Task</item>
+    </string-array>
+
+    <string-array name="label_course_shop_tabs">
+        <item>Latest</item>
+        <item>Hot</item>
+        <item>Price</item>
+    </string-array>
+
+    <string-array name="label_online_class_tabs">
+        <item>Latest</item>
+        <item>Hot</item>
+        <item>Price</item>
+    </string-array>
+
+    <string name="voice_evaluating">Oral Test</string>
+
+</resources>

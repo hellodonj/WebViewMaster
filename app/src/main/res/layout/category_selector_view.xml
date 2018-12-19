@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/category_selector_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffebebeb"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/category_name_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/line_gray"
+            android:dividerHeight="1dp"
+            android:listSelector="#ffebebeb" />
+
+        <TextView
+            android:id="@+id/confirm_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="10dp"
+            android:background="#009039"
+            android:gravity="center"
+            android:text="按钮"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/category_value_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffebebeb"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/line_gray"
+            android:dividerHeight="1dp"
+            android:listSelector="#ffebebeb"
+            android:visibility="visible"/>
+        </LinearLayout>
+
+</LinearLayout>
+

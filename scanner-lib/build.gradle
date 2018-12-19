@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+
+    compile project(':elearning-library')
+    compile(name:'albumvideo-release',ext:'aar')
+
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '27.0.3'
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resource_list_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/resource_list_header" />
+
+    <com.galaxyschool.app.wawaschool.views.MyGridView
+        android:id="@+id/resource_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:background="@color/main_bg_color"
+        android:numColumns="1"
+        android:scrollingCache="false"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="10dp"/>
+
+</LinearLayout>

@@ -1,0 +1,13 @@
+<resources>
+
+    <dimen name="view_padding">10dp</dimen>
+    <dimen name="paper_padding_bottom">100dp</dimen>
+    <dimen name="paper_padding_default">6dp</dimen>
+    <dimen name="paper_padding_small">3dp</dimen>
+    <dimen name="paper_padding_table">60dp</dimen>
+    <dimen name="paper_default_height">45dp</dimen>
+
+    <dimen name="attach_layout_min_height">60dp</dimen>
+    <dimen name="delete_mode_btn_size">60dp</dimen>
+
+</resources>

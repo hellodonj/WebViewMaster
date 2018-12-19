@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/image_root_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_dark_trans_black">
+
+    <LinearLayout
+        android:id="@+id/image_pop_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/com_bg_light_white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/text_gray_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/select_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/image_take_photo_btn"
+                style="@style/text_gray_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/com_item_selector"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/camera"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/com_item_space"
+                android:layout_marginRight="@dimen/com_item_space"
+                android:background="@color/com_bg_light_white"/>
+
+            <TextView
+                android:id="@+id/image_fetch_photo_btn"
+                style="@style/text_gray_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/com_item_selector"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/gallery"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/image_cancel_btn"
+            style="@style/text_gray_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+</RelativeLayout>
+

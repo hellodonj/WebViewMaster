@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/personal_space_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/text_white"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/main_bg_color">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/user_header_new"/>
+
+            <LinearLayout
+                android:id="@+id/user_brief_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <include
+                    android:id="@+id/user_real_name_attr"
+                    layout="@layout/contacts_user_align_left_attribute"/>
+
+                <ImageView
+                    android:id="@+id/user_real_name_line"
+                    style="@style/line_gray"/>
+
+                <include
+                    android:id="@+id/user_location_attr"
+                    layout="@layout/contacts_user_align_left_attribute"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"/>
+
+                <include
+                    android:id="@+id/user_intro_attr"
+                    layout="@layout/contacts_user_align_vertical_attribute"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <include
+                android:id="@+id/post_bar_list_body"
+                layout="@layout/resource_list_with_header"/>
+
+            <!--二维码-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/text_white"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/contacts_qrcode_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center|top"
+                    android:layout_margin="10dp"
+                    android:scaleType="fitCenter"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        style="@style/line_gray"
+        android:background="@color/main_bg_color"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 如果是自己，显示个人详情/退出账户 -->
+        <LinearLayout
+            android:id="@+id/user_account_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/user_detail_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/personal_details"
+                android:textColor="@color/white"/>
+
+            <View
+                style="@style/line_gray_v"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/user_exit_account_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/exit_account"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- 关注/加好友 -->
+        <LinearLayout
+            android:id="@+id/user_subscribe_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/follow_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/subscribe"
+                android:textColor="@color/white"/>
+
+            <View
+                style="@style/line_gray_v"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/friend_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/add_as_friend"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- 如果已是好友，显示删除好友/聊天 -->
+        <LinearLayout
+            android:id="@+id/user_chat_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/delete_friend_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/delete_friend"
+                android:textColor="@color/white"/>
+
+            <View
+                style="@style/line_gray_v"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/chat_btn"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_add_authority_or_people_green_bg"
+                android:gravity="center"
+                android:text="@string/wawatong_menu_chat"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorGrayHighLight">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="1dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@color/colorLight">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_course"
+                android:layout_width="96dp"
+                android:layout_height="54dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tv_live_state"
+                android:layout_width="44dp"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_gravity="top|right"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/tv_live_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:textColor="@color/textPrimary"
+                android:layout_gravity="top"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <TextView
+                android:id="@+id/tv_live_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:textColor="@color/textGray"
+                android:layout_gravity="left|center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <TextView
+                android:id="@+id/tv_live_teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:ellipsize="end"
+                android:textColor="@color/textGray"
+                android:layout_gravity="left|bottom"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

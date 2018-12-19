@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_child_view"
+              android:layout_marginTop="10dp"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:id="@+id/layout_child_sub_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="55dp"
+            android:orientation="horizontal"
+            android:background="@color/main_bg_color"
+            android:padding="5dp"
+            >
+
+        <TextView
+                android:id="@+id/reply_name"
+                style="@style/comment_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="费拉基米尔.伊利奇.列宁"
+                android:singleLine="true"
+                android:maxEms="4"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:textColor="#417597"
+                />
+
+        <TextView
+                android:id="@+id/reply"
+                style="@style/comment_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/reply"
+                android:textSize="14sp"
+                android:singleLine="true"/>
+
+        <TextView
+                android:id="@+id/reply_to_name"
+                style="@style/comment_content_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="潇潇"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:maxEms="4"
+                android:ellipsize="end"
+                android:textColor="#417597"
+                android:visibility="visible"/>
+
+        <TextView
+                android:id="@+id/reply_time"
+                style="@style/comment_date_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
+                android:text="2016-06-27 16:19:46"
+                android:visibility="gone"
+                />
+
+        <TextView
+            android:id="@+id/reply_colon"
+            style="@style/comment_date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="："
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/reply_content"
+            style="@style/comment_content_txt"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:textSize="14sp"
+            android:text="快去，应该的顶顶顶顶顶的刷刷刷"
+            android:visibility="visible"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

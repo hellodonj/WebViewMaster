@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CheckedTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/txt_wawa_normal_black"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeightSmall"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:checkMark="@drawable/single_choice_btn"
+    android:gravity="center_vertical">
+</CheckedTextView>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+	<string name="playbackphone_menu_show">Show</string>
+    <string name="playbackphone_menu_attention">Follow</string>
+    <string name="playbackphone_menu_praise">Like</string>
+    <string name="playbackphone_menu_comments">Comment</string>
+    <string name="playbackphone_menu_share">Share</string>
+    <string name="playbackphone_menu_collect">Favorite</string>
+    <string name="playbackphone_menu_edit">Edit</string>
+    <string name="playbackphone_menu_more">More</string>
+    <string name="playbackphone_menu_complete">Done</string>
+
+    <string name="playbackphone_menu_viewcourse">See the course</string>
+
+</resources>

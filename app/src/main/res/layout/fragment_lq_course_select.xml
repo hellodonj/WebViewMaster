@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbar_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        style="@style/line_gray"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_has_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/common_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"/>
+
+            <include layout="@layout/contacts_picker_bar"
+                />
+        </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:id="@+id/tv_has_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/text_normal"
+            android:textSize="16sp"
+            android:gravity="center|left"
+            android:layout_centerInParent="true"
+            android:text="@string/personal_library_no_content_lq_course"/>
+    </RelativeLayout>
+
+</LinearLayout>

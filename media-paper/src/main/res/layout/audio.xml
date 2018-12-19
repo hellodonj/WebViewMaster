@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+    <LinearLayout
+            android:id="@+id/base_layout"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" android:gravity="center_vertical"
+            android:background="@drawable/audio_bg"
+            >
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical">
+            <ImageView
+                    android:id="@+id/recordbtn"
+                    android:layout_alignParentLeft="true" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:src="@drawable/mic_rec"
+                    android:scaleType="centerInside"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"/>
+            <ImageView
+                    android:id="@+id/recplaybtn"
+                    android:layout_alignParentLeft="true" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:src="@drawable/playbtn"
+                    android:scaleType="centerInside" android:minWidth="40dp"
+                    android:minHeight="40dp"/>
+            <ImageView
+                    android:id="@+id/recpausebtn"
+                    android:layout_alignParentLeft="true" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:src="@drawable/pausebtn"
+                    android:scaleType="centerInside"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"/>
+        </FrameLayout>
+
+        <Chronometer
+                android:id="@+id/recduration"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:gravity="center" android:text="00:00"/>
+
+
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical">
+            <SeekBar
+                    android:id="@+id/audioseek" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:layout_marginBottom="5px"
+                    android:thumb="@drawable/slide_button_g" android:paddingLeft="9dp"
+                    android:paddingRight="9dp" android:progressDrawable="@drawable/seekbar_progress_g"/>
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:gravity="center_vertical|right"
+                >
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginLeft="5px" android:paddingRight="15px"
+                    android:paddingTop="5px" android:paddingBottom="5px"
+                    android:layout_gravity="center_vertical">
+                <TextView
+                        android:id="@+id/playduration"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="00:00" android:textColor="#ffa05504"
+                        android:visibility="invisible"/>
+                <TextView
+                        android:id="@+id/playTotal" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="00:00"
+                        android:textColor="#ff5e3309"
+                        android:visibility="invisible"/>
+            </LinearLayout>
+
+            <ImageView
+                    android:id="@+id/recstopbtn"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/stopbtn"
+                    android:scaleType="centerInside"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"/>
+        </FrameLayout>
+
+
+    </LinearLayout>
+    <ImageView
+            android:id="@+id/dele"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/mp_delete"/>
+</RelativeLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/popup_root_view_bg">
+
+    <LinearLayout
+        android:id="@+id/layout_pop_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_bg_color"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+    <com.galaxyschool.app.wawaschool.views.EnglishWritingEditText
+        android:id="@+id/et_modify"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@null"
+        android:gravity="left"
+        android:textColor="#555555"
+        android:text="hello mey kalld sllslsl alllalllalalallaal hdddhoowowo  woowowhhwhwwhwhhwhwehhh sslllllls"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/commit_btn"
+            style="@style/txt_mp_normal_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_green_bg"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:minWidth="80dp"
+            android:textColor="@color/white"
+            android:text="@string/commit"
+            />
+
+        <TextView
+            android:id="@+id/cancel_btn"
+            style="@style/txt_mp_normal_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_green_bg"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:minWidth="80dp"
+            android:textColor="@color/white"
+            android:text="@string/cancel"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+</LinearLayout>

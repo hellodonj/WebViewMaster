@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/white"/>
+    <stroke android:color="#E8E8E8" android:width="2dp"/>
+    <padding
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp"/>
+    <corners
+        android:topLeftRadius="@dimen/resource_gridview_padding"
+        android:topRightRadius="@dimen/resource_gridview_padding"
+        android:bottomRightRadius="@dimen/resource_gridview_padding"
+        android:bottomLeftRadius="@dimen/resource_gridview_padding"/>
+</shape>

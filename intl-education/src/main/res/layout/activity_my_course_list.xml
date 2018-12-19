@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/com_bg_light_white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:orientation="vertical">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_paper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbarSize"
+            android:background="@color/colorLight">
+
+            <ImageButton
+                android:id="@+id/left_function1_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:background="#00000000"
+                android:padding="4dp"
+                android:src="@drawable/ic_back_green"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_centerInParent="true"
+                app:tabTextColor="@color/textSecond"
+                app:tabSelectedTextColor="@color/textPrimary"
+                app:tabIndicatorHeight="2dp"
+                app:tabIndicatorColor="@color/colorAccent"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:tabMode="scrollable"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:singleLine="true"
+                android:textColor="@color/textPrimary"
+                android:textSize="18sp"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/bottom_split_view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/com_gray_trans_gradient" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

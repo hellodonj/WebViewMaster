@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <View
+        android:id="@+id/top_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E5E5E5"
+        android:visibility="visible"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        >
+
+        <com.galaxyschool.app.wawaschool.views.CircleImageView
+            android:id="@+id/head_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/default_user_icon"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/comment_name"
+                    style="@style/comment_content_txt"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="dawei"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_praise"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="right|center_vertical"
+                    android:layout_gravity="top">
+
+                <TextView
+                    android:id="@+id/reply_btn"
+                    style="@style/comment_praise_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/reply"
+                    android:layout_marginRight="10dp"
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    android:singleLine="true"/>
+
+                <TextView
+                    android:id="@+id/praise_btn"
+                    style="@style/comment_praise_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:drawableLeft="@drawable/btn_comment_praise"
+                    android:singleLine="true"/>
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/comment_time"
+                    style="@style/comment_date_txt"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="2016-03-14 13:45"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/comment_cotent"
+                style="@style/comment_content_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="123"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"/>
+
+
+            <View
+                android:id="@+id/parent_children_devider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E5E5E5"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

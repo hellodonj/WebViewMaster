@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="@dimen/com_item_space_s">
+
+    <ImageView
+        android:id="@+id/user_head_iv"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/user_header_def"
+        android:layout_marginRight="@dimen/com_item_space"/>
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/name_tv"
+            style="@style/text_dark_gray_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingTop="@dimen/com_item_space_xs"/>
+
+        <TextView
+            android:id="@+id/create_time_tv"
+            style="@style/text_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/task_name_tv"
+            style="@style/text_dark_gray_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:background="@drawable/com_white_green_edge_radio_bt_normal"
+        android:layout_width="wrap_content"
+        android:padding="2dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@id/cover_iv"
+            android:scaleType="fitXY"
+            android:layout_width="64dp"
+            android:layout_height="64dp"/>
+    </LinearLayout>
+</LinearLayout>

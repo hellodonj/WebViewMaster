@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/expandable_item_header"/>
+
+    <include layout="@layout/item_assigned_homework"/>
+
+    <include layout="@layout/include_10_dp_horizontal_line_layout"/>
+
+    <com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip
+        android:id="@+id/pager_sliding_tab_strip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:background="@color/white"
+        app:pstsTabPaddingLeftRight="15dp"
+        app:pstsTabTextColor="@color/custom_tab_text"
+        app:pstsShouldExpand="true"
+        app:pstsIndicatorColor="@color/green"
+        app:pstsDividerWidth="0dp"
+        app:pstsDividerPadding="5dp"
+        app:pstsDividerColor="@color/line_gray"
+        />
+
+    <View style="@style/line_gray"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.galaxyschool.app.wawaschool.views.MyViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <FrameLayout
+            android:layout_gravity="bottom|right"
+            android:visibility="gone"
+            android:id="@+id/tv_statistic"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="58dp"
+            android:layout_height="58dp">
+
+            <com.lqwawa.apps.views.DrawPointView
+                app:pointShape="round"
+                app:pointColor="#ee00913a"
+                app:pointWideth="58dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:text="@string/str_achievement_statistics"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+
+
+    <TextView
+        android:id="@+id/retell_course_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:minWidth="120dp"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/shape_corner_text_light_red_20_dp"
+        android:text="@string/retell_course"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

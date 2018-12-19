@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/com_bg_white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_light_white"
+            android:fitsSystemWindows="false"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/com_item_space_xl"
+                android:text="@string/network"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/text_gray_xl"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/com_item_space_xl"
+                    android:text="@string/allow_4g"/>
+
+                <CheckBox
+                    android:id="@+id/allow_4g_cb"
+                    style="@style/ComCheckBox"
+                    android:layout_marginRight="@dimen/com_item_space_xl"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/com_item_space_xl"
+                android:text="@string/message_silent"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/text_gray_xl"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/com_item_space_xl"
+                    android:text="@string/private_msg"/>
+
+                <CheckBox
+                    android:id="@+id/allow_private_msg_cb"
+                    style="@style/ComCheckBox"
+                    android:layout_marginRight="@dimen/com_item_space_xl"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dip"
+                  android:background="@color/com_line_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/text_gray_xl"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/com_item_space_xl"
+                    android:text="@string/notice"/>
+
+                <CheckBox
+                    android:id="@+id/allow_notice_cb"
+                    style="@style/ComCheckBox"
+                    android:layout_marginRight="@dimen/com_item_space_xl"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/com_item_space_xl"
+                android:text="@string/about"/>
+
+            <TextView
+                android:id="@+id/about_product_tv"
+                style="@style/text_gray_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/com_item_selector"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/com_item_space_xl"
+                android:text="@string/about_product"/>
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="1dip"
+                  android:background="@color/com_line_gray"/>
+
+            <TextView
+                android:id="@+id/check_for_updates_tv"
+                style="@style/text_gray_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/com_item_selector"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/com_item_space_xl"
+                android:text="@string/check_for_updates"/>
+
+            <Button
+                android:id="@+id/logout_bt"
+                style="@style/text_white_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/com_item_space_xxxxl"
+                android:background="@drawable/com_green_radio_bt_bg"
+                android:text="@string/login_out"/>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_common_send"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <View
+        style="@style/line_gray"/>
+
+    <LinearLayout
+        android:id="@+id/layout_border"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_btn"
+            style="@style/text_black_l"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/gray_10dp_main_bg_color"
+            android:hint="@string/say_something"
+            android:minHeight="40dp"
+            android:maxLength="40"
+            android:padding="5dp"
+            android:inputType="none"
+            android:focusable="false"
+            android:imeOptions="actionDone"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/send_btn"
+            style="@style/text_white_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_10dp_text_green"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:minWidth="75dp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:text="@string/send"
+            />
+    </LinearLayout>
+</LinearLayout>

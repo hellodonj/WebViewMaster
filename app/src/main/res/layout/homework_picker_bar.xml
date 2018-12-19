@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/homework_picker_bar_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffebebeb"
+              android:orientation="vertical"
+              android:visibility="visible">
+
+    <ImageView style="@style/line_gray"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            >
+        <TextView
+                android:id="@+id/contacts_picker_clear"
+                style="@style/txt_wawa_normal_green"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="@string/clear"
+                android:textColor="@color/contacts_picker_bar_color"
+                android:background="@color/white"
+                android:enabled="false"
+                android:gravity="center"
+                />
+
+        <TextView
+                android:id="@+id/contacts_picker_confirm"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="@string/ok"
+                android:textColor="@color/white"
+                android:background="#009039"
+                android:enabled="true"
+                android:gravity="center"
+                />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ebebeb"
+              android:orientation="vertical">
+    <include layout="@layout/contacts_header" />
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@color/white">
+        <include layout="@layout/contacts_search_bar"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cdcdcd"/>
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/shool_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            />
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="#ebebeb"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/sure_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/noc_sure"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/text_green"
+            android:padding="10dp"
+            />
+        <View
+            android:layout_width="1dp"
+            android:background="@color/line_gray"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/cancel_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:textColor="@color/text_green"
+            android:padding="10dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>

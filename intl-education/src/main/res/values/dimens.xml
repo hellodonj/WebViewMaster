@@ -1,0 +1,41 @@
+<resources>
+    <!-- common font size -->
+    <dimen name="com_font_size_1">8sp</dimen>
+    <dimen name="com_font_size_2">10sp</dimen>
+    <dimen name="com_font_size_3">12sp</dimen>
+    <dimen name="com_font_size_4">14sp</dimen>
+    <dimen name="com_font_size_5">16sp</dimen>
+    <dimen name="com_font_size_6">18sp</dimen>
+    <dimen name="com_font_size_7">20sp</dimen>
+    <dimen name="com_font_size_8">22sp</dimen>
+    <dimen name="com_font_size_9">24sp</dimen>
+    <dimen name="com_font_size_10">26sp</dimen>
+    <dimen name="com_font_size_11">28sp</dimen>
+    <dimen name="com_font_size_12">30sp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!--<dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>-->
+
+    <!--common padding or margin-->
+    <dimen name="com_item_space_xxxs">1dp</dimen>
+    <dimen name="com_item_space_xxs">2dp</dimen>
+    <dimen name="com_item_space_xs">4dp</dimen>
+    <dimen name="com_item_space_s">6dp</dimen>
+    <dimen name="com_item_space">8dp</dimen>
+    <dimen name="com_item_space_l">10dp</dimen>
+    <dimen name="com_item_space_xl">12dp</dimen>
+    <dimen name="com_item_space_xxl">14dp</dimen>
+    <dimen name="com_item_space_xxxl">16dp</dimen>
+    <dimen name="com_item_space_xxxxl">18dp</dimen>
+
+    <dimen name="com_btn_height_xs">30dp</dimen>
+    <dimen name="com_btn_height_s">34dp</dimen>
+    <dimen name="com_btn_height">36dp</dimen>
+    <dimen name="com_btn_height_l">38dp</dimen>
+    <dimen name="com_btn_height_xl">40dp</dimen>
+    <dimen name="com_btn_height_xxl">42dp</dimen>
+    <dimen name="com_btn_height_xxxl">44dp</dimen>
+
+    <dimen name="top_bar_valid_height">48dp</dimen>
+</resources>

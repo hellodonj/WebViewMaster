@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical" >
+
+    <include layout="@layout/contacts_header" />
+
+    <include layout="@layout/contacts_search_bar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/contacts_tab_person"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/contacts_tab_bg"
+            android:enabled="false"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/subscribed_person"
+            android:textColor="@color/contacts_tab_text_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/contacts_tab_school"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/contacts_tab_bg"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/subscribed_school"
+            android:textColor="@color/contacts_tab_text_color"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View style="@style/line_gray" />
+
+    <com.galaxyschool.app.wawaschool.views.MyViewPager
+        android:id="@+id/contacts_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

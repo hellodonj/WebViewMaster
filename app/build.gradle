@@ -1,0 +1,140 @@
+apply plugin: 'com.android.application'
+apply plugin: 'bugly'
+
+bugly {
+    appId = 'eea1375c3e' // 注册时分配的App ID
+    appKey = 'a07b42dc-cb09-4c1f-9de1-289f839b35a9' // 注册时分配的App Key
+    uploadMapping = true
+}
+
+dependencies {
+    compile 'com.android.support:multidex:1.0.3'
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile project(':elearning-library')
+    compile project(':onekey-share-lib')
+    compile project(':video-recorder')
+    compile project(':media-paper')
+    compile project(':ecourse-maker')
+    compile project(':robot-pen')
+    compile project(':scanner-lib')
+    compile project(':letv-sdk')
+    compile project(':intl-education')
+    compile project(':lqbase-lib')
+    compile(name: 'ebanshu-android-sdk', ext: 'aar')
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.github.NodeMedia:NodeMediaClient-Android:2.4.2'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+}
+
+static def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+    useLibrary 'org.apache.http.legacy'
+
+    compileSdkVersion rootProject.ext.versions.compileSdkVersion
+    buildToolsVersion rootProject.ext.versions.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.versions.minSdkVersion
+        targetSdkVersion rootProject.ext.versions.targetSdkVersion
+        applicationId "com.galaxyschool.app.wawaschool"
+        versionCode 522
+        versionName "5.11.26"
+
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+    }
+    signingConfigs {
+        debug {
+
+        }
+
+        release {
+            storeFile file(KEY_STORE_FILE)
+            storePassword KEY_STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919", EASEMOB_APPKEY: "lqwwxx#newlqwawa"]
+        }
+
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
+
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919", EASEMOB_APPKEY: "lqwwxx#newlqwawa"]
+        }
+
+        staging {
+            initWith(release)
+            matchingFallbacks = ['release']
+        }
+    }
+
+    // set output apk filename
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.buildType.name == "release") {
+                outputFileName = "lqwawa_${versionName}_release_${releaseTime()}.apk"
+            } else if (variant.buildType.name == "staging") {
+                outputFileName = "lqwawa_${versionName}_staging_${releaseTime()}.apk"
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds true
+        disable 'MockLocation'
+        disable 'ResourceType'
+        disable 'ResAuto'
+        disable 'ValidFragment'
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+    }
+    dexOptions {
+        preDexLibraries true
+        dexInProcess true
+        jumboMode true
+        javaMaxHeapSize "2048m"
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    productFlavors {
+    }
+
+    repositories {
+        flatDir {
+            dirs '../scanner-lib/libs'
+        }
+    }
+
+}
+

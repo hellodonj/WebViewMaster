@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_little_gray"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/com_top_text"
+        style="@style/text_dark_gray_l"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/com_item_selector"
+        android:padding="@dimen/com_item_space_xl"
+        android:visibility="gone"/>
+
+    <include layout="@layout/com_page_load_failed"/>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/com_bg_white"
+            android:scrollbars="none"/>
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+</LinearLayout>

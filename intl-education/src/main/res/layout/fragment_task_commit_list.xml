@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/com_top_text"
+            style="@style/text_dark_gray_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:padding="@dimen/com_item_space_xl"
+            android:visibility="gone"/>
+
+        <include layout="@layout/com_page_load_failed"/>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:padding="10dp"
+        android:gravity="center_horizontal">
+
+        <!--复述课件，做读写单-->
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/done_bt"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple"
+            tools:text="@string/app_name"
+            app:gTouchColor="@color/colorLightHighAlpha"
+            android:visibility="gone"
+            android:background="@drawable/btn_pink_radius_selector"/>
+
+        <!--语音评测-->
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_speech_evaluation"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple"
+            app:gTouchColor="@color/colorLightHighAlpha"
+            android:layout_marginLeft="10dp"
+            android:text="@string/label_speech_evaluation"
+            android:background="@drawable/btn_pink_radius_selector"
+            android:visibility="gone"/>
+
+        <!--成绩统计-->
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_statistical_scores"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple"
+            app:gTouchColor="@color/colorLightHighAlpha"
+            android:layout_marginLeft="10dp"
+            android:text="@string/label_statistical_scores"
+            android:background="@drawable/btn_pink_radius_selector"
+            android:visibility="gone"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

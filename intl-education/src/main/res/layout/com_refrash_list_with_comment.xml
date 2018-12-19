@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@color/com_bg_little_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/com_top_text"
+            style="@style/text_dark_gray_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:padding="@dimen/com_item_space_xl"
+            android:visibility="gone"/>
+
+        <include layout="@layout/com_page_load_failed"/>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:scrollbars="none"/>
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_common_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            style="@style/line_gray"/>
+
+        <LinearLayout
+            android:id="@+id/layout_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:padding="5dp">
+
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/edit_btn"
+                style="@style/text_black_l"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/gray_10dp_main_bg_color"
+                android:hint="@string/say_something"
+                android:textColorHint="@color/textFourth"
+                android:imeOptions="actionDone"
+                android:maxLength="40"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/send_btn"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/textAccent"
+                android:foreground="@drawable/ic_touch_menu"
+                android:text="@string/send"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!--<include layout="@layout/include_lq_bottom_send_layout"/>-->
+
+</LinearLayout>

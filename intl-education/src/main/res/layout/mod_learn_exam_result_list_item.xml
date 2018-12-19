@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:padding="@dimen/com_item_space">
+    <TextView
+        android:id="@+id/pager_index_tv"
+        style="@style/text_black_l"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/exam_title_tv"
+        style="@style/text_dark_gray_l"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/com_bg_white"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="@dimen/com_item_space"
+        android:paddingRight="@dimen/com_item_space"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/result_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/result_tv"
+        style="@style/text_red_l"
+        android:text="@string/not_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical">
+    <include layout="@layout/contacts_header" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/entry_info"
+               android:textSize="20dp"
+               android:gravity="center"
+               android:layout_marginTop="15dp"
+               />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/entry_info_detail"
+                android:textSize="18dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_dark_gray"
+                android:padding="10dp"
+                />
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:id="@+id/agree_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/noc_agree_join_info"
+        android:background="@drawable/green_10dp_green"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        />
+</LinearLayout>

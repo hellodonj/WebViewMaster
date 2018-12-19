@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/com_page_load_failed"/>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/common_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/com_bg_white"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/com_btn_height_xs"
+            android:padding="@dimen/com_item_space_xxl"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/com_btn_height_xs"/>
+
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+</LinearLayout>

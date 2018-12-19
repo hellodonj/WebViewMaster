@@ -1,0 +1,11 @@
+<resources>
+
+    <dimen name="ray_menu_root_item_size">60dp</dimen>
+    <dimen name="ray_menu_item_size">50dp</dimen>
+    <dimen name="ray_menu_item_margin">2dp</dimen>
+    <dimen name="ray_menu_item_radius">25dp</dimen>
+    <dimen name="ray_menu_margin">5dp</dimen>
+
+    <dimen name="ray_menu_toolbar_min_size">80dp</dimen>
+
+</resources>

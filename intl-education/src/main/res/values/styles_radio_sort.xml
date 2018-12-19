@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SortRadioStyle" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/com_green_check_text</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:checked">false</item>
+        <item name="android:drawableRight">@drawable/sort_arrow_radio_bg</item>
+        <item name="android:drawablePadding">2dp</item>
+        <item name="android:drawableBottom">@drawable/arrow_up_small_radio_bg</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+</resources>

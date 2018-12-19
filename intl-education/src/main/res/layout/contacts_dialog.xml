@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_white_bg"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/contacts_dialog_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/contacts_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:text="标题"
+                style="@style/contacts_dialog_text"
+                android:singleLine="true"/>
+
+        <ImageView style="@style/line_gray"/>
+    </LinearLayout>
+
+    <FrameLayout
+            android:id="@+id/contacts_dialog_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+    </FrameLayout>
+
+    <ImageView style="@style/line_gray"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/contacts_dialog_left_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="#00000000"
+                style="@style/contacts_dialog_text"
+                android:text="取消" />
+
+        <ImageView style="@style/line_gray"
+                android:id="@+id/contacts_dialog_button_seperator"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
+        <Button
+                android:id="@+id/contacts_dialog_right_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:gravity="center"
+                style="@style/contacts_dialog_text"
+                android:text="确定" />
+    </LinearLayout>
+
+</LinearLayout>
+

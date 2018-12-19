@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/iv_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_net_error"/>
+
+    <TextView
+        android:id="@+id/tv_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_failed"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/textPrimary"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/label_net_error"/>
+
+    <net.qiujuer.genius.ui.widget.Button
+        android:id="@+id/btn_reload"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:textSize="10sp"
+        android:textColor="@color/textLight"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center"
+        android:layout_below="@+id/tv_failed"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_accent_radius_19"
+        app:gTouchCornerRadius="19dp"
+        app:gTouchEffect="ripple"
+        app:gTouchColor="@color/colorLightHighAlpha"
+        android:text="@string/reload"/>
+
+</RelativeLayout>

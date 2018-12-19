@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root_layout">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_space_school_header"
+        android:layout_alignTop="@+id/content_layout"
+        android:layout_alignBottom="@+id/content_layout"/>
+
+    <RelativeLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <FrameLayout
+            android:id="@+id/bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/tv_toggle_school"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:background="@drawable/toggle_school_bg"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/toggle_school"
+                android:textColor="#ffffffff"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/btn_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:gravity="center"
+                android:drawableLeft="@drawable/my_share"
+                android:text="@string/share"
+                android:textColor="#ffffffff"
+                android:textSize="14sp"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/bar_layout"
+            android:layout_marginTop="10dp">
+
+            <FrameLayout
+                android:id="@+id/avatar_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left|center_vertical">
+
+                <com.galaxyschool.app.wawaschool.views.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:border_width="2dp"
+                    app:border_color="@android:color/white"
+                    android:src="@drawable/default_avatar"
+                    android:scaleType="fitCenter"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left">
+
+                    <TextView
+                        android:id="@+id/tv_school_name"
+                        style="@style/txt_wawa_normal_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="left"
+                        android:maxLines="2"
+                        android:maxWidth="240dp"
+                        android:padding="0dp"
+                        android:textSize="16sp"
+                        tools:text="@string/label_course" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom|left"
+                    android:layout_marginTop="10dp">
+
+                    <RatingBar
+                        android:id="@+id/grade_rating_bar"
+                        style="@style/RatingStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:max="5"
+                        android:numStars="5"
+                        android:rating="0"
+                        android:stepSize="0.05" />
+
+                    <TextView
+                        android:id="@+id/tv_attention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorLight"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="center"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                        tools:text="@string/label_many_attention"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="2dp"
+                android:layout_gravity="bottom">
+
+                <TextView
+                    android:id="@+id/tv_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="#26ABA3"
+                    android:text="@string/label_intro"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_space_school_intro"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"/>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

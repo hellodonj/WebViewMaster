@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="#ffffff"
+    android:orientation="horizontal">
+
+    <include
+        android:id="@+id/notice_item_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/class_space_toolbar_item" />
+
+    <include
+        android:id="@+id/comment_item_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/class_space_toolbar_item" />
+
+    <include
+        android:id="@+id/course_item_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/class_space_toolbar_item" />
+
+    <include
+        android:id="@+id/homework_item_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/class_space_toolbar_item" />
+
+    <include
+        android:id="@+id/lecture_item_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        layout="@layout/class_space_toolbar_item" />
+
+</LinearLayout>

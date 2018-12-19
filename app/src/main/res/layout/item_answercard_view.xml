@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+              android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_title_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:text=""
+        android:textColor="@color/text_black"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_title_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:text=""
+                android:textColor="@color/text_black"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+
+        <!--主观题的答题选项-->
+        <LinearLayout
+            android:id="@+id/ll_subject_problem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center|left"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/tv_take_photo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_task_take_photo"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/tv_photo"
+                    style="@style/txt_mp_normal_white"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_task_local_image"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/tv_handwriting"
+                    style="@style/txt_mp_normal_white"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_task_handwriting"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!--提示选择选项-->
+        <com.galaxyschool.app.wawaschool.views.MyGridView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gv_check_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:cacheColorHint="#00000000"
+            android:gravity="center"
+            android:horizontalSpacing="0dp"
+            android:listSelector="#00000000"
+            android:numColumns="4"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"
+            android:scrollingCache="false"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="20dp"
+            android:visibility="gone"/>
+        <!--填空-->
+        <LinearLayout
+            android:id="@+id/ll_fill_in_blank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/layout_input_answer_content"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>

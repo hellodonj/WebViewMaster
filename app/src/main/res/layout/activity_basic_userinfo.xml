@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <ListView
+            android:id="@+id/userinfo_basic_info_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="1dp" />
+
+        <FrameLayout
+            android:id="@+id/basic_userinfo_edit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/basic_userinfo_content_edittext"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inputbox_pre_bg"
+                android:padding="10dp"
+                android:minHeight="@dimen/feedback_edittext_min_height"
+                android:gravity="top|left"
+                android:textCursorDrawable="@null" />
+
+            <LinearLayout
+                android:id="@+id/basic_userinfo_sex_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/basic_userinfo_male_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:minHeight="@dimen/userinfo_item_min_height"
+                    android:clickable="true"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/male" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/my_detail_right_ico"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/basic_userinfo_female_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:minHeight="@dimen/userinfo_item_min_height"
+                    android:clickable="true"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:text="@string/female" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/my_detail_right_ico"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.galaxyschool.app.wawaschool.views.wheelview.CalendarView
+                android:id="@+id/basic_userinfo_calendarview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </FrameLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

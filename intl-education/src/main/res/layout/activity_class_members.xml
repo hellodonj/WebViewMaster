@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_light_white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <include layout="@layout/com_page_load_failed"/>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:background="@color/com_bg_light_white"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/com_bg_light_white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/teacher_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/com_item_selector"
+                    android:gravity="right|center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/com_item_space"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp"
+                        android:src="@drawable/title"/>
+
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10.0dp"
+                        android:text="@string/teacher"
+                        style="@style/text_black_xl"/>
+
+                    <ImageView
+                        android:id="@+id/teacher_sort_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="@dimen/com_item_space"
+                        android:src="@drawable/arrow_down_gray_ico"/>
+                </LinearLayout>
+
+                <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:numColumns="3"
+                    android:fillViewport="true"
+                    android:background="@color/com_bg_white"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    android:layout_marginBottom="@dimen/com_item_space"
+                    android:id="@+id/teacher_gv"/>
+
+                <LinearLayout
+                    android:id="@+id/student_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/com_item_selector"
+                    android:gravity="right|center_vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/com_item_space"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp"
+                        android:src="@drawable/title"/>
+
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10.0dp"
+                        android:text="@string/student"
+                        style="@style/text_black_xl"/>
+
+                    <ImageView
+                        android:id="@+id/student_sort_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="@dimen/com_item_space"
+                        android:src="@drawable/arrow_down_gray_ico"/>
+                </LinearLayout>
+
+
+                <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/com_bg_white"
+                    android:numColumns="3"
+                    android:fillViewport="true"
+                    android:scrollbars="none"
+                    android:visibility="visible"
+                    android:id="@+id/student_gv"/>
+
+                <Button
+                    android:id="@+id/group_chat_bt"
+                    style="@style/text_white_xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/com_btn_height_xxxl"
+                    android:layout_marginLeft="@dimen/com_item_space_xxxxl"
+                    android:layout_marginRight="@dimen/com_item_space_xxxxl"
+                    android:layout_marginTop="@dimen/com_item_space_xxxxl"
+                    android:background="@drawable/com_green_radio_bt_bg"
+                    android:text="@string/group_chat"/>
+
+                <Button
+                    android:id="@+id/exit_class_bt"
+                    style="@style/text_black_xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/com_btn_height_xxxl"
+                    android:layout_marginLeft="@dimen/com_item_space_xxxxl"
+                    android:layout_marginRight="@dimen/com_item_space_xxxxl"
+                    android:layout_marginTop="@dimen/com_item_space_xxxxl"
+                    android:background="@drawable/com_white_radio_bt_bg"
+                    android:text="@string/exit_class"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

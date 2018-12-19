@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="42dp"
+              android:background="@color/com_bg_light_white"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/search_bg_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/white_search_text_bg"
+            android:paddingBottom="@dimen/com_item_space_xxs"
+            android:paddingTop="@dimen/com_item_space_xxs">
+
+            <EditText
+                android:id="@+id/search_et"
+                style="@style/text_black_xl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/search_hit"
+                android:imeOptions="actionNone"
+                android:inputType="text|textAutoComplete|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textColorHint="@color/com_text_light_gray"
+                android:textCursorDrawable="@null"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/search_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="5dp"
+            android:src="@drawable/search_small"/>
+
+        <ImageView
+            android:id="@+id/search_clear_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/com_item_space"
+            android:padding="@dimen/com_item_space"
+            android:src="@drawable/search_clear"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/commit_search_tv"
+        style="@style/text_green_l"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/com_item_space"
+        android:padding="6dp"
+        android:text="@string/search"/>
+</LinearLayout>

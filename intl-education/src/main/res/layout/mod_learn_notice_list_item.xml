@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/com_item_selector"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/com_item_space"
+              android:paddingTop="@dimen/com_item_space"
+              android:paddingRight="@dimen/com_item_space">
+
+    <TextView
+        android:id="@+id/notice_title_tv"
+        style="@style/text_dark_gray_l"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/notice_content_tv"
+        style="@style/text_dark_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"/>
+
+    <TextView
+        android:id="@+id/notice_date_tv"
+        style="@style/text_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/com_item_space"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/com_line_gray"/>
+</LinearLayout>

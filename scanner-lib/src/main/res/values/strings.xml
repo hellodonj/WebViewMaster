@@ -1,0 +1,14 @@
+<resources>    
+    <integer name="viewfinder_border_width">4</integer>
+    <integer name="viewfinder_border_length">60</integer>
+
+    <string name="qrcode_scanning">Scan</string>
+    <string name="ar_scanning">Scan</string>
+
+    <string name="scan">Scan</string>
+    <string name="ar_scan">AR</string>
+    <string name="photo">Photos</string>
+    <string name="scanning">Scanning</string>
+    <string name="scan_failed">Scan failed</string>
+    <string name="title_scan">Scan</string>
+</resources>

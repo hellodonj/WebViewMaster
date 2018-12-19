@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/colors.xml
+**
+** Copyright 2008, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License"); 
+** you may not use this file except in compliance with the License. 
+** You may obtain a copy of the License at 
+**
+**     http://www.apache.org/licenses/LICENSE-2.0 
+**
+** Unless required by applicable law or agreed to in writing, software 
+** distributed under the License is distributed on an "AS IS" BASIS, 
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+** See the License for the specific language governing permissions and 
+** limitations under the License.
+*/
+-->
+<resources>
+    <color name="delete_color_filter">#A5FF0000</color>
+
+    <color name="snag_callout_color">#F444</color>
+
+
+    <!--	<color name="prev_next_month_day_color">#00000000</color>-->
+
+    <!--    <color name="sunday_saturday_prev_next_month_day_color">#00000000</color>-->
+    <!-- for camera -->
+
+
+    <drawable name="mp_transparent_background">#00000000</drawable>
+    <color name="mp_white">#ffffff</color>
+    <color name="mp_light_gray">#ffd2d2d2</color>
+    <color name="mp_text_green">#009039</color>
+</resources>

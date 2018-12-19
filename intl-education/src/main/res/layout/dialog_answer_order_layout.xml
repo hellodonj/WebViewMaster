@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gray_radius_14"
+        android:padding="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="@string/label_intro_of_answer_question"
+            android:textColor="@color/text_black"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:gravity="center|left"
+            android:text="@string/label_answer_tips"
+            android:textColor="@color/text_black"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:gravity="center|left"
+            android:text="@string/label_answer_writing_tips"
+            android:textColor="@color/text_gray"/>
+
+
+        <CheckBox
+            android:layout_marginTop="10dp"
+            android:id="@+id/check_do_task_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:checked="false"
+            android:button="@null"
+            android:drawableLeft="@drawable/ecourse_choice_btn"
+            android:drawablePadding="5dp"
+            android:text="@string/label_no_tips"
+            android:textSize="14sp"
+            android:textColor="@color/text_black"/>
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:id="@+id/tv_begin_to_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_pink_radius_selector"
+            android:padding="10dp"
+            android:textSize="14sp"
+            android:minWidth="120dp"
+            android:gravity="center"
+            android:text="@string/label_begin_to_answer"
+            android:layout_gravity="center"
+            android:textColor="@color/textLight"/>
+    </LinearLayout>
+
+</LinearLayout>

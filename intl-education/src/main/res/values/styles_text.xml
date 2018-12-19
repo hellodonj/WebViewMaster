@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="text_dark_gray_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_dark_gray</item>
+    </style>
+
+    <style name="text_dark_gray_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_dark_gray</item>
+    </style>
+
+    <style name="text_dark_gray">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_dark_gray</item>
+    </style>
+
+    <style name="text_dark_gray_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_dark_gray</item>
+    </style>
+
+    <style name="text_dark_gray_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_dark_gray</item>
+    </style>
+
+    <style name="text_gray_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_gray</item>
+    </style>
+
+    <style name="text_gray_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_gray</item>
+    </style>
+
+    <style name="text_gray">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_gray</item>
+    </style>
+
+    <style name="text_gray_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_gray</item>
+    </style>
+
+    <style name="text_gray_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_gray</item>
+    </style>
+
+    <style name="text_light_gray_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_light_gray</item>
+    </style>
+
+    <style name="text_light_gray_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_light_gray</item>
+    </style>
+
+    <style name="text_light_gray">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_light_gray</item>
+    </style>
+
+    <style name="text_light_gray_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_light_gray</item>
+    </style>
+
+    <style name="text_light_gray_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_light_gray</item>
+    </style>
+
+    <style name="text_white_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_white</item>
+    </style>
+
+    <style name="text_white_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_white</item>
+    </style>
+
+    <style name="text_white">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_white</item>
+    </style>
+
+    <style name="text_white_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_white</item>
+    </style>
+
+    <style name="text_white_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_white</item>
+    </style>
+
+    <style name="text_black_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_black</item>
+    </style>
+
+    <style name="text_black_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_black</item>
+    </style>
+
+    <style name="text_black">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_black</item>
+    </style>
+
+    <style name="text_black_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_black</item>
+    </style>
+
+    <style name="text_black_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_black</item>
+    </style>
+
+    <style name="text_green_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_green</item>
+    </style>
+
+    <style name="text_green_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_green</item>
+    </style>
+
+    <style name="text_green">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_green</item>
+    </style>
+
+    <style name="text_green_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_green</item>
+    </style>
+
+    <style name="text_green_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_green</item>
+    </style>
+
+    <style name="text_red_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_red</item>
+    </style>
+
+    <style name="text_red_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_red</item>
+    </style>
+
+    <style name="text_red">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_red</item>
+    </style>
+
+    <style name="text_red_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_red</item>
+    </style>
+
+    <style name="text_red_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_red</item>
+    </style>
+
+    <style name="text_pink_xs">
+        <item name="android:textSize">@dimen/com_font_size_1</item>
+        <item name="android:textColor">@color/com_text_pink</item>
+    </style>
+
+    <style name="text_pink_s">
+        <item name="android:textSize">@dimen/com_font_size_2</item>
+        <item name="android:textColor">@color/com_text_pink</item>
+    </style>
+
+    <style name="text_pink">
+        <item name="android:textSize">@dimen/com_font_size_3</item>
+        <item name="android:textColor">@color/com_text_pink</item>
+    </style>
+
+    <style name="text_pink_l">
+        <item name="android:textSize">@dimen/com_font_size_4</item>
+        <item name="android:textColor">@color/com_text_pink</item>
+    </style>
+
+    <style name="text_pink_xl">
+        <item name="android:textSize">@dimen/com_font_size_5</item>
+        <item name="android:textColor">@color/com_text_pink</item>
+    </style>
+</resources>

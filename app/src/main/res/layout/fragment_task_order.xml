@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+              android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+    <View
+        android:layout_height="10dp"
+        android:background="#E8E7E8"
+        android:layout_width="match_parent"/>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/book_grid_view" />
+    <LinearLayout
+        android:id="@+id/bottom_sub_layout_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="40dp"
+        android:background="#e3e3e3"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+
+        <TextView
+            style="@style/txt_wawa_normal_green"
+            android:id="@+id/btn_bottom_rename"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/rename"/>
+
+        <ImageView
+            android:id="@+id/seg_line_1"
+            style="@style/line_gray_v"/>
+
+        <TextView
+            style="@style/txt_wawa_normal_green"
+            android:id="@+id/btn_bottom_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="@string/delete"/>
+    </LinearLayout>
+</LinearLayout>

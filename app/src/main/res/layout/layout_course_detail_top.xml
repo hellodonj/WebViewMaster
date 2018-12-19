@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+   >
+
+    <LinearLayout
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="15dp"
+        android:background="@color/color_indian"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/contacts_header_left_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/my_back_0"
+            />
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/tv_course_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="哈哈哈哈哈哈恢哈哈ha哈哈啊哈哈哈哈哈爱恨恢恢哈哈"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="-3dp"
+            android:id="@+id/contacts_header_right_ico"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_plus_white"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/pic_book_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:background="@color/color_indian"
+        android:padding="10dp"
+        >
+
+            <RelativeLayout
+                android:padding="1px"
+                android:background="@drawable/green_border"
+                android:id="@+id/pic_book_thumbnail_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/pic_book_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_cover"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/play_ico"/>
+            </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_right_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:id="@+id/pic_book_author_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                android:ellipsize="end"
+                tools:text="哈哈哈"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+
+
+            <LinearLayout
+                android:id="@+id/noc_num_time_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="0dp"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/noc_num_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#B6B6B6"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/pic_book_author_textview"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/pic_book_source_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:textColor="@color/darkgrey"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="10sp"/>
+
+                <TextView
+                    android:id="@+id/pic_book_read_count_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    tools:text="100人阅读.99条评价.100个赞"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="10sp"/>
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="-5dp"
+                android:layout_marginBottom="-5dp"
+                android:src="@drawable/icon_qr_code"
+                android:id="@+id/iv_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/comment_count_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text=""
+                android:textColor="@color/darkgrey"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <!--===============-我要加点读,做课件=======================-->
+    <LinearLayout
+
+        android:showDividers="middle"
+        android:dividerPadding="3dp"
+        android:divider="@drawable/divider_line_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/rl_do_course"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_do_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tv_make_pic_book"
+                android:textSize="16sp"
+                android:text="@string/make_pic_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/rl_add_reading"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:src="@drawable/icon_add_reading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textSize="16sp"
+                android:text="@string/edit_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

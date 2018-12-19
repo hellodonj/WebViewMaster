@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contacts_class_management_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <View android:layout_width="wrap_content"
+        android:layout_height="10dp"/>
+
+    <!--班级名称-->
+    <include
+        android:id="@+id/class_name_attr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        layout="@layout/contacts_user_attribute" />
+
+    <View style="@style/line_gray"/>
+
+    <!--更换班主任-->
+    <include
+        android:id="@+id/class_headteacher_attr"
+        layout="@layout/contacts_user_attribute" />
+
+    <View style="@style/line_gray"/>
+
+    <!--加入审批-->
+    <include
+        android:id="@+id/class_join_approve_attr"
+        layout="@layout/contacts_user_attribute" />
+
+    <!--切换开课班与历史班的状态-->
+    <FrameLayout
+        android:id="@+id/class_status_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/class_status"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:layout_gravity="left|center"
+            android:text="字段" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="right|center">
+
+            <TextView
+                android:id="@+id/history_class"
+                style="@style/txt_wawa_normal_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical|right"
+                android:enabled="false"
+                android:textColor="@color/contacts_class_status_text_color"
+                android:text="@string/history_class" />
+
+            <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+                android:id="@+id/class_status_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:checked="false"
+                app:kswTintColor="@color/text_green"/>
+
+            <TextView
+                android:id="@+id/present_class"
+                style="@style/txt_wawa_normal_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right"
+                android:enabled="false"
+                android:textColor="@color/contacts_class_status_text_color"
+                android:text="@string/present_class" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>
+

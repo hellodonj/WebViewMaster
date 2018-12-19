@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include layout="@layout/com_page_load_failed"/>
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/com_bg_white"
+            android:fillViewport="true"
+            android:horizontalSpacing="@dimen/com_item_space"
+            android:numColumns="4"
+            android:paddingLeft="@dimen/com_item_space"
+            android:paddingRight="@dimen/com_item_space"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/com_item_space"/>
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

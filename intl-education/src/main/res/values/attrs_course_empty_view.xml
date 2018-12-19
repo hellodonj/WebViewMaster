@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CourseEmptyView">
+        <attr name="empty_text_remind" format="string" />
+        <attr name="empty_text_remind_visible" format="boolean" />
+        <attr name="empty_text_loading" format="string" />
+        <attr name="empty_text_loading_visible" format="boolean" />
+        <attr name="call_show" format="boolean"/>
+        <attr name="empty_icon_drawable" format="reference" />
+    </declare-styleable>
+</resources>

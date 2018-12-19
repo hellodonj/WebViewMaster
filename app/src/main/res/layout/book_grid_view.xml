@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.galaxyschool.app.wawaschool.views.PullToRefreshView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_pull_to_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <GridView
+        xmlns:slide="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/book_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:gravity="center"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        android:horizontalSpacing="0dp"
+        slide:showFullHeight="false"
+        slide:slideAnimationTime="200"
+        slide:slideLeftAction="scroll"
+        slide:slideMode="right"
+        android:scrollingCache="false"
+        android:verticalSpacing="10dp"
+        slide:slideRightAction="scroll" />
+
+</com.galaxyschool.app.wawaschool.views.PullToRefreshView>

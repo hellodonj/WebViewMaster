@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/noc_works_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/noc_banner_logo"
+                    />
+
+                    <LinearLayout
+                        android:id="@+id/preschool_more_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp"
+                        android:gravity="center_vertical"
+                        >
+
+                        <include layout="@layout/layout_common_tab_more"/>
+
+                    </LinearLayout>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/preschool_gridview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00000000"
+                        android:numColumns="3"
+                        android:stretchMode="columnWidth"
+                        android:cacheColorHint="#00000000"
+                        android:listSelector="#00000000"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="insideOverlay"
+                        android:horizontalSpacing="0dp"
+                        android:verticalSpacing="10dp"
+                        android:layout_marginBottom="30dp"
+                        android:layout_marginTop="30dp"
+                        />
+                <LinearLayout
+                    android:id="@+id/primary_more_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <include layout="@layout/layout_common_tab_more"/>
+                </LinearLayout>
+
+                <com.galaxyschool.app.wawaschool.views.MyGridView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/primary_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00000000"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="#00000000"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideOverlay"
+                    android:horizontalSpacing="0dp"
+                    android:verticalSpacing="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
+                    />
+                <LinearLayout
+                    android:id="@+id/middle_more_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <include layout="@layout/layout_common_tab_more"/>
+                </LinearLayout>
+
+                <com.galaxyschool.app.wawaschool.views.MyGridView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/middle_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00000000"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="#00000000"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideOverlay"
+                    android:horizontalSpacing="0dp"
+                    android:verticalSpacing="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
+                    />
+                <LinearLayout
+                    android:id="@+id/teacher_more_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:gravity="center_vertical"
+                    >
+
+                    <include layout="@layout/layout_common_tab_more"/>
+                </LinearLayout>
+
+                <com.galaxyschool.app.wawaschool.views.MyGridView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/teacher_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00000000"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="#00000000"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideOverlay"
+                    android:horizontalSpacing="0dp"
+                    android:verticalSpacing="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+        <TextView
+            android:id="@+id/tv_join"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="@string/join_game_n"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/com_bg_circle_green_btn"
+            />
+    </FrameLayout>
+
+</LinearLayout>

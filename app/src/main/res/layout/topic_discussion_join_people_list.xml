@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+
+                <!--已完成布局-->
+                <LinearLayout
+                              android:id="@+id/finish_status_contacts_list_item_layout"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="#ffffff"
+                              android:orientation="horizontal"
+                              android:layout_marginTop="10dp"
+                              android:gravity="center_vertical"
+                              android:visibility="gone"
+                              android:padding="10dp"
+                        >
+
+                    <ImageView
+                            android:id="@+id/finish_status_contacts_item_icon"
+                            android:layout_width="@dimen/logo_size"
+                            android:layout_height="@dimen/logo_size"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            android:scaleType="fitCenter" />
+
+                    <TextView
+                            android:id="@+id/finish_status_contacts_item_title"
+                            style="@style/txt_wawa_normal_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="已完成（0）" />
+
+                    <ImageView
+                            android:id="@+id/finish_status_contacts_item_arrow"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/list_exp_up"
+                            android:scaleType="centerInside" />
+
+                </LinearLayout>
+
+                <View
+                        style="@style/line_gray"
+                        android:visibility="gone"
+                        android:layout_marginLeft="10dp"/>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        android:id="@+id/finish_status_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:numColumns="4"
+                        android:stretchMode="columnWidth"
+                        android:cacheColorHint="#00000000"
+                        android:listSelector="#00000000"
+                        android:scrollbars="vertical"
+                        android:scrollbarStyle="insideOverlay"
+                        android:horizontalSpacing="0dp"
+                        android:visibility="gone"
+                        android:verticalSpacing="0dp"
+                        />
+
+
+                <!--未完成布局-->
+                <LinearLayout
+                        android:id="@+id/unfinish_status_contacts_list_item_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical">
+
+                    <LinearLayout android:layout_width="fill_parent"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:padding="10dp"
+                            >
+
+                    <ImageView
+                            android:id="@+id/unfinish_status_contacts_item_icon"
+                            android:layout_width="@dimen/logo_size"
+                            android:layout_height="@dimen/logo_size"
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone"
+                            android:scaleType="fitCenter" />
+
+                    <TextView
+                            android:id="@+id/unfinish_status_contacts_item_title"
+                            style="@style/txt_wawa_normal_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="10dp"
+                            android:text="未完成（0）" />
+
+                    <ImageView
+                            android:id="@+id/unfinish_status_contacts_item_arrow"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/list_exp_up"
+                            android:scaleType="centerInside" />
+
+                </LinearLayout>
+                <View
+                        style="@style/line_gray"
+                        android:layout_marginLeft="12dp"/>
+                    </LinearLayout>
+
+                <com.galaxyschool.app.wawaschool.views.MyGridView
+                    android:id="@+id/unfinish_status_grid_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:cacheColorHint="#00000000"
+                    android:listSelector="#00000000"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideOverlay"
+                    android:horizontalSpacing="0dp"
+                    android:verticalSpacing="0dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+</LinearLayout>

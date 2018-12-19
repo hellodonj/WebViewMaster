@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/customer_service_bg"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/customer_service_view"
+            style="@style/txt_wawa_big_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/wawachat_support"
+            style="@style/txt_wawa_normal_darkgray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wawachat_support"
+            android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/phone_service_btn"
+                style="@style/txt_wawa_normal_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/text_green"
+                android:drawableRight="@drawable/phone_call_logo"
+                android:text="@string/wawachat_phonenumber" />
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_dark_gray"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="(9:00-17:00)" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/customer_service_bg"
+            >
+
+            <ListView
+                android:id="@+id/listview"
+                android:divider="@null"
+                android:layout_width="match_parent"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/online_consultation_logo"
+            android:gravity="center_vertical"
+            android:drawablePadding="8dp"
+            android:textSize="16dp"
+            android:textColor="#7A7A7A"
+            android:text="@string/online_consultation"/>
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_pid"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/english_writing_common_gray"
+            android:text=""/>
+
+            <TextView
+                android:id="@+id/tv_sid"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/english_writing_common_gray"
+                android:text=""/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_modify"
+            style="@style/txt_wawa_normal_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textSize="14sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:background="@drawable/shape_corner_text_green_20_dp"
+            android:text="@string/modify_text"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/english_writing_common_light_gray"
+        android:text=""/>
+
+</LinearLayout>

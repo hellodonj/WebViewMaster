@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#f4f4f4"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/register_by_name_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/create_student_outside_line_frame"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/register_username_layout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/user_name"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="@string/create_student_input_user_name_hint_tips"
+                android:maxLength="40"
+                android:minHeight="@dimen/account_edittext_min_height"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textCursorDrawable="@null"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/real_name"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:hint="@string/create_student_input_real_name_optional_hint_tips"
+                android:minHeight="@dimen/account_edittext_min_height"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textCursorDrawable="@null"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        style="@style/txt_wawa_normal_green"
+        android:text="@string/create_student_hint_tips"/>
+</LinearLayout>

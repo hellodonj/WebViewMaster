@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topic_discussion_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbar_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/comfirm_commit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_green_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/comfirm_commit"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="@string/introduction_title"/>
+
+                <com.lqwawa.apps.views.ContainsEmojiEditText
+                    android:id="@+id/title_text"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/topic_input_gray_bg"
+                    android:gravity="center_vertical"
+                    android:hint="@string/topic_title_hint"
+                    android:maxLength="40"
+                    android:minHeight="@dimen/item_height"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:text=""/>
+
+                <!--================================指定课件====================================-->
+
+                <!-- 看课件列表 -->
+                <LinearLayout
+                    android:id="@+id/layout_course_ware_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_course_ware_title"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/course_ware_list"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_add_course_ware_hint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/course_ware_list_join_hint"
+                            android:textColor="#bababa"
+                            android:textSize="12sp"
+                            />
+
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/common_grid_view_without_pull_to_refresh_layout"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_add_course_ware"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/icon_add_bg_pad"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_listen_read_and_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"/>
+
+                <!--添加课件-->
+                <LinearLayout
+                    android:id="@+id/layout_origin_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/ll_appoint_course"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_appoint_course"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/appoint_course"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="@string/forcedchoice"
+                            android:textColor="#bababa"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_appoint_course"
+                        android:layout_width="87dp"
+                        android:layout_height="70dp"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/background_rectangle"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/appoint_add"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="1dp"
+                                android:background="@color/line_gray"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/add_course_icon"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/appoint_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="-15dp"
+                            android:src="@drawable/ecourse_delete_recorder_btn"
+                            android:visibility="gone"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_eval_text"
+                            android:layout_width="wrap_content"
+                            android:padding="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/bg_white"
+                            android:background="@drawable/ecourse_evaluate_label_bg"
+                            android:text="@string/evaluate_label"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!--================================任务要求====================================-->
+                <TextView
+                    android:id="@+id/tv_content"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/student_should_complete_task"/>
+
+                <com.lqwawa.apps.views.ContainsEmojiEditText
+                    android:id="@+id/student_task_content"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/topic_input_gray_bg"
+                    android:gravity="top"
+                    android:hint="@string/topic_description_hint"
+                    android:maxLength="500"
+                    android:minHeight="115dp"
+                    android:padding="5dp"
+                    />
+                <!--================================关联任务单====================================-->
+                <LinearLayout
+                    android:id="@+id/ll_connect_task_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/pls_add_work_task"/>
+
+                    <TextView
+                        android:id="@+id/tv_str_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="@string/chooseable"
+                        android:textColor="#bababa"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/re_connect_task_list"
+                    android:layout_width="87dp"
+                    android:layout_height="70dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/background_rectangle"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/connent_course"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/line_gray"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/add_course_icon"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/connect_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="-15dp"
+                        android:src="@drawable/ecourse_delete_recorder_btn"
+                        android:visibility="gone"
+                        />
+                </RelativeLayout>
+
+                <!--==============================英文写作==================================-->
+                <LinearLayout
+                    android:id="@+id/ll_english_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/layout_score_formula"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/score_formula"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/score_formula"/>
+
+                        <TextView
+                            android:id="@+id/score_formula_click"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/arrow_down_ico"
+                            android:gravity="center"
+                            android:hint=""
+                            android:padding="10dp"
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c3c3c3"/>
+
+                    <LinearLayout
+                        android:id="@+id/article_limit_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/article_limit_word"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/article_limited_word"/>
+
+                        <com.lqwawa.apps.views.ContainsEmojiEditText
+                            android:id="@+id/limit_from"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/topic_input_gray_bg"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:text=""/>
+
+                        <View
+                            android:layout_width="30dp"
+                            android:layout_height="1dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@color/black"/>
+
+                        <com.lqwawa.apps.views.ContainsEmojiEditText
+                            android:id="@+id/limit_to"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/topic_input_gray_bg"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:padding="5dp"
+                            android:singleLine="true"
+                            android:text=""/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c3c3c3"/>
+                </LinearLayout>
+
+                <!--================================布置时间====================================-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/item_height"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:text="@string/assign_date"/>
+
+                    <TextView
+                        android:id="@+id/study_task_start_date_text"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/arrow_right"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/item_small_height"
+                        android:padding="5dp"
+                        android:text="2016-12-09"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#c3c3c3"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/item_height"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:text="@string/finish_date"/>
+
+                    <TextView
+                        android:id="@+id/study_task_end_date_text"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/arrow_right"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/item_small_height"
+                        android:padding="5dp"
+                        android:text="2016-12-13"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#c3c3c3"/>
+
+                <!--================================打分====================================-->
+                <LinearLayout
+                    android:id="@+id/ll_mark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/item_height"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:text="@string/str_ismark"/>
+
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_mark_yes"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/com_checkbox"
+                                android:padding="10dp"
+                                android:text="@string/yes"
+                                android:textSize="14sp"/>
+
+                            <RadioButton
+                                android:id="@+id/rb_mark_no"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:button="@drawable/com_checkbox"
+                                android:checked="true"
+                                android:padding="10dp"
+                                android:text="@string/no"
+                                android:textSize="14sp"/>
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c3c3c3"/>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_select_mark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:minHeight="@dimen/item_height"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:minHeight="40dp"
+                            android:text="@string/str_select_mark"/>
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rb_percentage_system"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/com_checkbox"
+                                android:checked="true"
+                                android:padding="10dp"
+                                android:text="@string/str_percentage_system"
+                                android:textSize="14sp"/>
+
+                            <RadioButton
+                                android:id="@+id/rb_ten_system"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/com_checkbox"
+                                android:padding="10dp"
+                                android:text="@string/str_system_of_ten"
+                                android:textSize="14sp"/>
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--================================需要学生提交====================================-->
+                <LinearLayout
+                    android:id="@+id/commit_task_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/commit_task_view"
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:drawableRight="@drawable/unselect"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:text="@string/need_student_to_commit"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c3c3c3"/>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+                </View>
+            </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+</LinearLayout>

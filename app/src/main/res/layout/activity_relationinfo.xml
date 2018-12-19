@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_bg_color">
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_height"
+            android:background="@drawable/inputbox_pre_bg"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/parent_account"/>
+
+            <EditText
+                android:id="@+id/parent_account_edittext"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:textCursorDrawable="@null"
+                android:hint="@string/pls_input_parent_account" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/item_height"
+            android:background="@drawable/inputbox_pre_bg"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/txt_wawa_big_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/parent_name"/>
+
+            <EditText
+                android:id="@+id/parent_name_edittext"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:textCursorDrawable="@null"
+                android:hint="@string/pls_input_parent_name" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

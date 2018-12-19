@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_little_gray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <include layout="@layout/com_page_load_failed"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_paper"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+    <View
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/com_line_gray"/>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_lay"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/com_item_space"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/previous_pager_bt"
+            style="@style/text_gray_xl"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/com_gray_item_selector"
+            android:gravity="center"
+            android:text="@string/previous_pager"
+            android:visibility="gone"/>
+        <View
+            android:visibility="gone"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/com_line_gray"/>
+        <Button
+            android:id="@+id/next_pager_bt"
+            style="@style/text_gray_xl"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/com_gray_item_selector"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/next_pager"/>
+
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/commit_bt"
+            style="@style/text_white_xl"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/com_btn_height_xl"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:background="@drawable/com_btn_green_bg"
+            android:gravity="center"
+            android:text="@string/commit_exam"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

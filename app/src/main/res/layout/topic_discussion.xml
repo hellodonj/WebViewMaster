@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/root_layout"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="@color/white"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/contacts_header"/>
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+        <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                >
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/layout_head_view_topic_discussion"/>
+
+                <com.galaxyschool.app.wawaschool.views.MyExpandListView
+                        android:id="@+id/expandable_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/line_gray"
+                        android:dividerHeight="0dp"
+                        android:childDivider="@color/white"
+                        android:listSelector="@android:color/transparent"
+                        android:cacheColorHint="@android:color/transparent"
+                        />
+        </LinearLayout>
+        </ScrollView>
+
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+    <View
+        style="@style/line_gray"/>
+
+    <LinearLayout
+            android:id="@+id/comment_grp"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+        <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/comment_send_content"
+                style="@style/txt_mp_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/gray_10dp_main_bg_color"
+                android:hint="@string/say_something"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:maxLength="500"
+                android:imeOptions="actionDone"
+                android:singleLine="true"/>
+
+        <TextView
+                android:id="@+id/comment_send_btn"
+                style="@style/txt_mp_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/green_10dp_text_green"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:minWidth="75dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:text="@string/send"/>
+    </LinearLayout>
+
+</LinearLayout>

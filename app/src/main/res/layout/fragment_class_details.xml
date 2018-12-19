@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/contacts_qrcode_details_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <include layout="@layout/contacts_header"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+                    <include layout="@layout/contacts_user_basic_info"/>
+
+                    <ImageView
+                        android:id="@+id/contacts_qrcode_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="40dp"
+                        android:minHeight="150dp"
+                        android:minWidth="150dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/default_photo"/>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        android:id="@+id/class_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:cacheColorHint="@android:color/transparent"
+                        android:gravity="center"
+                        android:horizontalSpacing="0dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="4"
+                        android:verticalSpacing="0dp"
+                        android:visibility="gone"/>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/attend_btn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/green_10dp_green"
+        android:gravity="center_horizontal"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        />
+</LinearLayout>
+

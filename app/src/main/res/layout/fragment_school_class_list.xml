@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffebebeb"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/class_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <com.galaxyschool.app.wawaschool.views.MyListView
+                        android:id="@+id/class_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/line_gray"
+                        android:dividerHeight="1dp"
+                        android:listSelector="@android:color/transparent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/grade_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/grade_list_title"
+                        style="@style/txt_wawa_normal_gray"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/text_green"
+                        android:text="@string/unjoined" />
+
+                    <com.galaxyschool.app.wawaschool.views.MyExpandListView
+                        android:id="@+id/grade_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@color/line_gray"
+                        android:dividerHeight="1dp"
+                        android:childIndicatorLeft="5dp"
+                        android:listSelector="@android:color/transparent" />
+                    </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+</LinearLayout>

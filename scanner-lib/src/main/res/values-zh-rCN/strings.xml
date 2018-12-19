@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="qrcode_scanning">扫一扫</string>
+    <string name="ar_scanning">扫一扫</string>
+
+    <string name="scan">扫码</string>
+    <string name="ar_scan">AR</string>
+    <string name="photo">相册</string>
+
+    <string name="scanning">正在扫描....</string>
+    <string name="scan_failed">扫描失败</string>
+
+    <string name="title_scan">扫一扫</string>
+
+</resources>

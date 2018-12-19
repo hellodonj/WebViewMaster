@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.galaxyschool.app.wawaschool.views.PullToRefreshView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_pull_to_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <GridView
+            android:id="@+id/resource_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:background="@color/main_bg_color"
+            android:numColumns="1"
+            android:scrollingCache="false"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"/>
+
+</com.galaxyschool.app.wawaschool.views.PullToRefreshView>

@@ -1,0 +1,1642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">两栖蛙蛙</string>
+    <string name="contacts">通讯录</string>
+    <string name="wawatv">快乐学习</string>
+    <string name="createspace">LQ云板</string>
+    <string name="personal_space">个人空间</string>
+    <string name="personal_resource_library">个人资源库</string>
+    <string name="local_course_task">本机课件</string>
+    <!-- register & login -->
+    <string name="register">注册</string>
+    <string name="login">登录</string>
+    <string name="meet_problem">遇到问题? 你可以</string>
+    <string name="exit">退出</string>
+    <string name="forgot_password">忘记密码</string>
+    <string name="username">用户名</string>
+    <string name="username_hint">用户名(请输入字母与数字)</string>
+    <string name="password">密码</string>
+    <string name="teacher">老师</string>
+    <string name="student">学生</string>
+    <string name="parent">家长</string>
+    <string name="child">孩子</string>
+    <string name="dad">爸爸</string>
+    <string name="mum">妈妈</string>
+    <string name="mailbox">邮箱</string>
+    <string name="mailbox_register">邮箱(选填), 用于找回密码</string>
+    <string name="mailbox_info">*用于用户找回密码，建议填写。</string>
+    <string name="send">发送</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="user_account">用户名</string>
+    <string name="user_account_hint">请输入3-20位纯英文或英文+数字</string>
+    <string name="real_name">真实姓名</string>
+    <string name="bind_phone_number">绑定手机</string>
+    <string name="contact_phone">联系电话</string>
+    <string name="sex">性别</string>
+    <string name="birthday">出生日期</string>
+    <string name="role_info">角色信息</string>
+    <string name="add_role">添加角色</string>
+    <string name="about_wawatong">关于</string>
+    <string name="wawachat_intro">关于两栖蛙蛙</string>
+    <string name="wawachat_agency">机构入驻</string>
+    <string name="enter_wawachat">加入两栖蛙蛙</string>
+    <string name="share_to">分享</string>
+    <string name="share">分享</string>
+    <string name="collection">收藏</string>
+    <string name="role">角色</string>
+    <string name="school">学校</string>
+    <string name="bind_parent">绑定家长</string>
+    <string name="add_parent">添加家长</string>
+    <string name="bind">绑定</string>
+    <string name="apply">*申请</string>
+    <string name="absolve">*解除</string>
+    <string name="unbind">取消绑定</string>
+    <string name="reset_password">重置密码</string>
+    <string name="setting">设置</string>
+    <string name="qrcode">二维码</string>
+    <string name="modify_password">修改密码</string>
+    <string name="feedback">意见反馈</string>
+    <string name="feedback_hint_text">请输入您的反馈意见，我们将不断优化体验（字数200以内）</string>
+    <string name="input_old_password">输入旧密码</string>
+    <string name="input_new_password">请输入新密码</string>
+    <string name="confirm_new_password">请确认新密码</string>
+    <string name="different_password">两次输入的密码不一致</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="camera">拍照</string>
+    <string name="gallery">从相册获取</string>
+    <string name="photo">相册</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="pls_input_username">请输入用户名</string>
+    <string name="pls_input_password">请输入密码</string>
+    <string name="pls_input_email">请输入邮箱</string>
+    <string name="pls_input_realname">请输入真实姓名</string>
+    <string name="login_success">登录成功！</string>
+    <string name="wrong_email_format">邮箱格式不正确</string>
+    <string name="password_not_same">两次输入的密码不一致</string>
+    <string name="register_success">恭喜你已注册成功</string>
+    <string name="wrong_phone_number">手机号码格式不正确</string>
+    <string name="modify_password_success">修改密码成功！</string>
+    <string name="uploading">正在上传...</string>
+    <string name="parent_account">家长账号</string>
+    <string name="parent_name">家长姓名</string>
+    <string name="pls_input_parent_account">请输入家长账号</string>
+    <string name="pls_input_parent_name">请输入家长姓名</string>
+    <string name="email_send_success">邮件已发送，请注意查收！</string>
+    <string name="pls_input_feedback">请输入反馈内容</string>
+    <string name="feedback_send_success">反馈已发送</string>
+    <string name="network_error">网络出错</string>
+    <string name="delete">删除</string>
+    <string name="add">加入</string>
+    <string name="qrcode_scanning">扫一扫</string>
+    <string name="user_qrcode">用户二维码</string>
+    <string name="name">姓名</string>
+    <string name="remark">备注</string>
+    <string name="input_rename_illegal">输入的备注名格式不合法</string>
+    <string name="personal_qrcode">个人二维码</string>
+    <string name="accept">接受</string>
+    <string name="pass">通过</string>
+    <string name="passed">已通过</string>
+    <string name="added">已添加</string>
+    <string name="refuse">拒绝</string>
+    <string name="refused">已拒绝</string>
+    <string name="search">搜索</string>
+    <string name="pls_enter_keyword">请输入关键字</string>
+    <string name="screening">筛选</string>
+    <string name="pls_enter_search_keyword">请输入搜索关键词</string>
+    <string name="no_data">没有数据</string>
+    <string name="attention_one_oriza">成功关注%s机构!</string>
+    <string name="join_orizatination">关注机构</string>
+    <string name="no_more_data">没有更多数据了</string>
+    <string name="search_account">搜索帐号</string>
+    <string name="school_name">请输入学校名称</string>
+    <string name="new_friends">新朋友</string>
+    <string name="add_friend">添加好友</string>
+    <string name="participate_class">加入班级</string>
+    <string name="personal_info">个人信息</string>
+    <string name="personal_materials">个人资料</string>
+    <string name="school_qrcode">学校二维码</string>
+    <string name="class_qrcode">班级二维码</string>
+    <string name="contacts_info">通讯录信息</string>
+    <string name="assign_homework">布置\n任务</string>
+    <string name="scan_task">扫码识任务</string>
+    <string name="resource_not_exist">课件不存在！</string>
+    <string name="student_info">学生信息</string>
+    <string name="teacher_info">老师信息</string>
+    <string name="parent_info">家长信息</string>
+    <string name="approve">审批</string>
+    <string name="select_all">全选</string>
+    <string name="confirm_to_delete_friend">确认要将联系人%s删除吗？</string>
+    <string name="delete_friend_success">删除好友成功</string>
+    <string name="remark_friend_success">修改备注成功</string>
+    <string name="friend_request_agreed">好友请求已同意</string>
+    <string name="friend_request_refused">好友请求已拒绝</string>
+    <string name="friend_request_send_success">好友请求发送成功</string>
+    <string name="class_request_passed">加入请求已审批通过</string>
+    <string name="class_request_refused">加入请求已拒绝</string>
+    <string name="delete_request_failed">删除请求失败</string>
+    <string name="delete_request_success">删除请求成功</string>
+    <string name="select_class">选择班级</string>
+    <string name="select_teacher">选择老师</string>
+    <string name="select_student">选择学生</string>
+    <string name="select_parent">选择家长</string>
+    <string name="select_friend">选择好友</string>
+    <string name="select_my_children">选择我的孩子</string>
+    <string name="select_receiver">选择接收人</string>
+    <string name="pls_select_a_class_at_least">您还没有选择任何班级</string>
+    <string name="pls_select_a_student_at_least">您还没有选择任何学生</string>
+    <string name="pls_select_a_friend_at_least">您还没有选择任何人</string>
+    <string name="add_as_friend">加为好友</string>
+    <string name="send_message">发送消息</string>
+    <string name="start_chat">发起聊天</string>
+    <string name="start_group_chat">发起群聊</string>
+    <string name="take_photo">拍照</string>
+    <string name="not_work_here">不在职</string>
+    <string name="not_study_here">不在读</string>
+    <string name="conversation_list">会话列表</string>
+    <string name="header_teacher">班主任</string>
+    <string name="qrcode_verify_hint">请输入验证信息</string>
+    <string name="qrcode_subject_hint">请输入学科</string>
+    <string name="exit_if_press_back_again">再按一次退出程序</string>
+    <string name="register_tab1">手机号注册</string>
+    <string name="register_tab2">用户名注册</string>
+    <string name="pls_input_phonenum">请输入手机号</string>
+    <string name="user_name_not_containe_char">用户名必须包含字母</string>
+    <string name="login_enter_hint">手机号/用户名</string>
+    <string name="verification_code">验证码</string>
+    <string name="pls_input_verification_code">请输入验证码</string>
+    <string name="verification_code_error">验证码错误</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="change_verfication_code">换一张</string>
+    <string name="retrieve_by_phone">手机号找回</string>
+    <string name="retrieve_by_mail">邮箱找回</string>
+    <string name="retrieve_by_parent">家长帮忙找</string>
+    <string name="goto_wawashow">去快乐学习看看吧，那里有丰富的课程与资源等着你哦！！</string>
+    <string name="to_wawashow">前往快乐学习</string>
+    <string name="refetch_vercode">重新获取</string>
+    <string name="recommend_app">推荐两栖蛙蛙</string>
+    <string name="re_set_pw">重设密码</string>
+    <string name="change_pw_success">密码修改成功</string>
+    <string name="modify_success">修改成功</string>
+    <string name="contact_phone_wrong">电话格式不正确</string>
+
+    <string-array name="role_check_state">
+        <item>未审批</item>
+        <item>通过</item>
+        <item>拒绝</item>
+    </string-array>
+    <string-array name="relation_check_state">
+        <item>未绑定</item>
+        <item>已绑定</item>
+        <item>拒绝</item>
+    </string-array>
+
+    <!-- edit_templates -->
+    <string name="confirm">确定</string>
+
+    <string name="title">标题</string>
+    <string name="classes">班级</string>
+    <string name="subject">学科</string>
+    <string name="title_hint">标题</string>
+    <string name="content_description">描述</string>
+
+    <!-- jiaxiao top bar -->
+    <string name="load_platform_outline">引用平台大纲</string>
+    <!-- wawatv top bar -->
+    <string name="public_course">校本资源库</string>
+
+    <!-- curriculum -->
+    <string name="no_role">请选择角色</string>
+    <string name="no_school">请选择学校</string>
+    <string name="no_grade">请选择年级</string>
+    <string name="no_class">请选择班级</string>
+
+    <!-- commit -->
+    <string name="upload_comment_success">发送成功</string>
+    <string name="upload_comment_error">发送失败</string>
+
+    <!-- detail -->
+
+    <!-- pulltorefresh -->
+    <string name="pullToRefreshPullLabel_custom_str">下拉刷新</string>
+    <string name="pullToRefreshFooterPullLabel_custom_str">上拉加载更多</string>
+    <string name="pullToRefreshReleaseLabel_custom_str">松开后刷新</string>
+    <string name="pullToRefreshFooterReleaseLabel_custom_str">松开后加载</string>
+    <string name="pullToRefreshRefreshingLabel_custom_str">刷新\u2026</string>
+    <string name="pullToRefreshFooterRefreshingLabel_custom_str">加载中\u2026</string>
+
+    <!-- curriculum -->
+    <string name="select_school">选择学校</string>
+    <string name="publish">发布</string>
+    <string name="publish_time">发布时间</string>
+
+    <!-- assignment -->
+    <string name="today_assignment">今日任务</string>
+    <string name="more">更多</string>
+    <string name="more_indicator">更多></string>
+    <string name="create">新建</string>
+    <string name="upload">上传</string>
+    <string name="upload_success">发送成功</string>
+    <string name="no_students">该班级没有学生,你不能发送作业!</string>
+
+    <string name="me">我</string>
+    <string name="message">消息</string>
+
+    <!-- contacts -->
+    <string name="class_contacts">班级通讯录</string>
+    <string name="personal_contacts">个人通讯录</string>
+    <string name="family_contacts">我的孩子</string>
+    <string name="clear">清除</string>
+    <string name="teaching_materials">教学材料</string>
+    <string name="to_be_expected">敬请期待...</string>
+    <string name="publish_object">发布对象</string>
+    <string name="interaction">互动交流</string>
+    <string name="online_count">%s人浏览</string>
+    <string name="begin_online">开始直播</string>
+    <string name="server_connect_error">服务器连接出错,请稍后重试!</string>
+
+    <string name="downloading">正在加载，请稍后...</string>
+    <string name="loading">正在加载...</string>
+    <string name="loading_and_wait">正在加载，请稍侯...</string>
+
+
+    <string name="temp_no_content"> 暂无内容,请到个人空间/LQ云板制作参赛作品。</string>
+    <string name="personal_library_no_content_video">暂无内容,请将制作的视频参赛作品上传到个人空间/个人资源库/视频</string>
+    <string name="personal_library_no_content_lq_course">暂无内容,请将LQ云板制作的参赛作品上传到个人空间/个人资源库/听读课</string>
+    <string name="help">服务与帮助</string>
+
+    <string-array name="qrcode_titles">
+        <item>加入班级</item>
+        <item>加入学校</item>
+        <item>找朋友</item>
+        <item>关注学校</item>
+    </string-array>
+    <string-array name="qrcode_add_infos">
+        <item>申请加入</item>
+        <item>申请加入</item>
+        <item>添加到个人通讯录</item>
+        <item>关注</item>
+    </string-array>
+
+    <string-array name="relation_types">
+        <item>爸爸</item>
+        <item>妈妈</item>
+        <item>家长</item>
+    </string-array>
+
+    <string name="join">加入</string>
+    <string name="join_school">加入学校</string>
+    <string name="join_class">加入班级</string>
+
+    <string name="who_am_i">我是%s</string>
+    <string name="relation">关系</string>
+    <string name="stu_name">学生姓名</string>
+    <string name="apply_success">申请成功</string>
+    <string name="attend_success">关注成功</string>
+    <string name="scanning">正在扫描...</string>
+    <string name="scanning_failed">扫描失败！</string>
+    <string name="pls_input_subject">请输入学科</string>
+    <string name="pls_input_name">请输入姓名</string>
+    <string name="pls_input_student_name">请输入学生姓名</string>
+    <string name="pls_select_relation">请选择关系</string>
+    <string name="whose_parent">%1$s的%2$s</string>
+    <string name="pls_input_relationship">请输入您与学生的关系</string>
+
+    <!-- wawa tong tab -->
+    <string name="wawatong_menu_chat">聊天</string>
+    <string name="wawatong_attention">关注</string>
+
+    <!-- chat -->
+    <string name="text_ack_msg">已读</string>
+    <string name="text_delivered_msg">送达</string>
+    <string name="back">返回</string>
+
+    <!--<string name="save">保存</string>-->
+    <string name="image_saved_to">图片已保存至%s</string>
+    <string name="save_failed">图片保存失败</string>
+    <string name="button_pushtotalk">按住说话</string>
+    <string name="button_send">发送</string>
+    <string name="attach_picture">图片</string>
+    <string name="attach_take_pic">拍照</string>
+    <string name="attach_location">位置</string>
+    <string name="attach_file">文件</string>
+    <string name="attach_video">视频</string>
+    <string name="attach_voice_call">语音电话</string>
+    <string name="attach_video_call">视频通话</string>
+    <string name="move_up_to_cancel">手指上滑，取消发送</string>
+    <string name="release_to_cancel">松开手指，取消发送</string>
+    <string name="send_fail">发送消息失败,</string>
+    <string name="delete_message">删除消息</string>
+    <string name="copy_message">复制消息</string>
+    <string name="delete_voice">删除语音</string>
+    <string name="delete_video">删除视频</string>
+
+    <!--<string name="delete">删除</string>-->
+    <string name="resend">重发</string>
+    <string name="confirm_resend">确认重发该信息？</string>
+    <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="network_unavailable">网络连接不可用，请检查网络</string>
+    <string name="copy">复制</string>
+    <string name="forward">转发</string>
+    <string name="button_uploadlog">上传运行日志</string>
+    <string name="ok">确认</string>
+
+    <!--<string name="cancel">取消</string>-->
+    <string name="prompt">提示</string>
+    <string name="location_recv">[%1$s的位置]</string>
+    <string name="recording_video">录制视频</string>
+    <string name="location_prefix">[我的位置]</string>
+    <string name="picture">[图片]</string>
+    <string name="video_msg">[视频]</string>
+    <string name="file_msg">[文件]</string>
+    <string name="voice_call">[语音通话]</string>
+    <string name="resource_msg">[资源]</string>
+    <!--<string name="button_cancel">取消</string>-->
+    <string name="button_save">保存</string>
+    <string name="button_search">查找</string>
+    <string name="button_add">添加</string>
+    <string name="search_header">搜</string>
+    <string name="recoding_fail">录音失败，请重试！</string>
+    <string name="select_contacts">选择联系人</string>
+    <string name="confirm_forward_to">确定转发到：%1$s ?</string>
+    <string name="logout">退出登录</string>
+    <string name="logout_hint">退出后不会删除任何历史数据，下次登录依然可以使用本账号</string>
+    <string name="exit_group_hint">退出后，将不再接收此群聊信息</string>
+    <string name="dissolution_group_hint">退出后，此群将被解散</string>
+    <string name="exit_group">退出</string>
+    <string name="connect_conflict">同一帐号已在其他设备登录</string>
+    <string name="em_user_remove">此用户已被移除</string>
+    <string name="voice">声音</string>
+
+    <!--<string name="setting">设置</string>-->
+    <string name="Application_and_notify">申请与通知</string>
+    <string name="save_new_nickname">保存</string>
+    <string name="nickname_description">设置此昵称以后，在与iOS客户端demo聊天过程中，iOS一侧会显示此昵称而不是环信ID，如果对方使用安卓客户端则此设置不生效</string>
+    <string name="group_chat">群聊</string>
+    <string name="chat_room">聊天室</string>
+
+    <!--<string name="add_friend">添加好友</string>-->
+    <!--<string name="search">搜索</string>-->
+    <string name="black_item">黑名单</string>
+    <string name="diagnose">诊断</string>
+    <string name="push_nick">iOS离线推送昵称</string>
+    <string name="Current_version">当前版本</string>
+    <string name="Not_Set">未设置</string>
+    <string name="Upload_the_log">上传日志中</string>
+    <string name="The_new_group_chat">新建群组</string>
+    <string name="add_public_group_chat">添加公开群</string>
+    <string name="add_public_chat_room">添加聊天室</string>
+    <string name="group_name">群聊名称</string>
+    <string name="Group_chat_profile">群聊简介</string>
+    <string name="Whether_the_public">是否公开</string>
+    <string name="Open_group_members_invited">开放群成员邀请</string>
+    <string name="Open_group_chat">公开的群聊</string>
+    <string name="blacklist">黑名单列表</string>
+    <string name="Empty_the_chat_record">清空聊天记录</string>
+    <string name="Shielding_of_the_message">屏蔽群消息</string>
+    <string name="Select_the_contact">选择联系人</string>
+    <string name="Group_chat_information">群聊资料</string>
+    <string name="Group_of_Lord">群主</string>
+    <string name="Introduction">简介</string>
+    <string name="To_join_the_chat">加入群聊</string>
+    <!--<string name="login">登录</string>-->
+    <string name="user_name">用户名</string>
+    <!--<string name="password">密码</string>-->
+    <!--<string name="register">注册</string>-->
+    <string name="downwaiting">正在下载文件请稍后</string>
+    <string name="mute">静音</string>
+    <string name="Hands_free">免提</string>
+    <string name="hang_up">挂断</string>
+    <string name="answer">接听</string>
+    <string name="newchat">新建聊天</string>
+    <string name="agree">同意</string>
+    <string name="not_download">未下载:</string>
+    <string name="Please_enter_a_username">请输入用户名</string>
+    <string name="is_down_please_wait">正在下载视频请稍候</string>
+    <string name="Exit_the_group_chat">退出群聊</string>
+    <string name="chat_service_not_works">聊天服务不正常，请尝试退出后重新打开应用</string>
+    <string name="not_add_myself">不能添加自己</string>
+    <string name="This_user_is_already_your_friend">此用户已是你的好友</string>
+    <string name="Add_a_friend">加个好友呗</string>
+    <string name="send_successful">发送请求成功,等待对方验证</string>
+    <string name="Request_add_buddy_failure">请求添加好友失败:</string>
+    <string name="Removed_from_the_failure">移出失败</string>
+    <string name="be_removing">正在移出...</string>
+    <string name="call_duration">通话时长</string>
+    <string name="Refused">已拒绝</string>
+    <string name="The_other_party_has_refused_to">对方已拒绝</string>
+    <string name="The_other_is_not_online">对方不在线</string>
+    <string name="The_other_is_on_the_phone">对方正在通话中</string>
+    <string name="The_other_party_did_not_answer">对方未接听</string>
+    <string name="did_not_answer">未接听</string>
+    <string name="Has_been_cancelled">已取消</string>
+    <string name="unable_to_get_loaction">无法获取到您的位置信息!</string>
+    <string name="not_connect_to_server">尚未连接至服务器，请稍后重试</string>
+    <string name="sd_card_does_not_exist">SD卡不存在，不能拍照</string>
+    <string name="cant_find_pictures">找不到图片</string>
+    <string name="File_does_not_exist">文件不存在</string>
+    <string name="The_file_is_not_greater_than_10_m">文件不能大于10M</string>
+    <string name="Whether_to_empty_all_chats">是否清空所有聊天记录</string>
+    <string name="Send_voice_need_sdcard_support">发送语音需要sdcard支持</string>
+    <string name="Recording_without_permission">无录音权限</string>
+    <string name="The_recording_time_is_too_short">录音时间太短</string>
+    <string name="send_failure_please">发送失败，请检测服务器是否连接</string>
+    <string name="Move_into_blacklist_success">移入黑名单成功</string>
+    <string name="Move_into_blacklist_failure">移入黑名单失败</string>
+    <string name="Delete_failed">删除失败:</string>
+    <string name="Is_moved_into_blacklist">正在移入黑名单...</string>
+    <string name="Log_uploaded_successfully">日志上传成功</string>
+    <string name="Log_Upload_failed">log上传失败</string>
+    <string name="get_failed_please_check">获取失败,请检查网络或稍后再试</string>
+    <string name="people">人)</string>
+    <string name="being_added">正在添加...</string>
+    <string name="is_quit_the_group_chat">正在退出群聊...</string>
+    <string name="chatting_is_dissolution">正在解散群聊...</string>
+    <string name="are_empty_group_of_news">正在清空群消息...</string>
+    <string name="is_modify_the_group_name">正在修改群名称...</string>
+    <string name="Modify_the_group_name_successful">修改群名称成功</string>
+    <string name="change_the_group_name_failed_please">改变群名称失败，请检查网络或稍后重试</string>
+    <string name="Are_moving_to_blacklist">正在移入至黑名单</string>
+    <string name="failed_to_move_into">移入黑名单失败,请检查网络或稍后重试</string>
+    <string name="Exit_the_group_chat_failure">退出群聊失败:</string>
+    <string name="Dissolve_group_chat_tofail">解散群聊失败:</string>
+    <string name="Add_group_members_fail">添加群成员失败:</string>
+    <string name="Is_unblock">正在解除屏蔽...</string>
+    <string name="remove_group_of">解除群屏蔽失败，请检查网络或稍后重试</string>
+    <string name="group_is_blocked">正在屏蔽群组...</string>
+    <string name="group_of_shielding">群屏蔽失败，请检查网络或稍后重试</string>
+    <string name="sure_to_empty_this">确定清空此群的聊天记录吗？</string>
+    <string name="The_delete_button_is_clicked">删除按钮被点击</string>
+    <string name="Add_a_button_was_clicked">添加按钮被点击</string>
+    <string name="not_delete_myself">不能删除自己</string>
+    <string name="Are_removed">正在移除...</string>
+    <string name="confirm_the_members">确认将此成员加入至此群黑名单?</string>
+    <string name="Failed_to_get_group_chat_information">获取群聊信息失败:</string>
+    <string name="Is_sending_a_request">正在发送请求...</string>
+    <string name="Request_to_join">请求加入</string>
+    <string name="send_the_request_is">发送请求成功，等待群主同意</string>
+    <string name="Join_the_group_chat">加入群聊成功</string>
+    <string name="Failed_to_join_the_group_chat">加入群聊失败:</string>
+    <string name="temporary_does_not">暂不支持大于10M的视频！</string>
+    <string name="Video_footage">拍摄录像</string>
+    <string name="take_shoot">拍摄</string>
+    <string name="receive_the_passthrough">收到透传：action：</string>
+    <string name="Group_name_cannot_be_empty">群组名称不能为空</string>
+    <string name="Is_to_create_a_group_chat">正在创建群聊...</string>
+    <string name="Failed_to_create_groups">创建群组失败:</string>
+    <string name="The_video_to_start">录像开始</string>
+    <string name="Whether_to_send">是否发送？</string>
+    <string name="Open_the_equipment_failure">打开设备失败!</string>
+    <string name="Download_the_pictures">下载图片: 0%</string>
+    <string name="Download_the_pictures_new">下载图片:</string>
+    <string name="Failed_to_download_file">下载文件失败:</string>
+    <string name="Are_connected_to_each_other">正在连接对方...</string>
+    <string name="Is_not_yet_connected_to_the_server">尚未连接至服务器</string>
+    <string name="have_connected_with">已经和对方建立连接，等待对方接受...</string>
+    <string name="In_the_call">通话中...</string>
+    <string name="The_other_party_refused_to_accept">对方拒绝接受！...</string>
+    <string name="Connection_failure">连接建立失败！...</string>
+    <string name="The_other_party_is_not_online">对方不在线，请稍后再拨...</string>
+    <string name="The_other_is_on_the_phone_please">对方正在通话中，请稍后再拨</string>
+    <string name="The_other_is_hang_up">对方已经挂断</string>
+    <string name="The_other_party_did_not_answer_new">对方未接听</string>
+    <string name="Into_the_blacklist">移入到黑名单？</string>
+    <string name="Have_downloaded">已下载</string>
+    <string name="Did_not_download">未下载</string>
+    <string name="Has_agreed_to_your_friend_request">已同意你的好友请求</string>
+    <string name="Request_to_add_you_as_a_friend">请求加你为好友</string>
+    <string name="Apply_to_the_group_of">申请加入群：</string>
+    <string name="Has_agreed_to">已同意</string>
+    <string name="Has_refused_to">已拒绝</string>
+    <string name="Are_agree_with">正在同意...</string>
+    <string name="Agree_with_failure">同意失败:</string>
+    <string name="Is_download_voice_click_later">正在下载语音，稍后点击</string>
+    <string name="Send_the_following_pictures">发送以下图片？</string>
+    <string name="search_new">搜</string>
+    <string name="Change_the_group_name">改变群名称</string>
+    <string name="The_dissolution_of_chatting_new">解散群聊</string>
+    <string name="gorup_not_found">找不到这个群组</string>
+
+    <!-- subscription -->
+    <string name="subscription_recommend">推荐给好友</string>
+    <string name="subs_school_introduction">学校介绍</string>
+    <string name="subs_school_adrress">学校地址</string>
+    <string name="subs_school_phone">联系电话</string>
+
+    <!-- customer service -->
+    <string name="contact_customer_service">联系客服</string>
+    <string name="customer_service_info">客服热线、在线客服</string>
+    <string name="wawachat_service">两栖蛙蛙客服</string>
+    <string name="wawachat_support">服务范围：业务咨询、问题解决、意见与反馈</string>
+    <string name="wawachat_phonenumber">客服电话：400-1077-727</string>
+    <string name="online_service">在线客服</string>
+
+    <!-- comment -->
+    <string name="comment">留言</string>
+    <string name="say_something">说点什么</string>
+    <string name="reply">回复</string>
+
+    <!-- create space -->
+    <string name="cs_cloud_post_bar">云贴吧</string>
+    <string name="cs_local_post_bar">本机贴吧</string>
+    <string name="cs_preparation">备课</string>
+    <string name="cs_comment">评论</string>
+    <string name="cs_update_time">最后更新：</string>
+    <string name="cs_modify_time">修改时间：</string>
+    <string name="cs_operation_publish">发送</string>
+    <string name="cs_operation_share">分享</string>
+    <string name="cs_operation_edit">编辑</string>
+    <string name="cs_delete_success">删除成功</string>
+    <string name="cs_loading_wait">正在加载, 请稍后</string>
+    <string name="cs_loading_error">加载出错</string>
+
+    <string name="search_and_search">找一找</string>
+    <string name="start_to_search">开始找</string>
+    <string name="all">全部</string>
+    <string name="my_book_shelf">个人资源库</string>
+    <string name="my_courseware">我的课件</string>
+    <string name="syllabus">课程大纲</string>
+    <string name="pls_select_catalog">请选择章节</string>
+    <string name="search_course">搜课</string>
+    <string name="search_course_hint">找到更多符合你要求的课程</string>
+    <string name="pls_enter_title">请输入标题</string>
+    <string name="upload_failure">发送失败</string>
+    <string name="send_to_sp">发送至%s</string>
+    <string name="pub_course">翻转课堂</string>
+
+    <!-- notice -->
+
+    <!-- WawaShow -->
+    <string name="n_viewcount">播放%s次</string>
+    <string name="collect_success">已收藏</string>
+    <string name="collect_book_success">已加入我的书架</string>
+    <string name="discard_save">放弃</string>
+
+    <string name="history_class">历史班</string>
+    <string name="present_class">开课班</string>
+    <string name="scan_me">扫一扫</string>
+    <string name="search_school">搜索学校</string>
+    <string name="joined">已加入</string>
+    <string name="unjoined">未加入</string>
+    <string name="join_as_school_teacher">是否成为学校老师？</string>
+    <string name="application_commit_success">您的申请已提交成功</string>
+    <string name="application_commit_failure">您的申请提交失败</string>
+    <string name="build_class">建班级</string>
+    <string name="class_management">班主任管理</string>
+    <string name="class_name">班级名称</string>
+    <string name="modify_class_name">修改班级名称</string>
+    <string name="class_status">班级状态</string>
+    <string name="change_headteacher">换班主任</string>
+    <string name="select_headteacher">选择班主任</string>
+
+    <string name="use_for_getback_password">(用于找回密码)</string>
+    <string name="pls_input_user_info">完善真实姓名后才可加入学校/班级,是否跳过?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="pls_input_name_email">请完善个人资料中的真实姓名、邮箱。</string>
+    <string name="input_user_info">完善个人信息</string>
+    <string name="pls_login">请先登录！</string>
+    <string name="ppt_pdf_not_have_pic">暂无图片显示</string>
+
+
+    <string name="forbid_chat">禁言</string>
+    <string name="forbid_class_chat">班级禁言</string>
+    <string name="allow_chat">取消禁言</string>
+    <string name="forbid_chat_success">禁言成功</string>
+    <string name="allow_chat_success">取消禁言成功</string>
+    <string name="chat_forbidden_alert">您已被禁言</string>
+    <string name="operation_success">操作成功</string>
+    <string name="operation_failure">操作失败</string>
+    <string name="operation_not_allowed">没有可禁言的成员</string>
+    <string name="picture_download_failed">图片加载失败</string>
+    <string name="invite_parents_to_join_class">邀请加入班级</string>
+    <string name="add_reporterId_success">添加成功</string>
+
+    <string name="school_intro">学校简介</string>
+    <string name="cloud_classroom">公开课</string>
+    <string name="class_info">班级信息</string>
+    <string name="school_message">校园动态</string>
+    <string name="personal_message">消息</string>
+    <string name="send_to_cloud_classroom">发送至公开课</string>
+    <string name="class_messages">班级消息</string>
+    <string name="platform_news">新闻活动</string>
+    <string name="platform_notice">系统公告</string>
+    <string name="class_message_tips">[%s]</string>
+    <string name="recovery_original_resource_tips">恢复将删除微课笔记，确认恢复？</string>
+    <string name="recovery_original_resource_success">恢复原版成功</string>
+
+    <string name="class_request">加入审批</string>
+    <string name="create_class">创建班级</string>
+    <string name="customize">自定义</string>
+    <string name="customize_stage">自定义学段</string>
+    <string name="customize_grade">自定义年级</string>
+    <string name="customize_class">自定义班级</string>
+    <string name="create_class_success">班级创建成功</string>
+    <string name="create_class_failed">班级创建失败</string>
+    <string name="class_name_needed">请选择班级名称</string>
+    <string name="class_name_more_than_40_character">班级名称不能大于40个字符</string>
+    <string name="select_class_headteacher_success">班主任切换成功</string>
+    <string name="modify_class_name_success">班级名称修改成功</string>
+    <string name="modify_class_status_success">班级状态修改成功</string>
+
+    <string name="save_to_local">保存到手机</string>
+    <string name="upload_and_wait">正在上传，请稍后...</string>
+
+    <!-- join school -->
+    <string name="apply_join">申请加入</string>
+    <string name="i_am">我是</string>
+
+    <!--campaign-->
+
+    <!--Note-->
+    <string name="n_comment">评论(%s)</string>
+    <string name="n_praise">赞(%s)</string>
+    <string name="pls_input_comment_content">请输入评论内容</string>
+    <string name="send_content_cannot_null">发送内容不能为空</string>
+    <string name="n_max_comment_lenth">最多可输入200个字</string>
+    <string name="anonym">匿名</string>
+    <string name="have_praised">已点赞</string>
+    <string name="select_comments">精选评论</string>
+    <string name="more_comments">查看更多评论>></string>
+
+    <string name="send_success">发送成功！</string>
+    <string name="send_failure">发送失败！</string>
+    <string name="create_success">创建成功</string>
+
+    <string name="post_bar">云贴吧</string>
+    <string name="user_introduction">个人介绍</string>
+    <string name="user_location">所在地</string>
+    <string name="follow">关注</string>
+    <string name="plus_follow">+关注</string>
+    <string name="plus_friend">+好友</string>
+    <string name="cancel_follow">取消关注</string>
+    <string name="n_read">%d人阅读</string>
+    <string name="n_followed">%d人关注</string>
+    <string name="n_subscribed">%d人关注</string>
+    <string name="n_browse">%d人浏览</string>
+
+    <string name="now_has_not_school_attention">当前没有可关注的学校</string>
+    <string name="attention_already_oraz">已经关注此学校,不能再关注</string>
+    <string name="cloud_resources">云素材</string>
+    <string name="local_resources">微课素材</string>
+    <string name="my_works">我的作品</string>
+    <string name="collected_resources">我的收藏</string>
+    <string name="no_resource_select">请选择导入的资源!</string>
+    <string name="no_note_update">资源没有改动，无需更新。</string>
+    <string name="update_success">更新成功</string>
+    <string name="update_failure">更新失败</string>
+    <string name="toggle_school">切换机构</string>
+    <string name="word_number">单词个数 :</string>
+    <string name="pls_input_article_content">请输入作文的内容</string>
+    <string name="reporter_permission">记者权限</string>
+    <string name="subscribe">关注</string>
+    <string name="subscribed_person">个人</string>
+    <string name="subscribed_school">机构</string>
+    <string name="subscribe_school_tips">请加入机构，才能获取更多内容哦！</string>
+    <string name="subscribe_search_user_tips">输入您要查找的用户名</string>
+    <string name="subscribe_search_school_tips">输入您要查找的学校名</string>
+    <string name="subscribe_search_user">搜索用户</string>
+    <string name="subscribe_search_school">搜索学校</string>
+    <string name="subscribe_success">关注成功</string>
+    <string name="subscribe_failed">关注失败</string>
+    <string name="subscribe_cancel_success">取消关注成功</string>
+    <string name="subscribe_cancel_failed">取消关注失败</string>
+    <string name="joined_school">已加入学校</string>
+    <string name="subscribed">已关注</string>
+    <string name="sign_activity">报名活动</string>
+    <string name="vote_activity">投票活动</string>
+    <string name="school_style">校园风采</string>
+    <string name="news">新闻</string>
+    <string name="resource_type_not_supported">资源类型暂不支持</string>
+    <string name="going">进行中</string>
+    <string name="over">已结束</string>
+    <string name="search_title">输入您要查找的标题</string>
+    <string name="search_title_or_author">输入您要查找的标题/作者</string>
+    <string name="search_teacher">查找老师姓名</string>
+
+    <string name="back_or_not">是否返回？</string>
+    <string name="confirm_end_online">确定结束直播？</string>
+    <string name="record_video">录制</string>
+    <string name="local">本机</string>
+    <string name="cloud">个人资源库</string>
+    <string name="pls_select_files">请选择文件！</string>
+    <string name="microcourse">听读课</string>
+    <string name="pictures">图片</string>
+    <string name="audios">音频</string>
+    <string name="videos">视频</string>
+    <string name="lesson_plan">教案</string>
+    <string name="media_num">(%s)</string>
+    <string name="n_upload_max_count">最多只能上传%s个文件！</string>
+    <string name="n_rename_max_count">最多只能重命名%s个文件！</string>
+    <string name="n_pick_max_count">最多可选取%s个文件！</string>
+
+    <string name="cloud_post_bar">云贴吧</string>
+    <string name="school_movement">校园动态</string>
+    <string name="notices">通知</string>
+    <string name="homeworks">作业</string>
+    <string name="comments">秀秀</string>
+    <string name="shows">秀秀</string>
+    <string name="courses">翻转课堂</string>
+    <string name="lectures">创e学堂</string>
+    <string name="stage">学段</string>
+    <string name="grade">年级</string>
+
+    <string name="confirm_to_delete_reporter_id">是否确定解除%s的记者身份？</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_failure">删除失败</string>
+    <string name="delete_postbar">删除帖子？</string>
+    <string name="delete_collection">删除收藏？</string>
+
+    <string name="split_course">查看拆分</string>
+
+    <string name="auto_upload_resources">创作空间自动上传</string>
+
+    <string-array name="share_type">
+        <item>分享当前页</item>
+        <item>分享全部</item>
+    </string-array>
+
+    <string name="share_select_title">选择分享方式</string>
+    <string name="success">成功</string>
+    <string name="failure">失败</string>
+
+    <string name="rename_file">重命名该文件</string>
+    <string name="rename_success">重命名成功</string>
+    <string name="rename_failure">重命名失败</string>
+    <string name="cloud_resource_rename_exist">%s已存在！</string>
+    <string name="cloud_resource_upload_exist">%s已存在，请重命名后上传！</string>
+    <string name="class_not_exist">班级不存在！</string>
+    <!--bellow add for book_store by renbao-->
+    <string name="read_room">创e书屋</string>
+    <string name="latest_info">最近更新</string>
+    <string name="more_info">更多</string>
+    <string name="store_to_bookshelf">放入我的书架</string>
+    <string name="stored_to_bookshelf">已放入我的书架</string>
+    <string name="catalog">目录</string>
+    <string name="finished">已完成</string>
+    <string name="unfinished">未完成</string>
+    <string name="school_space">空中学校</string>
+    <string name="store_count">人放入我的书架</string>
+    <string name="class_right">课程权限：</string>
+    <string name="always_use">常用</string>
+    <string name="source">来源：</string>
+    <string name="add_book_faliure">加入我的书架不成功！</string>
+    <string name="delete_book_success">从我的书架删除成功！</string>
+    <string name="previous_note">上一节</string>
+    <string name="next_note">下一节</string>
+    <string name="check_catalog">查看目录</string>
+    <string name="no_privous_note">已是第一节了</string>
+    <string name="no_next_note">已是最后一节了</string>
+
+    <string name="save_file_exist">%s已存在，请重新命名后保存！</string>
+
+    <string name="cloud_wawaweike_info">这里可以接收专业制作端上传的听读课哦!</string>
+    <string name="delete_school_message">删除校园动态？</string>
+    <string name="delete_school_course">删除公开课？</string>
+    <string name="delete_note">删除通知？</string>
+    <string name="delete_show">删除秀秀？</string>
+    <string name="delete_course">删除帖子？</string>
+    <string name="delete_homework">删除作业？</string>
+
+    <string name="app_version">版本号信息</string>
+    <string name="default_subscribe_search_school_tips">输入您要查找的学校名</string>
+    <string name="school_class_book">校本资源库</string>
+    <string name="choice_books">精品资源库</string>
+    <string name="class_manage">班级管理</string>
+    <string name="author">作者：</string>
+    <string name="toggle_class">切换班级</string>
+    <string name="delete_mic_class">删除微课？</string>
+    <string name="no_class_tip">请加入班级，才能获取更多内容哦！</string>
+
+    <string name="switch_child">切换</string>
+    <string name="clear_screening_case">清除筛选条件</string>
+    <string name="date">日期</string>
+    <string name="work_type">作业类型</string>
+    <string name="assign_date">开始时间</string>
+    <string name="finish_date">结束时间</string>
+    <string name="study_task_type">学习任务类型</string>
+    <string name="homework_state_type">任务状态类型</string>
+    <string name="cancel_to_select_all">取消全选</string>
+    <string name="commit_homework">交作业</string>
+    <string name="to">至</string>
+    <string name="look_through_courseware">看课件</string>
+    <string name="discuss_topic">讨论话题</string>
+    <string name="english_writing">英文写作</string>
+    <string name="assign_date_string">布置日期: %s</string>
+    <string name="finish_date_string">完成日期: %s</string>
+    <string name="retell_course">听读课</string>
+    <string name="introduction">导读</string>
+    <string name="other">其他</string>
+    <string name="start_date">开始日期</string>
+    <string name="end_date">结束日期</string>
+    <string name="article_title">作文标题 :</string>
+    <string name="article_request">作文要求 :</string>
+    <string name="score_formula">打分公式 :</string>
+    <string name="article_limited_word">作文字数</string>
+
+    <string name="date_empty">请完善日期信息!</string>
+    <string name="date_above_cur_date">布置日期或完成日期不能小于当天日期</string>
+    <string name="end_date_above_start_date">布置日期不能大于完成日期</string>
+
+    <string name="n_finish">已完成 %s</string>
+    <string name="n_unfinish">未完成 %s</string>
+    <string name="n_finish_all">全部完成%s</string>
+    <string name="discussion">讨论 (  %s )</string>
+    <string name="actor_cast">演员表</string>
+    <string name="act_classroom_look_count">%s次观看</string>
+
+    <string name="homework_screening_result">筛选的任务</string>
+    <string name="finish_count">已完成 %s</string>
+    <string name="unfinish_count">未完成 %s</string>
+    <string name="n_people_join">%s人参与</string>
+    <string name="n_person_join">已参与（%s）</string>
+    <string name="send_comment_success">评论成功</string>
+    <string name="want_to_delete_sb">确认要删除%s吗？</string>
+    <string name="confirm_delete">确认删除吗？</string>
+    <string name="confirm_delete_online">确定删除直播%s吗?</string>
+    <string name="start_airclass_dialog_prompt">已进入直播状态，请使用直播机进行直播</string>
+    <string name="publish_course_ok">发送成功</string>
+    <string name="publish_course_error">发送失败</string>
+    <string name="scan_task_save_ok">课件已保存至个人空间/个人资源库/听读课，素材已保存到个人空间/LQ云板。</string>
+    <string name="scan_task_send_ok">发送成功，课件已备份到个人空间/个人资源库/听读课，素材已备份到个人空间/LQ云板。</string>
+    <string name="add_sb">添加个人</string>
+    <string name="add_authority">添加机构</string>
+    <string name="myself">（本人）</string>
+    <string name="my_family">%s的家庭通讯录</string>
+    <string name="want_to_unbind_sb">确认要将联系人%s解除绑定吗？</string>
+    <string name="unbind_success">解绑成功</string>
+    <string name="personal_contacts_hint_tips">搜索好友账号/真实姓名/备注名</string>
+    <string name="create_student">新建学生</string>
+    <string name="add_student">添加学生</string>
+    <string name="import_student_from_address_book">从通讯录导入</string>
+    <string name="search_student_account">搜索学生账号</string>
+    <string name="create_student_success">新建学生成功</string>
+    <string name="out_of_class_success">移出班级成功</string>
+    <string name="add_student_success">添加学生成功</string>
+    <string name="want_to_remove_sb_from_class">确认要将%s移出班级吗？</string>
+    <string name="out_of_class">移出班级</string>
+    <string name="create_student_input_user_name_hint_tips">用户名（字母/字母和数字）</string>
+    <string name="create_student_input_real_name_optional_hint_tips">真实姓名（选填）</string>
+    <string name="create_student_hint_tips">默认密码111111，登录后请尽快修改</string>
+
+
+    <string name="attended_schools">入驻机构</string>
+    <string name="excellent_course">精品课程</string>
+    <string name="no_schools">没有学校</string>
+    <string name="no_book_class">没有课程</string>
+    <string name="enter_bookstore">进入校本课程</string>
+    <string name="online_consultation">在线咨询</string>
+    <string name="exit_class">退出班级</string>
+    <string name="want_to_exit_class">确认要退出班级吗？</string>
+    <string name="exit_class_success">退出班级成功</string>
+    <string name="pls_select_bind_student_account">请选择您要绑定的学生账户</string>
+    <string name="exists_multiple_student_with_the_same_name_tips">存在重名的学生，请选择学生账户加以区分
+    </string>
+    <string name="my_family_contacts">家庭通讯录</string>
+    <string name="myself_family_contacts">我的家庭通讯录</string>
+    <string name="already_was_friend">已是好友</string>
+
+    <string name="hint_school">输入机构名称</string>
+    <string name="hint_class">输入课程名称</string>
+    <string name="hint_pic_book">输入绘本名称</string>
+    <string name="class_list">班级列表</string>
+    <string name="send_email">发送邮件</string>
+    <string name="discussion_text">讨论</string>
+
+    <string name="no_course_images">没有获取到微课图片资源！</string>
+
+    <string name="no_excellent_pic_book">没有精品绘本</string>
+    <string name="excellent_pic_book">精品绘本</string>
+    <string name="hint_show_book">创意秀</string>
+
+    <string name="latest">最新</string>
+    <string name="recommend">推荐</string>
+    <string name="choice_picturebooks">精品绘本</string>
+    <string name="start_whiteboard">白板</string>
+    <string name="start_image">照片</string>
+    <string name="start_camera">拍照</string>
+    <string name="land">横版</string>
+    <string name="port">竖版</string>
+    <string name="orientation_select_title">选择制作版式</string>
+    <string name="select_course_from">选择课件来源</string>
+    <string name="select_course_type">选择课件类型</string>
+    <string name="n_teacher">%s老师</string>
+
+    <string name="make_pic_book">我要做课件</string>
+    <string name="edit_course">我要加点读</string>
+    <string name="personal_cloudspace">个人资源库</string>
+    <string name="picturebook">绘本屋</string>
+    <string name="comment_person">%s条评论</string>
+    <string name="my_download_waiting">等待下载</string>
+    <string name="my_downloading">正在下载</string>
+    <string name="my_download_paused">暂停</string>
+    <string name="my_download_failed">下载失败</string>
+    <string name="my_downloaded">已下载完成</string>
+    <string name="my_download_courses">我的下载</string>
+    <string name="read_person">次阅读</string>
+    <string name="support_person">个赞</string>
+    <string name="n_source">来源：%s</string>
+    <string name="course_not_edit">该课件不允许加点读!</string>
+    <string name="fetch_no_resources">没有获取到资源文件!</string>
+    <string name="add_to_download_queue">已加入下载队列，是否前往我的下载？</string>
+    <string name="sharescreen">投屏</string>
+    <string name="bluetooth_pen">蓝牙笔</string>
+    <string name="device_manager">设备管理</string>
+    <string name="no_description">暂无简介</string>
+    <string name="no_comment">暂无评论</string>
+    <string name="back_home">返回主页</string>
+    <string name="input_original_show_hint">请输入创意秀名称</string>
+    <string name="avatar">头像</string>
+    <string name="has_subscribed_person">关注的人</string>
+    <string name="has_subscribed_authority">关注的机构</string>
+    <string name="exit_account">退出账户</string>
+    <string name="my_institutions">我的机构</string>
+    <string name="school_and_class">学校班级</string>
+    <string name="learning_tasks">学习任务</string>
+    <string name="my_message">我的消息</string>
+    <string name="save_qrcode">保存二维码</string>
+    <string name="authority_info">机构信息</string>
+    <string name="school_adrress_suffix">学校地址：</string>
+    <string name="school_phone_suffix">联系电话：</string>
+    <string name="remark_suffix">备注名：</string>
+    <string name="location_suffix">所在地：</string>
+    <string name="personal_intro_suffix">个人介绍：</string>
+    <string name="personal_details">个人详情</string>
+    <string name="delete_friend">删除好友</string>
+    <string name="container_string">(%s)</string>
+    <string name="commit_task_list">任务列表</string>
+    <string name="pls_select_homework">请选择一个作业!</string>
+
+    <!--Share Screen-->
+    <string name="searched_devices">搜索到设备</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开连接</string>
+    <string name="n_connect_device">确认连接到%s？</string>
+    <string name="n_disconnect_device">确认与%s断开连接？</string>
+    <string name="n_current_device">当前连接设备%s</string>
+    <string name="sure_to_exit">确定退出账号吗？</string>
+    <string name="modify_user_info">修改个人信息</string>
+    <string name="default_look_through_count">0人浏览</string>
+    <string name="default_attention_count">0人关注</string>
+
+    <string name="course_is_not_watch">该课件仅供本校成员查看。</string>
+    <string name="resource_is_not_watch">资源仅供本校成员查看。</string>
+    <string name="course_is_not_authorize">课件未经授权，请联系所在学校与两栖蛙蛙客服咨询精品资源库开通事宜。</string>
+
+    <string name="contacts_detail">通讯录详情</string>
+    <string name="class_detail">班级详情</string>
+    <string name="act_classroom">表演课堂</string>
+    <string name="my_course">我的课程</string>
+    <string name="show_split_course">查看分页</string>
+    <string name="broadcast_hall">播报厅</string>
+    <string name="resource_no_exist">资源不存在!</string>
+
+
+    <string name="title_step1">使用浏览器打开www.lqwawa.com</string>
+    <string name="content_step1">点击“机构入驻“，完善并提交相关信息。</string>
+    <string name="title_step2">核实机构信息</string>
+    <string name="content_step2">请耐心等待资质审核通过。</string>
+    <string name="title_step3">审核通过</string>
+    <string name="content_step3">入驻机构即可开启机构自建，畅享机构-家长-学生三方互动，共同丰富和享用优质教育资源。
+    </string>
+    <string name="tel_title">客服热线：400-1077-727</string>
+    <string name="need_student_to_commit">需要学生提交</string>
+    <string name="upload_exist">%s已存在！</string>
+    <string name="search_acccount">搜索账号</string>
+
+    <string name="save_to_lq_cloud">听读课已保存至个人空间/LQ云板。</string>
+
+    <string name="collect_to_my_course">已放入个人空间/个人资源库/我的书架</string>
+    <string name="collect_to_lq_course">已收藏到个人空间/个人资源库/听读课</string>
+    <string name="collect_to_yuntieba">已收藏到个人空间/云贴吧</string>
+    <string name="collect_different_to_personalLibrary">已收藏到个人空间/个人资源库/%s</string>
+    <string name="add_school">加入机构</string>
+    <string name="open_consultion_content">
+        “空中学校-精品资源库”是两栖蛙蛙优质课程的展示平台，其中包括幼儿园、小学、初中、高中等多个学科的精品教学资源和特色课程。\n如需开通，请联系两栖蛙蛙客服。
+    </string>
+    1-复述微课,2-做任务,3-提问,4-创作
+    <string name="make_task">读写单</string>
+    <string name="ask_question">提问</string>
+    <string name="create_course">创作</string>
+    <string name="appoint_cousrse_cannot_null">指定课件不能为空</string>
+    <string name="title_cannot_null">标题不能为空</string>
+    <string name="online_time_limit">直播结束时间必须大于开始时间</string>
+    <string name="online_start_time_limit">直播开始时间必须大于当前时间</string>
+    <string name="publish_end_time_must_more_than_start_time">发布结束时间必须大于发布开始时间</string>
+    <string name="forcedchoice">(必选)</string>
+    <string name="chooseable">(可选)</string>
+    <string name="introduction_title">标题:</string>
+    <string name="appoint_course">添加课件:</string>
+    <string name="appoint_course_no_point">指定课件</string>
+    <string name="appoint_course_point">指定课件:</string>
+    <string name="student_should_complete_task">任务要求:</string>
+    <string name="add_title">添加标题:</string>
+    <string name="add_host">添加主持人:</string>
+    <string name="add_host_no_point">添加主持人</string>
+    <string name="online_host">主持人</string>
+    <string name="online_host_point">主持人: %s</string>
+    <string name="add_introduction">添加简介:</string>
+    <string name="add_thumbnail">添加封面:</string>
+    <string name="add_publish_object">添加发布对象:</string>
+    <string name="add_publish_object_no_point">添加发布对象</string>
+    <string name="online_time">直播时间：</string>
+    <string name="open_consultion">开通咨询</string>
+    <string name="choice_pool_open_consultion">精品资源库开通咨询</string>
+    <string name="lqcourse_save_local">听读课已保存至个人空间/LQ云板。</string>
+    <string name="class_infos">班级信息</string>
+    <string name="contacts_infos">通讯录信息</string>
+    <string name="today">今天</string>
+    <string name="date_to_date">%1$s至%2$s</string>
+    <string name="delete_tip">确认删除%s？</string>
+    <string name="no_file_select">没有选中文件!</string>
+    <string name="n_create_task">新建任务-%s</string>
+    <string name="pls_input_title">请输入标题</string>
+    <string name="pls_input_article_title">请输入作文标题</string>
+    <string name="pls_input_article_request">请输入作文要求</string>
+    <string name="pls_input_description">请输入任务要求</string>
+    <string name="min_cannot_more_than_max">作文字数最小值不能大于最大值</string>
+    <string name="assign_task">布置\n任务</string>
+    <string name="assign_task_line">布置任务</string>
+    <string name="topic_title_hint">最多可输入40个字</string>
+    <string name="topic_discription">请输入话题描述：</string>
+    <string name="topic_description_hint">最多可输入500个字</string>
+    <string name="create_new_task">+&#160;新建</string>
+    <string name="no_task_tip_1">暂无学习任务</string>
+    <string name="discuss_content">%s讨论内容</string>
+    <string name="praise_fail">点赞失败</string>
+    <string name="praise_success">点赞成功</string>
+    <string name="not_read_tip_success">提醒成功</string>
+    <string name="not_read_tip_failure">提醒失败</string>
+    <string name="un_read_tip"> 未读提醒</string>
+    <string name="reply_who">回复%s:</string>
+    <string name="invalid_characters">不允许输入特殊符号！</string>
+    <string name="no_real_name_tip">请填写真实姓名，以供实名审核。</string>
+    <string name="consummate_personal_info">完善个人详情</string>
+    <string name="whose_homework">%s的作业</string>
+    <string name="finish_time">%s完成</string>
+    <string name="who_reply_who">%1$s 回复 %2$s</string>
+    <string name="time_assigned">开始时间:%s</string>
+    <string name="time_completed">结束时间:%s</string>
+    <string name="delete_lecture">删除创e学堂？</string>
+    <string name="all_read">全部已读</string>
+    <string name="ppt_file">PPT</string>
+    <string name="pdf_file">PDF</string>
+    <string name="DOC">DOC</string>
+    <string name="course_amount">资源数：</string>
+    <string name="avoid_disturb">消息免打扰</string>
+    <string name="shake">震动</string>
+    <string name="notice_avoid_disturb_tip">软件运行中收到新消息，您可以设置是否需要声音或震动提醒。</string>
+
+    <string name="no_share_play">请连接课堂实录仪。</string>
+    <string name="connect_to_smarthub">连接到课堂实录仪 %s</string>
+    <string name="connect_to_smarthub_error">未找到该课堂实录仪，请确认平板与课堂实录仪已接入同一局域网</string>
+
+    <string name="campus_patrol">校园巡查</string>
+    <string name="according_to_teacher">按老师</string>
+    <string name="according_to_class">按班级</string>
+    <string name="the_end_date">截止日期</string>
+    <string name="txt_resource">资源</string>
+    <string name="txt_ppt">PPT</string>
+    <string name="txt_pdf">PDF</string>
+    <string name="txt_end_date_early_than_start_date">截止日期不能早于开始日期</string>
+    <string name="campus_now_direct">校园电视台</string>
+    <string name="now_direct">电视台</string>
+    <string name="campus_live_show_nosupport">安卓版本暂不支持</string>
+    <string name="campus_live_show_nosupport_title">校园电视台开通</string>
+    <string name="free_use">体验</string>
+    <string name="free_use_address">http://m.womob.cn/m/wx/?db=lqwawa</string>
+    <string name="free_use_title">青岛银河学校电视台</string>
+    <string name="task_order">读写单</string>
+    <string name="single_task_show">单项任务展示</string>
+    <string name="selected_reading">导读</string>
+    <string name="question">提问</string>
+    <string name="article_content_cannot_empty">作文内容不能为空</string>
+    <string name="commit_success">提交成功</string>
+    <string name="create_sth">创作</string>
+    <string name="watch_task">查看读写单</string>
+    <string name="task_student_need_finish">学生应完成的任务</string>
+    <string name="no_task_order">没有读写单</string>
+    <string name="retel_couese">复述</string>
+    <string name="start_writing">开始写作</string>
+    <string name="article_limited_word_point">作文字数:</string>
+    <string name="auto_comment">自动点评</string>
+    <string name="personal_comment">人工点评</string>
+
+
+    <string name="composition_requirements">作文要求</string>
+    <string name="comment_by_sentence">按句\n点评</string>
+    <string name="commit">提交</string>
+    <string name="pid_num">第%s段</string>
+    <string name="category_bracket">[%s]</string>
+    <string name="modify_text">修改</string>
+    <string name="score">分</string>
+    <string name="word_num">单词个数：%s</string>
+    <string name="commit_times">提交次数：%s</string>
+
+    <string name="please_retry_for_resource">资源正在准备，请稍后再试。</string>
+    <string name="view_qrcode">查看二维码</string>
+    <string name="course_qrcode">课件二维码</string>
+    <string name="save_to_local_space">保存到本地</string>
+
+    <string name="I_want_to_make_order">我要做读写单</string>
+
+    <!--==================营养膳食==================-->
+    <string name="health_nutrition_recipes">营养食谱</string>
+    <string name="health_growth_record">成长记录</string>
+    <string name="health_vaccination">疫苗接种</string>
+
+    <string name="access_details">课件详情</string>
+    <string name="task_requirements">任务要求</string>
+    <string name="commit_list">提交列表</string>
+    <string name="commit_task">提交任务</string>
+    <!--==================NOC 大赛==================-->
+    <string name="join_game">参与大赛</string>
+    <string name="join_game_n">参与\n大赛</string>
+    <string name="entry_info">【参赛须知】</string>
+    <string name="entry_info_detail">
+           &#160;1.参赛选手必须是亲自参赛，不能委托他人代表参赛。\n\n
+            2.全国决赛入围名单公布后不允许更改作品申报表中的各项内容，
+            入围作品不得进行修改和替换。\n\n
+            3.外语作品，请同意用普通话陈述与答辩（教学与比赛必要环节除外）。\n\n
+            4.已在全国其他比赛中获奖的作品不予参赛。\n\n
+            5.参赛作品必须为参赛选手原创，选手在上传作品前须确认拥有该
+            作品的著作权。作品时常不得少于30s，内容要健康向上，不触犯国家法律法规。\n
+            不得剽窃、抄袭他人作品，如因此引起任何法律纠纷，其法律责任
+            由参赛选手本人承担，并取消选手的参赛资格和获奖资格，\n
+            通报所在单位。\n\n
+            6.所有作品一经参赛，即视为参赛选手同意全国组委会拥有对其作品的使用权，
+            同意组委会以任何形式对参赛作品进行展示和传播。
+    </string>
+    <string name="noc_competition">NOC大赛</string>
+    <string name="noc_agree_join_info">我已了解并同意遵守上述规定</string>
+    <string name="noc_name">* 姓名 ：</string>
+    <string name="noc_phone">* 电话 ：</string>
+    <string name="noc_mail">邮箱 ：</string>
+    <string name="noc_school">学校名称：</string>
+    <string name="noc_school_phone">学校电话：</string>
+    <string name="noc_region">所在地区：</string>
+    <string name="noc_adress">详细地址：</string>
+    <string name="noc_sure">确定</string>
+    <string name="please_select_school">请选择学校</string>
+    <string name="please_finish_school">请完善学校信息</string>
+    <string name="please_finish_info">请完善参赛信息</string>
+    <string name="noc_upload_work">上传作品：</string>
+    <string name="noc_work_type">作品类别：</string>
+    <string name="noc_csp_programme">CSP文本创意方案</string>
+    <string name="noc_ctp_programme">CTP表演创意类</string>
+    <string name="noc_work_describe">作品描述：</string>
+    <string name="noc_subject">参赛学科：</string>
+    <string name="noc_group">参赛组别：</string>
+    <string name="noc_join_reason">参赛名义：</string>
+    <string name="noc_join_reason_mechanism">机构名义</string>
+    <string name="noc_join_reason_self">个人名义</string>
+    <string name="noc_works_title">NOC创意阅读表演大赛</string>
+    <string name="noc_preschool_group">学前组</string>
+    <string name="noc_primary_group">小学组</string>
+    <string name="noc_middle_group">中学组</string>
+    <string name="noc_teacher_group">教师组</string>
+    <string-array name="noc_group_types">
+        <item>学前组</item>
+        <item>小学组</item>
+        <item>中学组</item>
+        <item>教师组</item>
+    </string-array>
+    <string-array name="noc_subject_types">
+        <item>语文</item>
+        <item>英语</item>
+        <item>历史</item>
+        <item>生物</item>
+        <item>地理</item>
+        <item>科学</item>
+        <item>物理</item>
+        <item>数学</item>
+        <item>化学</item>
+    </string-array>
+    <string name="more_school">更多学校</string>
+    <string name="noc_num">编号：%s</string>
+    <string name="noc_join_success">报名成功</string>
+    <string name="noc_join_failure">报名失败</string>
+    <!--==================NOC 大赛==================-->
+    <string name="words_count_over_limit">输入字数超过限制</string>
+
+    <string name="str_colletc_pop">收藏到个人资源库</string>
+
+    <string name="str_ok">知道了</string>
+    <string name="str_consultation">开通咨询</string>
+    <string name="noc_match_info_tip">更多详情，请参考&#160;</string>
+
+    <string name="activity_details">活动详情</string>
+    <string name="praise_count">人赞</string>
+    <string name="max_descr_length">最多输入200个字</string>
+    <string name="chinese">语文</string>
+    <string name="pre_school_group">学前组</string>
+
+    <string name="whiteboard_plus_voice">白板+语音</string>
+    <string name="image_plus_voice">相册+语音</string>
+    <string name="camera_plus_voice">拍照+语音</string>
+
+    <string name="do_task">做读写单</string>
+    <string name="appoint_task">添加作业:</string>
+    <string name="no_content">暂无内容</string>
+    <string name="pls_add_task">请添加读写单</string>
+    <string name="pls_add_work">请添加作业</string>
+    <string name="pls_add_work_task">指定读写单</string>
+    <string name="pls_add_work_task_point">指定读写单:</string>
+
+    <string name="comment_record_text">点评记录</string>
+
+    <string name="principal_assistant">校长助手</string>
+
+    <string name="course_ware_list">课件列表</string>
+    <string name="course_ware_list_join_hint">(听读课/音频/图片/视频/PPT/PDF/DOC)</string>
+    <string name="course_ware_list_empty_tips">课件列表不能为空！</string>
+
+    <string name="my_bookshelf_text">我的书架</string>
+    <string name="str_loadding">正在压缩中，请稍候…</string>
+
+    <string name="user_name_length_is_not_legal">用户名限制3-20个字符</string>
+    <string name="real_name_length_is_not_legal">真实姓名不能大于20个字符</string>
+    <string name="associate_task_list">关联读写单</string>
+    <string name="max_input_character_length">最多允许输入%d个字符！</string>
+    <string name="nutrition_recipes">营养膳食</string>
+
+    <string name="lq_excellent_program">LQ精品学程</string>
+    <string name="select_institution">选择机构</string>
+
+    <string name="send_comment_failed">评论失败</string>
+    <string name="have_been_collected">已收藏</string>
+
+    <string name="lq_look_course">查看\n课程</string>
+    <string name="txt_info_about">&#8195;&#8195;两栖蛙蛙是新一代智能教学平台，涵盖英语国际、英语国内、小语种、基础等特色专业化课程，集国际国内优质教师资源在线开班，以直播为媒介，按步层层引导专业课程的学习，课前预习、课中直播、课后练习全程跟踪，非常适用于K12学生、出国人群学习。除此之外，老师、学生、家长还可以使用文字、图片、视频、声音等多媒体元素自由创作课程、课件、贴吧、学习任务等多元化学习资源，随时发起教学讨论。多元化、立体化的教学模式，学习更省时省力、有效高效。</string>
+
+    <string name="txt_info_company">Copyright©2014-2017 青岛两栖蛙蛙信息技术有限公司版权所有</string>
+
+    <string name="i_see">知道了</string>
+    <string name="learn_more_course">试听结束，为获得更好的畅学体验，推荐参与LQ学程。</string>
+
+    <string name="be_sure_to_commit">是否需要提交？</string>
+    <string name="str_check_update">检查更新</string>
+
+    <string name="str_achievement_statistic">成绩统计</string>
+    <string name="str_achievement_statistics">成绩\n统计</string>
+    <string name="str_check_mark">查看\n批阅</string>
+    <string name="str_watch_mark">查看批阅</string>
+    <string name="str_ismark">是否打分</string>
+    <string name="str_select_mark">评分标准</string>
+    <string name="str_percentage_system">百分制</string>
+    <string name="str_system_of_ten">十级评分制</string>
+    <string name="str_score">分数:&#8195;</string>
+    <string name="str_people">人</string>
+    <string name="str_scores">分</string>
+    <string name="str_less_than">低于</string>
+    <string name="str_no_data">暂无数据</string>
+
+    <string name="hava_lq_course_permission">非本校成员无权访问校本资源库资源</string>
+
+    <string name="read_over">批阅</string>
+    <string name="mark">打分</string>
+    <string name="commit_or_mot">确认提交？</string>
+    <string name="str_manfei">(满分100)</string>
+    <string name="str_tips_markscores">总分100,请重新打分!</string>
+
+    <string name="barcode_is_not_accept">设备不可用，请扫描罗博智写板条形码</string>
+    <string name="choice_library_resource_over_date">授权过期无法访问精品资源库资源</string>
+    <string name="no_choice_lib_permissions_tip">更多精品资源，请联系两栖蛙蛙客服开通浏览权限。</string>
+
+    <string name="application_model">应用场景</string>
+    <string name="general_model">通用模式</string>
+    <string name="campus_model">校内模式</string>
+    <string name="general_model_des">适用于各种网络环境下获取LQWaWa数据</string>
+    <string name="campus_model_des">校内经校本服务器获取LQWaWa数据速度更快</string>
+    <string name="campus_model_ip">校本服务器IP</string>
+    <string name="pls_input_complete_ip">请输入完整的校本服务器IP</string>
+    <string name="check_ip_input_legal">%s 不是有效项。请指定一个介于 0 和 255 之间的值。</string>
+    <string name="str_clean_cache">清理缓存</string>
+    <string name="str_clear_cache">清理缓存中,请稍候</string>
+
+    <string name="account">账户</string>
+    <string name="pls_enter_email">请输入邮箱</string>
+    <string name="pls_enter_password">请输入密码</string>
+    <string name="new_password">新密码</string>
+    <string name="upload_file_sucess">上传成功</string>
+    <string name="upload_file_failed">上传文件失败</string>
+    <string name="uploading_file">正在上传文件...</string>
+
+    <string-array name="new_attachment_type">
+        <item>白板+语音</item>
+        <item>拍照+语音</item>
+        <item>相册+语音</item>
+    </string-array>
+
+    <string name="read_course">点读课件</string>
+    <string name="record_course">录音课件</string>
+    <string name="str_class_group">班级分组</string>
+    <string name="str_establish_group">创建分组</string>
+    <string name="str_modify_name">修改名称</string>
+    <string name="str_exit_group">退出小组</string>
+    <string name="str_add_group_member">添加组员</string>
+    <string name="str_out_of_group">移出分组</string>
+    <string name="str_input_group_name">请输入小组名称</string>
+    <string name="str_group_delete">只能解散自己创建的小组</string>
+    <string name="str_remove_from_group">确认要将%s移出小组吗？</string>
+    <string name="select_group">选择小组</string>
+
+    <string name="preview_before_class">课前预习</string>
+    <string name="after_before_class">课后练习</string>
+    <string name="str_exit_group_tips">确定要退出小组吗</string>
+    <string name="str_already_clear_cache">已成功清除缓存</string>
+    <string name="str_rename_group">修改组名称</string>
+    <string name="pls_input_groupname">请输入小组名</string>
+    <string name="str_rename_group_error_tips">新的小组名称和旧的小组名称一样</string>
+    <string name="str_talent_cipher">天赋密码</string>
+    <string name="str_talent_contrast">解读\n对比</string>
+    <string name="str_talent_basic_data">基本资料</string>
+    <string name="str_talent_multiple_intelligence">多元智能</string>
+    <string name="str_talent_genetic_temperament">基因气质</string>
+    <string name="str_talent_character_expression">性格表现</string>
+    <string name="str_talent_selection_of_interest_classes">兴趣班选择</string>
+    <string name="str_talent_gene_intelligence">基因智能</string>
+    <string name="str_talent_professional_tendencies">专业倾向</string>
+    <string name="str_dissolution_group">解散</string>
+    <string name="str_dissolution_groups">解散分组</string>
+    <string name="str_dissolution_group_tips">确定要解散分组吗</string>
+    <string name="res_is_not_exist">未找到资源信息</string>
+    <string name="send_to_the_whole_class">发布到全班</string>
+    <string name="send_to">发布到%s</string>
+    <string name="evaluate_person">%s条评价</string>
+    <string name="str_talent_no_interpretation_tips">暂无解读对比文件</string>
+    <string name="str_build_group_error_tips">该班级已经存在相同的小组了</string>
+    <string name="str_blackboard_live">板书直播</string>
+    <string name="str_video_live">视频直播</string>
+    <string name="str_live_type">直播类型:</string>
+    <string name="str_start_online_live_blackboard">已进入直播状态,请使用LQ教育平台进行直播</string>
+    <string name="str_single_page_show">单页展示</string>
+    <string name="retell_course_new">复述课件</string>
+    <string name="join_count">%s人参加</string>
+    <string name="str_class_member_list">班级成员</string>
+    <string name="str_online_num">(在线%d人)</string>
+    <string name="str_how_many_people_online">%d人在上课</string>
+    <string name="str_delete_publish_obj">删除该发布对象</string>
+    <string name="str_confirm_delete_data">确认将%s从发布对象中删除?</string>
+    <string name="str_online_time">直播时间</string>
+    <string name="str_start_time">开始时间</string>
+    <string name="str_finish_time">结束时间</string>
+    <string name="str_online_type_no_point">直播类型</string>
+    <string name="str_search_data_hint">搜索直播名称/主持人</string>
+    <string name="str_ten_info">(等级A+,A,A-,B+,B,B-,C+,C,C-,D)</string>
+    <string name="str_recalculate">重新打分</string>
+    <string name="str_pop_dialog_prompt_text">您不是班级成员，无权查看</string>
+    <string name="str_remove_address_book_prompt">在以下班级担任班主任，移出老师通讯录之前请先更换这些班级的班主任。</string>
+    <string name="str_remove_person_of_address">移出通讯录</string>
+    <string name="str_change_headMaster">换班主任</string>
+    <string name="str_already_change_headMaster">已换班主任</string>
+    <string name="str_confirm_remove_master">确认将%s移出老师通讯录？</string>
+    <string name="str_success_remove_master">成功将%s移出老师通讯录</string>
+    <string name="str_mark_ask">的提问</string>
+    <string name="str_mark_teacher">的批阅</string>
+    <string name="str_mark_watch">查看</string>
+    <string name="str__delete_from_this_class">从本班删除</string>
+    <string name="str__delete_from_all_class">从所有班级删除</string>
+    <string name="str_delete_online_list_data_title">您希望将该直播从本班删除还是从所有班级删除？</string>
+    <string name="str_has_inspect_auth_permission_person">%s是校长助手，无权移除</string>
+
+    <string name="str_upload_resource">上传资源</string>
+    <string name="str_upload_to_public_resource">上传到校本资源库</string>
+    <string name="str_teaching_material">智能教材</string>
+    <string name="str_time">时间：</string>
+    <string name="str_i_am_teacher">我是老师</string>
+    <string name="str_listen_read_and_write">听读+读写</string>
+    <string name="str_appoint_task_order_not_null">指定读写单不能为空</string>
+    <string name="save_to_photo">保存到相册</string>
+    <string name="str_look_more_comment">查看更多</string>
+    <string name="ar_photo_desc">使用两栖蛙蛙APP扫一扫中的AR扫描图片\n逼真呈现AR幻彩视频</string>
+    <string name="qr_photo_desc">保存并使用两栖蛙蛙APP扫一扫二维码\n即刻畅享立体视觉体验</string>
+
+    <string name="making_course">制作LQ云板</string>
+    <string name="making_course_tips">
+        1. 制作LQ云板时，请先点击上方“录制”按键，再使用工具进行创作，
+        点击“结束录制”即可保存到LQ云板或直接分享给好友。\n\n
+        2. 为获得更好的书写体验，推荐使用配套的LQ手写板。
+        点击右上角LQ手写板的连接图标，可快速接入并使用设备。</string>
+    <string name="no_more_tips">不再提示</string>
+
+    <string name="str_to_bo_school_teacher">成为机构老师</string>
+    <string name="str_birthday_need_greater_than_today">出生日期不能大于当前日期</string>
+    <string name="str_super_task">综合任务</string>
+
+    <string-array name="str_array_task_num">
+        <item>任务一:</item>
+        <item>任务二:</item>
+        <item>任务三:</item>
+        <item>任务四:</item>
+        <item>任务五:</item>
+        <item>任务六:</item>
+    </string-array>
+
+    <string name="str_add_new_task">添加新任务:</string>
+    <string name="str_add_task">添加任务</string>
+    <string name="str_super_homework_total">老师作业-%d个任务</string>
+    <string name="str_max_select_limit">最多选择5个资源</string>
+    <string name="str_homework_not_null">作业不能为空</string>
+    <string name="add_teacher">添加老师</string>
+    <string name="add_teacher_success">添加老师成功</string>
+    <string name="unable_to_add_teacher">该老师已存在班级中，不能添加</string>
+    <string name="only_teacher_can_see_the_course">师训课程仅老师可查看</string>
+    <string name="str_task_content_not_null">任务内容不能为空</string>
+    <string name="str_assign_start_time_above_end_time">开始时间的开始日期不能大于结束日期</string>
+    <string name="str_finish_start_time_above_end_time">结束时间的开始日期不能大于结束日期</string>
+    <string name="str_assign_time_above_finish_time">开始时间不能大于结束时间</string>
+
+    <string name="confirm_to_remove_from_class">确认移出班级吗?</string>
+
+    <string name="str_follow_people">%s人关注</string>
+    <string name="Str_view_people">%s人浏览</string>
+    <string name="follow_success_tips">关注成功，进入空中学校，切换机构可查看关注的学校</string>
+    <string name="pls_input_real_name">请完善个人资料中的真实姓名</string>
+    <string name="pls_select_a_teacher">至少选择一个老师</string>
+    <string name="auto_mark">语音评测</string>
+    <string name="str_online_school_message">学校论坛</string>
+
+    <string-array name="str_online_school_message_type">
+        <item>校园社区</item>
+        <item>资源共享</item>
+        <item>研学讨论</item>
+        <item>休闲时光</item>
+    </string-array>
+    <string name="str_choose_online_message_content_type">选择内容发布类型:</string>
+    <string name="str_delete_online_school_message">删除学校论坛？</string>
+    <string name="str_online_class_message">班级论坛</string>
+    <string name="str_delete_class_message">删除班级论坛？</string>
+    <string name="str_no_buy_lqCourse_shop_for_student">此任务来源于《%s》课程，请购买此课程后提交任务。</string>
+    <string name="str_no_buy_lqCourse_shop_for_parent">此任务来源于《%1$s》课程，请使用学生账号%2$s购买此课程后提交学习任务。</string>
+    <string name="str_confirm_delete_comment">确认删除该评论？</string>
+    <string name="label_to">至</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
+    <string name="str_my_Lecture">我的授课</string>
+    <string name="str_change_headmaster">是否更换班主任？</string>
+    <!--5.10-->
+    <string name="str_associated_account">关联账号</string>
+    <string name="str_weixin">微信</string>
+    <string name="str_qq">QQ</string>
+    <string name="str_associated_account_tips">账号关联之后，用户可以使用微信，QQ账号快速登录两栖蛙蛙。</string>
+    <string name="str_confirm_remove_associated">您是否要解除关联？</string>
+    <string name="str_remove_associated_success">解除关联成功</string>
+    <string name="str_remove_associated">解除关联</string>
+    <string name="str_remove_associated_tips">解除后将不能使用%s登录</string>
+    <string name="str_i_know">我知道了</string>
+    <string name="str_already_associated">已关联</string>
+    <string name="str_not_associated">未关联</string>
+    <string name="str_bind_auth_success">关联成功</string>
+    <string name="str_other_way_login">其他登录方式</string>
+    <string name="str_qq_login">QQ登录</string>
+    <string name="str_wx_login">微信登录</string>
+    <string name="lqwawa_login">账号密码登录</string>
+    <string name="qq_auth_login_info">已有两栖蛙蛙账号，还没关联QQ？</string>
+    <string name="wx_auth_login_info">已有两栖蛙蛙账号，还没关联微信？</string>
+    <string name="or">或</string>
+    <string name="learning_record">学习记录</string>
+    <string name="average">平均分</string>
+    <string name="max_score">最高分</string>
+    <string name="min_score">最低分</string>
+    <string name="commit_and_all_person">提交人数/班级人数: %s人</string>
+    <string name="str_class_lesson">班级学程</string>
+    <string name="str_show_text">显示文本</string>
+    <string name="str_fundamental_tone">原音</string>
+    <string name="str_record_err">录制异常，请重新录制</string>
+    <string name="str_evaluate_fail">评测失败，请重新提交评测</string>
+    <string name="str_evaluate_success">评测成功</string>
+    <string name="str_recording">正在录音中...</string>
+    <string name="str_commit_evaluation_unfinish_tip">第%s页未完成录音，继续评测？</string>
+    <string name="str_back_show_evaluation_tip">是否需要提交？</string>
+    <string name="str_teacher_review">老师点评</string>
+    <string name="str_immediately_review">立即点评</string>
+    <string name="str_eval_test">语音评测</string>
+    <string name="str_system_eval">系统评测:</string>
+    <string name="str_teacher_comment">老师评语:</string>
+    <string name="str_teacher_eval">老师评测:</string>
+    <string name="str_full_mark">(满分100分)</string>
+    <string name="str_score_not_null">分数不能为空</string>
+    <string name="str_eval_score">%s分</string>
+    <string name="str_score_more_than_hundred">最大不能超过100分</string>
+    <string name="str_view_detail">查看详情</string>
+    <string name="str_system_eval_page_score">系统评测-单页得分</string>
+    <string name="str_eval_no_comment">暂无评语</string>
+    <string name="hand_write_input">手写\n输入</string>
+    <string name="str_show_select_lqcourse_mark_score_tip">您引用了学程的课件，评分标准固定为百分制</string>
+    <string name="lesson_book">课本</string>
+    <string name="voice_evaluating">语音评测</string>
+    <string name="str_retell_list">复述列表</string>
+    <string name="str_eval_list">评测列表</string>
+    <string name="str_speed_of_read">跟读速度</string>
+    <string-array name="str_speed_array">
+        <item>慢速跟读</item>
+        <item>中速跟读</item>
+        <item>快速跟读</item>
+    </string-array>
+    <string name="str_following_read">正在跟读中...</string>
+    <string name="str_blackboard_live_overed">暂无回顾视频</string>
+    <string name="str_continue_eval">继续评测</string>
+    <string name="str_send_comment_success">发表成功</string>
+
+    <!--5.11需求-->
+    <string name="str_my_performance">我的表演</string>
+    <string name="str_my">我的</string>
+    <string name="str_source_from">来源:%s</string>
+    <string name="str_personal">个人</string>
+    <string name="str_pls_input_super_task_title">请确认综合任务名称(可修改)</string>
+    <string name="str_and">和</string>
+    <string name="str_resources_tag">【%1$s】%2$s</string>
+    <string name="str_lqcourse_shop">100%习课程</string>
+    <string name="str_online_study">名师课程</string>
+    <string name="air_classroom">在线课堂</string>
+    <string name="str_display_source">来源:</string>
+    <!--5.12需求-->
+    <string name="str_make_task_order_answer_tips">
+        1.为保证答题内容有效，请在读写单中标记的虚线框内书写答案。\n\n2. 请在英文输入下，严格按照英文书写规范输入录入，比如输入英文\', 相邻单词间留一个空格等。
+    </string>
+    <string name="str_task_order_handwriting_tips">推荐使用LQ手写板作答，书写输入更高效</string>
+    <string name="str_begin_to_answer">开始作答</string>
+    <string name="str_intro_of_answer_question">答题须知</string>
+    <string name="str_answer_card">答题卡</string>
+    <string name="str_revising">订正</string>
+    <string name="str_handwriting_input">手写输入</string>
+    <string name="str_space">空</string>
+    <string name="str_last_question">上一题</string>
+    <string name="str_next_question">下一题</string>
+    <string name="str_answer_parsing">答案解析</string>
+    <string name="str_question_title">题目:</string>
+    <string name="str_question_type">题型:</string>
+    <string name="str_reference_answer">参考答案:</string>
+    <string name="str_common_mistakes">常见错误:</string>
+    <string-array name="array_question_type_name">
+        <item>单选题</item>
+        <item>多选题</item>
+        <item>判断题</item>
+        <item>填空题</item>
+        <item>听力单选</item>
+        <item>听力判断</item>
+        <item>听力填空</item>
+        <item>单选改错</item>
+        <item>主观题</item>
+    </string-array>
+    <string name="str_no_analyse_tip">暂无</string>
+    <string name="str_my_answer">我的答案:</string>
+    <string name="str_objective_question">客观题</string>
+    <string name="str_subjective_problem">主观题</string>
+    <string name="str_total_score">共%s分</string>
+    <string name="sr_mark_score">得分%s</string>
+    <string name="str_full_marks">满分%s</string>
+    <string name="str_wrong_question_count">错%s题</string>
+    <string name="str_listen_question">听力题</string>
+    <string name="str_continue_answer">作答</string>
+    <string name="str_unfinish_answer">还有没有作答的题目，继续作答？</string>
+    <string name="str_max_select_image_count">(最多上传%d张图片)</string>
+    <string name="str_max_select_image_count_limit">最多可以选择%d张图片</string>
+    <string name="str_no_answer">未答题</string>
+    <string name="str_no_read_over">未批阅</string>
+    <string name="str_look_answer_parsing">查看答案解析</string>
+    <string name="str_look_origin_question">查看原题</string>
+    <string name="str_look_image">查看图片</string>
+    <string name="str_answer_parsing_no_point">答案解析</string>
+    <string name="str_reference_answer_no_point">参考答案</string>
+    <string name="str_question_name">题目:%s</string>
+    <string name="str_single_question_total_score">单题最高%s分，请重新打分！</string>
+    <string name="str_answer_analysis">答题分析</string>
+    <string-array name="array_sort_exercise_data">
+        <item>按题目序号排序</item>
+        <item>按错题率排序</item>
+        <item>平均分</item>
+    </string-array>
+    <string name="str_answer_error_rate">错误率: </string>
+    <string name="str_question_average_score">平均得分: %s分</string>
+    <string name="str_listen_article">听力原文</string>
+    <string name="str_single_select_data">选项%s</string>
+    <string name="str_right_answer">(正确)</string>
+    <string name="str_wrong_answer">(错误)</string>
+    <string name="str_average_up">平均分以上</string>
+    <string name="str_average_down">平均分以下</string>
+    <string name="str_right">对</string>
+    <string name="str_wrong">错</string>
+    <string name="str_answer_right">答对</string>
+    <string name="str_answer_wrong">答错</string>
+    <string name="str_unit_percentage">单位: 百分比</string>
+    <string name="str_answer_question_personal">答题人数: %d人</string>
+    <string name="str_class_overview">班级概况</string>
+    <string name="str_exercise_commit_number">已批阅人数/班级人数: %s人</string>
+    <string name="str_full_score_string">满分</string>
+    <string name="str_add_schoollib_video">添加校本视频(可选)</string>
+    <string name="str_some_body_answer">%s的答案:</string>
+    <string name="str_auto_mark">自动批阅</string>
+    <string name="str_mark_score">得分</string>
+    <string name="str_teacher_comment_no_point">老师评语</string>
+    <string name="str_later_review">稍后点评</string>
+    <string name="str_comments_should_not_be_empty">点评内容不能为空！</string>
+</resources>

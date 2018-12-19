@@ -1,0 +1,103 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircularProgressBar="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@android:color/black">
+
+    <com.lqwawa.libs.videorecorder.CameraView
+        android:id="@+id/vr_camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/vr_cancel_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="10dp"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:padding="5dp"
+            android:background="@drawable/vr_btn_bg"
+            android:src="@drawable/vr_cancel"
+            android:scaleType="centerInside"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.lqwawa.libs.videorecorder.views.CircularProgressBar
+                android:id="@+id/vr_record_btn"
+                android:layout_width="@dimen/vr_record_button_size"
+                android:layout_height="@dimen/vr_record_button_size"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="bottom|center"
+                android:padding="0dp"
+                CircularProgressBar:pwText="@string/vr_press_and_hold_to_record"
+                CircularProgressBar:pwTextColor="@color/vr_green"
+                CircularProgressBar:pwTextSize="20sp"
+                CircularProgressBar:pwCircleColor="@android:color/transparent"
+                CircularProgressBar:pwContourColor="@android:color/transparent"
+                CircularProgressBar:pwContourSize="0dp"
+                CircularProgressBar:pwRadius="0dp"
+                CircularProgressBar:pwBarLength="0dp"
+                CircularProgressBar:pwBarColor="@color/vr_green"
+                CircularProgressBar:pwRimColor="#5fffffff"
+                CircularProgressBar:pwBarWidth="2dp"
+                CircularProgressBar:pwRimWidth="2dp" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/vr_confirm_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="10dp"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:padding="5dp"
+            android:background="@drawable/vr_btn_bg"
+            android:src="@drawable/vr_confirm"
+            android:scaleType="centerInside"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/vr_thumbnail_layout"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:padding="3dp"
+        android:background="@drawable/vr_thumbnail_bg"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/vr_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/vr_toggle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
+        android:src="@drawable/vr_toggle"
+        android:scaleType="centerInside" />
+
+</FrameLayout>

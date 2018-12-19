@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@android:color/white">
+
+        <View
+                android:id="@+id/top_line"
+                style="@style/line_gray"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+<RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+        <com.galaxyschool.app.wawaschool.views.CircleImageView
+            android:id="@+id/comment_sender_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
+
+    <LinearLayout
+        android:id="@+id/layout_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/comment_sender_icon">
+
+    <TextView
+            android:id="@+id/comment_sender_name"
+            style="@style/comment_content_txt"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:singleLine="false"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="top">
+
+
+            <TextView
+                style="@style/comment_praise_txt"
+                android:id="@+id/comment_praise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="2"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/selector_comment_praise"
+                android:singleLine="true"/>
+
+            <TextView
+                style="@style/comment_praise_txt"
+                android:id="@+id/comment_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/icon_comment"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+            style="@style/comment_date_txt"
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/comment_sender_icon"
+            android:layout_below="@id/layout_user_name"
+            android:layout_marginTop="5dp"
+            android:text="Date"
+            android:textSize="14sp"
+            android:singleLine="true"/>
+    <TextView
+            android:id="@+id/comment_content"
+            style="@style/comment_content_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/comment_sender_icon"
+            android:layout_below="@id/comment_date"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:text="Content"/>
+
+</RelativeLayout>
+
+    <!-- 父子之间的分割线 -->
+        <View
+                android:id="@+id/line"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="45dp"
+                style="@style/line_gray"
+                android:visibility="gone"/>
+
+        </LinearLayout>

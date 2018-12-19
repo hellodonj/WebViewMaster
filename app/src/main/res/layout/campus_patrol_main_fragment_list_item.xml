@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/contacts_list_item_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/main_bg_color"
+              android:orientation="horizontal"
+              android:gravity="center_vertical"
+              android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tv_left"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:text="1" />
+
+    <LinearLayout
+        android:id="@+id/layout_body"
+        android:layout_toRightOf="@id/tv_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+
+    <FrameLayout
+        android:layout_width="@dimen/logo_size"
+        android:layout_height="@dimen/logo_size"
+        android:layout_marginRight="10dp">
+
+        <com.galaxyschool.app.wawaschool.views.RoundedImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:src="@drawable/default_user_icon"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/txt_wawa_normal_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:padding="0dp"
+            android:background="#e0009039"
+            android:gravity="center"
+            android:textSize="8sp"
+            android:singleLine="true"
+            android:ellipsize="middle"
+            android:text="描述"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="标题" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/comment_date_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="内容"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_right"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:maxWidth="60dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:drawableRight="@drawable/rightarrow_black"
+        android:layout_marginRight="10dp"
+        android:text="1" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/line_gray"
+        android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

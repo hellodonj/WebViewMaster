@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NetErrorView">
+        <attr name="net_error_text" format="string" />
+        <attr name="net_error_icon" format="reference" />
+    </declare-styleable>
+</resources>

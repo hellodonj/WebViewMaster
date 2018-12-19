@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorLight">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/teacher_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:layout_marginTop="@dimen/toolbarSize">
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+        <com.lqwawa.intleducation.base.widgets.TopBar
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/join_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/windowsBackground"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+        
+        <TextView
+            android:id="@+id/tv_join_teacher"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="90dp"
+            android:layout_marginRight="90dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorLight"
+            android:lines="1"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:text="@string/label_apply_join"
+            android:foreground="@drawable/ic_touch_fg_gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:background="@drawable/bg_accent_haf_height_radius"/>
+        
+    </FrameLayout>
+
+
+</LinearLayout>

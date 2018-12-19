@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ebebeb"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <include layout="@layout/contacts_search_bar"/>
+
+    <View
+        android:id="@+id/category_split_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D3D4D4"
+        />
+
+    <LinearLayout
+        android:id="@+id/category_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/filter_pre_ico"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/search_and_search"
+            android:textColor="@color/text_black"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/category_filter_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_down_ico"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contacts_pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/general_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:minHeight="40dp"
+                            android:padding="10dp">
+
+                            <View
+                                android:layout_width="4dp"
+                                android:layout_height="match_parent"
+                                android:background="#009039"/>
+
+                            <TextView
+                                style="@style/txt_wawa_big_black"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="1"
+                                android:text="@string/always_use"/>
+                        </LinearLayout>
+
+                        <com.galaxyschool.app.wawaschool.views.MyGridView
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/booksore_list_general_gridview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/text_white"
+                            android:cacheColorHint="#00000000"
+                            android:horizontalSpacing="0dp"
+                            android:listSelector="#00000000"
+                            android:numColumns="3"
+                            android:scrollbarStyle="insideOverlay"
+                            android:scrollbars="vertical"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="0dp"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:minHeight="40dp"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:background="#009039"/>
+
+                        <TextView
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:text="@string/all"/>
+                    </LinearLayout>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        xmlns:slide="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/book_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/text_white"
+                        android:cacheColorHint="#00000000"
+                        android:gravity="center"
+                        android:horizontalSpacing="0dp"
+                        android:listSelector="#00000000"
+                        android:numColumns="3"
+                        android:scrollbarStyle="insideOverlay"
+                        android:scrollbars="vertical"
+                        android:scrollingCache="false"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="10dp"
+                        slide:showFullHeight="false"
+                        slide:slideAnimationTime="200"
+                        slide:slideLeftAction="scroll"
+                        slide:slideMode="right"
+                        slide:slideRightAction="scroll"/>
+                </LinearLayout>
+            </ScrollView>
+
+        </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+        <!--<include layout="@layout/book_grid_view" />-->
+
+        <com.galaxyschool.app.wawaschool.fragment.category.CategorySelectorView
+            android:id="@+id/category_selector_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </FrameLayout>
+</LinearLayout>

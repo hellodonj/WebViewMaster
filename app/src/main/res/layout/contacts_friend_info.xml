@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_person_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffebebeb"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <LinearLayout
+        android:id="@+id/contacts_person_attrs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/contacts_user_basic_info" />
+
+        <include
+                android:id="@+id/contacts_remark_attr"
+                layout="@layout/contacts_user_attribute" />
+
+        <ImageView style="@style/line_gray"/>
+
+        <include
+                android:id="@+id/contacts_qrcode_attr"
+                layout="@layout/contacts_user_attribute" />
+
+        <Button
+            android:id="@+id/contacts_send_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="#009039"
+            android:text="@string/start_chat"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:textColor="#ffffff"/>
+
+        <Button
+                android:id="@+id/contacts_delete_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="#f1765a"
+                android:textSize="18sp"
+                android:text="删除"
+                android:textColor="#ffffff"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+

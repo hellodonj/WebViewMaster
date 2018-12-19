@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_white"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/com_item_space"
+        android:numColumns="2"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/com_item_space">
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView>
+</LinearLayout>

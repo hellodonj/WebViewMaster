@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_mp">MediaPaper</string>
+
+    <string-array name="week_name">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+    <string-array name="month_name">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </string-array>
+
+
+    <string name="sdcard_full">存储空间已满。</string>
+    <string name="sdcard_mount">您的设备正作为USB存储器使用。请断开USB连接后重试。</string>
+
+
+    <string name="error_audio_msg"> 很抱歉，无法播放此音频。 </string>
+    <string name="error_record_msg"> 很抱歉，录制音频失败。 </string>
+    <string name="recordend">录音时长最大支持1小时。</string>
+    <string name="record_in_preview_alart">请在编辑模式下录音。</string>
+    <string name="play_error">文件可能损坏，无法播放。</string>
+
+    <string name="waiting">请稍候...</string>
+
+    <string name="no_title">请输入标题</string>
+    <string name="reach_max">最大支持添加30个多媒体文件。</string>
+    <string name="Paper_homework_title">作业标题:</string>
+    <string name="paper_homework_content">作业内容:</string>
+
+    <string name="photolib">图片</string>
+    <string name="audio_lib">音频</string>
+
+    <string name="save">保存</string>
+
+
+    <string name="praise">赞</string>
+    <string name="share">分享</string>
+
+
+    <string name="start_record">开始录音</string>
+    <string name="stop_record">结束录音</string>
+
+    <string name="mp_send">发送</string>
+    <string name="mp_completed">完成</string>
+
+    <string name="mp_chat_now">沟通</string>
+    <string name="mp_follow">关注</string>
+    <string name="mp_collect">收藏</string>
+    <string name="mp_edit">编辑</string>
+    <string name="mp_should_have_path">路径不能为空</string>
+    <string name="mp_File_does_not_exist">文件不存在</string>
+    <string name="mp_rerecord">重录</string>
+    <string name="mp_click_record">点击录音</string>
+    <string name="mp_finish_record">结束录音</string>
+    <string name="mp_play_recodr">播放录音</string>
+    <string name="mp_file_name">文件名</string>
+    <string name="mp_upload">上传</string>
+    <string name="mp_cancel">取消</string>
+    <string name="mp_ok">确认</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resource_list_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+    <include layout="@layout/contacts_search_bar" />
+
+    <View style="@style/line_gray" />
+
+    <include layout="@layout/contacts_search_list_item" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        layout="@layout/resource_list" />
+
+</LinearLayout>

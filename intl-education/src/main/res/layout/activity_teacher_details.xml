@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/com_bg_white"
+             android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/com_page_load_failed"/>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:orientation="vertical">
+
+            <com.lqwawa.intleducation.base.widgets.ScrollViewEx
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/com_bg_white"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/cover_iv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/teacher_details_cover"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="16dp"
+                            android:paddingLeft="@dimen/com_item_space"
+                            android:paddingRight="@dimen/com_item_space">
+
+                            <ImageView
+                                android:id="@+id/teacher_avatar_iv"
+                                android:layout_width="76dp"
+                                android:layout_height="76dp"/>
+
+                            <TextView
+                                android:id="@+id/introduction_tv"
+                                style="@style/text_white_l"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:maxLines="5"
+                                android:ellipsize="end"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="20dp"/>
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:background="@color/com_bg_light_white"/>
+
+                    <RadioGroup
+                        android:id="@+id/rg_tab"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@color/com_bg_white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_course"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/com_green_line_bg_selector"
+                            android:button="@null"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:text="@string/course"
+                            android:textColor="@color/organ_tab_text"
+                            android:textSize="@dimen/com_font_size_4"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_resource"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/com_green_line_bg_selector"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/resource"
+                            android:textColor="@color/organ_tab_text"
+                            android:textSize="@dimen/com_font_size_4"/>
+                    </RadioGroup>
+
+                    <FrameLayout
+                        android:id="@+id/fragment_container"
+                        android:background="@color/com_bg_white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
+            </com.lqwawa.intleducation.base.widgets.ScrollViewEx>
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.lqwawa.intleducation.base.widgets.TopBar
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/rg_tab_f"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/com_bg_white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rb_course_f"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/com_green_line_bg_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/course"
+                android:textColor="@color/organ_tab_text"
+                android:textSize="@dimen/com_font_size_4"/>
+
+            <RadioButton
+                android:id="@+id/rb_resource_f"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/com_green_line_bg_selector"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/resource"
+                android:textColor="@color/organ_tab_text"
+                android:textSize="@dimen/com_font_size_4"/>
+        </RadioGroup>
+    </LinearLayout>
+</FrameLayout>

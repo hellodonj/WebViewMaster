@@ -1,0 +1,227 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/school_space_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--机构信息的头部-->
+            <include layout="@layout/school_space_header"/>
+
+
+            <!--两栖蛙蛙机构详情页-->
+            <LinearLayout
+                android:id="@+id/ll_lqwawa_school_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!--作业以及云贴吧相关的信息-->
+                <include
+                    android:id="@+id/school_message_list_body"
+                    layout="@layout/resource_list_with_header"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_new_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <!--地址-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <TextView
+                            style="@style/txt_wawa_normal_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/school_adrress_suffix"/>
+
+                        <TextView
+                            android:id="@+id/address"
+                            style="@style/txt_wawa_normal_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=""/>
+
+                    </LinearLayout>
+
+                    <View style="@style/line_gray"/>
+
+                    <!--电话-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <TextView
+                            style="@style/txt_wawa_normal_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/school_phone_suffix"/>
+
+                        <TextView
+                            android:id="@+id/phone"
+                            style="@style/txt_wawa_normal_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text=""/>
+
+                    </LinearLayout>
+
+
+                    <View style="@style/line_gray"/>
+
+                    <!--二维码-->
+
+                    <ImageView
+                        android:id="@+id/contacts_qrcode_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center|top"
+                        android:layout_margin="10dp"
+                        android:scaleType="fitCenter"/>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        android:id="@+id/school_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:cacheColorHint="@android:color/transparent"
+                        android:horizontalSpacing="0dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="4"
+                        android:verticalSpacing="0dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <!--在线课堂的机构详情页-->
+            <LinearLayout
+                android:id="@+id/ll_online_school_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!--添加在线课堂的内容详情-->
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        style="@style/line_gray"
+        android:background="@color/main_bg_color"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/user_subscribe_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/holder1"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="40dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/friend_btn"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_add_authority_or_people_green_bg"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="加入"
+            android:textColor="@color/white"/>
+
+        <View
+            style="@style/line_gray_v"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/follow_btn"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:background="@drawable/btn_add_authority_or_people_green_bg"
+            android:gravity="center"
+            android:text="关注"
+            android:textColor="@color/white"/>
+
+
+        <TextView
+            android:id="@+id/holder2"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="40dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/join_btn"
+        style="@style/txt_wawa_normal_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_add_authority_or_people_green_bg"
+        android:gravity="center"
+        android:text="关注"
+        android:textColor="@color/white"/>
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OneKeyShare</string>
+    <string name="wechat_friends">WeChat Contacts</string>
+    <string name="wxcircle">WeChat Moments</string>
+    <string name="qq_friends">QQ Friends</string>
+    <string name="qzone">Qzone</string>
+    <string name="wawachat">WawaChat Contacts</string>
+    <string name="install_qq">Please Install QQ</string>
+    <string name="install_wechat">Please Install WeChat</string>
+    <string name="cancel">Cancel</string>
+    <string name="str_loadding">Compressing files, please wait...</string>
+
+    <string name="share_success">分享成功</string>
+</resources>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:background="@color/com_bg_little_gray"
+            android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/com_bg_little_gray"
+        android:padding="@dimen/com_item_space">
+
+        <TextView
+            android:id="@+id/exam_title_tv"
+            style="@style/text_dark_gray_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_little_gray"
+            android:padding="@dimen/com_item_space"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/com_line_gray"
+            android:paddingBottom="@dimen/com_item_space"
+            android:paddingTop="@dimen/com_item_space"/>
+
+        <LinearLayout
+            android:id="@+id/single_root_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollListView
+                android:id="@+id/single_options_list"
+                android:divider="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/essay_question_root_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:id="@+id/question_et"
+                style="@style/text_black_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_item_space"
+                android:layout_marginBottom="@dimen/com_item_space"
+                android:background="@drawable/bg_exam_edit_text"
+                android:gravity="left|top"
+                android:maxLength="500"
+                android:hint="@string/enter_question_please"
+                android:minLines="6"
+                android:padding="@dimen/com_item_space_s"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/result_root_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/com_line_gray"/>
+
+            <TextView
+                android:id="@+id/result_tv"
+                style="@style/text_dark_gray_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_item_space"
+                android:padding="@dimen/com_item_space"/>
+
+            <TextView
+                android:id="@+id/score_tv"
+                style="@style/text_dark_gray_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_item_space"
+                android:padding="@dimen/com_item_space"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/answer_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_exam_text"
+                    android:layout_marginTop="@dimen/com_item_space"
+                    android:minLines="6"
+                    android:padding="@dimen/com_item_space"/>
+                
+                <TextView
+                    android:id="@+id/parsing_et"
+                    style="@style/text_gray_l"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/com_item_space"
+                    android:background="@drawable/bg_exam_text"
+                    android:minLines="6"
+                    android:padding="@dimen/com_item_space"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/exam_mark_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:gravity="center_vertical"
+                android:background="@color/transparent"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/text_black_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/result_score_with_colon"/>
+                <EditText
+                    android:id="@+id/mark_et"
+                    style="@style/text_black_l"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_exam_edit_text"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:padding="@dimen/com_item_space_s"
+                    android:layout_margin="@dimen/com_item_space" />
+                <TextView
+                    style="@style/text_gray_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/points"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

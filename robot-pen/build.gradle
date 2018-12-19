@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 25
+    buildToolsVersion '27.0.3'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'org.greenrobot:greendao:3.2.0'
+    compile 'com.codingmaster:slog:1.0.0'
+    compile 'cn.robotpen.pen:penservice:1.6.22.28'
+
+    compile project(':elearning-library')
+}

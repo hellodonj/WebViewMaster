@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color">
+
+    <include layout="@layout/contacts_header"/>
+
+    <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+        android:id="@+id/contacts_pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+        <com.galaxyschool.app.wawaschool.views.CircleImageView
+            android:id="@+id/iv_student_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/default_user_icon"
+            android:layout_marginRight="10dp"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_author_name"
+                    style="@style/comment_content_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:ellipsize="end"
+                    />
+
+            <TextView
+                android:id="@+id/tv_commit_time"
+                style="@style/comment_date_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_content"
+                style="@style/txt_wawa_normal_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/task_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="@string/comment_record_text"
+                android:layout_margin="10dp"
+                />
+
+            <com.galaxyschool.app.wawaschool.views.MyListView
+                android:id="@+id/contacts_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:layout_marginBottom="10dp"
+                android:dividerHeight="0dp"
+                android:listSelector="@android:color/transparent"
+                android:cacheColorHint="@android:color/transparent"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+    </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+
+    <!-- 发送评论布局 -->
+    <LinearLayout
+        android:id="@+id/send_talks_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone">
+
+        <include layout="@layout/include_bottom_send_layout"/>
+
+    </LinearLayout>
+</LinearLayout>

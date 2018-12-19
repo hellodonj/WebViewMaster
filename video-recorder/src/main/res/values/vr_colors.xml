@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="vr_green">#66ff66</color>
+    <color name="vr_gray">#5fffffff</color>
+    <color name="vr_title_bar_bg">#7f000000</color>
+
+</resources>

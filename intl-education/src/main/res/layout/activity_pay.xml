@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_light_white"
+    >
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
+
+    <LinearLayout
+        android:id="@+id/ll_payway"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_bar"
+        android:divider="@drawable/divider_line"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+
+        <!--===========================银行卡支付==============================-->
+        <LinearLayout
+            android:id="@+id/payway_uppay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:src="@drawable/pay_uppay"/>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/payway_uppay"/>
+
+            <RadioButton
+                android:id="@+id/payway_uppay_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/com_checkbox"
+                android:clickable="false"/>
+
+        </LinearLayout>
+
+
+        <!--===========================蛙蛙币支付==============================-->
+        <LinearLayout
+            android:id="@+id/payway_wawa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/pay_wawa"/>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wawa_coin"/>
+
+            <RadioButton
+                android:checked="true"
+                android:id="@+id/payway_wawa_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/com_checkbox"
+                android:clickable="false"/>
+
+
+        </LinearLayout>
+
+
+        <!--===========================激活码支付==============================-->
+        <LinearLayout
+            android:id="@+id/payway_activation_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/act_code2"/>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/activation_code"/>
+
+            <RadioButton
+                android:id="@+id/payway_act_code_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/com_checkbox"
+                android:clickable="false"/>
+
+        </LinearLayout>
+
+        <!--===========================微信支付==============================-->
+        <LinearLayout
+            android:id="@+id/payway_wechatpay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/pay_wechat"/>
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/text_black_xl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/weChat"/>
+
+            <RadioButton
+                android:id="@+id/payway_wechatpay_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/com_checkbox"
+                android:clickable="false"/>
+
+        </LinearLayout>
+
+        <!--===========================支付宝支付==============================-->
+        <LinearLayout
+            android:id="@+id/payway_alipay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:src="@drawable/pay_ali_new"/>
+
+            <TextView
+                style="@style/text_black_xl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ali"/>
+
+            <RadioButton
+                android:id="@+id/payway_alipay_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/com_checkbox"
+                android:clickable="false"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_btn"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <TextView
+                style="@style/text_gray_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_total_money"/>
+
+            <TextView
+                android:id="@+id/need_pay_tv"
+                style="@style/text_red_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="$100"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/commit_tv"
+            style="@style/text_white_l"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#007c32"
+            android:clickable="true"
+            android:gravity="center"
+            android:scaleType="center"
+            android:text="@string/immediate_pay"/>
+    </LinearLayout>
+
+    <ViewStub
+        android:id="@+id/pay_result_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_bar"
+        android:inflatedId="@+id/pay_result_view"
+        android:layout="@layout/activity_pay_result"/>
+
+</RelativeLayout>

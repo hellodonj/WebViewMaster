@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid
+        android:color="@color/com_bg_sky_blue"/>
+    <corners
+        android:radius="3dp"/>
+</shape>

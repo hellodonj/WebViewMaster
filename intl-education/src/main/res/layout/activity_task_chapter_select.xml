@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/com_bg_white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/list_back_lay"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_light_white"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:background="@color/com_bg_light_white"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@null"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/clear_bt"
+            android:layout_width="0px"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@drawable/com_white_bg_selecter"
+            android:gravity="center"
+            android:text="@string/clear"
+            android:textColor="@color/com_green_text"
+            android:textSize="@dimen/com_font_size_4"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/com_line_gray"/>
+
+        <Button
+            android:id="@+id/commit_bt"
+            android:layout_width="0px"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@drawable/com_white_bg_selecter"
+            android:gravity="center"
+            android:text="@string/commit"
+            android:textColor="@color/com_green_text"
+            android:textSize="@dimen/com_font_size_4"/>
+    </LinearLayout>
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

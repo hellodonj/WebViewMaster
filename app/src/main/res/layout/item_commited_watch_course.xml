@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:padding="10dp"
+              android:gravity="center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/framelayout_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        >
+
+        <!-- 备用的ImageView头像 -->
+        <ImageView
+            android:id="@+id/iv_extra_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/resource_video_ico"
+            android:visibility="visible"
+            />
+
+
+        <ImageView
+            android:id="@+id/red_point"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="right|top"
+            android:scaleType="fitCenter"
+            android:src="@drawable/shape_corner_circle_red"
+            android:visibility="invisible"
+            />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- 备用的内容 -->
+        <TextView
+            android:textColor="@color/text_black"
+            android:id="@+id/tv_extra_content"
+            style="@style/comment_date_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            tools:text="备用内容哈哈哈哈就发觉发放开发快速"
+            android:textSize="14sp"
+            android:visibility="visible"/>
+
+        <TextView
+            android:visibility="gone"
+            android:padding="3dp"
+            android:id="@+id/tv_access_details"
+            style="@style/txt_wawa_small_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:drawablePadding="3dp"
+            android:drawableRight="@drawable/jiaxiao_detail_rightarrow_ico"
+            android:gravity="center_vertical"
+            android:text="@string/access_details"
+            android:textColor="@color/text_gray"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

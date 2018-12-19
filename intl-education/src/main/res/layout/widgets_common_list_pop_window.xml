@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/transparent"
+              android:orientation="vertical">
+
+    <View
+        android:id="@+id/pop_top_bg"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@color/com_bg_dark_trans_black"/>
+
+    <LinearLayout
+        android:id="@+id/pop_root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/com_bg_light_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pop_title_tv"
+            style="@style/text_gray_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/select_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_white"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/com_item_space_l"
+                android:layout_marginRight="@dimen/com_item_space_l"
+                android:divider="@color/com_bg_light_white"
+                android:dividerHeight="1dp"
+                android:scrollbars="none"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bottom_btn"
+            style="@style/text_gray_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/com_item_selector"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/cancel"/>
+
+        <View
+            android:id="@+id/pop_bottom_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@color/com_bg_dark_trans_black"/>
+    </LinearLayout>
+</LinearLayout>

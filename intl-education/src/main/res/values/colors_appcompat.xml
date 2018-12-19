@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorLight">@color/white</color>
+    <color name="colorLightAlpha">#f0ffffff</color>
+    <color name="colorLightHighAlpha">#30ffffff</color>
+    <color name="colorDark">@color/black</color>
+    <color name="colorDarkAlpha">#aa000000</color>
+    <color name="colorDarkHighAlpha">#66000000</color>
+    <color name="colorGary">#cccccc</color>
+    <color name="colorGrayDark">#999999</color>
+    <color name="colorGrayLight">#D6D6D6</color>
+    <color name="colorGrayHighLight">#ECECEC</color>
+    <color name="colorAccentAlpha">#8000913A</color>
+    <color name="colorPink">#F7475B</color>
+    <color name="colorDarkRed">#FF1D33</color>
+
+    <!--背景色-->
+    <color name="windowsBackground">#f2f2f2</color>
+    <color name="windowsBackgroundLight">#f4f4f4</color>
+
+    <!--字体颜色-->
+    <color name="textPrimary">#333333</color>
+    <color name="textSecond">#808080</color>
+    <color name="textAccent">@color/colorAccent</color>
+    <color name="textLight">@color/colorLight</color>
+    <color name="textDark">#202020</color>
+    <color name="textGray">#999999</color>
+    <color name="textDarkGray">#cccccc</color>
+    <color name="textThird">#4d4d4d</color>
+    <color name="textFourth">#666666</color>
+    <color name="textMoneyRed">#F63A00</color>
+
+
+    <color name="textBlue">#0097FA</color>
+
+    <!--提示色彩-->
+    <color name="alertNormal">#4ce275</color>
+    <color name="alertImportant">#f98d2c</color>
+
+    <!--遮罩颜色-->
+    <color name="maskChatHeader">#30000000</color>
+    <!--导航栏Icon遮罩色-->
+    <color name="navIconTintLight">#f0000000</color>
+
+    <!--Dialog背景颜色-->
+    <color name="customDialog">#90000000</color>
+
+    <color name="foreground_color">#e6e6e6</color>
+
+    <color name="touch_color">#30ffffff</color>
+    <color name="divider_color">#ebebeb</color>
+
+    <!--不可用主题-->
+    <color name="unusable_color">#2EA65E</color>
+
+    <!--首页基础课程各类型的底色配置-->
+    <color name="basics_type_color_1">#FFC80B</color>
+    <color name="basics_type_color_2">#39BABA</color>
+    <color name="basics_type_color_3">#5496D5</color>
+    <color name="basics_type_color_4">#EB9279</color>
+
+    <!--课程大纲状态颜色值-->
+    <color name="section_state_idle_color">#FF2635</color>
+    <color name="section_state_starting_color">#FFBE0D</color>
+    <color name="section_state_complete_color">#94CD54</color>
+</resources>

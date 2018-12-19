@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <com.galaxyschool.app.wawaschool.views.RoundedImageView
+        android:id="@+id/iv_img"
+        android:layout_width="@dimen/size_avatar"
+        android:layout_height="@dimen/size_avatar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/mini_avatar_shadow"
+        android:scaleType="centerCrop" />
+
+
+        <TextView
+            tools:text="90-100分"
+            style="@style/txt_wawa_normal_black"
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1.0"
+            android:padding="@dimen/min_padding"
+            android:gravity="center_vertical"
+            android:singleLine="true"/>
+
+    <TextView
+        android:layout_marginRight="5dp"
+        tools:text="90-100分"
+        android:textSize="16sp"
+        android:textColor="@color/text_dark_gray"
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:padding="@dimen/min_padding"
+        android:gravity="center_vertical"
+        android:singleLine="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/arrow_right"/>
+
+</LinearLayout>

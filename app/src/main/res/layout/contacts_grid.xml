@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.galaxyschool.app.wawaschool.views.MyGridView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slide="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contacts_grid_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:numColumns="3"
+    android:stretchMode="columnWidth"
+    android:scrollbars="vertical"
+    android:scrollbarStyle="insideOverlay"
+    slide:showFullHeight="false"
+    slide:slideAnimationTime="200"
+    slide:slideLeftAction="scroll"
+    slide:slideMode="right"
+    slide:slideRightAction="scroll" />

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="au_already_newest_version">Latest version installed already</string>
+    <string name="au_new_version_found">New version available</string>
+    <string name="au_new_version">Latest version:</string>
+    <string name="au_release_notes">Release note:</string>
+    <string name="au_file_size">File size:</string>
+    <string name="au_update_now">Update Now</string>
+    <string name="au_not_now">Update Later</string>
+    <string name="au_ignore">Ignore</string>
+    <string name="au_downloading">Downloading new version…</string>
+    <string name="au_download_error">Download failed, please try again later</string>
+    <string name="au_retry">Retry</string>
+    <string name="au_new_version_downloaded">New version downloaded, touch to install</string>
+
+    </resources>

@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#ffebebeb">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="#ffffffff"
+        android:paddingRight="5dp">
+
+        <ImageView
+            android:id="@+id/contacts_header_left_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/sel_nav_backarrow"
+            android:background="@drawable/nav_blank_ico"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/toggle_school_left_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/toggle_school_bookstore_bg"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:text="@string/toggle_school"
+            android:textColor="@color/text_green"
+            android:textSize="14sp"
+            />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/contacts_header_right_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/nav_blank_ico"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="按钮"
+                android:textColor="#ffffffff"
+                android:textSize="16sp"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/contacts_header_right_ico"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/nav_blank_ico"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/contacts_header_title"
+            style="@style/txt_wawa_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:maxLines="2"/>
+    </RelativeLayout>
+
+    <ImageView style="@style/line_gray"/>
+    
+</LinearLayout>

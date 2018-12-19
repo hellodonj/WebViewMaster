@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/com_bg_white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/com_bg_black">
+
+        <LinearLayout
+            android:id="@+id/search_bg_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/cancel_tv"
+            android:background="@drawable/trans_search_text_bg">
+
+            <EditText
+                android:id="@+id/search_et"
+                style="@style/text_white_l"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/search_hit"
+                android:inputType="text|textAutoComplete|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:focusable="true"
+                android:textColorHint="@color/com_text_light_gray"
+                android:textCursorDrawable="@null"
+                android:imeOptions="actionSearch"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/search_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="5dp"
+            android:src="@drawable/search_small"/>
+
+        <ImageView
+            android:id="@+id/search_clear_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/search_bg_view"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:padding="@dimen/com_item_space"
+            android:src="@drawable/search_clear"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/cancel_tv"
+            style="@style/text_gray_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="@dimen/com_item_space"
+            android:padding="6dp"
+            android:text="@string/cancel"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/hishory_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/com_item_space">
+
+            <TextView
+                style="@style/text_gray_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/com_item_space"
+                android:text="@string/recent_search"/>
+
+            <ImageView
+                android:id="@+id/clear_history_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:padding="@dimen/com_item_space_xs"
+                android:src="@drawable/comment_delete"/>
+
+
+        </RelativeLayout>
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView
+            android:id="@+id/history_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="@dimen/com_item_space"
+            android:numColumns="3"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:verticalSpacing="@dimen/com_item_space"/>
+
+    </LinearLayout>
+</LinearLayout>

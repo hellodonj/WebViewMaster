@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:background="@drawable/bg_item_selector">
+
+    <ImageView
+        android:id="@+id/iv_organ_avatar"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_default_school_avatar"
+        android:scaleType="fitXY" >
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/tv_organ_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/textPrimary"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
+</LinearLayout>

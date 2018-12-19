@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qrcode_process_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical" >
+
+    <com.galaxyschool.app.wawaschool.views.ToolbarTopView
+        android:id="@+id/toolbartopview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bg_color"
+            android:padding="10dp" >
+
+            <ImageView
+                android:id="@+id/qrcode_thumbnail"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/qrcode_name"
+                style="@style/txt_wawa_big_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/qrcode_thumbnail"
+                android:layout_toRightOf="@id/qrcode_thumbnail"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/qrcode_info"
+                style="@style/txt_wawa_big_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/qrcode_thumbnail"
+                android:layout_toRightOf="@id/qrcode_thumbnail"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <FrameLayout
+                android:id="@+id/qrcode_center_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <EditText
+                    android:id="@+id/qrcode_verify_edittext"
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/bg_top_white_frame"
+                    android:hint="@string/qrcode_verify_hint"
+                    android:minHeight="@dimen/item_height"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/qrcode_class_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RadioGroup
+                        android:id="@+id/qrcode_radio_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/bg_top_white_frame"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="0dp" >
+
+                        <RadioButton
+                            android:id="@+id/qrcode_radio_btn_teacher"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1.0"
+                            android:button="@drawable/radio_button"
+                            android:text="@string/teacher" />
+
+                        <RadioButton
+                            android:id="@+id/qrcode_radio_btn_student"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:button="@drawable/radio_button"
+                            android:text="@string/student" />
+
+                        <RadioButton
+                            android:id="@+id/qrcode_radio_btn_parent"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:button="@drawable/radio_button"
+                            android:text="@string/parent" />
+                    </RadioGroup>
+
+                    <include
+                        android:id="@+id/qrcode_realname_layout"
+                        layout="@layout/common_name_edittext_layout" />
+
+                    <include
+                        android:id="@+id/qrcode_subject_layout"
+                        layout="@layout/common_name_edittext_layout" />
+
+                    <!--用户名-->
+                    <LinearLayout
+                        android:id="@+id/qrcode_account_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/bg_middle_frame"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/username" />
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@android:color/darker_gray" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.0"
+                            android:gravity="center"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/qrcode_class_selected_student_account"
+                                style="@style/txt_wawa_big_black"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_gravity="right"
+                                android:hint="@string/pls_select_bind_student_account"
+                                android:layout_marginRight="20dp"
+                                android:gravity="center_vertical"
+                                android:drawableRight="@drawable/arrow_down_ico"
+                                android:padding="10dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!--关系-->
+
+                    <LinearLayout
+                        android:id="@+id/qrcode_relation_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/bg_middle_frame"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/name_edit_name"
+                            style="@style/txt_wawa_big_black"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/relation" />
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@android:color/darker_gray" />
+
+                        <LinearLayout
+                            android:id="@+id/qrcode_class_verify_extra_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.0"
+                            android:gravity="center"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:id="@+id/qrcode_class_verify_extra"
+                                style="@style/txt_wawa_big_black"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_gravity="right"
+                                android:hint="@string/pls_input_relationship"
+                                android:layout_marginRight="20dp"
+                                android:gravity="center_vertical"
+                                android:drawableRight="@drawable/arrow_down_ico"
+                                android:padding="10dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/bg_bottom_frame"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/qrcode_add_btn"
+                    style="@style/txt_wawa_big_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="0dp"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/confirm_ico"
+                    android:gravity="center"
+                    android:minHeight="@dimen/register_btn_min_height"
+                    android:padding="10dp"
+                    android:text="@string/add" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

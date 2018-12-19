@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.galaxyschool.app.wawaschool.views.PullToRefreshView
+            android:id="@+id/contacts_pull_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/main_bg_color"
+            android:orientation="vertical"
+            >
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_content"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|left"
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_words_count"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|left"
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/layout_place_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginTop="20dp"
+                            android:drawablePadding="10dp"
+                            android:drawableTop="@drawable/icon_no_content"
+                            android:gravity="center"
+                            android:text="@string/no_content"
+                            android:textColor="@color/gray"/>
+
+                    </LinearLayout>
+
+                    <com.galaxyschool.app.wawaschool.views.MyListView
+                        android:id="@+id/contacts_list_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:cacheColorHint="@android:color/transparent"
+                        android:dividerHeight="3dp"
+                        android:listSelector="@android:color/transparent"
+                        android:scrollingCache="false"
+                        />
+
+                </LinearLayout>
+            </ScrollView>
+        </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl_retell_course_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/retell_course_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_corner_text_light_red_20_dp"
+                android:gravity="center"
+                android:minWidth="100dp"
+                android:padding="10dp"
+                android:text="@string/retell_course"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_speech_assessment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_speech_assessment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_corner_text_light_red_20_dp"
+                android:gravity="center"
+                android:minWidth="100dp"
+                android:padding="10dp"
+                android:text="@string/auto_mark"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_statistic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_statistic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_corner_text_light_red_20_dp"
+                android:gravity="center"
+                android:minWidth="100dp"
+                android:padding="10dp"
+                android:text="@string/str_achievement_statistic"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

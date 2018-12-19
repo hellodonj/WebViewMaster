@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 通用的LQ课件布局 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_round_image_shape"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/resource_frameLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.galaxyschool.app.wawaschool.views.HalfRoundedImageView
+                android:id="@+id/resource_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"/>
+
+            <ImageView
+                android:id="@+id/resource_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:src="@drawable/contacts_item_selector"
+                android:padding="10dp"/>
+
+            <!--place holder-->
+            <TextView
+                style="@style/txt_wawa_normal_gray"
+                android:id="@+id/resource_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#e8e8e8"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/icon_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_star"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+        <TextView
+            style="@style/txt_wawa_normal_black"
+            android:id="@+id/resource_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:singleLine="true"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/resource_split_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_split_course"
+        android:textColor="@color/text_green"
+        android:textSize="12sp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/green_5dp_white"
+        android:visibility="gone"
+        />
+</FrameLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 四周都是绿色填充的圆形（不带边框）。shape是椭圆，当size的长和宽一样的时候，椭圆就是圆了。-->
+
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#c1c1c1"/>
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>
+</layer-list>

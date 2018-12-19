@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_entity_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 顶部1dp分割线-->
+    <View
+        android:id="@+id/item_top_line"
+        style="@style/line_gray"
+        android:visibility="gone"/>
+
+    <!-- 顶10dp分割线-->
+    <View
+        android:id="@+id/item_divider_header"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_bg_color"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/item_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/item_tips"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="top|right"
+                android:background="@drawable/shape_round_indicator_small"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:textColor="#ffffffff"
+                android:text=""
+                android:visibility="invisible"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/item_title"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:minHeight="30dp"
+            android:drawableRight="@drawable/youjiantou"
+            android:text="标题" />
+
+    </LinearLayout>
+
+        <View
+            android:id="@+id/item_footer"
+            style="@style/line_gray"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="60dp"
+            android:visibility="visible"/>
+
+    <!-- 底部1dp分割线-->
+    <View
+        android:id="@+id/item_bottom_line"
+        style="@style/line_gray"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
+
+    <!-- 底部10dp分割线-->
+    <View
+        android:id="@+id/item_divider_footer"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_bg_color"
+        android:visibility="gone"/>
+</LinearLayout>

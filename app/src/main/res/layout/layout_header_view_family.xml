@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_vertical">
+
+    <View style="@style/line_gray"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/layout_my_family_child"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:padding="10dp">
+
+        <com.galaxyschool.app.wawaschool.views.CircleImageView
+            android:id="@+id/user_icon_child"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_user_icon"/>
+
+        <TextView
+            android:id="@+id/title_child"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/txt_wawa_normal_black"
+            android:layout_marginLeft="10dp"
+            android:text="@string/my_family_contacts"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:src="@drawable/right_arrow_icon"/>
+    </LinearLayout>
+
+    <com.galaxyschool.app.wawaschool.views.MyListView
+        android:id="@+id/contacts_family_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/line_gray"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:color/transparent"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

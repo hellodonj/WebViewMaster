@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff" >
+
+    <com.lqwawa.libs.mediapaper.DragLayer
+        android:id="@+id/dragLayer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/paperView1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <RelativeLayout
+                android:id="@+id/save_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/paper_padding_small">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:id="@+id/edit_linear"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10px"
+                        android:layout_marginTop="10px" >
+
+                        <RelativeLayout
+                            android:id="@+id/preview_top"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/returnbtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/sel_nav_backarrow"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/nav_blank_ico" />
+
+                            <LinearLayout
+                                android:id="@+id/feedback_grp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:visibility="gone" >
+
+                                <TextView
+                                    android:id="@+id/chat_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/mp_chat_now"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/praise_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/praise"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/collect_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/mp_collect"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp"
+                                    android:visibility="gone" />
+
+                                <TextView
+                                    android:id="@+id/share_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/share"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/edit_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/mp_edit"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp"
+                                    android:visibility="gone" />
+
+                                <TextView
+                                    android:id="@+id/follow_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="40dp"
+                                    android:padding="10dp"
+                                    android:text="@string/mp_follow"
+                                    android:textColor="#ff00913a"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/edit_top"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/otherFocus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical" />
+
+                            <ImageView
+                                android:id="@+id/edit_returnbtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:minHeight="45dp"
+                                android:minWidth="45dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/sel_nav_backarrow" />
+
+                            <TextView
+                                android:id="@+id/edit_send"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="5dp"
+                                android:gravity="center"
+                                android:minHeight="45dp"
+                                android:minWidth="45dp"
+                                android:scaleType="centerInside"
+                                android:text="@string/mp_send"
+                                android:textColor="#ff009039"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/save_bar_center_title"
+                        style="@style/paper_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"/>
+                </FrameLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/title_bar_underline"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_below="@id/save_bar"
+                android:background="#ebebeb" />
+
+            <RelativeLayout
+                android:id="@+id/paper_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="@dimen/paper_padding_default"
+                android:layout_below="@id/title_bar_underline">
+
+                <com.lqwawa.libs.mediapaper.MyScrollView
+                    android:id="@+id/scrollview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scrollbarStyle="insideOverlay"
+                    android:scrollbars="none|vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:id="@+id/date_title_bar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal" >
+                            <RelativeLayout
+                                android:id="@+id/diary_title_lay"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/paper_default_height"
+                                android:layout_marginTop="@dimen/paper_padding_small"
+                                android:layout_marginBottom="@dimen/paper_padding_small">
+
+                                <TextView
+                                    android:id="@+id/diary_title_prompt"
+                                    style="@style/paper_sub_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="left|center_vertical"
+                                    android:text="@string/Paper_homework_title"
+                                    android:visibility="gone"/>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@id/diary_title_prompt">
+                                    <TextView
+                                        android:id="@+id/diary_title_text_view_id"
+                                        style="@style/paper_title"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:gravity="left|center_vertical"
+                                        android:paddingLeft="@dimen/paper_padding_default"
+                                        android:singleLine="true"
+                                        android:ellipsize="end"
+                                        android:visibility="gone"/>
+
+                                    <com.lqwawa.apps.views.ContainsEmojiEditText
+                                        android:id="@+id/diary_title"
+                                        style="@style/paper_title"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:focusableInTouchMode="true"
+                                        android:layout_centerVertical="true"
+                                        android:gravity ="center_vertical"
+                                        android:imeOptions="flagNoFullscreen|flagNoExtractUi"
+                                        android:hint="@string/no_title" />
+                                </FrameLayout>
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:id="@+id/paper_date_linear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10px"
+                                android:layout_marginRight="10px"
+                                android:orientation="vertical"
+                                android:visibility="gone" >
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="bottom"
+                                    android:orientation="horizontal" >
+
+                                    <TextView
+                                        android:id="@+id/paper_day"
+                                        style="@style/paper_day_text_style"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:layout_marginLeft="0px"
+                                        android:text="xx" />
+
+                                    <TextView
+                                        android:id="@+id/paper_week"
+                                        style="@style/paper_year_mon_week_text_style"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:layout_marginLeft="6px"
+                                        android:text="xx xx" />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/paper_mon_year"
+                                    style="@style/paper_year_mon_week_text_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="0px"
+                                    android:text="xx xx" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/subtitle_grp"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/paper_padding_small"
+                            android:layout_marginBottom="@dimen/paper_padding_small">
+
+                            <ImageView
+                                android:id= "@+id/sub_title_letf_line"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="3dp"
+                                android:src="@drawable/leftline" />
+
+                            <TextView
+                                android:id="@+id/sub_title"
+                                style="@style/paper_sub_small_title"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left|center_vertical" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/paperView"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/paper_padding_default"
+                            android:paddingRight="@dimen/paper_padding_default" >
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/attach_layout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="@dimen/attach_layout_min_height"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/placeholder_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/delete_mode_btn_size"
+                            android:orientation="vertical"
+                            android:layout_marginTop="10dp"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+                </com.lqwawa.libs.mediapaper.MyScrollView>
+            </RelativeLayout>
+
+            <GridView
+                android:id="@+id/emotionGrid"
+                android:layout_width="fill_parent"
+                android:layout_height="150px"
+                android:background="#ff888888"
+                android:columnWidth="75px"
+                android:gravity="center_horizontal"
+                android:numColumns="auto_fit"
+                android:scrollbars="none|vertical"
+                android:stretchMode="none"
+                android:verticalSpacing="20px"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </com.lqwawa.libs.mediapaper.DragLayer>
+
+    <com.lqwawa.libs.mediapaper.DeleteZone
+        android:id="@+id/delete_zone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@drawable/delete_zone_selector"
+        android:scaleType="center"
+        android:src="@drawable/ic_delete"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/pgr"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"
+        android:focusableInTouchMode="true" >
+
+        <ImageView
+            android:id="@+id/pgr_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/wait" />
+
+        <TextView
+            android:id="@+id/pgr_msg"
+            style="@style/title_year_mon_week_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pgr_icon"
+            android:layout_centerHorizontal="true"
+            android:text="@string/waiting" />
+    </RelativeLayout>
+
+    <ImageView
+            android:id="@+id/delete_mode_btn"
+            android:layout_width="@dimen/delete_mode_btn_size"
+            android:layout_height="@dimen/delete_mode_btn_size"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/composer_delete" />
+
+    <com.lqwawa.libs.mediapaper.KeyboardListener
+        android:id="@+id/keyboardRelativeLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    </com.lqwawa.libs.mediapaper.KeyboardListener>
+
+</FrameLayout>

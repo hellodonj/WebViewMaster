@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="20dp"
+              android:paddingRight="20dp"
+              android:gravity="center_vertical"
+    >
+<TextView
+    android:textSize="16sp"
+    android:textColor="@color/text_dark_gray"
+    android:text="@string/str_score"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+
+    <com.lqwawa.apps.views.ContainsEmojiEditText
+        android:id="@+id/contacts_dialog_content_text"
+        style="@style/contacts_dialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:minHeight="@dimen/item_height"
+        android:minWidth="400dp"
+        android:maxLength="3"
+        android:inputType="number"
+        android:layout_margin="10dp"
+        android:background="@drawable/background_rectangle_corners"
+
+        />
+
+</LinearLayout>
+
+

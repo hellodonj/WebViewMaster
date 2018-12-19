@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- 头布局 -->
+    <include layout="@layout/contacts_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 完成状态布局 -->
+
+            <include layout="@layout/include_10_dp_horizontal_line_layout"/>
+
+            <LinearLayout
+                android:id="@+id/not_talk_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+                <include
+                    layout="@layout/include_task_finish_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/show_talks_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <!-- 话题讨论标题布局 -->
+            <LinearLayout
+                android:id="@+id/talk_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/task_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:padding="10dp"/>
+
+                        <View style="@style/line_gray"/>
+
+                        <TextView
+                            android:id="@+id/task_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"/>
+
+            </LinearLayout>
+
+
+            <include layout="@layout/include_10_dp_horizontal_line_layout"/>
+
+            <!-- 评论布局 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/discuss_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18dp"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <View style="@style/line_gray"/>
+
+            <com.galaxyschool.app.wawaschool.views.MyExpandListView
+                android:id="@+id/catlog_expand_listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="@color/line_gray"
+                android:dividerHeight="1dp"
+                android:childIndicatorLeft="5dp"
+                android:background="@color/white"
+                android:listSelector="@android:color/transparent" />
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 发送评论布局 -->
+    <LinearLayout
+        android:id="@+id/send_talks_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <include
+            layout="@layout/include_bottom_send_layout"/>
+    </LinearLayout>
+
+
+</LinearLayout>

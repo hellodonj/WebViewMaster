@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <View
+        android:id="@+id/top_line"
+        style="@style/line_gray"
+        android:visibility="gone"/>
+    <LinearLayout
+                  android:id="@+id/attribute_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="60dp"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical"
+                  android:padding="10dp">
+
+        <com.galaxyschool.app.wawaschool.views.RoundedImageView
+            android:id="@+id/image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
+    <TextView
+            android:id="@+id/key"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:text="字段" />
+
+    <TextView
+        android:id="@+id/value"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical|right"
+        android:singleLine="true"
+        android:maxWidth="60dp"
+        android:textSize="16sp"
+        android:text="值" />
+
+    <ImageView
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/icon_gray_down_arrow"
+        android:scaleType="centerInside"
+        android:visibility="visible"/>
+
+</LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        style="@style/line_gray"
+        android:visibility="visible"/>
+    </LinearLayout>
+

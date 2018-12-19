@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resource_list_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/contacts_header" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/contacts_search_bar"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/contacts_search_bar"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_below="@id/contacts_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                layout="@layout/resource_list" />
+        </FrameLayout>
+
+
+        <include layout="@layout/publicity_page"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_create_online"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="@string/create"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/com_bg_circle_green_btn"
+            />
+    </RelativeLayout>
+</LinearLayout>

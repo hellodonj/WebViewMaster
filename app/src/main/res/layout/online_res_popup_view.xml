@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/share_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/share_pop_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_bg_color"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/main_bg_color"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_height="50dp">
+            <com.lqwawa.apps.views.ContainsEmojiEditText
+                android:focusable="true"
+                android:id="@+id/comment_edittext"
+                style="@style/txt_mp_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/gray_5dp_white"
+                android:hint="@string/say_something"
+                android:minHeight="40dp"
+                android:maxLength="300"
+                android:padding="5dp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"/>
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/add_online_resource"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/add_edit_content"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray"/>
+    <LinearLayout
+        android:id="@+id/layout_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_bg_color"
+        android:orientation="vertical">
+        <GridView
+            android:id="@+id/share_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:verticalSpacing="20dp"
+            android:horizontalSpacing="20dp"
+            android:layout_margin="20dp"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="4"></GridView>
+    </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

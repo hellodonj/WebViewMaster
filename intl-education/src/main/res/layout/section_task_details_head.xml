@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/root_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/com_bg_light_white"
+             android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:orientation="vertical">
+
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_bg_white"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_item_space_s">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+                <ImageView
+                    android:id="@+id/cover_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:paddingRight="@dimen/com_item_space"/>
+
+                <ImageView
+                    android:id="@+id/play_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/com_circle_white_edge_bg_selecter"
+                    android:padding="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_play"/>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingRight="@dimen/com_item_space_xs">
+
+                <TextView
+                    android:id="@+id/create_name_tv"
+                    style="@style/text_gray_xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"/>
+                <TextView
+                    android:id="@+id/tv_access_details"
+                    style="@style/text_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center|left"
+                />
+            </LinearLayout>
+        </LinearLayout>-->
+
+
+        <FrameLayout
+            android:id="@+id/res_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:foreground="@drawable/ic_touch_fg_gray">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_res_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintDimensionRatio="16:9"
+                    android:scaleType="fitXY"
+                    android:padding="2dp"
+                    android:background="@drawable/bg_rectangle_accent_border_2"/>
+
+                <!--android:background="@drawable/com_circle_white_edge_bg_selecter"-->
+                <ImageView
+                    android:id="@+id/play_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_res_icon"
+                    app:layout_constraintRight_toRightOf="@+id/iv_res_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_res_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_res_icon"
+                    android:padding="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_lqwawa_play"/>
+
+                <!--自动批阅读写单分数-->
+                <TextView
+                    android:id="@+id/tv_total_grade"
+                    android:textColor="@color/textLight"
+                    android:textSize="14sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/btn_pink_radius_selector"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <!--<ImageView
+                android:id="@+id/iv_res_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:layout_margin="15dp"
+                />-->
+
+            <TextView
+                android:id="@+id/tv_res_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/textPrimary"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="180dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <TextView
+                android:id="@+id/tv_access_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:drawablePadding="2dp"
+                android:textColor="@color/textGray"
+                android:text="@string/label_courseware_detail"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                />
+        </FrameLayout>
+
+        <!--<RadioGroup
+            android:visibility="visible"
+            android:id="@+id/rg_tab"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/com_bg_white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoLink="all"
+                android:background="@drawable/com_green_line_radio_bg"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:text="@string/commit_list"
+                android:textColor="@color/organ_tab_text"
+                android:textSize="@dimen/com_font_size_4"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/com_bg_light_white"/>
+
+            <RadioButton
+                android:id="@+id/rb1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autoLink="all"
+                android:background="@drawable/com_green_line_radio_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:text="@string/discussion_count"
+                android:textColor="@color/organ_tab_text"
+                android:textSize="@dimen/com_font_size_4"/>
+        </RadioGroup>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_paper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>-->
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorHeight="2dp"
+            app:tabPaddingStart="12dp"
+            app:tabPaddingEnd="12dp"
+            style="@style/AppTheme.TabLayout.TextAppearance"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorLight"
+            app:tabTextColor="@color/textPrimary"
+            app:tabSelectedTextColor="@color/textPrimary"
+            android:visibility="gone">
+
+        </android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/res_root_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <com.lqwawa.intleducation.base.widgets.CircleImageView
+        android:id="@+id/res_icon_iv"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="@dimen/com_item_space_xxs"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/com_item_space"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/res_name_tv"
+            style="@style/text_black_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/res_time_tv"
+            style="@style/text_gray_s"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/res_action_tv"
+        style="@style/text_gray_l"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:padding="5dp"
+        android:paddingLeft="@dimen/com_item_space"
+        android:singleLine="true" />
+</LinearLayout>

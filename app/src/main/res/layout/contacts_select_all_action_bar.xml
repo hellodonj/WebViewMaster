@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_action_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <ImageView style="@style/line_gray"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/contacts_action_tools_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/contacts_action_select_all"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="true"
+                android:gravity="center"
+                android:textColor="@color/contacts_picker_bar_color"
+                android:textSize="16sp" />
+
+            <View style="@style/line_gray_v" />
+
+            <TextView
+                android:id="@+id/contacts_action_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:gravity="center"
+                android:textColor="@color/contacts_picker_bar_color"
+                android:textSize="16sp" />
+
+            <View style="@style/line_gray_v" />
+
+            <TextView
+                android:id="@+id/contacts_action_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="true"
+                android:gravity="center"
+                android:textColor="@color/contacts_picker_bar_color"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/contacts_action_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:enabled="true"
+            android:gravity="center"
+            android:textColor="@color/contacts_picker_bar_color"
+            android:textSize="16sp" />
+
+    </FrameLayout>
+</LinearLayout>

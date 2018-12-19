@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_activated="false" android:color="@color/section_state_idle_color"></item>
+    <item android:state_activated="true" android:color="@color/section_state_complete_color"></item>
+
+</selector>
