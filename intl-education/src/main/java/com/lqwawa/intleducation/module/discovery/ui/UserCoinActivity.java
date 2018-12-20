@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferDialogFragment;
+import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferNavigator;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.osastudio.apps.BaseFragmentActivity;
@@ -72,7 +74,7 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
         tvCharge.setOnClickListener(this);
 
         mTvGiveMoney = (TextView) findViewById(R.id.tv_give_money);
-        mTvGiveMoney.setVisibility(View.GONE);
+        mTvGiveMoney.setVisibility(View.VISIBLE);
         mTvGiveMoney.setOnClickListener(this);
 
     }
@@ -152,12 +154,12 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
 
         }else if(i == R.id.tv_give_money){
             // 转赠他人
-            /*CoinTransferDialogFragment.Companion.show(getSupportFragmentManager(), new CoinTransferNavigator() {
+            JavaCoinTransferDialogFragment.show(getSupportFragmentManager(), new JavaCoinTransferNavigator() {
                 @Override
                 public void onChoiceConfirm(String curMemberId) {
 
                 }
-            });*/
+            });
         }
     }
 }
