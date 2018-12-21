@@ -753,5 +753,14 @@ public final class AppConfig {
 
         // 读写单自动批阅拿答题卡信息的接口
         public static final String GetResourceDetailByIdUrl = WEIKE_SERVER + "resource/getResourceDetailById?j=";
+
+
+        // 获取老师学生班级已选定标签
+        public static final String GetSetupConfigDataUrl = ServerBase +
+                "api/config/getSetUpConfigList?j=";
+
+        // 获取老师学生班级已选定标签
+        public static final String GetAssignConfigDataUrl = ServerBase +
+                "api/config/getAssignConfigList?j=";
     }
 }

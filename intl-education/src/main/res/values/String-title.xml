@@ -12,5 +12,6 @@
     <string name="title_related_course">Correlated Course</string>
     <string name="title_basics_course">Basic Course</string>
     <string name="title_my_timetable">My Timetable</string>
+    <string name="title_subject_setting">科目设置</string>
 
 </resources>

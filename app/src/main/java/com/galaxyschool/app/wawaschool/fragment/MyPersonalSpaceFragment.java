@@ -70,6 +70,7 @@ import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity;
 import com.lqwawa.intleducation.module.discovery.ui.person.mygive.MyGiveInstructionActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyLiveListActivity;
 import com.lqwawa.intleducation.module.user.ui.MyOrderListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -614,7 +615,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
      * 进入科目设置界面
      */
     private void enterSubjectSettingDetail(){
-
+        SubjectActivity.show(getActivity());
     }
 
     private void loadChildInfo() {

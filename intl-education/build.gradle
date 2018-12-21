@@ -43,15 +43,16 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.1.0'
     compile 'net.qiujuer.genius:ui:2.0.0'
     compile 'de.hdodenhof:circleimageview:2.2.0'
-    compile ('com.github.bumptech.glide:glide:4.8.0'){
+    compile('com.github.bumptech.glide:glide:4.8.0') {
         exclude group: 'com.android.support', module: 'support-fragment'
     }
-
     compile 'com.github.jdsjlzx:LRecyclerView:1.5.0'
-
+    compile 'com.google.android:flexbox:1.0.0'
+    compile 'com.hyman:flowlayout-lib:1.1.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     /*debugCompile 'me.ele:uetool:1.0.15'
-    releaseCompile 'me.ele:uetool-no-op:1.0.15'*/
+        releaseCompile 'me.ele:uetool-no-op:1.0.15'*/
+    compile 'com.android.support:recyclerview-v7:25.4.0'
 }
 
 
