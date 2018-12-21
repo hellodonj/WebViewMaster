@@ -1,3 +1,4 @@
 [submodule "ecourse-maker"]
 	path = ecourse-maker
 	url = git@gitserver:lqwawa/ecourse-maker.git
+	branch = lqwawa-phone
