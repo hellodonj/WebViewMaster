@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.subject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
+import com.github.mikephil.charting.utils.EntryXComparator;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -23,6 +26,8 @@ import java.util.List;
  */
 public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter>
     implements SubjectContract.View,View.OnClickListener {
+
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 0;
 
     private TopBar mTopBar;
     private ExpandableListView mExpandableView;
@@ -50,16 +55,19 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
         mBtnSubjectAdd.setOnClickListener(this);
 
         mExpandableView = (ExpandableListView) findViewById(R.id.expandable_view);
-        mAdapter = new SubjectExpandableAdapter();
+        mAdapter = new SubjectExpandableAdapter(true);
         mExpandableView.setAdapter(mAdapter);
     }
 
     @Override
     protected void initData() {
         super.initData();
+        loadData();
+    }
+
+    // 加载数据
+    private void loadData(){
         String userId = UserHelper.getUserId();
-        // 测试数据
-        userId = "c9a1a1ac-a72f-436a-90e4-a91600c0347a";
         mPresenter.requestTeacherConfigData(userId);
     }
 
@@ -73,7 +81,25 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
         int viewId = v.getId();
         if(viewId == R.id.btn_add_subject){
             // 点击确定
-            AddSubjectActivity.show(this);
+            AddSubjectActivity.show(this,SUBJECT_SETTING_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if(completed){
+                        // 刷新UI
+                        loadData();
+                    }
+                }
+            }
         }
     }
 

@@ -762,5 +762,9 @@ public final class AppConfig {
         // 获取老师学生班级已选定标签
         public static final String GetAssignConfigDataUrl = ServerBase +
                 "api/config/getAssignConfigList?j=";
+
+        // 保存老师选定的标签
+        public static final String GetSaveTeacherConfigUrl = ServerBase +
+                "api/teacher/saveTeacherConfig?j=";
     }
 }

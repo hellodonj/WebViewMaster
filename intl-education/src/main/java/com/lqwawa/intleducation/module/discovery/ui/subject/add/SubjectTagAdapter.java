@@ -19,8 +19,11 @@ import java.util.List;
  */
 public class SubjectTagAdapter extends TagAdapter<LQCourseConfigEntity> {
 
-    public SubjectTagAdapter(List<LQCourseConfigEntity> entities) {
+    private boolean mViewer;
+
+    public SubjectTagAdapter(boolean viewer,List<LQCourseConfigEntity> entities) {
         super(entities);
+        this.mViewer = viewer;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class SubjectTagAdapter extends TagAdapter<LQCourseConfigEntity> {
     }
 
 
-    static class SubjectHolder extends RecyclerAdapter.ViewHolder<LQCourseConfigEntity>{
+    class SubjectHolder extends RecyclerAdapter.ViewHolder<LQCourseConfigEntity>{
 
         private TextView mTvContent;
 
@@ -44,7 +47,7 @@ public class SubjectTagAdapter extends TagAdapter<LQCourseConfigEntity> {
         @Override
         protected void onBind(LQCourseConfigEntity entity) {
             StringUtil.fillSafeTextView(mTvContent,entity.getConfigValue());
-            mTvContent.setActivated(entity.isSelected());
+            mTvContent.setActivated(mViewer || entity.isSelected());
         }
     }
 }

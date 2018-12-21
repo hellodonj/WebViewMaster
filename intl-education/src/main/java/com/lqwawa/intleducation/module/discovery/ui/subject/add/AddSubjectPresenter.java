@@ -70,9 +70,10 @@ public class AddSubjectPresenter extends BasePresenter<AddSubjectContract.View>
         return idBuilder.toString();
     }
 
-
-
-
+    /**
+     * 找已经选择的标签
+     * @param entities 标签列表
+     */
     private void checkEntityTag(@NonNull List<LQCourseConfigEntity> entities){
         if(EmptyUtil.isEmpty(entities)) return;
         for (LQCourseConfigEntity entity:entities) {
@@ -84,5 +85,26 @@ public class AddSubjectPresenter extends BasePresenter<AddSubjectContract.View>
             List<LQCourseConfigEntity> childList = entity.getChildList();
             checkEntityTag(childList);
         }
+    }
+
+    @Override
+    public void requestSaveTeacherConfig(@NonNull String memberId, @NonNull String ids) {
+        LQConfigHelper.requestSaveTeacherConfig(memberId, ids, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final AddSubjectContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final AddSubjectContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateSaveTeacherConfigView(aBoolean);
+                }
+            }
+        });
     }
 }

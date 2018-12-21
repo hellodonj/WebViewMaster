@@ -35,12 +35,14 @@ import java.util.Set;
 public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
 
     private List<LQCourseConfigEntity> mGroupData;
+    private boolean mViewer;
 
-    public SubjectExpandableAdapter() {
-        this(null);
+    public SubjectExpandableAdapter(boolean viewer) {
+        this(viewer,null);
     }
 
-    public SubjectExpandableAdapter(List<LQCourseConfigEntity> groupData) {
+    public SubjectExpandableAdapter(boolean viewer,@NonNull List<LQCourseConfigEntity> groupData) {
+        this.mViewer = viewer;
         this.mGroupData = mGroupData;
         if(mGroupData == null){
             mGroupData = new ArrayList<>();
@@ -195,18 +197,21 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         public void bind(@NonNull LQCourseConfigEntity entity) {
             StringUtil.fillSafeTextView(mTvConfigTitle,entity.getConfigValue());
             List<LQCourseConfigEntity> configEntities = entity.getChildList();
-            mAdapter = new SubjectTagAdapter(configEntities);
+            mAdapter = new SubjectTagAdapter(mViewer,configEntities);
             mFlowLayout.setAdapter(mAdapter);
 
-            mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-                @Override
-                public boolean onTagClick(View view, int position, FlowLayout parent) {
-                    LQCourseConfigEntity item = mAdapter.getItem(position);
-                    item.setSelected(!item.isSelected());
-                    mAdapter.notifyDataChanged();
-                    return true;
-                }
-            });
+            if(!mViewer){
+                // 不是观看模式
+                mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                    @Override
+                    public boolean onTagClick(View view, int position, FlowLayout parent) {
+                        LQCourseConfigEntity item = mAdapter.getItem(position);
+                        item.setSelected(!item.isSelected());
+                        mAdapter.notifyDataChanged();
+                        return true;
+                    }
+                });
+            }
         }
     }
 

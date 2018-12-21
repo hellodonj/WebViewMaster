@@ -114,4 +114,45 @@ public class LQConfigHelper {
             }
         });
     }
+
+    /**
+     * 老师选择授课标签的选择列表
+     * @param memberId 老师Id
+     * @param ids 科目拼接的ids
+     * @param callback 回调对象
+     */
+    public static void requestSaveTeacherConfig(@NonNull String memberId,
+                                               @NonNull String ids,
+                                               @NonNull final DataSource.Callback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("ids", ids);
+        RequestParams params =
+                new RequestParams(AppConfig.ServerUrl.GetSaveTeacherConfigUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                TypeReference<ResponseVo<Void>> typeReference =
+                        new TypeReference<ResponseVo<Void>>() {
+                        };
+                ResponseVo<Void> result = JSON.parseObject(str, typeReference);
+                if (result.isSucceed()) {
+                    if (callback != null) {
+                        callback.onDataLoaded(true);
+                    }
+                } else {
+                    Factory.decodeRspCode(result.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
 }

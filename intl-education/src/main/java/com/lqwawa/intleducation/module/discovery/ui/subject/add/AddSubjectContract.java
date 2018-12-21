@@ -15,10 +15,14 @@ public interface AddSubjectContract {
     interface Presenter extends BaseContract.Presenter{
         void requestAssignConfigData(@NonNull String memberId);
         String getSelectedIds(@NonNull List<LQCourseConfigEntity> entities);
+        // 确定，保存老师指定标签
+        void requestSaveTeacherConfig(@NonNull String memberId,@NonNull String ids);
     }
 
     interface View extends BaseContract.View<Presenter>{
         void updateAssignConfigView(@NonNull List<LQCourseConfigEntity> entities);
+        // 保存接口的回调
+        void updateSaveTeacherConfigView(boolean completed);
     }
 
 }
