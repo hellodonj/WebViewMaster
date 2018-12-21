@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
@@ -57,14 +56,6 @@ import com.galaxyschool.app.wawaschool.views.categoryview.CategoryGridview.SureS
 import com.galaxyschool.app.wawaschool.views.categoryview.CategoryValue;
 import com.galaxyschool.app.wawaschool.views.sortlistview.ClearEditText;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
-import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
-import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
-import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity;
-import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateParams;
-import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.Tab;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
@@ -92,7 +83,6 @@ public class BookStoreListFragment extends ContactsListFragment {
     private TextView headTitletextView;
     private MyGridView generalGridView, allGridView;
     private LinearLayout generalLayout;
-    private LinearLayout labelLayout;
     private String generalGridViewTag;
     //SchoolId BookName 要从上个页面传过来
     private TextView keywordView;
@@ -115,7 +105,6 @@ public class BookStoreListFragment extends ContactsListFragment {
     private boolean isFromAirClass = false;
     //区分是否来自精品资源库
     private boolean isFromChoiceLib;
-    private String headerTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,7 +115,7 @@ public class BookStoreListFragment extends ContactsListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
+        if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
         getIntentData();
@@ -269,10 +258,10 @@ public class BookStoreListFragment extends ContactsListFragment {
         if (schoolInfo == null) {
             return;
         }
-        if (clickBook.getCourseType() == 2) {
-            if (schoolInfo.isTeacher() || VipConfig.isVip(getActivity())) {
+        if (clickBook.getCourseType() == 2){
+            if (schoolInfo.isTeacher() || VipConfig.isVip(getActivity())){
                 jump2BookDetailActivity(clickBook);
-            } else {
+            }else {
                 ToastUtil.showToast(getActivity(), R.string.only_teacher_can_see_the_course);
             }
             return;
@@ -318,7 +307,7 @@ public class BookStoreListFragment extends ContactsListFragment {
         args.putSerializable("data", data);
         args.putBoolean(ActivityUtils.IS_FROM_CHOICE_LIB, isFromChoiceLib);
         args.putBoolean(BookDetailFragment.IS_TEACHER, schoolInfo.isTeacher());
-        args.putInt(BookDetailFragment.COURSE_TYPE, data.getCourseType());
+        args.putInt(BookDetailFragment.COURSE_TYPE,data.getCourseType());
 
         //从空中课堂进来作区分，故意把isPick设置false 为了区分跳转选出临时变量
         boolean tempData = args.getBoolean(ActivityUtils.EXTRA_TEMP_DATA);
@@ -627,12 +616,6 @@ public class BookStoreListFragment extends ContactsListFragment {
 
 
     private void initViews() {
-        //title的搜索
-        ImageView rightSearchImageV = (ImageView) findViewById(R.id.contacts_header_right_ico);
-        rightSearchImageV.setImageResource(R.drawable.search);
-        rightSearchImageV.setVisibility(View.VISIBLE);
-        rightSearchImageV.setOnClickListener(v -> search());
-
         ClearEditText editText = (ClearEditText) findViewById(R.id.search_keyword);
         if (editText != null) {
             editText.setHint(getString(R.string.search_title));
@@ -674,15 +657,14 @@ public class BookStoreListFragment extends ContactsListFragment {
         }
         view = findViewById(R.id.contacts_search_bar_layout);
         if (view != null) {
-            //隐藏搜索框
-            view.setVisibility(View.GONE);
+            view.setVisibility(View.VISIBLE);
         }
         generalLayout = (LinearLayout) findViewById(R.id.general_layout);
         generalLayout.setVisibility(View.GONE);
         headTitletextView = (TextView) findViewById(R.id.contacts_header_title);
         headTitletextView.setVisibility(View.VISIBLE);
-        labelLayout = (LinearLayout) findViewById(R.id.ll_label);
         if (isPick) {
+            String headerTitle = null;
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 headerTitle = getString(R.string.n_create_task, getString(R.string.retell_course));
             } else if (taskType == StudyTaskType.WATCH_WAWA_COURSE) {
@@ -703,11 +685,10 @@ public class BookStoreListFragment extends ContactsListFragment {
             headTitletextView.setText(headerTitle);
         } else {
             if (isPicBookChoice || isFromChoiceLib) {
-                headerTitle = getString(R.string.choice_books);
+                headTitletextView.setText(getString(R.string.choice_books));
             } else {
-                headerTitle = getString(R.string.public_course);
+                headTitletextView.setText(getString(R.string.public_course));
             }
-            headTitletextView.setText(headerTitle);
         }
         ImageView imageView = ((ImageView) findViewById(R.id.contacts_header_left_btn));
         imageView.setVisibility(View.VISIBLE);
@@ -721,15 +702,6 @@ public class BookStoreListFragment extends ContactsListFragment {
         initAllGridview();
         initGeneralGridview();
         initCategoryGridview();
-    }
-
-    /**
-     * 进入搜索页面
-     */
-    private void search(){
-        NewOnlineStudyFiltrateParams mFiltrateParams = new NewOnlineStudyFiltrateParams(getString
-                (R.string.public_course),new NewOnlineConfigEntity());
-        SearchActivity.show(getActivity(), HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS,mFiltrateParams);
     }
 
     private void loadDatas() {
@@ -775,14 +747,14 @@ public class BookStoreListFragment extends ContactsListFragment {
             loadChoiceDataList();
             return;
         }
-//        String keyword = this.keywordView.getText().toString().trim();
-//        if (!keyword.equals(this.keyword)) {
-//            getCurrAdapterViewHelper().clearData();
-//            getPageHelper().clear();
-//        }
-//        this.keyword = keyword;
+        String keyword = this.keywordView.getText().toString().trim();
+        if (!keyword.equals(this.keyword)) {
+            getCurrAdapterViewHelper().clearData();
+            getPageHelper().clear();
+        }
+        this.keyword = keyword;
         Map<String, Object> params = new HashMap();
-        params.put("BookName", this.keyword);
+        params.put("BookName", keyword);
 //        params.put("SchoolId", schoolInfo.getSchoolId() != null ? schoolInfo.getSchoolId() : "");
         String tempSchoolId = "";
         if (schoolInfo != null && !TextUtils.isEmpty(schoolInfo.getSchoolId())) {
@@ -791,50 +763,49 @@ public class BookStoreListFragment extends ContactsListFragment {
             tempSchoolId = schoolId;
         }
         params.put("SchoolId", tempSchoolId);
-        handleLabelData(params);
-//        if (categoriesAll != null && categoriesAll.size() > 0) {
-//            for (Category category : categoriesAll) {
-//                if (category != null) {
-//                    switch (category.getType()) {
-//                        case Category.CATEGOTY_TYPE_VERSION:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("VersionId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_LEVEL:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("LevelId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_GRADE:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("GradeId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_SUBJECT:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("SubjectId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_VOLUME:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("VolumeId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_LANGUAGE:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("LanguageId", category.getIds());
-//                            }
-//                            break;
-//                        case Category.CATEGOTY_TYPE_PUBLISHER:
-//                            if (!TextUtils.isEmpty(category.getIds())) {
-//                                params.put("PublisherId", category.getIds());
-//                            }
-//                            break;
-//                    }
-//                }
-//            }
-//        }
+        if (categoriesAll != null && categoriesAll.size() > 0) {
+            for (Category category : categoriesAll) {
+                if (category != null) {
+                    switch (category.getType()) {
+                        case Category.CATEGOTY_TYPE_VERSION:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("VersionId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_LEVEL:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("LevelId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_GRADE:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("GradeId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_SUBJECT:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("SubjectId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_VOLUME:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("VolumeId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_LANGUAGE:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("LanguageId", category.getIds());
+                            }
+                            break;
+                        case Category.CATEGOTY_TYPE_PUBLISHER:
+                            if (!TextUtils.isEmpty(category.getIds())) {
+                                params.put("PublisherId", category.getIds());
+                            }
+                            break;
+                    }
+                }
+            }
+        }
         params.put("Pager", getPageHelper().getFetchingPagerArgs());
         String schoolMaterialType = "1,2,3,4,5,6,7,8,9,10,11";
         if (isPickSchoolResource) {
@@ -875,60 +846,6 @@ public class BookStoreListFragment extends ContactsListFragment {
                 };
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_SCHOOL_BOOK_LIST_URL, params, listener);
-    }
-
-    private void handleLabelData(Map<String,Object> params){
-        if (categoriesAll != null && categoriesAll.size() > 0){
-            outer: for (Category category : categoriesAll){
-                List<CategoryValue> valueList = category.getDetailList();
-                if (valueList != null){
-                    for (CategoryValue value : valueList){
-                        if (value != null
-                                && !TextUtils.isEmpty(value.getId())
-                                && value.isSelect()){
-                            switch (category.getType()) {
-                                case Category.CATEGOTY_TYPE_VERSION:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("VersionId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_LEVEL:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("LevelId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_GRADE:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("GradeId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_SUBJECT:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("SubjectId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_VOLUME:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("VolumeId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_LANGUAGE:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("LanguageId", value.getId());
-                                    }
-                                    break;
-                                case Category.CATEGOTY_TYPE_PUBLISHER:
-                                    if (!TextUtils.isEmpty(value.getId())) {
-                                        params.put("PublisherId", value.getId());
-                                    }
-                                    break;
-                            }
-                            continue outer;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void updateAllBookListView(BookStoreBookListResult result) {
@@ -1034,7 +951,6 @@ public class BookStoreListFragment extends ContactsListFragment {
                             categories.addAll(categoriesAll);
                         }
                         getAdapterViewHelper(categoryGridviewTag).setData(categories);
-                        initCategoryLabelView();
                     }
                 };
         postRequest(ServerUrl.LOAD_OUTLINE_ATR_URL, params, listener);
@@ -1121,7 +1037,6 @@ public class BookStoreListFragment extends ContactsListFragment {
                         categoryGridview.setNumColumns(categoriesAll.size());
                         categories.addAll(categoriesAll);
                         getAdapterViewHelper(categoryGridviewTag).setData(categories);
-                        initCategoryLabelView();
                     }
                 };
         postRequest(ServerUrl.GET_CHOICE_LIB_TAG_BASE_URL, params, listener);
@@ -1131,14 +1046,14 @@ public class BookStoreListFragment extends ContactsListFragment {
      * 加载精品资源库的list
      */
     private void loadChoiceDataList() {
-//        String keyword = this.keywordView.getText().toString().trim();
-//        if (!keyword.equals(this.keyword)) {
-//            getCurrAdapterViewHelper().clearData();
-//            getPageHelper().clear();
-//        }
-//        this.keyword = keyword;
+        String keyword = this.keywordView.getText().toString().trim();
+        if (!keyword.equals(this.keyword)) {
+            getCurrAdapterViewHelper().clearData();
+            getPageHelper().clear();
+        }
+        this.keyword = keyword;
         Map<String, Object> params = new HashMap();
-        params.put("BookName", this.keyword);
+        params.put("BookName", keyword);
         String tempSchoolId = "";
         if (schoolInfo != null && !TextUtils.isEmpty(schoolInfo.getSchoolId())) {
             tempSchoolId = schoolInfo.getSchoolId();
@@ -1183,9 +1098,7 @@ public class BookStoreListFragment extends ContactsListFragment {
                     if (values != null && values.size() > 0) {
                         for (int j = 0, length = values.size(); j < length; j++) {
                             CategoryValue value = values.get(j);
-                            if (value != null
-                                    && !TextUtils.isEmpty(value.getId())
-                                    && value.isSelect()) {
+                            if (value != null && value.isSelect()) {
                                 if (builder.length() == 0) {
                                     builder.append(value.getId());
                                 } else {
@@ -1329,14 +1242,14 @@ public class BookStoreListFragment extends ContactsListFragment {
             String updateAction = messageEvent.getUpdateAction();
             if (TextUtils.equals(updateAction, "update_local_book_dao")) {
                 String type = messageEvent.getBundle().getString("book_type");
-                updateBook(clickBook, Integer.valueOf(type));
+                updateBook(clickBook,Integer.valueOf(type));
                 loadBookGeneralList();
             }
         }
     }
 
 
-    private void updateBook(BookStoreBook book, int type) {
+    private void updateBook(BookStoreBook book,int type) {
         if (schoolInfo == null || isFromChoiceLib) {
             return;
         }
@@ -1347,88 +1260,7 @@ public class BookStoreListFragment extends ContactsListFragment {
             e.printStackTrace();
         }
         if (dao != null) {
-            dao.updateBook(book, getMemeberId(), book.getSchoolId(), type);
-        }
-    }
-
-    /**
-     * 更新最近的标签数据
-     */
-    private void initCategoryLabelView() {
-        if (categoriesAll != null && categoriesAll.size() > 0){
-            labelLayout.removeAllViews();
-            for (int i = 0; i < categoriesAll.size(); i++){
-                Category category = categoriesAll.get(i);
-                View labelView = LayoutInflater.from(getActivity()).inflate(R.layout
-                        .layout_label_view,null);
-                TextView labelTitleView = (TextView) labelView.findViewById(R.id.tv_label_type);
-                //类型名
-                labelTitleView.setText(category.getTypeName());
-                //tabel的content
-                List<CategoryValue> valueList = category.getDetailList();
-                TabLayout labelContentView = (TabLayout) labelView.findViewById(R.id.tl_label_content);
-                if (valueList != null && valueList.size() > 0){
-                    CategoryValue allValue = new CategoryValue();
-                    allValue.setName(getString(R.string.all));
-                    allValue.setId("");
-                    allValue.setSelect(true);
-                    valueList.add(0,allValue);
-                    for (int j = 0; j < valueList.size(); j++){
-                        CategoryValue value = valueList.get(j);
-                        View tableItemView = LayoutInflater.from(getActivity()).inflate(R.layout
-                                .item_tab_control_layout,null);
-                        TextView tvContent = (TextView) tableItemView.findViewById(com.lqwawa.intleducation.R.id.tv_content);
-                        tvContent.setText(value.getName());
-                        TabLayout.Tab newTab = labelContentView.newTab().setCustomView(tableItemView).setTag(value);
-                        labelContentView.addTab(newTab);
-                    }
-                }
-                labelContentView.addOnTabSelectedListener(new TabSelectedAdapter(){
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        super.onTabSelected(tab);
-                        // 全部发生数据联动
-                        CategoryValue value = (CategoryValue) tab.getTag();
-                        onClickLabelItem(value,valueList);
-                        getPageHelper().clear();
-                        loadBookData();
-                    }
-                });
-                labelLayout.addView(labelView);
-            }
-        }
-    }
-
-    private void onClickLabelItem(CategoryValue value,List<CategoryValue> valueList){
-        for (int i = 0; i < valueList.size(); i++){
-            if (valueList.get(i) == value){
-                valueList.get(i).setSelect(true);
-            } else {
-                valueList.get(i).setSelect(false);
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == NewOnlineStudyFiltrateActivity.SEARCH_REQUEST_CODE){
-            String searchTitle = null;
-            if (data != null){
-                searchTitle = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
-            }
-            if (TextUtils.isEmpty(searchTitle)){
-                headTitletextView.setText(headerTitle);
-            } else {
-                headTitletextView.setText(searchTitle);
-            }
-            if (TextUtils.isEmpty(this.keyword) && TextUtils.isEmpty(searchTitle)){
-
-            } else {
-                this.keyword = searchTitle;
-                getPageHelper().clear();
-                loadBookData();
-            }
+            dao.updateBook(book, getMemeberId(), book.getSchoolId(),type);
         }
     }
 }
