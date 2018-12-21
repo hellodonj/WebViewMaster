@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -168,6 +169,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private RadioButton mRbMarkNo;
     private RadioButton mRbPercentageSystem, mRbTenSystem;
     private View mSelectMark;
+    private RadioButton immediatelyRb;//立即发布
+    private LinearLayout publishTimeAndTypeLayout;
 
     private int currentStudyType;//空中课堂学习类型
     private Emcee onlineRes;
@@ -278,6 +281,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         startDateView.setOnClickListener(this);
         endDateView.setOnClickListener(this);
         commitTaskView.setOnClickListener(this);
+        //初始化任务类型的作答方式
+        immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
+        publishTimeAndTypeLayout = (LinearLayout) findViewById(R.id.ll_publish_time_and_type);
+        if (isFromSuperTask){
+            //综合任务不显示
+            publishTimeAndTypeLayout.setVisibility(View.GONE);
+        }
+
         if (taskType == StudyTaskType.ENGLISH_WRITING) {//英文写作
             findViewById(R.id.ll_appoint_course).setVisibility(View.GONE);
             findViewById(R.id.rl_appoint_course).setVisibility(View.GONE);
@@ -835,6 +846,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             returnSelectData();
             return;
         }
+        uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
         if (onlineRes != null) {
             //来自空中课堂的布置学习任务
             publishWatchWawaCourseStudyTask(uploadParameter, schoolClassInfos);
@@ -1208,6 +1220,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             returnSelectData();
             return;
         }
+        uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
         if (onlineRes != null) {
             //空中课堂的布置学习任务
             enterSendOnlineStudyTask();
@@ -1332,6 +1345,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 lookResDto.setTaskId(8);
             }
             lookResDto.setImgPath(info.getImgPath());
+            lookResDto.setSplitInfoList(info.getSplitInfoList());
             lookResDto.setAuthorName(info.getAuthorName());
             lookResDto.setCreateTime(info.getCreateTime());
             lookResDto.setResCourseId(info.getResCourseId());
@@ -2357,6 +2371,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 }
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
                     taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 } else {
@@ -2457,6 +2473,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);

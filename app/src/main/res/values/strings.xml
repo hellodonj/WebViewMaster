@@ -1732,4 +1732,9 @@
     <string name="str_teacher_comment_no_point">Teacher\'s comment</string>
     <string name="str_later_review">Cancel</string>
     <string name="str_comments_should_not_be_empty">Remark cannot be blank！</string>
+    <!--5.11.y-->
+    <string name="str_start_time_point">Start Time</string>
+    <string name="str_publish_task_time">学生作答时间</string>
+    <string name="str_publish_right_now">随时作答</string>
+    <string name="str_publish_according_to_time">按开始时间作答</string>
 </resources>

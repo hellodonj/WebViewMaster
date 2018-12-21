@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
+import com.lqwawa.client.pojo.ResourceInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -97,5 +98,36 @@ public class StudyTaskUtils {
         } else {
             return "D";
         }
+    }
+
+    public static String getPicResourceData(List<ResourceInfo> resourceInfos,
+                                            boolean isUrl,
+                                            boolean isAuthorId,
+                                            boolean isResId) {
+        if (resourceInfos != null && resourceInfos.size() > 0) {
+            String resUrl = "";
+            String authorId = "";
+            String resId = "";
+            for (int i = 0; i < resourceInfos.size(); i++) {
+                ResourceInfo info = resourceInfos.get(i);
+                if (i == 0) {
+                    resUrl = info.getResourcePath();
+                    authorId = info.getAuthorId();
+                    resId = info.getResId();
+                } else {
+                    resUrl = resUrl + "," + info.getResourcePath();
+                    authorId = authorId + "," + info.getAuthorId();
+                    resId = resId + "," + info.getResId();
+                }
+            }
+            if (isUrl) {
+                return resUrl;
+            } else if (isAuthorId) {
+                return authorId;
+            } else if (isResId) {
+                return resId;
+            }
+        }
+        return "";
     }
 }

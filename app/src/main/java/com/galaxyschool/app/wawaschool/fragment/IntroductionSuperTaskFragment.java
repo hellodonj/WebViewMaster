@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,15 +36,14 @@ import com.galaxyschool.app.wawaschool.common.ArrangeLearningTasksUtil;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
-import com.galaxyschool.app.wawaschool.pojo.CompletedListInfo;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.LookResDto;
-import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
@@ -53,8 +54,6 @@ import com.galaxyschool.app.wawaschool.views.ContactsInputBoxDialog;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.slidelistview.SlideListView;
 import com.lqwawa.client.pojo.ResourceInfo;
-import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.DataResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -76,6 +75,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private LinearLayout superTaskHeaderLayout;
     private TextView taskTitleTextV;
     private TextView finishStudyTaskStatus;
+    private TextView taskStartTimeTextV;//开始时间
+    private RadioButton immediatelyRb;//立即发布
+    private ConstraintLayout publishTimeAndTypeLayout;
     private SlideListView listView;
     private int taskType;
     private String headTitle;
@@ -210,20 +212,25 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (addRelativeLayout != null) {
             addRelativeLayout.setOnClickListener(this);
         }
-
         superTaskHeaderLayout = (LinearLayout) findViewById(R.id.ll_task_detail);
+        taskStartTimeTextV = (TextView) findViewById(R.id.tv_publish_start_time);
+        immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
+        publishTimeAndTypeLayout = (ConstraintLayout) findViewById(R.id.ll_publish_time_and_type);
         if (isOnlineSuperTaskDetail) {
             superTaskHeaderLayout.setVisibility(View.VISIBLE);
             addNewTaskLayout.setVisibility(View.GONE);
+            publishTimeAndTypeLayout.setVisibility(View.GONE);
             confirmTextV.setVisibility(View.GONE);
             initOnlineTaskView();
         } else if (lookStudentTaskFinish || isPick) {
             superTaskHeaderLayout.setVisibility(View.GONE);
             addNewTaskLayout.setVisibility(View.GONE);
+            publishTimeAndTypeLayout.setVisibility(View.GONE);
             confirmTextV.setVisibility(View.GONE);
         } else {
             superTaskHeaderLayout.setVisibility(View.GONE);
             addNewTaskLayout.setVisibility(View.VISIBLE);
+            publishTimeAndTypeLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -774,6 +781,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         uploadParameter.setTaskType(taskType);
         uploadParameter.setStartDate(getIntroductionDate(true));
         uploadParameter.setEndDate(getIntroductionDate(false));
+        uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
         if (onlineRes != null) {
             publishSuperTask(uploadParameter, schoolClassInfos);
         } else {
@@ -878,6 +886,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             getCurrAdapterViewHelper().update();
             return;
         }
+        notifyStartTimeData();
         if (uploadParameters.size() >= 6) {
             addNewTaskLayout.setVisibility(View.GONE);
         } else {
@@ -892,6 +901,16 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             } else {
                 getCurrAdapterViewHelper().update();
             }
+        }
+    }
+
+    private void notifyStartTimeData(){
+        if (uploadParameters == null || uploadParameters.size() == 0){
+            //没有数据
+            taskStartTimeTextV.setText("");
+        } else {
+            //有数据
+            taskStartTimeTextV.setText(getIntroductionDate(true));
         }
     }
 
@@ -1093,6 +1112,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
@@ -1136,13 +1157,15 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             String resId = lookDto.getResId();
                             String authorId = lookDto.getAuthor();
                             List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
-                            if (parameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE &&
-                                    splitInfo != null && splitInfo.size() > 0) {
-                                resUrl = getPicResourceData(splitInfo, true,
+                            int taskType = parameter.getTaskType();
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    && splitInfo != null && splitInfo.size() > 0) {
+                                resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
                                         false, false);
-                                resId = getPicResourceData(splitInfo, false,
+                                resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
                                         false, true);
-                                authorId = getPicResourceData(splitInfo, false,
+                                authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
                                         true, false);
                             }
                             thirdObject.put("ResUrl", resUrl);
@@ -1207,36 +1230,6 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         listener.setShowLoading(true);
         RequestHelper.postRequest(getActivity(), ServerUrl.ADD_TOGETHER_TASK_TOAIRCLASS_BASE_URL, taskParams.toString(), listener);
     }
-
-    private String getPicResourceData(List<ResourceInfo> resourceInfos, boolean isUrl, boolean
-            isAuthorId, boolean isResId) {
-        if (resourceInfos != null && resourceInfos.size() > 0) {
-            String resUrl = "";
-            String authorId = "";
-            String resId = "";
-            for (int i = 0; i < resourceInfos.size(); i++) {
-                ResourceInfo info = resourceInfos.get(i);
-                if (i == 0) {
-                    resUrl = info.getResourcePath();
-                    authorId = info.getAuthorId();
-                    resId = info.getResId();
-                } else {
-                    resUrl = resUrl + "," + info.getResourcePath();
-                    authorId = authorId + "," + info.getAuthorId();
-                    resId = resId + "," + info.getResId();
-                }
-            }
-            if (isUrl) {
-                return resUrl;
-            } else if (isAuthorId) {
-                return authorId;
-            } else if (isResId) {
-                return resId;
-            }
-        }
-        return "";
-    }
-
 
     public static String ACTION_DATA = TAG + "_loadData";
     private LocalBroadcastManager mBroadcastManager;
