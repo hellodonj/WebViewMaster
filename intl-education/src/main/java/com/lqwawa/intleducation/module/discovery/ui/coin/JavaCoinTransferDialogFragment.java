@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.MemberChoiceAdapter;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,8 +195,7 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
             }
         }else if(viewId == R.id.btn_confirm){
             // 确定
-            // 获取到已经选择的memberId
-            String payMemberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
+            UserParams user = null;
 
             // 选择购买
             List<ChildrenListVo> items = mMemberAdapter.getItems();
@@ -208,7 +208,7 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                             if(EmptyUtil.isNotEmpty(mChildContainer)){
                                 if(EmptyUtil.isNotEmpty(mChildContainer.getTag())){
                                     UserEntity tag = (UserEntity) mChildContainer.getTag();
-                                    payMemberId = tag.getMemberId();
+                                    user = UserParams.buildUser(tag);
                                 }else{
                                     // 提示
                                     UIUtil.showToastSafe(R.string.label_give_money_tip_title);
@@ -217,19 +217,19 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                             }
                         }else if(TextUtils.equals(vo.getNickname(),UIUtil.getString(R.string.label_self_member))){
                             // 自己
-                            payMemberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
+                            user = UserParams.buildUser(UserHelper.getUserInfo());
                         }
 
                     }else{
                         // 找到选中
-                        payMemberId = vo.getMemberId();
+                        user = UserParams.buildUser(vo);
                     }
                     break;
                 }
             }
 
             if(EmptyUtil.isNotEmpty(mNavigator)){
-                mNavigator.onChoiceConfirm(payMemberId);
+                mNavigator.onChoiceConfirm(user);
             }
         }else if(viewId == R.id.btn_cancel){
             // 取消

@@ -20,12 +20,14 @@ import com.lqwawa.intleducation.base.ui.MyBaseActivity;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.lqpay.LqPay;
 import com.lqwawa.intleducation.lqpay.PayParams;
 import com.lqwawa.intleducation.lqpay.callback.OnPayInfoRequestListener;
 import com.lqwawa.intleducation.lqpay.callback.OnPayResultListener;
 import com.lqwawa.intleducation.lqpay.enums.PayWay;
 import com.lqwawa.intleducation.module.discovery.adapter.NormalCountAdapter;
+import com.lqwawa.intleducation.module.discovery.ui.coin.UserParams;
 import com.lqwawa.intleducation.module.discovery.vo.NormalChargeInfo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.osastudio.common.utils.LogUtils;
@@ -50,6 +52,8 @@ import java.util.List;
 
 public class ChargeCenterActivity extends MyBaseActivity implements View.OnClickListener {
 
+    public static final String KEY_EXTRA_USER = "KEY_EXTRA_USER";
+
 
     private TopBar topBar;
     private EditText etCount;
@@ -68,6 +72,8 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
     private LinearLayout llWx;
     private LinearLayout llAli;
 
+    private UserParams mUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,9 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
         setContentView(R.layout.activity_charge_center);
         topBar = (TopBar) findViewById(R.id.top_bar);
 
+        Bundle extras = getIntent().getExtras();
+        mUser = (UserParams) extras.getSerializable(KEY_EXTRA_USER);
+        if(EmptyUtil.isEmpty(mUser)) finish();
 
         initData();
 

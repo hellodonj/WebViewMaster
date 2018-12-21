@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.discovery.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.coin.UserParams;
+import com.lqwawa.intleducation.module.discovery.ui.coin.donation.DonationCoinActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.osastudio.apps.BaseFragmentActivity;
@@ -149,17 +152,19 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
             startActivity(intent);
         } else if (i == R.id.charge_textView) {
             //充值
-            intent = new Intent(this, ChargeCenterActivity.class);
-            startActivity(intent);
-
-        }else if(i == R.id.tv_give_money){
-            // 转赠他人
             JavaCoinTransferDialogFragment.show(getSupportFragmentManager(), new JavaCoinTransferNavigator() {
                 @Override
-                public void onChoiceConfirm(String curMemberId) {
-
+                public void onChoiceConfirm(@NonNull UserParams user) {
+                    Intent intent = new Intent(UserCoinActivity.this, ChargeCenterActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ChargeCenterActivity.KEY_EXTRA_USER,user);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             });
+        }else if(i == R.id.tv_give_money){
+            // 转赠他人
+            DonationCoinActivity.show(this);
         }
     }
 }

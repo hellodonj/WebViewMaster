@@ -852,6 +852,12 @@
         <activity android:name=".module.discovery.ui.subject.add.AddSubjectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
+
+        <!--转赠蛙蛙币页面-->
+        <activity android:name=".module.discovery.ui.coin.donation.DonationCoinActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>
