@@ -431,17 +431,17 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
                 } else if (itemData.getEqState() == 3) {
                     //没有打分
                     arrowRightImageV.setVisibility(View.VISIBLE);
-                    rightTextV.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable
-                            .green_10dp_red));
-                    rightTextV.setTextColor(ContextCompat.getColor(mContext, R.color.red));
-                    rightTextV.setTextSize(14);
-                    rightTextV.setPadding(DensityUtils.dp2px(mContext, 7),
-                            DensityUtils.dp2px(mContext, 2),
-                            DensityUtils.dp2px(mContext, 7),
-                            DensityUtils.dp2px(mContext, 2));
                     if (cardParam.isOnlineHost() || cardParam.isOnlineReporter()) {
                         //显示批阅
                         rightTitle = getString(R.string.read_over);
+                        rightTextV.setBackgroundDrawable(ContextCompat.getDrawable(mContext, R.drawable
+                                .green_10dp_red));
+                        rightTextV.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+                        rightTextV.setTextSize(14);
+                        rightTextV.setPadding(DensityUtils.dp2px(mContext, 7),
+                                DensityUtils.dp2px(mContext, 2),
+                                DensityUtils.dp2px(mContext, 7),
+                                DensityUtils.dp2px(mContext, 2));
                         rightTextV.setOnClickListener(v -> {
                             //直接进入批阅
                             openCheckMarkActivity(itemData);
@@ -449,6 +449,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
                     } else {
                         //显示未批阅
                         rightTitle = getString(R.string.str_no_read_over);
+                        rightTextV.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                     }
                 } else {
                     //显示分数
