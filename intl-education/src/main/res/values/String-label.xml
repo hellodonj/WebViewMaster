@@ -296,6 +296,9 @@
     <!--V5.12字符串-->
     <string name="label_give_money">转赠他人</string>
     <string name="label_give_money_tip_title">请选择充值用户</string>
+    <string name="label_current_choice_subject">当前已选科目</string>
+    <string name="label_please_choice_subject">请选择授课科目</string>
+    <string name="label_add_subject">添加科目</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>

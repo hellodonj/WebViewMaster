@@ -48,6 +48,9 @@ public class LQCourseConfigEntity extends BaseVo{
     // V5.11.X新添加的字段
     private boolean isAuthorized;
 
+    // V5.12新添加的字段
+    private boolean selected;
+
     public int getConfigType() {
         return configType;
     }
@@ -254,5 +257,13 @@ public class LQCourseConfigEntity extends BaseVo{
 
     public void setAuthorized(boolean authorized) {
         isAuthorized = authorized;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

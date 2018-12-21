@@ -28,6 +28,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortTy
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.livelist.LiveListActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseListActivity;
@@ -118,6 +119,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                 // 点击了分类列表数据 显示下级列表
                 if(entity.getId() == CourseFiltrateActivity.BASIC_COURSE_ID){
                     // 进入基础课程列表
+                    // SubjectActivity.show(getActivity());
                     if(EmptyUtil.isNotEmpty(mConfigEntities)){
                         if(mConfigEntities.size() > 3){
                             LQCourseConfigEntity configEntity = mConfigEntities.get(3);
