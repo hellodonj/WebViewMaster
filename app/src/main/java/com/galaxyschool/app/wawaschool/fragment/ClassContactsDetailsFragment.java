@@ -822,7 +822,7 @@ public class ClassContactsDetailsFragment extends GroupContactsListFragment {
 		//真实姓名（选填，一旦填写，就需要限制字符）
 		if (!TextUtils.isEmpty(realName)) {
 			//过滤特殊字符和表情
-			if (!Utils.checkEditTextValid(getActivity(), realName)) {
+			if (!Utils.checkTitleValid(getActivity(), realName)) {
 				return;
 			}
 			//用户真实姓名<=20个字符

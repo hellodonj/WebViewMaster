@@ -374,7 +374,7 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
                 String text = ((ContactsInputBoxDialog) dialog).getInputText().trim();
                 if (!TextUtils.isEmpty(text)) {
                     //限制特殊字符
-                    if (!Utils.checkEditTextValid(getActivity(),text)){
+                    if (!Utils.checkTitleValid(getActivity(),text)){
                         return;
                     }
                     dialog.dismiss();

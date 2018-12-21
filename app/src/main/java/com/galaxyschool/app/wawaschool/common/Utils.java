@@ -1066,14 +1066,25 @@ public class Utils {
 
     }
 
-    public static boolean checkEditTextValid(Activity activity, String str) {
+    public static boolean checkTitleValid(Activity activity, String title) {
         String regEx = "[~¥#*<>\\[\\]{}【】^@/￡¤¥|§¨「」『』￠￢￣~@#¥*——+|$_€\\\\/；;]";
         Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
+        Matcher m = p.matcher(title);
         if (m.find()) {
             Toast.makeText(activity, R.string.invalid_characters, Toast.LENGTH_LONG).show();
             return false;
         }
+        return true;
+    }
+
+    public static boolean checkEditTextValid(Activity activity, String str) {
+//        String regEx = "[~¥#*<>\\[\\]{}【】^@/￡¤¥|§¨「」『』￠￢￣~@#¥*——+|$_€\\\\/；;]";
+//        Pattern p = Pattern.compile(regEx);
+//        Matcher m = p.matcher(str);
+//        if (m.find()) {
+//            Toast.makeText(activity, R.string.invalid_characters, Toast.LENGTH_LONG).show();
+//            return false;
+//        }
         return true;
     }
 
