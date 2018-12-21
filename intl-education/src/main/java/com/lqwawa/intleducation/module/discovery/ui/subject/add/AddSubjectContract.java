@@ -14,6 +14,7 @@ public interface AddSubjectContract {
 
     interface Presenter extends BaseContract.Presenter{
         void requestAssignConfigData(@NonNull String memberId);
+        String getSelectedIds(@NonNull List<LQCourseConfigEntity> entities);
     }
 
     interface View extends BaseContract.View<Presenter>{

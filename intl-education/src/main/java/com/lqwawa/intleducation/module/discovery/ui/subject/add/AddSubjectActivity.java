@@ -9,6 +9,7 @@ import android.widget.ExpandableListView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectExpandableAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -43,6 +44,8 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
         mTopBar.setTitle(R.string.title_subject_setting);
         mTopBar.setRightFunctionText1(R.string.label_confirm,view->{
             // 点击确定
+            List<LQCourseConfigEntity> items = mAdapter.getItems();
+
         });
 
         mExpandableView = (ExpandableListView) findViewById(R.id.expandable_view);

@@ -44,7 +44,7 @@ public class SubjectTagAdapter extends TagAdapter<LQCourseConfigEntity> {
         @Override
         protected void onBind(LQCourseConfigEntity entity) {
             StringUtil.fillSafeTextView(mTvContent,entity.getConfigValue());
-            mTvContent.setActivated(true);
+            mTvContent.setActivated(entity.isSelected());
         }
     }
 }

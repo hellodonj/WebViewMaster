@@ -21,11 +21,13 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.SubjectConfigAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.SubjectTagAdapter;
+import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 二级列表Adapter
@@ -195,10 +197,28 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
             List<LQCourseConfigEntity> configEntities = entity.getChildList();
             mAdapter = new SubjectTagAdapter(configEntities);
             mFlowLayout.setAdapter(mAdapter);
+
+            mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                @Override
+                public boolean onTagClick(View view, int position, FlowLayout parent) {
+                    LQCourseConfigEntity item = mAdapter.getItem(position);
+                    item.setSelected(!item.isSelected());
+                    mAdapter.notifyDataChanged();
+                    return true;
+                }
+            });
         }
     }
 
     interface Action{
         void bind(@NonNull LQCourseConfigEntity entity);
+    }
+
+    /**
+     * 获取data数据
+     * @return List<LQCourseConfigEntity>
+     */
+    public List<LQCourseConfigEntity> getItems(){
+        return mGroupData;
     }
 }
