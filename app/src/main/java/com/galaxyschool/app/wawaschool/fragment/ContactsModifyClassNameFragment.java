@@ -122,7 +122,7 @@ public class ContactsModifyClassNameFragment extends ContactsClassCategorySelect
                     return;
                 }
                 //过滤特殊字符
-                if (!Utils.checkEditTextValid(getActivity(),className)){
+                if (!Utils.checkTitleValid(getActivity(),className)){
                     return;
                 }
                 if (className.length() > 40){

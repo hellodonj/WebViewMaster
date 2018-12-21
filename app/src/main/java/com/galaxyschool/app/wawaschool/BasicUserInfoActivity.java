@@ -562,7 +562,7 @@ public class BasicUserInfoActivity extends BaseActivity
                     return;
                 } else {
                     //过滤特殊字符和表情
-                    if (!Utils.checkEditTextValid(BasicUserInfoActivity.this,content)){
+                    if (!Utils.checkTitleValid(BasicUserInfoActivity.this,content)){
                         return;
                     }
                     int length = content.length();
@@ -583,7 +583,7 @@ public class BasicUserInfoActivity extends BaseActivity
                     return;
                 } else {
                     //过滤特殊字符和表情
-                    if (!Utils.checkEditTextValid(BasicUserInfoActivity.this,content)){
+                    if (!Utils.checkTitleValid(BasicUserInfoActivity.this,content)){
                         return;
                     }
                     //用户真实姓名<=20个字符
