@@ -1732,4 +1732,7 @@
     <string name="str_teacher_comment_no_point">Teacher\'s comment</string>
     <string name="str_later_review">Cancel</string>
     <string name="str_comments_should_not_be_empty">Remark cannot be blank！</string>
+
+    <!--5.12-->
+    <string name="str_subject_setting">科目设置</string>
 </resources>

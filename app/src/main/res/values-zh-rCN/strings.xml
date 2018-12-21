@@ -1639,4 +1639,7 @@
     <string name="str_teacher_comment_no_point">老师评语</string>
     <string name="str_later_review">稍后点评</string>
     <string name="str_comments_should_not_be_empty">点评内容不能为空！</string>
+
+    <!--5.12-->
+    <string name="str_subject_setting">科目设置</string>
 </resources>

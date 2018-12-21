@@ -129,6 +129,7 @@
         <activity
             android:name=".WatchWawaCourseResourceListPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <activity
@@ -724,6 +725,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".chat.activity.HomeworkChatActivity"
@@ -884,7 +886,8 @@
             android:name=".BookStoreListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
         </activity>
         <activity
             android:name=".BookDetailActivity"
@@ -980,6 +983,7 @@
         <activity
             android:name=".ChoiceBooksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -1143,6 +1147,7 @@
         <activity
             android:name=".MyAttendedSchoolListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"/>
 
 
