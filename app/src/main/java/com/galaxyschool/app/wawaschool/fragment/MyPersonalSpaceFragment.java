@@ -1,4 +1,5 @@
 package com.galaxyschool.app.wawaschool.fragment;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -12,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.AccountActivity;
 import com.galaxyschool.app.wawaschool.ActClassroomActivity;
@@ -80,9 +82,11 @@ import com.oosic.apps.share.SharedResource;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,6 +163,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_ASSOCIATED_ACCOUNT = 108;
         //我的表演
         int TAB_ENTITY_TYPE_MY_PERFORMANCE = 109;
+        //科目设置
+        int TAB_ENTITY_TYPE_SUBJECT_SETTING = 110;
 
     }
 
@@ -594,9 +600,21 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 loadChildInfo();
                 break;
 
+            //科目设置
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBJECT_SETTING:
+                enterSubjectSettingDetail();
+                break;
+
             default:
                 break;
         }
+    }
+
+    /**
+     * 进入科目设置界面
+     */
+    private void enterSubjectSettingDetail(){
+
     }
 
     private void loadChildInfo() {
@@ -1024,6 +1042,14 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 //        itemList.add(item);
 //        entryMap.put(item.type, item);
 
+        //科目设置
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBJECT_SETTING;
+        item.title = getString(R.string.str_subject_setting);
+        item.resId = R.drawable.icon_subject_setting;
+        itemList.add(item);
+        entryMap.put(item.type, item);
+
         //设备管理
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_DEVICE_MANAGEMENT;
@@ -1167,7 +1193,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                         getThumbnailManager().displayUserIconWithDefault(AppSettings.getFileUrl(
                                 userInfo.getHeaderPic()), userIconView, R.drawable.default_avatar);
                         String userName = userInfo.getRealName();
-                        if (TextUtils.isEmpty(userName)){
+                        if (TextUtils.isEmpty(userName)) {
                             userName = userInfo.getNickName();
                         }
                         userNameTxt.setText(userName);
@@ -1267,11 +1293,11 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         }
     }
 
-    private void showUnInstallShareMediaMessage(SHARE_MEDIA shareMedia){
-        if (shareMedia == SHARE_MEDIA.QQ){
-            TipMsgHelper.ShowMsg(getActivity(),R.string.install_qq);
-        } else if (shareMedia == SHARE_MEDIA.WEIXIN){
-            TipMsgHelper.ShowMsg(getActivity(),R.string.install_wechat);
+    private void showUnInstallShareMediaMessage(SHARE_MEDIA shareMedia) {
+        if (shareMedia == SHARE_MEDIA.QQ) {
+            TipMsgHelper.ShowMsg(getActivity(), R.string.install_qq);
+        } else if (shareMedia == SHARE_MEDIA.WEIXIN) {
+            TipMsgHelper.ShowMsg(getActivity(), R.string.install_wechat);
         }
     }
 
