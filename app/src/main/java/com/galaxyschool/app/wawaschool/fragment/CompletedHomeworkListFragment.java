@@ -9,9 +9,13 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.ArrayMap;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +42,7 @@ import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -455,7 +460,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             } else {
                                 content = data.getStudentResTitle();
                             }
-                            processTitle(textView, content);
+                            processTitle(textView, content,data.getCommitTime());
                         }
                         //作业图片布局
                         View iconLayout = view.findViewById(R.id.layout_icon);
@@ -1961,15 +1966,17 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
      * @param textView
      * @param content
      */
-    private void processTitle(TextView textView, String content) {
+    private void processTitle(TextView textView, String content,String commitTime) {
         if (textView != null && isAnswerTaskOrderQuestion) {
-            textView.setText(task.getTaskTitle());
+            textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),task.getTaskTitle(),commitTime,
+                    task.getEndTime()));
             return;
         }
         if (textView == null || TextUtils.isEmpty(content)) {
             return;
         }
-        textView.setText(content);
+        textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),content,commitTime,task
+                .getEndTime()));
         TitleGlobalLayoutListener listener = new TitleGlobalLayoutListener(textView);
         textView.getViewTreeObserver().addOnGlobalLayoutListener(listener);
     }

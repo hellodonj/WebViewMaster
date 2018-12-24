@@ -17,17 +17,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--显示任务完成的状态-->
+            <TextView
+                android:id="@+id/tv_student_task_finish_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/text_white"
+                android:gravity="center|left"
+                android:padding="10dp"
+                android:textColor="@color/text_black"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+
             <include layout="@layout/include_task_title_detail"/>
 
             <TextView
                 android:id="@+id/iv_task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:gravity="left|center"
                 android:padding="10dp"
-                android:textSize="16sp"
-                android:background="@color/white"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 android:visibility="gone"/>
 
             <include

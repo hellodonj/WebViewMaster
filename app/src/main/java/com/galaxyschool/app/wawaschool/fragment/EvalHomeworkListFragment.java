@@ -35,6 +35,7 @@ import com.galaxyschool.app.wawaschool.TeacherReviewDetailActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -447,7 +448,7 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                             } else {
                                 content = data.getStudentResTitle();
                             }
-                            processTitle(textView, content);
+                            processTitle(textView, content,data.getCommitTime());
                         }
                         //作业图片布局
                         View iconLayout = view.findViewById(R.id.layout_icon);
@@ -1963,12 +1964,12 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
      * @param textView
      * @param content
      */
-    private void processTitle(TextView textView, String content) {
+    private void processTitle(TextView textView, String content,String commitTime) {
         if (textView == null || TextUtils.isEmpty(content)) {
             return;
         }
-
-        textView.setText(content);
+        textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),content,commitTime,task
+                .getEndTime()));
         TitleGlobalLayoutListener listener = new TitleGlobalLayoutListener(textView);
         textView.getViewTreeObserver().addOnGlobalLayoutListener(listener);
     }

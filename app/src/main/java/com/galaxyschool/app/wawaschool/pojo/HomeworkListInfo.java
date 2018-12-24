@@ -70,6 +70,33 @@ public class HomeworkListInfo implements Serializable {
     private boolean isHistoryClass;
     private boolean isOnlineSchoolClass;
     private int ResPropType;
+    private int UnDoneThirdTaskCount;
+    private int SubmitType;
+    private String ServerNowTime;
+
+    public int getSubmitType() {
+        return SubmitType;
+    }
+
+    public void setSubmitType(int submitType) {
+        SubmitType = submitType;
+    }
+
+    public String getServerNowTime() {
+        return ServerNowTime;
+    }
+
+    public void setServerNowTime(String serverNowTime) {
+        ServerNowTime = serverNowTime;
+    }
+
+    public int getUnDoneThirdTaskCount() {
+        return UnDoneThirdTaskCount;
+    }
+
+    public void setUnDoneThirdTaskCount(int unDoneThirdTaskCount) {
+        UnDoneThirdTaskCount = unDoneThirdTaskCount;
+    }
 
     public int getResPropType() {
         return ResPropType;

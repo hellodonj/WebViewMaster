@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -78,6 +79,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private TextView taskStartTimeTextV;//开始时间
     private RadioButton immediatelyRb;//立即发布
     private ConstraintLayout publishTimeAndTypeLayout;
+    private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private SlideListView listView;
     private int taskType;
     private String headTitle;
@@ -206,6 +208,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (confirmTextV != null) {
             confirmTextV.setOnClickListener(this);
         }
+        //学生的完成的状态
+        showTaskFinishView = (TextView) findViewById(R.id.tv_student_task_finish_status);
         //增加新任务的layout
         addNewTaskLayout = (LinearLayout) findViewById(R.id.ll_add_new_task);
         RelativeLayout addRelativeLayout = (RelativeLayout) findViewById(R.id.rl_add_new_task);
@@ -294,6 +298,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                     //全部完成
                     finishStudyTaskStatus.setText(getString(R.string.n_finish_all, String.valueOf(taskNum)));
                 }
+                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStudyTaskStatus,
+                        taskFinishCount,taskNum);
             }
         }
     }
@@ -381,7 +387,23 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             //删除
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
                             if (deleteView != null) {
-                                deleteView.setVisibility(View.GONE);
+                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
+                                        .getLayoutParams();
+                                layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                deleteView.setLayoutParams(layoutParams);
+                                if (lookStudentTaskFinish && data.getUnDoneThirdTaskCount() > 0){
+                                    TextView showUnFinishCountView = (TextView) view.findViewById
+                                            (R.id.tv_delete_homework);
+                                    showUnFinishCountView.setBackground(null);
+                                    showUnFinishCountView.setText(getString(R.string.n_unfinish,
+                                            String.valueOf(data.getUnDoneThirdTaskCount())));
+                                    showUnFinishCountView.setTextColor(ContextCompat.getColor
+                                            (getActivity(),R.color.red));
+                                    deleteView.setVisibility(View.VISIBLE);
+                                } else {
+                                    deleteView.setVisibility(View.GONE);
+                                }
                             }
 
                             ImageView finishImage = (ImageView) view.findViewById(R.id.iv_super_finish);
@@ -978,7 +1000,10 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (lookStudentTaskFinish && !TextUtils.isEmpty(studentName)) {
             //显示title中已完成和未完成的数量
             String titleString = studentName + "(" + finishCount + "/" + totalCount + ")";
-            taskTitleTextV.setText(titleString);
+            taskTitleTextV.setText(studentName);
+            showTaskFinishView.setText(getString(R.string.str_look_student_finish_task_detail,
+                    totalCount,finishCount));
+            showTaskFinishView.setVisibility(View.VISIBLE);
         }
 
         if (listView != null) {

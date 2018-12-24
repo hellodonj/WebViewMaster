@@ -9,6 +9,19 @@
 
     <include layout="@layout/contacts_header"/>
 
+    <!--显示任务完成的状态-->
+    <TextView
+        android:id="@+id/tv_student_task_finish_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/text_white"
+        android:gravity="center|left"
+        android:padding="10dp"
+        android:textColor="@color/text_black"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+    <!--显示列表界面-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
