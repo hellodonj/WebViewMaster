@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/topic_discussion_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -135,8 +134,8 @@
                     android:id="@+id/layout_listen_read_and_write"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
 
                 <!--添加课件-->
                 <LinearLayout
@@ -207,14 +206,14 @@
                         <TextView
                             android:id="@+id/tv_eval_text"
                             android:layout_width="wrap_content"
-                            android:padding="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="@color/bg_white"
-                            android:background="@drawable/ecourse_evaluate_label_bg"
-                            android:text="@string/evaluate_label"
-                            android:textSize="14sp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/ecourse_evaluate_label_bg"
+                            android:padding="5dp"
+                            android:text="@string/evaluate_label"
+                            android:textColor="@color/bg_white"
+                            android:textSize="14sp"
                             android:visibility="gone"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -479,6 +478,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#c3c3c3"/>
+
+                <!--显示发布开始时间和类型-->
+                <LinearLayout
+                    android:id="@+id/ll_publish_time_and_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!--选择任务发布的时间-->
+                    <TextView
+                        style="@style/txt_wawa_big_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/str_publish_task_time"/>
+
+                    <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_publish_right_now"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/com_checkbox"
+                            android:checked="true"
+                            android:padding="10dp"
+                            android:text="@string/str_publish_right_now"
+                            android:textColor="@color/text_normal"
+                            android:textSize="14sp"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_publish_according_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/com_checkbox"
+                            android:padding="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/str_publish_according_to_time"
+                            android:textColor="@color/text_normal"
+                            android:textSize="14sp"/>
+                    </RadioGroup>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#c3c3c3"/>
+                </LinearLayout>
 
                 <!--================================打分====================================-->
                 <LinearLayout

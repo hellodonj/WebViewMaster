@@ -28,6 +28,7 @@ import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.ScreenUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -73,6 +74,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private String READ_AND_WRITE_DATA_TAG = "read_and_write_data_tag";
     private TextView finishStudyTaskStatus;
     private TextView headTitleView;
+    private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private int roleType = -1;
     private String TaskId;
     private HomeworkListInfo homeworkListInfo;
@@ -186,6 +188,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             }
             textView.setOnClickListener(this);
         }
+        //学生的完成的状态
+        showTaskFinishView = (TextView) findViewById(R.id.tv_student_task_finish_status);
         if (lookStudentTaskFinish || isPick) {
             //隐藏状态栏
             findViewById(R.id.ll_task_detail).setVisibility(View.GONE);
@@ -249,6 +253,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     //全部完成
                     finishStudyTaskStatus.setText(getString(R.string.n_finish_all, String.valueOf(taskNum)));
                 }
+                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStudyTaskStatus,
+                        taskFinishCount,taskNum);
             }
         }
     }
@@ -424,8 +430,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         if (lookStudentTaskFinish && !TextUtils.isEmpty(studentName)) {
             //显示title中已完成和未完成的数量
             String titleString = null;
+            int totalCount = taskData.size();
             if (isSuperChildTask){
-                int totalCount = taskData.size();
                 if (finishCount == totalCount && totalCount > 1){
                     finishCount = finishCount - 1;
                 }
@@ -436,7 +442,11 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             } else {
                 titleString = studentName + "(" + finishCount + "/" + taskData.size() + ")";
             }
-            headTitleView.setText(titleString);
+            headTitleView.setText(studentName);
+            //学生完成任务的情况
+            showTaskFinishView.setText(getString(R.string.str_look_student_finish_task_detail,
+                    totalCount,finishCount));
+            showTaskFinishView.setVisibility(View.VISIBLE);
         }
 
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.ll_parent_layout);

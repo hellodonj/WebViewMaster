@@ -1732,7 +1732,15 @@
     <string name="str_teacher_comment_no_point">Teacher\'s comment</string>
     <string name="str_later_review">Cancel</string>
     <string name="str_comments_should_not_be_empty">Remark cannot be blank！</string>
-
+    <!--5.11.y-->
+    <string name="str_start_time_point">Start Time</string>
+    <string name="str_publish_task_time">学生作答时间</string>
+    <string name="str_publish_right_now">随时作答</string>
+    <string name="str_publish_according_to_time">按开始时间作答</string>
+    <string name="str_look_student_finish_task_detail">共%1$d个任务，已完成%2$d个</string>
+    <string name="str_taste_task_start_time">未到任务开始时间</string>
+    <string name="str_make_up_study_task">【补交】</string>
+    <string name="str_not_yet_arrive_task_start_time">未到任务开始时间</string>
     <!--5.12-->
     <string name="str_subject_setting">科目设置</string>
 </resources>

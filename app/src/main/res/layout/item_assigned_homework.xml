@@ -60,8 +60,7 @@
     <RelativeLayout
         android:id="@+id/layout_right_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_title"
@@ -80,7 +79,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
-            android:layout_marginTop="5dp"
             android:singleLine="true"
             tools:text="布置时间:2017-01-01"/>
 
@@ -98,8 +96,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            >
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_finish_status"
@@ -108,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:ellipsize="end"
-                android:paddingTop="3dp"
+                android:paddingTop="5dp"
                 android:singleLine="true"
                 android:visibility="gone"
                 tools:text="已完成(0)/未完成(1)"
