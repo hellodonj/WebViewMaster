@@ -7,6 +7,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.Factory;
+import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
@@ -14,13 +17,16 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
+import com.lqwawa.intleducation.factory.data.entity.user.CoinEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
+import com.lqwawa.intleducation.module.discovery.vo.BannerInfoVo;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -125,6 +131,41 @@ public class UserHelper {
                 LogUtil.w(UserHelper.class,"request "+params.getUri()+" failed");
                 if(!EmptyUtil.isEmpty(callback)){
                     callback.onDataNotAvailable(com.lqwawa.intleducation.R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取用户金钱信息的请求
+     * @param callback DataSource.Callback<CoinEntity> 回调对象
+     */
+    public static void requestUserCoinCount(@NonNull DataSource.Callback<CoinEntity> callback){
+        RequestVo requestVo = new RequestVo();
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GET_USER_COINS_COUNT + requestVo.getParams());
+        LogUtil.i(UserHelper.class,"send request ==== " +params.getUri());
+        params.setConnectTimeout(10000);
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(UserHelper.class,"request "+params.getUri()+" result :"+str);
+                ResponseVo<CoinEntity> result = JSON.parseObject(str,new TypeReference<ResponseVo<CoinEntity>>() {});
+                if (result.isSucceed()) {
+                    CoinEntity entity = result.getData();
+                    if(EmptyUtil.isNotEmpty(callback)){
+                        callback.onDataLoaded(entity);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(UserHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }
         });

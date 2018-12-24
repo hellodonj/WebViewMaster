@@ -60,4 +60,47 @@ public class OrderHelper {
 
     }
 
+    /**
+     * @desc 检查订单状态
+     * @param memberId 赠送人Id
+     * @param beneficiaryId 受益人Id
+     * @param consumeSource 受益设备来源 2 Android Phone 3 Android Pad
+     * @param amount 转赠金额
+     * @param callback 回调对象
+     */
+    public static void requestUserBalanceDonation(@NonNull String memberId,
+                                  @NonNull String beneficiaryId,
+                                  int consumeSource,
+                                  int amount,
+                                  @NonNull DataSource.Callback<Boolean> callback){
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId",memberId);
+        requestVo.addParams("beneficiaryId",beneficiaryId);
+        requestVo.addParams("consumeSource",consumeSource);
+        requestVo.addParams("amount",amount);
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetWaWaGiveUrl+requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(OrderHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(OrderHelper.class,"request "+params.getUri()+" result :"+str);
+                ResponseVo<Void> vo = JSON.parseObject(str,new TypeReference<ResponseVo<Void>>() {});
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(vo.isSucceed());
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(OrderHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+
+    }
+
 }

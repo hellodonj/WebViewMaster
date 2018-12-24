@@ -34,7 +34,8 @@ import org.xutils.x;
  */
 
 public class UserCoinActivity extends BaseFragmentActivity implements View.OnClickListener {
-
+    // 转赠请求码
+    private static final int KEY_BALANCE_REQUEST_CODE = 1 << 0;
 
     private String memberId;
     private ImageView ivClose;
@@ -164,7 +165,22 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
             });
         }else if(i == R.id.tv_give_money){
             // 转赠他人
-            DonationCoinActivity.show(this);
+            DonationCoinActivity.show(this,KEY_BALANCE_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == KEY_BALANCE_REQUEST_CODE){
+                Bundle extras = data.getExtras();
+                boolean result = extras.getBoolean(DonationCoinActivity.KEY_RESULT_BALANCE_STATE);
+                if(result){
+                    // 发生余额更新
+                    initData();
+                }
+            }
         }
     }
 }

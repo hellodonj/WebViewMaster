@@ -766,5 +766,10 @@ public final class AppConfig {
         // 保存老师选定的标签
         public static final String GetSaveTeacherConfigUrl = ServerBase +
                 "api/teacher/saveTeacherConfig?j=";
+
+
+        // 蛙蛙币转赠的接口
+        public static final String GetWaWaGiveUrl = PayBase +
+                "api/coin/giveawayWawaCoin?j=";
     }
 }

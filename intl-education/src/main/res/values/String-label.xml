@@ -298,6 +298,10 @@
     <string name="label_give_money_tip_title">请选择充值用户</string>
     <string name="label_current_choice_subject">当前已选科目</string>
     <string name="label_please_choice_subject">请选择授课科目</string>
+    <string name="label_please_choice_donation_user">请选择转赠用户</string>
+    <string name="label_please_input_donation_money">请输入转赠金额</string>
+    <string name="label_current_balance">当前余额%d蛙蛙币</string>
+    <string name="label_all_donation">全部转赠</string>
     <string name="label_add_subject">添加科目</string>
 
     <string-array name="label_online_class_details_tabs">
