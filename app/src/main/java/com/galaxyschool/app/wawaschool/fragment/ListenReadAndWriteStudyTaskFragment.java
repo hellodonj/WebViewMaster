@@ -101,6 +101,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private boolean isSuperChildTask;
     private boolean isHistoryClass;
     private boolean isOnlineClass;
+    private int taskType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,6 +127,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             TaskId = bundle.getString("TaskId");
             sortStudentId = bundle.getString("sortStudentId");
             childId = bundle.getString("StudentId");
+            taskType = bundle.getInt("TaskType");
             userInfo = (UserInfo) bundle.getSerializable(UserInfo.class.getSimpleName());
             isHeadMaster = bundle.getBoolean(HomeworkMainFragment.Constants.EXTRA_IS_HEAD_MASTER);
             homeworkListInfo = (HomeworkListInfo) bundle.getSerializable(HomeworkListInfo.class.getSimpleName());
@@ -160,12 +162,16 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 if (!TextUtils.isEmpty(studentName)) {
                     headTitleView.setText(studentName);
                 }
-            } else if (isSuperChildTask){
-                if (isPick){
+            } else if (isSuperChildTask) {
+                if (isPick) {
                     headTitleView.setText(R.string.str_super_task);
                 } else {
                     headTitleView.setText(homeworkListInfo.getParentTaskTitle());
                 }
+            } else if (taskType == StudyTaskType.MULTIPLE_RETELL_COURSE) {
+                headTitleView.setText(getString(R.string.microcourse));
+            } else if (taskType == StudyTaskType.MULTIPLE_TASK_ORDER) {
+                headTitleView.setText(getString(R.string.make_task));
             } else {
                 headTitleView.setText(getString(R.string.str_listen_read_and_write));
             }
@@ -180,7 +186,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     taskTitleTextV.setVisibility(View.VISIBLE);
                     taskTitleTextV.setText(selectHomeworkInfo.getTaskTitle());
                 }
-            } else if (lookStudentTaskFinish || isSuperChildTask){
+            } else if (lookStudentTaskFinish || isSuperChildTask) {
                 textView.setVisibility(View.INVISIBLE);
             } else {
                 textView.setText(getString(R.string.share));
@@ -253,8 +259,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     //全部完成
                     finishStudyTaskStatus.setText(getString(R.string.n_finish_all, String.valueOf(taskNum)));
                 }
-                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStudyTaskStatus,
-                        taskFinishCount,taskNum);
+                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(), finishStudyTaskStatus,
+                        taskFinishCount, taskNum);
             }
         }
     }
@@ -301,7 +307,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         param.put("TaskId", TaskId);
         if (isPick) {
             param.put("StudentId", getMemeberId());
-        } else if (lookStudentTaskFinish){
+        } else if (lookStudentTaskFinish) {
             param.put("StudentId", sortStudentId);
         } else if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
             param.put("StudentId", childId);
@@ -323,10 +329,10 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         };
         listener.setShowLoading(true);
         String url = ServerUrl.GET_LISTEN_READANDWRITE_TASK_DETAIL_BASE_URL;
-        if (isSuperChildTask){
+        if (isSuperChildTask) {
             url = ServerUrl.GET_SECOND_TOGETHER_TASK_DETAIL_BASE_URL;
         }
-        RequestHelper.sendPostRequest(getActivity(),url, param, listener);
+        RequestHelper.sendPostRequest(getActivity(), url, param, listener);
     }
 
     private void loadStudentFinishData() {
@@ -368,14 +374,17 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         }
         int finishCount = 0;
         for (HomeworkListInfo info : taskData) {
-            if (isPick && info.getResPropType() == 1){
+            if (isPick && info.getResPropType() == 1) {
                 //过滤答题卡类型的数据
                 continue;
             }
             if (lookStudentTaskFinish && info.isStudentDoneTask()) {
                 finishCount++;
             }
-            if (info.getType() == StudyTaskType.LISTEN_READ_AND_WRITE && !lookStudentTaskFinish) {
+            if ((info.getType() == StudyTaskType.LISTEN_READ_AND_WRITE
+                    || info.getType() == StudyTaskType.MULTIPLE_RETELL_COURSE
+                    || info.getType() == StudyTaskType.MULTIPLE_TASK_ORDER)
+                    && !lookStudentTaskFinish) {
                 //听说 + 读写 任务对象
                 homeworkListInfo = info;
                 updateFinishStatus();
@@ -385,8 +394,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     || (lookStudentTaskFinish && (info.getType() == StudyTaskType.WATCH_HOMEWORK
                     || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))) {
                 //听说课
-                if (isSuperChildTask){
-                    if (TextUtils.equals(info.getId()+ "",TaskId)){
+                if (isSuperChildTask) {
+                    if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
                     } else {
@@ -397,8 +406,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 }
             } else if (info.getType() == StudyTaskType.TASK_ORDER) {
                 //读写单
-                if (isSuperChildTask){
-                    if (TextUtils.equals(info.getId()+ "",TaskId)){
+                if (isSuperChildTask) {
+                    if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
                     } else {
@@ -414,13 +423,13 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             //学生提交了任务更新adapter
             if (listenData != null && listenData.size() > 0) {
                 AdapterViewHelper listenHelper = getAdapterViewHelper(LISTEN_DATA_TAG);
-                if (listenHelper != null){
+                if (listenHelper != null) {
                     listenHelper.update();
                 }
             }
             if (readAndWriteData != null && readAndWriteData.size() > 0) {
                 AdapterViewHelper readAndWriteHelper = getAdapterViewHelper(READ_AND_WRITE_DATA_TAG);
-                if (readAndWriteHelper != null){
+                if (readAndWriteHelper != null) {
                     readAndWriteHelper.update();
                 }
             }
@@ -431,8 +440,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             //显示title中已完成和未完成的数量
             String titleString = null;
             int totalCount = taskData.size();
-            if (isSuperChildTask){
-                if (finishCount == totalCount && totalCount > 1){
+            if (isSuperChildTask) {
+                if (finishCount == totalCount && totalCount > 1) {
                     finishCount = finishCount - 1;
                 }
                 if (totalCount > 1) {
@@ -445,7 +454,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             headTitleView.setText(studentName);
             //学生完成任务的情况
             showTaskFinishView.setText(getString(R.string.str_look_student_finish_task_detail,
-                    totalCount,finishCount));
+                    totalCount, finishCount));
             showTaskFinishView.setVisibility(View.VISIBLE);
         }
 
@@ -507,7 +516,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     .item_classify_layout, parentLayout, false);
             TextView listenTitleTextV = (TextView) listenChildView.findViewById(R.id.title_name);
             if (listenTitleTextV != null) {
-                if (isSuperOtherHomeWork()){
+                if (isSuperOtherHomeWork()) {
                     listenTitleTextV.setText(getString(R.string.other));
                 } else {
                     listenTitleTextV.setText(getString(R.string.microcourse));
@@ -551,8 +560,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     ImageView thumbnail = (ImageView) view.findViewById(R.id.media_thumbnail);
                     if (thumbnail != null) {
                         String thumbnailUrl = data.getResThumbnailUrl();
-                        if (!TextUtils.isEmpty(thumbnailUrl)){
-                            if (thumbnailUrl.contains(",")){
+                        if (!TextUtils.isEmpty(thumbnailUrl)) {
+                            if (thumbnailUrl.contains(",")) {
                                 thumbnailUrl = thumbnailUrl.split(",")[0];
                             }
                         }
@@ -568,8 +577,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                         name.setTextSize(12);
                         name.setLines(2);
                         String taskTitle = data.getTaskTitle();
-                        if (!TextUtils.isEmpty(taskTitle)){
-                            if (taskTitle.contains(",")){
+                        if (!TextUtils.isEmpty(taskTitle)) {
+                            if (taskTitle.contains(",")) {
                                 taskTitle = taskTitle.split(",")[0];
                             }
                         }
@@ -632,7 +641,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         if (readAndWriteData != null && readAndWriteData.size() > 0) {
             View tenDistanceDp = LayoutInflater.from(getContext()).inflate(R.layout
                     .include_10_dp_horizontal_line_layout, parentLayout, false);
-            if (lookStudentTaskFinish && isSuperTaskOrder()){
+            if (lookStudentTaskFinish && isSuperTaskOrder()) {
 
             } else {
                 parentLayout.addView(tenDistanceDp);
@@ -693,8 +702,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                         name.setTextSize(12);
                         name.setLines(2);
                         String taskTitle = data.getTaskTitle();
-                        if (!TextUtils.isEmpty(taskTitle)){
-                            if (taskTitle.contains(",")){
+                        if (!TextUtils.isEmpty(taskTitle)) {
+                            if (taskTitle.contains(",")) {
                                 taskTitle = taskTitle.split(",")[0];
                             }
                         }
@@ -758,7 +767,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
     private void checkAllData(int position, boolean isListen) {
         AdapterViewHelper listenHelp = getAdapterViewHelper(LISTEN_DATA_TAG);
-        if (listenHelp != null){
+        if (listenHelp != null) {
             List<HomeworkListInfo> ListenData = listenHelp.getData();
             if (ListenData != null) {
                 for (int i = 0, len = ListenData.size(); i < len; i++) {
@@ -775,7 +784,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             }
         }
         AdapterViewHelper readHelp = getAdapterViewHelper(READ_AND_WRITE_DATA_TAG);
-        if (readHelp != null){
+        if (readHelp != null) {
             List<HomeworkListInfo> readData = readHelp.getData();
             if (readData != null) {
                 for (int i = 0, len = readData.size(); i < len; i++) {
@@ -803,20 +812,20 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 getMemeberId(), sortStudentId, childId, userInfo, false);
         if (roleType == RoleType.ROLE_TYPE_STUDENT
                 && !data.isStudentDoneTask()
-                && TextUtils.equals(data.getTaskType(),String.valueOf(StudyTaskType.WATCH_HOMEWORK))){
+                && TextUtils.equals(data.getTaskType(), String.valueOf(StudyTaskType.WATCH_HOMEWORK))) {
             updateReadState(data.getTaskId());
         }
     }
 
     private void enterStudentTaskListDetail(HomeworkListInfo data) {
-        if (data.getType() == StudyTaskType.WATCH_HOMEWORK){
+        if (data.getType() == StudyTaskType.WATCH_HOMEWORK) {
             //看作业
             return;
         }
         Bundle args = getArguments();
-        if (args != null){
+        if (args != null) {
             //兼容答题卡
-            args.putString(HomeworkFinishStatusActivity.Constants.EXTRA_IS_TASK_COURSE_RESID,data.getResId());
+            args.putString(HomeworkFinishStatusActivity.Constants.EXTRA_IS_TASK_COURSE_RESID, data.getResId());
         }
         ActivityUtils.enterStudentTaskListDetail(getActivity(),
                 data,
@@ -830,22 +839,22 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         homeworkListInfo.setTaskType(String.valueOf(homeworkListInfo.getType()));
         homeworkListInfo.setTaskId(String.valueOf(homeworkListInfo.getId()));
         homeworkListInfo.setIsSuperChildTask(isSuperChildTask);
-        ActivityUtils.enterHomeworkFinishStatusActivity(getActivity(),homeworkListInfo,roleType, TaskId);
+        ActivityUtils.enterHomeworkFinishStatusActivity(getActivity(), homeworkListInfo, roleType, TaskId);
     }
 
-    private boolean isSuperOtherHomeWork(){
-        if (listenData != null && listenData.size() > 0){
+    private boolean isSuperOtherHomeWork() {
+        if (listenData != null && listenData.size() > 0) {
             int type = listenData.get(0).getType();
-            if (type == StudyTaskType.WATCH_HOMEWORK || type == StudyTaskType.SUBMIT_HOMEWORK){
+            if (type == StudyTaskType.WATCH_HOMEWORK || type == StudyTaskType.SUBMIT_HOMEWORK) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isSuperTaskOrder(){
+    private boolean isSuperTaskOrder() {
         if ((listenData == null || listenData.size() == 0) && readAndWriteData != null &&
-                readAndWriteData.size() > 0){
+                readAndWriteData.size() > 0) {
             return true;
         }
         return false;
@@ -880,7 +889,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
     private HomeworkListInfo getSelectData() {
         AdapterViewHelper listenHelp = getAdapterViewHelper(LISTEN_DATA_TAG);
-        if (listenHelp != null){
+        if (listenHelp != null) {
             List<HomeworkListInfo> ListenData = listenHelp.getData();
             if (ListenData != null) {
                 for (int i = 0, len = ListenData.size(); i < len; i++) {
@@ -893,7 +902,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         }
 
         AdapterViewHelper readAndWriteHelp = getAdapterViewHelper(READ_AND_WRITE_DATA_TAG);
-        if (readAndWriteHelp != null){
+        if (readAndWriteHelp != null) {
             List<HomeworkListInfo> readData = readAndWriteHelp.getData();
             if (readData != null) {
                 for (int i = 0, len = readData.size(); i < len; i++) {
@@ -913,7 +922,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             TipsHelper.showToast(getActivity(), R.string.pls_select_homework);
             return;
         }
-        if (selectData.getResCourseId() > 0){
+        if (selectData.getResCourseId() > 0) {
             new CheckLqShopPmnHelper().
                     setActivity(getActivity()).
                     setMemberId(getMemeberId()).
@@ -934,7 +943,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         }
     }
 
-    private void commitSelectStudyTask(final HomeworkListInfo selectData){
+    private void commitSelectStudyTask(final HomeworkListInfo selectData) {
         if (uploadParameter != null) {
             uploadParameter.setIsNeedSplit(false);
             final LocalCourseDTO data = uploadParameter.getLocalCourseDTO();
@@ -1040,28 +1049,28 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     }
 
 
-    private void studentFinishAllStudyTask(){
-        if (lookStudentTaskFinish || roleType == RoleType.ROLE_TYPE_TEACHER){
+    private void studentFinishAllStudyTask() {
+        if (lookStudentTaskFinish || roleType == RoleType.ROLE_TYPE_TEACHER) {
             return;
         }
         boolean isFinishAll = true;
-        if (listenData != null && listenData.size() > 0){
-            for (HomeworkListInfo info : listenData){
-                if (!info.isStudentDoneTask()){
+        if (listenData != null && listenData.size() > 0) {
+            for (HomeworkListInfo info : listenData) {
+                if (!info.isStudentDoneTask()) {
                     isFinishAll = false;
                     break;
                 }
             }
         }
-        if (readAndWriteData != null && readAndWriteData.size() > 0 && isFinishAll){
-            for (HomeworkListInfo info : readAndWriteData){
-                if (!info.isStudentDoneTask()){
+        if (readAndWriteData != null && readAndWriteData.size() > 0 && isFinishAll) {
+            for (HomeworkListInfo info : readAndWriteData) {
+                if (!info.isStudentDoneTask()) {
                     isFinishAll = false;
                     break;
                 }
             }
         }
-        if (isFinishAll){
+        if (isFinishAll) {
             HomeworkMainFragment.hasPublishedCourseToStudyTask = true;
         }
     }

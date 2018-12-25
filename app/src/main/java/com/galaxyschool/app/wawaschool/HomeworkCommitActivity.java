@@ -29,7 +29,9 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
         Bundle args = getIntent().getExtras();
         int taskType = args.getInt("TaskType");
         String TAG;
-        if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE){
+        if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
             fragment = new ListenReadAndWriteStudyTaskFragment();
             TAG = ListenReadAndWriteStudyTaskFragment.TAG;
         } else if (taskType == StudyTaskType.SUPER_TASK){
