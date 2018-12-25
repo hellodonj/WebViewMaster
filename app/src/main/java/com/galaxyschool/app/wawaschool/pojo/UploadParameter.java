@@ -79,6 +79,15 @@ public class UploadParameter implements Serializable{
     private List<UploadParameter> uploadParameters;
     private int ResCourseId;
     private int ResPropType;
+    private int SubmitType;
+
+    public int getSubmitType() {
+        return SubmitType;
+    }
+
+    public void setSubmitType(int submitType) {
+        SubmitType = submitType;
+    }
 
     public int getResPropType() {
         return ResPropType;

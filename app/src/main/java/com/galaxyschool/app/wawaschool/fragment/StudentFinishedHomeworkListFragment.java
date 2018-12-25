@@ -28,6 +28,7 @@ import com.galaxyschool.app.wawaschool.TeacherReviewDetailActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
@@ -195,9 +196,11 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                             textView.setEllipsize(TextUtils.TruncateAt.END);
                         } else {
                             if (isAnswerTaskOrderQuestion && task != null){
-                                textView.setText(task.getTaskTitle());
+                                textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),
+                                        task.getTaskTitle(),data.getCommitTime(),task.getEndTime()));
                             } else {
-                                textView.setText(data.getStudentResTitle());
+                                textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),
+                                        data.getStudentResTitle(),data.getCommitTime(),task.getEndTime()));
                             }
                         }
                     }

@@ -8,15 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
@@ -154,6 +158,21 @@ public class UnCompletedHomeworkListTabFragment extends ContactsListFragment{
                         });
                     }
 
+                    //显示未到开始时间的锁
+                    if (data.getSubmitType() == 1 && !TextUtils.isEmpty(data.getServerNowTime())){
+                        //按时间作答题的任务
+                        RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                        boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
+                                .getServerNowTime(),data.getStartTime(),true);
+                        if (arriveDoTime){
+                            rlLocking.setVisibility(View.GONE);
+                        } else {
+                            rlLocking.setVisibility(View.VISIBLE);
+                            rlLocking.setOnClickListener(v -> {
+                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_arrive_task_start_time);
+                            });
+                        }
+                    }
                     view.setTag(holder);
                     return view;
                 }

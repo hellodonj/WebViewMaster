@@ -1,16 +1,26 @@
 package com.galaxyschool.app.wawaschool.common;
 
+import android.app.Activity;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.widget.TextView;
 
+import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
+import com.lqwawa.client.pojo.ResourceInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * ======================================================
@@ -97,5 +107,90 @@ public class StudyTaskUtils {
         } else {
             return "D";
         }
+    }
+
+    public static String getPicResourceData(List<ResourceInfo> resourceInfos,
+                                            boolean isUrl,
+                                            boolean isAuthorId,
+                                            boolean isResId) {
+        if (resourceInfos != null && resourceInfos.size() > 0) {
+            String resUrl = "";
+            String authorId = "";
+            String resId = "";
+            for (int i = 0; i < resourceInfos.size(); i++) {
+                ResourceInfo info = resourceInfos.get(i);
+                if (i == 0) {
+                    resUrl = info.getResourcePath();
+                    authorId = info.getAuthorId();
+                    resId = info.getResId();
+                } else {
+                    resUrl = resUrl + "," + info.getResourcePath();
+                    authorId = authorId + "," + info.getAuthorId();
+                    resId = resId + "," + info.getResId();
+                }
+            }
+            if (isUrl) {
+                return resUrl;
+            } else if (isAuthorId) {
+                return authorId;
+            } else if (isResId) {
+                return resId;
+            }
+        }
+        return "";
+    }
+
+    public static void setTaskFinishBackgroundDetail(Activity activity,
+                                                     @Nullable TextView finishView,
+                                                     int finishCount,
+                                                     int totalCount){
+        finishView.setTextColor(ContextCompat.getColor(activity, R.color.text_white));
+        finishView.setTextSize(10);
+        finishView.setPadding(
+                DensityUtils.dp2px(activity,5),
+                DensityUtils.dp2px(activity,3),
+                DensityUtils.dp2px(activity,5),
+                DensityUtils.dp2px(activity,3));
+        if (finishCount == 0){
+            //一个未做
+            finishView.setBackground(ContextCompat.getDrawable(activity,R.drawable
+                    .shape_corner_red_10_dp));
+        } else if (finishCount == totalCount){
+            //全部做完
+            finishView.setBackground(ContextCompat.getDrawable(activity,R.drawable
+                    .shape_corner_green_10_dp));
+        } else {
+            //
+            finishView.setBackground(ContextCompat.getDrawable(activity,R.drawable
+                    .shape_corner_yellow_10_dp));
+        }
+    }
+
+    public static boolean compareStudyTaskTime(String dataTime,String targetTime,boolean containEqual){
+        int result = DateUtils.compareDate(dataTime, targetTime, DateUtils.DATE_PATTERN_yyyy_MM_dd);
+        if (result == 1 || (result == 0 && containEqual)){
+            return true;
+        }
+        return false;
+    }
+
+    public static SpannableString getCommitTaskTitle(Activity activity,
+                                                     String content,
+                                                     String commitTime,
+                                                     String endTime){
+        boolean isOverTime = StudyTaskUtils.compareStudyTaskTime(commitTime,endTime,false);
+        SpannableString systemColorString = null;
+        if (isOverTime){
+            String makeUpString  = activity.getString(R.string.str_make_up_study_task);
+            String systemContent = makeUpString + content;
+            systemColorString = new SpannableString(systemContent);
+            systemColorString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(activity, R.color
+                            .red))
+                    , 0, makeUpString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return systemColorString;
+        } else {
+            systemColorString =  new SpannableString(content);
+        }
+        return systemColorString;
     }
 }

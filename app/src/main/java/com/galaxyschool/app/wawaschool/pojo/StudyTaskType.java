@@ -19,4 +19,9 @@ public interface StudyTaskType {
     int LISTEN_READ_AND_WRITE = 10;
     //综合任务
     int SUPER_TASK = 11;
+    //听说课多选
+    int MULTIPLE_RETELL_COURSE = 12;
+    //读写单多选
+    int MULTIPLE_TASK_ORDER = 13;
+
 }
