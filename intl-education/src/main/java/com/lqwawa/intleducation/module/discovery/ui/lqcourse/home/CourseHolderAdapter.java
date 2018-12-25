@@ -8,11 +8,20 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 
+import java.util.List;
+
 /**
  * @author medici
  * @desc LQ学程Holder显示的Adapter
  */
 public class CourseHolderAdapter extends RecyclerAdapter<LQCourseConfigEntity>{
+
+    public CourseHolderAdapter() {
+    }
+
+    public CourseHolderAdapter(List<LQCourseConfigEntity> entities, AdapterListener<LQCourseConfigEntity> listener) {
+        super(entities, listener);
+    }
 
     @Override
     protected int getItemViewType(int position, LQCourseConfigEntity entity) {

@@ -28,6 +28,7 @@ import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
@@ -330,6 +331,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         }else{
             mPresenter.requestCheckSchoolPermission(mSchoolId,0,false);
         }
+
+        // 获取标签
+        mPresenter.requestClassConfigData(mClassId);
         requestClassCourse(false);
     }
 
@@ -429,6 +433,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void updateClassConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+
     }
 
     @Override
