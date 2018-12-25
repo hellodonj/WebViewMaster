@@ -12,17 +12,43 @@ import com.lqwawa.intleducation.base.vo.BaseVo;
 
 public class CoinsDetailInfo extends BaseVo{
 
-
-    private int amount;
-    private int courseId;
-    private String courseName;
     private long createTime;
+    // vtype == 0时, 0：自充 1代充 2 他人赠送
+    private int rechargeType;
+    // vtype == 1时, 0:购买课程;1:购买直播;2:学程馆借买书籍, 3购买在线课堂 4 赠送给他人
+    private int consumeType;
+    // 赠送给别人的id，此时realName，userName 是toId的姓名
+    private String toId;
+    private int vtype; // 0 充值 1消费
+    private int courseId;
+    // 别人赠送给我或者别人为我代充的id此时realName, userName是buyerId的姓名
+    private String buyerId;
+    private String typeC;
+    private int amount;
     private int id;
-    private String memberId;
     private int payType;
-    private int vtype; //0充值  1消费
-    private int consumeType;  //0购买课程   1购买直播  2学程馆借买书籍
+    private String memberId;
+    private String courseName;
+    private String mobile;
+    private String realName;
+    private String userName;
 
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getRechargeType() {
+        return rechargeType;
+    }
+
+    public void setRechargeType(int rechargeType) {
+        this.rechargeType = rechargeType;
+    }
 
     public int getConsumeType() {
         return consumeType;
@@ -32,12 +58,20 @@ public class CoinsDetailInfo extends BaseVo{
         this.consumeType = consumeType;
     }
 
-    public int getAmount() {
-        return amount;
+    public String getToId() {
+        return toId;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setToId(String toId) {
+        this.toId = toId;
+    }
+
+    public int getVtype() {
+        return vtype;
+    }
+
+    public void setVtype(int vtype) {
+        this.vtype = vtype;
     }
 
     public int getCourseId() {
@@ -48,20 +82,28 @@ public class CoinsDetailInfo extends BaseVo{
         this.courseId = courseId;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getBuyerId() {
+        return buyerId;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId;
     }
 
-    public long getCreateTime() {
-        return createTime;
+    public String getTypeC() {
+        return typeC;
     }
 
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+    public void setTypeC(String typeC) {
+        this.typeC = typeC;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public int getId() {
@@ -72,14 +114,6 @@ public class CoinsDetailInfo extends BaseVo{
         this.id = id;
     }
 
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
-
     public int getPayType() {
         return payType;
     }
@@ -88,11 +122,43 @@ public class CoinsDetailInfo extends BaseVo{
         this.payType = payType;
     }
 
-    public int getVtype() {
-        return vtype;
+    public String getMemberId() {
+        return memberId;
     }
 
-    public void setVtype(int vtype) {
-        this.vtype = vtype;
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
