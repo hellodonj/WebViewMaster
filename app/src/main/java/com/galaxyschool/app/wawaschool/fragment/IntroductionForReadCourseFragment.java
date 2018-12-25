@@ -193,6 +193,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private boolean isAutoMark = false;
     private boolean needScore = false;
     private LinearLayout llMark;
+    private boolean multipleDoTask;//任务多选
 
     public interface EditType {
         int titleType = 0;
@@ -227,6 +228,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             onlineRes = (Emcee) getArguments().getSerializable(ActivityUtils.EXTRA_DATA_INFO);
             schoolClassInfos = (List<ShortSchoolClassInfo>) getArguments().getSerializable(ActivityUtils.EXTRA_SCHOOL_INFO_LIST_DATA);
             isFromSuperTask = getArguments().getBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK);
+            if (taskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || taskType == StudyTaskType.TASK_ORDER){
+                //读写单、听说课支持多选
+                isFromSuperTask = true;
+            }
             if (isFromSuperTask) {
                 superTaskType = taskType;
                 if (taskType == StudyTaskType.TASK_ORDER
