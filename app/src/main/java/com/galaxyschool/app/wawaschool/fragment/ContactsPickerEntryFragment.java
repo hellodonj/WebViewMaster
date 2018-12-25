@@ -1456,7 +1456,19 @@ public class ContactsPickerEntryFragment extends BaseFragment
                     taskParams.put("ScoringRule", uploadParameter.ScoringRule);
                 }
 
-
+                //判断是不是任务单和听说课的多选
+                int taskType = uploadParameter.getTaskType();
+                if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE){
+                    List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
+                    if (lookResDtos != null && lookResDtos.size() > 1){
+                        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                        } else {
+                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                        }
+                        StudyTaskUtils.addMultipleTaskParams(taskParams,lookResDtos);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

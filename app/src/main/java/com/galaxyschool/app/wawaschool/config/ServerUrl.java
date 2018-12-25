@@ -33,8 +33,8 @@ public class ServerUrl {
     static {
         if (Config.DEBUG) {
             VERSION = VER_SIMULATE;
-//            BASE_SERVER = "http://platformtestop.lqwawa.com/";
-            BASE_SERVER = "http://platformop.lqwawa.com/";
+            BASE_SERVER = "http://platformtestop.lqwawa.com/";
+//            BASE_SERVER = "http://platformop.lqwawa.com/";
             FILE_SERVER = "http://filetestop.lqwawa.com/";
             WEIKE_SERVER = "http://resop.lqwawa.com/kukewebservice/";
             WEIKE_UPLOAD_SERVER = "http://resop.lqwawa.com/uploadservice/";

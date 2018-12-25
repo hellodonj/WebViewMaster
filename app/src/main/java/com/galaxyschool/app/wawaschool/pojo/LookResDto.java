@@ -1,9 +1,7 @@
 package com.galaxyschool.app.wawaschool.pojo;
 
 import android.text.TextUtils;
-
 import com.lqwawa.client.pojo.ResourceInfo;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
