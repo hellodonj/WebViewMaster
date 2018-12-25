@@ -50,6 +50,7 @@ import com.galaxyschool.app.wawaschool.common.LogUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -1065,6 +1066,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     //全部完成
                     finishStatus.setText(getString(R.string.n_finish_all, String.valueOf(taskNum)));
                 }
+                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStatus,
+                        taskFinishCount,taskNum);
             }
         }
     }

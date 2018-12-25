@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.AirClassroomActivity;
@@ -28,6 +29,7 @@ import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.ScreenUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -36,6 +38,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.DataAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
@@ -322,6 +325,23 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
                             homeworkStatusLayout.setVisibility(View.INVISIBLE);
                         }
                     }
+                    //按时间作答题的任务
+                    RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                    //显示未到开始时间的锁
+                    if (lockingPermission(data)){
+                        boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
+                                .getServerNowTime(),data.getStartTime(),true);
+                        if (arriveDoTime){
+                            rlLocking.setVisibility(View.GONE);
+                        } else {
+                            rlLocking.setVisibility(View.VISIBLE);
+                            rlLocking.setOnClickListener(v -> {
+                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_time_not_answer);
+                            });
+                        }
+                    } else {
+                        rlLocking.setVisibility(View.GONE);
+                    }
 
                     view.setTag(holder);
                     return view;
@@ -374,6 +394,17 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
 
             setCurrAdapterViewHelper(listView, listViewHelper);
         }
+    }
+
+    private boolean lockingPermission(HomeworkListInfo data){
+        if ((roleType == RoleType.ROLE_TYPE_STUDENT
+                || roleType == RoleType.ROLE_TYPE_PARENT
+                || roleType == RoleType.ROLE_TYPE_VISITOR)
+                && data.getSubmitType() == 1
+                && !TextUtils.isEmpty(data.getServerNowTime())){
+            return true;
+        }
+        return false;
     }
 
     private UserInfo getCurUserInfo() {

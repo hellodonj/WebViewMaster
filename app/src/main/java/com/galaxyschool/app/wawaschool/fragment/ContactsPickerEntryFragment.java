@@ -970,6 +970,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 JSONArray secondTaskList = new JSONArray();
                 JSONObject secondObject = null;
                 List<UploadParameter> data = uploadParameter.getUploadParameters();
@@ -1010,13 +1012,15 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             String resId = lookDto.getResId();
                             String authorId = lookDto.getAuthor();
                             List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
-                            if (parameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE &&
-                                    splitInfo != null && splitInfo.size() > 0){
-                                resUrl = getPicResourceData(splitInfo,true,
+                            int taskType = parameter.getTaskType();
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    && splitInfo != null && splitInfo.size() > 0){
+                                resUrl = StudyTaskUtils.getPicResourceData(splitInfo,true,
                                         false,false);
-                                resId = getPicResourceData(splitInfo,false,
+                                resId = StudyTaskUtils.getPicResourceData(splitInfo,false,
                                         false,true);
-                                authorId = getPicResourceData(splitInfo,false,
+                                authorId = StudyTaskUtils.getPicResourceData(splitInfo,false,
                                         true,false);
                             }
                             thirdObject.put("ResUrl", resUrl);
@@ -1082,35 +1086,6 @@ public class ContactsPickerEntryFragment extends BaseFragment
 //                .ADD_TOGETHER_TASK_TOCLASS_BASE_URL;
         String serverUrl = ServerUrl.GET_TOGETHERTASK_TO_CLASS_AND_STUDYGROUP;
         RequestHelper.postRequest(getActivity(),serverUrl,taskParams.toString(), listener);
-    }
-
-    private String getPicResourceData(List<ResourceInfo> resourceInfos,boolean isUrl,boolean
-            isAuthorId,boolean isResId){
-        if (resourceInfos != null && resourceInfos.size() > 0) {
-            String resUrl = "";
-            String authorId = "";
-            String resId = "";
-            for (int i = 0; i < resourceInfos.size(); i++) {
-                ResourceInfo info = resourceInfos.get(i);
-                if (i == 0) {
-                    resUrl = info.getResourcePath();
-                    authorId = info.getAuthorId();
-                    resId = info.getResId();
-                } else {
-                    resUrl = resUrl + "," + info.getResourcePath();
-                    authorId = authorId + "," + info.getAuthorId();
-                    resId = resId + "," + info.getResId();
-                }
-            }
-            if (isUrl){
-                return resUrl;
-            } else if (isAuthorId){
-                return authorId;
-            } else if (isResId){
-                return resId;
-            }
-        }
-        return "";
     }
 
     /**
@@ -1298,6 +1273,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
                 JSONArray lookResArray = new JSONArray();
@@ -1456,6 +1433,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 }
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
                 if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
                     taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 } else {
