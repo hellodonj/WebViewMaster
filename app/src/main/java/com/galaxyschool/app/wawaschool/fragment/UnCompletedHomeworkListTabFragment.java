@@ -159,9 +159,9 @@ public class UnCompletedHomeworkListTabFragment extends ContactsListFragment{
                     }
 
                     //显示未到开始时间的锁
+                    //按时间作答题的任务
+                    RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
                     if (data.getSubmitType() == 1 && !TextUtils.isEmpty(data.getServerNowTime())){
-                        //按时间作答题的任务
-                        RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
                         boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
                                 .getServerNowTime(),data.getStartTime(),true);
                         if (arriveDoTime){
@@ -172,6 +172,8 @@ public class UnCompletedHomeworkListTabFragment extends ContactsListFragment{
                                 ToastUtil.showToast(getActivity(),R.string.str_not_yet_time_not_answer);
                             });
                         }
+                    } else {
+                        rlLocking.setVisibility(View.GONE);
                     }
                     view.setTag(holder);
                     return view;
