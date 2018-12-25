@@ -230,6 +230,7 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
 
             if(EmptyUtil.isNotEmpty(mNavigator)){
                 mNavigator.onChoiceConfirm(user);
+                dismiss();
             }
         }else if(viewId == R.id.btn_cancel){
             // 取消

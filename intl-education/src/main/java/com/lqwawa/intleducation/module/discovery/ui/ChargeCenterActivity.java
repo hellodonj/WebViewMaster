@@ -291,10 +291,11 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
         //请求预支付信息
 
         RequestVo requestVo = new RequestVo();
-        requestVo.addParams("memberId", UserHelper.getUserId());
+        requestVo.addParams("buyerId", UserHelper.getUserId());
+        requestVo.addParams("memberId", mUser.getMemberId());
         requestVo.addParams("coinNum", coinNum);
-        requestVo.addParams("realName", UserHelper.getUserName());
-        requestVo.addParams("userName", UserHelper.getAccount());
+        // requestVo.addParams("realName", UserHelper.getUserName());
+        // requestVo.addParams("userName", UserHelper.getAccount());
         requestVo.addParams("payType", isWXpay ? 2 : 1);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GET_CHARGE_PRE_INFO + requestVo.getParams());

@@ -310,6 +310,8 @@
     <string name="label_current_balance">当前余额%d蛙蛙币</string>
     <string name="label_all_donation">全部转赠</string>
     <string name="label_add_subject">添加科目</string>
+    <string name="label_donation_money_desc">转赠: %s</string>
+    <string name="label_Generation_of_charge_desc">代充: %s</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>

@@ -2,6 +2,11 @@ package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.module.discovery.ui.empty.EmptyActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CoinsDetailInfo;
 
 import java.text.SimpleDateFormat;
@@ -61,10 +70,46 @@ public class CoinsDetailAdapter extends BaseAdapter {
         Date date = new Date(info.getCreateTime());
         holder.tvTime.setText(simpleDateFormat.format(date));
         if (info.getVtype() == 0) {
-            //充值
             holder.tvCount.setTextColor(Color.parseColor("#01913a"));
             holder.tvCount.setText("+" + info.getAmount());
-            holder.tvName.setText(context.getResources().getString(R.string.charge_account));
+
+            switch (info.getRechargeType()){
+                case 0:
+                    // 账户充值
+                    holder.tvName.setText(context.getResources().getString(R.string.charge_account));
+                    break;
+                case 1:
+                case 2:
+                    String benefitStr = UIUtil.getString(R.string.label_donation_money_desc);
+                    if(info.getRechargeType() == 1){
+                        benefitStr = UIUtil.getString(R.string.label_Generation_of_charge_desc);
+                    }
+
+                    SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
+                    String realName = info.getRealName();
+                    if(EmptyUtil.isEmpty(realName)) {
+                        realName = "";
+                    }
+
+                    String title = String.format(benefitStr,realName);
+                    SpannableString spanReal = new SpannableString(title);
+                    spanReal.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textPrimary)),
+                            0,title.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanBuilder.append(spanReal);
+
+                    String userName = info.getUserName();
+                    if(EmptyUtil.isNotEmpty(userName)){
+                        SpannableString spanName = new SpannableString(" ("+userName+")");
+                        spanName.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond)),
+                                0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spanName.setSpan(new AbsoluteSizeSpan((int)DisplayUtil.sp2px(UIUtil.getContext(),14)),
+                                0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spanBuilder.append(spanName);
+                    }
+
+                    holder.tvName.setText(spanBuilder);
+                    break;
+            }
         } else {
             holder.tvCount.setTextColor(Color.parseColor("#161616"));
             holder.tvCount.setText("-" + info.getAmount());
@@ -77,8 +122,32 @@ public class CoinsDetailAdapter extends BaseAdapter {
             }else if (info.getConsumeType() == 3){
                //购买在线课堂
                 holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_online_school),info.getCourseName()));
-            }else {
-                //学程馆借买书籍
+            }else if(info.getConsumeType() == 4){
+                //赠送给他人
+                String desc = UIUtil.getString(R.string.label_donation_money_desc);
+                SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
+                String realName = info.getRealName();
+                if(EmptyUtil.isEmpty(realName)) {
+                    realName = "";
+                }
+
+                String title = String.format(desc,realName);
+                SpannableString spanReal = new SpannableString(title);
+                spanReal.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textPrimary)),
+                        0, title.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                spanBuilder.append(spanReal);
+
+                String userName = info.getUserName();
+                if(EmptyUtil.isNotEmpty(userName)) {
+                    SpannableString spanName = new SpannableString(" (" + userName + ")");
+                    spanName.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond)),
+                            0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanName.setSpan(new AbsoluteSizeSpan((int)DisplayUtil.sp2px(UIUtil.getContext(),14)),
+                            0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanBuilder.append(spanName);
+                }
+
+                holder.tvName.setText(spanBuilder);
             }
         }
 
