@@ -47,6 +47,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.UploadReourceHelper;
@@ -228,10 +229,12 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             onlineRes = (Emcee) getArguments().getSerializable(ActivityUtils.EXTRA_DATA_INFO);
             schoolClassInfos = (List<ShortSchoolClassInfo>) getArguments().getSerializable(ActivityUtils.EXTRA_SCHOOL_INFO_LIST_DATA);
             isFromSuperTask = getArguments().getBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK);
-            if (taskType == StudyTaskType.RETELL_WAWA_COURSE
-                    || taskType == StudyTaskType.TASK_ORDER){
+            if (!isFromSuperTask
+                    && (taskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || taskType == StudyTaskType.TASK_ORDER)) {
                 //读写单、听说课支持多选
                 isFromSuperTask = true;
+                multipleDoTask = true;
             }
             if (isFromSuperTask) {
                 superTaskType = taskType;
@@ -290,7 +293,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         //初始化任务类型的作答方式
         immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
         publishTimeAndTypeLayout = (LinearLayout) findViewById(R.id.ll_publish_time_and_type);
-        if (isFromSuperTask){
+        if (isFromSuperTask && !multipleDoTask) {
             //综合任务不显示
             publishTimeAndTypeLayout.setVisibility(View.GONE);
         }
@@ -416,9 +419,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         mRbMarkYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isAutoMark){
+                if (isAutoMark) {
                     needScore = isChecked;
-                }else {
+                } else {
                     mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 }
             }
@@ -537,7 +540,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 readAndWriteAdapter.notifyDataSetChanged();
                 boolean flag = showScoreView(false);
                 updateScoreView(flag ? View.GONE : View.VISIBLE);
-                if (hasPointData()){
+                if (hasPointData()) {
                     mSelectMark.setVisibility(View.GONE);
                 } else {
                     mSelectMark.setVisibility(View.VISIBLE);
@@ -554,7 +557,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     getEditContent();
                     chooseResources(true);
                 } else {
-                    if (info.getResourceType() == ResType.RES_TYPE_STUDY_CARD){
+                    if (info.getResourceType() == ResType.RES_TYPE_STUDY_CARD) {
                         loadCourseDetail(info.getResId(), false);
                     } else {
                         //打开选中的资源
@@ -592,7 +595,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 if (tag.isSelected()) {
                     return true;
                 }
-                if (!TextUtils.isEmpty(tag.getPoint())){
+                if (!TextUtils.isEmpty(tag.getPoint())) {
                     return true;
                 }
             }
@@ -600,9 +603,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         return false;
     }
 
-    private boolean hasPointData(){
+    private boolean hasPointData() {
         for (ResourceInfoTag tag : readWriteData) {
-            if (!TextUtils.isEmpty(tag.getPoint())){
+            if (!TextUtils.isEmpty(tag.getPoint())) {
                 return true;
             }
         }
@@ -672,7 +675,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 limitWordTo.setText(String.valueOf(wordCountMax));
             }
         } else if (isOtherHomeWork()) {
-            setListenData(getResourceData(),true);
+            setListenData(getResourceData(), true);
             if (uploadParameter.getTaskType() == StudyTaskType.SUBMIT_HOMEWORK) {
                 isCommit = true;
             } else {
@@ -680,10 +683,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
             updateTaskCommitView(isCommit);
         } else if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
-            setReadWriteData(getResourceData(),true);
+            setReadWriteData(getResourceData(), true);
             configMarkData();
         } else if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE) {
-            setListenData(getResourceData(),true);
+            setListenData(getResourceData(), true);
             configMarkData();
         } else if (uploadParameter.getTaskType() == StudyTaskType.WATCH_WAWA_COURSE) {
             //看课件的处理方式
@@ -885,7 +888,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         args.putInt(ActivityUtils.EXTRA_TASK_TYPE, taskType);
         args.putSerializable(ActivityUtils.EXTRA_DEFAULT_DATE, DateUtils.getCurDate());
         args.putString(ActivityUtils.EXTRA_CLASS_ID, classId);
-        args.putString(ActivityUtils.EXTRA_SCHOOL_ID,schoolId);
+        args.putString(ActivityUtils.EXTRA_SCHOOL_ID, schoolId);
         args.putBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS, isOnlineClass);
         fragment.setArguments(args);
         ft.add(R.id.activity_body, fragment, CoursePickerFragment.TAG);
@@ -1021,10 +1024,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
 
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE
-                && TextUtils.equals("1",uploadParameter.getCourseData().getResproperties())){
+                && TextUtils.equals("1", uploadParameter.getCourseData().getResproperties())) {
             evalTextView.setVisibility(View.VISIBLE);
         } else if (taskType == StudyTaskType.TASK_ORDER
-                && !TextUtils.isEmpty(uploadParameter.getCourseData().point)){
+                && !TextUtils.isEmpty(uploadParameter.getCourseData().point)) {
             evalTextView.setVisibility(View.VISIBLE);
         } else {
             evalTextView.setVisibility(View.GONE);
@@ -1220,13 +1223,17 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
         //针对复述课件的图片的处理方式
         setRetellImageCourseData();
-        if (isFromSuperTask) {
+        if (isFromSuperTask && !multipleDoTask) {
             uploadParameter.setTempData(isTempData);
             //综合任务的返回
             returnSelectData();
             return;
         }
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
+        if (multipleDoTask) {
+            //多选的读写单和听说课
+            configMultipleBaseData();
+        }
         if (onlineRes != null) {
             //空中课堂的布置学习任务
             enterSendOnlineStudyTask();
@@ -1242,6 +1249,39 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         intent.putExtras(bundle);
         getActivity().setResult(ActivityUtils.REQUEST_CODE_ADD_RELATION_INFO, intent);
         finish();
+    }
+
+    private void configMultipleBaseData() {
+        List<LookResDto> resDtos = uploadParameter.getLookResDtoList();
+        if (resDtos != null && resDtos.size() > 0) {
+            LookResDto dto = resDtos.get(0);
+            CourseData courseData = new CourseData();
+            courseData.code = dto.getAuthor();
+            courseData.resourceurl = dto.getResUrl();
+            uploadParameter.setResPropType(dto.getResPropType());
+            uploadParameter.setResCourseId(dto.getResCourseId());
+            String resId = dto.getResId();
+            if (!TextUtils.isEmpty(resId)) {
+                if (resId.contains("-")) {
+                    String[] array = resId.split("-");
+                    courseData.id = Integer.valueOf(array[0]);
+                    courseData.type = Integer.valueOf(array[1]);
+                    uploadParameter.setType(courseData.type);
+                    if (courseData.type == ResType.RES_TYPE_IMG) {
+                        List<ResourceInfo> SplitInfoList = dto.getSplitInfoList();
+                        if (SplitInfoList != null && SplitInfoList.size() > 0) {
+                            courseData.resId = StudyTaskUtils.getPicResourceData(SplitInfoList, false,
+                                    false, true);
+                            courseData.resourceurl = StudyTaskUtils.getPicResourceData(SplitInfoList,
+                                    true, false, false);
+                            courseData.code = StudyTaskUtils.getPicResourceData(SplitInfoList,
+                                    false, true, false);
+                        }
+                    }
+                }
+            }
+            uploadParameter.setCourseData(courseData);
+        }
     }
 
     /**
@@ -1333,7 +1373,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setResCourseId(info.getResCourseId());
             lookResDto.setIsSelect(info.isSelected());
             lookResDto.setPoint(info.getPoint());
-            if (!TextUtils.isEmpty(info.getPoint())){
+            if (!TextUtils.isEmpty(info.getPoint())) {
                 lookResDto.setResPropType(1);
             }
             lookResDtos.add(lookResDto);
@@ -1357,7 +1397,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setResCourseId(info.getResCourseId());
             lookResDto.setIsSelect(info.isSelected());
             lookResDto.setPoint(info.getPoint());
-            if (!TextUtils.isEmpty(info.getPoint())){
+            if (!TextUtils.isEmpty(info.getPoint())) {
                 lookResDto.setResPropType(1);
             }
             lookResDtos.add(lookResDto);
@@ -1412,7 +1452,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         this.localCourseInfo = localCourseInfo;
     }
 
-    public void setReadWriteData(List<ResourceInfoTag> readWriteData,boolean isSuperTask) {
+    public void setReadWriteData(List<ResourceInfoTag> readWriteData, boolean isSuperTask) {
         for (ResourceInfoTag tag : readWriteData) {
             //来自学程
             if (tag.isSelected()) {
@@ -1424,9 +1464,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
         }
 
-        for (ResourceInfoTag tag : readWriteData){
+        for (ResourceInfoTag tag : readWriteData) {
             //兼容point
-            if (!TextUtils.isEmpty(tag.getPoint())){
+            if (!TextUtils.isEmpty(tag.getPoint())) {
                 updateScoreView(View.GONE);
                 mSelectMark.setVisibility(View.GONE);
                 break;
@@ -1439,7 +1479,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
     }
 
-    public void setListenData(List<ResourceInfoTag> listenData,boolean isSuperTask) {
+    public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
 
 //        for (ResourceInfoTag tag : listenData) {
 //            if (TextUtils.equals("1", tag.getResProperties())) {
@@ -1545,7 +1585,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 if (result != null) {
                     List<ImageInfo> resourceInfoList = new ArrayList<>();
                     List<PPTAndPDFCourseInfo> splitCourseInfo = result.getData();
-                    if (splitCourseInfo == null || splitCourseInfo.size() == 0){
+                    if (splitCourseInfo == null || splitCourseInfo.size() == 0) {
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.ppt_pdf_not_have_pic);
                         return;
                     }
@@ -1716,7 +1756,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                                 updateScoreView(View.GONE);
                                 mSelectMark.setVisibility(View.GONE);
                             }
-                            if (!TextUtils.isEmpty(tag.getPoint())){
+                            if (!TextUtils.isEmpty(tag.getPoint())) {
                                 uploadParameter.setResPropType(1);
                             } else {
                                 uploadParameter.setResPropType(0);
@@ -1734,7 +1774,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         }
                     } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
                         if (resultList != null && resultList.size() > 0) {
-                            if (superTaskType == StudyTaskType.TASK_ORDER){
+                            if (superTaskType == StudyTaskType.TASK_ORDER) {
                                 setReadWriteData(resultList, false);
                             } else {
                                 setListenData(resultList, false);
@@ -1852,7 +1892,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             updateScoreView(View.GONE);
             isAutoMark = true;
         }*/
-        if (!TextUtils.isEmpty(tag.getPoint())){
+        if (!TextUtils.isEmpty(tag.getPoint())) {
             //答题卡
             updateScoreView(View.GONE);
             mSelectMark.setVisibility(View.GONE);
@@ -1872,7 +1912,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
             uploadParameter.setNewResourceInfoTag(tag);
             uploadParameter.setResCourseId(tag.getResCourseId());
-            if (!TextUtils.isEmpty(tag.getPoint())){
+            if (!TextUtils.isEmpty(tag.getPoint())) {
                 uploadParameter.setResPropType(1);
             } else {
                 uploadParameter.setResPropType(0);
@@ -1880,7 +1920,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
     }
 
-    private void setFromLqCourseMarkScore(){
+    private void setFromLqCourseMarkScore() {
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE || taskType == StudyTaskType.TASK_ORDER) {
             if (!isAutoMark) {
                 isAutoMark = true;
@@ -2231,14 +2271,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         return builder.toString();
     }
 
-    private void checkClassPlayEnd(){
-        if (schoolClassInfos == null || schoolClassInfos.size() < 2){
+    private void checkClassPlayEnd() {
+        if (schoolClassInfos == null || schoolClassInfos.size() < 2) {
             return;
         }
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < schoolClassInfos.size(); i++){
+        for (int i = 0; i < schoolClassInfos.size(); i++) {
             ShortSchoolClassInfo classInfo = schoolClassInfos.get(i);
-            if (stringBuilder.length() == 0){
+            if (stringBuilder.length() == 0) {
                 stringBuilder.append(classInfo.getClassId());
             } else {
                 stringBuilder.append(",").append(classInfo.getClassId());
@@ -2254,26 +2294,27 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         if (getActivity() == null) {
                             return;
                         }
-                        if (!TextUtils.isEmpty(jsonString)){
+                        if (!TextUtils.isEmpty(jsonString)) {
                             try {
                                 JSONObject jsonObject = new JSONObject(jsonString);
                                 JSONArray dataArray = jsonObject.getJSONArray("data");
-                                if (dataArray != null && dataArray.length() > 0){
+                                if (dataArray != null && dataArray.length() > 0) {
                                 }
                                 JSONArray dataHisArray = jsonObject.getJSONArray("dataHis");
-                                if (dataHisArray != null && dataHisArray.length() > 0){
-                                    outer:for (int m = 0; m < dataHisArray.length(); m++){
+                                if (dataHisArray != null && dataHisArray.length() > 0) {
+                                    outer:
+                                    for (int m = 0; m < dataHisArray.length(); m++) {
                                         String hisClassId = dataHisArray.get(m).toString();
-                                        for (int k = 0; k < schoolClassInfos.size(); k++){
+                                        for (int k = 0; k < schoolClassInfos.size(); k++) {
                                             ShortSchoolClassInfo info = schoolClassInfos.get(k);
-                                            if (TextUtils.equals(info.getClassId(),hisClassId)){
+                                            if (TextUtils.equals(info.getClassId(), hisClassId)) {
                                                 schoolClassInfos.remove(k);
                                                 continue outer;
                                             }
                                         }
                                     }
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -2349,7 +2390,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 if (courseData != null) {
                     if ((uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                    || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER)
+                            || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER)
                             && uploadParameter.getType() == ResType.RES_TYPE_IMG) {
                         taskParams.put("ResAuthor", courseData.code);
                         taskParams.put("ResId", courseData.resId);
@@ -2366,8 +2407,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
                     taskParams.put("ResCourseId", uploadParameter.getResCourseId());
                 }
-                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
-                    taskParams.put("ResPropType",uploadParameter.getResPropType());
+                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
+                    taskParams.put("ResPropType", uploadParameter.getResPropType());
                 }
                 if (uploadParameter.getWorkOrderId() != null) {
                     taskParams.put("WorkOrderId", uploadParameter.getWorkOrderId());
@@ -2378,7 +2419,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
-                taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("SubmitType", uploadParameter.getSubmitType());
                 if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
                     taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 } else {
@@ -2403,6 +2444,19 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
 
+                //判断是不是任务单和听说课的多选
+                int taskType = uploadParameter.getTaskType();
+                if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                    List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
+                    if (lookResDtos != null && lookResDtos.size() > 1) {
+                        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                        } else {
+                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                        }
+                        StudyTaskUtils.addMultipleTaskParams(taskParams, lookResDtos);
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2480,7 +2534,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("StartTime", uploadParameter.getStartDate());
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
-                taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("SubmitType", uploadParameter.getSubmitType());
                 taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);
@@ -2511,7 +2565,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                                 lookDto.getCreateName());
                         lookObject.put("Deleted", lookDto.isDeleted());
                         lookObject.put("Author", lookDto.getAuthor() == null ? "" : lookDto.getAuthor());
-                        lookObject.put("ResCourseId",lookDto.getResCourseId());
+                        lookObject.put("ResCourseId", lookDto.getResCourseId());
                         lookResArray.put(lookObject);
                     }
                 }

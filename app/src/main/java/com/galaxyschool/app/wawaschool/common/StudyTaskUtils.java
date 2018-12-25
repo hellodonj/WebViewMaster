@@ -9,7 +9,9 @@ import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.pojo.LookResDto;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.lqwawa.client.pojo.ResourceInfo;
@@ -192,5 +194,40 @@ public class StudyTaskUtils {
             systemColorString =  new SpannableString(content);
         }
         return systemColorString;
+    }
+
+    public static void addMultipleTaskParams(JSONObject taskParams, List<LookResDto> lookResDtos){
+        try {
+            if (lookResDtos != null && lookResDtos.size() > 0) {
+                JSONArray jsonArray = new JSONArray();
+                for (int j = 0; j < lookResDtos.size(); j++) {
+                    JSONObject thirdObject = new JSONObject();
+                    LookResDto lookDto = lookResDtos.get(j);
+                    String resUrl = lookDto.getResUrl();
+                    String resId = lookDto.getResId();
+                    String authorId = lookDto.getAuthor();
+                    List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
+                    if (splitInfo != null && splitInfo.size() > 0) {
+                        resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
+                                false, false);
+                        resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                false, true);
+                        authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                true, false);
+                    }
+                    thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
+                    thirdObject.put("ResUrl", resUrl);
+                    thirdObject.put("ResId", resId);
+                    thirdObject.put("ResAuthor", authorId == null ? "" : authorId);
+                    //学程馆资源的id
+                    thirdObject.put("ResCourseId", lookDto.getResCourseId());
+                    thirdObject.put("ResPropType", lookDto.getResPropType());
+                    jsonArray.put(thirdObject);
+                }
+                taskParams.put("TSDXResList",jsonArray);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

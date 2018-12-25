@@ -433,7 +433,8 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                         //导读类型也需要显示
                         if (!TextUtils.isEmpty(type)) {
                             if (type.equals("3") || type.equals("5") || type.equals("6") || type
-                                    .equals("7") || type.equals("8") || type.equals("10") ||
+                                    .equals("7") || type.equals("8") || type.equals("10") || type
+                                    .equals("12") || type.equals("13") ||
                                     (type.equals("11") && data.isNeedCommit())) {
                                 imageView.setVisibility(View.VISIBLE);
                             } else {
@@ -462,13 +463,13 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                                 textView.setBackgroundResource(R.drawable.icon_other);
                             } else if (type.equals("4")) {
                                 textView.setBackgroundResource(R.drawable.discuss_topic);
-                            } else if (type.equals("5")) {
+                            } else if (type.equals("5") || type.equals("12")) {
                                 textView.setBackgroundResource(R.drawable.retell_course_ico);
                             } else if (type.equals("6")) {
                                 textView.setBackgroundResource(R.drawable.introduction_type);
                             } else if (type.equals("7")) {
                                 textView.setBackgroundResource(R.drawable.english_writing_icon);
-                            } else if (type.equals("8")) {
+                            } else if (type.equals("8") || type.equals("13")) {
                                 //做任务单
                                 textView.setBackgroundResource(R.drawable.icon_do_task);
                             } else if (type.equals("9")) {
