@@ -1648,4 +1648,5 @@
     <string name="str_taste_task_start_time">未到任务开始时间</string>
     <string name="str_make_up_study_task">【补交】</string>
     <string name="str_not_yet_arrive_task_start_time">未到任务开始时间</string>
+    <string name="str_not_yet_time_not_answer">未到任务开始时间,不能作答</string>
 </resources>

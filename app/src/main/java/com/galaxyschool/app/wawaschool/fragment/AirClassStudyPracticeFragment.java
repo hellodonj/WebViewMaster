@@ -337,7 +337,7 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
                         } else {
                             rlLocking.setVisibility(View.VISIBLE);
                             rlLocking.setOnClickListener(v -> {
-                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_arrive_task_start_time);
+                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_time_not_answer);
                             });
                         }
                     }
