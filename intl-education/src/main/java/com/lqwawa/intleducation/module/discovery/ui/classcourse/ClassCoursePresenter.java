@@ -3,10 +3,17 @@ package com.lqwawa.intleducation.module.discovery.ui.classcourse;
 import android.support.annotation.NonNull;
 
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.helper.ClassCourseHelper;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
@@ -20,6 +27,30 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
 
     public ClassCoursePresenter(ClassCourseContract.View view) {
         super(view);
+    }
+
+
+    @Override
+    public void requestClassConfigData(@NonNull String hostId) {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(hostId, SetupConfigType.TYPE_CLASS,languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view) && EmptyUtil.isNotEmpty(entities)){
+                    view.updateClassConfigView(entities);
+                }
+            }
+        });
     }
 
     @Override

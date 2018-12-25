@@ -27,6 +27,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFilt
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.common.NewCommonHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.livelist.LiveListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
@@ -68,13 +69,16 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
     // 中段课程容器
     private LinearLayout mCourseLayout;
     // 英语国际课程
-    private EnglishCourseInternationalHolder mEnglishInternationalHolder;
+    // private EnglishCourseInternationalHolder mEnglishInternationalHolder;
+    private NewCommonHolder mEnglishInternationalHolder;
     // 英语国内课程
-    private EnglishCourseInlandHolder mEnglishInlandHolder;
+    // private EnglishCourseInlandHolder mEnglishInlandHolder;
+    private NewCommonHolder mEnglishInlandHolder;
     // 阅读课程
     private ReadCourseHolder mReadCourseHolder;
     // 小语种课程
-    private NewMinorityLanguageHolder mMinorityLanguageHolder;
+    // private NewMinorityLanguageHolder mMinorityLanguageHolder;
+    private NewCommonHolder mMinorityLanguageHolder;
     // 基础课程
     private NewBasicsCourseHolder mBasicsHolder;
 
@@ -137,17 +141,30 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
 
         // 添加中段课程
         // 小语种课程
-        mMinorityLanguageHolder = new NewMinorityLanguageHolder(getContext());
+        /*mMinorityLanguageHolder = new NewMinorityLanguageHolder(getContext());
+        mMinorityLanguageHolder.setCourseNavigator(this);
+        mCourseLayout.addView(mMinorityLanguageHolder.getRootView());*/
+
+        mMinorityLanguageHolder = new NewCommonHolder(getContext());
         mMinorityLanguageHolder.setCourseNavigator(this);
         mCourseLayout.addView(mMinorityLanguageHolder.getRootView());
 
-        mEnglishInternationalHolder = new EnglishCourseInternationalHolder(getContext());
+        /*mEnglishInternationalHolder = new EnglishCourseInternationalHolder(getContext());
+        mEnglishInternationalHolder.setCourseNavigator(this);
+        mCourseLayout.addView(mEnglishInternationalHolder.getRootView());*/
+
+        mEnglishInternationalHolder = new NewCommonHolder(getContext());
         mEnglishInternationalHolder.setCourseNavigator(this);
         mCourseLayout.addView(mEnglishInternationalHolder.getRootView());
+
         // 英语国内课程
-        mEnglishInlandHolder = new EnglishCourseInlandHolder(getContext());
+        /*mEnglishInlandHolder = new EnglishCourseInlandHolder(getContext());
+        mEnglishInlandHolder.setCourseNavigator(this);
+        mCourseLayout.addView(mEnglishInlandHolder.getRootView());*/
+        mEnglishInlandHolder = new NewCommonHolder(getContext());
         mEnglishInlandHolder.setCourseNavigator(this);
         mCourseLayout.addView(mEnglishInlandHolder.getRootView());
+
         // 阅读课程 V5.5X UI修改
         /*mReadCourseHolder = new ReadCourseHolder(getContext());
         mReadCourseHolder.setCourseNavigator(this);

@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.discovery.ui.classcourse;
 
 import android.support.annotation.NonNull;
 
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionContract;
@@ -15,6 +16,9 @@ import java.util.List;
 public class ClassCourseContract {
 
     interface Presenter extends SchoolPermissionContract.Presenter{
+        // 获取班级学程标签
+        void requestClassConfigData(@NonNull String hostId);
+
         void requestClassCourseData(@NonNull String token,
                                     @NonNull String classId,
                                     int role, @NonNull String name,
@@ -26,6 +30,9 @@ public class ClassCourseContract {
     }
 
     interface View extends SchoolPermissionContract.View<Presenter>{
+
+        void updateClassConfigView(@NonNull List<LQCourseConfigEntity> entities);
+
         void updateClassCourseView(List<ClassCourseEntity> entities);
         void updateMoreClassCourseView(List<ClassCourseEntity> entities);
         // 班主任从班级中删除课程的回调
