@@ -1077,4 +1077,9 @@ public class ServerUrl {
      * 设置mooc资源已读
      */
     public static final String MOOC_SET_READED_BASE_URL = LQMOOC_BASE_SERVER + "api/student/course/setReaded";
+
+    /**
+     * 新增会员的极光设备ID
+     */
+    public static final String ADD_MEMBER_JREGIST_BASE_URL = BASE_SERVER + "NewApi/JPush/AddMemberJRegist";
 }

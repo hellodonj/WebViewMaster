@@ -21,6 +21,7 @@ import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.account.AccountListener;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.lecloud.skin.init.InitResultListener;
@@ -28,6 +29,7 @@ import com.lecloud.skin.init.LqInit;
 import com.lqwawa.libs.appupdater.instance.DefaultUpdateService;
 import com.lqwawa.libs.filedownloader.DownloadService;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
 import com.osastudio.apps.Config;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -159,6 +161,8 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
 
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 
+        EvaluateHelper.setRequestEvaluateTextUrl(ServerUrl.GET_SPEECH_ASSESSMENT_TEXT_BASE_URL);
+
 //        startUpdateService();
 //        startDownloadService();
         final WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -214,6 +218,8 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         initUmengShare();
 
         ErrorCodeUtil.getInstance().init(getApplicationContext());
+        //极光推送
+        PushUtils.init(getApplicationContext());
     }
 
     public static float getXDPI() {

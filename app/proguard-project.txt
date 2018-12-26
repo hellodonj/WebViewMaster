@@ -577,3 +577,14 @@
 -keep class com.core.** { *; }
 -keep class com.tt.** { *; }
 -keep class com.xs.** { *; }
+
+#---激光推送---
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
