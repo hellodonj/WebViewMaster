@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +13,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.AppConfig;
@@ -22,6 +25,7 @@ import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
@@ -30,6 +34,7 @@ import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
+import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -40,6 +45,8 @@ import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.MinorityLanguageHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -66,8 +73,26 @@ import static com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragm
 public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.Presenter>
     implements ClassCourseContract.View,View.OnClickListener{
 
+    private static final int SEARCH_REQUEST_CODE = 1 << 0;
+
     private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
     private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
+    // 小语种课程
+    private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
+    // 英语国际课程
+    private static final int ENGLISH_INTERNATIONAL_COURSE_ID = 2001;
+    // 特色课程
+    private static final int CHARACTERISTIC_COURSE_ID = 2005;
+    // 基础课程
+    private static final int COUNTRY_COURSE_ID = 2003;
+
+    // LQ English Primary
+    private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
+
+    private static final int CONFIG_TYPE_1 = 1;
+    private static final int CONFIG_TYPE_2 = 2;
+    private static final int CONFIG_TYPE_3 = 3;
+    private static final int CONFIG_TYPE_4 = 4;
 
     private TopBar mTopBar;
 
@@ -76,10 +101,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private ImageView mSearchClear;
     private TextView mSearchFilter;
 
+    private LinearLayout mHeaderLayout;
+    private LinearLayout mTabVector1,mTabVector2,mTabVector3;
+    private TextView mTabLabel1,mTabLabel2,mTabLabel3;
+    private TabLayout mTabLayout1,mTabLayout2,mTabLayout3;
+
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
     private CourseEmptyView mEmptyLayout;
+    private TextView mTvAction;
 
     private ClassCourseParams mClassCourseParams;
     private boolean mResourceFlag;
@@ -88,6 +119,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private String mClassId;
     private String mRoles;
 
+    // 全部文本
+    private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
+    private List<LQCourseConfigEntity> mConfigEntities;
+    // 筛选集合1
+    private List<Tab> mFiltrateArray1;
+    // 筛选集合2
+    private List<Tab> mFiltrateArray2;
+    // 筛选集合3
+    private List<Tab> mFiltrateArray3;
+
     private int pageIndex;
     // 是否是Hold状态
     private boolean holdState;
@@ -95,6 +136,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private boolean isAuthorized;
     // 授权码是否过期
     private boolean isExist;
+
+    // 搜索关键词
+    private String mKeyWord;
 
     private ImputAuthorizationCodeDialog imputAuthorizationCodeDialog;
 
@@ -148,6 +192,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     protected void initWidget() {
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
+        mTvAction = (TextView) findViewById(R.id.tv_action);
 
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_class_course);
@@ -211,21 +256,36 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         });
 
 
-
+        mHeaderLayout = (LinearLayout) findViewById(R.id.header_layout);
+        mTabVector1 = (LinearLayout) findViewById(R.id.tab_vector_1);
+        mTabVector2 = (LinearLayout) findViewById(R.id.tab_vector_2);
+        mTabVector3 = (LinearLayout) findViewById(R.id.tab_vector_3);
+        mTabLabel1 = (TextView) findViewById(R.id.tab_label_1);
+        mTabLabel2 = (TextView) findViewById(R.id.tab_label_2);
+        mTabLabel3 = (TextView) findViewById(R.id.tab_label_3);
+        mTabLayout1 = (TabLayout) findViewById(R.id.tab_layout_1);
+        mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
+        mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         if(!mResourceFlag && isTeacher){
             // 只有老师才显示添加学程
-            mTopBar.setRightFunctionText1(R.string.label_add_course,view->{
+            mTvAction.setText(R.string.label_add_course_lines);
+            mTvAction.setOnClickListener(this);
+            mTvAction.setVisibility(View.VISIBLE);
+            /*mTopBar.setRightFunctionText1(R.string.label_add_course,view->{
                 switchHoldState(false);
                 addCourseToClass();
-            });
+            });*/
         }
 
         if(UserHelper.isStudent(mRoles)){
             // 学程显示获取授权
-            mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
+            mTvAction.setText(R.string.label_request_authorization_lines);
+            mTvAction.setOnClickListener(this);
+            mTvAction.setVisibility(View.VISIBLE);
+            /*mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // 点击获取授权
@@ -236,12 +296,22 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     }
                     requestAuthorizedPermission(isExist);
                 }
-            });
+            });*/
         }
+
+        mTopBar.setRightFunctionImage1(R.drawable.search,view->{
+            // 搜索
+            SearchActivity.show(
+                    ClassCourseActivity.this,
+                    HideSortType.TYPE_SORT_CLASS_COURSE,
+                    UIUtil.getString(R.string.title_class_course),
+                    SEARCH_REQUEST_CODE);
+        });
 
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
+
         mCourseAdapter = new ClassCourseAdapter(mClassCourseParams.isHeadMaster(),mRoles);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this,3){
@@ -334,7 +404,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         // 获取标签
         mPresenter.requestClassConfigData(mClassId);
-        requestClassCourse(false);
+        // requestClassCourse(false);
     }
 
     @Override
@@ -382,6 +452,13 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     }
 
     /**
+     * 触发更新
+     */
+    private void triggerUpdateData(){
+        requestClassCourse(false);
+    }
+
+    /**
      * 获取班级学程数据
      * @param isMoreData 是否加载更多
      */
@@ -393,12 +470,56 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         }
 
         mRefreshLayout.showRefresh();
-        String token = UserHelper.getUserId();
-        String name = mSearchContent.getText().toString().trim();
+        // String name = mSearchContent.getText().toString().trim();
+        String name = mKeyWord;
+        if(EmptyUtil.isEmpty(name)) name = "";
         int role = 1; // 默认学生
         // 如果是老师身份 role传0
         if(UserHelper.isTeacher(mRoles)) role = 0;
-        mPresenter.requestClassCourseData(token,mClassId,role,name,pageIndex, AppConfig.PAGE_SIZE);
+
+        // 准备Level,先获取到第一级别的Level
+        String level = "";
+        int rootId = 0;
+        for (Tab tab:mFiltrateArray1) {
+            if(tab.isChecked()){
+                level = tab.getLevel();
+
+                // 找到选中的第一分类
+                rootId = tab.getId();
+                break;
+            }
+        }
+
+        // 查看TabLayout是全部选中,还是正确Tab选中
+        for (Tab tab:mFiltrateArray2) {
+            if(!tab.isAll() && tab.isChecked()){
+                // 选择不是全部的Level
+                level = tab.getLevel();
+                break;
+            }
+        }
+
+        int paramOneId = 0;
+        int paramTwoId = 0;
+
+        if(rootId != MINORITY_LANGUAGE_COURSE_ID){
+            // 不是小语种课程
+            for (Tab tab:mFiltrateArray2) {
+                if(!tab.isAll()){
+                    if(rootId == CHARACTERISTIC_COURSE_ID || rootId == COUNTRY_COURSE_ID){
+                        // 特色课程或者国家课程
+                        paramTwoId = tab.getLabelId();
+                    }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID && tab.getId() == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
+                        // 英语国际课程 LQ English PRIMARY
+                        paramTwoId = tab.getLabelId();
+                    }else{
+                        paramOneId = tab.getLabelId();
+                    }
+                }
+            }
+        }
+
+        mPresenter.requestClassCourseData(mClassId,role,name,level,paramOneId,paramTwoId,pageIndex);
     }
 
     @Override
@@ -437,7 +558,276 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     @Override
     public void updateClassConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+        this.mConfigEntities = entities;
+        // 组装Label数据
+        // 默认第一个选中
+        if(EmptyUtil.isNotEmpty(entities)){
+            mFiltrateArray1 = new ArrayList<>();
+            mFiltrateArray2 = new ArrayList<>();
+            mFiltrateArray3 = new ArrayList<>();
 
+            if(EmptyUtil.isEmpty(mConfigEntities)) return;
+            recursionConfig(entities);
+
+
+            LQCourseConfigEntity rootEntity = entities.get(0);
+            int rootId = rootEntity.getId();
+            configLabel(rootId);
+            // 设置TabLayout相关监听
+            initTabListener();
+            // 设置数据到TabLayout上
+            initTabControl();
+            // 设置第一个选中
+            // mTabLayout1.getTabAt(0).select();
+            // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+        }
+    }
+
+    /**
+     * 组装Label数据
+     */
+    private void configLabel(@NonNull int rootId){
+        // 是否配置全部
+        if(rootId == MINORITY_LANGUAGE_COURSE_ID){
+            // 小语种课程 二级页面
+            mTabVector3.setVisibility(View.GONE);
+
+            // 类型语言
+            mTabLabel1.setText(getString(R.string.label_colon_type));
+            mTabLabel2.setText(getString(R.string.label_colon_language));
+        }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID){
+            // 英语国际课程 三级页面
+            // 三级页面
+            mTabVector3.setVisibility(View.VISIBLE);
+
+            // 类型 类型 科目
+            mTabLabel1.setText(getString(R.string.label_colon_type));
+            mTabLabel2.setText(getString(R.string.label_colon_type));
+            mTabLabel3.setText(getString(R.string.label_colon_subject));
+        }else{
+            // 三级页面
+            mTabVector3.setVisibility(View.VISIBLE);
+
+            // 类型 学段 科目
+            mTabLabel1.setText(getString(R.string.label_colon_type));
+            mTabLabel2.setText(getString(R.string.label_colon_period));
+            mTabLabel3.setText(getString(R.string.label_colon_subject));
+        }
+    }
+
+    /**
+     * 递归调用
+     */
+    private void recursionConfig(List<LQCourseConfigEntity> entities){
+        clearArray(CONFIG_TYPE_1);
+        recursionConfigArray(entities);
+    }
+
+    /**
+     * 清空集合
+     */
+    private void clearArray(int configType){
+        // 清空所有数据
+        if(configType <= CONFIG_TYPE_4 || configType <= CONFIG_TYPE_3){
+            // 清除第三个
+            mFiltrateArray3.clear();
+        }
+
+        if(configType <= CONFIG_TYPE_2){
+            // 清除第二个
+            mFiltrateArray2.clear();
+        }
+
+        if(configType <= CONFIG_TYPE_1){
+            // 清除第一个
+            mFiltrateArray1.clear();
+        }
+    }
+
+    /**
+     * 递归调用
+     */
+    private void recursionConfigArray(@NonNull List<LQCourseConfigEntity> array){
+        if(EmptyUtil.isEmpty(array)) return;
+
+        for (LQCourseConfigEntity entity:array) {
+            if(entity.getConfigType() == CONFIG_TYPE_1){
+                Tab tab = Tab.build(entity);
+                if(!mFiltrateArray1.contains(tab)){
+                    mFiltrateArray1.add(Tab.build(entity));
+                }
+                // 第一个筛选容器,加全部
+                /*Tab allTab1 = Tab.buildAll(mAllText,array);
+                if(!mFiltrateArray1.contains(allTab1)){
+                    mFiltrateArray1.add(0,allTab1);
+                }*/
+            }
+
+            if(entity.getConfigType() == CONFIG_TYPE_2){
+                Tab tab = Tab.build(entity);
+                if(!mFiltrateArray2.contains(tab)){
+                    mFiltrateArray2.add(Tab.build(entity));
+                }
+                // 第二个筛选容器,加全部
+                Tab allTab2 = Tab.buildAll(mAllText,null);
+                if(!mFiltrateArray2.contains(allTab2)){
+                    mFiltrateArray2.add(0,allTab2);
+                }
+            }
+
+            if(entity.getConfigType() == CONFIG_TYPE_3 || entity.getConfigType() == CONFIG_TYPE_4){
+                Tab tab = Tab.build(entity);
+                if(!mFiltrateArray3.contains(tab)){
+                    mFiltrateArray3.add(Tab.build(entity));
+                }
+                // 第三个筛选容器,加全部
+                Tab allTab3 = Tab.buildAll(mAllText,null);
+                if(!mFiltrateArray3.contains(allTab3)){
+                    mFiltrateArray3.add(0,allTab3);
+                }
+            }
+            // 递归调用
+            List<LQCourseConfigEntity> childList = entity.getChildList();
+            recursionConfigArray(childList);
+        }
+    }
+
+    /**
+     * 填充数据,设置监听
+     */
+    private void initTabControl(){
+        initTabControl1();
+        initTabControl2();
+        initTabControl3();
+    }
+
+    private void initTabControl1(){
+        mTabLayout1.removeAllTabs();
+        for (Tab tab:mFiltrateArray1) {
+            View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
+            TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
+            tvContent.setText(tab.getConfigValue());
+            // 将tab数据作为Tag设置到TabLayout的TabLayout.Tab上
+            TabLayout.Tab newTab = mTabLayout1.newTab().setCustomView(tabView).setTag(tab);
+            mTabLayout1.addTab(newTab,mTabLayout1.getTabCount() == 0);
+        }
+
+
+        mTabLayout1.smoothScrollTo(0,0);
+    }
+
+    private void initTabControl2(){
+        mTabLayout2.removeAllTabs();
+        for (Tab tab:mFiltrateArray2) {
+            View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
+            TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
+            tvContent.setText(tab.getConfigValue());
+            TabLayout.Tab newTab = mTabLayout2.newTab().setCustomView(tabView).setTag(tab);
+            mTabLayout2.addTab(newTab);
+        }
+
+        mTabLayout2.smoothScrollTo(0,0);
+    }
+
+    private void initTabControl3(){
+        mTabLayout3.removeAllTabs();
+        if(EmptyUtil.isNotEmpty(mFiltrateArray3)){
+            for (Tab tab:mFiltrateArray3) {
+                View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
+                TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
+                tvContent.setText(tab.getConfigValue());
+                TabLayout.Tab newTab = mTabLayout3.newTab().setCustomView(tabView).setTag(tab);
+                mTabLayout3.addTab(newTab);
+            }
+        }
+
+        mTabLayout3.smoothScrollTo(0,0);
+    }
+
+    /**
+     * 设置相关联动的监听
+     */
+    private void initTabListener(){
+        mTabLayout1.addOnTabSelectedListener(new TabSelectedAdapter(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                // 全部发生数据联动
+                Tab tabData = (Tab) tab.getTag();
+                setTabItemSelected(mFiltrateArray1,tabData);
+                // 重新配置2,3数据的联动效果
+                clearArray(CONFIG_TYPE_2);
+                recursionConfigArray(tabData.getChildList());
+                configLabel(tabData.getId());
+                initTabControl2();
+                // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
+                // initTabControl3();
+
+                // 数据请求
+                // triggerUpdateData();
+            }
+        });
+
+        mTabLayout2.addOnTabSelectedListener(new TabSelectedAdapter(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                Tab tabData = (Tab) tab.getTag();
+                setTabItemSelected(mFiltrateArray2,tabData);
+                // 所有标签都会发生二级，甚至三级联动
+                TabLayout.Tab tabAt = mTabLayout1.getTabAt(mTabLayout1.getSelectedTabPosition());
+                if(EmptyUtil.isNotEmpty(tabAt)){
+                    if(tabData.isAll()){
+                        List<LQCourseConfigEntity> entities = new ArrayList<>();
+                        for (Tab item:mFiltrateArray2) {
+                            if(!item.isAll() && EmptyUtil.isNotEmpty(item.getChildList())){
+                                entities.addAll(item.getChildList());
+                            }
+                        }
+                        tabData.setChildList(entities);
+                    }
+
+                    // 重新配置3数据的联动效果
+                    clearArray(CONFIG_TYPE_3);
+                    recursionConfigArray(tabData.getChildList());
+                    initTabControl3();
+                }
+
+                // 数据请求
+                for (Tab tab1:mFiltrateArray1){
+                    if(tab1.getId() == MINORITY_LANGUAGE_COURSE_ID){
+                        // 选中的是小语种的Id
+                        triggerUpdateData();
+                    }
+                }
+
+            }
+        });
+
+        // 小语种TabLayout3被隐藏了
+        mTabLayout3.addOnTabSelectedListener(new TabSelectedAdapter(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                // 数据请求
+                triggerUpdateData();
+            }
+        });
+    }
+
+    /**
+     * 设置该Tab选中
+     * @param array 对应的Tab集合
+     * @param tab 选择的Tab
+     */
+    private void setTabItemSelected(@NonNull List<Tab> array, @NonNull Tab tab){
+        if(EmptyUtil.isEmpty(array) || EmptyUtil.isEmpty(tab)) return;
+        for (Tab item:array) {
+            item.setChecked(false);
+            if(item.equals(tab)){
+                item.setChecked(true);
+            }
+        }
     }
 
     @Override
@@ -542,6 +932,23 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mSearchContent.getText().clear();
         }else if(viewId == R.id.et_search){
             // 点击搜索框
+        }else if(viewId == R.id.tv_action){
+            boolean isTeacher = UserHelper.isTeacher(mRoles);
+            if(!mResourceFlag && isTeacher){
+                // 只有老师才显示添加学程
+                switchHoldState(false);
+                addCourseToClass();
+            }
+
+            if(UserHelper.isStudent(mRoles)){
+                // 点击获取授权
+                if(isAuthorized){
+                    // 已经获取到授权
+                    UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+                    return;
+                }
+                requestAuthorizedPermission(isExist);
+            }
         }
     }
 
@@ -610,6 +1017,21 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
             // ActivityUtil.finishActivity(SearchActivity.class);
             finish();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == SEARCH_REQUEST_CODE){
+                // 更新字符串发生更新
+                // 设置Top隐藏
+                mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+                mKeyWord = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
+                // 刷新数据
+                triggerUpdateData();
+            }
         }
     }
 

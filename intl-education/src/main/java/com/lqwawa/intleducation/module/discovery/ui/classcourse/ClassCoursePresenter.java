@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.discovery.ui.classcourse;
 
 import android.support.annotation.NonNull;
 
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
@@ -54,16 +55,16 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
     }
 
     @Override
-    public void requestClassCourseData(@NonNull String token,
-                                       @NonNull String classId,
-                                       int role,
-                                       @NonNull String name,
-                                       final int pageIndex, int pageSize) {
+    public void requestClassCourseData(@NonNull String classId,
+                                       int role,@NonNull String name,
+                                       @NonNull String level,
+                                       int paramOneId,int paramTwoId,
+                                       final int pageIndex) {
         // 测试数据
         // classId = "164cdc60-243e-4318-92dd-a91f00a85974";
         // token = "4f961e8f-778a-4cf1-97a4-09fe25a183ff";
         role = 1;
-        ClassCourseHelper.requestClassCourseData(token, classId, role, name, pageIndex, pageSize, new DataSource.Callback<List<ClassCourseEntity>>() {
+        ClassCourseHelper.requestClassCourseData(classId, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final ClassCourseContract.View view = getView();
