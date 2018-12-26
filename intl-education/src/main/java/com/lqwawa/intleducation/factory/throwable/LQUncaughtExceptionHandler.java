@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.factory.throwable;
 
+import android.os.Process;
+
 import com.lqwawa.intleducation.common.utils.IOUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 
