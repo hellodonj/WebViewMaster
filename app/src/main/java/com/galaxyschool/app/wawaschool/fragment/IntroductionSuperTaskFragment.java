@@ -386,26 +386,35 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                             //删除
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
-                            if (deleteView != null) {
-                                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
-                                        .getLayoutParams();
-                                layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                                layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                                deleteView.setLayoutParams(layoutParams);
-                                if (lookStudentTaskFinish && data.getUnDoneThirdTaskCount() > 0){
+                            if (lookStudentTaskFinish){
+                                if (deleteView != null) {
+                                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
+                                            .getLayoutParams();
+                                    layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                    layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                                    deleteView.setLayoutParams(layoutParams);
                                     TextView showUnFinishCountView = (TextView) view.findViewById
                                             (R.id.tv_delete_homework);
                                     showUnFinishCountView.setBackground(null);
-                                    showUnFinishCountView.setText(getString(R.string.n_unfinish,
-                                            String.valueOf(data.getUnDoneThirdTaskCount())));
                                     showUnFinishCountView.setTextColor(ContextCompat.getColor
                                             (getActivity(),R.color.red));
-                                    deleteView.setVisibility(View.VISIBLE);
-                                } else {
-                                    deleteView.setVisibility(View.GONE);
+                                    int taskType = data.getType();
+                                    if (data.getUnDoneThirdTaskCount() > 0){
+                                        showUnFinishCountView.setText(getString(R.string.n_unfinish,
+                                                String.valueOf(data.getUnDoneThirdTaskCount())));
+                                        deleteView.setVisibility(View.VISIBLE);
+                                    } else if (!data.isStudentDoneTask()
+                                            && (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
+                                            || taskType == StudyTaskType.ENGLISH_WRITING)){
+                                        showUnFinishCountView.setText(getString(R.string.unfinished));
+                                        deleteView.setVisibility(View.VISIBLE);
+                                    } else {
+                                        deleteView.setVisibility(View.GONE);
+                                    }
                                 }
+                            } else {
+                                deleteView.setVisibility(View.GONE);
                             }
-
                             ImageView finishImage = (ImageView) view.findViewById(R.id.iv_super_finish);
                             if (data.isStudentDoneTask()) {
                                 //已完成
