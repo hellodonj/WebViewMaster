@@ -29,23 +29,28 @@ import java.util.List;
 public class ClassCourseHelper {
     /**
      * 获取班级学程课程
-     * @param token 令牌，传登录人的memberId
      * @param classId 班级Id
      * @param role 角色信息 1表示学生 0表示老师
      * @param name 搜索关键字
+     * @param level 级别
+     * @param paramOneId configType3
+     * @param paramTwoId configType4
      * @param pageIndex 页码
      * @param pageSize 每页加载的数目
      * @param callback 数据回调接口
      */
-    public static void requestClassCourseData(@NonNull String token,
-                                              @NonNull String classId,
+    public static void requestClassCourseData(@NonNull String classId,
                                               int role,@NonNull String name,
+                                              @NonNull String level,
+                                              int paramOneId,int paramTwoId,
                                               int pageIndex,int pageSize,
                                                @NonNull final DataSource.Callback<List<ClassCourseEntity>> callback){
         RequestVo requestVo = new RequestVo();
-        requestVo.addParams("token",token);
         requestVo.addParams("classId",classId);
         requestVo.addParams("role",role);
+        requestVo.addParams("level",level);
+        requestVo.addParams("paramOneId",paramOneId);
+        requestVo.addParams("paramTwoId",paramTwoId);
         requestVo.addParams("pageIndex",pageIndex);
         requestVo.addParams("pageSize",pageSize);
         if(EmptyUtil.isNotEmpty(name)){

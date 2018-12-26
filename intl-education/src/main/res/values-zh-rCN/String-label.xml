@@ -261,6 +261,7 @@
 
     <string name="label_colon_type">类型：</string>
     <string name="label_colon_grade">年级：</string>
+    <string name="label_colon_period">学段：</string>
     <string name="label_colon_subject">科目：</string>
     <string name="label_colon_language">语言：</string>
     <string name="label_colon_level">级别：</string>
@@ -312,6 +313,8 @@
     <string name="label_add_subject">添加科目</string>
     <string name="label_donation_money_desc">转赠: %s</string>
     <string name="label_Generation_of_charge_desc">代充: %s</string>
+    <string name="label_add_course_lines">添加\n学程</string>
+    <string name="label_request_authorization_lines">获取\n授权</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>

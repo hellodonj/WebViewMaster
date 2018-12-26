@@ -19,10 +19,11 @@ public class ClassCourseContract {
         // 获取班级学程标签
         void requestClassConfigData(@NonNull String hostId);
 
-        void requestClassCourseData(@NonNull String token,
-                                    @NonNull String classId,
+        void requestClassCourseData(@NonNull String classId,
                                     int role, @NonNull String name,
-                                    int pageIndex, int pageSize);
+                                    @NonNull String level,
+                                    int paramOneId,int paramTwoId,
+                                    int pageIndex);
         // 班主任从班级中删除课程
         void requestDeleteCourseFromClass(@NonNull String token, @NonNull String classId, @NonNull String ids);
         // 老师添加课程

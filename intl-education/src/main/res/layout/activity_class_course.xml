@@ -12,7 +12,122 @@
 
     </com.lqwawa.intleducation.base.widgets.TopBar>
 
-    <include layout="@layout/holder_top_search_layout"/>
+    <include layout="@layout/holder_top_search_layout"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorLight">
+
+        <LinearLayout
+            android:id="@+id/tab_vector_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/tab_vector_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_vector_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -61,6 +176,21 @@
             android:visibility="gone">
 
         </com.lqwawa.intleducation.base.CourseEmptyView>
+
+        <TextView
+            android:id="@+id/tv_action"
+            android:textColor="@color/textLight"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/com_bg_circle_green_btn"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:visibility="gone"
+            android:lines="2"/>
     </FrameLayout>
 
 

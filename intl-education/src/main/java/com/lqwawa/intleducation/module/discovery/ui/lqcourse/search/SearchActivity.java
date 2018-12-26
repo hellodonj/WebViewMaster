@@ -202,6 +202,12 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
                     setResult(Activity.RESULT_OK,intent);
                     finish();
+                }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
+                    // 班级课程搜索筛选
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS_SUPER)){
                     // 发送广播
                     mFiltrateParams.setHideTop(true);
@@ -251,6 +257,12 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                             // 讲授课堂分类筛选
                             // NewOnlineStudyFiltrateParams params = NewOnlineStudyFiltrateParams.copy(true,keyString,mFiltrateParams);
                             // NewOnlineStudyFiltrateActivity.show(SearchActivity.this,params);
+                            Intent intent = new Intent();
+                            intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
+                            setResult(Activity.RESULT_OK,intent);
+                            finish();
+                        }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
+                            // 班级课程搜索筛选
                             Intent intent = new Intent();
                             intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
                             setResult(Activity.RESULT_OK,intent);
@@ -480,5 +492,25 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
         bundle.putSerializable(KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS,params);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,NewOnlineStudyFiltrateActivity.SEARCH_REQUEST_CODE);
+    }
+
+    /**
+     * 公共的搜索入口
+     *
+     * @param activity 上下文对象
+     * @param sort 搜索类型
+     * @param configValue 标题文本
+     * @param requestCode 请求码
+     */
+    public static void show(@NonNull Activity activity,
+                            @HideSortType.SortRes String sort,
+                            @NonNull String configValue,
+                            int requestCode){
+        Intent intent = new Intent(activity,SearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_EXTRA_SORT,sort);
+        bundle.putString(KEY_EXTRA_TITLE,configValue);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent,requestCode);
     }
 }
