@@ -21,6 +21,7 @@ import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.account.AccountListener;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.lecloud.skin.init.InitResultListener;
@@ -214,6 +215,8 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         initUmengShare();
 
         ErrorCodeUtil.getInstance().init(getApplicationContext());
+        //极光推送
+        PushUtils.init(getApplicationContext());
     }
 
     public static float getXDPI() {

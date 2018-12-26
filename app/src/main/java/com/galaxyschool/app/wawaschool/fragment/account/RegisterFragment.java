@@ -29,6 +29,7 @@ import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.VertificationCode;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
@@ -387,6 +388,7 @@ public class RegisterFragment extends GetSmsVerCodeBase implements OnClickListen
 						getMyApplication().getPrefsManager().setUserPassword(userInfo.getPassword());
 						//初始化mooc用户信息
 						MOOCHelper.init(userInfo);
+						PushUtils.resumePush(getActivity());
 						Intent intent = new Intent();
 						// intent.setClass(getActivity(),
 						// HomeActivity.class);

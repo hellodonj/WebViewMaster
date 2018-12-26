@@ -51,6 +51,7 @@ import com.galaxyschool.app.wawaschool.fragment.PersonalSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.SchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.TaskOrderFragment;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ContactsSchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
@@ -932,6 +933,7 @@ public class ActivityUtils {
     private static void logout(Activity activity, boolean isFinishActivity) {
         ((MyApplication) activity.getApplication()).clearLoginUserInfo();
         ((MyApplication) activity.getApplication()).stopDownloadService();
+        PushUtils.stopPush(activity);
 //        ConversationHelper.logout();
         if (activity != null) {
             UserHelper.logout();

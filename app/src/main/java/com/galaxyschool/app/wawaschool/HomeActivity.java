@@ -35,6 +35,7 @@ import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.account.AccountListener;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
 import com.galaxyschool.app.wawaschool.views.ToolbarBottomView;
@@ -199,6 +200,7 @@ public class HomeActivity extends BaseCompatActivity
             DataMigrationUtils.loadDraftData(HomeActivity.this);
             DataMigrationUtils.processLocalCourseData(HomeActivity.this, memberId);
             ((MyApplication) getApplication()).getPrefsManager().setVip(memberId);
+            PushUtils.initUserDeviceData(this,memberId);
         }
 
         //6.0以上杀进程后APP获取到所有权限不会走onRequestPermissionsResult方法，需手动乐视初始化

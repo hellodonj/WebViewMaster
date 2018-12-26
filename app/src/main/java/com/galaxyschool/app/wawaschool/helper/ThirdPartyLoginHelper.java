@@ -16,6 +16,7 @@ import com.galaxyschool.app.wawaschool.common.DataMigrationUtils;
 import com.galaxyschool.app.wawaschool.common.DialogHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -289,6 +290,7 @@ public class ThirdPartyLoginHelper {
                 setMemberId(userInfo.getMemberId()).
                 setActivity(mContext).
                 checkData();
+        PushUtils.resumePush(mContext);
         if (isBackHome) {
             Intent intent = new Intent(mContext, HomeActivity.class);
             mContext.startActivity(intent);

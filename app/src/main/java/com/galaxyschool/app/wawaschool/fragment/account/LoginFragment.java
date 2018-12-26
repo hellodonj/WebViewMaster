@@ -32,6 +32,7 @@ import com.galaxyschool.app.wawaschool.fragment.AdShowFragment;
 import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
 import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.helper.ThirdPartyLoginHelper;
+import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
@@ -274,7 +275,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener,
                         MySchoolSpaceFragment.sendBrocast(getActivity());
                         //校验判断校内网是不是一个连接的状态
                         checkInsideWiFiIPConnected(userInfo.getMemberId());
-
+                        PushUtils.resumePush(getActivity());
                     }
                 }
             }
