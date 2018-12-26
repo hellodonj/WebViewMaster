@@ -29,6 +29,7 @@ import com.lecloud.skin.init.LqInit;
 import com.lqwawa.libs.appupdater.instance.DefaultUpdateService;
 import com.lqwawa.libs.filedownloader.DownloadService;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
 import com.osastudio.apps.Config;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -159,6 +160,8 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         DefaultUpdateService.setDebugMode(!isReleaseVersion());
 
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
+
+        EvaluateHelper.setRequestEvaluateTextUrl(ServerUrl.GET_SPEECH_ASSESSMENT_TEXT_BASE_URL);
 
 //        startUpdateService();
 //        startDownloadService();

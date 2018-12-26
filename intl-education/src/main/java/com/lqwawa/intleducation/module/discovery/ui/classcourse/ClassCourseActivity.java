@@ -669,10 +669,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     mFiltrateArray2.add(Tab.build(entity));
                 }
                 // 第二个筛选容器,加全部
-                Tab allTab2 = Tab.buildAll(mAllText,null);
+                /*Tab allTab2 = Tab.buildAll(mAllText,null);
                 if(!mFiltrateArray2.contains(allTab2)){
                     mFiltrateArray2.add(0,allTab2);
-                }
+                }*/
             }
 
             if(entity.getConfigType() == CONFIG_TYPE_3 || entity.getConfigType() == CONFIG_TYPE_4){
