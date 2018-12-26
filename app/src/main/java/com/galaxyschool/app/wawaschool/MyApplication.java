@@ -161,7 +161,7 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
 
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler);
 
-        EvaluateHelper.setRequestEvaluateTextUrl(ServerUrl.GET_AUTO_MARK_COURSE_TEXT);
+        EvaluateHelper.setRequestEvaluateTextUrl(ServerUrl.GET_SPEECH_ASSESSMENT_TEXT_BASE_URL);
 
 //        startUpdateService();
 //        startDownloadService();
