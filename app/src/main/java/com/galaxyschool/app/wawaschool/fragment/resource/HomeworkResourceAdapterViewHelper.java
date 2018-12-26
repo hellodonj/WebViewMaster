@@ -333,13 +333,15 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
             //只给不是老师身份调更新阅读状态接口
             if (roleType != RoleType.ROLE_TYPE_TEACHER && !data.isStudentIsRead()) {
                 if (taskType== StudyTaskType.SUBMIT_HOMEWORK
-                        ||taskType== StudyTaskType.TOPIC_DISCUSSION
+                        || taskType== StudyTaskType.TOPIC_DISCUSSION
                         || taskType == StudyTaskType.RETELL_WAWA_COURSE
-                        ||taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE
-                        ||taskType == StudyTaskType.ENGLISH_WRITING
-                        ||taskType == StudyTaskType.TASK_ORDER
-                        ||taskType == StudyTaskType.LISTEN_READ_AND_WRITE
-                        ||taskType == StudyTaskType.SUPER_TASK){
+                        || taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE
+                        || taskType == StudyTaskType.ENGLISH_WRITING
+                        || taskType == StudyTaskType.TASK_ORDER
+                        || taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                        || taskType == StudyTaskType.SUPER_TASK
+                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
                     //学生更新提交作业和讨论话题已读接口
                     UpdateStudentIsRead(data.getTaskId(),memberId,String.valueOf(taskType));
                 }else {
