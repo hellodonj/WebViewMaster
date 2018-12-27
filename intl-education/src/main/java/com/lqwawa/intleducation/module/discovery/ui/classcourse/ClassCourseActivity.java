@@ -267,6 +267,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
+        if(mResourceFlag){
+            mHeaderLayout.setVisibility(View.GONE);
+        }
+
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         if(!mResourceFlag && isTeacher){
@@ -521,7 +525,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             }
         }
 
-        mPresenter.requestClassCourseData(mClassId,role,name,level,paramOneId,paramTwoId,pageIndex);
+        if(mResourceFlag){
+            mPresenter.requestStudyTaskClassCourseData(mClassId,name,pageIndex);
+        }else{
+            mPresenter.requestClassCourseData(mClassId,role,name,level,paramOneId,paramTwoId,pageIndex);
+        }
     }
 
     @Override
@@ -556,6 +564,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void updateStudyTaskClassCourseView(List<ClassCourseEntity> entities) {
+        updateClassCourseView(entities);
+    }
+
+    @Override
+    public void updateMoreStudyTaskClassCourseView(List<ClassCourseEntity> entities) {
+        updateMoreClassCourseView(entities);
     }
 
     @Override

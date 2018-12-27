@@ -91,6 +91,58 @@ public class ClassCourseHelper {
     }
 
     /**
+     * 获取选择学习任务班级学程课程
+     * @param classId 班级Id
+     * @param name 搜索关键字
+     * @param pageIndex 页码
+     * @param pageSize 每页加载的数目
+     * @param callback 数据回调接口
+     */
+    public static void requestStudyTaskClassCourseData(@NonNull String classId,@NonNull String name,
+                                              int pageIndex,int pageSize,
+                                              @NonNull final DataSource.Callback<List<ClassCourseEntity>> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId",classId);
+        requestVo.addParams("pageIndex",pageIndex);
+        requestVo.addParams("pageSize",pageSize);
+        if(EmptyUtil.isNotEmpty(name)){
+            try{
+                requestVo.addParams("name", URLEncoder.encode(name, "UTF-8"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetStudyTaskClassCourseListUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(ClassCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(ClassCourseHelper.class,"request "+params.getUri()+" result :"+str);
+                ResponseVo<List<ClassCourseEntity>> result = JSON.parseObject(str,new TypeReference<ResponseVo<List<ClassCourseEntity>>>() {});
+                if (result.isSucceed()) {
+                    List<ClassCourseEntity> data = result.getData();
+                    if(!EmptyUtil.isEmpty(callback)){
+                        // 接口回调数据到Presenter
+                        callback.onDataLoaded(data);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(ClassCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
      * 获取班级学程课程
      * @param schoolId 机构Id
      * @param classId 班级Id
