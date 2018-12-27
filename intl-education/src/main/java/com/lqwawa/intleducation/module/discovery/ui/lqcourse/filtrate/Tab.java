@@ -120,6 +120,7 @@ public class Tab {
         tab.configValue = entity.getConfigValue();
         tab.labelId = entity.getLabelId();
         tab.level = entity.getLevel();
+        tab.childList = entity.getChildList();
         return tab;
     }
 
