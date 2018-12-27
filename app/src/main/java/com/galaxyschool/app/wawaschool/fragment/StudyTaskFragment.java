@@ -35,6 +35,7 @@ import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.EnglishWritingUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -1043,18 +1044,20 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
     }
 
     private void showTaskTypeDialog() {
-        ArrangeLearningTasksUtil.getInstance()
-                .setActivity(getActivity())
-                .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                    @Override
-                    public void selectedTypeData(String title, int type) {
-                        if (schoolInfo != null) {
-                            ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
-                                    schoolInfo, false, false, null,schoolInfo.getSchoolId(), null);
+        StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
+            ArrangeLearningTasksUtil.getInstance()
+                    .setActivity(getActivity())
+                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+                        @Override
+                        public void selectedTypeData(String title, int type) {
+                            if (schoolInfo != null) {
+                                ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
+                                        schoolInfo, false, false, null,schoolInfo.getSchoolId(), null);
+                            }
                         }
-                    }
-                })
-                .show();
+                    })
+                    .show();
+        });
     }
 
     /***

@@ -845,16 +845,17 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
      * 显示布置任务的Dialog
      */
     private void showTaskTypeDialog() {
-        ArrangeLearningTasksUtil.getInstance()
-                .setActivity(getActivity())
-                .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                    @Override
-                    public void selectedTypeData(String title, int type) {
-
-                        enterIntroductionCourse(title,type);
-                    }
-                })
-                .show();
+        StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
+            ArrangeLearningTasksUtil.getInstance()
+                    .setActivity(getActivity())
+                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+                        @Override
+                        public void selectedTypeData(String title, int type) {
+                            enterIntroductionCourse(title,type);
+                        }
+                    })
+                    .show();
+        });
     }
 
     /**

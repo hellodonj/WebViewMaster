@@ -258,7 +258,9 @@ public class StudyTaskUtils {
 
             @Override
             public void onDataLoaded(List<LQCourseConfigEntity> entities) {
-                if(EmptyUtil.isNotEmpty(entities)){
+                if (entities == null || entities.size() == 0){
+                    popChooseSubjectDialog(context);
+                } else {
                     //有数据
                     listener.onBack(true);
                 }
