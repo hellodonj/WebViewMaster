@@ -44,6 +44,8 @@ public interface HideSortType {
     String TYPE_SORT_TEACH_ONLINE_CLASS_SUPER = "1002";
     // 班级学程搜索入口
     String TYPE_SORT_CLASS_COURSE = "1003";
+    // 实体机构学程馆新搜索
+    String TYPE_SORT_NEW_SCHOOL_SHOP = "1004";
 
 
     @Target(ElementType.PARAMETER)
@@ -52,7 +54,7 @@ public interface HideSortType {
             TYPE_SORT_CLASSIFY,TYPE_SORT_ONLINE_COURSE,
             TYPE_SORT_SCHOOL_SHOP,TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,
             TYPE_SORT_TEACH_ONLINE_CLASS,TYPE_SORT_TEACH_ONLINE_CLASS_SUPER,
-            TYPE_SORT_CLASS_COURSE,
+            TYPE_SORT_CLASS_COURSE,TYPE_SORT_NEW_SCHOOL_SHOP,
             TYPE_SORT_ONLINE_SHOP_PRICE_UP,TYPE_SORT_ONLINE_SHOP_PRICE_DOWN})
     public @interface SortRes{
 

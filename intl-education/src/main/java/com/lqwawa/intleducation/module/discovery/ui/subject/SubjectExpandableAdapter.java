@@ -33,6 +33,8 @@ import java.util.Set;
  * 二级列表Adapter
  */
 public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
+    // 小语种的Id
+    private static final int MINORITY_LANGUAGE_ID = 2004;
 
     private List<LQCourseConfigEntity> mGroupData;
     private boolean mViewer;
@@ -124,8 +126,13 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
             childHolder = (ChildViewHolder) convertView.getTag();
         }
 
+        LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
         LQCourseConfigEntity child = (LQCourseConfigEntity) getChild(groupPosition, childPosition);
-        childHolder.bind(child);
+        if(group.getId() == MINORITY_LANGUAGE_ID){
+            childHolder.bind(group);
+        }else{
+            childHolder.bind(child);
+        }
         return convertView;
     }
 
@@ -150,6 +157,8 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     public int getChildrenSize(@NonNull LQCourseConfigEntity entity){
         int count = 0;
         if(EmptyUtil.isEmpty(entity.getChildList())) return count;
+        // 如果是小语种课程,其子控件只有一个
+        if(entity.getId() == MINORITY_LANGUAGE_ID) return 1;
         return entity.getChildList().size();
     }
 
@@ -195,7 +204,14 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
 
         @Override
         public void bind(@NonNull LQCourseConfigEntity entity) {
-            StringUtil.fillSafeTextView(mTvConfigTitle,entity.getConfigValue());
+            if(entity.getId() == MINORITY_LANGUAGE_ID){
+                // 一级列表是小语种课程
+                mTvConfigTitle.setVisibility(View.GONE);
+            }else{
+                mTvConfigTitle.setVisibility(View.VISIBLE);
+                StringUtil.fillSafeTextView(mTvConfigTitle,entity.getConfigValue());
+            }
+
             List<LQCourseConfigEntity> configEntities = entity.getChildList();
             mAdapter = new SubjectTagAdapter(mViewer,configEntities);
             mFlowLayout.setAdapter(mAdapter);

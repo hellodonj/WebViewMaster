@@ -717,6 +717,8 @@ public final class AppConfig {
         // 获取班级学程列表
         public static final String GetClassCourseListUrl = ServerBase +
                 "api/class/getClassCourseList?j=";
+        public static final String GetStudyTaskClassCourseListUrl = ServerBase +
+                "api/class/getTeacherClassCourseList?j=";
         // 老师添加班级里的学程
         public static final String GetAddCourseFromClassUrl = ServerBase +
                 "api/class/addClassCourse?j=";

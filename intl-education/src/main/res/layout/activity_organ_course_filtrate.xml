@@ -11,9 +11,158 @@
         android:orientation="vertical"
         >
 
-        <include layout="@layout/include_organ_course_list_filtrate_layout"/>
+        <include layout="@layout/include_organ_course_list_filtrate_layout"
+            android:visibility="gone"/>
 
-        <include layout="@layout/holder_top_search_layout"></include>
+        <LinearLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorLight">
+
+            <LinearLayout
+                android:id="@+id/tab_vector_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tab_label_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textAccent"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp">
+
+                </android.support.design.widget.TabLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/tab_vector_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tab_label_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textAccent"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp">
+
+                </android.support.design.widget.TabLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab_vector_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tab_label_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textAccent"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp">
+
+                </android.support.design.widget.TabLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab_vector_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tab_label_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/textAccent"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabPaddingStart="4dp"
+                    app:tabPaddingEnd="4dp">
+
+                </android.support.design.widget.TabLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/horizontalDividerHeight"
+                android:background="@color/divider_color"/>
+        </LinearLayout>
+
+        <include layout="@layout/holder_top_search_layout"
+            android:visibility="gone"></include>
 
         <FrameLayout
             android:layout_width="match_parent"

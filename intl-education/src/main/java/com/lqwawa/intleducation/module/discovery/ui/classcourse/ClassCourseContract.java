@@ -18,6 +18,8 @@ public class ClassCourseContract {
     interface Presenter extends SchoolPermissionContract.Presenter{
         // 获取班级学程标签
         void requestClassConfigData(@NonNull String hostId);
+        // 选择学习任务的请求
+        void requestStudyTaskClassCourseData(@NonNull String classId,@NonNull String name,int pageIndex);
 
         void requestClassCourseData(@NonNull String classId,
                                     int role, @NonNull String name,
@@ -33,6 +35,9 @@ public class ClassCourseContract {
     interface View extends SchoolPermissionContract.View<Presenter>{
 
         void updateClassConfigView(@NonNull List<LQCourseConfigEntity> entities);
+        // 选择学习任务的信息回调
+        void updateStudyTaskClassCourseView(List<ClassCourseEntity> entities);
+        void updateMoreStudyTaskClassCourseView(List<ClassCourseEntity> entities);
 
         void updateClassCourseView(List<ClassCourseEntity> entities);
         void updateMoreClassCourseView(List<ClassCourseEntity> entities);

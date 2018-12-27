@@ -267,6 +267,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
+        if(mResourceFlag){
+            mHeaderLayout.setVisibility(View.GONE);
+        }
+
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         if(!mResourceFlag && isTeacher){
@@ -491,10 +495,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         }
 
         // 查看TabLayout是全部选中,还是正确Tab选中
+        int rootTypeId = 0;
         for (Tab tab:mFiltrateArray2) {
             if(!tab.isAll() && tab.isChecked()){
                 // 选择不是全部的Level
                 level = tab.getLevel();
+                rootTypeId = tab.getId();
                 break;
             }
         }
@@ -504,12 +510,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         if(rootId != MINORITY_LANGUAGE_COURSE_ID){
             // 不是小语种课程
-            for (Tab tab:mFiltrateArray2) {
-                if(!tab.isAll()){
+            for (Tab tab:mFiltrateArray3) {
+                if(!tab.isAll() && tab.isChecked()){
                     if(rootId == CHARACTERISTIC_COURSE_ID || rootId == COUNTRY_COURSE_ID){
                         // 特色课程或者国家课程
                         paramTwoId = tab.getLabelId();
-                    }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID && tab.getId() == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
+                    }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID && rootTypeId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
                         // 英语国际课程 LQ English PRIMARY
                         paramTwoId = tab.getLabelId();
                     }else{
@@ -519,7 +525,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             }
         }
 
-        mPresenter.requestClassCourseData(mClassId,role,name,level,paramOneId,paramTwoId,pageIndex);
+        if(mResourceFlag){
+            mPresenter.requestStudyTaskClassCourseData(mClassId,name,pageIndex);
+        }else{
+            mPresenter.requestClassCourseData(mClassId,role,name,level,paramOneId,paramTwoId,pageIndex);
+        }
     }
 
     @Override
@@ -554,6 +564,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void updateStudyTaskClassCourseView(List<ClassCourseEntity> entities) {
+        updateClassCourseView(entities);
+    }
+
+    @Override
+    public void updateMoreStudyTaskClassCourseView(List<ClassCourseEntity> entities) {
+        updateMoreClassCourseView(entities);
     }
 
     @Override
@@ -809,6 +829,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
+                Tab tabData = (Tab) tab.getTag();
+                setTabItemSelected(mFiltrateArray3,tabData);
                 // 数据请求
                 triggerUpdateData();
             }

@@ -90,6 +90,33 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
     }
 
     @Override
+    public void requestStudyTaskClassCourseData(@NonNull String classId, @NonNull String name, int pageIndex) {
+        ClassCourseHelper.requestStudyTaskClassCourseData(classId, name, pageIndex, AppConfig.PAGE_SIZE, new DataSource.Callback<List<ClassCourseEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<ClassCourseEntity> classCourseEntities) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    if(pageIndex == 0){
+                        // 下拉刷新
+                        view.updateStudyTaskClassCourseView(classCourseEntities);
+                    }else{
+                        // 加载更多
+                        view.updateMoreStudyTaskClassCourseView(classCourseEntities);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void requestDeleteCourseFromClass(@NonNull String token, @NonNull String classId, @NonNull String ids) {
         ClassCourseHelper.requestDeleteCourseFromClass(token, classId, ids, new DataSource.Callback<Boolean>() {
             @Override

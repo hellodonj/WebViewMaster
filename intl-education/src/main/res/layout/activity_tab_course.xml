@@ -14,7 +14,7 @@
 
         <CheckedTextView
             android:id="@+id/tv_autonomously_study"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
@@ -31,7 +31,7 @@
 
         <CheckedTextView
             android:id="@+id/tv_online_study"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
