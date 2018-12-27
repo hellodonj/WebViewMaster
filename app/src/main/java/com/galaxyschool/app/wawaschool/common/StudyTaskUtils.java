@@ -1,6 +1,8 @@
 package com.galaxyschool.app.wawaschool.common;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -14,7 +16,19 @@ import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
+import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectPresenter;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -230,4 +244,51 @@ public class StudyTaskUtils {
             e.printStackTrace();
         }
     }
+
+    public static void  handleSubjectSettingData(Context context,
+                                                 String memberId,
+                                                 CallbackListener listener){
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER,languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                //没有数据
+                popChooseSubjectDialog(context);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                if (entities == null || entities.size() == 0){
+                    popChooseSubjectDialog(context);
+                } else {
+                    //有数据
+                    listener.onBack(true);
+                }
+            }
+        });
+    }
+
+    private static void popChooseSubjectDialog(Context context){
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                context,
+                null,
+                context.getString(R.string.str_intro_task_choose_subject),
+                context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                context.getString(R.string.str_choose_subject),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddSubjectActivity.show((Activity) context,0);
+                    }
+                });
+        messageDialog.show();
+    }
+
 }
