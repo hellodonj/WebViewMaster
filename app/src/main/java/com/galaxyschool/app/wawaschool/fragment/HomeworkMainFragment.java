@@ -138,7 +138,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
     private CompletedHomeworkListTabFragment completedHomeworkListTabFragment;
     public static boolean hasPublishedCourseToStudyTask = false; // 课件发送到学习任务是否成功
     private boolean isOnlineSchoolClass;//是否是在线课堂的班级
-
+    private boolean isApplicationStart = true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -576,6 +576,8 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             isHistory = getArguments().getBoolean(Constants.EXTRA_IS_HISTORY);
             isHeadMaster = getArguments().getBoolean(Constants.EXTRA_IS_HEAD_MASTER);
             isOnlineSchoolClass = getArguments().getBoolean(Constants.EXTRA_IS_ONLINE_SCHOOL_CLASS);
+            isApplicationStart = getArguments().getBoolean(ActivityUtils
+                    .EXTRA_IS_APPLICATION_START,true);
         }
         //左侧返回按钮
         ImageView imageView = (ImageView) findViewById(R.id.header_left_btn);
@@ -955,6 +957,9 @@ public class HomeworkMainFragment extends ContactsListFragment implements
     public void onClick(View v) {
         if (v.getId() == R.id.header_left_btn) {
             //返回
+            if (!isApplicationStart){
+                ActivityUtils.enterHomeActivity(getActivity());
+            }
             finish();
         } else if (v.getId() == R.id.tab_finished) {
             //已完成

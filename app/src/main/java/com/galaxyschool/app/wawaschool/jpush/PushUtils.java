@@ -3,8 +3,12 @@ package com.galaxyschool.app.wawaschool.jpush;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.helper.PushOpenResourceHelper;
+import com.galaxyschool.app.wawaschool.pojo.PushMessageInfo;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import java.util.HashMap;
@@ -54,7 +58,21 @@ public class PushUtils {
         RequestHelper.sendPostRequest(context, ServerUrl.ADD_MEMBER_JREGIST_BASE_URL,param, listener);
     }
 
-    public static void openPushMessage(Bundle bundle){
+    public static void openPushMessage(Context context,Bundle bundle){
+        if (bundle != null){
+            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            try {
+                if (!TextUtils.isEmpty(extras)){
+                    PushMessageInfo pushMessageInfo = JSONObject.parseObject(extras, PushMessageInfo.class);
+                    if (pushMessageInfo != null){
+                        PushOpenResourceHelper.getInstance().setContext(context)
+                                .setPushMessageInfo(pushMessageInfo).open();
 
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
