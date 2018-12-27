@@ -471,6 +471,30 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
     }
 
     /**
+     * 精简的在线课堂入口
+     * 推送广播进入
+     * @param context 上下文对象
+     * @param classId 班级ID 直播跳转调用
+     */
+    public static void show(@NonNull final Context context,@NonNull final String classId,boolean pushEnter,boolean isHome){
+        OnlineCourseHelper.requestOnlineIdByClassId(classId, new DataSource.Callback<Integer>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                UIUtil.showToastSafe(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Integer integer) {
+                OnlineClassEntity entity = new OnlineClassEntity();
+                entity.setClassId(classId);
+                entity.setId(integer);
+                ClassInfoParams params = new ClassInfoParams(entity);
+                ClassDetailActivity.show(context,params);
+            }
+        });
+    }
+
+    /**
      * 未加入班级详情页入口
      *
      * @param context       上下文对象
