@@ -33,6 +33,17 @@ public interface OrganCourseFiltrateContract {
          * @param paramThreeId 筛选条件3
          */
         void requestCourseData(boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString, @NonNull String level, int paramOneId, int paramTwoId, int paramThreeId);
+
+        /**
+         * 获取符合筛选条件的选择资源课程数据
+         * @param more 是否是加载更多
+         * @param organId 机构Id
+         * @param pageIndex 分页数
+         * @param pageSize 每页数据量
+         * @param keyString 搜索关键词
+         * @param level 级别
+         */
+        void requestCourseResourceData(boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString, @NonNull String level);
     }
 
     interface View extends SchoolPermissionContract.View<Presenter>{
@@ -44,5 +55,11 @@ public interface OrganCourseFiltrateContract {
 
         // 获取到更多数据
         void onMoreCourseLoaded(List<CourseVo> courseVos);
+
+        // 获取到符合筛选条件的选择资源课程
+        void onCourseResourceLoaded(List<CourseVo> courseVos);
+
+        // 获取到更多选择资源数据
+        void onMoreCourseResourceLoaded(List<CourseVo> courseVos);
     }
 }

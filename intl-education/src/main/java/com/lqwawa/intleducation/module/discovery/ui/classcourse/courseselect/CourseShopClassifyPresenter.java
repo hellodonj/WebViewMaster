@@ -54,4 +54,29 @@ public class CourseShopClassifyPresenter extends SchoolPermissionPresenter<Cours
             }
         });
     }
+
+    @Override
+    public void requestCourseShopClassifyResourceData(@NonNull String organId) {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+        OrganCourseHelper.requestOrganCourseClassifyResourceData(organId, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final CourseShopClassifyContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> lqCourseConfigEntities) {
+                final CourseShopClassifyContract.View view = getView();
+                // 只有一个分类
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateCourseShopClassifyResourceView(lqCourseConfigEntities);
+                }
+            }
+        });
+    }
 }

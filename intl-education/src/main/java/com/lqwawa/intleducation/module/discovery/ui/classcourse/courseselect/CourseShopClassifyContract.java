@@ -18,9 +18,11 @@ public interface CourseShopClassifyContract {
 
     interface Presenter extends SchoolPermissionContract.Presenter{
         void requestCourseShopClassifyData(@NonNull String organId);
+        void requestCourseShopClassifyResourceData(@NonNull String organId);
     }
 
     interface View extends SchoolPermissionContract.View<Presenter>{
         void updateCourseShopClassifyView(@NonNull List<LQCourseConfigEntity> entities);
+        void updateCourseShopClassifyResourceView(@NonNull List<LQCourseConfigEntity> entities);
     }
 }

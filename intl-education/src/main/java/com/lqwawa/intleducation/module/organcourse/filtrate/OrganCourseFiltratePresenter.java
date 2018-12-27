@@ -7,14 +7,9 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
-import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.OrganCourseHelper;
-import com.lqwawa.intleducation.factory.presenter.BasePresenter;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateContract;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LQCourseContract;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
@@ -74,6 +69,31 @@ public class OrganCourseFiltratePresenter extends SchoolPermissionPresenter<Orga
                         view.onMoreCourseLoaded(courseVos);
                     }else{
                         view.onCourseLoaded(courseVos);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestCourseResourceData(boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString, @NonNull String level) {
+        OrganCourseHelper.requestOrganCourseResourceData(organId,pageIndex, pageSize,keyString, level, new DataSource.Callback<List<CourseVo>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<CourseVo> courseVos) {
+                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    if(more){
+                        view.onMoreCourseResourceLoaded(courseVos);
+                    }else{
+                        view.onCourseResourceLoaded(courseVos);
                     }
                 }
             }

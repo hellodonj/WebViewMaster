@@ -700,12 +700,16 @@ public final class AppConfig {
          */
         // 获取学程馆分类列表
         public static final String GetOrganCourseClassifyUrl = ServerBase + "api/organCourse/getClassificationAndCourse?j=";
+        // 获取学程馆分类列表,科目设置
+        public static final String GetOrganCourseClassifyResourceUrl = ServerBase + "api/organCourse/getTeacherSchoolCourseLabel?j=";
         // 获取学程馆分类标签
         public static final String GetOrganCourseClassifyLabelUrl = ServerBase + "api/organCourse/getOrganClassificationListBySearch?j=";
         // 获取学程馆所有分类标签
         public static final String GetOrganCourseAllClassifyLabelUrl = ServerBase + "api/organCourse/getOrganClassificationList?j=";
         // 获取学程馆课程
         public static final String GetOrganCourseListUrl = ServerBase + "api/organCourse/getCourseListBySearch?j=";
+        // 获取学程馆课程 选择资源 老师科目已设置
+        public static final String GetOrganCourseListResourceUrl = ServerBase + "api/organCourse/getTeacherSchoolCourseList?j=";
         // 检查订单的接口
         public static final String GetCheckOrder = PayBase + "api/order/checkOrder?j=";
 

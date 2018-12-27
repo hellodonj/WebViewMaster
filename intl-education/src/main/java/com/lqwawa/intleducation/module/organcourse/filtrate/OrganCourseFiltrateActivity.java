@@ -373,6 +373,11 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
         mTabLayout4 = (TabLayout) findViewById(R.id.tab_layout_4);
 
+        if(mSelectResource){
+            // 隐藏HeaderLayout
+            mHeaderLayout.setVisibility(View.GONE);
+        }
+
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
         mBtnConfirmAdd = (Button) findViewById(R.id.btn_confirm);
         mBtnRequestAuthorized = (Button) findViewById(R.id.btn_request_authorized);
@@ -579,11 +584,16 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
         if(isMoreLoaded){
             currentPage++;
-            mPresenter.requestCourseData(isMoreLoaded,mEntity.getEntityOrganId(),currentPage, AppConfig.PAGE_SIZE,mKeyString,level,paramOneId,paramTwoId,paramThreeId);
         }else{
             currentPage = 0;
+        }
+
+        if(mSelectResource){
+            mPresenter.requestCourseResourceData(isMoreLoaded,mEntity.getEntityOrganId(),currentPage,AppConfig.PAGE_SIZE,mKeyString,level);
+        }else{
             mPresenter.requestCourseData(isMoreLoaded,mEntity.getEntityOrganId(),currentPage,AppConfig.PAGE_SIZE,mKeyString,level,paramOneId,paramTwoId,paramThreeId);
         }
+
     }
 
     @Override
@@ -987,6 +997,16 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         // 设置数据
         mCourseListAdapter.addData(courseVos);
         mCourseListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCourseResourceLoaded(List<CourseVo> courseVos) {
+        onCourseLoaded(courseVos);
+    }
+
+    @Override
+    public void onMoreCourseResourceLoaded(List<CourseVo> courseVos) {
+        onMoreCourseResourceLoaded(courseVos);
     }
 
     @Override

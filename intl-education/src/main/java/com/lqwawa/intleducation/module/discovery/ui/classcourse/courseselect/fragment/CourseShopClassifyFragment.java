@@ -165,7 +165,11 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
         }
 
         String organId = mParams.getOrganId();
-        mPresenter.requestCourseShopClassifyData(organId);
+        if(mSelectResource){
+            mPresenter.requestCourseShopClassifyResourceData(organId);
+        }else{
+            mPresenter.requestCourseShopClassifyData(organId);
+        }
     }
 
     /**
@@ -220,6 +224,11 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
             mNoPermissionView.setVisibility(View.GONE);
             mRecycler.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void updateCourseShopClassifyResourceView(@NonNull List<LQCourseConfigEntity> entities) {
+        updateCourseShopClassifyView(entities);
     }
 
     @Override
