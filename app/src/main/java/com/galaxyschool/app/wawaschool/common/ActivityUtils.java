@@ -144,6 +144,7 @@ public class ActivityUtils {
     public static final String EXTRA_IS_HISTORY_CLASS = "is_histroy_class";
     public static final String EXTRA_IS_FINISH_LECTURE = "is_finish_lecture";//完成授课
     public static final String EXTRA_IS_GET_APPOINT_RESOURCE = "get_appoint_resource";//获取指定的资源
+    public static final String EXTRA_IS_APPLICATION_START = "isApplicationStart";
     public static CommitTask commitTask = null;
 
     /**
@@ -341,19 +342,19 @@ public class ActivityUtils {
                     || resType == ResType.RES_TYPE_OLD_COURSE
                     || resType == ResType.RES_TYPE_COURSE
                     || resType == (ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD)
-                    || resType == (ResType.RES_TYPE_BASE + ResType.RES_TYPE_COURSE_SPEAKER)){
+                    || resType == (ResType.RES_TYPE_BASE + ResType.RES_TYPE_COURSE_SPEAKER)) {
                 String typeName = context.getString(R.string.retell_course);
                 if (resType == ResType.RES_TYPE_STUDY_CARD
-                        || resType == (ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD)){
+                        || resType == (ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD)) {
                     typeName = context.getString(R.string.make_task);
                 }
-                String nickname = context.getString(R.string.str_resources_tag,typeName,courseInfo
+                String nickname = context.getString(R.string.str_resources_tag, typeName, courseInfo
                         .getNickname());
                 shareData.setTitle(nickname);
                 String createName = courseInfo.getCreatename();
                 if (!TextUtils.isEmpty(createName)) {
-                    if (createName.length() > 10){
-                        createName = createName.substring(0,10);
+                    if (createName.length() > 10) {
+                        createName = createName.substring(0, 10);
                         createName = createName + "...";
                     }
                     createName = createName + "\n" + context.getString(R.string
@@ -719,7 +720,7 @@ public class ActivityUtils {
         activity.startActivity(intent);
     }
 
-    public static void gotoMediaTypeList(Activity activity,List<SchoolInfo> schoolInfoList) {
+    public static void gotoMediaTypeList(Activity activity, List<SchoolInfo> schoolInfoList) {
         Intent intent = new Intent();
         intent.setClass(activity, ShellActivity.class);
         if (schoolInfoList != null && schoolInfoList.size() > 0) {
@@ -1066,7 +1067,7 @@ public class ActivityUtils {
                                                        SchoolInfo schoolInfo,
                                                        boolean isFromSuperTask) {
         enterIntroductionCourseActivity(activity, title, type, schoolInfo, isFromSuperTask,
-                false, null, null,null);
+                false, null, null, null);
     }
 
     public static void enterIntroductionCourseActivity(Activity activity,
@@ -1094,8 +1095,8 @@ public class ActivityUtils {
         if (!TextUtils.isEmpty(classId)) {
             intent.putExtra(ActivityUtils.EXTRA_CLASS_ID, classId);
         }
-        if (!TextUtils.isEmpty(schoolId)){
-            intent.putExtra(ActivityUtils.EXTRA_SCHOOL_ID,schoolId);
+        if (!TextUtils.isEmpty(schoolId)) {
+            intent.putExtra(ActivityUtils.EXTRA_SCHOOL_ID, schoolId);
         }
         if (uploadParameter != null) {
             intent.putExtra(UploadParameter.class.getSimpleName(), uploadParameter);
@@ -1200,7 +1201,7 @@ public class ActivityUtils {
     public static void enterClassCourseDetailActivity(Activity activity,
                                                       SchoolInfo schoolInfo,
                                                       SubscribeClassInfo classInfo) {
-        if (activity == null || EmptyUtil.isEmpty(classInfo) || EmptyUtil.isEmpty(schoolInfo)){
+        if (activity == null || EmptyUtil.isEmpty(classInfo) || EmptyUtil.isEmpty(schoolInfo)) {
             return;
         }
         String roles = classInfo.getRoles();
@@ -1222,8 +1223,11 @@ public class ActivityUtils {
 
         ClassCourseActivity.show(activity,params,data);*/
 
-        ClassCourseActivity.show(activity,params);
+        ClassCourseActivity.show(activity, params);
+    }
 
-
+    public static void enterHomeActivity(Activity activity) {
+        Intent intent = new Intent(activity, HomeActivity.class);
+        activity.startActivity(intent);
     }
 }
