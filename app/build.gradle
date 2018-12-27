@@ -41,8 +41,8 @@ android {
         minSdkVersion rootProject.ext.versions.minSdkVersion
         targetSdkVersion rootProject.ext.versions.targetSdkVersion
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 526
-        versionName "5.11.33"
+        versionCode 527
+        versionName "5.11.34"
 
         multiDexEnabled true
         ndk {
