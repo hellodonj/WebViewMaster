@@ -26,6 +26,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.ArrangeLearningTasksUtil;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -990,16 +991,18 @@ public class HomeworkMainFragment extends ContactsListFragment implements
     }
 
     private void showTaskTypeDialog() {
-        ArrangeLearningTasksUtil.getInstance()
-                .setActivity(getActivity())
-                .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                    @Override
-                    public void selectedTypeData(String title, int type) {
-                        ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
-                                schoolInfo,false,isOnlineSchoolClass,classId,schoolId,null);
-                    }
-                })
-                .show();
+        StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
+            ArrangeLearningTasksUtil.getInstance()
+                    .setActivity(getActivity())
+                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+                        @Override
+                        public void selectedTypeData(String title, int type) {
+                            ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
+                                    schoolInfo,false,isOnlineSchoolClass,classId,schoolId,null);
+                        }
+                    })
+                    .show();
+        });
     }
 
     private UserInfo getCurUserInfo() {
