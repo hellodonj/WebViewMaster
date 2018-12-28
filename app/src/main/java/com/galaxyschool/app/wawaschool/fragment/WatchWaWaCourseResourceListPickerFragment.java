@@ -86,7 +86,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private String schoolId;
     private String controlGetStudyTaskTypeString;
     private String vipSchoolId = "D8FE8280-FB40-4B61-9936-08819AA7E611";
-    private boolean openSelectSchoolRes = true;
+    private boolean openSelectSchoolRes = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
