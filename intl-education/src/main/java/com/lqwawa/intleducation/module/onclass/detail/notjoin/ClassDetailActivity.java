@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -459,7 +460,7 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
      * @param classId 班级ID
      */
     public static void show(@NonNull final Context context,@NonNull final String classId){
-        show(context,classId,false,false);
+        show(context,classId,false,false,UserHelper.getUserId());
         /*OnlineCourseHelper.requestOnlineIdByClassId(classId, new DataSource.Callback<Integer>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -483,7 +484,8 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
      * @param context 上下文对象
      * @param classId 班级ID 直播跳转调用
      */
-    public static void show(@NonNull final Context context,@NonNull final String classId,boolean pushEnter,boolean isHome){
+    public static void show(@NonNull final Context context, @NonNull final String classId,
+                            boolean pushEnter, boolean isHome, @Nullable String memberId){
         OnlineCourseHelper.requestOnlineIdByClassId(classId, new DataSource.Callback<Integer>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -498,6 +500,10 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
                 ClassInfoParams params = new ClassInfoParams(entity);
                 params.setPushEnter(pushEnter);
                 params.setHome(isHome);
+                if(!TextUtils.equals(memberId,UserHelper.getUserId())){
+                    // 孩子进来
+                    params.setParent(true,memberId);
+                }
                 ClassDetailActivity.show(context,params);
             }
         });
