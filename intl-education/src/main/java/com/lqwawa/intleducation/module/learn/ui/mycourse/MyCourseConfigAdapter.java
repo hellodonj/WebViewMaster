@@ -1,8 +1,7 @@
-package com.lqwawa.intleducation.module.discovery.ui.subject;
+package com.lqwawa.intleducation.module.learn.ui.mycourse;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,41 +9,36 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
-import com.lqwawa.intleducation.module.discovery.ui.subject.add.SubjectConfigAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.SubjectTagAdapter;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 二级列表Adapter
  */
-public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
+public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
     // 小语种的Id
     private static final int MINORITY_LANGUAGE_ID = 2004;
 
+    private int[] colors = new int[]{
+            R.color.basics_type_color_1,
+            R.color.basics_type_color_2,
+            R.color.basics_type_color_3,
+            R.color.basics_type_color_4
+    };
+
     private List<LQCourseConfigEntity> mGroupData;
-    private boolean mViewer;
 
-    public SubjectExpandableAdapter(boolean viewer) {
-        this(viewer,null);
-    }
-
-    public SubjectExpandableAdapter(boolean viewer,@NonNull List<LQCourseConfigEntity> groupData) {
-        this.mViewer = viewer;
+    public MyCourseConfigAdapter(@NonNull List<LQCourseConfigEntity> groupData) {
         this.mGroupData = groupData;
         if(mGroupData == null){
             mGroupData = new ArrayList<>();
@@ -95,7 +89,7 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupViewHolder groupHolder = null;
         if(convertView == null){
-            convertView = UIUtil.inflate(R.layout.item_subject_expandable_group);
+            convertView = UIUtil.inflate(R.layout.item_course_config_expandable_group);
             groupHolder = new GroupViewHolder(convertView);
             convertView.setTag(groupHolder);
         }else{
@@ -103,7 +97,7 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
-        groupHolder.bind(group);
+        groupHolder.bind(groupPosition,group);
 
         if(isExpanded){
             // 展开
@@ -119,7 +113,7 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childHolder = null;
         if(convertView == null){
-            convertView = UIUtil.inflate(R.layout.item_subject_expandable_child);
+            convertView = UIUtil.inflate(R.layout.item_course_config_expandable_child);
             childHolder = new ChildViewHolder(convertView);
             convertView.setTag(childHolder);
         }else{
@@ -129,9 +123,9 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
         LQCourseConfigEntity child = (LQCourseConfigEntity) getChild(groupPosition, childPosition);
         if(group.getId() == MINORITY_LANGUAGE_ID){
-            childHolder.bind(group);
+            childHolder.bind(groupPosition,group);
         }else{
-            childHolder.bind(child);
+            childHolder.bind(childPosition,child);
         }
         return convertView;
     }
@@ -172,7 +166,7 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         @Override
-        public void bind(@NonNull LQCourseConfigEntity entity) {
+        public void bind(int position,@NonNull LQCourseConfigEntity entity) {
             StringUtil.fillSafeTextView(mTvTitle,entity.getConfigValue());
         }
     }
@@ -180,30 +174,21 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     class ChildViewHolder implements Action{
 
         private TextView mTvConfigTitle;
-        private TagFlowLayout mFlowLayout;
+        private RecyclerView mRecycler;
         // private RecyclerView mFlexRecycler;
         // private SubjectConfigAdapter mAdapter;
 
-        private SubjectTagAdapter mAdapter;
+        private MyCourseChoiceAdapter mAdapter;
 
         public ChildViewHolder(View convertView) {
             mTvConfigTitle = (TextView) convertView.findViewById(R.id.tv_config_title);
-            mFlowLayout = (TagFlowLayout) convertView.findViewById(R.id.flow_layout);
-            // mFlexRecycler = (RecyclerView) convertView.findViewById(R.id.recycler);
-            /*FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(UIUtil.getContext());
-            // 主轴为水平方向，起点在左端。
-            layoutManager.setFlexDirection(FlexDirection.ROW);
-            // 换行排列
-            layoutManager.setFlexWrap(FlexWrap.WRAP);
-            // 项目在主轴上的对齐方式 交叉轴的起点对齐。
-            layoutManager.setJustifyContent(JustifyContent.FLEX_END);*/
-
-            /*GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3);
-            mFlexRecycler.setLayoutManager(layoutManager);*/
+            mRecycler = (RecyclerView) convertView.findViewById(R.id.recycler);
+            GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3);
+            mRecycler.setLayoutManager(layoutManager);
         }
 
         @Override
-        public void bind(@NonNull LQCourseConfigEntity entity) {
+        public void bind(int position,@NonNull LQCourseConfigEntity entity) {
             if(entity.getId() == MINORITY_LANGUAGE_ID){
                 // 一级列表是小语种课程
                 mTvConfigTitle.setVisibility(View.GONE);
@@ -213,26 +198,22 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
             }
 
             List<LQCourseConfigEntity> configEntities = entity.getChildList();
-            mAdapter = new SubjectTagAdapter(mViewer,configEntities);
-            mFlowLayout.setAdapter(mAdapter);
+            mAdapter = new MyCourseChoiceAdapter(configEntities,UIUtil.getColor(colors[position % 4]));
+            mRecycler.setAdapter(mAdapter);
 
-            if(!mViewer){
-                // 不是观看模式
-                mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-                    @Override
-                    public boolean onTagClick(View view, int position, FlowLayout parent) {
-                        LQCourseConfigEntity item = mAdapter.getItem(position);
-                        item.setSelected(!item.isSelected());
-                        mAdapter.notifyDataChanged();
-                        return true;
-                    }
-                });
-            }
+            mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
+                @Override
+                public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity entity) {
+                    super.onItemClick(holder, entity);
+                    // 点击了某个Item
+
+                }
+            });
         }
     }
 
     interface Action{
-        void bind(@NonNull LQCourseConfigEntity entity);
+        void bind(int position,@NonNull LQCourseConfigEntity entity);
     }
 
     /**
