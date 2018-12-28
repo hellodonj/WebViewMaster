@@ -29,6 +29,11 @@ public class ClassDetailParams extends BaseVo{
     // 家长身份进来，要传孩子的memberId
     private String childMemberId;
 
+    // 是否推送跳转过来
+    private boolean pushEnter;
+    // 是否推送从主页面过来
+    private boolean isHome;
+
     public ClassDetailParams(JoinClassEntity joinClassEntity, int id, String role) {
         this.joinClassEntity = joinClassEntity;
         this.id = id;
@@ -90,5 +95,21 @@ public class ClassDetailParams extends BaseVo{
     public void setParent(boolean isParent, @NonNull String childMemberId) {
         this.isParent = isParent;
         this.childMemberId = childMemberId;
+    }
+
+    public boolean isPushEnter() {
+        return pushEnter;
+    }
+
+    public void setPushEnter(boolean pushEnter) {
+        this.pushEnter = pushEnter;
+    }
+
+    public boolean isHome() {
+        return isHome;
+    }
+
+    public void setHome(boolean home) {
+        isHome = home;
     }
 }
