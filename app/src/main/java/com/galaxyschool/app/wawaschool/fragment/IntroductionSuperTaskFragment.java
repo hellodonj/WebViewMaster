@@ -177,9 +177,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             isPick = bundle.getBoolean(ActivityUtils.EXTRA_IS_PICK);
             if (isPick) {
                 selectHomeworkInfo = (HomeworkListInfo) bundle.getSerializable(ListenReadAndWriteStudyTaskFragment.Constants.EXTRA_TASK_INFO_DATA);
-                if (selectHomeworkInfo != null) {
-                    TaskId = selectHomeworkInfo.getTaskId();
-                }
+//                if (selectHomeworkInfo != null) {
+//                    TaskId = selectHomeworkInfo.getTaskId();
+//                }
             }
             isHistoryClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
         }
@@ -1027,7 +1027,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
         if (selectHomeworkInfo != null) {
             selectHomeworkInfo.setIsSuperChildTask(true);
-            selectHomeworkInfo.setTaskId(data.getId() + "");
+//            selectHomeworkInfo.setTaskId(data.getId() + "");
+            args.putString("TaskId",data.getId() + "");
             args.putSerializable(ListenReadAndWriteStudyTaskFragment.Constants.EXTRA_TASK_INFO_DATA, selectHomeworkInfo);
         }
         fragment.setArguments(args);
