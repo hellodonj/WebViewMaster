@@ -397,7 +397,7 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
         Intent intent = new Intent(context, ClassDetailActivity.class);
         if(params.isPushEnter()){
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
