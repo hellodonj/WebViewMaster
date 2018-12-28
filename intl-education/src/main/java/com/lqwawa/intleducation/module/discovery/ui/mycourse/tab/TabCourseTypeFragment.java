@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.module.discovery.ui.mycourse.TabType;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
 import com.lqwawa.intleducation.module.discovery.ui.person.mycourse.CourseTitle;
 import com.lqwawa.intleducation.module.discovery.ui.person.mycourse.MyCourseListActivity;
+import com.lqwawa.intleducation.module.learn.ui.MyCourseListFragment;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseListPagerFragment;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -124,6 +125,14 @@ public class TabCourseTypeFragment extends PresenterFragment<TabCourseTypeContra
                     // 该Fragment是可见的
                     _fragment.getData();
             }
+
+            // V5.12支持的方法
+            if(fragment.getUserVisibleHint() && fragment instanceof com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment){
+                com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment _fragment = (com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment) fragment;
+                if(_fragment.isVisible())
+                    // 该Fragment是可见的
+                    _fragment.getData();
+            }
         }
     }
 
@@ -141,11 +150,14 @@ public class TabCourseTypeFragment extends PresenterFragment<TabCourseTypeContra
             // 我的自主学习
             {
                 // 添加我的课程
-                MyCourseListPagerFragment studentFragment = new MyCourseListPagerFragment();
+                /*MyCourseListPagerFragment studentFragment = new MyCourseListPagerFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("MemberId", UserHelper.getUserId());
                 // bundle.putBoolean(MyCourseListPagerFragment.KEY_HIDE_SEARCH,true);
-                studentFragment.setArguments(bundle);
+                studentFragment.setArguments(bundle);*/
+                String memberId = UserHelper.getUserId();
+                Fragment studentFragment =
+                        com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment.newInstance(null,memberId,false);
                 mPagerFragments.add(studentFragment);
 
                 // 添加标题
@@ -160,12 +172,17 @@ public class TabCourseTypeFragment extends PresenterFragment<TabCourseTypeContra
                     // 添加标题
                     CourseTitle title = new CourseTitle(vo.getRealName(),true);
                     mPageArray.add(title);
-                    MyCourseListPagerFragment fragment = new MyCourseListPagerFragment();
+                    /*MyCourseListPagerFragment fragment = new MyCourseListPagerFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("MemberId", vo.getMemberId());
                     bundle.putString("SchoolId", vo.getSchoolId());
                     // bundle.putBoolean(MyCourseListPagerFragment.KEY_HIDE_SEARCH,true);
-                    fragment.setArguments(bundle);
+                    fragment.setArguments(bundle);*/
+                    Fragment fragment =
+                            com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment.newInstance(
+                                    vo.getSchoolId(),
+                                    vo.getMemberId(),
+                                    false);
                     mPagerFragments.add(fragment);
                 }
             }

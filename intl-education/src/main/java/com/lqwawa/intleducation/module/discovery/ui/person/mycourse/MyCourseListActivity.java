@@ -25,6 +25,7 @@ import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.module.learn.ui.MyCourseListFragment;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseListPagerFragment;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
