@@ -356,6 +356,10 @@ public class JoinClassDetailActivity extends BaseClassDetailActivity<JoinClassDe
      */
     public static void show(@NonNull Context context,@NonNull ClassDetailParams params){
         Intent intent = new Intent(context, JoinClassDetailActivity.class);
+        if(params.isPushEnter()){
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         intent.putExtras(bundle);
