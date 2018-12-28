@@ -72,7 +72,7 @@ public class AirClassroomFragment extends ContactsListFragment implements View.O
     private int filterOnlineType = -1;
     private int roleType;
     private boolean isFirstIn = true;
-
+    private boolean isApplicationStart = true;
     public interface Constants {
         String EXTRA_CONTACTS_TYPE = "type";
         String EXTRA_CONTACTS_ID = "id";
@@ -134,6 +134,7 @@ public class AirClassroomFragment extends ContactsListFragment implements View.O
             isTeacher = bundle.getBoolean(Constants.EXTRA_IS_TEACHER, false);
             roleType = bundle.getInt(Constants.EXTRA_ROLE_TYPE);
             fromOnlineFilter = bundle.getBoolean(Constants.EXTRA_FROM_ONLINE_FILTER);
+            isApplicationStart = bundle.getBoolean(ActivityUtils.EXTRA_IS_APPLICATION_START,true);
             if (fromOnlineFilter) {
                 //来自直播的筛选界面
                 filterStartTimeBegin = bundle.getString(Constants.EXTRA_FILTER_START_TIME_BEGIN);
@@ -602,6 +603,9 @@ public class AirClassroomFragment extends ContactsListFragment implements View.O
             //课堂表
             enterTimeTableActivity();
         } else {
+            if (!isApplicationStart){
+                ActivityUtils.enterHomeActivity(getActivity());
+            }
             super.onClick(v);
         }
     }
