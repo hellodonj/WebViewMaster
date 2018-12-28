@@ -395,6 +395,10 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
      */
     public static void show(@NonNull Context context,@NonNull ClassDetailParams params){
         Intent intent = new Intent(context, ClassDetailActivity.class);
+        if(params.isPushEnter()){
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         intent.putExtras(bundle);
@@ -434,6 +438,8 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
                 classParams.setGiveFinish(entity.isGiveFinish());
                 classParams.setGiveHistory(entity.isGiveHistory());
                 classParams.setParent(params.isParent(),params.getChildMemberId());
+                params.setPushEnter(params.isPushEnter());
+                params.setHome(params.isHome());
 
                 if(needToJoin || params.isParent() || OnlineClassRole.ROLE_TEACHER.equals(role)){
                     // 家长身份
@@ -453,7 +459,8 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
      * @param classId 班级ID
      */
     public static void show(@NonNull final Context context,@NonNull final String classId){
-        OnlineCourseHelper.requestOnlineIdByClassId(classId, new DataSource.Callback<Integer>() {
+        show(context,classId,false,false);
+        /*OnlineCourseHelper.requestOnlineIdByClassId(classId, new DataSource.Callback<Integer>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -467,7 +474,7 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
                 ClassInfoParams params = new ClassInfoParams(entity);
                 ClassDetailActivity.show(context,params);
             }
-        });
+        });*/
     }
 
     /**
@@ -489,6 +496,8 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
                 entity.setClassId(classId);
                 entity.setId(integer);
                 ClassInfoParams params = new ClassInfoParams(entity);
+                params.setPushEnter(pushEnter);
+                params.setHome(isHome);
                 ClassDetailActivity.show(context,params);
             }
         });
