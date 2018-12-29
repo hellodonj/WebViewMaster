@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ExpandableListView
         android:id="@+id/expandable_view"
@@ -12,5 +12,15 @@
         android:scrollbars="none">
 
     </ExpandableListView>
+
+    <com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView
+        android:id="@+id/tab_empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tab_empty_text_remind="@string/label_tab_course_empty_remind"
+        app:tab_empty_text_action="@string/label_self_study_class"
+        android:visibility="gone">
+
+    </com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView>
 
 </FrameLayout>

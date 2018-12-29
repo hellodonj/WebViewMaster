@@ -42,7 +42,7 @@ public class MyCourseListPresenter extends BasePresenter<MyCourseListContract.Vi
             @Override
             public void onDataLoaded(List<LQCourseConfigEntity> entities) {
                 final MyCourseListContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view) && EmptyUtil.isNotEmpty(entities)){
+                if(EmptyUtil.isNotEmpty(view)){
                     view.updateStudentConfigView(entities);
                 }
             }

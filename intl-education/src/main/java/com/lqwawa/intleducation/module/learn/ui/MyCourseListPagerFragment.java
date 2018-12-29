@@ -370,10 +370,14 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         }else if(view.getId() == R.id.search_clear_iv) {
             editTextSearch.setText("");
         }else if(view.getId() == R.id.btn_submit){
-            // 去在线学习
-            Intent broadIntent = new Intent();
-            broadIntent.setAction(ACTION_GO_COURSE_SHOP);
-            getContext().sendBroadcast(broadIntent);
+            // 去100%习课程
+            if(!isTeacher){
+                // 我的习课程
+                getActivity().finish();
+                Intent broadIntent = new Intent();
+                broadIntent.setAction(ACTION_GO_COURSE_SHOP);
+                getContext().sendBroadcast(broadIntent);
+            }
         }
     }
     private int pageIndex = 0;

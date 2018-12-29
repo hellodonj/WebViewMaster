@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.learn.ui.mycourse;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
+import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 public class MyCourseListFragment extends PresenterFragment<MyCourseListContract.Presenter>
     implements MyCourseListContract.View,MyCourseConfigNavigator{
 
+    // 去在线学习
+    public static final String ACTION_GO_COURSE_SHOP = "ACTION_GO_COURSE_SHOP";
 
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
@@ -45,6 +49,7 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
 
     private ExpandableListView mExpandableView;
     private MyCourseConfigAdapter mConfigAdapter;
+    private TabCourseEmptyView mTabEmptyLayout;
 
     private String mCurSchoolId;
     private String mCurMemberId;
@@ -86,6 +91,16 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     protected void initWidget() {
         super.initWidget();
         mExpandableView = (ExpandableListView) mRootView.findViewById(R.id.expandable_view);
+        mTabEmptyLayout = (TabCourseEmptyView) mRootView.findViewById(R.id.tab_empty_layout);
+        mTabEmptyLayout.setSubmitListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 去百分百习课程
+                Intent broadIntent = new Intent();
+                broadIntent.setAction(ACTION_GO_COURSE_SHOP);
+                getContext().sendBroadcast(broadIntent);
+            }
+        });
         mConfigAdapter = new MyCourseConfigAdapter(null);
         mConfigAdapter.setNavigator(this);
         mExpandableView.setAdapter(mConfigAdapter);
@@ -109,10 +124,17 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
 
     @Override
     public void updateStudentConfigView(@NonNull List<LQCourseConfigEntity> entities) {
-        mConfigAdapter.setData(entities);
-        int groupCount = mExpandableView.getCount();
-        for (int i=0; i<groupCount; i++) {
-            mExpandableView.expandGroup(i);
+        if(EmptyUtil.isEmpty(entities)){
+            mExpandableView.setVisibility(View.GONE);
+            mTabEmptyLayout.setVisibility(View.VISIBLE);
+        }else{
+            mExpandableView.setVisibility(View.VISIBLE);
+            mTabEmptyLayout.setVisibility(View.GONE);
+            mConfigAdapter.setData(entities);
+            int groupCount = mExpandableView.getCount();
+            for (int i=0; i<groupCount; i++) {
+                mExpandableView.expandGroup(i);
+            }
         }
     }
 
