@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
@@ -134,7 +135,12 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
             // mExpandableView.getCount();
             // 返回并不是正确的groupCount();
             int groupCount = mConfigAdapter.getGroupCount();
-            for (int i=0; i<groupCount; i++) {
+            /*int count = mExpandableView.getCount();
+            LogUtil.e(MyCourseListFragment.class,"current memberId : " + mCurMemberId);
+            LogUtil.e(MyCourseListFragment.class,"ExpandableListView id : " + mExpandableView.toString());
+            LogUtil.e(MyCourseListFragment.class,"ExpandableListView count : " + count);
+            LogUtil.e(MyCourseListFragment.class,"ExpandableAdapter group count : " + groupCount);*/
+            for (int i=0; i < groupCount; i++) {
                 mExpandableView.expandGroup(i);
             }
         }
