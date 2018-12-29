@@ -18,6 +18,8 @@ public interface ViewerType {
     int VIEWER_TYPE_FIVE = 1 << 5;
     int VIEWER_TYPE_SIX = 1 << 6;
     int VIEWER_TYPE_SEVEN = 1 << 7;
+    int VIEWER_TYPE_EIGHT = 1 << 8;
+    int VIEWER_TYPE_MORE = 1 << 31;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
@@ -26,7 +28,9 @@ public interface ViewerType {
             VIEWER_TYPE_FOUR,
             VIEWER_TYPE_FIVE,
             VIEWER_TYPE_SIX,
-            VIEWER_TYPE_SEVEN})
+            VIEWER_TYPE_SEVEN,
+            VIEWER_TYPE_EIGHT,
+            VIEWER_TYPE_MORE})
     public @interface ViewerRes{
 
     }

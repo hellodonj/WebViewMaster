@@ -103,7 +103,7 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
      * 显示列表控件
      * @param sources 列表控件数据源
      */
-    private void updateRecyclerView(@NonNull final List<LQCourseConfigEntity> sources, @ViewerType.ViewerRes int viewerType){
+    private void updateRecyclerView(@NonNull List<LQCourseConfigEntity> sources, @ViewerType.ViewerRes int viewerType){
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2){
             @Override
@@ -113,11 +113,12 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
         };
 
         mRecycler.setLayoutManager(mLayoutManager);
-        int column = 2;
-        if(viewerType >= ViewerType.VIEWER_TYPE_SEVEN){
-            column = 3;
+        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2,8,false));
+        if(mViewerType > ViewerType.VIEWER_TYPE_EIGHT){
+            // 当前有很多Item 切除多余的Item
+            sources = new ArrayList<>(sources.subList(0,8));
         }
-        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(column,8,false));
+
         mHolderAdapter = new CourseHolderAdapter(sources,null);
         mRecycler.setAdapter(mHolderAdapter);
 
@@ -140,7 +141,8 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
      */
     private void updateView(@NonNull final List<LQCourseConfigEntity> entities, @ViewerType.ViewerRes int viewerType){
         if(viewerType == ViewerType.VIEWER_TYPE_THREE ||
-                viewerType == ViewerType.VIEWER_TYPE_FIVE){
+                viewerType == ViewerType.VIEWER_TYPE_FIVE ||
+                viewerType == ViewerType.VIEWER_TYPE_SEVEN){
             // 3,5
             ViewStub stub = mHeaderStub;
             stub.inflate();
@@ -171,8 +173,9 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
 
 
 
-                if(viewerType == ViewerType.VIEWER_TYPE_FIVE){
-                    // 还有两个没有显示
+                if(viewerType == ViewerType.VIEWER_TYPE_FIVE ||
+                        viewerType == ViewerType.VIEWER_TYPE_SEVEN){
+                    // 还有两个或者四个没有显示
                     mRecycler.setVisibility(View.VISIBLE);
                     List<LQCourseConfigEntity> sources = new ArrayList<>(entities.subList(3,entities.size()));
                     updateRecyclerView(sources,viewerType);
@@ -204,7 +207,7 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
             if(EmptyUtil.isEmpty(childList)) return;
 
             int childCount = childList.size();
-            int viewerType = ViewerType.VIEWER_TYPE_SEVEN;
+            int viewerType = ViewerType.VIEWER_TYPE_MORE;
             if(childCount <= 31){
                 viewerType = 1 << childCount;
             }

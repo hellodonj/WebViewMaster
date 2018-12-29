@@ -233,9 +233,15 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
             mRefreshLayout.onHeaderRefreshComplete();
 
             // 0是英语国际课程
-            mEnglishInternationalHolder.updateView(entities.get(1));
+            // 测试7个
+            /*LQCourseConfigEntity entity = entities.get(1);
+            entity.getChildList().addAll(entity.getChildList().subList(0,2));*/
+            mEnglishInternationalHolder.updateView(/*entity*/entities.get(1));
             // 1是英语国内课程
-            mEnglishInlandHolder.updateView(entities.get(2));
+            // 测试超过8个
+            /*LQCourseConfigEntity entity2 = entities.get(2);
+            entity2.getChildList().addAll(entity2.getChildList().subList(0,4));*/
+            mEnglishInlandHolder.updateView(/*entity2*/entities.get(2));
             // 2是阅读课程 V5.6删除阅读课程
             // mReadCourseHolder.updateView(entities.get(2));
             // 2是小语种课程
