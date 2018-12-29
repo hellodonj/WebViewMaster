@@ -146,6 +146,6 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
             }
         }
 
-        MyCourseConfigDetailActivity.show(getActivity(),groupEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
+        MyCourseConfigDetailActivity.show(getActivity(),configEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
     }
 }
