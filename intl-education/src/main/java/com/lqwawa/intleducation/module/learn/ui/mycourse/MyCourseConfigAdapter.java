@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.learn.ui.mycourse;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -37,6 +39,7 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
     };
 
     private List<LQCourseConfigEntity> mGroupData;
+    private MyCourseConfigNavigator mNavigator;
 
     public MyCourseConfigAdapter(@NonNull List<LQCourseConfigEntity> groupData) {
         this.mGroupData = groupData;
@@ -125,7 +128,8 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
         if(group.getId() == MINORITY_LANGUAGE_ID){
             childHolder.bind(groupPosition,group);
         }else{
-            childHolder.bind(childPosition,child);
+            // 不管怎么样，都传Group 位置
+            childHolder.bind(groupPosition,child);
         }
         return convertView;
     }
@@ -185,28 +189,38 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
             mRecycler = (RecyclerView) convertView.findViewById(R.id.recycler);
             GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3);
             mRecycler.setLayoutManager(layoutManager);
+            mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3,8));
         }
 
         @Override
-        public void bind(int position,@NonNull LQCourseConfigEntity entity) {
-            if(entity.getId() == MINORITY_LANGUAGE_ID){
+        public void bind(int position,@NonNull LQCourseConfigEntity childEntity) {
+            if(childEntity.getId() == MINORITY_LANGUAGE_ID){
                 // 一级列表是小语种课程
                 mTvConfigTitle.setVisibility(View.GONE);
             }else{
                 mTvConfigTitle.setVisibility(View.VISIBLE);
-                StringUtil.fillSafeTextView(mTvConfigTitle,entity.getConfigValue());
+                StringUtil.fillSafeTextView(mTvConfigTitle,childEntity.getConfigValue());
             }
 
-            List<LQCourseConfigEntity> configEntities = entity.getChildList();
+            List<LQCourseConfigEntity> configEntities = childEntity.getChildList();
             mAdapter = new MyCourseChoiceAdapter(configEntities,UIUtil.getColor(colors[position % 4]));
             mRecycler.setAdapter(mAdapter);
 
             mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
                 @Override
-                public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity entity) {
-                    super.onItemClick(holder, entity);
+                public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity configEntity) {
+                    super.onItemClick(holder, configEntity);
                     // 点击了某个Item
-
+                    if(EmptyUtil.isNotEmpty(mNavigator)){
+                        LQCourseConfigEntity groupEntity = (LQCourseConfigEntity) getGroup(position);
+                        if(childEntity.getId() == MINORITY_LANGUAGE_ID){
+                            // 小语种课程
+                            mNavigator.onChoiceConfig(groupEntity,null,configEntity);
+                        }else{
+                            // 其它课程
+                            mNavigator.onChoiceConfig(groupEntity,childEntity,configEntity);
+                        }
+                    }
                 }
             });
         }
@@ -222,5 +236,9 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
      */
     public List<LQCourseConfigEntity> getItems(){
         return mGroupData;
+    }
+
+    public void setNavigator(@Nullable MyCourseConfigNavigator navigator){
+        this.mNavigator = navigator;
     }
 }

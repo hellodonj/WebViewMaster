@@ -297,6 +297,7 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
         // requestVo.addParams("realName", UserHelper.getUserName());
         // requestVo.addParams("userName", UserHelper.getAccount());
         requestVo.addParams("payType", isWXpay ? 2 : 1);
+        requestVo.addParams("paySource", 2);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GET_CHARGE_PRE_INFO + requestVo.getParams());
 

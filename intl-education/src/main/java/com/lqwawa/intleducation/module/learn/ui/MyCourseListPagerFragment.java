@@ -37,6 +37,7 @@ import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
@@ -72,6 +73,11 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
     private static final String TAG = "MyCourseListPagerFragment";
     public static final String KEY_IS_TEACHER = "KEY_IS_TEACHER";
     public static final String KEY_HIDE_SEARCH = "KEY_HIDE_SEARCH";
+    public static final String KEY_CONFIG_ENTITY = "KEY_CONFIG_ENTITY";
+    public static final String KEY_EXTRA_CONFIG_LEVEL = "KEY_EXTRA_CONFIG_LEVEL";
+    public static final String KEY_EXTRA_CONFIG_ONEID = "KEY_EXTRA_CONFIG_ONEID";
+    public static final String KEY_EXTRA_CONFIG_TWOID = "KEY_EXTRA_CONFIG_TWOID";
+
     //下拉刷新
     private PullToRefreshView pullToRefreshView;
     private ScrollView mScrollLayout;
@@ -99,6 +105,11 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
     private String searchKeyword;
     private boolean isTeacher;
     private boolean mHideSearch;
+
+    private LQCourseConfigEntity mConfigEntity;
+    private String mLevel;
+    private int mParamOneId;
+    private int mParamTwoId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -136,6 +147,12 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         curMemberId = getArguments().getString("MemberId");
         curSchoolId = getArguments().getString("SchoolId");
         mHideSearch = getArguments().getBoolean(KEY_HIDE_SEARCH);
+        if(getArguments().containsKey(KEY_CONFIG_ENTITY)){
+            mConfigEntity = (LQCourseConfigEntity) getArguments().getSerializable(KEY_CONFIG_ENTITY);
+        }
+        mLevel = getArguments().getString(KEY_EXTRA_CONFIG_LEVEL);
+        mParamOneId = getArguments().getInt(KEY_EXTRA_CONFIG_ONEID);
+        mParamTwoId = getArguments().getInt(KEY_EXTRA_CONFIG_TWOID);
 
         if(mHideSearch){
             // 隐藏搜索
@@ -387,6 +404,9 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         if(isTeacher){
             url = AppConfig.ServerUrl.GetMyEstablishCourseList + requestVo.getParams();
         }else{
+            requestVo.addParams("level",mLevel);
+            requestVo.addParams("paramOneId",mParamOneId);
+            requestVo.addParams("paramTwoId",mParamTwoId);
             url = AppConfig.ServerUrl.GetMyCourseList + requestVo.getParams();
         }
         RequestParams params = new RequestParams(url);
@@ -453,13 +473,26 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         requestVo.addParams("pageIndex", pageIndex + 1);
         requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
         requestVo.addParams("token", curMemberId);
+
         if(searchKeyword != null){
-            requestVo.addParams("courseName", searchKeyword);
+            try{
+                requestVo.addParams("name", URLEncoder.encode(searchKeyword, "UTF-8"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         LogUtil.d(TAG, requestVo.getParams());
-        RequestParams params =
-                new RequestParams(AppConfig.ServerUrl.GetMyCourseList + requestVo.getParams());
+        String url = null;
+        if(isTeacher){
+            url = AppConfig.ServerUrl.GetMyEstablishCourseList + requestVo.getParams();
+        }else{
+            requestVo.addParams("level",mLevel);
+            requestVo.addParams("paramOneId",mParamOneId);
+            requestVo.addParams("paramTwoId",mParamTwoId);
+            url = AppConfig.ServerUrl.GetMyCourseList + requestVo.getParams();
+        }
+        RequestParams params = new RequestParams(url);
         params.setConnectTimeout(10000);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

@@ -853,11 +853,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
-        <!--转赠蛙蛙币页面-->
-        <activity android:name=".module.discovery.ui.coin.donation.DonationCoinActivity"
+        <!--我的习课程标签详情课程列表-->
+        <activity android:name=".module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/AppTheme.Common"/>
 
     </application>
 

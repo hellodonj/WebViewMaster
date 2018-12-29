@@ -157,12 +157,12 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
 
                 // 获取到第二个显示数据
                 LQCourseConfigEntity entity2 = entities.get(1);
-                course1.setTag(entity2);
+                course2.setTag(entity2);
                 ImageUtil.fillDefaultView(course2,entity2.getThumbnail());
 
                 // 获取到第一个显示数据
                 LQCourseConfigEntity entity3 = entities.get(2);
-                course1.setTag(entity3);
+                course3.setTag(entity3);
                 ImageUtil.fillDefaultView(course3,entity3.getThumbnail());
 
                 course1.setOnClickListener(this);

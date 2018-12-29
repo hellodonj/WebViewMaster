@@ -32,5 +32,6 @@
         android:layout_gravity="right|center_vertical"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="@dimen/com_item_space"
-        android:src="@drawable/ic_arrow_down" />
+        android:src="@drawable/ic_arrow_down"
+        android:visibility="gone"/>
 </LinearLayout>
