@@ -187,7 +187,13 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
         public ChildViewHolder(View convertView) {
             mTvConfigTitle = (TextView) convertView.findViewById(R.id.tv_config_title);
             mRecycler = (RecyclerView) convertView.findViewById(R.id.recycler);
-            GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3);
+            mRecycler.setNestedScrollingEnabled(false);
+            GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3){
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
             mRecycler.setLayoutManager(layoutManager);
             mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3,8));
         }
