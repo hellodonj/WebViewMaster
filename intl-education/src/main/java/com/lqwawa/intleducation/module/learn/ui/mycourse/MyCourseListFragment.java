@@ -131,7 +131,9 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
             mExpandableView.setVisibility(View.VISIBLE);
             mTabEmptyLayout.setVisibility(View.GONE);
             mConfigAdapter.setData(entities);
-            int groupCount = mExpandableView.getCount();
+            // mExpandableView.getCount();
+            // 返回并不是正确的groupCount();
+            int groupCount = mConfigAdapter.getGroupCount();
             for (int i=0; i<groupCount; i++) {
                 mExpandableView.expandGroup(i);
             }
