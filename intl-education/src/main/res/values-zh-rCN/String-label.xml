@@ -111,7 +111,7 @@
     <string name="label_space_school_function_principal_assistant">校长助手</string>
     <string name="label_space_school_function_campus_patrol">校园巡查</string>
     <string name="label_space_school_function_SCHOOL_FORUM">学校论坛</string>
-    <string name="label_space_school_relevance_course">关联习课程</string>
+    <string name="label_space_school_relevance_course">关联习教辅</string>
     <string name="label_save_qrcode">保存二维码</string>
     <string name="label_course_qrcode">课件二维码</string>
     <string name="label_qrcode">二维码</string>
@@ -230,33 +230,33 @@
     <string name="label_join_course">+我的学程</string>
 
     <!--V5.11版本字符串-->
-    <string name="label_share_online_class_title">【两栖名师课程】</string>
-    <string name="label_share_course_title">【两栖习课程】</string>
+    <string name="label_share_online_class_title">【两栖名师课】</string>
+    <string name="label_share_course_title">【两栖习教辅】</string>
     <string name="label_timetable">课程表</string>
     <string name="label_today">今天</string>
     <string name="label_study_number">%d人报名</string>
     <!--<string name="label_teach_class">名师课堂</string>-->
-    <string name="label_teach_class">名师课程</string>
-    <string name="label_teach_course">名师课程</string>
+    <string name="label_teach_class">名师课</string>
+    <string name="label_teach_course">名师课</string>
     <!--<string name="label_tab_course_chapter">课程大纲</string>-->
-    <string name="label_tab_course_chapter">习课程</string>
-    <string name="label_study_course">习课程</string>
-    <string name="label_tab_new_study_course">我的习课程</string>
-    <string name="label_tab_new_teach_course">我的名师课程</string>
-    <string name="label_tab_new_give_study_course">我开设的习课程</string>
-    <string name="label_tab_new_give_teach_course">我开设的名师课程</string>
-    <string name="label_new_tab_class_empty_remind">还没有参加名师课程？</string>
-    <string name="label_new_go_online_study">去名师课程</string>
+    <string name="label_tab_course_chapter">习教辅</string>
+    <string name="label_study_course">习教辅</string>
+    <string name="label_tab_new_study_course">我的习教辅</string>
+    <string name="label_tab_new_teach_course">我的名师课</string>
+    <string name="label_tab_new_give_study_course">我开设的习教辅</string>
+    <string name="label_tab_new_give_teach_course">我开设的名师课</string>
+    <string name="label_new_tab_class_empty_remind">还没有参加名师课？</string>
+    <string name="label_new_go_online_study">去名师课</string>
     <!--<string name="label_new_go_online_study">去名师课堂</string>-->
-    <string name="label_watch_more_teach_course">查看更多名师课程</string>
+    <string name="label_watch_more_teach_course">查看更多名师课</string>
     <string name="label_history_give">历史授课</string>
     <string name="label_give_complete">完成授课</string>
     <string name="label_history_setting">设成历史课</string>
-    <string name="label_self_study_class">去100%习课程</string>
+    <string name="label_self_study_class">去习教辅</string>
     <string name="label_live_source">来源：%s</string>
     <string name="label_online_class_give_history_tip">您正在将课程设成历史课，确认后，将不能再对课程进行开课、批阅等操作</string>
     <string name="label_this_class_give_history">该班级已设成历史课</string>
-    <string name="label_delete_live_status_warning">该直播所在的名师课程已完成授课/设成历史课，无法删除</string>
+    <string name="label_delete_live_status_warning">该直播所在的名师课已完成授课/设成历史课，无法删除</string>
     <string name="label_search_course_name_hint">搜索课程名称</string>
 
     <string name="label_colon_type">类型：</string>
@@ -287,7 +287,7 @@
     <string name="label_name">姓名：</string>
     <string name="label_course_buy_warning">该课程/课堂无法购买</string>
     <string name="label_choice_other_null">请确认此课程为谁购买</string>
-    <string name="label_online_member_in_class_warning">此用户已参加该名师课程</string>
+    <string name="label_online_member_in_class_warning">此用户已参加该名师课</string>
     <string name="label_not_have_realname">暂未设置真实姓名</string>
     <string name="label_other_order_disabled">该订单他人已付款，无法参加，请重新下单</string>
     <string name="label_task_complete">【已完成】</string>
@@ -328,7 +328,7 @@
         <item>授课计划</item>
         <item>学员评论</item>
         <!--<item>相关课程</item>-->
-        <item>习课程</item>
+        <item>习教辅</item>
     </string-array>
 
     <string-array name="label_lesson_sourse_tabs">
