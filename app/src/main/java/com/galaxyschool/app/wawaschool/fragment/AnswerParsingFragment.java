@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.AnswerParsingActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -52,6 +53,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
     private LinearLayout answerDetailLayout;
     private LinearLayout llBarLayout;
     private LinearLayout llDetailLayout;
+    private LinearLayout llAnswerAnalysisLayout;
     private Context mContext;
     private ExerciseItem exerciseData;//任务单答题的数据
     private String[] questionTypeName;
@@ -96,7 +98,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
             studentId = args.getString(AnswerParsingActivity.Constants.STUDENT_ID);
             studentName = args.getString(AnswerParsingActivity.Constants.STUDENT_NAME);
         }
-        String[] checkList = new String[]{"","A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        String[] checkList = new String[]{"", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         checkAnswerDataList.addAll(Arrays.asList(checkList));
     }
 
@@ -109,6 +111,8 @@ public class AnswerParsingFragment extends ContactsListFragment {
         llBarLayout = (LinearLayout) findViewById(R.id.ll_bar_detail);
         //听力原文
         llDetailLayout = (LinearLayout) findViewById(R.id.ll_listen_detail);
+        //答案解析
+        llAnswerAnalysisLayout = (LinearLayout) findViewById(R.id.ll_answer_analysis_detail);
         //题目名称
         TextView questionTitleTextV = (TextView) findViewById(R.id.tv_question_title);
         questionTitleTextV.setText(exerciseData.getName());
@@ -116,7 +120,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
         TextView questionTypeTextV = (TextView) findViewById(R.id.tv_question_type);
         String rightScore = "(" + getString(R.string.str_eval_score, Utils.changeDoubleToInt(exerciseData.getScore())) + ")";
         String typeTitle = null;
-        if (questionType == LearnTaskCardType.SUBJECTIVE_PROBLEM){
+        if (questionType == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
             //主观题
             typeTitle = exerciseData.getType_name() + rightScore;
         } else {
@@ -144,7 +148,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
             } else {
                 //答错 红色标识
                 if (questionType == LearnTaskCardType.SUBJECTIVE_PROBLEM && exerciseData
-                        .getEqState() == 3){
+                        .getEqState() == 3) {
                     //没有批阅 不显示分数
                     markScoreTextV.setVisibility(View.GONE);
                 } else {
@@ -155,21 +159,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
         //学生答题的详情layout
         answerDetailLayout = (LinearLayout) findViewById(R.id.ll_answer_detail);
         handleStudentAnswerDetail();
-        //答案解析
-        TextView answerParsingTextV = (TextView) findViewById(R.id.tv_answer_parsing);
-        String analyseString = null;
-        if (TextUtils.isEmpty(exerciseData.getAnalysis())) {
-            analyseString = "【" + getString(R.string.str_answer_parsing) + "】 " + getString(R
-                    .string.str_no_analyse_tip);
-        } else {
-            analyseString = "【" + getString(R.string.str_answer_parsing) + "】 " + exerciseData
-                    .getAnalysis();
-        }
-        int index = analyseString.indexOf("】");
-        SpannableString systemColorString = new SpannableString(analyseString);
-        systemColorString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R
-                .color.text_black)), 0, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        answerParsingTextV.setText(systemColorString);
+        showAnswerAnalysisData();
     }
 
     private void handleStudentAnswerDetail() {
@@ -215,8 +205,8 @@ public class AnswerParsingFragment extends ContactsListFragment {
         //我的答案
         TextView answerTextV = (TextView) view.findViewById(R.id.tv_my_answer_text);
         //不是自己的显示xx的答案
-        if (!TextUtils.equals(getMemeberId(),studentId) && !TextUtils.isEmpty(studentName)){
-          answerTextV.setText(getString(R.string.str_some_body_answer,studentName));
+        if (!TextUtils.equals(getMemeberId(), studentId) && !TextUtils.isEmpty(studentName)) {
+            answerTextV.setText(getString(R.string.str_some_body_answer, studentName));
         }
         TextView myAnswerTextV = (TextView) view.findViewById(R.id.tv_my_answer);
         //订正
@@ -318,7 +308,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
                 if (TextUtils.equals(exerciseData.getStudent_answer(), "1")) {
                     //答对
                     myAnswerTextV.setText(getString(R.string.str_right));
-                } else if (TextUtils.isEmpty(exerciseData.getStudent_answer())){
+                } else if (TextUtils.isEmpty(exerciseData.getStudent_answer())) {
                     //未做
                     myAnswerTextV.setText("");
                 } else {
@@ -359,13 +349,13 @@ public class AnswerParsingFragment extends ContactsListFragment {
         answerDetailLayout.addView(view);
     }
 
-    private String getChoiceAnswerData(String itemIndex){
+    private String getChoiceAnswerData(String itemIndex) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (itemIndex.contains(";")){
-            String [] splitArray = itemIndex.split(";");
-            for (int i = 0; i < splitArray.length; i++){
+        if (itemIndex.contains(";")) {
+            String[] splitArray = itemIndex.split(";");
+            for (int i = 0; i < splitArray.length; i++) {
                 int index = Integer.valueOf(splitArray[i]);
-                if (i == 0){
+                if (i == 0) {
                     stringBuilder.append(checkAnswerDataList.get(index));
                 } else {
                     stringBuilder.append(";").append(checkAnswerDataList.get(index));
@@ -455,8 +445,8 @@ public class AnswerParsingFragment extends ContactsListFragment {
                                 .changeDoubleToInt(subScoreArray[i])));
                     } else {
                         //不是自己的显示xx的答案
-                        if (!TextUtils.equals(getMemeberId(),studentId) && !TextUtils.isEmpty(studentName)){
-                            answerTextV.setText(getString(R.string.str_some_body_answer,studentName));
+                        if (!TextUtils.equals(getMemeberId(), studentId) && !TextUtils.isEmpty(studentName)) {
+                            answerTextV.setText(getString(R.string.str_some_body_answer, studentName));
                         }
                         if (subStudentScoreArray != null && subStudentScoreArray.length > 0) {
                             studentFillScoreView.setText(getString(R.string.str_eval_score,
@@ -513,8 +503,8 @@ public class AnswerParsingFragment extends ContactsListFragment {
         //我的答案
         TextView answerTextV = (TextView) view.findViewById(R.id.tv_my_answer_text);
         //不是自己的显示xx的答案
-        if (!TextUtils.equals(getMemeberId(),studentId) && !TextUtils.isEmpty(studentName)){
-            answerTextV.setText(getString(R.string.str_some_body_answer,studentName));
+        if (!TextUtils.equals(getMemeberId(), studentId) && !TextUtils.isEmpty(studentName)) {
+            answerTextV.setText(getString(R.string.str_some_body_answer, studentName));
         }
         TextView studentAnswerTextV = (TextView) view.findViewById(R.id.tv_correct_answer);
         studentAnswerTextV.setVisibility(View.VISIBLE);
@@ -576,20 +566,69 @@ public class AnswerParsingFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(rightAnswerResUrl)) {
             //查看图片
             rightTextV.setVisibility(View.VISIBLE);
-            rightTextV.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable
-                    .green_10dp_stroke_green));
-            rightTextV.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_green));
-            rightTextV.setText(getString(R.string.str_look_image));
-            rightTextV.setPadding(DensityUtils.dp2px(getActivity(), 7),
-                    DensityUtils.dp2px(getActivity(), 2),
-                    DensityUtils.dp2px(getActivity(), 7),
-                    DensityUtils.dp2px(getActivity(), 2));
-            rightTextV.setOnClickListener(v -> {
-                //打开参考答案
-                openImage(rightAnswerResUrl, rightAnswerName,rightAnswerResId);
-            });
+            StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
+                    rightAnswerResId,
+                    rightAnswerResUrl,
+                    rightAnswerName,
+                    rightTextV);
         }
         answerDetailLayout.addView(view);
+    }
+
+    /**
+     * 展示答案解析的数据
+     */
+    private void showAnswerAnalysisData() {
+        //答案解析
+//        TextView answerParsingTextV = (TextView) findViewById(R.id.tv_answer_parsing);
+//        String analyseString = null;
+//        if (TextUtils.isEmpty(exerciseData.getAnalysis())) {
+//            analyseString = "【" + getString(R.string.str_answer_parsing) + "】 " + getString(R
+//                    .string.str_no_analyse_tip);
+//        } else {
+//            analyseString = "【" + getString(R.string.str_answer_parsing) + "】 " + exerciseData
+//                    .getAnalysis();
+//        }
+//        int index = analyseString.indexOf("】");
+//        SpannableString systemColorString = new SpannableString(analyseString);
+//        systemColorString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R
+//                .color.text_black)), 0, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        answerParsingTextV.setText(systemColorString);
+
+        String srcText = exerciseData.getAnalysis();
+        String srcResUrl = exerciseData.getAnalysis_res_url();
+        String srcResName = exerciseData.getAnalysis_res_name();
+        String srcResId = exerciseData.getAnalysis_res_id();
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_answer_parsing_detail, null);
+        LinearLayout studentAnswerLayout = (LinearLayout) view.findViewById(R.id.ll_my_answer);
+        LinearLayout answerRightLayout = (LinearLayout) view.findViewById(R.id.ll_reference_answer);
+        answerRightLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.text_white));
+        answerRightLayout.setPadding(0,0,0,0);
+        studentAnswerLayout.setVisibility(View.GONE);
+        TextView leftRightTextV = (TextView) view.findViewById(R.id.tv_left_right_title);
+        TextView picImageTextV = (TextView) view.findViewById(R.id.tv_correct_right_answer);
+        TextView textTextV = (TextView) view.findViewById(R.id.tv_answer_text);
+        String leftRightTitle = "【" + getString(R.string.str_answer_parsing) + "】";
+        leftRightTextV.setText(leftRightTitle);
+        leftRightTextV.setTextColor(ContextCompat.getColor(mContext, R.color.text_black));
+        if (!TextUtils.isEmpty(srcText)) {
+            textTextV.setText(srcText);
+            textTextV.setVisibility(View.VISIBLE);
+        }
+        if (!TextUtils.isEmpty(srcResUrl)) {
+            picImageTextV.setVisibility(View.VISIBLE);
+            StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
+                    srcResId,
+                    srcResUrl,
+                    srcResName,
+                    picImageTextV);
+        }
+        //显示暂无
+        if (TextUtils.isEmpty(srcText) && TextUtils.isEmpty(srcResUrl)){
+            textTextV.setText(getString(R.string.str_no_analyse_tip));
+            textTextV.setVisibility(View.VISIBLE);
+        }
+        llAnswerAnalysisLayout.addView(view);
     }
 
     /**
@@ -611,12 +650,10 @@ public class AnswerParsingFragment extends ContactsListFragment {
                 LinearLayout answerRightLayout = (LinearLayout) view.findViewById(R.id.ll_reference_answer);
                 answerRightLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.text_white));
                 studentAnswerLayout.setVisibility(View.GONE);
-                if (fromAnswerAnalysis) {
-                    answerRightLayout.setPadding(0,
-                            DensityUtils.dp2px(mContext, 5),
-                            DensityUtils.dp2px(mContext, 5),
-                            DensityUtils.dp2px(mContext, 5));
-                }
+                answerRightLayout.setPadding(0,
+                        DensityUtils.dp2px(mContext, 5),
+                        DensityUtils.dp2px(mContext, 5),
+                        DensityUtils.dp2px(mContext, 5));
                 TextView leftRightTextV = (TextView) view.findViewById(R.id.tv_left_right_title);
                 TextView picImageTextV = (TextView) view.findViewById(R.id.tv_correct_right_answer);
                 TextView textTextV = (TextView) view.findViewById(R.id.tv_answer_text);
@@ -629,71 +666,14 @@ public class AnswerParsingFragment extends ContactsListFragment {
                 }
                 if (!TextUtils.isEmpty(srcResUrl)) {
                     picImageTextV.setVisibility(View.VISIBLE);
-                    picImageTextV.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable
-                            .green_10dp_stroke_green));
-                    picImageTextV.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_green));
-                    picImageTextV.setText(getString(R.string.str_look_image));
-                    picImageTextV.setPadding(DensityUtils.dp2px(getActivity(), 7),
-                            DensityUtils.dp2px(getActivity(), 2),
-                            DensityUtils.dp2px(getActivity(), 7),
-                            DensityUtils.dp2px(getActivity(), 2));
-                    picImageTextV.setOnClickListener(v -> {
-                        //打开参考答案
-                        openImage(srcResUrl, srcResName,srcResId);
-                    });
+                    StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
+                            srcResId,
+                            srcResUrl,
+                            srcResName,
+                            picImageTextV);
                 }
                 llDetailLayout.addView(view);
             }
-        }
-    }
-
-    private void openImage(String resUrl, String srcResName,String srcResId) {
-        List<ImageInfo> resourceInfoList = new ArrayList<>();
-        if (resUrl.contains(",")) {
-            String[] splitArray = resUrl.split(",");
-            String[] titleArray = null;
-            if (!TextUtils.isEmpty(srcResName)) {
-                titleArray = srcResName.split(",");
-            }
-            if (splitArray.length > 0) {
-                for (int m = 0; m < splitArray.length; m++) {
-                    ImageInfo newResourceInfo = new ImageInfo();
-                    newResourceInfo.setResourceUrl(splitArray[m]);
-                    if (titleArray != null && titleArray.length > m) {
-                        newResourceInfo.setTitle(titleArray[m]);
-                    }
-                    resourceInfoList.add(newResourceInfo);
-                }
-            }
-        } else {
-            ImageInfo newResourceInfo = new ImageInfo();
-            newResourceInfo.setTitle(srcResName);
-            newResourceInfo.setResourceUrl(resUrl);
-            resourceInfoList.add(newResourceInfo);
-        }
-        //判断是不是ppt以及pdf
-        String analysisUrl = resourceInfoList.get(0).getResourceUrl();
-        if ((analysisUrl.endsWith(".pdf")
-                || analysisUrl.endsWith(".ppf")
-                || analysisUrl.endsWith(".doc"))
-                && !TextUtils.isEmpty(srcResId)){
-            if (srcResId.contains(",")){
-                srcResId = srcResId.split(",")[0];
-            }
-            int resourceType = MaterialResourceType.PPT;
-            if (analysisUrl.endsWith("pdf")){
-                resourceType = MaterialResourceType.PDF;
-            } else if (analysisUrl.endsWith(".doc")){
-                resourceType = MaterialResourceType.DOC;
-            }
-            ResourceInfoTag infoTag = new ResourceInfoTag();
-            infoTag.setResId(srcResId + "-" + resourceType);
-            infoTag.setResourceType(resourceType);
-            infoTag.setTitle(srcResName);
-            WatchWawaCourseResourceOpenUtils.openPDFAndPPTDetails(getActivity(), infoTag,
-                    true, false,false);
-        } else {
-            GalleryActivity.newInstance(getActivity(), resourceInfoList, true, 0, false, false, false);
         }
     }
 
@@ -746,7 +726,7 @@ public class AnswerParsingFragment extends ContactsListFragment {
         if (barChartDataInfoList != null && barChartDataInfoList.size() > 0) {
             llBarLayout.setVisibility(View.VISIBLE);
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_bar_chart, null);
-            BarChartHelper barChartHelper = new BarChartHelper(mContext,exerciseData,barChartDataInfoList);
+            BarChartHelper barChartHelper = new BarChartHelper(mContext, exerciseData, barChartDataInfoList);
             barChartHelper.initView(view);
             llBarLayout.addView(view);
         }

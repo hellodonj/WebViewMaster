@@ -33,6 +33,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
@@ -472,59 +473,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                     if (TextUtils.isEmpty(rightAnswer)){
                         contentTextV.setVisibility(View.GONE);
                     }
-                    //显示图片
-                    picImageView.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable
-                            .green_10dp_stroke_green));
-                    picImageView.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_green));
-                    picImageView.setText(getString(R.string.str_look_image));
-                    picImageView.setPadding(DensityUtils.dp2px(getActivity(), 7),
-                            DensityUtils.dp2px(getActivity(), 2),
-                            DensityUtils.dp2px(getActivity(), 7),
-                            DensityUtils.dp2px(getActivity(), 2));
-                    picImageView.setOnClickListener(v -> {
-                        //打开参考答案
-                        List<ImageInfo> resourceInfoList = new ArrayList<>();
-                        if (resUrl.contains(",")) {
-                            String[] splitArray = resUrl.split(",");
-                            if (splitArray.length > 0) {
-                                for (int m = 0; m < splitArray.length; m++) {
-                                    ImageInfo newResourceInfo = new ImageInfo();
-                                    newResourceInfo.setResourceUrl(splitArray[m]);
-                                    newResourceInfo.setTitle(exerciseItem.getRight_answer_res_name());
-                                    resourceInfoList.add(newResourceInfo);
-                                }
-                            }
-                        } else {
-                            ImageInfo newResourceInfo = new ImageInfo();
-                            newResourceInfo.setTitle(exerciseItem.getRight_answer_res_name());
-                            newResourceInfo.setResourceUrl(resUrl);
-                            resourceInfoList.add(newResourceInfo);
-                        }
-                        String analysisUrl = resourceInfoList.get(0).getResourceUrl();
-                        String rightAnswerResId = exerciseItem.getRight_answer_res_id();
-                        if ((analysisUrl.endsWith(".pdf")
-                                || analysisUrl.endsWith(".ppf")
-                                || analysisUrl.endsWith(".doc"))
-                                && !TextUtils.isEmpty(rightAnswerResId)){
-                            if (rightAnswerResId.contains(",")){
-                                rightAnswerResId = rightAnswerResId.split(",")[0];
-                            }
-                            int resourceType = MaterialResourceType.PPT;
-                            if (analysisUrl.endsWith("pdf")){
-                                resourceType = MaterialResourceType.PDF;
-                            } else if (analysisUrl.endsWith(".doc")){
-                                resourceType = MaterialResourceType.DOC;
-                            }
-                            ResourceInfoTag infoTag = new ResourceInfoTag();
-                            infoTag.setResId(rightAnswerResId + "-" + resourceType);
-                            infoTag.setResourceType(resourceType);
-                            infoTag.setTitle(exerciseItem.getRight_answer_res_name());
-                            WatchWawaCourseResourceOpenUtils.openPDFAndPPTDetails(getActivity(), infoTag,
-                                    true, false,false);
-                        } else {
-                            GalleryActivity.newInstance(getActivity(), resourceInfoList, true, 0, false, false, false);
-                        }
-                    });
+                    StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
+                            exerciseItem.getRight_answer_res_id(),
+                            resUrl,
+                            exerciseItem.getRight_answer_res_name(),
+                            picImageView);
                 }
             } else {
                 //答案解析
@@ -534,6 +487,18 @@ public class CheckMarkFragment extends ContactsListFragment {
                     content = getString(R.string.str_no_analyse_tip);
                 }
                 contentTextV.setText(content);
+                if (!TextUtils.isEmpty(exerciseItem.getAnalysis_res_url())){
+                    //答案解析的resUrl
+                    picImageView.setVisibility(View.VISIBLE);
+                    if (TextUtils.isEmpty(content)){
+                        contentTextV.setVisibility(View.GONE);
+                    }
+                    StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
+                            exerciseItem.getAnalysis_res_id(),
+                            exerciseItem.getAnalysis_res_url(),
+                            exerciseItem.getAnalysis_res_name(),
+                            picImageView);
+                }
             }
             answerParsingLayout.addView(itemView);
         }

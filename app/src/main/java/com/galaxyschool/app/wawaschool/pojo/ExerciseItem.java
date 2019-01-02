@@ -27,6 +27,13 @@ public class ExerciseItem implements Serializable{
     //正确答案的资源名 资源库的图片或者pdf格式
     private String right_answer_res_url;
     private String right_answer_res_name;
+    //答案解析需要的字段
+    //答案解析的资源id
+    private String analysis_res_id;
+    //答案解析的资源路径
+    private String analysis_res_url;
+    //答案解析的资源名字
+    private String analysis_res_name;
     //学生作答内容
     private String student_answer;
     //答案解析
@@ -404,6 +411,30 @@ public class ExerciseItem implements Serializable{
 
     public void setDatas(List<MediaData> datas) {
         this.datas = datas;
+    }
+
+    public String getAnalysis_res_id() {
+        return analysis_res_id;
+    }
+
+    public void setAnalysis_res_id(String analysis_res_id) {
+        this.analysis_res_id = analysis_res_id;
+    }
+
+    public String getAnalysis_res_url() {
+        return analysis_res_url;
+    }
+
+    public void setAnalysis_res_url(String analysis_res_url) {
+        this.analysis_res_url = analysis_res_url;
+    }
+
+    public String getAnalysis_res_name() {
+        return analysis_res_name;
+    }
+
+    public void setAnalysis_res_name(String analysis_res_name) {
+        this.analysis_res_name = analysis_res_name;
     }
 
     public String [] getSubScoreArray(){
