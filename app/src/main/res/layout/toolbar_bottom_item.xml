@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:gravity="center|top"
         android:text="标题"
-        android:textSize="11sp"
         android:textColor="@drawable/btn_txt_color" />
 
 </LinearLayout>
