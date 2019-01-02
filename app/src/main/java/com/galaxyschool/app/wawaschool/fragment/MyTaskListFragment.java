@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -28,6 +30,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
 import com.galaxyschool.app.wawaschool.helper.CheckLqShopPmnHelper;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.lqbaselib.net.library.DataResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -175,6 +178,23 @@ public class MyTaskListFragment extends ContactsListFragment {
                     ImageView imageView = (ImageView) view.findViewById(R.id.red_point);
                     if (imageView != null) {
                         imageView.setVisibility(View.INVISIBLE);
+                    }
+
+                    //按时间作答题的任务
+                    RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                    if (data.getSubmitType() == 1 && !TextUtils.isEmpty(data.getServerNowTime())){
+                        boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
+                                .getServerNowTime(),data.getStartTime(),true);
+                        if (arriveDoTime){
+                            rlLocking.setVisibility(View.GONE);
+                        } else {
+                            rlLocking.setVisibility(View.VISIBLE);
+                            rlLocking.setOnClickListener(v -> {
+                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_time_not_answer);
+                            });
+                        }
+                    } else {
+                        rlLocking.setVisibility(View.GONE);
                     }
 
                     view.setTag(holder);
@@ -584,6 +604,7 @@ public class MyTaskListFragment extends ContactsListFragment {
         IntroductionSuperTaskFragment fragment = new IntroductionSuperTaskFragment();
         Bundle args = getArguments();
         args.putInt("TaskType", Integer.valueOf(selectHomeworkInfo.getTaskType()));
+        args.putString("TaskId",selectHomeworkInfo.getTaskId());
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
         args.putSerializable(ListenReadAndWriteStudyTaskFragment.Constants.EXTRA_TASK_INFO_DATA, selectHomeworkInfo);
         fragment.setArguments(args);

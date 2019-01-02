@@ -143,7 +143,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 isScanTask = bundle.getBoolean("is_scan_task");
                 selectHomeworkInfo = (HomeworkListInfo) bundle.getSerializable(Constants.EXTRA_TASK_INFO_DATA);
                 if (selectHomeworkInfo != null) {
-                    TaskId = selectHomeworkInfo.getTaskId();
+//                    TaskId = selectHomeworkInfo.getTaskId();
                     isSuperChildTask = selectHomeworkInfo.isSuperChildTask();
                 }
                 uploadParameter = (UploadParameter) getArguments().getSerializable
