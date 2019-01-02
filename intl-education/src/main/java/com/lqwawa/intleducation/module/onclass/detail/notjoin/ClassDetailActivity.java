@@ -439,8 +439,8 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
                 classParams.setGiveFinish(entity.isGiveFinish());
                 classParams.setGiveHistory(entity.isGiveHistory());
                 classParams.setParent(params.isParent(),params.getChildMemberId());
-                params.setPushEnter(params.isPushEnter());
-                params.setHome(params.isHome());
+                classParams.setPushEnter(params.isPushEnter());
+                classParams.setHome(params.isHome());
 
                 if(needToJoin || params.isParent() || OnlineClassRole.ROLE_TEACHER.equals(role)){
                     // 家长身份
