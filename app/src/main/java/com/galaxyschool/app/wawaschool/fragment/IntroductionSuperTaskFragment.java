@@ -951,6 +951,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         }
         Map<String, Object> param = new HashMap<>();
         param.put("TaskId", TaskId);
+        param.put("Role",roleType);
         if (isPick) {
             param.put("StudentId", getMemeberId());
         } else if (lookStudentTaskFinish) {
