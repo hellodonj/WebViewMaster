@@ -589,6 +589,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         }
 
         if(mSelectResource){
+            level = mEntity.getLevel();
             mPresenter.requestCourseResourceData(isMoreLoaded,mEntity.getEntityOrganId(),currentPage,AppConfig.PAGE_SIZE,mKeyString,level);
         }else{
             mPresenter.requestCourseData(isMoreLoaded,mEntity.getEntityOrganId(),currentPage,AppConfig.PAGE_SIZE,mKeyString,level,paramOneId,paramTwoId,paramThreeId);
