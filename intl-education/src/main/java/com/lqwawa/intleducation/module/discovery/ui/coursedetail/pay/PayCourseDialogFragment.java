@@ -250,11 +250,13 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
                 // 置空
                 mChildContainer.setTag(null);
                 StringUtil.fillSafeTextView(mQueryName,"");
+                UIUtil.showToastSafe(R.string.label_this_account_not_available);
             }
         }else{
             // 置空
             mChildContainer.setTag(null);
             StringUtil.fillSafeTextView(mQueryName,"");
+            UIUtil.showToastSafe(R.string.label_this_account_not_available);
         }
     }
 

@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.MemberChoiceAdapter;
@@ -171,11 +172,13 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                 // 置空
                 mChildContainer.setTag(null);
                 StringUtil.fillSafeTextView(mQueryName,"");
+                UIUtil.showToastSafe(R.string.label_this_account_not_available);
             }
         }else{
             // 置空
             mChildContainer.setTag(null);
             StringUtil.fillSafeTextView(mQueryName,"");
+            UIUtil.showToastSafe(R.string.label_this_account_not_available);
         }
     }
 
@@ -211,7 +214,49 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                                     user = UserParams.buildUser(tag);
                                 }else{
                                     // 提示
-                                    UIUtil.showToastSafe(R.string.label_give_money_tip_title);
+                                    // UIUtil.showToastSafe(R.string.label_give_money_tip_title);
+                                    // return;
+
+                                    // 此时请求
+                                    String inputName = mInputName.getText().toString().trim();
+                                    if(EmptyUtil.isEmpty(inputName)) return;
+
+                                    List<UserModel> members = new ArrayList<>();
+                                    UserModel model = new UserModel(inputName);
+                                    members.add(model);
+
+                                    mBtnConfirm.setEnabled(false);
+                                    com.lqwawa.intleducation.factory.helper.UserHelper.requestRealNameWithNick(false, members, new DataSource.Callback<List<UserEntity>>() {
+                                        @Override
+                                        public void onDataNotAvailable(int strRes) {
+                                            UIUtil.showToastSafe(strRes);
+                                            mBtnConfirm.setEnabled(true);
+                                        }
+
+
+                                        @Override
+                                        public void onDataLoaded(List<UserEntity> entities) {
+                                            if(EmptyUtil.isNotEmpty(entities)){
+                                                mBtnConfirm.setEnabled(true);
+                                                if(EmptyUtil.isNotEmpty(entities)){
+                                                    // 获取到用户信息
+                                                    UserEntity entity = entities.get(0);
+                                                    if(entity.isIsExist()){
+                                                        UserParams user = UserParams.buildUser(entity);
+                                                        if(EmptyUtil.isNotEmpty(mNavigator)){
+                                                            mNavigator.onChoiceConfirm(user);
+                                                            dismiss();
+                                                        }
+                                                    }else{
+                                                        UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                    }
+                                                }else{
+                                                    UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    // 不走下面的逻辑
                                     return;
                                 }
                             }
