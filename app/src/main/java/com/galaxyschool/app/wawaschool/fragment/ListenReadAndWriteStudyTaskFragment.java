@@ -186,7 +186,10 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     taskTitleTextV.setVisibility(View.VISIBLE);
                     taskTitleTextV.setText(selectHomeworkInfo.getTaskTitle());
                 }
-            } else if (lookStudentTaskFinish || isSuperChildTask) {
+            } else if (lookStudentTaskFinish
+                    || isSuperChildTask
+                    || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                    || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE) {
                 textView.setVisibility(View.INVISIBLE);
             } else {
                 textView.setText(getString(R.string.share));

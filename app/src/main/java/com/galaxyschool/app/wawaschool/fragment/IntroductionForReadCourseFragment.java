@@ -1453,7 +1453,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     public void setReadWriteData(List<ResourceInfoTag> readWriteData, boolean isSuperTask) {
-        for (ResourceInfoTag tag : readWriteData) {
+        int length = this.readWriteData.size() - 1;
+        this.readWriteData.addAll(length, readWriteData);
+        for (ResourceInfoTag tag : this.readWriteData) {
             //来自学程
             if (tag.isSelected()) {
                 if (!isSuperTask) {
@@ -1464,7 +1466,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
         }
 
-        for (ResourceInfoTag tag : readWriteData) {
+        for (ResourceInfoTag tag : this.readWriteData) {
             //兼容point
             if (!TextUtils.isEmpty(tag.getPoint())) {
                 updateScoreView(View.GONE);
@@ -1472,8 +1474,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 break;
             }
         }
-        int length = this.readWriteData.size() - 1;
-        this.readWriteData.addAll(length, readWriteData);
         if (readAndWriteAdapter != null) {
             readAndWriteAdapter.notifyDataSetChanged();
         }
@@ -1487,8 +1487,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 //                break;
 //            }
 //        }
-
-        for (ResourceInfoTag tag : listenData) {
+        int length = this.listenData.size() - 1;
+        this.listenData.addAll(length, listenData);
+        for (ResourceInfoTag tag : this.listenData) {
             if (tag.isSelected()) {
                 if (!isSuperTask) {
                     TipMsgHelper.ShowMsg(getActivity(), R.string.str_show_select_lqcourse_mark_score_tip);
@@ -1497,9 +1498,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 break;
             }
         }
-
-        int length = this.listenData.size() - 1;
-        this.listenData.addAll(length, listenData);
         if (listenAdapter != null) {
             listenAdapter.notifyDataSetChanged();
         }

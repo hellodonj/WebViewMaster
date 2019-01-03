@@ -112,7 +112,7 @@ public class AchievementStatisticsFragment extends ContactsListFragment {
                 }
             }
             //答题卡的信息
-            DEFAULT_TITLE_LIST[4] = getString(R.string.str_less_than) + (fullMarkScore * 0.6) +
+            DEFAULT_TITLE_LIST[4] = getString(R.string.str_less_than) + (int)(fullMarkScore * 0.6) +
                     getString(R.string.str_scores);
         } else {
             DEFAULT_TITLE_LIST[0] = "90-100" + getString(R.string.str_scores);
