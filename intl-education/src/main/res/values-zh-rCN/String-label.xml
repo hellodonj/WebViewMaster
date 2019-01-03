@@ -188,7 +188,7 @@
     <string name="label_image_saved_to">图片已保存至%s</string>
     <string name="label_image_save_failed">图片保存失败</string>
     <string name="label_image_save_to_photo">保存到相册</string>
-    <string name="label_tab_course_empty_remind">还没有参加课程学习？</string>
+    <string name="label_tab_course_empty_remind">还没有参加习教辅学习？</string>
     <string name="label_tab_class_empty_remind">还没有参加在线课堂？</string>
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
