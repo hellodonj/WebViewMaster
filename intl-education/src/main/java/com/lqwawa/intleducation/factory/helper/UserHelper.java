@@ -154,6 +154,10 @@ public class UserHelper {
                 if (result.isSucceed()) {
                     CoinEntity entity = result.getData();
                     if(EmptyUtil.isNotEmpty(callback)){
+                        if(EmptyUtil.isEmpty(entity)){
+                            entity = new CoinEntity();
+                            entity.setAmount(0);
+                        }
                         callback.onDataLoaded(entity);
                     }
                 }else{
