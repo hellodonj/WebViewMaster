@@ -219,7 +219,7 @@
     <string name="label_old_in_class">已指定班级</string>
     <string name="label_picker_class">选择班级</string>
     <string name="label_cancel_order">取消订单</string>
-    <string name="label_watch_more_course">查看更多课程</string>
+    <string name="label_watch_more_course">查看更多习教辅</string>
     <string name="label_basics_course">基础课程</string>
     <string name="label_class_notice_default_text">暂无通知</string>
     <string name="label_committed_list">提交列表</string>
