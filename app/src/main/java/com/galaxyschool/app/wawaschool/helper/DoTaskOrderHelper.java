@@ -547,6 +547,7 @@ public class DoTaskOrderHelper {
                                 Activity activity = (Activity) mContext;
                                 LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getContext());
                                 broadcastManager.sendBroadcast(new Intent(CompletedHomeworkListFragment.ACTION_MARK_SCORE));
+                                HomeworkCommitFragment.setHasCommented(true);
                                 activity.finish();
                             }
                         }

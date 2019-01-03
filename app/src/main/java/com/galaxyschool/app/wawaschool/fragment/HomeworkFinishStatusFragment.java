@@ -204,6 +204,8 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                                     return;
                                 } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                                         || taskType == StudyTaskType.SUPER_TASK
+                                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
+                                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                                         || isSuperChildTask) {
                                     //听说+读写
                                     enterStudentListenReadAndWriteListActivity(data);
@@ -287,7 +289,12 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
         } else {
             args.putInt("TaskType", taskType);
         }
-        args.putString("TaskId", String.valueOf(data.getTaskId()));
+        if (taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
+            args.putString("TaskId", taskId);
+        } else {
+            args.putString("TaskId", String.valueOf(data.getTaskId()));
+        }
         args.putString(HomeworkFinishStatusActivity.Constants.TASK_TITLE, data.getStudentName());
         args.putBoolean(HomeworkFinishStatusActivity.Constants.EXTRA_STUDENT_FINISH_STUDY_TASK_LIST, true);
         args.putString(HomeworkFinishStatusActivity.Constants.SORT_STUDENT_ID, data.getStudentId());

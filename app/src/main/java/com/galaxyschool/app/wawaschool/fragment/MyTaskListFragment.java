@@ -586,6 +586,7 @@ public class MyTaskListFragment extends ContactsListFragment {
         ListenReadAndWriteStudyTaskFragment fragment = new ListenReadAndWriteStudyTaskFragment();
         Bundle args = getArguments();
         args.putInt("TaskType", Integer.valueOf(selectHomeworkInfo.getTaskType()));
+        args.putString("TaskId",selectHomeworkInfo.getTaskId());
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
         args.putSerializable(ListenReadAndWriteStudyTaskFragment.Constants.EXTRA_TASK_INFO_DATA, selectHomeworkInfo);
         fragment.setArguments(args);

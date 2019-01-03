@@ -1044,12 +1044,14 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 //        entryMap.put(item.type, item);
 
         //科目设置
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBJECT_SETTING;
-        item.title = getString(R.string.str_subject_setting);
-        item.resId = R.drawable.icon_subject_setting;
-        itemList.add(item);
-        entryMap.put(item.type, item);
+        if (isRealTeacher()) {
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBJECT_SETTING;
+            item.title = getString(R.string.str_subject_setting);
+            item.resId = R.drawable.icon_subject_setting;
+            itemList.add(item);
+            entryMap.put(item.type, item);
+        }
 
         //设备管理
         item = new TabEntityPOJO();
@@ -1199,7 +1201,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                         }
                         userNameTxt.setText(userName);
                         getMyApplication().setUserInfo(userInfo);
-                        loadTopGridViewEntityData();
+                        loadEntityData();
                     }
                 });
         prepareLoadPushMessage();
