@@ -414,7 +414,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     @Override
     protected void onRestart() {
         super.onRestart();
-        requestClassCourse(false);
+        // requestClassCourse(false);
+        // 刷新标签和课程
+        // mPresenter.requestClassConfigData(mClassId);
     }
 
     /**
@@ -990,7 +992,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 提示添加成功
         UIUtil.showToastSafe(R.string.label_add_succeed);
         // 刷新UI
-        requestClassCourse(false);
+        // requestClassCourse(false);
+
+        // 刷新标签和课程
+        mPresenter.requestClassConfigData(mClassId);
     }
 
     /**
