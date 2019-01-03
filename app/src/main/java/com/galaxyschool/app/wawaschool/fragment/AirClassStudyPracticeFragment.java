@@ -325,11 +325,10 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
                             homeworkStatusLayout.setVisibility(View.INVISIBLE);
                         }
                     }
-
+                    //按时间作答题的任务
+                    RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
                     //显示未到开始时间的锁
                     if (lockingPermission(data)){
-                        //按时间作答题的任务
-                        RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
                         boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
                                 .getServerNowTime(),data.getStartTime(),true);
                         if (arriveDoTime){
@@ -337,9 +336,11 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
                         } else {
                             rlLocking.setVisibility(View.VISIBLE);
                             rlLocking.setOnClickListener(v -> {
-                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_arrive_task_start_time);
+                                ToastUtil.showToast(getActivity(),R.string.str_not_yet_time_not_answer);
                             });
                         }
+                    } else {
+                        rlLocking.setVisibility(View.GONE);
                     }
 
                     view.setTag(holder);

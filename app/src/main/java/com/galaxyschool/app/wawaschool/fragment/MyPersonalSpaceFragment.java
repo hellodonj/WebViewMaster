@@ -1192,7 +1192,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                             userInfo.setMemberId(memberId);
                         }
                         getThumbnailManager().displayUserIconWithDefault(AppSettings.getFileUrl(
-                                userInfo.getHeaderPic()), userIconView, R.drawable.default_avatar);
+                                userInfo.getHeaderPic()), userIconView, R.drawable.default_user_icon);
                         String userName = userInfo.getRealName();
                         if (TextUtils.isEmpty(userName)) {
                             userName = userInfo.getNickName();
