@@ -306,7 +306,9 @@
     <string name="label_all_donation">全部转赠</string>
     <string name="label_add_subject">添加科目</string>
     <string name="label_donation_money_desc">转赠: %s</string>
-    <string name="label_Generation_of_charge_desc">代充: %s</string>
+    <string name="label_other_donation_money_desc">他人转赠: %s</string>
+    <string name="label_generation_of_charge_desc">代充: %s</string>
+    <string name="label_other_generation_of_charge_desc">他人代充: %s</string>
     <string name="label_add_course_lines">添加\n学程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
 

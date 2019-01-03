@@ -80,9 +80,9 @@ public class CoinsDetailAdapter extends BaseAdapter {
                     break;
                 case 1:
                 case 2:
-                    String benefitStr = UIUtil.getString(R.string.label_donation_money_desc);
+                    String benefitStr = UIUtil.getString(R.string.label_other_donation_money_desc);
                     if(info.getRechargeType() == 1){
-                        benefitStr = UIUtil.getString(R.string.label_Generation_of_charge_desc);
+                        benefitStr = UIUtil.getString(R.string.label_other_generation_of_charge_desc);
                     }
 
                     SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
