@@ -39,4 +39,9 @@ public abstract class EventConstant {
 	 */
 	public static final String TRIGGER_SEARCH_CALLBACK_EVENT = "TRIGGER_SEARCH_CALLBACK_EVENT";
 
+	/**
+	 * 退出课程
+	 */
+	public static final String TRIGGER_EXIT_COURSE = "TRIGGER_EXIT_COURSE";
+
 }

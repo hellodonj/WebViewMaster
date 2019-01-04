@@ -14,9 +14,15 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -116,6 +122,9 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     @Override
     protected void initData() {
         super.initData();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
         mPresenter.requestStudentConfigData(mCurMemberId);
     }
 
@@ -177,5 +186,20 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }
 
         MyCourseConfigDetailActivity.show(getActivity(),configEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull EventWrapper event){
+        if(EventWrapper.isMatch(event,EventConstant.TRIGGER_EXIT_COURSE)){
+            getData();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

@@ -316,6 +316,10 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (result.getCode() == 0) {
+
+                    // 发送刷新标签的通知
+                    EventBus.getDefault().post(new EventWrapper(null,EventConstant.TRIGGER_EXIT_COURSE));
+
                     ToastUtil.showToast(activity, getResources().getString(R.string.exit_course)
                             + getResources().getString(R.string.success));
                     pullToRefreshView.showRefresh();
