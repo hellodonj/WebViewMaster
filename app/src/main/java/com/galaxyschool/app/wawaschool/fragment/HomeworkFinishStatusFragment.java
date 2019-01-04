@@ -434,7 +434,10 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                     UnCompletedListInfo data = (UnCompletedListInfo) holder.data;
 
                     if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
-                            || taskType == StudyTaskType.SUPER_TASK || isSuperChildTask) {
+                            || taskType == StudyTaskType.SUPER_TASK
+                            || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
+                            || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                            || isSuperChildTask) {
                         enterStudentListenReadAndWriteListActivity(data.toCompleteListInfo());
                     }
                 }
