@@ -24,7 +24,7 @@ public class CheckLanMp4UrlHelper {
     //http://118.190.103.67/video/cache/test.mp4
     private Context mContext;
     //校内网模式的IP地址
-    private String headUrl = "118.190.103.67";
+    private String headUrl = null;
     private String bodyUrl = "/video/cache/";
     private CallbackListener callBackListener;
     private String resTitle;
@@ -53,7 +53,6 @@ public class CheckLanMp4UrlHelper {
     public void checkLanUrl(boolean isCheckTitle) {
         //判断当前WiFi是不是打开的状态
         boolean isWiFiOpen = NetworkHelper.isWifiConnected(mContext);
-        checkTypeCondition(isCheckTitle);
         if (isWiFiOpen) {
             if (judgeCurrentApplicationModel()) {
                 //校内网模式
@@ -136,16 +135,12 @@ public class CheckLanMp4UrlHelper {
      * @return 替换后的resUrl
      */
     private String getChangeIPUrl(String resUrl) {
-        if (!TextUtils.isEmpty(resUrl) && resUrl.contains("http:")) {
-            String[] splitArray = resUrl.split("/");
-            if (splitArray != null && splitArray.length > 0) {
-                for (int i = 0, len = splitArray.length; i < len; i++) {
-                    String tempData = splitArray[i];
-                    if (!TextUtils.isEmpty(tempData) && tempData.contains(".com")) {
-                        resUrl = resUrl.replace(tempData, headUrl);
-                        break;
-                    }
-                }
+        if (!TextUtils.isEmpty(resUrl) && (resUrl.contains("http:") || resUrl.contains("https:"))) {
+            int startIndex = resUrl.indexOf("//");
+            int endIndex = resUrl.indexOf("/",startIndex +2);
+            String tempData = resUrl.substring(startIndex + 2,endIndex);
+            if (!TextUtils.isEmpty(tempData)){
+                resUrl = resUrl.replace(tempData, headUrl);
             }
         }
         return resUrl;
