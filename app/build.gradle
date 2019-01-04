@@ -25,6 +25,12 @@ dependencies {
     compile 'com.github.NodeMedia:NodeMediaClient-Android:2.4.2'
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    //小米
+    compile 'cn.jiguang.sdk.plugin:xiaomi:3.1.5'
+    //华为
+    compile'cn.jiguang.sdk.plugin:huawei:3.1.5'
+    //魅族
+    compile'cn.jiguang.sdk.plugin:meizu:3.1.5'
 }
 
 static def releaseTime() {
@@ -73,7 +79,15 @@ android {
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
-            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919", EASEMOB_APPKEY: "lqwwxx#newlqwawa"]
+            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919",
+                                    EASEMOB_APPKEY: "lqwwxx#newlqwawa",
+                                    JPUSH_PKGNAME: "com.galaxyschool.app.wawaschool",
+                                    XIAOMI_APPKEY: "MI-5161744662580",//小米平台的appKey
+                                    XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
+                                    HUAWEI_APPID: "appid=10468811",//华为的appId
+                                    MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
+                                    MEIZU_APPID: "MZ-117876"
+            ]
         }
 
         release {
@@ -86,7 +100,15 @@ android {
 
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919", EASEMOB_APPKEY: "lqwwxx#newlqwawa"]
+            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919",
+                                    EASEMOB_APPKEY: "lqwwxx#newlqwawa",
+                                    JPUSH_PKGNAME: "com.galaxyschool.app.wawaschool",
+                                    XIAOMI_APPKEY: "MI-5161744662580",//小米平台的appKey
+                                    XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
+                                    HUAWEI_APPID: "appid=10468811",//华为的appId
+                                    MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
+                                    MEIZU_APPID: "MZ-117876"
+            ]
         }
 
         staging {

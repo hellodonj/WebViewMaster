@@ -15,6 +15,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.bitmapmanager.ThumbnailManager;
+import com.galaxyschool.app.wawaschool.common.LogUtils;
 import com.galaxyschool.app.wawaschool.common.PrefsManager;
 import com.galaxyschool.app.wawaschool.common.SharedPreferencesHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -34,6 +35,8 @@ import com.osastudio.apps.Config;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.xiaomi.mipush.sdk.MiPushClient;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -45,6 +48,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
+
+import cn.jpush.android.api.ThirdLogger;
 
 public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
     /**
@@ -220,6 +225,9 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         ErrorCodeUtil.getInstance().init(getApplicationContext());
         //极光推送
         PushUtils.init(getApplicationContext());
+        String regId = MiPushClient.getRegId(getApplicationContext());
+        LogUtils.log("TTT","resId=" + regId);
+//        MiPushClient.registerPush(this, "MI-2882303761517446580", "MI-5161744662580");
     }
 
     public static float getXDPI() {

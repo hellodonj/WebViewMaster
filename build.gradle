@@ -26,6 +26,8 @@ allprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
+        //华为
+        maven{url'http://developer.huawei.com/repo/'}
     }
 }
 
