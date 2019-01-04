@@ -41,6 +41,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -1584,7 +1585,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 // 获取中英文数据
                 int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
                 // 获取分类数据 英语国际课程,英语国内课程 等 获取第一级别
-                LQCourseHelper.requestLQBasicsConfigData(languageRes, new DataSource.Callback<List<LQBasicsOuterEntity>>() {
+                /*LQCourseHelper.requestLQBasicsConfigData(languageRes, new DataSource.Callback<List<LQBasicsOuterEntity>>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
                         // 重要的数据发生异常了，才弹提示
@@ -1593,6 +1594,23 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
                     @Override
                     public void onDataLoaded(List<LQBasicsOuterEntity> entities) {
+                        if(!EmptyUtil.isEmpty(entities)){
+                            // 基础课程 特殊一些
+                            BasicsCourseActivity.show(OrganCourseFiltrateActivity.this,mEntity,entities);
+                        }
+                    }
+                });*/
+
+                LQCourseHelper.requestLQHomeConfigData(languageRes, 1, 0, new DataSource.Callback<LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>>>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        // 重要的数据发生异常了，才弹提示
+                        UIUtil.showToastSafe(strRes);
+                    }
+
+                    @Override
+                    public void onDataLoaded(LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>> responseVo) {
+                        List<LQBasicsOuterEntity> entities = responseVo.getBasicConfig();
                         if(!EmptyUtil.isEmpty(entities)){
                             // 基础课程 特殊一些
                             BasicsCourseActivity.show(OrganCourseFiltrateActivity.this,mEntity,entities);
