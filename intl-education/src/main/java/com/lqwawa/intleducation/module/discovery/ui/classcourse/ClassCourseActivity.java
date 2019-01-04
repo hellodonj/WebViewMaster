@@ -461,6 +461,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * 触发更新
      */
     private void triggerUpdateData(){
+        if (EmptyUtil.isNotEmpty(mConfigEntities)){
+            clearConfigArrayStatus(mConfigEntities);
+        }
         requestClassCourse(false);
     }
 
@@ -667,6 +670,22 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     }
 
     /**
+     * 清空默认设置科目的选择状态
+     * @param array 标签数据
+     */
+    private void clearConfigArrayStatus(@NonNull List<LQCourseConfigEntity> array){
+        if(EmptyUtil.isEmpty(array)) return;
+
+        for (LQCourseConfigEntity entity:array) {
+            entity.setSelected(false);
+
+            // 递归调用
+            List<LQCourseConfigEntity> childList = entity.getChildList();
+            clearConfigArrayStatus(childList);
+        }
+    }
+
+    /**
      * 递归调用
      */
     private void recursionConfigArray(@NonNull List<LQCourseConfigEntity> array){
@@ -719,19 +738,36 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      */
     private void initTabControl(){
         initTabControl1();
-        initTabControl2();
-        initTabControl3();
+        // initTabControl2();
+        // initTabControl3();
     }
 
     private void initTabControl1(){
         mTabLayout1.removeAllTabs();
+        // 查看是否有Selected的
+        boolean haveSelected = false;
+        for (Tab tab:mFiltrateArray1) {
+            if(tab.isSelected()){
+                haveSelected = true;
+                break;
+            }
+        }
+
+        boolean setSelected = false;
         for (Tab tab:mFiltrateArray1) {
             View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
             TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
             tvContent.setText(tab.getConfigValue());
             // 将tab数据作为Tag设置到TabLayout的TabLayout.Tab上
             TabLayout.Tab newTab = mTabLayout1.newTab().setCustomView(tabView).setTag(tab);
-            mTabLayout1.addTab(newTab,mTabLayout1.getTabCount() == 0);
+
+            if(!setSelected){
+                setSelected = (mTabLayout1.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                mTabLayout1.addTab(newTab,setSelected);
+            }else{
+                // 已经添加过已经选择的Tab
+                mTabLayout1.addTab(newTab);
+            }
         }
 
 
@@ -740,12 +776,30 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private void initTabControl2(){
         mTabLayout2.removeAllTabs();
+
+        // 查看是否有Selected的
+        boolean haveSelected = false;
+        for (Tab tab:mFiltrateArray2) {
+            if(tab.isSelected()){
+                haveSelected = true;
+                break;
+            }
+        }
+
+        boolean setSelected = false;
         for (Tab tab:mFiltrateArray2) {
             View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
             TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
             tvContent.setText(tab.getConfigValue());
             TabLayout.Tab newTab = mTabLayout2.newTab().setCustomView(tabView).setTag(tab);
-            mTabLayout2.addTab(newTab);
+
+            if(!setSelected){
+                setSelected = (mTabLayout2.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                mTabLayout2.addTab(newTab,setSelected);
+            }else{
+                // 已经添加过已经选择的Tab
+                mTabLayout2.addTab(newTab);
+            }
         }
 
         mTabLayout2.smoothScrollTo(0,0);
@@ -753,13 +807,31 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private void initTabControl3(){
         mTabLayout3.removeAllTabs();
+
+        // 查看是否有Selected的
+        boolean haveSelected = false;
+        for (Tab tab:mFiltrateArray3) {
+            if(tab.isSelected()){
+                haveSelected = true;
+                break;
+            }
+        }
+
+        boolean setSelected = false;
         if(EmptyUtil.isNotEmpty(mFiltrateArray3)){
             for (Tab tab:mFiltrateArray3) {
                 View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
                 TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
                 tvContent.setText(tab.getConfigValue());
                 TabLayout.Tab newTab = mTabLayout3.newTab().setCustomView(tabView).setTag(tab);
-                mTabLayout3.addTab(newTab);
+
+                if(!setSelected){
+                    setSelected = (mTabLayout3.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                    mTabLayout3.addTab(newTab,setSelected);
+                }else{
+                    // 已经添加过已经选择的Tab
+                    mTabLayout3.addTab(newTab);
+                }
             }
         }
 

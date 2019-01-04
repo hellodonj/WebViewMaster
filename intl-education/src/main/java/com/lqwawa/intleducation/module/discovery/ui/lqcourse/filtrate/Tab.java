@@ -25,6 +25,7 @@ public class Tab {
     private String level;
     private boolean isAll;
     private boolean selected;
+    private boolean firstSelected;
     private List<LQCourseConfigEntity> childList;
 
     private Tab() {
@@ -86,6 +87,14 @@ public class Tab {
         this.selected = selected;
     }
 
+    public boolean isFirstSelected() {
+        return firstSelected;
+    }
+
+    public void setFirstSelected(boolean firstSelected) {
+        this.firstSelected = firstSelected;
+    }
+
     public List<LQCourseConfigEntity> getChildList() {
         return childList;
     }
@@ -121,6 +130,8 @@ public class Tab {
         tab.labelId = entity.getLabelId();
         tab.level = entity.getLevel();
         tab.childList = entity.getChildList();
+        // 科目设置默认选中
+        tab.firstSelected = entity.isSelected();
         return tab;
     }
 
