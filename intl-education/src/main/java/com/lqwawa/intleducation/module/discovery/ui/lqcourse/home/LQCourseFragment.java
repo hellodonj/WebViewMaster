@@ -191,7 +191,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
             @Override
             public void onHeaderRefresh(PullToRefreshView view) {
                 mPresenter.start();
-                mPresenter.requestNewBasicConfig();
+                // mPresenter.requestNewBasicConfig();
             }
         });
         mRefreshLayout.setLoadMoreEnable(false);
@@ -249,7 +249,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
             // 3是基础课程
             // mBasicsHolder.updateView(entities.get(3));
             // 标签数据抓到了，获取基础课程数据
-            mPresenter.requestNewBasicConfig();
+            // mPresenter.requestNewBasicConfig();
         }catch (Exception e){
             e.printStackTrace();
             LogUtil.e(getClass(),"数组越界异常");

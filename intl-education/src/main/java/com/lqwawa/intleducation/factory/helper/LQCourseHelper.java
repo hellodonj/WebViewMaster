@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -142,6 +143,52 @@ public class LQCourseHelper {
     }
 
     /**
+     * 获取LQ学程首页分类数据 V5.12使用
+     * {@link LanguageType.LanguageRes}
+     * @param isZh 是否中文显示 0 chinese 1 other
+     * @param level 返回level级别课程
+     * @param parentId 父级Id
+     * @param callback 数据回调接口
+     */
+    public static void requestLQHomeConfigData(@LanguageType.LanguageRes int isZh,
+                                               int level,int parentId,
+                                               @NonNull final DataSource.Callback<LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>>> callback){
+        final RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language",isZh);
+        requestVo.addParams("level",level);
+        requestVo.addParams("parentId",parentId);
+        requestVo.addParams("version",1);
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetConfigList+requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(LQCourseHelper.class,"request "+params.getUri()+" result :"+str);
+                TypeReference<LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>>> typeReference =
+                        new TypeReference<LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>>>(){};
+                LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>> result = JSON.parseObject(str, typeReference);
+                if(result.isSucceed()){
+                    if(!EmptyUtil.isEmpty(callback)){
+                        callback.onDataLoaded(result);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
      * 获取LQ学程分类数据
      * {@link LanguageType.LanguageRes}
      * @param isZh 是否中文显示 0 chinese 1 other
@@ -157,7 +204,7 @@ public class LQCourseHelper {
         requestVo.addParams("language",isZh);
         requestVo.addParams("level",level);
         requestVo.addParams("parentId",parentId);
-        requestVo.addParams("version",0);
+        requestVo.addParams("version",1);
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetConfigList+requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());

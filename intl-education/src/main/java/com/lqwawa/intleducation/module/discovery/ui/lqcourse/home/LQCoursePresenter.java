@@ -11,6 +11,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.LiveHelper;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
@@ -69,7 +70,7 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         // 获取分类数据 英语国际课程,英语国内课程 等 获取第一级别
-        LQCourseHelper.requestLQCourseConfigData(languageRes, 1, 0, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        /*LQCourseHelper.requestLQCourseConfigData(languageRes, 1, 0, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 // 重要的数据发生异常了，才弹提示
@@ -83,7 +84,30 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
                     view.updateConfigViews(lqCourseConfigEntities);
                 }
             }
+        });*/
+
+        LQCourseHelper.requestLQHomeConfigData(languageRes, 1, 0, new DataSource.Callback<LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                // 重要的数据发生异常了，才弹提示
+                UIUtil.showToastSafe(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(LQConfigResponseVo<List<LQCourseConfigEntity>,List<LQBasicsOuterEntity>> responseVo) {
+                final LQCourseContract.View view = (LQCourseContract.View) getView();
+                List<LQCourseConfigEntity> data = responseVo.getData();
+                if(!EmptyUtil.isEmpty(data) && !EmptyUtil.isEmpty(view)){
+                    view.updateConfigViews(data);
+                }
+
+                List<LQBasicsOuterEntity> basicConfig = responseVo.getBasicConfig();
+                if(!EmptyUtil.isEmpty(basicConfig) && !EmptyUtil.isEmpty(view)){
+                    view.updateNewBasicsConfigView(basicConfig);
+                }
+            }
         });
+
 
         // 添加直播
         // @date   :2018/6/7 0007 下午 6:27
