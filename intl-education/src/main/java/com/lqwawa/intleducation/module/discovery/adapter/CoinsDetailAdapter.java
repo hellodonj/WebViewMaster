@@ -70,8 +70,14 @@ public class CoinsDetailAdapter extends BaseAdapter {
         Date date = new Date(info.getCreateTime());
         holder.tvTime.setText(simpleDateFormat.format(date));
         if (info.getVtype() == 0) {
-            holder.tvCount.setTextColor(Color.parseColor("#01913a"));
-            holder.tvCount.setText("+" + info.getAmount());
+
+            if(info.getRechargeType() == -4){
+                holder.tvCount.setVisibility(View.GONE);
+            }else{
+                holder.tvCount.setVisibility(View.VISIBLE);
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
+                holder.tvCount.setText("+" + info.getAmount());
+            }
 
             switch (info.getRechargeType()){
                 case 0:
@@ -80,9 +86,14 @@ public class CoinsDetailAdapter extends BaseAdapter {
                     break;
                 case 1:
                 case 2:
-                    String benefitStr = UIUtil.getString(R.string.label_donation_money_desc);
+                case -4:
+                    // 给他人充值
+                    String benefitStr = UIUtil.getString(R.string.label_other_donation_money_desc);
                     if(info.getRechargeType() == 1){
-                        benefitStr = UIUtil.getString(R.string.label_Generation_of_charge_desc);
+                        benefitStr = UIUtil.getString(R.string.label_other_generation_of_charge_desc);
+                    }else if(info.getRechargeType() == -4){
+                        // 代充
+                        benefitStr = UIUtil.getString(R.string.label_generation_of_charge_desc);
                     }
 
                     SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
@@ -111,6 +122,7 @@ public class CoinsDetailAdapter extends BaseAdapter {
                     break;
             }
         } else {
+            holder.tvCount.setVisibility(View.VISIBLE);
             holder.tvCount.setTextColor(Color.parseColor("#161616"));
             holder.tvCount.setText("-" + info.getAmount());
             if (info.getConsumeType() == 0){

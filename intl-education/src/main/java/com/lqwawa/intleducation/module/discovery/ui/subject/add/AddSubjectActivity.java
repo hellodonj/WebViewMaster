@@ -73,6 +73,12 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
     public void updateAssignConfigView(@NonNull List<LQCourseConfigEntity> entities) {
         hideLoading();
         mAdapter.setData(entities);
+
+        // 展开所有科目
+        int groupCount = mAdapter.getGroupCount();
+        for (int index = 0;index < groupCount;index++) {
+            mExpandableView.expandGroup(index);
+        }
     }
 
     @Override

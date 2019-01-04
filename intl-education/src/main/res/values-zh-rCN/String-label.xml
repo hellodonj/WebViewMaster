@@ -188,7 +188,7 @@
     <string name="label_image_saved_to">图片已保存至%s</string>
     <string name="label_image_save_failed">图片保存失败</string>
     <string name="label_image_save_to_photo">保存到相册</string>
-    <string name="label_tab_course_empty_remind">还没有参加课程学习？</string>
+    <string name="label_tab_course_empty_remind">还没有参加习教辅学习？</string>
     <string name="label_tab_class_empty_remind">还没有参加在线课堂？</string>
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
@@ -219,7 +219,7 @@
     <string name="label_old_in_class">已指定班级</string>
     <string name="label_picker_class">选择班级</string>
     <string name="label_cancel_order">取消订单</string>
-    <string name="label_watch_more_course">查看更多课程</string>
+    <string name="label_watch_more_course">查看更多习教辅</string>
     <string name="label_basics_course">基础课程</string>
     <string name="label_class_notice_default_text">暂无通知</string>
     <string name="label_committed_list">提交列表</string>
@@ -304,6 +304,7 @@
     <!--V5.12字符串-->
     <string name="label_give_money">转赠他人</string>
     <string name="label_give_money_tip_title">请选择充值用户</string>
+    <string name="label_this_account_not_available">该账号不存在</string>
     <string name="label_current_choice_subject">当前已选科目</string>
     <string name="label_please_choice_subject">请选择授课科目</string>
     <string name="label_please_choice_donation_user">请选择转赠用户</string>
@@ -312,7 +313,9 @@
     <string name="label_all_donation">全部转赠</string>
     <string name="label_add_subject">添加科目</string>
     <string name="label_donation_money_desc">转赠: %s</string>
-    <string name="label_Generation_of_charge_desc">代充: %s</string>
+    <string name="label_other_donation_money_desc">他人转赠: %s</string>
+    <string name="label_generation_of_charge_desc">代充: %s</string>
+    <string name="label_other_generation_of_charge_desc">他人代充: %s</string>
     <string name="label_add_course_lines">添加\n学程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
 

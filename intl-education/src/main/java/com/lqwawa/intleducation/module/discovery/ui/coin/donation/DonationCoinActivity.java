@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.user.CoinEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
@@ -215,11 +216,13 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                 // 置空
                 mChildContainer.setTag(null);
                 StringUtil.fillSafeTextView(mQueryName,"");
+                UIUtil.showToastSafe(R.string.label_this_account_not_available);
             }
         }else{
             // 置空
             mChildContainer.setTag(null);
             StringUtil.fillSafeTextView(mQueryName,"");
+            UIUtil.showToastSafe(R.string.label_this_account_not_available);
         }
     }
 
@@ -269,7 +272,47 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                                     user = UserParams.buildUser(tag);
                                 }else{
                                     // 提示
-                                    UIUtil.showToastSafe(R.string.label_please_choice_donation_user);
+                                    // UIUtil.showToastSafe(R.string.label_please_choice_donation_user);
+                                    // return;
+
+                                    // 此时请求
+                                    String inputName = mInputName.getText().toString().trim();
+                                    if(EmptyUtil.isEmpty(inputName)) return;
+
+                                    List<UserModel> members = new ArrayList<>();
+                                    UserModel model = new UserModel(inputName);
+                                    members.add(model);
+
+                                    mBtnConfirm.setEnabled(false);
+                                    com.lqwawa.intleducation.factory.helper.UserHelper.requestRealNameWithNick(false, members, new DataSource.Callback<List<UserEntity>>() {
+                                        @Override
+                                        public void onDataNotAvailable(int strRes) {
+                                            UIUtil.showToastSafe(strRes);
+                                            mBtnConfirm.setEnabled(true);
+                                        }
+
+
+                                        @Override
+                                        public void onDataLoaded(List<UserEntity> entities) {
+                                            if(EmptyUtil.isNotEmpty(entities)){
+                                                mBtnConfirm.setEnabled(true);
+                                                if(EmptyUtil.isNotEmpty(entities)){
+                                                    // 获取到用户信息
+                                                    UserEntity entity = entities.get(0);
+                                                    if(entity.isIsExist()){
+                                                        UserParams user = UserParams.buildUser(entity);
+                                                        balanceDonation(user);
+                                                    }else{
+                                                        UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                    }
+                                                }else{
+                                                    UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    // 不走下面的逻辑
                                     return;
                                 }
                             }
@@ -286,35 +329,44 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                 }
             }
 
-            if(EmptyUtil.isEmpty(user)){
-                // 提示
-                UIUtil.showToastSafe(R.string.label_please_choice_donation_user);
-                return;
-            }
+            balanceDonation(user);
 
-            // 转赠金额
-            String inputMoney = mInputMoney.getText().toString().trim();
-            if(EmptyUtil.isEmpty(inputMoney)){
-                // 请输入转赠金额
-                UIUtil.showToastSafe(R.string.label_please_input_donation_money);
-                return;
-            }
-
-            int money = Integer.parseInt(inputMoney);
-            final CoinEntity entity = mCoinEntity;
-            if(money > entity.getAmount()){
-                // 输入的转赠金额大于余额
-                UIUtil.showToastSafe(R.string.tip_not_sufficient_funds);
-                return;
-            }
-
-            String memberId = UserHelper.getUserId();
-            String beneficiaryId = user.getMemberId();
-            int amount = Integer.parseInt(inputMoney);
-            showLoading();
-            mBtnConfirm.setEnabled(false);
-            mPresenter.requestBalanceDonation(memberId,beneficiaryId,amount);
         }
+    }
+
+    /**
+     * 转赠
+     * @param user 转赠的对象
+     */
+    private void balanceDonation(@NonNull UserParams user){
+        if(EmptyUtil.isEmpty(user)){
+            // 提示
+            UIUtil.showToastSafe(R.string.label_please_choice_donation_user);
+            return;
+        }
+
+        // 转赠金额
+        String inputMoney = mInputMoney.getText().toString().trim();
+        if(EmptyUtil.isEmpty(inputMoney)){
+            // 请输入转赠金额
+            UIUtil.showToastSafe(R.string.label_please_input_donation_money);
+            return;
+        }
+
+        int money = Integer.parseInt(inputMoney);
+        final CoinEntity entity = mCoinEntity;
+        if(money > entity.getAmount()){
+            // 输入的转赠金额大于余额
+            UIUtil.showToastSafe(R.string.tip_not_sufficient_funds);
+            return;
+        }
+
+        String memberId = UserHelper.getUserId();
+        String beneficiaryId = user.getMemberId();
+        int amount = Integer.parseInt(inputMoney);
+        showLoading();
+        mBtnConfirm.setEnabled(false);
+        mPresenter.requestBalanceDonation(memberId,beneficiaryId,amount);
     }
 
     @Override

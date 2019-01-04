@@ -74,6 +74,11 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
     @Override
     public void updateTeacherConfigView(@NonNull List<LQCourseConfigEntity> entities) {
         mAdapter.setData(entities);
+        // 展开所有科目
+        int groupCount = mAdapter.getGroupCount();
+        for (int index = 0;index < groupCount;index++) {
+            mExpandableView.expandGroup(index);
+        }
     }
 
     @Override
