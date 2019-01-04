@@ -77,6 +77,7 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
 
         mHeaderStub = (ViewStub) view.findViewById(R.id.header_stub);
         mRecycler = (RecyclerView) view.findViewById(R.id.recycler);
+        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2,8,false));
 
         mTitleLayout.setOnClickListener(new OnClickListener() {
             @Override
@@ -113,7 +114,6 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
         };
 
         mRecycler.setLayoutManager(mLayoutManager);
-        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2,8,false));
         if(mViewerType > ViewerType.VIEWER_TYPE_EIGHT){
             // 当前有很多Item 切除多余的Item
             sources = new ArrayList<>(sources.subList(0,8));
@@ -167,6 +167,9 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
                 course3.setTag(entity3);
                 ImageUtil.fillDefaultView(course3,entity3.getThumbnail());
 
+                course1.postInvalidate();
+                course2.postInvalidate();
+                course3.postInvalidate();
                 course1.setOnClickListener(this);
                 course2.setOnClickListener(this);
                 course3.setOnClickListener(this);
