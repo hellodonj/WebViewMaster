@@ -49,8 +49,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import cn.jpush.android.api.ThirdLogger;
-
 public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
     /**
      * It is the design ui width.
@@ -227,7 +225,6 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         PushUtils.init(getApplicationContext());
         String regId = MiPushClient.getRegId(getApplicationContext());
         LogUtils.log("TTT","resId=" + regId);
-//        MiPushClient.registerPush(this, "MI-2882303761517446580", "MI-5161744662580");
     }
 
     public static float getXDPI() {
