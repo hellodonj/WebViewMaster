@@ -21,6 +21,7 @@ public class Tab {
     private String level;
     private boolean isAll;
     private boolean checked;
+    private boolean selected;
     private List<LQCourseConfigEntity> childList;
 
     private Tab() {
@@ -82,6 +83,14 @@ public class Tab {
         this.checked = checked;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     public List<LQCourseConfigEntity> getChildList() {
         return childList;
     }
@@ -116,6 +125,9 @@ public class Tab {
         tab.labelId = entity.getLabelId();
         tab.level = entity.getLevel();
         tab.childList = entity.getChildList();
+
+        // 选中状态,也要赋值进去
+        tab.selected = entity.isSelected();
         return tab;
     }
 
