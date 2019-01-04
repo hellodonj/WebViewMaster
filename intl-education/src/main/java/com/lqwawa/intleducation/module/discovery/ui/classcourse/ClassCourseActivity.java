@@ -461,6 +461,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * 触发更新
      */
     private void triggerUpdateData(){
+        if (EmptyUtil.isNotEmpty(mConfigEntities)){
+            clearConfigArrayStatus(mConfigEntities);
+        }
         requestClassCourse(false);
     }
 
@@ -667,6 +670,22 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     }
 
     /**
+     * 清空默认设置科目的选择状态
+     * @param array 标签数据
+     */
+    private void clearConfigArrayStatus(@NonNull List<LQCourseConfigEntity> array){
+        if(EmptyUtil.isEmpty(array)) return;
+
+        for (LQCourseConfigEntity entity:array) {
+            entity.setSelected(false);
+
+            // 递归调用
+            List<LQCourseConfigEntity> childList = entity.getChildList();
+            clearConfigArrayStatus(childList);
+        }
+    }
+
+    /**
      * 递归调用
      */
     private void recursionConfigArray(@NonNull List<LQCourseConfigEntity> array){
@@ -719,8 +738,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      */
     private void initTabControl(){
         initTabControl1();
-        initTabControl2();
-        initTabControl3();
+        // initTabControl2();
+        // initTabControl3();
     }
 
     private void initTabControl1(){
