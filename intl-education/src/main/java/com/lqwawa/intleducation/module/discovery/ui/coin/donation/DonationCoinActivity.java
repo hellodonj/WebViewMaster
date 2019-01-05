@@ -257,8 +257,9 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
             }
         }else if(viewId == R.id.btn_confirm){
             // 确认转赠
-            // 确定
             UserParams user = null;
+            // 点击确定,就删Tag
+            mChildContainer.setTag(null);
 
             // 选择购买
             List<ChildrenListVo> items = mMemberAdapter.getItems();
