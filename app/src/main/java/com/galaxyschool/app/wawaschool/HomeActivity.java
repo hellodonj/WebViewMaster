@@ -62,8 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.jpush.android.api.JPluginPlatformInterface;
-
 public class HomeActivity extends BaseCompatActivity
         implements ToolbarBottomView.BottomViewClickListener, AccountListener {
 
@@ -141,8 +139,6 @@ public class HomeActivity extends BaseCompatActivity
         }
     };
 
-    private JPluginPlatformInterface pHuaweiPushInterface;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,8 +213,6 @@ public class HomeActivity extends BaseCompatActivity
                 }
             });
         }
-        pHuaweiPushInterface = new
-                JPluginPlatformInterface(this.getApplicationContext());
     }
 
     @Override
@@ -268,14 +262,6 @@ public class HomeActivity extends BaseCompatActivity
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (pHuaweiPushInterface != null){
-            pHuaweiPushInterface.onStart(this);
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (this.nextIndex >= 0) {
@@ -290,14 +276,6 @@ public class HomeActivity extends BaseCompatActivity
         if (mShareManager != null) {
             mShareManager
                     .setOpenPackage("com.oosic.apps.kuke_receiver/com.oosic.apps.iemaker_receiver.ShareBox");
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (pHuaweiPushInterface != null){
-            pHuaweiPushInterface.onStop(this);
         }
     }
 
@@ -554,12 +532,6 @@ public class HomeActivity extends BaseCompatActivity
 
         if (requestCode == REQUEST_CODE_EXIT && resultCode == RESULT_OK) {
             HomeActivity.this.finish();
-        }
-        if(requestCode == JPluginPlatformInterface.JPLUGIN_REQUEST_CODE) {
-            if (pHuaweiPushInterface != null) {
-                pHuaweiPushInterface.onActivityResult(this, requestCode,
-                        resultCode, data);
-            }
         }
     }
 
