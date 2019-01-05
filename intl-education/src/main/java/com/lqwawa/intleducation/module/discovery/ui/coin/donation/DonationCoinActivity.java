@@ -252,6 +252,8 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                 members.add(model);
                 mBtnWatchName.setEnabled(false);
                 mPresenter.requestUserInfoWithMembers(members);
+            }else{
+                UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
             }
         }else if(viewId == R.id.btn_confirm){
             // 确认转赠
@@ -270,6 +272,13 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                                 if(EmptyUtil.isNotEmpty(mChildContainer.getTag())){
                                     UserEntity tag = (UserEntity) mChildContainer.getTag();
                                     user = UserParams.buildUser(tag);
+
+                                    String account = UserHelper.getAccount();
+                                    String inputName = user.getNickName();
+                                    if(TextUtils.equals(account,inputName)){
+                                        UIUtil.showToastSafe(R.string.label_not_donation_self);
+                                        return;
+                                    }
                                 }else{
                                     // 提示
                                     // UIUtil.showToastSafe(R.string.label_please_choice_donation_user);
@@ -277,7 +286,16 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
 
                                     // 此时请求
                                     String inputName = mInputName.getText().toString().trim();
-                                    if(EmptyUtil.isEmpty(inputName)) return;
+                                    if(EmptyUtil.isEmpty(inputName)){
+                                        UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
+                                        return;
+                                    }
+
+                                    String account = UserHelper.getAccount();
+                                    if(TextUtils.equals(account,inputName)){
+                                        UIUtil.showToastSafe(R.string.label_not_donation_self);
+                                        return;
+                                    }
 
                                     List<UserModel> members = new ArrayList<>();
                                     UserModel model = new UserModel(inputName);

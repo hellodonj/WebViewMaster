@@ -309,6 +309,8 @@
     <string name="label_please_choice_subject">请选择授课科目</string>
     <string name="label_please_choice_donation_user">请选择转赠用户</string>
     <string name="label_please_input_donation_money">请输入转赠金额</string>
+    <string name="label_please_input_completed_right_account">请输入完整且正确的账号</string>
+    <string name="label_not_donation_self">无法转赠给自己</string>
     <string name="label_current_balance">当前余额%d蛙蛙币</string>
     <string name="label_all_donation">全部转赠</string>
     <string name="label_add_subject">添加科目</string>

@@ -195,6 +195,8 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                 members.add(model);
                 mBtnWatchName.setEnabled(false);
                 mPresenter.requestUserInfoWithMembers(members);
+            }else{
+                UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
             }
         }else if(viewId == R.id.btn_confirm){
             // 确定
@@ -219,7 +221,10 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
 
                                     // 此时请求
                                     String inputName = mInputName.getText().toString().trim();
-                                    if(EmptyUtil.isEmpty(inputName)) return;
+                                    if(EmptyUtil.isEmpty(inputName)){
+                                        UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
+                                        return;
+                                    }
 
                                     List<UserModel> members = new ArrayList<>();
                                     UserModel model = new UserModel(inputName);

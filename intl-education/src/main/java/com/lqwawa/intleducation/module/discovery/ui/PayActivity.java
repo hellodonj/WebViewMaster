@@ -36,6 +36,7 @@ import com.lqwawa.intleducation.lqpay.PayParams;
 import com.lqwawa.intleducation.lqpay.callback.OnPayInfoRequestListener;
 import com.lqwawa.intleducation.lqpay.callback.OnPayResultListener;
 import com.lqwawa.intleducation.lqpay.enums.PayWay;
+import com.lqwawa.intleducation.module.discovery.ui.coin.UserParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
@@ -603,6 +604,10 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         if (value) {
             //余额不足需要充值
             Intent intent = new Intent(this, ChargeCenterActivity.class);
+            Bundle bundle = new Bundle();
+            UserParams user = UserParams.buildUser(UserHelper.getUserInfo());
+            bundle.putSerializable(ChargeCenterActivity.KEY_EXTRA_USER,user);
+            intent.putExtras(bundle);
             startActivity(intent);
 
             return;
