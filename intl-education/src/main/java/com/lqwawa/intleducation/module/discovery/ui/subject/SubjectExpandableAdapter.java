@@ -145,8 +145,9 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         mGroupData.clear();
         if(EmptyUtil.isNotEmpty(groupData)){
             mGroupData.addAll(groupData);
-            notifyDataSetChanged();
         }
+
+        notifyDataSetChanged();
     }
 
     /**

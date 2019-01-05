@@ -39,7 +39,7 @@ public class SubjectPresenter extends BasePresenter<SubjectContract.View>
             @Override
             public void onDataLoaded(List<LQCourseConfigEntity> entities) {
                 final SubjectContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view) && EmptyUtil.isNotEmpty(entities)){
+                if(EmptyUtil.isNotEmpty(view)){
                     view.updateTeacherConfigView(entities);
                 }
             }
