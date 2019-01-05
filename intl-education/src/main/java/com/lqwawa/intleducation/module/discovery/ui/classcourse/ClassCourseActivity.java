@@ -1086,8 +1086,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     public void updateDeleteCourseFromClassView(Boolean aBoolean) {
         this.hideLoading();
         // 刷新UI
-        // 重新拉取课程
-        requestClassCourse(false);
+        // 刷新标签和课程
+        mPresenter.requestClassConfigData(mClassId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
