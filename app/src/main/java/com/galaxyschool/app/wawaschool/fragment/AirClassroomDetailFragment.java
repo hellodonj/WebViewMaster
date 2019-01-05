@@ -2667,11 +2667,7 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     uUid = values[1].split("=")[1];
                     vUid = values[2].split("=")[1];
                 }
-                if (!TextUtils.isEmpty(vUid)) {
-                    //用乐视的进行播放
-                    onlineRes.setDemandId(vUid);
-                    playSchoolResVideo();
-                } else if (!TextUtils.isEmpty(resUrl)) {
+                if (!TextUtils.isEmpty(resUrl)) {
                     String resTitle = onlineRes.getResTitle();
                     CheckLanMp4UrlHelper mp4UrlHelper = new CheckLanMp4UrlHelper(getActivity());
                     mp4UrlHelper.setCallBackListener(result -> {
@@ -2688,6 +2684,10 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     } else if (!TextUtils.isEmpty(resUrl)) {
                         mp4UrlHelper.setMp4ResourceUrl(resUrl).checkLanUrl(false);
                     }
+                } else if (!TextUtils.isEmpty(vUid)){
+                    //用乐视的进行播放
+                    onlineRes.setDemandId(vUid);
+                    playSchoolResVideo();
                 }
             }
         });

@@ -31,6 +31,8 @@ dependencies {
     compile'cn.jiguang.sdk.plugin:huawei:3.1.5'
     //魅族
     compile'cn.jiguang.sdk.plugin:meizu:3.1.5'
+    //oppo
+    compile'cn.jiguang.sdk.plugin:oppo:3.1.8'
 }
 
 static def releaseTime() {
@@ -47,8 +49,8 @@ android {
         minSdkVersion rootProject.ext.versions.minSdkVersion
         targetSdkVersion rootProject.ext.versions.targetSdkVersion
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 530
-        versionName "5.11.39"
+        versionCode 531
+        versionName "5.11.41"
 
         multiDexEnabled true
         ndk {
@@ -86,7 +88,10 @@ android {
                                     XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
                                     HUAWEI_APPID: "appid=10468811",//华为的appId
                                     MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
-                                    MEIZU_APPID: "MZ-117876"
+                                    MEIZU_APPID: "MZ-117876",
+                                    OPPO_APPKEY : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
+                                    OPPO_APPID : "OP-3286830", // OPPO
+                                    OPPO_APPSECRET: "OP-8dcF28E47c180688667E809cf3F13890"
             ]
         }
 
@@ -107,7 +112,10 @@ android {
                                     XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
                                     HUAWEI_APPID: "appid=10468811",//华为的appId
                                     MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
-                                    MEIZU_APPID: "MZ-117876"
+                                    MEIZU_APPID: "MZ-117876",
+                                    OPPO_APPKEY : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
+                                    OPPO_APPID : "OP-3286830", // OPPO
+                                    OPPO_APPSECRET: "OP-8dcF28E47c180688667E809cf3F13890"
             ]
         }
 
