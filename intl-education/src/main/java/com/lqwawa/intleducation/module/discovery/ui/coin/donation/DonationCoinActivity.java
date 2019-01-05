@@ -252,6 +252,8 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                 members.add(model);
                 mBtnWatchName.setEnabled(false);
                 mPresenter.requestUserInfoWithMembers(members);
+            }else{
+                UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
             }
         }else if(viewId == R.id.btn_confirm){
             // 确认转赠
@@ -277,7 +279,10 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
 
                                     // 此时请求
                                     String inputName = mInputName.getText().toString().trim();
-                                    if(EmptyUtil.isEmpty(inputName)) return;
+                                    if(EmptyUtil.isEmpty(inputName)){
+                                        UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
+                                        return;
+                                    }
 
                                     List<UserModel> members = new ArrayList<>();
                                     UserModel model = new UserModel(inputName);
