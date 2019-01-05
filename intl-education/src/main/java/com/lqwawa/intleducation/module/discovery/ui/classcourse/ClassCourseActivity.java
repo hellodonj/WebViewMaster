@@ -613,6 +613,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      */
     private void configLabel(@NonNull int rootId){
         // 是否配置全部
+        mTabVector2.setVisibility(View.VISIBLE);
+
         if(rootId == MINORITY_LANGUAGE_COURSE_ID){
             // 小语种课程 二级页面
             mTabVector3.setVisibility(View.GONE);
@@ -637,6 +639,13 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTabLabel1.setText(getString(R.string.label_colon_type));
             mTabLabel2.setText(getString(R.string.label_colon_period));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
+
+
+            // 特色课程 or 国家课程
+            if(mFiltrateArray2.size() <= 1){
+                // 标签隐藏
+                mTabVector2.setVisibility(View.GONE);
+            }
         }
     }
 
