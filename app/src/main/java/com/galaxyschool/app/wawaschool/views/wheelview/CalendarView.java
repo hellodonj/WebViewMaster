@@ -25,7 +25,8 @@ public class CalendarView extends LinearLayout {
     private final int MAXYEAR = 2100;
 
     private final String mintes[] = new String[]{"0","10","20","30","40","50"};
-
+    private final String fiveMins [] = new String[]{"0","5","10","15","20","25","30","35","40","45",
+            "50","55"};
     private boolean isOnline;
     private  int hour;
     private  int minutes;
@@ -126,9 +127,9 @@ public class CalendarView extends LinearLayout {
             time.setCyclic(true);
             time.setCurrentItem(hour);
             //min.setViewAdapter(new DateNumericAdapter(context,0,59,minutes));
-            min.setViewAdapter(new DateArrayAdapter(context,mintes,minutes));
+            min.setViewAdapter(new DateArrayAdapter(context,fiveMins,minutes));
             min.setCyclic(true);
-            min.setCurrentItem(minutes/10);
+            min.setCurrentItem(minutes/5);
         }
     }
 
@@ -165,10 +166,10 @@ public class CalendarView extends LinearLayout {
             }else {
                 currentMin=String.valueOf(min.getCurrentItem());
             }*/
-          if (min.getCurrentItem() == 0){
-              currentMin = "0"+mintes[min.getCurrentItem()];
+          if (min.getCurrentItem() == 0 || min.getCurrentItem() == 1){
+              currentMin = "0"+fiveMins[min.getCurrentItem()];
           }else {
-              currentMin = mintes[min.getCurrentItem()];
+              currentMin = fiveMins[min.getCurrentItem()];
           }
             result=result+" "+currentHour+":"+currentMin;
         }

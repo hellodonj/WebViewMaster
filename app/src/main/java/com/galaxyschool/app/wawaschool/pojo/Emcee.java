@@ -56,8 +56,6 @@ public class Emcee implements Serializable {
 
     private String EndTimeStr;
 
-
-
     private String courseId;
 
     private String courseIds;
@@ -87,6 +85,15 @@ public class Emcee implements Serializable {
     private boolean addMyLived;
     private int LiveType;//校本资源库的视频
     private String ResTitle;//资源的title
+    private boolean IsOnlineSchool;
+
+    public boolean isOnlineSchool() {
+        return IsOnlineSchool;
+    }
+
+    public void setIsOnlineSchool(boolean onlineSchool) {
+        IsOnlineSchool = onlineSchool;
+    }
 
     public int getLiveType() {
         return LiveType;

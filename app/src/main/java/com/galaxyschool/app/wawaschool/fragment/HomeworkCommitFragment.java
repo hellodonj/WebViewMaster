@@ -911,7 +911,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (studyTask != null) {
                 ScoringRule = studyTask.getScoringRule();
                 checkSpeechAssessmentPermission(studyTask.getResId(), result);
-                checkTaskOrderAnswerQuestionCard();
+                if (studyTask.getResPropType() == 1) {
+                    //任务单答题卡类型
+                    checkTaskOrderAnswerQuestionCard();
+                }
             }
         }
     }

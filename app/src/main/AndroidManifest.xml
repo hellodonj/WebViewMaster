@@ -1622,7 +1622,8 @@
             android:exported="true"
             android:theme="@style/TranslucentTheme">
             <intent-filter>
-                <action android:name="com.example.jpushdemo.OpenClickActivity"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="com.galaxyschool.app.wawaschool.OpenJPushClickActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
