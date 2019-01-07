@@ -160,6 +160,7 @@ public class PushOpenResourceHelper {
         if (TextUtils.equals(emcee.getAcCreateId(), memberId)){
             //主编
             userClassId = emcee.getClassId();
+            pushMessageInfo.setIsOnlineSchool(emcee.isOnlineSchool());
         }
         if (TextUtils.isEmpty(userClassId)){
             if (emceeLists != null && emceeLists.size() > 0){
@@ -174,6 +175,8 @@ public class PushOpenResourceHelper {
                         } else {
                             userClassId = classIds;
                         }
+                        pushMessageInfo.setIsOnlineSchool(emceeMember.isOnlineSchool());
+                        break;
                     }
                 }
             }

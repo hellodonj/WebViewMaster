@@ -39,8 +39,18 @@ public class EmceeList implements Serializable{
 
     private String SchoolIds;
 
+    private boolean IsOnlineSchool;
+
     public EmceeList(){
 
+    }
+
+    public boolean isOnlineSchool() {
+        return IsOnlineSchool;
+    }
+
+    public void setIsOnlineSchool(boolean onlineSchool) {
+        IsOnlineSchool = onlineSchool;
     }
 
     public String getClassIds() {
