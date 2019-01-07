@@ -13,6 +13,9 @@ public class SectionResListVo extends BaseVo {
     // 自动批阅的值
     public static final String EXTRAS_AUTO_READ_OVER = "1";
 
+    // 任务单的自动批阅
+    public static final int ORDER_TASK_AUTO_MARK = 1;
+
     /**
      * id : 2075
      * status : 1
@@ -54,6 +57,9 @@ public class SectionResListVo extends BaseVo {
 
     // V5.11.X新加的字段
     private String point;
+
+    // V5.12
+    private int resPropType;
 
     private SectionTaskOriginVo sectionTaskOriginVo;
 
@@ -257,6 +263,14 @@ public class SectionResListVo extends BaseVo {
         this.point = point;
     }
 
+    public int getResPropType() {
+        return resPropType;
+    }
+
+    public void setResPropType(int resPropType) {
+        this.resPropType = resPropType;
+    }
+
     public String getResProperties() {
         return resProperties;
     }
@@ -269,6 +283,7 @@ public class SectionResListVo extends BaseVo {
      * 是否是任务单的自动批阅
      */
     public boolean isAutoMark(){
-        return taskType == 3 && EmptyUtil.isNotEmpty(point);
+        // return taskType == 3 && EmptyUtil.isNotEmpty(point);
+        return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
     }
 }
