@@ -291,79 +291,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.resNameTv.setText(("" + vo.getName()).trim());
             holder.checkbox.setVisibility(isCourseSelect ? View.VISIBLE : View.GONE);
             holder.checkbox.setChecked(vo.isChecked());
-            holder.itemRootLay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClickListener != null){
-                        onItemClickListener.onItemClick(position,_convertView);
-                    }
-                    //课件选取
-                    if (isCourseSelect) {
-                        if (maxSelect == 1) {//单选模式
-                            if(EmptyUtil.isNotEmpty(mSelectListener)){
-                                boolean onSelect = mSelectListener.onSelect(vo);
-                                if(!onSelect){
-                                    vo.setChecked(!vo.isChecked());
-                                    notifyDataSetChanged();
-                                    if (vo.isChecked()) {
-                                        RefreshUtil.getInstance().addId(vo.getId());
-                                    } else {
-                                        RefreshUtil.getInstance().removeId(vo.getId());
-                                    }
-                                }
-                            }
-                            /*for (int i = 0; i < list.size(); i++) {
-                                SectionResListVo sectionResListVo = list.get(i);
-                                if (sectionResListVo.isChecked() && !TextUtils.equals(vo.getId(),sectionResListVo.getId())) {
-                                   sectionResListVo.setChecked(false);
-                                    RefreshUtil.getInstance().removeId(sectionResListVo.getId());
-                                }
-                            }
-                            vo.setChecked(!vo.isChecked());
-                            notifyDataSetChanged();
-                            if (vo.isChecked()) {
-                                RefreshUtil.getInstance().addId(vo.getId());
-                            } else {
-                                RefreshUtil.getInstance().removeId(vo.getId());
-                            }*/
 
-
-                        } else {//多选模式
-                            if(EmptyUtil.isNotEmpty(mSelectListener)){
-                                boolean onSelect = mSelectListener.onSelect(vo);
-                                if(!onSelect){
-                                    vo.setChecked(!vo.isChecked());
-                                    notifyDataSetChanged();
-                                    if (vo.isChecked()) {
-                                        selectCount++;
-                                        RefreshUtil.getInstance().addId(vo.getId());
-                                    } else {
-                                        selectCount--;
-                                        RefreshUtil.getInstance().removeId(vo.getId());
-                                    }
-                                }else{
-                                    ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
-                                }
-                            }
-                            /*if (selectCount < maxSelect || RefreshUtil.getInstance().contains(vo.getId())) {
-                                vo.setChecked(!vo.isChecked());
-                                notifyDataSetChanged();
-                                if (vo.isChecked()) {
-                                    selectCount++;
-                                    RefreshUtil.getInstance().addId(vo.getId());
-                                } else {
-                                    selectCount--;
-                                    RefreshUtil.getInstance().removeId(vo.getId());
-                                }
-
-                            } else {
-                                ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
-                            }*/
-                        }
-
-                    }
-                }
-            });
+            holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+            // holder.itemRootLay.setOnClickListener(new ItemClickListener(position,_convertView,vo));
         }else{
             holder.itemRootLay.setVisibility(View.GONE);
         }
@@ -447,6 +377,91 @@ public class CourseResListAdapter extends MyBaseAdapter {
         }
 
         return  convertView;
+    }
+
+    class ItemClickListener implements View.OnClickListener {
+
+        private int position;
+        private View _convertView;
+        private SectionResListVo vo;
+
+        ItemClickListener(int position,View convertView,SectionResListVo vo){
+            this.position = position;
+            this._convertView = convertView;
+            this.vo = vo;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (onItemClickListener != null){
+                onItemClickListener.onItemClick(position,_convertView);
+            }
+            //课件选取
+            if (isCourseSelect) {
+                if (maxSelect == 1) {//单选模式
+                    if(EmptyUtil.isNotEmpty(mSelectListener)){
+                        boolean onSelect = mSelectListener.onSelect(vo);
+                        if(!onSelect){
+                            vo.setChecked(!vo.isChecked());
+                            notifyDataSetChanged();
+                            if (vo.isChecked()) {
+                                RefreshUtil.getInstance().addId(vo.getId());
+                            } else {
+                                RefreshUtil.getInstance().removeId(vo.getId());
+                            }
+                        }
+                    }
+                            /*for (int i = 0; i < list.size(); i++) {
+                                SectionResListVo sectionResListVo = list.get(i);
+                                if (sectionResListVo.isChecked() && !TextUtils.equals(vo.getId(),sectionResListVo.getId())) {
+                                   sectionResListVo.setChecked(false);
+                                    RefreshUtil.getInstance().removeId(sectionResListVo.getId());
+                                }
+                            }
+                            vo.setChecked(!vo.isChecked());
+                            notifyDataSetChanged();
+                            if (vo.isChecked()) {
+                                RefreshUtil.getInstance().addId(vo.getId());
+                            } else {
+                                RefreshUtil.getInstance().removeId(vo.getId());
+                            }*/
+
+
+                } else {//多选模式
+                    if(EmptyUtil.isNotEmpty(mSelectListener)){
+                        boolean onSelect = mSelectListener.onSelect(vo);
+                        if(!onSelect){
+                            vo.setChecked(!vo.isChecked());
+                            notifyDataSetChanged();
+                            if (vo.isChecked()) {
+                                selectCount++;
+                                RefreshUtil.getInstance().addId(vo.getId());
+                            } else {
+                                selectCount--;
+                                RefreshUtil.getInstance().removeId(vo.getId());
+                            }
+                        }else{
+                            ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
+                        }
+                    }
+                            /*if (selectCount < maxSelect || RefreshUtil.getInstance().contains(vo.getId())) {
+                                vo.setChecked(!vo.isChecked());
+                                notifyDataSetChanged();
+                                if (vo.isChecked()) {
+                                    selectCount++;
+                                    RefreshUtil.getInstance().addId(vo.getId());
+                                } else {
+                                    selectCount--;
+                                    RefreshUtil.getInstance().removeId(vo.getId());
+                                }
+
+                            } else {
+                                ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
+                            }*/
+                }
+
+            }
+        }
     }
 
 /*    private boolean isContains(String id) {

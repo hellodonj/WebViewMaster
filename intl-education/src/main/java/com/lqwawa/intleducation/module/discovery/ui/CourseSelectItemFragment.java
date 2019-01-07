@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
@@ -28,8 +29,10 @@ import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.ResourceSelectListener;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
@@ -83,6 +86,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     private int mMultipleChoiceCount;
     private boolean isOnlineRelevance;
     private ArrayList<Integer> mFilterArray;
+    private ReadWeikeHelper mReadWeikeHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +109,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         mMultipleChoiceCount = arguments.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         isOnlineRelevance = arguments.getBoolean(KEY_EXTRA_ONLINE_RELEVANCE);
         mFilterArray = arguments.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
+        if(EmptyUtil.isEmpty(mReadWeikeHelper)){
+            mReadWeikeHelper = new ReadWeikeHelper(activity);
+        }
         initData();
     }
 
@@ -176,6 +183,27 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         courseResListAdapter.setOnResourceSelectListener(mListener);
         listView.setAdapter(courseResListAdapter);
 
+        listView.setOnItemClickListener(new SuperListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearLayout parent, View view, int position) {
+                SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
+                if(sectionResListVo.getTaskType() == 1){
+                    // 看课件类型
+                    if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+                        mReadWeikeHelper.readWeike(sectionResListVo);
+                    }
+                }else{
+                    if (TaskSliderHelper.onTaskSliderListener != null &&
+                            sectionResListVo != null) {
+                        TaskSliderHelper.onTaskSliderListener.viewCourse(
+                                activity, sectionResListVo.getResId(),
+                                sectionResListVo.getResType(),
+                                activity.getIntent().getStringExtra("schoolId"),
+                                SourceFromType.LQ_COURSE);
+                    }
+                }
+            }
+        });
 
         pullToRefresh.setLastUpdated(new Date().toLocaleString());
         pullToRefresh.showRefresh();
@@ -312,6 +340,14 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             // 没有数据
             mEmptyView.setVisibility(View.VISIBLE);
             pullToRefresh.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+            mReadWeikeHelper.release();
         }
     }
 
