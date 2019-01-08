@@ -72,7 +72,9 @@ public class CoinsDetailAdapter extends BaseAdapter {
         if (info.getVtype() == 0) {
 
             if(info.getRechargeType() == -4){
-                holder.tvCount.setVisibility(View.GONE);
+                holder.tvCount.setVisibility(View.VISIBLE);
+                holder.tvCount.setText(Integer.toString(info.getAmount()));
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
             }else{
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
