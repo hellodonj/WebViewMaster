@@ -47,7 +47,7 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
             @Override
             public void onDataLoaded(List<LQCourseConfigEntity> entities) {
                 final ClassCourseContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view) && EmptyUtil.isNotEmpty(entities)){
+                if(EmptyUtil.isNotEmpty(view)){
                     view.updateClassConfigView(entities);
                 }
             }
