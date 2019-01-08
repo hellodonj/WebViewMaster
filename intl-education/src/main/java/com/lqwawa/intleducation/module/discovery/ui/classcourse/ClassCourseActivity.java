@@ -269,6 +269,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         if(mResourceFlag){
             mHeaderLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
         }
 
 

@@ -377,6 +377,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         if(mSelectResource){
             // 隐藏HeaderLayout
             mHeaderLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
         }
 
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
