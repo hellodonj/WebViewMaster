@@ -15,6 +15,7 @@ import com.galaxyschool.app.wawaschool.fragment.HomeworkMainFragment;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.EmceeList;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkChildListResult;
+import com.galaxyschool.app.wawaschool.pojo.PublishClass;
 import com.galaxyschool.app.wawaschool.pojo.PushMessageInfo;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
@@ -70,7 +71,7 @@ public class PushOpenResourceHelper {
     }
 
     private void openResource() {
-        if (TextUtils.isEmpty(pushMessageInfo.getAirClassId())) {
+        if (pushMessageInfo.getAirClassId() <= 0) {
             //学习任务
             loadClassInfo(false);
         } else {
@@ -156,13 +157,14 @@ public class PushOpenResourceHelper {
 
     private void dealEmceeClassId(Emcee emcee){
         List<EmceeList> emceeLists = emcee.getEmceeList();
-        String userClassId = null;
         if (TextUtils.equals(emcee.getAcCreateId(), memberId)){
             //主编
-            userClassId = emcee.getClassId();
-            pushMessageInfo.setIsOnlineSchool(emcee.isOnlineSchool());
+            if (CheckClassIsExist(emcee.getClassId(),emcee.getPublishClassList())){
+                pushMessageInfo.setClassId(emcee.getClassId());
+                pushMessageInfo.setIsOnlineSchool(emcee.isOnlineSchool());
+            }
         }
-        if (TextUtils.isEmpty(userClassId)){
+        if (TextUtils.isEmpty(pushMessageInfo.getClassId())){
             if (emceeLists != null && emceeLists.size() > 0){
                 for (int i = 0; i < emceeLists.size(); i++) {
                     EmceeList emceeMember = emceeLists.get(i);
@@ -171,18 +173,25 @@ public class PushOpenResourceHelper {
                             && !TextUtils.isEmpty(classIds)) {
                         if (classIds.contains(",")) {
                             String[] splitClassArray = classIds.split(",");
-                            userClassId = splitClassArray[0];
+                            for (int m = 0; m < splitClassArray.length; m++){
+                                if (CheckClassIsExist(splitClassArray[m],emcee.getPublishClassList())){
+                                    pushMessageInfo.setClassId(splitClassArray[m]);
+                                    pushMessageInfo.setIsOnlineSchool(emceeMember.isOnlineSchool());
+                                    break;
+                                }
+                            }
                         } else {
-                            userClassId = classIds;
+                            if (CheckClassIsExist(classIds,emcee.getPublishClassList())){
+                                pushMessageInfo.setClassId(classIds);
+                                pushMessageInfo.setIsOnlineSchool(emceeMember.isOnlineSchool());
+                            }
                         }
-                        pushMessageInfo.setIsOnlineSchool(emceeMember.isOnlineSchool());
                         break;
                     }
                 }
             }
         }
-        if (!TextUtils.isEmpty(userClassId)){
-            pushMessageInfo.setClassId(userClassId);
+        if (!TextUtils.isEmpty(pushMessageInfo.getClassId())){
             if (pushMessageInfo.isOnlineSchool()){
                 ClassDetailActivity.show(context, pushMessageInfo.getClassId(), true,
                         ActivityStack.getInstance().getCount() == 0,memberId);
@@ -190,6 +199,20 @@ public class PushOpenResourceHelper {
                 loadClassInfo(true);
             }
         }
+    }
+
+    private boolean CheckClassIsExist(String classId, List<PublishClass> publishClasses){
+        boolean isExist = false;
+        if (publishClasses != null && publishClasses.size() > 0){
+            for (int i = 0; i < publishClasses.size(); i++){
+                PublishClass publishClass = publishClasses.get(i);
+                if (TextUtils.equals(publishClass.getClassId(),classId)){
+                    isExist = true;
+                    break;
+                }
+            }
+        }
+        return isExist;
     }
 
     private void loadClassInfo(boolean isLive) {

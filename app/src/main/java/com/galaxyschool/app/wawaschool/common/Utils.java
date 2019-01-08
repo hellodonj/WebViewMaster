@@ -1848,6 +1848,19 @@ public class Utils {
         }
     }
 
+    public static void removeSchoolInfoList(List<ContactsSchoolInfo> list,String schoolId) {
+        if (list == null || list.size() == 0 || TextUtils.isEmpty(schoolId)) {
+            return;
+        }
+        Iterator<ContactsSchoolInfo> it = list.iterator();
+        while (it.hasNext()) {
+            ContactsSchoolInfo schoolInfo = it.next();
+            if (schoolInfo != null && !TextUtils.equals(schoolId,schoolInfo.getSchoolId())) {
+                it.remove();
+            }
+        }
+    }
+
     /**
      * 从SubscribeUserInfoList中移除在线课堂的机构
      *

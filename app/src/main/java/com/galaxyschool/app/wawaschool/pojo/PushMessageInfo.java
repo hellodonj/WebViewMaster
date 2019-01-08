@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class PushMessageInfo implements Serializable {
     private String SchoolId;
     private String ClassId;
-    private String AirClassId;
+    private int AirClassId;
     private int Role;
     private int PushModuleType;
     private boolean IsOnlineSchool;
@@ -33,11 +33,11 @@ public class PushMessageInfo implements Serializable {
         ClassId = classId;
     }
 
-    public String getAirClassId() {
+    public int getAirClassId() {
         return AirClassId;
     }
 
-    public void setAirClassId(String airClassId) {
+    public void setAirClassId(int airClassId) {
         AirClassId = airClassId;
     }
 

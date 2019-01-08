@@ -627,7 +627,7 @@ public class HomeworkPickerFragment extends ContactsPickerFragment
 
         //复述微课
         StudyTaskTypeInfo retellMicroCourse = new StudyTaskTypeInfo();
-        retellMicroCourse.setType("5");
+        retellMicroCourse.setType("5,12");
         retellMicroCourse.setTypeName(getString(R.string.retell_course));
         //导读
         StudyTaskTypeInfo introductionCourse=new StudyTaskTypeInfo();
@@ -639,7 +639,7 @@ public class HomeworkPickerFragment extends ContactsPickerFragment
         englishWriting.setTypeName(getString(R.string.english_writing));
         //做任务单
         StudyTaskTypeInfo taskOrder = new StudyTaskTypeInfo();
-        taskOrder.setType("8");
+        taskOrder.setType("8,13");
         taskOrder.setTypeName(getString(R.string.do_task));
         //听说+读写
         StudyTaskTypeInfo listenReadAndWrite = new StudyTaskTypeInfo();
