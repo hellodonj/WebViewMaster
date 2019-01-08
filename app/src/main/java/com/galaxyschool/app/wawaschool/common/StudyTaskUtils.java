@@ -291,7 +291,7 @@ public class StudyTaskUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        AddSubjectActivity.show((Activity) context, 0);
+                        AddSubjectActivity.show((Activity) context,false, 0);
                     }
                 });
         messageDialog.show();
