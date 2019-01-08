@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -19,6 +20,7 @@ import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -191,6 +193,16 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(@NonNull EventWrapper event){
         if(EventWrapper.isMatch(event,EventConstant.TRIGGER_EXIT_COURSE)){
+            getData();
+        }else if(EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)){
+            getData();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        if(TextUtils.equals(EventConstant.TRIGGER_UPDATE_COURSE,event.getUpdateAction())){
+            // 发生课程信息更新，刷新UI
             getData();
         }
     }

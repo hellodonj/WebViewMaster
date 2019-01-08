@@ -35,7 +35,7 @@ public class ClassPlanPresenter extends BasePresenter<ClassPlanContract.View>
     @Override
     public void requestOnlineClassLiveData(@NonNull String schoolId, @NonNull String classId,int pageIndex) {
         // 不需要支持分页
-        LiveHelper.requestOnlineClassLiveData(schoolId, classId, pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<LiveEntity>>() {
+        LiveHelper.requestOnlineClassLiveData(schoolId, classId, pageIndex, Integer.MAX_VALUE,new DataSource.Callback<List<LiveEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final ClassPlanContract.View view = getView();
