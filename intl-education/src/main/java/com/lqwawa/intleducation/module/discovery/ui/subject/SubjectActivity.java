@@ -86,7 +86,7 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
         int viewId = v.getId();
         if(viewId == R.id.btn_add_subject){
             // 点击确定
-            AddSubjectActivity.show(this,SUBJECT_SETTING_REQUEST_CODE);
+            AddSubjectActivity.show(this,mAdapter.getGroupCount() != 0,SUBJECT_SETTING_REQUEST_CODE);
         }
     }
 

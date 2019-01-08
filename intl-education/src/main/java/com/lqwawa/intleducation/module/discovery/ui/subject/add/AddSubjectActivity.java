@@ -26,10 +26,15 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
 
     // 配置结果
     public static final String KEY_EXTRA_RESULT = "KEY_EXTRA_RESULT";
+    // 是否配置过标签
+    public static final String KEY_EXTRA_HAVE_CONFIG = "KEY_EXTRA_HAVE_CONFIG";
 
     private TopBar mTopBar;
     private ExpandableListView mExpandableView;
     private SubjectExpandableAdapter mAdapter;
+
+    private boolean mHaveConfig;
+    private int mConfigSize;
 
     @Override
     protected AddSubjectContract.Presenter initPresenter() {
@@ -42,6 +47,12 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
     }
 
     @Override
+    protected boolean initArgs(@NonNull Bundle bundle) {
+        mHaveConfig = bundle.getBoolean(KEY_EXTRA_HAVE_CONFIG);
+        return super.initArgs(bundle);
+    }
+
+    @Override
     protected void initWidget() {
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
@@ -51,6 +62,9 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
             // 点击确定
             List<LQCourseConfigEntity> items = mAdapter.getItems();
             String selectedIds = mPresenter.getSelectedIds(items);
+
+            mConfigSize = EmptyUtil.isNotEmpty(selectedIds) ? selectedIds.length() : 0;
+
             // 发生请求
             String memberId = UserHelper.getUserId();
             mPresenter.requestSaveTeacherConfig(memberId,selectedIds);
@@ -84,10 +98,12 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
     @Override
     public void updateSaveTeacherConfigView(boolean completed) {
         // 保存标签的回调
-        if(completed){
-            UIUtil.showToastSafe(R.string.tip_subject_setting_succeed);
-        }else{
-            UIUtil.showToastSafe(R.string.tip_subject_setting_failed);
+        if(mHaveConfig || mConfigSize != 0) {
+            if (completed) {
+                UIUtil.showToastSafe(R.string.tip_subject_setting_succeed);
+            } else {
+                UIUtil.showToastSafe(R.string.tip_subject_setting_failed);
+            }
         }
 
         Intent intent = new Intent();
@@ -102,9 +118,11 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
      * 添加科目页面的入口
      * @param activity 上下文对象
      */
-    public static void show(@NonNull Activity activity,int requestCode){
+    public static void show(@NonNull Activity activity,
+                            boolean haveConfig,int requestCode){
         Intent intent = new Intent(activity,AddSubjectActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_EXTRA_HAVE_CONFIG,haveConfig);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,requestCode);
     }
