@@ -411,8 +411,17 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             public void onClick(View v) {
                 // TODO: 2017/7/19 去学习
                 if(isOnline){
+                    ClassDetailActivity.show(activity,mClassId);
+                    if(TextUtils.equals(UserHelper.getUserId(),mBuyerMemberId)){
+                        // 是自己买
+                        LocalBroadcastManager mManager = LocalBroadcastManager.getInstance(UIUtil.getContext());
+                        mManager.sendBroadcast(new Intent().setAction(ClassDetailActivity.LQWAWA_PAY_RESULT_ACTION));
+                    }
+
+                    finish();
+
                     // 发送获取班级详情细信息的请求
-                    OnlineCourseHelper.loadOnlineClassInfo(UserHelper.getUserId(), mClassId, new DataSource.Callback<JoinClassEntity>() {
+                    /*OnlineCourseHelper.loadOnlineClassInfo(UserHelper.getUserId(), mClassId, new DataSource.Callback<JoinClassEntity>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
                             UIUtil.showToastSafe(strRes);
@@ -433,7 +442,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                                 finish();
                             }
                         }
-                    });
+                    });*/
                 }else{
                     if (!getIntent().getBooleanExtra("isLive", false)) {
                         ActivityUtil.finishActivity(CourseDetailsActivity.class);
