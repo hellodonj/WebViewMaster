@@ -488,47 +488,53 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         // 准备Level,先获取到第一级别的Level
         String level = "";
-        int rootId = 0;
-        for (Tab tab:mFiltrateArray1) {
-            if(tab.isChecked()){
-                level = tab.getLevel();
-
-                // 找到选中的第一分类
-                rootId = tab.getId();
-                break;
-            }
-        }
-
-        // 查看TabLayout是全部选中,还是正确Tab选中
-        int rootTypeId = 0;
-        for (Tab tab:mFiltrateArray2) {
-            if(!tab.isAll() && tab.isChecked()){
-                // 选择不是全部的Level
-                level = tab.getLevel();
-                rootTypeId = tab.getId();
-                break;
-            }
-        }
-
         int paramOneId = 0;
         int paramTwoId = 0;
 
-        if(rootId != MINORITY_LANGUAGE_COURSE_ID){
-            // 不是小语种课程
-            for (Tab tab:mFiltrateArray3) {
+        if(mFiltrateArray1 != null &&
+                mFiltrateArray2 != null &&
+                mFiltrateArray3 != null){
+
+            int rootId = 0;
+            for (Tab tab:mFiltrateArray1) {
+                if(tab.isChecked()){
+                    level = tab.getLevel();
+
+                    // 找到选中的第一分类
+                    rootId = tab.getId();
+                    break;
+                }
+            }
+
+            // 查看TabLayout是全部选中,还是正确Tab选中
+            int rootTypeId = 0;
+            for (Tab tab:mFiltrateArray2) {
                 if(!tab.isAll() && tab.isChecked()){
-                    if(rootId == CHARACTERISTIC_COURSE_ID || rootId == COUNTRY_COURSE_ID){
-                        // 特色课程或者国家课程
-                        paramTwoId = tab.getLabelId();
-                    }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID && rootTypeId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
-                        // 英语国际课程 LQ English PRIMARY
-                        paramTwoId = tab.getLabelId();
-                    }else{
-                        paramOneId = tab.getLabelId();
+                    // 选择不是全部的Level
+                    level = tab.getLevel();
+                    rootTypeId = tab.getId();
+                    break;
+                }
+            }
+
+            if(rootId != MINORITY_LANGUAGE_COURSE_ID){
+                // 不是小语种课程
+                for (Tab tab:mFiltrateArray3) {
+                    if(!tab.isAll() && tab.isChecked()){
+                        if(rootId == CHARACTERISTIC_COURSE_ID || rootId == COUNTRY_COURSE_ID){
+                            // 特色课程或者国家课程
+                            paramTwoId = tab.getLabelId();
+                        }else if(rootId == ENGLISH_INTERNATIONAL_COURSE_ID && rootTypeId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
+                            // 英语国际课程 LQ English PRIMARY
+                            paramTwoId = tab.getLabelId();
+                        }else{
+                            paramOneId = tab.getLabelId();
+                        }
                     }
                 }
             }
         }
+
 
         if(mResourceFlag){
             mPresenter.requestStudyTaskClassCourseData(mClassId,name,pageIndex);
@@ -605,6 +611,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+        }else{
+            updateClassCourseView(null);
         }
     }
 
