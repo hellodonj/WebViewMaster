@@ -267,11 +267,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
-        if(mResourceFlag){
-            mHeaderLayout.setVisibility(View.GONE);
-            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
-        }
-
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         if(!mResourceFlag && isTeacher){
@@ -312,6 +307,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     UIUtil.getString(R.string.title_class_course),
                     SEARCH_REQUEST_CODE);
         });
+
+        if(mResourceFlag){
+            mHeaderLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+        }
 
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
