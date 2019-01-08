@@ -1,19 +1,24 @@
 package com.lqwawa.mooc.select;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
-import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
+import com.galaxyschool.app.wawaschool.fragment.library.AdapterFragment;
+import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ExpandDataAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.pojo.ContactsClassInfo;
@@ -44,18 +49,20 @@ import java.util.Map;
  * @author mrmedici
  * @desc 学校班级选择的Activity
  */
-public class SchoolClassSelectFragment extends BaseFragment
+public class SchoolClassSelectFragment extends AdapterFragment
         implements View.OnClickListener {
 
     public interface Constants {
         String FROM_STUDYTASK_CHECK_DATA = "from_studytask_check_data";
         String CHECK_STUDY_TASK_TYPE = "check_study_task_type";
         String CHECK_STUDY_TASK_COUNT = "check_study_task_count";
+        String FILTER_APPOINT_CLASS_INFO = "filter_appoint_class_info";
     }
 
     private View mRootView;
     private PullToRefreshView mPullToRefreshView;
     private com.lqwawa.mooc.view.CustomExpandableListView mContactsListView;
+    private ListView myListView;
     private TextView mPickerClear;
     private TextView mPickerConfirm;
     private ExpandDataAdapter mDataAdapter;
@@ -65,6 +72,8 @@ public class SchoolClassSelectFragment extends BaseFragment
     private OnItemClickListener onItemClickListener;
     private int taskType;
     private int checkCount;
+    private String schoolId;
+    private boolean filterAppointClassInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,12 +96,15 @@ public class SchoolClassSelectFragment extends BaseFragment
             fromStudyTaskCheckData = args.getBoolean(Constants.FROM_STUDYTASK_CHECK_DATA, false);
             taskType = args.getInt(Constants.CHECK_STUDY_TASK_TYPE);
             checkCount = args.getInt(Constants.CHECK_STUDY_TASK_COUNT);
+            schoolId = args.getString(ActivityUtils.EXTRA_SCHOOL_ID);
+            filterAppointClassInfo = args.getBoolean(Constants.FILTER_APPOINT_CLASS_INFO);
         }
     }
 
     private void loadViews() {
         mPullToRefreshView = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mContactsListView = (com.lqwawa.mooc.view.CustomExpandableListView) mRootView.findViewById(R.id.expandable_list_view);
+        myListView = (ListView) mRootView.findViewById(R.id.listview);
         if (fromStudyTaskCheckData) {
             //隐藏底部bar
             mRootView.findViewById(R.id.contacts_picker_bar_layout).setVisibility(View.GONE);
@@ -110,6 +122,89 @@ public class SchoolClassSelectFragment extends BaseFragment
             }
         });
 
+        if (filterAppointClassInfo){
+            mPullToRefreshView.setVisibility(View.GONE);
+            myListView.setVisibility(View.VISIBLE);
+            loadSchoolClassAdapter();
+        } else {
+            mPullToRefreshView.setVisibility(View.VISIBLE);
+            myListView.setVisibility(View.GONE);
+            loadDataAdapter();
+        }
+    }
+
+    private void loadSchoolClassAdapter(){
+        if (myListView != null) {
+            myListView.setDivider(new ColorDrawable(getResources().getColor(R.color.text_white)));
+            myListView.setDividerHeight(1);
+            AdapterViewHelper helper = new AdapterViewHelper(getActivity(), myListView, R.layout
+                    .contacts_expand_list_child_item_with_selector) {
+                @Override
+                public void loadData() {
+                    loadGroups();
+                }
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    ContactsClassInfo data = (ContactsClassInfo) getData().get(position);
+                    if (data == null) {
+                        return view;
+                    }
+                    ViewHolder holder = (ViewHolder) view.getTag();
+                    if (holder == null) {
+                        holder = new ViewHolder();
+                    }
+                    holder.data = data;
+                    ImageView imageView = (ImageView) view.findViewById(R.id.contacts_item_icon);
+                    if (imageView != null) {
+                        getThumbnailManager().displayUserIconWithDefault(
+                                AppSettings.getFileUrl(data.getHeadPicUrl()), imageView,
+                                R.drawable.default_class_icon);
+                    }
+                    TextView textView = (TextView) view.findViewById(R.id.contacts_item_title);
+                    if (textView != null) {
+                        textView.setText(data.getClassMailName());
+                    }
+                    imageView = (ImageView) view.findViewById(R.id.contacts_item_selector);
+                    if (imageView != null) {
+                        imageView.setVisibility(View.GONE);
+                    }
+                    view.setTag(holder);
+                    return view;
+                }
+
+                @Override
+                public void onItemClick(AdapterView parent, View view, int position, long id) {
+                    ViewHolder holder = (ViewHolder) view.getTag();
+                    if (holder == null || holder.data == null) {
+                        return;
+                    }
+                    enterLqShopActivity((ContactsClassInfo) holder.data);
+                }
+            };
+            setCurrAdapterViewHelper(myListView, helper);
+        }
+    }
+
+    private void enterLqShopActivity(ContactsClassInfo classInfo){
+        ClassCourseParams classCourseParams = new ClassCourseParams(schoolId,
+                classInfo.getClassId());
+        ClassResourceData data = null;
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+            ArrayList<Integer> selectType = new ArrayList<>();
+            selectType.add(18);
+            selectType.add(19);
+            data = new ClassResourceData(taskType,checkCount,selectType, LQCourseCourseListActivity
+                    .RC_SelectCourseRes);
+        } else {
+            data = new ClassResourceData(taskType,checkCount,new ArrayList<Integer>(),
+                    LQCourseCourseListActivity.RC_SelectCourseRes);
+        }
+        ClassCourseActivity.show(getActivity(),classCourseParams,data);
+    }
+
+    private void loadDataAdapter(){
         ExpandDataAdapter dataAdapter = new ExpandDataAdapter(getActivity(),
                 null, R.layout.contacts_expand_list_group_item_mixed,
                 R.layout.contacts_expand_list_child_item_with_selector) {
@@ -359,6 +454,9 @@ public class SchoolClassSelectFragment extends BaseFragment
             // 移除在线课堂的机构
             Utils.removeOnlineContactsSchoolInfo(list);
         }
+        if (filterAppointClassInfo){
+            Utils.removeSchoolInfoList(list,schoolId);
+        }
         if (EmptyUtil.isEmpty(list)) return;
 
         if (EmptyUtil.isNotEmpty(mSchoolInfos)) {
@@ -406,10 +504,17 @@ public class SchoolClassSelectFragment extends BaseFragment
         }
 
         removeNoClassSchoolInfo(list);
-        mDataAdapter.setData(list);
-        if (mDataAdapter.hasData()) {
-            mDataAdapter.notifyDataSetChanged();
-            mDataAdapter.onGroupExpanded(0);
+        if (filterAppointClassInfo){
+             AdapterViewHelper adapterViewHelper = getCurrAdapterViewHelper();
+             if (adapterViewHelper != null && list.size() > 0){
+                 adapterViewHelper.setData(list.get(0).getClassMailList());
+             }
+        } else {
+            mDataAdapter.setData(list);
+            if (mDataAdapter.hasData()) {
+                mDataAdapter.notifyDataSetChanged();
+                mDataAdapter.onGroupExpanded(0);
+            }
         }
     }
 

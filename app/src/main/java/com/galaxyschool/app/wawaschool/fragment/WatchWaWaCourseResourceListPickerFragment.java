@@ -350,13 +350,31 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private void chooseClassLessonCourse() {
         int type = getTaskTypeOrSelectCount(true);
         int count = getTaskTypeOrSelectCount(false);
-        Intent intent = new Intent(getActivity(), SchoolClassSelectActivity.class);
-        Bundle args = new Bundle();
-        args.putBoolean(SchoolClassSelectFragment.Constants.FROM_STUDYTASK_CHECK_DATA, true);
-        args.putInt(SchoolClassSelectFragment.Constants.CHECK_STUDY_TASK_TYPE, type);
-        args.putInt(SchoolClassSelectFragment.Constants.CHECK_STUDY_TASK_COUNT, count);
-        intent.putExtras(args);
-        startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
+        if (isOnlineClass || TextUtils.isEmpty(classId)) {
+            Intent intent = new Intent(getActivity(), SchoolClassSelectActivity.class);
+            Bundle args = new Bundle();
+            args.putBoolean(SchoolClassSelectFragment.Constants.FROM_STUDYTASK_CHECK_DATA, true);
+            args.putInt(SchoolClassSelectFragment.Constants.CHECK_STUDY_TASK_TYPE, type);
+            args.putInt(SchoolClassSelectFragment.Constants.CHECK_STUDY_TASK_COUNT, count);
+            args.putString(ActivityUtils.EXTRA_SCHOOL_ID, schoolId);
+            args.putBoolean(SchoolClassSelectFragment.Constants.FILTER_APPOINT_CLASS_INFO, !isOnlineClass);
+            intent.putExtras(args);
+            startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
+        } else {
+            ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
+            ClassResourceData data = null;
+            if (type == StudyTaskType.RETELL_WAWA_COURSE){
+                ArrayList<Integer> selectType = new ArrayList<>();
+                selectType.add(18);
+                selectType.add(19);
+                data = new ClassResourceData(type,count,selectType, LQCourseCourseListActivity
+                        .RC_SelectCourseRes);
+            } else {
+                data = new ClassResourceData(type,count,new ArrayList<Integer>(),
+                        LQCourseCourseListActivity.RC_SelectCourseRes);
+            }
+            ClassCourseActivity.show(getActivity(),classCourseParams,data);
+        }
     }
 
 

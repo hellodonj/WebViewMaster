@@ -305,7 +305,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         //如果来自校园巡查的数据都不是显示小红点
                         ImageView redCircleView = (ImageView) view.findViewById(R.id.red_point);
                         if (redCircleView != null) {
-                            if (isCampusPatrolTag) {
+                            if (isCampusPatrolTag || isHistoryClass) {
                                 redCircleView.setVisibility(View.INVISIBLE);
                             } else {
                                 //显示小红点
