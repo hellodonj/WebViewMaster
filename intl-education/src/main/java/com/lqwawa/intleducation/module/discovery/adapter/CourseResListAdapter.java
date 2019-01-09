@@ -292,8 +292,11 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.checkbox.setVisibility(isCourseSelect ? View.VISIBLE : View.GONE);
             holder.checkbox.setChecked(vo.isChecked());
 
-            holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
-            // holder.itemRootLay.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+            if(isCourseSelect){
+                holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+            }else{
+                holder.itemRootLay.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+            }
         }else{
             holder.itemRootLay.setVisibility(View.GONE);
         }
