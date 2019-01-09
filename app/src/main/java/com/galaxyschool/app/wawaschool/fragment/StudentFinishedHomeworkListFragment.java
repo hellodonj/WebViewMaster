@@ -102,7 +102,6 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
         super.onActivityCreated(savedInstanceState);
         initViews();
         refreshData();
-        checkTaskOrderAnswerQuestionCard();
     }
 
     public void refreshData() {
@@ -536,6 +535,9 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
             task = homeworkCommitObjectInfo.getTaskInfo();
             if (task != null) {
                 loadTaskCourseDetail(task.getResId());
+                if (task.getResPropType() == 1){
+                    checkTaskOrderAnswerQuestionCard();
+                }
             }
         }
 
