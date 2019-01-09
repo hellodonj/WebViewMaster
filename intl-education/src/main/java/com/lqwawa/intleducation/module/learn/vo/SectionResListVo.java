@@ -256,6 +256,8 @@ public class SectionResListVo extends BaseVo {
     }
 
     public String getPoint() {
+        // 如果不是自动批阅类型，point = null
+        if(!isAutoMark()) point = "";
         return point;
     }
 
