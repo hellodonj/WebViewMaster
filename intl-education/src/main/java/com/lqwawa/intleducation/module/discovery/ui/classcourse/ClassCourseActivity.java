@@ -594,6 +594,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 组装Label数据
         // 默认第一个选中
         if(EmptyUtil.isNotEmpty(entities)){
+            if(!mResourceFlag){
+                mHeaderLayout.setVisibility(View.VISIBLE);
+            }
+
             mFiltrateArray1 = new ArrayList<>();
             mFiltrateArray2 = new ArrayList<>();
             mFiltrateArray3 = new ArrayList<>();
@@ -613,6 +617,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
         }else{
+            // 隐藏HeaderLayout
+            mHeaderLayout.setVisibility(View.GONE);
             updateClassCourseView(null);
         }
     }
