@@ -1743,8 +1743,7 @@
     <string name="str_not_yet_arrive_task_start_time">Start time not come</string>
     <string name="str_not_yet_time_not_answer">Unable to submit before start time</string>
     <!--5.12-->
-    <string name="str_subject_setting">科目设置</string>
-    <string name="str_choose_subject">选择科目</string>
-    <string name="str_intro_task_choose_subject">您尚未选择科目，请前往选择科目</string>
-
+    <string name="str_subject_setting">Subject Setting</string>
+    <string name="str_choose_subject">Select Subject</string>
+    <string name="str_intro_task_choose_subject">Subject not set, please select subject</string>
 </resources>
