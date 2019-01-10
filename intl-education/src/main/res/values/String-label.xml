@@ -254,7 +254,7 @@
 
     <string name="label_colon_type">Type:</string>
     <string name="label_colon_grade">Grade:</string>
-    <string name="label_colon_period">学段:</string>
+    <string name="label_colon_period">Stage:</string>
     <string name="label_colon_subject">Subject:</string>
     <string name="label_colon_language">Language:</string>
     <string name="label_colon_level">Level:</string>
@@ -295,24 +295,24 @@
     <string name="label_no_tips">Do not show again</string>
 
     <!--V5.12字符串-->
-    <string name="label_give_money">转赠他人</string>
-    <string name="label_give_money_tip_title">请选择充值用户</string>
-    <string name="label_this_account_not_available">该账号不存在</string>
-    <string name="label_current_choice_subject">当前已选科目</string>
-    <string name="label_please_choice_subject">请选择授课科目</string>
-    <string name="label_please_choice_donation_user">请选择转赠用户</string>
-    <string name="label_please_input_donation_money">请输入转赠金额</string>
-    <string name="label_please_input_completed_right_account">请输入完整且正确的账号</string>
-    <string name="label_not_donation_self">无法转赠给自己</string>
-    <string name="label_current_balance">当前余额%d蛙蛙币</string>
-    <string name="label_all_donation">全部转赠</string>
-    <string name="label_add_subject">添加科目</string>
-    <string name="label_donation_money_desc">转赠: %s</string>
-    <string name="label_other_donation_money_desc">他人转赠: %s</string>
-    <string name="label_generation_of_charge_desc">代充: %s</string>
-    <string name="label_other_generation_of_charge_desc">他人代充: %s</string>
-    <string name="label_add_course_lines">添加\n学程</string>
-    <string name="label_request_authorization_lines">获取\n授权</string>
+    <string name="label_give_money">Deliver</string>
+    <string name="label_give_money_tip_title">Please select top-up user</string>
+    <string name="label_this_account_not_available">Invalid account</string>
+    <string name="label_current_choice_subject">Selected Subject</string>
+    <string name="label_please_choice_subject">Please select subject to teach</string>
+    <string name="label_please_choice_donation_user">Please select user to deliver WaWacoins to</string>
+    <string name="label_please_input_donation_money">Please enter the amount of WaWacoins</string>
+    <string name="label_please_input_completed_right_account">Please enter a valid account</string>
+    <string name="label_not_donation_self">Unable to deliver WaWacoins to yourself</string>
+    <string name="label_current_balance">Current balance %d WaWacoins</string>
+    <string name="label_all_donation">Deliver All</string>
+    <string name="label_add_subject">Add Subject</string>
+    <string name="label_donation_money_desc">Delivered to: %s</string>
+    <string name="label_other_donation_money_desc">Delivered by: %s</string>
+    <string name="label_generation_of_charge_desc">Top-up for: %s</string>
+    <string name="label_other_generation_of_charge_desc">Top-up by: %s</string>
+    <string name="label_add_course_lines">Add\nCourse</string>
+    <string name="label_request_authorization_lines">Obtain\nAuthorization</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>

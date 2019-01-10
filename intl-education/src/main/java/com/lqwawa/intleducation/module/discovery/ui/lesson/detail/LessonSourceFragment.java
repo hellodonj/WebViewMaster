@@ -390,14 +390,17 @@ public class LessonSourceFragment extends IBaseFragment{
             handleRole = UserHelper.MoocRoleType.PARENT;
         }
 
-        if(TextUtils.equals(UserHelper.getUserId(),vo.getCreateId())){
-            // 任务的创建者 小编
-            handleRole = UserHelper.MoocRoleType.TEACHER;
-        }
+        if(handleRole != UserHelper.MoocRoleType.PARENT){
+            // 家长身份优先
+            if(TextUtils.equals(UserHelper.getUserId(),vo.getCreateId())){
+                // 任务的创建者 小编
+                handleRole = UserHelper.MoocRoleType.TEACHER;
+            }
 
-        if(mSourceParams.isLecturer()){
-            // 如果是讲师身份 主编身份处理
-            handleRole = UserHelper.MoocRoleType.EDITOR;
+            if(mSourceParams.isLecturer()){
+                // 如果是讲师身份 主编身份处理
+                handleRole = UserHelper.MoocRoleType.EDITOR;
+            }
         }
 
 
