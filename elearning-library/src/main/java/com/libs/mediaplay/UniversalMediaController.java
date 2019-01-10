@@ -293,8 +293,8 @@ public class UniversalMediaController extends FrameLayout {
     public void hide() {//只负责上下两条bar的隐藏,不负责中央loading,error,playBtn的隐藏
         if (mShowing) {
             mHandler.removeMessages(SHOW_PROGRESS);
-            mTitleLayout.setVisibility(GONE);
-            mControlLayout.setVisibility(GONE);
+            mTitleLayout.setVisibility(INVISIBLE);
+            mControlLayout.setVisibility(INVISIBLE);
             mShowing = false;
         }
     }
