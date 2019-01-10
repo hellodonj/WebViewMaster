@@ -9,9 +9,9 @@
     <string name="tip_cancel_attention_succeed">Unfollowed</string>
     <string name="tip_appoint_class_not_course">Course not available in this class</string>
     <string name="tip_delete_succeed">Deleted successfully</string>
-    <string name="tip_subject_setting_succeed">科目设置成功</string>
-    <string name="tip_subject_setting_failed">科目设置失败</string>
-    <string name="tip_balance_succeed">转赠成功</string>
-    <string name="tip_balance_failed">转赠失败</string>
-    <string name="tip_not_sufficient_funds">蛙蛙币余额不足</string>
+    <string name="tip_subject_setting_succeed">Subject setting succeeded</string>
+    <string name="tip_subject_setting_failed">Subject setting failed</string>
+    <string name="tip_balance_succeed">Delivery succeeded</string>
+    <string name="tip_balance_failed">Delivery failed</string>
+    <string name="tip_not_sufficient_funds">Insufficient WaWacoins</string>
 </resources>
