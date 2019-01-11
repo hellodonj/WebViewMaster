@@ -118,6 +118,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private String mSchoolId;
     private String mClassId;
     private String mRoles;
+    private boolean isTeacher;
 
     // 全部文本
     private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
@@ -269,6 +270,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
+        this.isTeacher = isTeacher;
         if(!mResourceFlag && isTeacher){
             // 只有老师才显示添加学程
             mTvAction.setText(R.string.label_add_course_lines);
@@ -771,7 +773,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab:mFiltrateArray1) {
-            if(tab.isSelected()){
+            if(tab.isSelected() && isTeacher){
                 haveSelected = true;
                 break;
             }
@@ -786,7 +788,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             TabLayout.Tab newTab = mTabLayout1.newTab().setCustomView(tabView).setTag(tab);
 
             if(!setSelected){
-                setSelected = (mTabLayout1.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                setSelected = (mTabLayout1.getTabCount() == 0 && !haveSelected) || (tab.isSelected() && isTeacher);
                 mTabLayout1.addTab(newTab,setSelected);
             }else{
                 // 已经添加过已经选择的Tab
@@ -804,7 +806,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab:mFiltrateArray2) {
-            if(tab.isSelected()){
+            if(tab.isSelected() && isTeacher){
                 haveSelected = true;
                 break;
             }
@@ -818,7 +820,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             TabLayout.Tab newTab = mTabLayout2.newTab().setCustomView(tabView).setTag(tab);
 
             if(!setSelected){
-                setSelected = (mTabLayout2.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                setSelected = (mTabLayout2.getTabCount() == 0 && !haveSelected) || (tab.isSelected() && isTeacher);
                 mTabLayout2.addTab(newTab,setSelected);
             }else{
                 // 已经添加过已经选择的Tab
@@ -835,7 +837,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab:mFiltrateArray3) {
-            if(tab.isSelected()){
+            if(tab.isSelected() && isTeacher){
                 haveSelected = true;
                 break;
             }
@@ -850,7 +852,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 TabLayout.Tab newTab = mTabLayout3.newTab().setCustomView(tabView).setTag(tab);
 
                 if(!setSelected){
-                    setSelected = (mTabLayout3.getTabCount() == 0 && !haveSelected) || tab.isSelected();
+                    setSelected = (mTabLayout3.getTabCount() == 0 && !haveSelected) || (tab.isSelected() && isTeacher);
                     mTabLayout3.addTab(newTab,setSelected);
                 }else{
                     // 已经添加过已经选择的Tab
