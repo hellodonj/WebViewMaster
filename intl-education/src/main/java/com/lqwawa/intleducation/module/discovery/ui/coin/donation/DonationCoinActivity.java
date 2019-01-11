@@ -276,7 +276,7 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
 
                                     String account = UserHelper.getAccount();
                                     String inputName = user.getNickName();
-                                    if(TextUtils.equals(account,inputName)){
+                                    if(inputName.equalsIgnoreCase(account)){
                                         UIUtil.showToastSafe(R.string.label_not_donation_self);
                                         return;
                                     }
@@ -293,7 +293,7 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
                                     }
 
                                     String account = UserHelper.getAccount();
-                                    if(TextUtils.equals(account,inputName)){
+                                    if(inputName.equalsIgnoreCase(account)){
                                         UIUtil.showToastSafe(R.string.label_not_donation_self);
                                         return;
                                     }
