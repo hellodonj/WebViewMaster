@@ -1177,6 +1177,9 @@ public class DoTaskOrderHelper {
                             item.setSrc_res_name(learnItem.getSrc_res_name());
                             item.setSrc_res_url(learnItem.getSrc_res_url());
                             item.setSrc_text(learnItem.getSrc_text());
+                            item.setAnalysis_res_id(learnItem.getAnalysis_res_id());
+                            item.setAnalysis_res_name(learnItem.getAnalysis_res_name());
+                            item.setAnalysis_res_url(learnItem.getAnalysis_res_url());
                             continue outer;
                         }
                     }
