@@ -1180,7 +1180,7 @@ public class ActivityUtils {
         if (schoolInfo == null || activity == null) {
             return;
         }
-        OrganCourseClassifyActivity.show(activity, schoolInfo.getSchoolId());
+        OrganCourseClassifyActivity.show(activity, schoolInfo.getSchoolId(),schoolInfo.getRoles());
     }
 
     /**
