@@ -157,7 +157,7 @@ public class PushOpenResourceHelper {
 
     private void dealEmceeClassId(Emcee emcee){
         List<EmceeList> emceeLists = emcee.getEmceeList();
-        if (TextUtils.equals(emcee.getAcCreateId(), memberId)){
+        if (TextUtils.isEmpty(pushMessageInfo.getClassId()) && TextUtils.equals(emcee.getAcCreateId(), memberId)){
             //主编
             if (CheckClassIsExist(emcee.getClassId(),emcee.getPublishClassList())){
                 pushMessageInfo.setClassId(emcee.getClassId());

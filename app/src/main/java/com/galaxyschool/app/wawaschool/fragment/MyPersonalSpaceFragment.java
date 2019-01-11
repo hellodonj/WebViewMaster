@@ -1036,12 +1036,12 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         entryMap.put(item.type, item);
 
         //关联账号
-//        item = new TabEntityPOJO();
-//        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_ASSOCIATED_ACCOUNT;
-//        item.title = getString(R.string.str_associated_account);
-//        item.resId = R.drawable.icon_associated_account;
-//        itemList.add(item);
-//        entryMap.put(item.type, item);
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_ASSOCIATED_ACCOUNT;
+        item.title = getString(R.string.str_associated_account);
+        item.resId = R.drawable.icon_associated_account;
+        itemList.add(item);
+        entryMap.put(item.type, item);
 
         //科目设置
         if (isRealTeacher()) {

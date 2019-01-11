@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -38,6 +39,11 @@ import com.lqwawa.lqbaselib.net.Netroid;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -456,6 +462,7 @@ public class PersonalSpaceFragment extends PersonalSpaceBaseFragment {
             //兼容html图文格式
             if (!TextUtils.isEmpty(userInfo.getPIntroduces())){
                 if (webview != null) {
+                    webview.getSettings().setDefaultFontSize(40);
                     webview.getSettings().setJavaScriptEnabled(true);
                     webview.getSettings().setBuiltInZoomControls(false);
                     webview.getSettings().setDisplayZoomControls(false);
@@ -464,11 +471,15 @@ public class PersonalSpaceFragment extends PersonalSpaceBaseFragment {
                     webview.setWebViewClient(new WebViewClient());
                     webview.getSettings().setDefaultTextEncodingName("UTF-8");
                     webview.getSettings().setBlockNetworkImage(false);
+                    webview.getSettings().setUseWideViewPort(true);
+                    webview.getSettings().setLoadWithOverviewMode(true);
+                    webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         webview.getSettings().setMixedContentMode(webview.getSettings()
                                 .MIXED_CONTENT_ALWAYS_ALLOW);  //注意安卓5.0以上的权限
                     }
-                    webview.loadDataWithBaseURL(null, userInfo.getPIntroduces(), "text/html", "UTF-8", null);
+                    webview.loadDataWithBaseURL(null, getNewContent(userInfo.getPIntroduces()), "text/html",
+                            "UTF-8", null);
                 }
             }
         }
@@ -479,6 +490,15 @@ public class PersonalSpaceFragment extends PersonalSpaceBaseFragment {
         }
 
         updateSubscribeBar();
+    }
+
+    private String getNewContent(String htmlText) {
+        Document doc = Jsoup.parse(htmlText);
+        Elements elements = doc.getElementsByTag("img");
+        for (Element element : elements) {
+            element.attr("word-break","break-all");
+        }
+        return doc.toString();
     }
 
     private void updateSubscribeBar() {
