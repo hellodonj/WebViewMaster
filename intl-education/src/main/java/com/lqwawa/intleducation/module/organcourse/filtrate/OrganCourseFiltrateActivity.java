@@ -992,7 +992,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                     if(firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
                         // 选中了英语国际课程的 LQ English Primary
                         mTabVector3.setVisibility(View.VISIBLE);
+                        mTabLabel2.setText(getString(R.string.label_colon_type));
                     }else{
+                        mTabLabel2.setText(getString(R.string.label_colon_subject));
                         mTabVector3.setVisibility(View.GONE);
                     }
                 }
