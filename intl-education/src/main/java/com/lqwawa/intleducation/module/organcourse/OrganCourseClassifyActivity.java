@@ -81,6 +81,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
     private static final String KEY_EXTRA_ORGAN_SELECT_RESOURCE = "KEY_EXTRA_ORGAN_SELECT_RESOURCE";
     // 学程馆选择资源的数据
     private static final String KEY_EXTRA_ORGAN_RESOURCE_DATA = "KEY_EXTRA_ORGAN_RESOURCE_DATA";
+    // 角色信息
+    private static final String KEY_EXTRA_ROLES = "KEY_EXTRA_ROLES";
     // 每页的分类Tab数目
     private static final int PAGER_TAB_COUNT = 4;
 
@@ -101,6 +103,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
     private boolean mSelectResource;
     private ShopResourceData mResourceData;
+    private String mRoles;
+    private boolean isTeacher;
 
     // 是否获取到授权
     private String mSchoolId;
@@ -156,6 +160,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         mSchoolId = bundle.getString(KEY_EXTRA_ORGAN_ID);
         if(mSelectResource)
         mResourceData = (ShopResourceData) bundle.getSerializable(KEY_EXTRA_ORGAN_RESOURCE_DATA);
+        mRoles = bundle.getString(KEY_EXTRA_ROLES);
+        isTeacher = UserHelper.isTeacher(mRoles);
         if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
         if(EmptyUtil.isEmpty(mSchoolId)) return false;
         return super.initArgs(bundle);
@@ -227,7 +233,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
                 // 获取该分类是否获取到授权
                 boolean reallyAuthorized = judgeClassifyAuthorizedInfo(entity);
-                OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this,entity,mSelectResource,false,mResourceData,isAuthorized,reallyAuthorized,false);
+                OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this,entity,mSelectResource,false,mResourceData,isAuthorized,reallyAuthorized,false,mRoles);
             }
 
             @Override
@@ -324,8 +330,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     }*/
                     // 获取该分类是否获取到授权
                     boolean reallyAuthorized = judgeClassifyAuthorizedInfo(entity);
-
-                    OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this,entity,mSelectResource,false,mResourceData,isAuthorized,reallyAuthorized,false);
+                    OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this,entity,mSelectResource,false,mResourceData,isAuthorized,reallyAuthorized,false,mRoles);
                 }
             });
             fragments.add(fragment);
@@ -523,7 +528,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
     public static void show(@NonNull final Activity activity,
                             @NonNull final String organId,
                             final boolean selectResource,
-                            @NonNull final ShopResourceData data){
+                            @NonNull final ShopResourceData data,
+                            @NonNull final String roles){
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
@@ -552,6 +558,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     bundle.putString(KEY_EXTRA_ORGAN_ID,organId);
                     if(selectResource)
                     bundle.putSerializable(KEY_EXTRA_ORGAN_RESOURCE_DATA,data);
+                    bundle.putString(KEY_EXTRA_ROLES,roles);
                     intent.putExtras(bundle);
                     if(selectResource){
                         activity.startActivityForResult(intent,data.getRequestCode());
@@ -561,7 +568,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                 }else{
                     // 只有一个分类
                     LQCourseConfigEntity entity = lqCourseConfigEntities.get(0);
-                    OrganCourseFiltrateActivity.show(activity,entity,selectResource,false,data,false,false,true);
+                    OrganCourseFiltrateActivity.show(activity,entity,selectResource,false,data,false,false,true,roles);
                 }
             }
         });
@@ -584,8 +591,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
      * @param organId 机构Id
      */
     public static void show(@NonNull final Activity activity,
-                            @NonNull String organId){
-        show(activity,organId,false,null);
+                            @NonNull String organId,@NonNull String roles){
+        show(activity,organId,false,null,roles);
     }
 
     private static class HolderPagerAdapter extends FragmentPagerAdapter {

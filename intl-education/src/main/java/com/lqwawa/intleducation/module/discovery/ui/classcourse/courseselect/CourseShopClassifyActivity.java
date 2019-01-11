@@ -20,17 +20,23 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -164,17 +170,29 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                     return;
                 }
 
-                if(mSelectResource){
-                    OrganCourseFiltrateActivity.show(
-                            CourseShopClassifyActivity.this,
-                            entity,mSelectResource,false,
-                            mResourceData,isAuthorized,isReallyAuthorized,false);
-                }else{
-                    OrganCourseFiltrateActivity.show(
-                            CourseShopClassifyActivity.this,
-                            entity,false,true,
-                            null,isAuthorized,isReallyAuthorized,false);
-                }
+                SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), mSchoolId, new DataSource.Callback<SchoolInfoEntity>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        showError(strRes);
+                    }
+
+                    @Override
+                    public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                        String roles = schoolInfoEntity.getRoles();
+                        if(mSelectResource){
+                            OrganCourseFiltrateActivity.show(
+                                    CourseShopClassifyActivity.this,
+                                    entity,mSelectResource,false,
+                                    mResourceData,isAuthorized,isReallyAuthorized,false,roles);
+                        }else{
+                            OrganCourseFiltrateActivity.show(
+                                    CourseShopClassifyActivity.this,
+                                    entity,false,true,
+                                    null,isAuthorized,isReallyAuthorized,false,roles);
+                        }
+                    }
+                });
+
             }
         });
 

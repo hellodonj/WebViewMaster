@@ -105,6 +105,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private static final String KEY_EXTRA_HOST_ENTER = "KEY_EXTRA_HOST_ENTER";
     // 是否是班级学程入口进来的
     private static final String KEY_EXTRA_CLASS_COURSE_ENTER = "KEY_EXTRA_CLASS_COURSE_ENTER";
+    // 该机构的角色信息
+    private static final String KEY_EXTRA_ROLES = "KEY_EXTRA_ROLES";
     // 特色英语ID
     private static final int CHARACTER_ENGLISH_ID = 2096;
     // 英语国际课程ID
@@ -203,6 +205,10 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     // 是否真正的授权
     private boolean isReallyAuthorized;
     private boolean isHostEnter;
+    // 机构角色信息
+    private String mRoles;
+    private boolean isTeacher;
+
     // 授权码是否过期
     private boolean isExist;
     // 是否是空Label
@@ -252,6 +258,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         isAuthorized = bundle.getBoolean(KEY_EXTRA_IS_AUTHORIZED);
         isReallyAuthorized = bundle.getBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED);
         isHostEnter = bundle.getBoolean(KEY_EXTRA_HOST_ENTER);
+        mRoles = bundle.getString(KEY_EXTRA_ROLES);
+        isTeacher = UserHelper.isTeacher(mRoles);
         if (mSelectResource)
             mResourceData = (ShopResourceData) bundle.getSerializable(KEY_EXTRA_RESOURCE_DATA);
         if (mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
@@ -827,7 +835,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab : mFiltrateArray1) {
-            if (tab.isFirstSelected()) {
+            if (tab.isFirstSelected() && isTeacher) {
                 haveSelected = true;
                 break;
             }
@@ -842,7 +850,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             TabLayout.Tab newTab = mTabLayout1.newTab().setCustomView(tabView).setTag(tab);
 
             if (!setSelected) {
-                setSelected = (mTabLayout1.getTabCount() == 0 && !haveSelected) || tab.isFirstSelected();
+                setSelected = (mTabLayout1.getTabCount() == 0 && !haveSelected) || (tab.isFirstSelected() && isTeacher);
                 mTabLayout1.addTab(newTab, setSelected);
             } else {
                 // 已经添加过已经选择的Tab
@@ -860,7 +868,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab : mFiltrateArray2) {
-            if (tab.isFirstSelected()) {
+            if (tab.isFirstSelected() && isTeacher) {
                 haveSelected = true;
                 break;
             }
@@ -874,7 +882,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             TabLayout.Tab newTab = mTabLayout2.newTab().setCustomView(tabView).setTag(tab);
 
             if (!setSelected) {
-                setSelected = (mTabLayout2.getTabCount() == 0 && !haveSelected) || tab.isFirstSelected();
+                setSelected = (mTabLayout2.getTabCount() == 0 && !haveSelected) || (tab.isFirstSelected() && isTeacher);
                 mTabLayout2.addTab(newTab, setSelected);
             } else {
                 // 已经添加过已经选择的Tab
@@ -891,7 +899,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab : mFiltrateArray3) {
-            if (tab.isFirstSelected()) {
+            if (tab.isFirstSelected() && isTeacher) {
                 haveSelected = true;
                 break;
             }
@@ -906,7 +914,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 TabLayout.Tab newTab = mTabLayout3.newTab().setCustomView(tabView).setTag(tab);
 
                 if (!setSelected) {
-                    setSelected = (mTabLayout3.getTabCount() == 0 && !haveSelected) || tab.isFirstSelected();
+                    setSelected = (mTabLayout3.getTabCount() == 0 && !haveSelected) || (tab.isFirstSelected() && isTeacher);
                     mTabLayout3.addTab(newTab, setSelected);
                 } else {
                     // 已经添加过已经选择的Tab
@@ -924,7 +932,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         // 查看是否有Selected的
         boolean haveSelected = false;
         for (Tab tab : mFiltrateArray4) {
-            if (tab.isFirstSelected()) {
+            if (tab.isFirstSelected() && isTeacher) {
                 haveSelected = true;
                 break;
             }
@@ -939,7 +947,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 TabLayout.Tab newTab = mTabLayout4.newTab().setCustomView(tabView).setTag(tab);
 
                 if (!setSelected) {
-                    setSelected = (mTabLayout4.getTabCount() == 0 && !haveSelected) || tab.isFirstSelected();
+                    setSelected = (mTabLayout4.getTabCount() == 0 && !haveSelected) || (tab.isFirstSelected() && isTeacher);
                     mTabLayout4.addTab(newTab, setSelected);
                 } else {
                     // 已经添加过已经选择的Tab
@@ -1748,7 +1756,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             @NonNull ShopResourceData data,
                             boolean isAuthorized,
                             boolean isReallyAuthorized,
-                            boolean isHostEnter) {
+                            boolean isHostEnter,
+                            String roles) {
         Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_ENTITY, entity);
@@ -1757,6 +1766,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         bundle.putBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED, isReallyAuthorized);
         bundle.putBoolean(KEY_EXTRA_HOST_ENTER, isHostEnter);
         bundle.putBoolean(KEY_EXTRA_CLASS_COURSE_ENTER, isClassCourseEnter);
+        bundle.putString(KEY_EXTRA_ROLES,roles);
         if (selectResource)
             bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
         intent.putExtras(bundle);
