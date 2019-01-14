@@ -1044,6 +1044,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                     int firstId = firstTab.getId();
                     if(rootId == MINORITY_LANGUAGE_COURSE ||
                             rootId == CHARACTERISTICS_ENGLISH ||
+                            rootId == BASIC_COURSE ||
                             rootId == ENGLISH_INTERNATIONAL_COURSE && firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
                         // 选中的是小语种的Id
                         triggerUpdateData();

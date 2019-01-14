@@ -868,6 +868,84 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * 设置相关联动的监听
      */
     private void initTabListener(){
+        mTabLayout1.removeOnTabSelectedListener(tabLayout1Adapter);
+        mTabLayout1.addOnTabSelectedListener(tabLayout1Adapter);
+
+        mTabLayout2.removeOnTabSelectedListener(tabLayout2Adapter);
+        mTabLayout2.addOnTabSelectedListener(tabLayout2Adapter);
+
+        // 小语种TabLayout3被隐藏了
+        mTabLayout3.removeOnTabSelectedListener(tabLayout3Adapter);
+        mTabLayout3.addOnTabSelectedListener(tabLayout3Adapter);
+    }
+
+    private TabSelectedAdapter tabLayout1Adapter = new TabSelectedAdapter(){
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            super.onTabSelected(tab);
+            // 全部发生数据联动
+            Tab tabData = (Tab) tab.getTag();
+            setTabItemSelected(mFiltrateArray1,tabData);
+            // 重新配置2,3数据的联动效果
+            clearArray(CONFIG_TYPE_2);
+            recursionConfigArray(tabData.getChildList());
+            configLabel(tabData.getId());
+            initTabControl2();
+            // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
+            // initTabControl3();
+
+            // 数据请求
+            // triggerUpdateData();
+        }
+    };
+
+    private TabSelectedAdapter tabLayout2Adapter = new TabSelectedAdapter(){
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            super.onTabSelected(tab);
+            Tab tabData = (Tab) tab.getTag();
+            setTabItemSelected(mFiltrateArray2,tabData);
+            // 所有标签都会发生二级，甚至三级联动
+            TabLayout.Tab tabAt = mTabLayout1.getTabAt(mTabLayout1.getSelectedTabPosition());
+            if(EmptyUtil.isNotEmpty(tabAt)){
+                if(tabData.isAll()){
+                    List<LQCourseConfigEntity> entities = new ArrayList<>();
+                    for (Tab item:mFiltrateArray2) {
+                        if(!item.isAll() && EmptyUtil.isNotEmpty(item.getChildList())){
+                            entities.addAll(item.getChildList());
+                        }
+                    }
+                    tabData.setChildList(entities);
+                }
+
+                // 重新配置3数据的联动效果
+                clearArray(CONFIG_TYPE_3);
+                recursionConfigArray(tabData.getChildList());
+                initTabControl3();
+            }
+
+            // 数据请求
+            for (Tab tab1:mFiltrateArray1){
+                if(tab1.getId() == MINORITY_LANGUAGE_COURSE_ID){
+                    // 选中的是小语种的Id
+                    triggerUpdateData();
+                }
+            }
+
+        }
+    };
+
+    private TabSelectedAdapter tabLayout3Adapter = new TabSelectedAdapter(){
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            super.onTabSelected(tab);
+            Tab tabData = (Tab) tab.getTag();
+            setTabItemSelected(mFiltrateArray3,tabData);
+            // 数据请求
+            triggerUpdateData();
+        }
+    };
+    /*private void initTabListener(){
         mTabLayout1.addOnTabSelectedListener(new TabSelectedAdapter(){
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -935,7 +1013,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 triggerUpdateData();
             }
         });
-    }
+    }*/
 
     /**
      * 设置该Tab选中

@@ -445,6 +445,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
                             }
                         }else{
                             ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
+                            notifyDataSetChanged();
                         }
                     }
                             /*if (selectCount < maxSelect || RefreshUtil.getInstance().contains(vo.getId())) {
