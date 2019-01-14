@@ -14,6 +14,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -287,6 +288,10 @@ public class LQCourseHelper {
             //只显示免费课程
             requestVo.addParams("payType", 0);
         }
+
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetDiscoveryItemList+requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
@@ -341,6 +346,10 @@ public class LQCourseHelper {
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
         requestVo.addParams("level", level);
+
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+
         // 筛选数据就不传
         if(!TextUtils.equals(sort,"0")){
             requestVo.addParams("sort", sort);

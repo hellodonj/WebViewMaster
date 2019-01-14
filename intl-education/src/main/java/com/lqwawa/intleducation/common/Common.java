@@ -25,6 +25,10 @@ public class Common {
         int LQMOOC_COURSE_MAX_COUNT = 30;
         // UE_TOOL 开关
         boolean UE_TOOL_FLAG = true;
+
+        // 是否过滤测试课程 1或者不传 过滤
+        // 0 不过滤
+        int isAppStore = 0;
     }
 
 }
