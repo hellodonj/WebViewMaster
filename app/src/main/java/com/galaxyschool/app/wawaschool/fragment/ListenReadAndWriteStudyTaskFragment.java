@@ -567,6 +567,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                             if (thumbnailUrl.contains(",")) {
                                 thumbnailUrl = thumbnailUrl.split(",")[0];
                             }
+                            thumbnailUrl = StudyTaskUtils.getResourceThumbnail(thumbnailUrl);
                         }
                         MyApplication.getThumbnailManager(getActivity()).displayImageWithDefault
                                 (thumbnailUrl, thumbnail, R.drawable.default_cover);
@@ -693,8 +694,15 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     //缩略图
                     ImageView thumbnail = (ImageView) view.findViewById(R.id.media_thumbnail);
                     if (thumbnail != null) {
-                        MyApplication.getThumbnailManager(getActivity()).displayImageWithDefault(data
-                                .getResThumbnailUrl(), thumbnail, R.drawable.default_cover);
+                        String thumbnailUrl = data.getResThumbnailUrl();
+                        if (!TextUtils.isEmpty(thumbnailUrl)) {
+                            if (thumbnailUrl.contains(",")) {
+                                thumbnailUrl = thumbnailUrl.split(",")[0];
+                            }
+                            thumbnailUrl = StudyTaskUtils.getResourceThumbnail(thumbnailUrl);
+                        }
+                        MyApplication.getThumbnailManager(getActivity()).displayImageWithDefault
+                                (thumbnailUrl, thumbnail, R.drawable.default_cover);
                     }
                     //名字
                     TextView name = (TextView) view.findViewById(R.id.media_name);
