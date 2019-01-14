@@ -1711,33 +1711,34 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (EmptyUtil.isEmpty(intent)) return;
-            if (sectionResListVo.isAutoMark()) {
-                // 答题卡类型
-                flagRead(null, sectionResListVo.getId(), sectionResListVo.getResId());
-            } else {
-                if (ACTION_MARK_SCORE.equals(intent.getAction())) {
-                    if (!EmptyUtil.isEmpty(mFragment0)) {
-                        // 复述列表刷新UI
-                        // 刷新UI
-                        if (!EmptyUtil.isEmpty(mFragment0)) {
-                            mFragment0.updateData();
+            if (ACTION_MARK_SCORE.equals(intent.getAction())) {
+                if(sectionResListVo.isAutoMark() &&
+                        mOriginalRole == UserHelper.MoocRoleType.STUDENT){
+                    // 学生身份, 自动批阅读写单的提交,批阅都广播的这个
+                    flagRead(null,sectionResListVo.getId(),sectionResListVo.getResId());
+                }
 
-                        }
-                        if (!TextUtils.isEmpty(examId)) {
-                            //任务单考试专用
-                            commitExamCheckMarkData();
-                        }
+                if (!EmptyUtil.isEmpty(mFragment0)) {
+                    // 复述列表刷新UI
+                    // 刷新UI
+                    if (!EmptyUtil.isEmpty(mFragment0)) {
+                        mFragment0.updateData();
+
                     }
-                } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
-                    // 语音评测刷新
-                    if (!EmptyUtil.isEmpty(mFragment1)) {
-                        mFragment1.updateData();
-                        Bundle extras = intent.getExtras();
-                        if (EmptyUtil.isNotEmpty(extras) && extras.containsKey("commit_resId")) {
-                            int resId = intent.getExtras().getInt("commit_resId");
-                            String resIdStr = Integer.toString(resId);
-                            flagRead(null, sectionResListVo.getId(), resIdStr);
-                        }
+                    if (!TextUtils.isEmpty(examId)) {
+                        //任务单考试专用
+                        commitExamCheckMarkData();
+                    }
+                }
+            } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
+                // 语音评测刷新
+                if (!EmptyUtil.isEmpty(mFragment1)) {
+                    mFragment1.updateData();
+                    Bundle extras = intent.getExtras();
+                    if (EmptyUtil.isNotEmpty(extras) && extras.containsKey("commit_resId")) {
+                        int resId = intent.getExtras().getInt("commit_resId");
+                        String resIdStr = Integer.toString(resId);
+                        flagRead(null, sectionResListVo.getId(), resIdStr);
                     }
                 }
             }
