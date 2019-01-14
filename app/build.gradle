@@ -57,6 +57,9 @@ android {
         ndk {
             abiFilters "armeabi-v7a"
         }
+
+        // 发布线上版本,需要设置com.lqwawa.intleducation.Common.Constance
+        // isAppStore = 1 来过滤线上版本的测试课程
     }
     signingConfigs {
         debug {
