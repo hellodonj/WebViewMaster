@@ -367,4 +367,34 @@ public class StudyTaskUtils {
         }
     }
 
+
+    public static String getResourceThumbnail(String thumbnail){
+        if (TextUtils.isEmpty(thumbnail)){
+            return thumbnail;
+        }
+        String flag = null;
+        if (thumbnail.endsWith(".pdf")){
+            flag = ".pdf";
+        }
+        if (thumbnail.endsWith(".pdfx")){
+            flag = ".pdfx";
+        }
+        if (thumbnail.endsWith(".ppt")){
+            flag = ".ppt";
+        }
+        if (thumbnail.endsWith(".pptx")){
+            flag = ".pptx";
+        }
+        if (thumbnail.endsWith(".doc")){
+            flag = ".doc";
+        }
+        if (thumbnail.endsWith(".docx")){
+            flag = ".docx";
+        }
+        if (!TextUtils.isEmpty(flag)){
+            thumbnail = thumbnail.replace(flag,"_split/1.jpg");
+        }
+        return thumbnail;
+    }
+
 }

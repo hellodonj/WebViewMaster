@@ -569,6 +569,8 @@ public class ClassDetailsFragment extends ContactsListFragment
         args.putBoolean(AirClassroomActivity.EXTRA_IS_HEADMASTER,classInfo.isHeadMaster());
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_CLASS_NAME, classInfo.getClassName());
         args.putSerializable(AirClassroomActivity.EXTRA_IS_SCHOOLINFO,schoolInfo);
+        args.putSerializable(AirClassroomActivity.ExTRA_CLASS_INFO, classInfo);
+        args.putInt(AirClassroomActivity.EXTRA_ROLE_TYPE, classInfo.getRoleType());
         if (schoolInfo != null){
             args.putBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS,schoolInfo.isOnlineSchool());
         }
