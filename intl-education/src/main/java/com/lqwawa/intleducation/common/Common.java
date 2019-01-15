@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.common;
 
+import com.osastudio.apps.Config;
+
 /**
  * **********************************
  *
@@ -28,7 +30,7 @@ public class Common {
 
         // 是否过滤测试课程 1或者不传 过滤
         // 0 不过滤
-        int isAppStore = 0;
+        int isAppStore = Config.UPLOAD_BUGLY_EXCEPTION ? 1 : 0;
     }
 
 }
