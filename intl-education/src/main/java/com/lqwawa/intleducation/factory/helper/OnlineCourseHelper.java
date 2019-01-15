@@ -11,6 +11,7 @@ import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -139,6 +140,11 @@ public class OnlineCourseHelper {
                                                    int firstId, int secondId, int thirdId, int fourthId,
                                                    @NonNull DataSource.Callback<List<OnlineClassEntity>> callback) {
         RequestVo requestVo = new RequestVo();
+
+
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+
         if (EmptyUtil.isNotEmpty(schoolId)) {
             requestVo.addParams("schoolId", schoolId);
         }
@@ -998,6 +1004,10 @@ public class OnlineCourseHelper {
      */
     public static void requestOnlineStudyOrganData(@NonNull DataSource.Callback<OnlineStudyEntity> callback) {
         RequestVo requestVo = new RequestVo();
+
+
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOnlineStudyOrganUrl + requestVo.getParams());
         params.setConnectTimeout(10000);
