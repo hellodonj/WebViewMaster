@@ -723,9 +723,7 @@ public class ActivityUtils {
     public static void gotoMediaTypeList(Activity activity, List<SchoolInfo> schoolInfoList) {
         Intent intent = new Intent();
         intent.setClass(activity, ShellActivity.class);
-        if (schoolInfoList != null && schoolInfoList.size() > 0) {
-            intent.putExtra("Window", "media_type_list");
-        }
+        intent.putExtra("Window", "media_type_list");
         intent.putExtra(ActivityUtils.EXTRA_SCHOOL_INFO_LIST, (Serializable) schoolInfoList);
         activity.startActivity(intent);
     }
