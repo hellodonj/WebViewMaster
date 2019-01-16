@@ -18,15 +18,14 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
 import com.lqwawa.apps.R;
 import com.osastudio.common.utils.FileProviderHelper;
 import com.osastudio.common.utils.Utils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -218,7 +217,6 @@ public abstract class UpdateService extends Service {
     }
 
     private RemoteViews remoteViews;
-    private Notification notification;
 
     private void notifyUser(AppInfo appInfo) {
         Intent intent = null;
@@ -248,29 +246,29 @@ public abstract class UpdateService extends Service {
             remoteViews.setViewVisibility(R.id.au_notify_progress, View.GONE);
         }
 
-        if (notification == null) {
-            notification = new Notification();
-        }
-        notification.icon = notificationIcon;
-        if (notification.icon <= 0) {
+        if (notificationIcon <= 0) {
             if (appInfo.isDownloadWaiting() || appInfo.isDownloadStarted()
                     || appInfo.isDownloading()) {
-                notification.icon = android.R.drawable.stat_sys_download;
+                notificationIcon = android.R.drawable.stat_sys_download;
             } else {
-                notification.icon = android.R.drawable.stat_sys_download_done;
+                notificationIcon = android.R.drawable.stat_sys_download_done;
             }
         }
-        remoteViews.setImageViewResource(R.id.au_notify_icon, notification.icon);
-        notification.contentView = remoteViews;
-        notification.contentIntent = PendingIntent.getActivity(this, 0,
-                intent != null ? intent : new Intent(),
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//        notification.when = System.currentTimeMillis();
-
-        NotificationManager nm = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        nm.notify(appInfo.getId().hashCode(), notification);
+        remoteViews.setImageViewResource(R.id.au_notify_icon, notificationIcon);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                intent != null ? intent : new Intent(), PendingIntent.FLAG_CANCEL_CURRENT);
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+        Notification notification = builder
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.notification_small_icon)
+                .setContent(remoteViews)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(false)
+                .build();
+        if (nm != null) {
+            nm.notify(appInfo.getId().hashCode(), notification);
+        }
     }
 
     private void notifyDownloadStateChanged(AppInfo appInfo) {

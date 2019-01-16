@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
@@ -80,7 +81,7 @@ public class AchievementStatisticsItemFragment extends ContactsListFragment {
             return;
         }
 
-        MyListView listView = (MyListView) findViewById(R.id.listview);
+        ListView listView = (ListView) findViewById(R.id.listview);
         if (listView != null) {
             AdapterViewHelper helper = new AdapterViewHelper(getActivity(), listView, R.layout
                     .item_achievement_statistics_item) {
