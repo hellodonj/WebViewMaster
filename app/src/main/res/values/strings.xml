@@ -1060,7 +1060,7 @@
     <string name="contacts_detail">Contact Details</string>
     <string name="class_detail">Class Details</string>
     <string name="act_classroom">Act Classroom</string>
-    <string name="my_course">My Courses</string>
+    <string name="my_course">Course</string>
     <string name="show_split_course">View split pages</string>
     <string name="broadcast_hall">Broadcast Hall</string>
 
@@ -1746,4 +1746,6 @@
     <string name="str_subject_setting">Subject Setting</string>
     <string name="str_choose_subject">Select Subject</string>
     <string name="str_intro_task_choose_subject">Subject not set, please select subject</string>
+    <string name="str_tutoring_center">Tutorial</string>
+    <string name="str_lecture_hall">Lecture</string>
 </resources>

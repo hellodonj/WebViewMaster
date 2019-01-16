@@ -1653,4 +1653,6 @@
     <string name="str_subject_setting">科目设置</string>
     <string name="str_choose_subject">选择科目</string>
     <string name="str_intro_task_choose_subject">您尚未选择科目，请前往选择科目</string>
+    <string name="str_tutoring_center">习教辅</string>
+    <string name="str_lecture_hall">名师课</string>
 </resources>
