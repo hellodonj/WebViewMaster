@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/linearLayout"
-    android:background="@color/main_bg_color">
+    android:background="@color/main_bg_color"
+    android:orientation="vertical">
 
     <com.galaxyschool.app.wawaschool.views.ToolbarTopView
         android:id="@+id/toolbar_top_view"
@@ -13,26 +13,26 @@
         android:layout_height="wrap_content"/>
 
     <View
+        android:id="@+id/ten_background"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/main_bg_color"
-        android:id="@+id/ten_background"
         android:visibility="gone"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include layout="@layout/empty_view"/>
 
-    <com.osastudio.common.utils.MyListView
-        android:background="@color/white"
-        android:numColumns="1"
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/divider_line"
-        android:listSelector="@android:color/transparent"/>
-
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="@drawable/divider_line"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="1"/>
 
     </FrameLayout>
 
