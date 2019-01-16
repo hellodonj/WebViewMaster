@@ -1104,7 +1104,7 @@ public class ClassContactsDetailsFragment extends GroupContactsListFragment {
 		for (ContactsClassMemberInfo obj : list) {
 			this.membersMap.put(obj.getMemberId(), obj);
 
-			if (obj.isHeadTeacher()) {
+			if (obj.isHeadTeacher() && obj.getRole() == RoleType.ROLE_TYPE_TEACHER) {
 				this.headTeacherInfo = obj;
 				if (this.headTeacherId == null) {
 					this.headTeacherId = obj.getMemberId();
