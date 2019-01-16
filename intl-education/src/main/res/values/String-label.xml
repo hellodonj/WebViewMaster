@@ -105,7 +105,7 @@
     <!--<string name="label_space_school_function_shop">Study Hall</string>-->
     <string name="label_space_school_function_shop">Course Library</string>
     <string name="label_space_school_function_teacher">Teachers</string>
-    <string name="label_space_school_relevance_course">Correlated Course</string>
+    <string name="label_space_school_relevance_course">Correlated Tutorial</string>
     <!--<string name="label_space_school_function_choice_books">Quality Resources</string>-->
     <string name="label_space_school_function_choice_books">Choice Course Pool</string>
     <string name="label_space_school_function_principal_assistant">Principal Assistant</string>
@@ -183,7 +183,7 @@
     <string name="label_image_saved_to">Image saved in %s</string>
     <string name="label_image_save_failed">Failed to save image</string>
     <string name="label_image_save_to_photo">Save</string>
-    <string name="label_tab_course_empty_remind">No course attended</string>
+    <string name="label_tab_course_empty_remind">No Tutorial attended</string>
     <string name="label_tab_class_empty_remind">No class attended</string>
     <string name="label_go_course_shop">Enter Study Hall</string>
     <string name="label_go_online_study">Enter Online Class</string>
@@ -212,7 +212,7 @@
     <string name="label_old_in_class">Assigned already</string>
     <string name="label_picker_class">Select Class</string>
     <string name="label_cancel_order">Cancel Order</string>
-    <string name="label_watch_more_course">View More Courses</string>
+    <string name="label_watch_more_course">View More Tutorials</string>
     <string name="label_basics_course">Basic Course</string>
     <string name="label_class_notice_default_text">No notice</string>
     <string name="label_committed_list">Submittal List</string>
@@ -224,28 +224,28 @@
 
     <!--V5.11版本字符串-->
     <string name="label_share_online_class_title">【LQ Lecture】</string>
-    <string name="label_share_course_title">【LQ Course】</string>
+    <string name="label_share_course_title">【LQ Tutorial】</string>
     <string name="label_timetable">Timetable</string>
     <string name="label_today">Today</string>
     <string name="label_study_number">%d attended</string>
-    <!--<string name="label_teach_class">Lecture Hall</string>-->
-    <string name="label_teach_class">Lecture Hall</string>
+    <!--<string name="label_teach_class">Lecture</string>-->
+    <string name="label_teach_class">Lecture</string>
     <string name="label_teach_course">Lecture</string>
     <!--<string name="label_tab_course_chapter">Outline</string>-->
-    <string name="label_tab_course_chapter">Course</string>
-    <string name="label_study_course">Course</string>
-    <string name="label_tab_new_study_course">My Course</string>
+    <string name="label_tab_course_chapter">Tutorial</string>
+    <string name="label_study_course">Tutorial</string>
+    <string name="label_tab_new_study_course">My Tutorial</string>
     <string name="label_tab_new_teach_course">My Lecture</string>
-    <string name="label_tab_new_give_study_course">Course</string>
+    <string name="label_tab_new_give_study_course">Tutorial</string>
     <string name="label_tab_new_give_teach_course">Lecture</string>
     <string name="label_new_tab_class_empty_remind">No lecture attended?</string>
-    <string name="label_new_go_online_study">Enter Lecture Hall</string>
-    <!--<string name="label_new_go_online_study">Enter Lecture Hall</string>-->
+    <string name="label_new_go_online_study">Enter Lecture</string>
+    <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
     <string name="label_watch_more_teach_course">More Lectures</string>
     <string name="label_history_give">History</string>
     <string name="label_give_complete">Ended</string>
     <string name="label_history_setting">Set as History</string>
-    <string name="label_self_study_class">Enter Study Hall</string>
+    <string name="label_self_study_class">Tutorial</string>
     <string name="label_live_source">From: %s</string>
     <string name="label_online_class_give_history_tip">You are now setting the lecture as history and will not be able to create new live stream or mark learning tasks, etc.</string>
     <string name="label_this_class_give_history">Lecture has been set as history</string>
@@ -313,6 +313,7 @@
     <string name="label_other_generation_of_charge_desc">Top-up by: %s</string>
     <string name="label_add_course_lines">Add\nCourse</string>
     <string name="label_request_authorization_lines">Obtain\nAuthorization</string>
+    <string name="label_confirm_authorization">Ok</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>
@@ -326,7 +327,7 @@
         <item>Schedule</item>
         <item>Comment</item>
         <!--<item>Correlated Course</item>-->
-        <item>Course</item>
+        <item>Tutorial</item>
     </string-array>
 
     <string-array name="label_lesson_sourse_tabs">

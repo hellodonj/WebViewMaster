@@ -320,6 +320,7 @@
     <string name="label_other_generation_of_charge_desc">他人代充: %s</string>
     <string name="label_add_course_lines">添加\n学程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
+    <string name="label_confirm_authorization">确定</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>
