@@ -900,7 +900,10 @@ public class CheckMarkFragment extends ContactsListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                score = intent.getStringExtra(ACTION_MARK_SCORE);
+                String markScore = intent.getStringExtra(ACTION_MARK_SCORE);
+                if (!TextUtils.isEmpty(markScore)){
+                    score = markScore;
+                }
                 if (mTaskMarkParam != null) {
 
                     mTaskMarkParam.isMarked = true;
