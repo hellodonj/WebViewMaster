@@ -32,7 +32,7 @@ import java.util.List;
 
 public class AirClassroomDetailActivity extends BaseFragmentActivity implements
         AirClassroomDetailFragment.Contants {
-    private Fragment fragment = null;
+    private AirClassroomDetailFragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +144,9 @@ public class AirClassroomDetailActivity extends BaseFragmentActivity implements
             this.finish();
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            if (fragment != null){
+                fragment.onBackPress(false);
+            }
         }
     }
 

@@ -2731,6 +2731,12 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
         mp4VideoView.start();
     }
 
+    public void onBackPress(boolean isFullScreen){
+        if (mp4PlayRootView != null){
+            onScaleChange(isFullScreen);
+        }
+    }
+
     @Override
     public void onScaleChange(boolean isFullscreen) {
         if (isFullscreen) {
