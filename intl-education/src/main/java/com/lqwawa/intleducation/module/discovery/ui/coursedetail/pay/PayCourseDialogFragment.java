@@ -28,6 +28,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
 import com.lqwawa.intleducation.factory.helper.UserHelper;
+import com.lqwawa.intleducation.module.discovery.ui.coin.UserParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
 
@@ -251,11 +252,13 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
                 mChildContainer.setTag(null);
                 StringUtil.fillSafeTextView(mQueryName,"");
                 UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                UIUtil.showToastSafe(R.string.label_this_account_not_available);
             }
         }else{
             // 置空
             mChildContainer.setTag(null);
             StringUtil.fillSafeTextView(mQueryName,"");
+            UIUtil.showToastSafe(R.string.label_this_account_not_available);
             UIUtil.showToastSafe(R.string.label_this_account_not_available);
         }
     }
@@ -303,9 +306,13 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
                 members.add(model);
                 mBtnWatchName.setEnabled(false);
                 mPresenter.requestUserInfoWithMembers(members);
+            }else{
+                UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
             }
         }else if(viewId == R.id.btn_confirm){
             // 确定
+            // 点击确定,就删Tag
+            mChildContainer.setTag(null);
             // 获取到已经选择的memberId
             String payMemberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
             if(mParent && mParentEnter){
@@ -325,7 +332,51 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
                                         payMemberId = tag.getMemberId();
                                     }else{
                                         // 提示
-                                        UIUtil.showToastSafe(R.string.label_choice_other_null);
+                                        // UIUtil.showToastSafe(R.string.label_choice_other_null);
+                                        // return;
+
+                                        // 此时请求
+                                        String inputName = mInputName.getText().toString().trim();
+                                        if(EmptyUtil.isEmpty(inputName)){
+                                            UIUtil.showToastSafe(R.string.label_please_input_completed_right_account);
+                                            return;
+                                        }
+
+                                        List<UserModel> members = new ArrayList<>();
+                                        UserModel model = new UserModel(inputName);
+                                        members.add(model);
+
+                                        mBtnConfirm.setEnabled(false);
+                                        com.lqwawa.intleducation.factory.helper.UserHelper.requestRealNameWithNick(false, members, new DataSource.Callback<List<UserEntity>>() {
+                                            @Override
+                                            public void onDataNotAvailable(int strRes) {
+                                                UIUtil.showToastSafe(strRes);
+                                                mBtnConfirm.setEnabled(true);
+                                            }
+
+
+                                            @Override
+                                            public void onDataLoaded(List<UserEntity> entities) {
+                                                if(EmptyUtil.isNotEmpty(entities)){
+                                                    mBtnConfirm.setEnabled(true);
+                                                    if(EmptyUtil.isNotEmpty(entities)){
+                                                        // 获取到用户信息
+                                                        UserEntity entity = entities.get(0);
+                                                        if(entity.isIsExist()){
+                                                            if(EmptyUtil.isNotEmpty(mNavigator)){
+                                                                String memberId = entity.getMemberId();
+                                                                mPresenter.requestCheckCourseBuy(mCourseId,memberId,mType);
+                                                            }
+                                                        }else{
+                                                            UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                        }
+                                                    }else{
+                                                        UIUtil.showToastSafe(R.string.label_this_account_not_available);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                        // 不走下面的逻辑
                                         return;
                                     }
                                 }
