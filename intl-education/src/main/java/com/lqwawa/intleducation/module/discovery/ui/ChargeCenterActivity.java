@@ -170,7 +170,7 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
             public void afterTextChanged(Editable s) {
 
                 if (TextUtils.isEmpty(s.toString())) {
-
+                    coinNum = 0;
                     tvCost.setText("0");
                     return;
                 }
