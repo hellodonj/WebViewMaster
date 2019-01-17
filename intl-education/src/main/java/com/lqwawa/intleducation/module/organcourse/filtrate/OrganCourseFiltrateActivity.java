@@ -1686,7 +1686,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             if (requestCode == SEARCH_REQUEST_CODE) {
                 // 更新字符串发生更新
                 // 设置Top隐藏
-                mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+                // mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
                 mKeyString = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();
