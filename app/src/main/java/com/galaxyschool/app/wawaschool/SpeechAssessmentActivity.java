@@ -421,7 +421,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                                     evalData.setRef_text(pageObj.getString("ref_text"));
                                     evalData.setImageUrl(pageObj.getString("ref_image_url"));
                                     String localAudioPath = pageObj.getString("my_audio_path");
-                                    if (!TextUtils.isEmpty(localAudioPath)){
+                                    if (!TextUtils.isEmpty(localAudioPath)) {
                                         evalData.setMy_audio_path(localFolderPath + File.separator + localAudioPath);
                                     }
                                     evalData.setEval_score(pageObj.getInteger("eval_score"));
@@ -592,7 +592,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                             if (!TextUtils.isEmpty(word)) {
                                 int wordStartIndex = englishText.indexOf(word, tempIndex);
                                 tempIndex = wordStartIndex + word.length();
-                                if (tempIndex < englishText.length()){
+                                if (tempIndex < englishText.length()) {
                                     wordIndexArray.add(tempIndex + 1);
                                 } else {
                                     wordIndexArray.add(tempIndex);
@@ -793,22 +793,24 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                                 public void onBack(Object result) {
                                     dismissLoadingDialog();
                                     if (result != null) {
-                                        CourseUploadResult uploadResult = (CourseUploadResult) result;
-                                        if (uploadResult.code != 0) {
-                                            TipMsgHelper.ShowLMsg(SpeechAssessmentActivity.this, R.string.upload_file_failed);
-                                            return;
-                                        }
-                                        if (uploadResult.data != null && uploadResult.data.size() > 0) {
-                                            final CourseData courseData = uploadResult.data.get(0);
-                                            if (courseData != null) {
-                                                if (fromOnlineStudyTask) {
-                                                    //在线课堂提交学生的任务
-                                                    commitStudentOnlineTaskList(courseData);
-                                                } else {
-                                                    commitStudentTaskList(courseData);
+                                        runOnUiThread(() -> {
+                                            CourseUploadResult uploadResult = (CourseUploadResult) result;
+                                            if (uploadResult.code != 0) {
+                                                TipMsgHelper.ShowLMsg(SpeechAssessmentActivity.this, R.string.upload_file_failed);
+                                                return;
+                                            }
+                                            if (uploadResult.data != null && uploadResult.data.size() > 0) {
+                                                final CourseData courseData = uploadResult.data.get(0);
+                                                if (courseData != null) {
+                                                    if (fromOnlineStudyTask) {
+                                                        //在线课堂提交学生的任务
+                                                        commitStudentOnlineTaskList(courseData);
+                                                    } else {
+                                                        commitStudentTaskList(courseData);
+                                                    }
                                                 }
                                             }
-                                        }
+                                        });
                                     }
                                 }
                             });
@@ -941,7 +943,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                 if (getResult() != null && getResult().isSuccess()) {
                     LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getContext());
                     broadcastManager.sendBroadcast(new Intent(EvalHomeworkListFragment
-                            .ACTION_MARK_SCORE).putExtra("commit_resId",courseData.id));
+                            .ACTION_MARK_SCORE).putExtra("commit_resId", courseData.id));
                     //删除本地制作的文件夹
                     FileUtils.deleteDir(folderPath);
                     EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_COURSE));
@@ -1005,8 +1007,8 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         } else {
             //语音评测制作
             if (isCheckMessageText) {
-                if (playRefIndexPosition > 0){
-                    TipMsgHelper.ShowMsg(this,R.string.str_following_read);
+                if (playRefIndexPosition > 0) {
+                    TipMsgHelper.ShowMsg(this, R.string.str_following_read);
                     return;
                 }
                 //弹出窗口选择跟读速度
@@ -1014,12 +1016,12 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             }
 //            arrowImageV.setImageResource(R.drawable.arrow_gray_down_icon);
             arrowImageV.setVisibility(View.GONE);
-            showTextLayout.setBackground(ContextCompat.getDrawable(this,R.drawable.shape_corner_text_green_20_dp));
-            showTextLayout.setPadding(10,10,10,10);
+            showTextLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_corner_text_green_20_dp));
+            showTextLayout.setPadding(10, 10, 10, 10);
             showTextLayout.setMinimumWidth(100);
-            leftMessageTextV.setTextColor(ContextCompat.getColor(this,R.color.text_white));
+            leftMessageTextV.setTextColor(ContextCompat.getColor(this, R.color.text_white));
             leftMessageTextV.setText(speedOfRead[selectData.getSpeedModel()]);
-            if (playType == PlayAudioType.PLAY_VOICE_TYPE){
+            if (playType == PlayAudioType.PLAY_VOICE_TYPE) {
                 //正在播放录音中
                 return;
             }
@@ -1056,7 +1058,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
 
                     @Override
                     public void onRawRecordingEnd(String encodedFilePath, String rawFilePath) {
-                        if (isPressHomeKey){
+                        if (isPressHomeKey) {
                             if (!TextUtils.isEmpty(encodedFilePath)) {
                                 deleteFile(encodedFilePath);
                             }
@@ -1121,7 +1123,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
     private SpannableString getSpannableString(int schemeId, String result) {
         if (!isOnlinePlay) {
             JSONArray jsonArray = JSONObject.parseArray(result);
-            if (jsonArray == null || jsonArray.size() == 0){
+            if (jsonArray == null || jsonArray.size() == 0) {
                 return null;
             }
             result = jsonArray.get(0).toString();
@@ -1162,10 +1164,10 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             mediaPlayer.setPlayUrl(data.getMp3Url());
             int startPosition = 0;
             int endPosition = 0;
-            if (!TextUtils.isEmpty(data.getStart())){
+            if (!TextUtils.isEmpty(data.getStart())) {
                 startPosition = Integer.valueOf(data.getStart());
             }
-            if (!TextUtils.isEmpty(data.getEnd())){
+            if (!TextUtils.isEmpty(data.getEnd())) {
                 endPosition = Integer.valueOf(data.getEnd());
             }
             mediaPlayer.seekTo(startPosition, endPosition);
@@ -1175,7 +1177,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             public void onBack(Object result) {
                 boolean hasComplete = (boolean) result;
                 if (hasComplete) {
-                    LogUtils.log(TAG,"mediaPlayer--complete");
+                    LogUtils.log(TAG, "mediaPlayer--complete");
                     resetAudioPlayer();
                 }
             }
@@ -1183,7 +1185,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         if (isAudioRecord) {
             if (playType != PlayAudioType.PLAY_RECORD_TYPE) {
                 playType = PlayAudioType.PLAY_RECORD_TYPE;
-                if (isOnlinePlay){
+                if (isOnlinePlay) {
                     changeMessageShow(false);
                 } else {
                     audioMessageTextV.setVisibility(View.VISIBLE);
@@ -1289,10 +1291,10 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             pageSoreTextV.setVisibility(View.VISIBLE);
             int pageScore = data.getEval_score();
             if (scoreRule == 1) {
-                pageSoreTextV.setText(getString(R.string.str_eval_score,StudyTaskUtils
+                pageSoreTextV.setText(getString(R.string.str_eval_score, StudyTaskUtils
                         .percentTransformTenLevel(pageScore)));
             } else {
-                pageSoreTextV.setText(getString(R.string.str_eval_score,String.valueOf(data
+                pageSoreTextV.setText(getString(R.string.str_eval_score, String.valueOf(data
                         .getEval_score())));
             }
         } else {
@@ -1322,13 +1324,13 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
     }
 
     private void resetAudioPlayer() {
-        LogUtils.log(TAG,"resetAudioPlayer()");
+        LogUtils.log(TAG, "resetAudioPlayer()");
         if (mediaPlayer != null) {
             mediaPlayer.releaseAudio();
         }
-        if (playType == PlayAudioType.PLAY_VOICE_TYPE){
+        if (playType == PlayAudioType.PLAY_VOICE_TYPE) {
             //播放的原音
-            if (isOnlinePlay){
+            if (isOnlinePlay) {
                 changeMessageShow(false);
             } else {
                 audioMessageTextV.setVisibility(View.VISIBLE);
@@ -1352,10 +1354,10 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         resetAudioPlayer();
     }
 
-    private void resetRecordingData(){
+    private void resetRecordingData() {
         isPressHomeKey = false;
         SpeechAssessmentData data = assessmentData.get(currentPagePosition);
-        if (data != null){
+        if (data != null) {
             data.setMy_audio_path(null);
             data.setEval_score(0);
             data.setIsAlreadyEval(false);
@@ -1450,7 +1452,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
     }
 
     private void startProgressThread() {
-        LogUtils.log(TAG,"startProgressThread()");
+        LogUtils.log(TAG, "startProgressThread()");
         if (isOnlinePlay) {
             return;
         }
@@ -1470,7 +1472,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                         public void run() {
                             showAudioTextProgress(data);
                             playRefIndexPosition++;
-                            LogUtils.log(TAG,"playRefIndexPosition = " + playRefIndexPosition);
+                            LogUtils.log(TAG, "playRefIndexPosition = " + playRefIndexPosition);
                         }
                     });
                 }
@@ -1496,7 +1498,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         if (isOnlinePlay) {
             return;
         }
-        LogUtils.log(TAG,"stopProgressThread()");
+        LogUtils.log(TAG, "stopProgressThread()");
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
@@ -1524,7 +1526,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                             TextView textView = (TextView) convertView.findViewById(
                                     R.id.contacts_dialog_list_item_title);
                             if (textView != null) {
-                                textView.setTextColor(ContextCompat.getColor(SpeechAssessmentActivity.this,R.color.text_black));
+                                textView.setTextColor(ContextCompat.getColor(SpeechAssessmentActivity.this, R.color.text_black));
                                 textView.setText(title);
                             }
                         }
@@ -1534,7 +1536,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (assessmentData != null && assessmentData.size() > 0){
+                        if (assessmentData != null && assessmentData.size() > 0) {
                             SpeechAssessmentData currentData = assessmentData.get(currentPagePosition);
                             currentData.setSpeedModel(position);
                             changeMessageShow(false);
@@ -1542,7 +1544,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                     }
                 }, getString(R.string.cancel), null);
         Button cancelBtn = dialog.getCancelButton();
-        cancelBtn.setTextColor(ContextCompat.getColor(this,R.color.text_black));
+        cancelBtn.setTextColor(ContextCompat.getColor(this, R.color.text_black));
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         dialog.show();

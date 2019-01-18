@@ -532,22 +532,18 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (answerCardParam != null){
                 answerCardParam.setTaskId(TaskId);
                 answerCardParam.setCommitTaskTitle(task.getTaskTitle());
-                if (isHistoryClass) {
-                    answerCardParam.setRoleType(RoleType.ROLE_TYPE_VISITOR);
-                } else {
-                    answerCardParam.setIsHeadMaster(isHeadMaster);
-                    answerCardParam.setIsOnlineHost(isOnlineHost);
-                    answerCardParam.setIsOnlineReporter(isOnlineReporter);
-                    if (roleType == RoleType.ROLE_TYPE_TEACHER && TextUtils.equals(getMemeberId(),
-                            task.getCreateId())) {
-                        //布置任务者
-                        if (!isOnlineReporter) {
-                            //不是主编的情况
-                            answerCardParam.setIsOnlineHost(true);
-                        }
+                answerCardParam.setIsHeadMaster(isHeadMaster);
+                answerCardParam.setIsOnlineHost(isOnlineHost);
+                answerCardParam.setIsOnlineReporter(isOnlineReporter);
+                if (roleType == RoleType.ROLE_TYPE_TEACHER && TextUtils.equals(getMemeberId(),
+                        task.getCreateId())) {
+                    //布置任务者
+                    if (!isOnlineReporter) {
+                        //不是主编的情况
+                        answerCardParam.setIsOnlineHost(true);
                     }
-                    answerCardParam.setRoleType(roleType);
                 }
+                answerCardParam.setRoleType(roleType);
             }
             ScoreStatisticsActivity.start(
                     getActivity(),
