@@ -196,7 +196,7 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
         mLuAdapter = new LuRecyclerViewAdapter(mAdapter);
         mRecycler.setAdapter(mLuAdapter);
         // 动态设置margin,预留课程表的高度
-        if (getActivity() instanceof JoinClassDetailActivity) {
+        if (getActivity() instanceof JoinClassDetailActivity && false) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRecycler.getLayoutParams();
             layoutParams.bottomMargin = DisplayUtil.dip2px(UIUtil.getContext(), 80);
             mRecycler.setLayoutParams(layoutParams);
