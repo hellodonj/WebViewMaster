@@ -1674,6 +1674,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         } else if (viewId == R.id.iv_search_clear) {
             // 删除关键字
             mSearchContent.getText().clear();
+            requestCourseData(false);
         } else if (viewId == R.id.et_search) {
             // 点击搜索框
         }
@@ -1686,7 +1687,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             if (requestCode == SEARCH_REQUEST_CODE) {
                 // 更新字符串发生更新
                 // 设置Top隐藏
-                mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+                // mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
                 mKeyString = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();

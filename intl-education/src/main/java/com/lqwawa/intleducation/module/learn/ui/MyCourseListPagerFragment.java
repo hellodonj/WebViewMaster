@@ -373,6 +373,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                     , curMemberId, "", curSchoolId);
         }else if(view.getId() == R.id.search_clear_iv) {
             editTextSearch.setText("");
+            search();
         }else if(view.getId() == R.id.btn_submit){
             // 去100%习课程
             if(!isTeacher){

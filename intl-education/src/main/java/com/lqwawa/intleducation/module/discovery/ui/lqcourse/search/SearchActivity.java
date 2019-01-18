@@ -347,7 +347,12 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
             mPresenter.clearAllSearchHistories(SHOWING_COUNT);
         }else if(view.getId() == R.id.tv_cancel) {
             List<Activity> listActivity = UIUtil.getListActivity();
-
+            if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_NEW_SCHOOL_SHOP) ||
+                    TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
+                Intent intent = new Intent();
+                intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,"");
+                setResult(Activity.RESULT_OK,intent);
+            }
             finish();
         }
     }

@@ -283,6 +283,7 @@ public class JoinOrganListActivity extends PresenterActivity<JoinOrganListContra
         }else if(viewId == R.id.iv_search_clear){
             // 删除关键字
             mSearchContent.getText().clear();
+            requestOrganData(false);
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }

@@ -262,9 +262,9 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         if(viewId == R.id.filter_tv){
             String searchKey = mSearchEt.getText().toString();
 
-            if (EmptyUtil.isEmpty(searchKey)){
+            /*if (EmptyUtil.isEmpty(searchKey)){
                 return;
-            }
+            }*/
 
             for (SearchNavigator navigator:mNavigatorList) {
                 boolean isVisible = navigator.search(searchKey);
@@ -272,6 +272,17 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
             }
         }else if(viewId == R.id.search_clear_iv) {
             mSearchEt.getText().clear();
+
+            String searchKey = mSearchEt.getText().toString();
+
+            /*if (EmptyUtil.isEmpty(searchKey)){
+                return;
+            }*/
+
+            for (SearchNavigator navigator:mNavigatorList) {
+                boolean isVisible = navigator.search(searchKey);
+                if(isVisible) break;
+            }
         }
     }
 

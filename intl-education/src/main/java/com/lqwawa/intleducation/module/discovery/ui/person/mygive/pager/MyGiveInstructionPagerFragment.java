@@ -286,6 +286,7 @@ public class MyGiveInstructionPagerFragment extends PresenterFragment<MyGiveInst
         }else if(viewId == R.id.iv_search_clear){
             // 删除关键字
             mSearchContent.getText().clear();
+            requestClassData(false);
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }else if(viewId == R.id.tv_watch_history || viewId == R.id.btn_watch_history){
