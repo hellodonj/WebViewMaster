@@ -198,6 +198,34 @@
 
         </FrameLayout>
 
+        <LinearLayout
+            android:id="@+id/subject_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="2"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_add_subject"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/label_add_subject"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="19dp"
+                app:gTouchEffect="ripple" />
+
+        </LinearLayout>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

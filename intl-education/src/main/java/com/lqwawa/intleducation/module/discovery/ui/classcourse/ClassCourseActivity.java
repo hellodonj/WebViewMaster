@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailPar
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.MinorityLanguageHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
@@ -74,6 +76,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     implements ClassCourseContract.View,View.OnClickListener{
 
     private static final int SEARCH_REQUEST_CODE = 1 << 0;
+
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
     private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
     private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
@@ -106,6 +110,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private TextView mTabLabel1,mTabLabel2,mTabLabel3;
     private TabLayout mTabLayout1,mTabLayout2,mTabLayout3;
 
+    private LinearLayout mBottomLayout;
+    private Button mAddSubject;
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
@@ -310,11 +316,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     SEARCH_REQUEST_CODE);
         });
 
+        mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
+
         if(mResourceFlag){
             mHeaderLayout.setVisibility(View.GONE);
+            mBottomLayout.setVisibility(View.VISIBLE);
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
         }
 
+        mAddSubject = (Button) findViewById(R.id.btn_add_subject);
+        mAddSubject.setOnClickListener(this);
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
@@ -1149,6 +1160,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 }
                 requestAuthorizedPermission(isExist);
             }
+        }else if(viewId == R.id.btn_add_subject){
+            // 点击确定
+            AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
         }
     }
 
@@ -1234,6 +1248,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 mKeyWord = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();
+            }else if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if(completed){
+                        // 刷新标签和课程
+                        mPresenter.requestClassConfigData(mClassId);
+                    }
+                }
             }
         }
     }

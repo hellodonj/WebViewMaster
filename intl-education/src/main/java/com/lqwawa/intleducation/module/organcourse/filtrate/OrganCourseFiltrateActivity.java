@@ -59,6 +59,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.SortLinePo
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
@@ -88,6 +89,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         View.OnClickListener {
 
     private static final int SEARCH_REQUEST_CODE = 1 << 0;
+
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
     // 一级页面分类数据
     private static final String KEY_EXTRA_ORGAN_COURSE_ENTITY = "KEY_EXTRA_ORGAN_COURSE_ENTITY";
@@ -172,6 +175,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private CourseListAdapter mCourseListAdapter;
 
     private LinearLayout mBottomLayout;
+    private LinearLayout mSubjectLayout;
+    private Button mAddSubject;
     private Button mBtnConfirmAdd;
     private Button mBtnRequestAuthorized;
     private Button mBtnMoreCourse;
@@ -392,6 +397,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         }
 
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
+        mSubjectLayout = (LinearLayout) findViewById(R.id.subject_layout);
+        mAddSubject = (Button) findViewById(R.id.btn_add_subject);
+        mAddSubject.setOnClickListener(this);
         mBtnConfirmAdd = (Button) findViewById(R.id.btn_confirm);
         mBtnRequestAuthorized = (Button) findViewById(R.id.btn_request_authorized);
         mBtnMoreCourse = (Button) findViewById(R.id.btn_more_course);
@@ -421,6 +429,10 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mBtnConfirmAdd.setOnClickListener(this);
             mBottomLayout.setVisibility(View.GONE);
             mCircleMoreCourse.setVisibility(View.GONE);
+        }
+
+        if(mSelectResource){
+            mSubjectLayout.setVisibility(View.VISIBLE);
         }
 
 
@@ -1677,6 +1689,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             requestCourseData(false);
         } else if (viewId == R.id.et_search) {
             // 点击搜索框
+        }else if(viewId == R.id.btn_add_subject){
+            // 点击确定
+            AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
         }
     }
 
@@ -1691,6 +1706,19 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 mKeyString = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();
+            }else if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if(completed){
+                        // 刷新标签和课程
+                        String organId = mEntity.getEntityOrganId();
+                        int parentId = mEntity.getId();
+                        String level = mEntity.getLevel();
+                        mPresenter.requestOrganCourseLabelData(organId,parentId,level);
+                    }
+                }
             }
         }
     }
