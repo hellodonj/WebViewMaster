@@ -930,7 +930,22 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
             displaySourceTextV.setText(currentClassInfo.getClassName());
             displaySourceTextV.setOnClickListener(v -> {
                 //跳转
-                ClassDetailActivity.show(getActivity(), currentClassInfo.getClassId());
+                String passMemberId = getMemeberId();
+                if (roleType == RoleType.ROLE_TYPE_PARENT){
+                    Bundle args = getArguments();
+                    if (args != null){
+                        String studentId = args.getString("memberId");
+                        boolean isMyLive = args.getBoolean("isAirClassRoomLive");
+                        if (isMyLive && !TextUtils.isEmpty(studentId)){
+                            passMemberId = studentId;
+                        }
+                    }
+                }
+                ClassDetailActivity.show(getActivity(),
+                        currentClassInfo.getClassId(),
+                        false,
+                        false,
+                        passMemberId);
             });
         }
         imageViewStartPlayLive = (ImageView) findViewById(R.id.start_play_live_iv);
