@@ -2671,11 +2671,17 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     String resTitle = onlineRes.getResTitle();
                     CheckLanMp4UrlHelper mp4UrlHelper = new CheckLanMp4UrlHelper(getActivity());
                     mp4UrlHelper.setCallBackListener(result -> {
-                        if (result != null) {
-                            playMp4FormatVideo((String) result);
-                        } else {
-                            playMp4FormatVideo(resUrl);
+                        if (getView() == null){
+                            return;
                         }
+                        getView().postDelayed(() -> {
+                            if (result != null) {
+                                playMp4FormatVideo((String) result);
+                            } else {
+                                playMp4FormatVideo(resUrl);
+                            }
+                        },50);
+
                     });
                     if (!TextUtils.isEmpty(resTitle)) {
                         mp4UrlHelper.setResTitle(resTitle)
