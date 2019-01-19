@@ -213,7 +213,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_accent_radius_19"
             android:gravity="center"
-            android:text="@string/label_add_subject"
+            android:text="@string/title_subject_setting"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
             android:textColor="@color/textLight"
             android:textSize="16sp"

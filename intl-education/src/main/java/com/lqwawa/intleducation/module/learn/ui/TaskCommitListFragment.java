@@ -438,7 +438,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                                 markList.add(vo);
                             }
                         }else if(sectionResListVo.isAutoMark()){
-                            if(EmptyUtil.isEmpty(vo.getTaskScore()) || TextUtils.equals(vo.getTaskScore(),"0")){
+                            if(EmptyUtil.isEmpty(vo.getTaskScore()) /*|| TextUtils.equals(vo.getTaskScore(),"0")*/){
                                 // 0分的
                                 unmarkList.add(vo);
                             }else{
