@@ -490,7 +490,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 if (!TextUtils.isEmpty(exerciseItem.getAnalysis_res_url())){
                     //答案解析的resUrl
                     picImageView.setVisibility(View.VISIBLE);
-                    if (TextUtils.isEmpty(content)){
+                    if (TextUtils.isEmpty(exerciseItem.getAnalysis())){
                         contentTextV.setVisibility(View.GONE);
                     }
                     StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
