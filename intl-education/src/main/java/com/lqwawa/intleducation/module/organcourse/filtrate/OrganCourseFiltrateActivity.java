@@ -432,7 +432,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         }
 
         if(mSelectResource){
-            mSubjectLayout.setVisibility(View.VISIBLE);
+            mSubjectLayout.setVisibility(View.GONE);
         }
 
 

@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
@@ -32,6 +34,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
@@ -55,12 +58,17 @@ import static com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragm
  * @desc 学程馆分类显示的页面，用来班级学程的选择，V5.11添加两栖蛙蛙学习任务用于学程馆的选择
  */
 public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClassifyContract.Presenter>
-    implements CourseShopClassifyContract.View{
+    implements CourseShopClassifyContract.View,View.OnClickListener{
+
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
     private TopBar mTopBar;
     private RecyclerView mRecycler;
     private CourseShopClassifyAdapter mAdapter;
     private NoPermissionView mNoPermissionView;
+
+    private LinearLayout mSubjectLayout;
+    private Button mAddSubject;
 
     private CourseShopClassifyParams mParams;
     private String mSchoolId;
@@ -131,6 +139,13 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mNoPermissionView = (NoPermissionView) findViewById(R.id.permission_view);
         mNoPermissionView.setDescription(getString(R.string.label_organ_shop_permission_description));
+        mSubjectLayout = (LinearLayout) findViewById(R.id.subject_layout);
+        mAddSubject = (Button) findViewById(R.id.btn_add_subject);
+        mAddSubject.setOnClickListener(this);
+
+        if(mSelectResource){
+            mSubjectLayout.setVisibility(View.VISIBLE);
+        }
 
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_course_shop);
@@ -148,6 +163,10 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                 requestAuthorizedPermission(isExist);
             }
         });
+
+        if(mSelectResource){
+            mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.GONE);
+        }
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(mLayoutManager);
@@ -254,7 +273,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     public void updateCourseShopClassifyView(@NonNull List<LQCourseConfigEntity> entities) {
         this.hideLoading();
         // 获取授权状态
-        mPresenter.requestCheckSchoolPermission(mSchoolId,0,false);
+        mPresenter.requestCheckSchoolPermission(mSchoolId,0,mSelectResource && !isActivityResult);
 
         mAdapter.replace(entities);
         if(EmptyUtil.isEmpty(entities)){
@@ -284,6 +303,15 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                 // 已经获取授权,并且没有失效
                 isAuthorized = true;
                 isExist = entity.isExist();
+            }else{
+                if(autoRequest){
+                    // 点击获取授权
+                    /*if(entity.isExist()){
+                        // 授权过期的状态
+                        UIUtil.showToastSafe(R.string.authorization_out_time_tip);
+                    }*/
+                    requestAuthorizedPermission(entity.isExist());
+                }
             }
         }
     }
@@ -343,6 +371,36 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
             }
         }
         return reallyAuthorized;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+        if(viewId == R.id.btn_add_subject){
+            // 点击确定
+            AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
+        }
+    }
+
+    private boolean isActivityResult;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if(completed){
+                        // 刷新标签和课程
+                        isActivityResult = true;
+                        initData();
+                    }
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
