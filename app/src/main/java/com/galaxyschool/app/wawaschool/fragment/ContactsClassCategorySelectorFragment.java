@@ -407,7 +407,7 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
     }
 
     protected boolean isRequiredCategoriesSelected() {
-        if (selectedCategories.size() <= 2) {
+        if (selectedCategories.size() < 2) {
             return false;
         }
 
