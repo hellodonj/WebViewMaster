@@ -863,6 +863,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--国家课程的测试类-->
+        <activity android:name=".module.discovery.ui.lqbasic.LQBasicActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>
