@@ -84,9 +84,9 @@ public class ToolbarBottomView extends LinearLayout {
     private int getItemText(int i) {
         switch (i) {
             case 0:
-                return R.string.str_tutoring_center;
+                return R.string.str_multilingual;
             case 1:
-                return R.string.str_lecture_hall;
+                return R.string.str_national_course;
             case 2:
                 return R.string.my_course;
             case 3:

@@ -1179,9 +1179,10 @@ public class ClassContactsDetailsFragment extends GroupContactsListFragment {
 				ContactsClassMemberInfo info = new ContactsClassMemberInfo();
 				info.setId(null);
 				leavedStudents.add(info);
-				if (isOnlineSchool){
+//				if (isOnlineSchool){
+				//添加老师身份
 					leavedTeachers.add(info);
-				}
+//				}
 			}
 		}
 

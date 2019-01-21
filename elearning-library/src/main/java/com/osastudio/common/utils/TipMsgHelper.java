@@ -1,6 +1,7 @@
 package com.osastudio.common.utils;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.Toast;
 
 
@@ -22,28 +23,36 @@ public class TipMsgHelper {
         if(context == null) {
             return;
         }
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
     
     public static void ShowMsg(Context context, int msgId) {
         if(context == null) {
             return;
         }
-        Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(context, msgId, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
 
     public static void ShowLMsg(Context context, String msg) {
         if(context == null) {
             return;
         }
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
     
     public static void ShowLMsg(Context context, int msgId) {
         if(context == null) {
             return;
         }
-        Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(context, msgId, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
     
 	public void showOneTips(Context context, String tips) {

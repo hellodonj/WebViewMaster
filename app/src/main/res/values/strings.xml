@@ -1748,4 +1748,7 @@
     <string name="str_intro_task_choose_subject">Subject not set, please select subject</string>
     <string name="str_tutoring_center">Tutorial</string>
     <string name="str_lecture_hall">Lecture</string>
+    <!--5.13-->
+    <string name="str_national_course">国家课程</string>
+    <string name="str_multilingual">多语种</string>
 </resources>
