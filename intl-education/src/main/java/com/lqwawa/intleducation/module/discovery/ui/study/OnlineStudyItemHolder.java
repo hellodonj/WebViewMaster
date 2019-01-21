@@ -140,6 +140,9 @@ public class OnlineStudyItemHolder extends FrameLayout{
         }else if(sort == OnlineStudyType.SORT_LATEST){
             // 最新数据
             mTitleContent.setText(UIUtil.getString(R.string.label_online_study_latest_data));
+        }else if(sort == OnlineStudyType.SORT_ONLINE_CLASS){
+            // 名师课
+            mTitleContent.setText(UIUtil.getString(R.string.label_teach_course));
         }
         mClassAdapter.replace(entities);
     }

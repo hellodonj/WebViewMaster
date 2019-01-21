@@ -15,12 +15,10 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.empty.EmptyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.BasicsCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.classifylist.ClassifyListActivity;
@@ -30,15 +28,11 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.common.NewCommonHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.livelist.LiveListActivity;
-import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
-import com.lqwawa.intleducation.module.learn.ui.MyCourseListActivity;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import java.lang.reflect.Array;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -125,13 +119,13 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                 if(entity.getId() == CourseFiltrateActivity.BASIC_COURSE_ID){
                     // 进入基础课程列表
                     // SubjectActivity.show(getActivity());
-                    LQBasicActivity.show(getActivity());
-                    /*if(EmptyUtil.isNotEmpty(mConfigEntities)){
+                    // LQBasicActivity.show(getActivity());
+                    if(EmptyUtil.isNotEmpty(mConfigEntities)){
                         if(mConfigEntities.size() > 3){
                             LQCourseConfigEntity configEntity = mConfigEntities.get(3);
                             BasicsCourseActivity.show(getActivity(),configEntity,mBasicsEntities);
                         }
-                    }*/
+                    }
                 }else{
                     ClassifyListActivity.show(getActivity(),entity);
                 }

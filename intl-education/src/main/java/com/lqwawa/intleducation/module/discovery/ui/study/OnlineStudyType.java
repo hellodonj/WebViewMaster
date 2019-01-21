@@ -25,10 +25,12 @@ public interface OnlineStudyType {
     int SORT_ORGAN = 100;
     // 搜索标志
     int SORT_ONLINE_STUDY_SEARCH = 200;
+    // 国家课程Tab的名师课
+    int SORT_ONLINE_CLASS = 300;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({SORT_LATEST,SORT_HOT,SORT_PRICE_TOP,SORT_PRICE_DOWN,SORT_ORGAN,SORT_ONLINE_STUDY_SEARCH})
+    @IntDef({SORT_LATEST,SORT_HOT,SORT_PRICE_TOP,SORT_PRICE_DOWN,SORT_ORGAN,SORT_ONLINE_STUDY_SEARCH,SORT_ONLINE_CLASS})
     public @interface OnlineStudyRes{
 
     }

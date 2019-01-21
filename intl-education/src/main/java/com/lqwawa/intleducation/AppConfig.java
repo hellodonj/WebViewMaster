@@ -777,5 +777,9 @@ public final class AppConfig {
         // 蛙蛙币转赠的接口
         public static final String GetWaWaGiveUrl = PayBase +
                 "api/coin/giveawayWawaCoin?j=";
+
+        // V5.13新添加的接口
+        public static final String GetLQRmCourseUrl = ServerBase +
+                "api/courseEx/getRmCourseList?j=";
     }
 }
