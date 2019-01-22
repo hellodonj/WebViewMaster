@@ -17,6 +17,7 @@ import com.galaxyschool.app.wawaschool.HomeworkFinishStatusActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
@@ -458,7 +459,23 @@ public class TaskRequirementFragment extends ContactsListFragment{
             String wordsCountStr = getString(R.string.article_limited_word_point) + " "+ task
                     .getWordCountMin()+"  -  "+task.getWordCountMax();
             wordsCountTextView.setText(wordsCountStr);
+            //完成方式
+            TextView completionModelView = (TextView) findViewById(R.id.tv_completion_mode);
+            int completionMode = task.getRepeatCourseCompletionMode();
+            if (completionMode == 1){
+                if (TextUtils.isEmpty(taskRequirements)){
+                    taskRequirements = getString(R.string.str_no_analyse_tip);
+                }
+                taskRequirements = getString(R.string.student_should_complete_task) + "\n" + taskRequirements;
 
+                //完成方式的string
+                String completionModeString  = getString(R.string.str_completion_mode) + "\n" + getString(R.string.str_task_completion_tip);
+                completionModelView.setText(completionModeString);
+                completionModelView.setVisibility(View.VISIBLE);
+                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
+                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_task_completion_tip);
+                }
+            }
             //任务要求
             contentTextView.setText(taskRequirements);
             if (TextUtils.isEmpty(taskRequirements)){

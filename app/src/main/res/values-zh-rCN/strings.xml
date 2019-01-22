@@ -1658,4 +1658,8 @@
     <!--5.13-->
     <string name="str_national_course">国家课程</string>
     <string name="str_multilingual">多语种</string>
+    <string name="str_completion_mode">完成方式:</string>
+    <string name="str_task_type_combination">复述课件+语音评测</string>
+    <string name="str_task_completion_tip">完成复述课件+语音评测，此任务才是完成。</string>
+
 </resources>

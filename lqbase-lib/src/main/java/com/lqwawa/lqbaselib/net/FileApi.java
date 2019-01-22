@@ -114,7 +114,7 @@ public class FileApi {
 			URLConnection conn = newurl.openConnection();
 			conn .setRequestProperty("Accept-Encoding", "identity");
 			conn.setConnectTimeout(20 * 1000);
-			
+			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 			int fileSize = conn.getContentLength();
 
 //			if (fileSize <= 0) {
