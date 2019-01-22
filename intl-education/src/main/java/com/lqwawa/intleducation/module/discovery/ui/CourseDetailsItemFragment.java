@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
@@ -65,6 +67,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private SuperListView listView;
     // 没有评论显示的空布局
     private View mNoCommentTip;
+    private LinearLayout mBottomLayout;
+    // 学习统计,课程统计
+    private Button mBtnStatisticalLearning,mBtnCourseStatistics;
 
     // 课程公告的集合以及Adapter
     private List<CourseIntroduceVo> mCourseIntroduceArray;
@@ -107,6 +112,13 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
         listView = (SuperListView) view.findViewById(R.id.listView);
+        mBottomLayout = (LinearLayout) view.findViewById(R.id.bottom_layout);
+        mBtnStatisticalLearning = (Button) view.findViewById(R.id.btn_statistical_learning);
+        mBtnCourseStatistics = (Button) view.findViewById(R.id.btn_course_statistics);
+
+        mBtnStatisticalLearning.setOnClickListener(this);
+        mBtnCourseStatistics.setOnClickListener(this);
+
         mNoCommentTip = view.findViewById(R.id.no_comment_tip);
         return view;
     }
@@ -157,6 +169,14 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     @Override
     public void onClick(View view) {
+        int viewId = view.getId();
+        if(viewId == R.id.btn_statistical_learning){
+            // 学习统计
+            UIUtil.showToastSafe("学习统计");
+        }else if(viewId == R.id.btn_course_statistics){
+            // 课程统计
+            UIUtil.showToastSafe("课程统计");
+        }
     }
 
     public void comment(CommentDialog.CommentData data) {
@@ -367,6 +387,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
                 UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)){
+            mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
         }else{
             LQCourseHelper.requestChapterByCourseId(token,courseId,schoolIds,new Callback());
