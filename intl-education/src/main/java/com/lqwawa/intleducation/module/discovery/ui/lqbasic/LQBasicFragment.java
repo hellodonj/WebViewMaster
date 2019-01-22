@@ -2,6 +2,8 @@ package com.lqwawa.intleducation.module.discovery.ui.lqbasic;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -9,6 +11,7 @@ import android.widget.LinearLayout;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
@@ -22,6 +25,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFilt
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.ClassifyAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.DiscoveryHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.NewBasicsCourseHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
@@ -48,6 +52,8 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     private FrameLayout mSearchLayout;
     private PullToRefreshView mRefreshLayout;
     private LinearLayout mRootLayout;
+    private RecyclerView mClassifyRecycler;
+    private ClassifyAdapter mClassifyAdapter;
     private NewBasicsCourseHolder mNewBasicHolder;
     // 热门推荐View
     private DiscoveryHolder mDiscoveryHolder;
@@ -95,6 +101,27 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
         mRefreshLayout.setLastUpdated(new Date().toLocaleString());
 
         mRootLayout = (LinearLayout) mRootView.findViewById(R.id.root_layout);
+        mClassifyRecycler = (RecyclerView) mRootView.findViewById(R.id.classify_recycler);
+
+        mClassifyRecycler.setNestedScrollingEnabled(false);
+        GridLayoutManager mClassifyLayoutManager = new GridLayoutManager(getContext(),4){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        mClassifyRecycler.setLayoutManager(mClassifyLayoutManager);
+        mClassifyAdapter = new ClassifyAdapter();
+        mClassifyRecycler.setAdapter(mClassifyAdapter);
+        mClassifyAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity entity) {
+                super.onItemClick(holder, entity);
+                // 点击了分类列表数据 显示下级列表
+                UIUtil.showToastSafe("点击了分类列表数据 显示下级列表");
+            }
+        });
+
         mNewBasicHolder = (NewBasicsCourseHolder) mRootView.findViewById(R.id.basics_holder);
 
         mDiscoveryHolder = (DiscoveryHolder) mRootView.findViewById(R.id.discovery_holder);
@@ -132,8 +159,14 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     }
 
     private void loadData(){
+        mPresenter.requestBasicCourseConfigData();
         mPresenter.requestConfigData();
         mPresenter.requestLQRmCourseData();
+    }
+
+    @Override
+    public void updateBasicCourseConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+        mClassifyAdapter.replace(entities);
     }
 
     @Override

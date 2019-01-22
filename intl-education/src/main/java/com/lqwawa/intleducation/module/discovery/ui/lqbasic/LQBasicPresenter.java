@@ -31,6 +31,28 @@ public class LQBasicPresenter extends BasePresenter<LQBasicContract.View>
         super(view);
     }
 
+    @Override
+    public void requestBasicCourseConfigData() {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQCourseHelper.requestLQBasicCourseConfigData(0, languageRes, 0, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final LQBasicContract.View view = (LQBasicContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                final LQBasicContract.View view = (LQBasicContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateBasicCourseConfigView(entities);
+                }
+            }
+        });
+    }
 
     @Override
     public void requestConfigData() {
@@ -41,7 +63,10 @@ public class LQBasicPresenter extends BasePresenter<LQBasicContract.View>
             @Override
             public void onDataNotAvailable(int strRes) {
                 // 重要的数据发生异常了，才弹提示
-                UIUtil.showToastSafe(strRes);
+                final LQBasicContract.View view = (LQBasicContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
             }
 
             @Override

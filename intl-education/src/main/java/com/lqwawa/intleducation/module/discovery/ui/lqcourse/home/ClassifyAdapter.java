@@ -15,6 +15,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.SizeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 
 /**
@@ -62,7 +63,8 @@ public class ClassifyAdapter extends RecyclerAdapter<LQCourseConfigEntity>{
             String thumbnail = entity.getThumbnail();
             if (!EmptyUtil.isEmpty(thumbnail)) {
                 if (StringUtils.isValidWebResString(thumbnail)) {
-                    ImageUtil.fillClassifyIcon(mClassifyIcon,entity.getThumbnail().trim());
+                    // ImageUtil.fillClassifyIcon(mClassifyIcon,entity.getThumbnail().trim());
+                    LQwawaImageUtil.loadCommonIcon(mClassifyIcon.getContext(),mClassifyIcon,entity.getThumbnail());
                 } else {
                     mClassifyIcon.setImageResource(ResourceUtils.getDrawableId(UIUtil.getContext(),thumbnail));
                 }

@@ -279,6 +279,53 @@ public class LQCourseHelper {
     }
 
     /**
+     * 获取国家课程标签数据 dataType == 1 与 parentId 必传获取一级标签
+     * @param dataType 1 获取二级标签 0 获取一级标签
+     * @param language {@link LanguageType}
+     * @param parentId 一级标签的Id
+     * @param callback 回调对象
+     */
+    public static void requestLQBasicCourseConfigData(int dataType,
+                                                      @NonNull @LanguageType.LanguageRes int language,
+                                                      int parentId,
+                                                      @NonNull final DataSource.Callback<List<LQCourseConfigEntity>> callback){
+        final RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("dataType",dataType);
+        requestVo.addParams("language",language);
+        if(dataType == 1){
+            requestVo.addParams("parentId",parentId);
+        }
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetBasicCourseConfigDataUrl+requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(LQCourseHelper.class,"request "+params.getUri()+" result :"+str);
+                TypeReference<ResponseVo<List<LQCourseConfigEntity>>> typeReference =
+                        new TypeReference<ResponseVo<List<LQCourseConfigEntity>>>(){};
+                ResponseVo<List<LQCourseConfigEntity>> result = JSON.parseObject(str, typeReference);
+                if(result.isSucceed()){
+                    if(!EmptyUtil.isEmpty(callback)){
+                        callback.onDataLoaded(result.getData());
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
      * 获取多语种课程，国家课程热门数据和名师课
      * @param dataType 1 国家课程,0 非国家课程
      * @param callback 数据回调接口

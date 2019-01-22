@@ -74,10 +74,28 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/classify_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:background="@color/colorLight">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
                 <com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.NewBasicsCourseHolder
                     android:id="@+id/basics_holder"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
                 </com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.NewBasicsCourseHolder>
 

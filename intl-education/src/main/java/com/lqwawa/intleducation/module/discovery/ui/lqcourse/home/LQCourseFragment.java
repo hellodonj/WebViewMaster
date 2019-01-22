@@ -120,7 +120,13 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
         mBannerView = (BannerHeaderView) mRootView.findViewById(R.id.banner_view);
         // 定义分类列表数据
         mClassifyRecycler = (RecyclerView) mRootView.findViewById(R.id.classify_recycler);
-        GridLayoutManager mClassifyLayoutManager = new GridLayoutManager(getContext(),3);
+        mClassifyRecycler.setNestedScrollingEnabled(false);
+        GridLayoutManager mClassifyLayoutManager = new GridLayoutManager(getContext(),3){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mClassifyRecycler.setLayoutManager(mClassifyLayoutManager);
         // mClassifyRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3,8));
         mClassifyAdapter = new ClassifyAdapter();

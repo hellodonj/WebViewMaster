@@ -789,5 +789,9 @@ public final class AppConfig {
         // 新的热门数据接口
         public static final String GetHostCourseUrl = ServerBase +
                 "api/courseEx/getHotCourseList?j=";
+
+        // 获取国家课程的标签数据
+        public static final String GetBasicCourseConfigDataUrl = ServerBase +
+                "api/config/getGjConfigList?j=";
     }
 }

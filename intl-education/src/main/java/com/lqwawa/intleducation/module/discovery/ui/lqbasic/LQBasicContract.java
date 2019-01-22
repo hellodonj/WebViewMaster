@@ -18,6 +18,8 @@ public interface LQBasicContract {
 
     interface Presenter extends BaseContract.Presenter{
 
+        // 获取国家课程的标签
+        void requestBasicCourseConfigData();
         // 获取国家课程的名称
         void requestConfigData();
         // 获取国家课程标签
@@ -30,6 +32,8 @@ public interface LQBasicContract {
 
 
     interface View extends BaseContract.View<Presenter>{
+        // 国家课程标签的回调
+        void updateBasicCourseConfigView(@NonNull List<LQCourseConfigEntity> entities);
         /**
          * 获取分类数据,回调给View进行数据刷新
          * @param entities 数据源
