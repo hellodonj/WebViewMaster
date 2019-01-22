@@ -1037,6 +1037,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
         // introductionFragment.setArguments(bundle1);
         Bundle bundle2 = new Bundle();
+        // bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
+        bundle2.putSerializable(CourseVo.class.getSimpleName(), courseVo);
         // 课程大纲传参
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);

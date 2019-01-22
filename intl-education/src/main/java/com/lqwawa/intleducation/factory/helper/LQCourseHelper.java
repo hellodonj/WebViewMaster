@@ -511,6 +511,45 @@ public class LQCourseHelper {
     }
 
     /**
+     * 获取班级学程老师的章节列表数据
+     * @param classId 班级Id
+     * @param courseId 课程Id
+     * @param callback 回调对象
+     */
+    public static void requestChapterByCourseId(@NonNull String classId,
+                                                @NonNull String courseId,
+                                                @NonNull DataSource.Callback<CourseDetailsVo> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetClassTeacherChapterList + requestVo.getParams());
+        params.setConnectTimeout(50000);
+
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                CourseDetailsVo courseDetailsVo = JSON.parseObject(str,new TypeReference<CourseDetailsVo>() {});
+                if (courseDetailsVo.isSucceed()) {
+                    if(EmptyUtil.isNotEmpty(callback)){
+                        callback.onDataLoaded(courseDetailsVo);
+                    }
+                }else{
+                    Factory.decodeRspCode(courseDetailsVo.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
      * @param token token信息，如果是家长，就传孩子的memberId
      * @param courseId 课程Id
      * @param schoolIds 仅在登陆用户是教师身份的情况下才传SchoolIds 以便server用于判断是否显示联合备课内容

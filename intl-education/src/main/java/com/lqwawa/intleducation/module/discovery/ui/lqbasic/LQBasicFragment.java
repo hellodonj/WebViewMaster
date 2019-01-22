@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.discovery.ui.lqbasic;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.R;
@@ -14,16 +15,20 @@ import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
+import com.lqwawa.intleducation.factory.data.entity.online.ParamResponseVo;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.coin.donation.DonationCoinContract;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.DiscoveryHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.NewBasicsCourseHolder;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyType;
+import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
@@ -38,8 +43,9 @@ import java.util.List;
  * @desc 国家课程页面
  */
 public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter>
-    implements LQBasicContract.View,OnlineStudyNavigator {
+    implements LQBasicContract.View,OnlineStudyNavigator,View.OnClickListener {
 
+    private FrameLayout mSearchLayout;
     private PullToRefreshView mRefreshLayout;
     private LinearLayout mRootLayout;
     private NewBasicsCourseHolder mNewBasicHolder;
@@ -76,6 +82,8 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     @Override
     protected void initWidget() {
         super.initWidget();
+        mSearchLayout = (FrameLayout) mRootView.findViewById(R.id.search_layout);
+        mSearchLayout.setOnClickListener(this);
         mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mRefreshLayout.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
             @Override
@@ -189,5 +197,16 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     @Override
     public void onClickOrgan(@NonNull OnlineStudyOrganEntity entity) {
         // 点击更多机构
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+        if(viewId == R.id.search_layout){
+            ParamResponseVo.Param param = new ParamResponseVo.Param();
+            param.setName(UIUtil.getString(R.string.label_search_course_name_hint));
+            NewOnlineStudyFiltrateParams params = new NewOnlineStudyFiltrateParams(param.getName(),param);
+            SearchActivity.show(getActivity(),HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS_SUPER,params);
+        }
     }
 }

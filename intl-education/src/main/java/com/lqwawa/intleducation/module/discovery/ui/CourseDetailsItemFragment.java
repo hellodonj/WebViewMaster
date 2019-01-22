@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseIntroduceAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
@@ -100,6 +101,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     // 分页数据
     private int pageIndex = 0;
 
+    private CourseVo courseVo;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
@@ -114,8 +117,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         activity = getActivity();
 
         Bundle arguments = getArguments();
-
+        courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER,false);
+
         if(arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)){
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -359,7 +363,14 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 //仅在登陆用户是教师身份的情况下才传SchoolIds 以便server用于判断是否显示联合备课内容
             schoolIds =  UserHelper.getUserInfo().getSchoolIds();
         }
-        LQCourseHelper.requestChapterByCourseId(token,courseId,schoolIds,new Callback());
+
+        CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
+        if(courseParams.isClassCourseEnter() &&
+                UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)){
+            LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
+        }else{
+            LQCourseHelper.requestChapterByCourseId(token,courseId,schoolIds,new Callback());
+        }
     }
 
     /**
@@ -416,6 +427,12 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                             mCourseChapterArray.get(i).setChapterName(courseDetailsVo.getChapterName());
                             mCourseChapterArray.get(i).setSectionName(courseDetailsVo.getSectionName());
                             ChapterVo chapterVo = mCourseChapterArray.get(i);
+                            CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
+                            // 如果是班级学程入口,并且是老师身份
+                            if(courseParams.isClassCourseEnter() &&
+                                    UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)){
+                                chapterVo.setBuyed(true);
+                            }
                             if(!chapterVo.getIsChildren() && EmptyUtil.isNotEmpty(chapterVo.getChildren())){
                                 // 如果章节下面有小节内容
                                 for (ChapterVo tempVo:chapterVo.getChildren()) {
@@ -462,6 +479,12 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                     }
                     mCourseChapterAdapter.setData(mCourseChapterArray);
                     mCourseChapterAdapter.buyAll(courseDetailsVo.isBuyAll());
+                    CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
+                    // 如果是班级学程入口,并且是老师身份
+                    if(courseParams.isClassCourseEnter() &&
+                            UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)){
+                        mCourseChapterAdapter.buyAll(true);
+                    }
                     mCourseChapterAdapter.notifyDataSetChanged();
                 } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {//课程评论
                     mCourseCommentArray = courseDetailsVo.getCommentList();
@@ -499,7 +522,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     }
 
     private void getData(boolean isMoreData) {
-        if(mDetailItemParams.isJoin() && mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN){
+        if(mDetailItemParams.isJoin() &&
+                mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN){
             // 单独拉课程大纲列表
             requestChapterList();
         }else{

@@ -299,7 +299,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                     boolean isTeacher = isTeacher();
 
-                    if(isCourseSelect || !isJoinCourse || isTeacher){
+                    if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
                         holder.mTvLessonState.setVisibility(View.GONE);
                     }else{
                         if(vo.isBuyed()){
@@ -462,9 +462,18 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    holder.mTvChapterState.setText(R.string.label_task_complete);
+                    if(isClassTeacher()){
+                        holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
+                    }else{
+                        holder.mTvChapterState.setText(R.string.label_task_complete);
+                    }
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
+                    if(isClassTeacher()){
+                        holder.mTvChapterState.setVisibility(View.GONE);
+                    }else{
+                        holder.mTvChapterState.setVisibility(View.VISIBLE);
+                    }
                 }
             }else{
                 holder.mTvChapterState.setVisibility(View.GONE);
@@ -472,11 +481,19 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             final boolean isTeacher = isTeacher();
 
-            if(isCourseSelect || !isJoinCourse || isTeacher){
+            if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
+                // 是老师但不是班级学程的老师
                 holder.mTvChapterState.setVisibility(View.GONE);
             }else{
                 if(vo.isBuyed()){
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
+                    // 添加班级学程的逻辑
+                    if(isClassTeacher() && vo.getStatus() == 0){
+                        // 班级学程的老师没有布置完成
+                        holder.mTvChapterState.setVisibility(View.GONE);
+                    }else{
+                        holder.mTvChapterState.setVisibility(View.VISIBLE);
+                    }
                 }else{
                     holder.mTvChapterState.setVisibility(View.GONE);
                 }
@@ -937,6 +954,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         }else{
             return UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
         }
+    }
+
+    /**
+     * 是否是班级学程的老师
+     * @return true 是班级学程的老师,显示状态信息
+     */
+    private boolean isClassTeacher(){
+        CourseDetailParams params = getCourseDetailParams(null, false);
+        return params.isClassCourseEnter() && isTeacher();
     }
 
     /**
