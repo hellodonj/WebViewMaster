@@ -133,7 +133,7 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
         mRefreshLayout.onHeaderRefreshComplete();
         mConfigEntities = entities;
         if(EmptyUtil.isNotEmpty(mConfigEntities) && mConfigEntities.size() > 3){
-            mPresenter.requestNewBasicConfig();
+            // mPresenter.requestNewBasicConfig();
         }
     }
 
