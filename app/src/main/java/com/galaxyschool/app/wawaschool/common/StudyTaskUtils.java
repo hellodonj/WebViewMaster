@@ -242,6 +242,7 @@ public class StudyTaskUtils {
                     //学程馆资源的id
                     thirdObject.put("ResCourseId", lookDto.getResCourseId());
                     thirdObject.put("ResPropType", lookDto.getResPropType());
+                    thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
                     jsonArray.put(thirdObject);
                 }
                 taskParams.put("TSDXResList", jsonArray);

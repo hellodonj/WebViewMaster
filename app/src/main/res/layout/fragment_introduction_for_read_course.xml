@@ -134,6 +134,7 @@
                     android:id="@+id/layout_listen_read_and_write"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:orientation="vertical"
                     android:visibility="gone"/>
 

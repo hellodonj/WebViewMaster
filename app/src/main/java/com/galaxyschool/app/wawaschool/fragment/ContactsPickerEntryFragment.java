@@ -1460,13 +1460,18 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 int taskType = uploadParameter.getTaskType();
                 if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE){
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
-                    if (lookResDtos != null && lookResDtos.size() > 1){
-                        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
-                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
-                        } else {
-                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                    if (lookResDtos != null){
+                        if (lookResDtos.size() == 1){
+                            //完成方式
+                            taskParams.put("RepeatCourseCompletionMode",lookResDtos.get(0).getCompletionMode());
+                        } else if (lookResDtos.size() > 1){
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                            } else {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                            }
+                            StudyTaskUtils.addMultipleTaskParams(taskParams, lookResDtos);
                         }
-                        StudyTaskUtils.addMultipleTaskParams(taskParams,lookResDtos);
                     }
                 }
             } catch (Exception e) {

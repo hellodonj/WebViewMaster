@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -27,6 +28,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -47,6 +49,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
+import com.galaxyschool.app.wawaschool.common.LogUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -61,6 +64,8 @@ import com.galaxyschool.app.wawaschool.db.NoteDao;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
+import com.galaxyschool.app.wawaschool.views.MyGridView;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -195,7 +200,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private boolean needScore = false;
     private LinearLayout llMark;
     private boolean multipleDoTask;//任务多选
-
     public interface EditType {
         int titleType = 0;
         int contentType = 1;
@@ -479,49 +483,32 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else {
             titleTextView.setText(getString(R.string.appoint_course_point));
         }
-        GridView listenGridView = (GridView) listenLayout.findViewById(R.id.common_grid_view);
+        MyGridView listenGridView = (MyGridView) listenLayout.findViewById(R.id.common_grid_view);
         listenGridView.setNumColumns(4);
         listenGridView.setVerticalSpacing(20);
+        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE){
+            listenGridView.setNumColumns(1);
+            //设置分割线
+            listenGridView.setVerticalSpacing(DisplayUtil.dip2px(getActivity(),1));
+            listenGridView.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_gray));
+        }
         if (listenData.size() == 0) {
             listenData.add(new ResourceInfoTag());
         }
-        listenAdapter = new ListenReadAndWriteCourseAdapter(getActivity(), listenData, new CallbackListener() {
-            @Override
-            public void onBack(Object result) {
-                int position = (int) result;
-                listenData.remove(position);
-                listenAdapter.notifyDataSetChanged();
-                boolean flag = showScoreView(true);
-                updateScoreView(flag ? View.GONE : View.VISIBLE);
-            }
+        listenAdapter = new ListenReadAndWriteCourseAdapter(getActivity(),
+                listenData, superTaskType,result -> {
+            //删除
+            int position = (int) result;
+            listenData.remove(position);
+            listenAdapter.notifyDataSetChanged();
+            boolean flag = showScoreView(true);
+            updateScoreView(flag ? View.GONE : View.VISIBLE);
+        }, result -> {
+            //打开
+            int position = (int) result;
+            openListenData(listenAdapter.getItem(position));
         });
         listenGridView.setAdapter(listenAdapter);
-        listenGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ResourceInfoTag info = listenAdapter.getItem(position);
-                if (TextUtils.isEmpty(info.getResId())) {
-                    //添加资源
-                    getEditContent();
-                    if (isOtherHomeWork()) {
-                        chooseOtherHomeWork();
-                    } else {
-                        chooseResources(false);
-                    }
-                } else {
-                    if (isOtherHomeWork()) {
-                        ActivityUtils.openOnlineNote(getActivity(), info.toNewResourceInfo()
-                                        .getCourseInfo(), false,
-                                false);
-                    } else {
-                        //打开选中的资源
-                        WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
-                                true, false, true);
-                    }
-                }
-            }
-        });
-
         View readWriteLayout = getActivity().getLayoutInflater().inflate(R.layout
                 .layout_add_course_res, listenReadAndWriteLayout, false);
         titleTextView = (TextView) readWriteLayout.findViewById(R.id.tv_appoint_course);
@@ -532,42 +519,24 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (readWriteData.size() == 0) {
             readWriteData.add(new ResourceInfoTag());
         }
-        readAndWriteAdapter = new ListenReadAndWriteCourseAdapter(getActivity(), readWriteData, new CallbackListener() {
-            @Override
-            public void onBack(Object result) {
-                int position = (int) result;
-                readWriteData.remove(position);
-                readAndWriteAdapter.notifyDataSetChanged();
-                boolean flag = showScoreView(false);
-                updateScoreView(flag ? View.GONE : View.VISIBLE);
-                if (hasPointData()) {
-                    mSelectMark.setVisibility(View.GONE);
-                } else {
-                    mSelectMark.setVisibility(View.VISIBLE);
-                }
-            }
+        readAndWriteAdapter = new ListenReadAndWriteCourseAdapter(getActivity(), readWriteData, superTaskType,
+               result -> {
+                   int position = (int) result;
+                   readWriteData.remove(position);
+                   readAndWriteAdapter.notifyDataSetChanged();
+                   boolean flag = showScoreView(false);
+                   updateScoreView(flag ? View.GONE : View.VISIBLE);
+                   if (hasPointData()) {
+                       mSelectMark.setVisibility(View.GONE);
+                   } else {
+                       mSelectMark.setVisibility(View.VISIBLE);
+                   }
+               },result -> {
+            //打开
+            int position = (int) result;
+            openReadAndWriteData(readAndWriteAdapter.getItem(position));
         });
         readWriteGridView.setAdapter(readAndWriteAdapter);
-        readWriteGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ResourceInfoTag info = readAndWriteAdapter.getItem(position);
-                if (TextUtils.isEmpty(info.getResId())) {
-                    //添加资源
-                    getEditContent();
-                    chooseResources(true);
-                } else {
-                    if (info.getResourceType() == ResType.RES_TYPE_STUDY_CARD) {
-                        loadCourseDetail(info.getResId(), false);
-                    } else {
-                        //打开选中的资源
-                        WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
-                                true, false, true);
-                    }
-                }
-            }
-        });
-
         if (isFromSuperTask) {
             if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE || isOtherHomeWork()) {
                 listenReadAndWriteLayout.addView(listenLayout);
@@ -577,6 +546,44 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else {
             listenReadAndWriteLayout.addView(listenLayout);
             listenReadAndWriteLayout.addView(readWriteLayout);
+        }
+    }
+
+    private void openListenData(ResourceInfoTag info){
+        if (TextUtils.isEmpty(info.getResId())) {
+            //添加资源
+            getEditContent();
+            if (isOtherHomeWork()) {
+                chooseOtherHomeWork();
+            } else {
+                chooseResources(false);
+            }
+        } else {
+            if (isOtherHomeWork()) {
+                ActivityUtils.openOnlineNote(getActivity(), info.toNewResourceInfo()
+                                .getCourseInfo(), false,
+                        false);
+            } else {
+                //打开选中的资源
+                WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
+                        true, false, true);
+            }
+        }
+    }
+
+    private void openReadAndWriteData(ResourceInfoTag info){
+        if (TextUtils.isEmpty(info.getResId())) {
+            //添加资源
+            getEditContent();
+            chooseResources(true);
+        } else {
+            if (info.getResourceType() == ResType.RES_TYPE_STUDY_CARD) {
+                loadCourseDetail(info.getResId(), false);
+            } else {
+                //打开选中的资源
+                WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
+                        true, false, true);
+            }
         }
     }
 
@@ -1376,6 +1383,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (!TextUtils.isEmpty(info.getPoint())) {
                 lookResDto.setResPropType(1);
             }
+            lookResDto.setCompletionMode(info.getCompletionMode());
             lookResDtos.add(lookResDto);
         }
         for (int i = 0, len = readWriteData.size() - 1; i < len; i++) {
@@ -1400,6 +1408,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (!TextUtils.isEmpty(info.getPoint())) {
                 lookResDto.setResPropType(1);
             }
+            lookResDto.setCompletionMode(info.getCompletionMode());
             lookResDtos.add(lookResDto);
         }
         return lookResDtos;
@@ -1426,6 +1435,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 infoTag.setResCourseId(info.getResCourseId());
                 infoTag.setIsSelected(info.isSelect());
                 infoTag.setPoint(info.getPoint());
+                infoTag.setCompletionMode(info.getCompletionMode());
                 resourceInfoTags.add(infoTag);
             }
         }
@@ -2446,13 +2456,18 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 int taskType = uploadParameter.getTaskType();
                 if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
-                    if (lookResDtos != null && lookResDtos.size() > 1) {
-                        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
-                        } else {
-                            taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                    if (lookResDtos != null){
+                        if (lookResDtos.size() == 1){
+                            //完成方式
+                            taskParams.put("RepeatCourseCompletionMode",lookResDtos.get(0).getCompletionMode());
+                        } else if (lookResDtos.size() > 1){
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                            } else {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                            }
+                            StudyTaskUtils.addMultipleTaskParams(taskParams, lookResDtos);
                         }
-                        StudyTaskUtils.addMultipleTaskParams(taskParams, lookResDtos);
                     }
                 }
 

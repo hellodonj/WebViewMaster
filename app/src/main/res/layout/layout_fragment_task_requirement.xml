@@ -30,6 +30,15 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_completion_mode"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|left"
+                        android:padding="5dp"
+                        android:visibility="gone"/>
+
+                    <TextView
                         android:id="@+id/tv_content"
                         style="@style/txt_wawa_normal_black"
                         android:layout_width="match_parent"

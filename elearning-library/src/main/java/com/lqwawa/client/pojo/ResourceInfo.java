@@ -29,6 +29,15 @@ public class ResourceInfo implements Parcelable,Serializable{
     private String ResProperties;
     private int ResCourseId;
     private String Point;//总分
+    private int completionMode;//0 复述课件 1 复述课件+语音评测
+
+    public int getCompletionMode() {
+        return completionMode;
+    }
+
+    public void setCompletionMode(int completionMode) {
+        this.completionMode = completionMode;
+    }
 
     public String getPoint() {
         return Point;

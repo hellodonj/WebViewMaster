@@ -49,6 +49,15 @@ public class StudyTask implements Serializable{
     private int ScoringRule; //1:十分制  2:百分制
     private int ResCourseId;
     private int ResPropType;
+    private int RepeatCourseCompletionMode;
+
+    public int getRepeatCourseCompletionMode() {
+        return RepeatCourseCompletionMode;
+    }
+
+    public void setRepeatCourseCompletionMode(int repeatCourseCompletionMode) {
+        RepeatCourseCompletionMode = repeatCourseCompletionMode;
+    }
 
     public int getResPropType() {
         return ResPropType;
