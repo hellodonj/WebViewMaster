@@ -66,6 +66,20 @@
 
                 </com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.DiscoveryHolder>
 
+                <com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder
+                    android:id="@+id/minority_language_class_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder>
+
+                <com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder
+                    android:id="@+id/english_international_class_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder>
+
 
             </LinearLayout>
         </ScrollView>

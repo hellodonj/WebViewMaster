@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
 import com.lqwawa.intleducation.module.discovery.vo.ClassifyVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
@@ -52,6 +53,12 @@ public interface LQCourseContract {
         void updateNewBasicsConfigView(@NonNull List<LQBasicsOuterEntity> entities);
         // 点击基础课程科目后跳转的回调
         void updateConfigView(@NonNull int parentId, @NonNull LQBasicsOuterEntity.LQBasicsInnerEntity entity, @NonNull List<LQCourseConfigEntity> entities);
+
+
+        // 回调国际小语种
+        void updateXyzOnlineClassView(@NonNull List<OnlineClassEntity> entities);
+        // 回调国际名师课
+        void updateInternationalOnlineClassView(@NonNull List<OnlineClassEntity> entities);
     }
 
     interface Presenter extends BaseContract.Presenter{
