@@ -18,9 +18,11 @@ import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.empty.EmptyActivity;
+import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.BasicsCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.classifylist.ClassifyListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
@@ -29,15 +31,17 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.common.NewCommonHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.livelist.LiveListActivity;
-import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
+import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder;
+import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
-import com.lqwawa.intleducation.module.learn.ui.MyCourseListActivity;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
+import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
+import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import java.lang.reflect.Array;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +56,8 @@ import java.util.List;
  * **********************************
  */
 public class LQCourseFragment extends PresenterFragment<LQCourseContract.Presenter>
-    implements LQCourseContract.View,LQCourseNavigator,View.OnClickListener{
+    implements LQCourseContract.View,LQCourseNavigator,OnlineStudyNavigator,
+        View.OnClickListener{
     /**
      * 下拉刷新布局
      */
@@ -86,6 +91,10 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
     private LiveHolder mLiveHolder;
     // 所有课程信息View
     private DiscoveryHolder mDiscoveryHolder;
+    // 小语种名师课
+    private OnlineStudyItemHolder mMinorityLanguageClassHolder;
+    // 国际名师课
+    private OnlineStudyItemHolder mInternationalClassHolder;
 
     // 我的学程按钮
     private TextView mTvMyCourse;
@@ -111,9 +120,9 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
         mBannerView = (BannerHeaderView) mRootView.findViewById(R.id.banner_view);
         // 定义分类列表数据
         mClassifyRecycler = (RecyclerView) mRootView.findViewById(R.id.classify_recycler);
-        GridLayoutManager mClassifyLayoutManager = new GridLayoutManager(getContext(),4);
+        GridLayoutManager mClassifyLayoutManager = new GridLayoutManager(getContext(),3);
         mClassifyRecycler.setLayoutManager(mClassifyLayoutManager);
-        mClassifyRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(4,8));
+        // mClassifyRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3,8));
         mClassifyAdapter = new ClassifyAdapter();
         mClassifyRecycler.setAdapter(mClassifyAdapter);
         mClassifyAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
@@ -124,6 +133,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                 if(entity.getId() == CourseFiltrateActivity.BASIC_COURSE_ID){
                     // 进入基础课程列表
                     // SubjectActivity.show(getActivity());
+                    // LQBasicActivity.show(getActivity());
                     if(EmptyUtil.isNotEmpty(mConfigEntities)){
                         if(mConfigEntities.size() > 3){
                             LQCourseConfigEntity configEntity = mConfigEntities.get(3);
@@ -175,10 +185,16 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
         // 基础课程
         mBasicsHolder = new NewBasicsCourseHolder(getContext());
         mBasicsHolder.setCourseNavigator(this);
-        mCourseLayout.addView(mBasicsHolder.getRootView());
+        // mCourseLayout.addView(mBasicsHolder.getRootView());
         // 相关课程分类 热门课程等
         mDiscoveryHolder = (DiscoveryHolder) mRootView.findViewById(R.id.discovery_holder);
         mDiscoveryHolder.setNavigator(this);
+
+        mMinorityLanguageClassHolder = (OnlineStudyItemHolder) mRootView.findViewById(R.id.minority_language_class_holder);
+        mMinorityLanguageClassHolder.setOnlineStudyNavigator(this);
+
+        mInternationalClassHolder = (OnlineStudyItemHolder) mRootView.findViewById(R.id.english_international_class_holder);
+        mInternationalClassHolder.setOnlineStudyNavigator(this);
 
         mTvMyCourse = (TextView) mRootView.findViewById(R.id.tv_my_course);
         mTvMyCourse.setOnClickListener(this);
@@ -219,6 +235,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
 
     @Override
     public void updateConfigViews(@NonNull List<LQCourseConfigEntity> entities) {
+        if(entities.size() > 3) entities = new ArrayList<>(entities.subList(0,3));
         this.mConfigEntities = entities;
         mRefreshLayout.onHeaderRefreshComplete();
         try{
@@ -273,6 +290,16 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
         // 刷新热门UI
         mDiscoveryHolder.updateHotCourseData(courseVos);
         mRefreshLayout.onHeaderRefreshComplete();
+    }
+
+    @Override
+    public void updateXyzOnlineClassView(@NonNull List<OnlineClassEntity> entities) {
+        mMinorityLanguageClassHolder.updateView(OnlineStudyType.SORT_MINORITY_ONLINE_CLASS,entities);
+    }
+
+    @Override
+    public void updateInternationalOnlineClassView(@NonNull List<OnlineClassEntity> entities) {
+        mInternationalClassHolder.updateView(OnlineStudyType.SORT_INTERNATIONAL_ONLINE_CLASS,entities);
     }
 
 
@@ -346,6 +373,30 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                 BasicsCourseActivity.show(getActivity(),entity,mBasicsEntities);
             }
         }
+    }
+
+
+
+    @Override
+    public void onClickTitleLayout(@NonNull int sort) {
+        if(sort == OnlineStudyType.SORT_MINORITY_ONLINE_CLASS){
+            // 点击名师课更多
+            UIUtil.showToastSafe("点击名师课更多");
+        }else if(sort == OnlineStudyType.SORT_INTERNATIONAL_ONLINE_CLASS){
+            // 点击名师课更多
+            UIUtil.showToastSafe("点击名师课更多");
+        }
+    }
+
+    @Override
+    public void onClickClass(@NonNull OnlineClassEntity entity) {
+        ClassInfoParams params = new ClassInfoParams(entity);
+        ClassDetailActivity.show(getActivity(),params);
+    }
+
+    @Override
+    public void onClickOrgan(@NonNull OnlineStudyOrganEntity entity) {
+        // 点击更多机构
     }
 
     @Override

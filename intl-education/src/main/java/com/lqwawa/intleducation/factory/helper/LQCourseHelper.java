@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.response.LQRmResponseVo;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -278,6 +279,46 @@ public class LQCourseHelper {
     }
 
     /**
+     * 获取多语种课程，国家课程热门数据和名师课
+     * @param dataType 1 国家课程,0 非国家课程
+     * @param callback 数据回调接口
+     */
+    public static void requestLQRmCourseData(int dataType,
+                                             @NonNull final DataSource.Callback<LQRmResponseVo> callback){
+        final RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("dataType",dataType);
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetLQRmCourseUrl+requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(LQCourseHelper.class,"request "+params.getUri()+" result :"+str);
+                TypeReference<LQRmResponseVo> typeReference =
+                        new TypeReference<LQRmResponseVo>(){};
+                LQRmResponseVo result = JSON.parseObject(str, typeReference);
+                if(result.isSucceed()){
+                    if(!EmptyUtil.isEmpty(callback)){
+                        callback.onDataLoaded(result);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
      * 获取LQ学程,热门推荐信息
      * @param needShowPay 是否显示收费课程
      * @param callback 回调数据
@@ -456,6 +497,45 @@ public class LQCourseHelper {
                     }
                 }else{
                     Factory.decodeRspCode(vo.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取班级学程老师的章节列表数据
+     * @param classId 班级Id
+     * @param courseId 课程Id
+     * @param callback 回调对象
+     */
+    public static void requestChapterByCourseId(@NonNull String classId,
+                                                @NonNull String courseId,
+                                                @NonNull DataSource.Callback<CourseDetailsVo> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetClassTeacherChapterList + requestVo.getParams());
+        params.setConnectTimeout(50000);
+
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                CourseDetailsVo courseDetailsVo = JSON.parseObject(str,new TypeReference<CourseDetailsVo>() {});
+                if (courseDetailsVo.isSucceed()) {
+                    if(EmptyUtil.isNotEmpty(callback)){
+                        callback.onDataLoaded(courseDetailsVo);
+                    }
+                }else{
+                    Factory.decodeRspCode(courseDetailsVo.getCode(),callback);
                 }
             }
 

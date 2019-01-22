@@ -11,7 +11,9 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.response.LQRmResponseVo;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.LiveHelper;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
@@ -23,6 +25,7 @@ import com.lqwawa.intleducation.module.discovery.vo.OrganVo;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.onclass.related.RelatedCourseListContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,7 +106,7 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
 
                 List<LQBasicsOuterEntity> basicConfig = responseVo.getBasicConfig();
                 if(!EmptyUtil.isEmpty(basicConfig) && !EmptyUtil.isEmpty(view)){
-                    view.updateNewBasicsConfigView(basicConfig);
+                    // view.updateNewBasicsConfigView(basicConfig);
                 }
             }
         });
@@ -138,7 +141,7 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
         });*/
 
         // 添加热门推荐/最近更新/入驻机构
-        LQCourseHelper.requestDiscoveryData(true, new DataSource.Callback<DiscoveryItemVo>() {
+        /*LQCourseHelper.requestDiscoveryData(true, new DataSource.Callback<DiscoveryItemVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 // UIUtil.showToastSafe(strRes);
@@ -169,6 +172,60 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
                 }
                 // 组织机构数据
                 List<OrganVo> organList = result.getOrganList();
+            }
+        });*/
+
+
+        LQCourseHelper.requestLQRmCourseData(0, new DataSource.Callback<LQRmResponseVo>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final LQCourseContract.View view = (LQCourseContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(LQRmResponseVo lqRmResponseVo) {
+                final LQCourseContract.View view = (LQCourseContract.View) getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    // 热门课程数据
+                    List<CourseVo> rmCourseList = lqRmResponseVo.getRmCourseList();
+                    if(rmCourseList != null) {
+                        if(rmCourseList.size() > 3){
+                            // 只显示3个热门课程数据,包头不包尾
+                            rmCourseList = new ArrayList<>(rmCourseList.subList(0, 3));
+                        }
+
+
+                        view.updateHotCourseView(rmCourseList);
+                    }
+
+
+                    // 小语种名师课数据
+                    List<OnlineClassEntity> xyzOnlineCourseList = lqRmResponseVo.getXyzOnlineCourseList();
+                    if(xyzOnlineCourseList != null) {
+                        if(xyzOnlineCourseList.size() > 2){
+                            // 只显示3个名师课数据,包头不包尾
+                            xyzOnlineCourseList = new ArrayList<>(xyzOnlineCourseList.subList(0, 2));
+                        }
+
+
+                        view.updateXyzOnlineClassView(xyzOnlineCourseList);
+                    }
+
+                    // 国际名师课数据
+                    List<OnlineClassEntity> reOnlineCourseList = lqRmResponseVo.getGjOnlineCourseList();
+                    if(reOnlineCourseList != null) {
+                        if(reOnlineCourseList.size() > 2){
+                            // 只显示3个名师课数据,包头不包尾
+                            reOnlineCourseList = new ArrayList<>(reOnlineCourseList.subList(0, 2));
+                        }
+
+
+                        view.updateInternationalOnlineClassView(reOnlineCourseList);
+                    }
+                }
             }
         });
     }
