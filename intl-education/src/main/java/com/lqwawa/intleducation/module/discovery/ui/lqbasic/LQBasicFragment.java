@@ -113,7 +113,7 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
             @Override
             public void onClickCourseTitleLayout() {
                 // 进入课程列表
-                LQCourseListActivity.show(getActivity(), HideSortType.TYPE_SORT_HOT_RECOMMEND,getString(R.string.hot_recommended));
+                LQCourseListActivity.show(getActivity(), 1,HideSortType.TYPE_SORT_HOT_RECOMMEND,getString(R.string.hot_recommended));
             }
 
             @Override

@@ -36,8 +36,26 @@ public class LQCourseListPresenter extends BasePresenter<LQCourseListContract.Vi
     }
 
     @Override
-    public void requestCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString) {
-        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
+    public void requestCourseData(@Nullable String organId,int pageIndex, int pageSize, int dataType,@NonNull String sort, int payType, String keyString) {
+        LQCourseHelper.requestLQHotCourseData(dataType, pageIndex, pageSize, keyString, new DataSource.Callback<List<CourseVo>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final LQCourseListContract.View view = (LQCourseListContract.View) getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<CourseVo> courseVos) {
+                final LQCourseListContract.View view = (LQCourseListContract.View) getView();
+                if(null != courseVos && !EmptyUtil.isEmpty(view)){
+                    view.onCourseLoaded(courseVos);
+                }
+            }
+        });
+
+        /*LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final LQCourseListContract.View view = (LQCourseListContract.View) getView();
@@ -53,12 +71,30 @@ public class LQCourseListPresenter extends BasePresenter<LQCourseListContract.Vi
                     view.onCourseLoaded(courseVos);
                 }
             }
-        });
+        });*/
     }
 
     @Override
-    public void requestMoreCourseData(@Nullable String organId,int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString) {
-        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
+    public void requestMoreCourseData(@Nullable String organId,int pageIndex, int pageSize,int dataType, @NonNull String sort, int payType, String keyString) {
+        LQCourseHelper.requestLQHotCourseData(dataType, pageIndex, pageSize, keyString, new DataSource.Callback<List<CourseVo>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final LQCourseListContract.View view = (LQCourseListContract.View) getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<CourseVo> courseVos) {
+                final LQCourseListContract.View view = (LQCourseListContract.View) getView();
+                if(null != courseVos && !EmptyUtil.isEmpty(view)){
+                    view.onMoreCourseLoaded(courseVos);
+                }
+            }
+        });
+
+        /*LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final LQCourseListContract.View view = (LQCourseListContract.View) getView();
@@ -74,7 +110,7 @@ public class LQCourseListPresenter extends BasePresenter<LQCourseListContract.Vi
                     view.onMoreCourseLoaded(courseVos);
                 }
             }
-        });
+        });*/
     }
 
     @Override

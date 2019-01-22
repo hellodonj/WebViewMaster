@@ -47,6 +47,8 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
 
     private static final String KEY_EXTRA_TITLE_TEXT = "KEY_EXTRA_TITLE_TEXT";
 
+    private static final String KEY_EXTRA_DATA_TYPE = "KEY_EXTRA_DATA_TYPE";
+
     private static final String KEY_EXTRA_SORT_TYPE = "KEY_EXTRA_SORT_TYPE";
 
     private static final String KEY_EXTRA_SEARCH_KEY = "KEY_EXTRA_SEARCH_KEY";
@@ -79,6 +81,7 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
     private int currentPage;
 
     private String mTitle;
+    private int mDataType;
     private String mSortType;
     private String mSchoolId;
     private boolean isSchoolEnter;
@@ -97,6 +100,7 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
     @Override
     protected boolean initArgs(Bundle bundle) {
         mTitle = (String) bundle.get(KEY_EXTRA_TITLE_TEXT);
+        mDataType = bundle.getInt(KEY_EXTRA_DATA_TYPE);
         mSortType = (String) bundle.get(KEY_EXTRA_SORT_TYPE);
         mSearchKey = (String) bundle.get(KEY_EXTRA_SEARCH_KEY);
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
@@ -241,18 +245,18 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
 
             if(isMoreLoaded){
                 currentPage++;
-                mPresenter.requestMoreCourseData(mSchoolId,currentPage,0,mSortType,payType,mSearchKey);
+                mPresenter.requestMoreCourseData(mSchoolId,currentPage,0,mDataType,mSortType,payType,mSearchKey);
             }else{
                 currentPage = 0;
-                mPresenter.requestCourseData(mSchoolId,currentPage,0,mSortType,payType,mSearchKey);
+                mPresenter.requestCourseData(mSchoolId,currentPage,0,mDataType,mSortType,payType,mSearchKey);
             }
         }else{
             if(isMoreLoaded){
                 currentPage++;
-                mPresenter.requestMoreCourseData(null,currentPage,0,mSortType,payType,mSearchKey);
+                mPresenter.requestMoreCourseData(null,currentPage,0,mDataType,mSortType,payType,mSearchKey);
             }else{
                 currentPage = 0;
-                mPresenter.requestCourseData(null,currentPage,0,mSortType,payType,mSearchKey);
+                mPresenter.requestCourseData(null,currentPage,0,mDataType,mSortType,payType,mSearchKey);
             }
         }
     }
@@ -337,12 +341,17 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
     /**
      * 课程列表显示入口
      * @param context 上下文对象
+     * @param dataType 数据类型 1 国家课程,0 非国家课程类型
      * @param sort 热门列表或者其它
      * @param title 标题文本
      */
-    public static void show(@NonNull Context context, @NonNull @HideSortType.SortRes String sort, @NonNull String title){
+    public static void show(@NonNull Context context,
+                            int dataType,
+                            @NonNull @HideSortType.SortRes String sort,
+                            @NonNull String title){
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putInt(KEY_EXTRA_DATA_TYPE, dataType);
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
         intent.putExtras(bundle);

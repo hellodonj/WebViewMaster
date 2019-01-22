@@ -26,22 +26,24 @@ public class LQCourseListContract {
          * @param organId 机构Id
          * @param pageIndex 分页数
          * @param pageSize 每页数据量
+         * @param dataType 数据类型
          * @param sort 加载课程类型
          * @param payType 加载课程收费类型
          * @param keyString 搜索关键词
          */
-        void requestCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString);
+        void requestCourseData(@Nullable String organId, int pageIndex, int pageSize, int dataType, @NonNull String sort, int payType, String keyString);
 
         /**
          * 获取符合筛选条件的课程数据 加载更多
          * @param organId 机构Id
          * @param pageIndex 分页数
          * @param pageSize 每页数据量
+         * @param dataType 数据类型
          * @param sort 加载课程类型
          * @param payType 加载课程收费类型
          * @param keyString 搜索关键词
          */
-        void requestMoreCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString);
+        void requestMoreCourseData(@Nullable String organId, int pageIndex, int pageSize, int dataType, @NonNull String sort, int payType, String keyString);
 
         // 在线机构,获取关联课程数据
         void requestOnlineSchoolInfoData(int pageIndex, @NonNull String schoolId);

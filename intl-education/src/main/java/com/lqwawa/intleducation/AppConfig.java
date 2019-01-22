@@ -785,5 +785,9 @@ public final class AppConfig {
         // 班级学程老师的章节接口
         public static final String GetClassTeacherChapterList = ServerBase +
                 "api/class/courseChapterList?j=";
+
+        // 新的热门数据接口
+        public static final String GetHostCourseUrl = ServerBase +
+                "api/courseEx/getHotCourseList?j=";
     }
 }

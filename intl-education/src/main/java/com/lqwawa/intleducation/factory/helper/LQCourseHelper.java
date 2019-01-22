@@ -458,6 +458,65 @@ public class LQCourseHelper {
     }
 
     /**
+     * 获取符合筛选条件的热门课程数据
+     * @param dataType 1 国家课程 0 非国家课程
+     * @param pageIndex 分页数
+     * @param pageSize 每页数据量
+     * @param keyString 搜索关键词
+     * @param callback 回调数据
+     */
+    public static void requestLQHotCourseData(int dataType,
+                                              int pageIndex, int pageSize,
+                                              String keyString,
+                                              @NonNull final DataSource.Callback<List<CourseVo>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
+        requestVo.addParams("dataType", dataType);
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+
+        if(!EmptyUtil.isEmpty(keyString)){
+            try {
+                requestVo.addParams("courseName", URLEncoder.encode(keyString.trim(), "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetHostCourseUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+
+        LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(LQCourseHelper.class,"request "+params.getUri()+" result :"+str);
+                ResponseVo<List<CourseVo>> result = JSON.parseObject(str,new TypeReference<ResponseVo<List<CourseVo>>>() {});
+                if (result.isSucceed()) {
+                    if(!EmptyUtil.isEmpty(callback)){
+                        List<CourseVo> data = result.getData();
+                        callback.onDataLoaded(data);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+
+    }
+
+    /**
      * @param token token信息，如果是家长，就传孩子的memberId
      * @param id 课程Id
      * @param schoolIds 课程详情页加载课程详情传参 //来自LQ精品学程
