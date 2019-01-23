@@ -30,6 +30,7 @@ import com.galaxyschool.app.wawaschool.BasicUserInfoActivity;
 import com.galaxyschool.app.wawaschool.CampusPatrolMainActivity;
 import com.galaxyschool.app.wawaschool.ClassResourceListActivity;
 import com.galaxyschool.app.wawaschool.ClassSpaceActivity;
+import com.galaxyschool.app.wawaschool.CommentStatisticActivity;
 import com.galaxyschool.app.wawaschool.ContactsActivity;
 import com.galaxyschool.app.wawaschool.HomeActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
@@ -54,6 +55,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.pojo.ClassInfoListResult;
 import com.galaxyschool.app.wawaschool.pojo.ClassMessageStatistics;
 import com.galaxyschool.app.wawaschool.pojo.ClassMessageStatisticsListResult;
+import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfoResult;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
@@ -166,6 +168,8 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         int TAB_ENTITY_TYPE_ACT_CLASSROOM = 14;
         int TAB_ENTITY_TYPE_LQCOURSE_SHOP = 15;
         int TAB_ENTITY_TYPE_CLASS_LESSON = 16;
+        //点评统计
+        int TAB_ENTITY_TYPE_COMMENT_STATISTIC = 17;
         int TAB_ENTITY_TYPE_LQ_GALAXY_INTL = 100;
     }
 
@@ -180,6 +184,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private boolean isChangeLqCourseTab;
     private String lqCourseSchoolId;
     private String lqCourseClassId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fromType = FROM_MY_SCHOOL_SPACE_FRAGMENT;
@@ -628,9 +633,18 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         }
         entryInfoHashMap.clear();
         List<TabEntityPOJO> itemList = new ArrayList<TabEntityPOJO>();
-
+        TabEntityPOJO item = null;
+        //点评统计(老师身份才显示)
+        if (classInfo != null && classInfo.isTeacherByRoles()) {
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_COMMENT_STATISTIC;
+            item.title = getString(R.string.str_comment_statistic);
+            item.resId = R.drawable.icon_comment_statistic;
+            itemList.add(item);
+            entryInfoHashMap.put(item.type + "", item);
+        }
         //通知
-        TabEntityPOJO item = new TabEntityPOJO();
+        item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_NOTICE;
         item.title = getString(R.string.notices);
         item.resId = R.drawable.tongzhi;
@@ -988,7 +1002,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
             //学程馆
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP:
-                ActivityUtils.enterLqCourseShopActivity(getActivity(),schoolInfo);
+                ActivityUtils.enterLqCourseShopActivity(getActivity(), schoolInfo);
                 break;
 
             //校园巡查
@@ -1007,7 +1021,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 break;
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_LESSON:
                 //班级学程
-               ActivityUtils.enterClassCourseDetailActivity(getActivity(),schoolInfo,classInfo);
+                ActivityUtils.enterClassCourseDetailActivity(getActivity(), schoolInfo, classInfo);
                 break;
             //空中课堂
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_AIR_CLASSROOM:
@@ -1025,6 +1039,10 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                         ClassifyIndexActivity.ClassifyValues.LQGalaxyInt);*/
 
                 HQCCourseListActivity.start(getActivity(), schoolId);
+                break;
+                //点评统计
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_COMMENT_STATISTIC:
+                CommentStatisticActivity.start(getActivity(), classInfo);
                 break;
             default:
                 break;
@@ -1405,12 +1423,12 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         if (!TextUtils.isEmpty(getLatestSchool(getMemeberId()))) {
             for (SchoolInfo sc : schoolInfoList) {
                 if (isChangeLqCourseTab && !TextUtils.isEmpty(lqCourseSchoolId)) {
-                    if (TextUtils.equals(sc.getSchoolId(),lqCourseSchoolId)) {
+                    if (TextUtils.equals(sc.getSchoolId(), lqCourseSchoolId)) {
                         schoolInfo = sc;
                         tag = true;
                         break;
                     }
-                }else {
+                } else {
                     if (sc.getSchoolId().equals(getLatestSchool(getMemeberId()))) {
                         schoolInfo = sc;
                         tag = true;
@@ -1511,9 +1529,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                             if (sc.getSchoolId() == null || sc.getClassId() == null) {
                                 continue;
                             }
-                            if (isChangeLqCourseTab && !TextUtils.isEmpty(lqCourseClassId) && !TextUtils.isEmpty(lqCourseSchoolId)){
-                                if (TextUtils.equals(sc.getSchoolId(),lqCourseSchoolId)
-                                        && TextUtils.equals(sc.getClassId(),lqCourseClassId)){
+                            if (isChangeLqCourseTab && !TextUtils.isEmpty(lqCourseClassId) && !TextUtils.isEmpty(lqCourseSchoolId)) {
+                                if (TextUtils.equals(sc.getSchoolId(), lqCourseSchoolId)
+                                        && TextUtils.equals(sc.getClassId(), lqCourseClassId)) {
                                     classInfo = sc;
                                     tag = true;
                                     break;
@@ -1549,6 +1567,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             }
             resourceLayout.setVisibility(View.VISIBLE);
             loadClassMessageStatistics();
+            loadNewlyClassEntityData();
         } else {
             noClassTipLayout.setVisibility(View.VISIBLE);
             resourceLayout.setVisibility(View.INVISIBLE);
@@ -1723,9 +1742,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             if (classInfo != null) {
                 enterClassSpace(classInfo);
             }
-        } else if(v.getId() == R.id.tv_intro){
+        } else if (v.getId() == R.id.tv_intro) {
             enterSchoolIntroduction();
-        }else{
+        } else {
             super.onClick(v);
         }
     }
@@ -1815,9 +1834,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(),ACTION_LOAD_DATA)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_LOAD_DATA)) {
                 loadSchools();
-            } else if (TextUtils.equals(HomeActivity.ACTION_CHANGE_LQCOURSE_TAB,intent.getAction())){
+            } else if (TextUtils.equals(HomeActivity.ACTION_CHANGE_LQCOURSE_TAB, intent.getAction())) {
                 //接收学程过来的进入机构详情页
                 isChangeLqCourseTab = true;
                 lqCourseSchoolId = intent.getStringExtra("schoolId");

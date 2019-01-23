@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/text_white"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <!--================================布置时间====================================-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/item_height"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:text="@string/assign_date"/>
+
+                <TextView
+                    android:id="@+id/study_task_start_date_text"
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/item_small_height"
+                    android:padding="5dp"
+                    android:text="2016-12-09"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#c3c3c3"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/item_height"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    style="@style/txt_wawa_big_black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:text="@string/finish_date"/>
+
+                <TextView
+                    android:id="@+id/study_task_end_date_text"
+                    style="@style/txt_wawa_normal_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/item_small_height"
+                    android:padding="5dp"
+                    android:text="2016-12-13"/>
+            </LinearLayout>
+
+
+            <!--已点评布局-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F6F7F9"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_review"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+
+                    <TextView
+                        android:id="@+id/tv_already_comment_num"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text=""
+                        android:textColor="@color/text_dark_gray"/>
+
+                    <ImageView
+                        android:id="@+id/iv_already_item_arrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/list_exp_up"/>
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line_gray"/>
+            </LinearLayout>
+
+
+            <com.galaxyschool.app.wawaschool.views.MyGridView
+                android:id="@+id/gv_review"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:cacheColorHint="#00000000"
+                android:horizontalSpacing="0dp"
+                android:listSelector="#00000000"
+                android:numColumns="4"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="0dp"/>
+
+
+            <!--未点评布局-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F6F7F9"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_unreview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_unalready_item_title"
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center|left"
+                        android:textColor="@color/text_dark_gray"/>
+
+                    <ImageView
+                        android:id="@+id/iv_unalready_item_arrow"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/list_exp_up"/>
+
+                </LinearLayout>
+
+                <View
+                    style="@style/line_gray"/>
+
+            </LinearLayout>
+
+            <com.galaxyschool.app.wawaschool.views.MyGridView
+                android:id="@+id/gv_unalready_grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:cacheColorHint="#00000000"
+                android:horizontalSpacing="0dp"
+                android:listSelector="#00000000"
+                android:numColumns="4"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="0dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

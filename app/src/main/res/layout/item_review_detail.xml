@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:gravity="center_vertical"
+              android:orientation="vertical"
+              android:padding="5dp">
+
+    <FrameLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <com.galaxyschool.app.wawaschool.views.RoundedImageView
+            android:id="@+id/icon_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:src="@drawable/default_user_icon"/>
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|right"
+            android:gravity="center"
+            android:background="@drawable/shape_red_oval"
+            android:text="12"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text=""/>
+
+</LinearLayout>

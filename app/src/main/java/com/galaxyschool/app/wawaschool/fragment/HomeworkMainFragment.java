@@ -35,6 +35,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerTitleAdap
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
+import com.galaxyschool.app.wawaschool.pojo.ReviewInfo;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.AddedSchoolInfoListResult;
@@ -76,6 +77,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
         String EXTRA_IS_HEAD_MASTER = "isHeadMaster";
         String EXTRA_CHILD_ID_ARRAY = "childIdArray";
         String EXTRA_IS_ONLINE_SCHOOL_CLASS = "isOnlineSchoolClass";
+        String EXTRA_IS_FROM_REVIEW_DATA = "from_review_data";
     }
 
     private TextView finishedTab, unfinishedTab;
@@ -139,6 +141,8 @@ public class HomeworkMainFragment extends ContactsListFragment implements
     public static boolean hasPublishedCourseToStudyTask = false; // 课件发送到学习任务是否成功
     private boolean isOnlineSchoolClass;//是否是在线课堂的班级
     private boolean isApplicationStart = true;
+    private boolean isFromReviewStatistic;//来自点评统计
+    private ReviewInfo reviewInfo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -578,6 +582,10 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             isOnlineSchoolClass = getArguments().getBoolean(Constants.EXTRA_IS_ONLINE_SCHOOL_CLASS);
             isApplicationStart = getArguments().getBoolean(ActivityUtils
                     .EXTRA_IS_APPLICATION_START,true);
+            reviewInfo = (ReviewInfo) getArguments().getSerializable(ReviewInfo.class.getSimpleName());
+            if (reviewInfo != null){
+                isFromReviewStatistic = true;
+            }
         }
         //左侧返回按钮
         ImageView imageView = (ImageView) findViewById(R.id.header_left_btn);
@@ -601,6 +609,10 @@ public class HomeworkMainFragment extends ContactsListFragment implements
         TextView textView = ((TextView) findViewById(R.id.header_right_btn));
         if (textView != null) {
             textView.setOnClickListener(this);
+            if (isFromReviewStatistic){
+                //隐藏筛选
+                textView.setVisibility(View.GONE);
+            }
         }
 
         //标题栏,仅对教师显示。
@@ -616,7 +628,11 @@ public class HomeworkMainFragment extends ContactsListFragment implements
         //标题
         textView = (TextView) findViewById(R.id.header_title);
         if (textView != null) {
-            textView.setText(R.string.learning_tasks);
+            if (isFromReviewStatistic){
+                textView.setText(getString(R.string.whose_homework,reviewInfo.getStudentName()));
+            } else {
+                textView.setText(R.string.learning_tasks);
+            }
         }
         //未完成
         textView = (TextView) findViewById(R.id.tab_unfinished);
@@ -636,12 +652,17 @@ public class HomeworkMainFragment extends ContactsListFragment implements
         textView = (TextView) findViewById(R.id.tv_today_homework);
         if (textView != null) {
             textView.setOnClickListener(this);
+            if (isFromReviewStatistic){
+                textView.setVisibility(View.GONE);
+            }
         }
         //布置作业
         textView = (TextView) findViewById(R.id.tv_assign_homework);
         View flAssignHomework = findViewById(R.id.fl_assign_homework);
         if (textView != null) {
-            if (roleType == RoleType.ROLE_TYPE_TEACHER && !isHistory) {
+            if (isFromReviewStatistic) {
+                textView.setVisibility(View.GONE);
+            } else if (roleType == RoleType.ROLE_TYPE_TEACHER && !isHistory) {
                 flAssignHomework.setVisibility(View.VISIBLE);
                 textView.setText(R.string.assign_task_line);
             } else {
