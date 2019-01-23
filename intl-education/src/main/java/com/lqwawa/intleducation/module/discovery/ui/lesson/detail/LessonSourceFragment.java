@@ -271,7 +271,13 @@ public class LessonSourceFragment extends IBaseFragment{
         if(mSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER){
             role = 1;
         }
-        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
+
+        String classId = "";
+        if(role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()){
+            classId = mSourceParams.getCourseParams().getClassId();
+        }
+
+        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

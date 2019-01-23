@@ -642,7 +642,13 @@ public class LessonDetailsActivity extends AppCompatActivity {
         if(mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER){
             role = 1;
         }
-        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
+
+        String classId = "";
+        if(role == 1 && mChapterParams.getCourseParams().isClassCourseEnter()){
+            classId = mChapterParams.getCourseParams().getClassId();
+        }
+
+        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
