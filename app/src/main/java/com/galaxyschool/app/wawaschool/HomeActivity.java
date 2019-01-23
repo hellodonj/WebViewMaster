@@ -372,10 +372,10 @@ public class HomeActivity extends BaseCompatActivity
 //        fragments.add(happyLearningFragment);
 
         //在线学习
-        // OnlineStudyFragment onlineStudyFragment = OnlineStudyFragment.newInstance();
-        // fragments.add(onlineStudyFragment);
-        LQBasicFragment lqBasicFragment = LQBasicFragment.newInstance();
-        fragments.add(lqBasicFragment);
+        OnlineStudyFragment onlineStudyFragment = OnlineStudyFragment.newInstance();
+        fragments.add(onlineStudyFragment);
+        // LQBasicFragment lqBasicFragment = LQBasicFragment.newInstance();
+        // fragments.add(lqBasicFragment);
 
         //我的课程
         TabCourseFragment tabCourseFragment = TabCourseFragment.newInstance();
