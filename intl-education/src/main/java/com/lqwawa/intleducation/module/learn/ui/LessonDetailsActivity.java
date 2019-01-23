@@ -637,7 +637,12 @@ public class LessonDetailsActivity extends AppCompatActivity {
 
 
         String token = mChapterParams.getMemberId();
-        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, new DataSource.Callback<SectionDetailsVo>() {
+
+        int role = 2;
+        if(mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER){
+            role = 1;
+        }
+        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

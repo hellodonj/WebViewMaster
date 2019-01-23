@@ -192,10 +192,12 @@ public class LessonHelper {
      * @param token 家长传孩子的token
      * @param courseId 课程Id
      * @param sectionId 小节Id
+     * @param role 1老师 2学生
      */
     public static void requestChapterStudyTask(@NonNull String token,
                                                @NonNull String courseId,
                                                @NonNull String sectionId,
+                                               int role,
                                                @NonNull DataSource.Callback<SectionDetailsVo> callback){
         RequestVo requestVo = new RequestVo();
         if(EmptyUtil.isNotEmpty(token)){
@@ -204,6 +206,7 @@ public class LessonHelper {
 
         requestVo.addParams("courseId",courseId);
         requestVo.addParams("sectionId",sectionId);
+        requestVo.addParams("role",role);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.courseSectionDetail + requestVo.getParams());
         params.setConnectTimeout(10000);
 

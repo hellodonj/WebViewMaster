@@ -164,7 +164,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         String token = UserHelper.getUserId();
         String courseId = mChapterVo.getCourseId();
         String sectionId = mChapterVo.getId();
-        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, new DataSource.Callback<SectionDetailsVo>() {
+        LessonHelper.requestChapterStudyTask(token, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
