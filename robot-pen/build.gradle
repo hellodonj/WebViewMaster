@@ -15,7 +15,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.codingmaster:slog:1.0.0'
-    compile 'cn.robotpen.pen:penservice:1.6.22.28'
+    compile 'cn.robotpen.pen:penservice:1.6.22.50'
 
     compile project(':elearning-library')
 }

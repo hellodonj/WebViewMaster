@@ -147,6 +147,11 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
     }
 
     @Override
+    public void onLargeOffLineNoteSyncFinished(String adressHead, String adressData) {
+
+    }
+
+    @Override
     public void onRobotKeyEvent(int e) {
     }
 
@@ -261,6 +266,11 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
 
     @Override
     public void requetSleepTimeCallBack(int time) {
+
+    }
+
+    @Override
+    public void requetMemorySizeCallBack(int size) {
 
     }
 

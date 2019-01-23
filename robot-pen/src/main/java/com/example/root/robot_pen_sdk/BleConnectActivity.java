@@ -315,6 +315,11 @@ public class BleConnectActivity extends PenBaseConnectActivity
             }
 
             @Override
+            public void onMemorySizeCallBack(int i) throws RemoteException {
+
+            }
+
+            @Override
             public void onStateChanged(int i, String address) {
                 switch (i) {
                     case RemoteState.STATE_CONNECTED://已连接
@@ -389,6 +394,11 @@ public class BleConnectActivity extends PenBaseConnectActivity
 
             @Override
             public void onOffLineNoteSyncFinished(String s, byte[] bytes) {
+
+            }
+
+            @Override
+            public void onLargeOffLineNoteSyncFinished(String adressHead, String adressData) {
 
             }
 
