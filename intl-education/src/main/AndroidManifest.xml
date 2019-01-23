@@ -868,6 +868,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--国家课程二级列表筛选页面-->
+        <activity android:name=".module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

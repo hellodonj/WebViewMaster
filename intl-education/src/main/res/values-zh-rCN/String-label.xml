@@ -265,6 +265,7 @@
     <string name="label_colon_subject">科目：</string>
     <string name="label_colon_language">语言：</string>
     <string name="label_colon_level">级别：</string>
+    <string name="label_colon_book_concern">出版社：</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">已授权</string>

@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntit
 import com.lqwawa.intleducation.factory.data.entity.online.ParamResponseVo;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coin.donation.DonationCoinContract;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
@@ -118,7 +119,11 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
             public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity entity) {
                 super.onItemClick(holder, entity);
                 // 点击了分类列表数据 显示下级列表
-                UIUtil.showToastSafe("点击了分类列表数据 显示下级列表");
+                // UIUtil.showToastSafe("点击了分类列表数据 显示下级列表");
+                int parentId = entity.getId();
+                String level = entity.getLevel();
+                String configValue = entity.getConfigValue();
+                LQBasicFiltrateActivity.show(getActivity(),parentId,level,configValue);
             }
         });
 

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorLight">
+
+        <LinearLayout
+            android:id="@+id/tab_vector_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/tab_vector_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_vector_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tab_label_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorHeight="0dp"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabMode="scrollable"
+                app:tabPaddingStart="4dp"
+                app:tabPaddingEnd="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+
+
+        <com.lqwawa.intleducation.base.CourseEmptyView
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:empty_text_remind="@string/label_empty_data"
+            app:empty_text_remind_visible="true"
+            app:empty_text_loading="@string/label_course_empty_info_2"
+            app:empty_text_loading_visible="false"
+            app:empty_icon_drawable="@drawable/ic_course_empty"
+            app:call_show="true"
+            android:visibility="gone">
+
+        </com.lqwawa.intleducation.base.CourseEmptyView>
+
+    </FrameLayout>
+
+</LinearLayout>
