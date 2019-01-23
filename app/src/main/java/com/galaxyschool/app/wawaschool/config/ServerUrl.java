@@ -1082,4 +1082,15 @@ public class ServerUrl {
      * 新增会员的极光设备ID
      */
     public static final String ADD_MEMBER_JREGIST_BASE_URL = BASE_SERVER + "NewApi/JPush/AddMemberJRegist";
+
+    /**
+     * 获取老师点评统计学生详情
+     */
+    public static final String GET_TEACHER_REVIEW_STATIS_BASE_URL = BASE_SERVER + "Api/Mobile/ST" +
+            "/CommitTask/GetTeacherReviewStatis";
+
+    /**
+     * 获取老师点评统计学生作业列表
+     */
+    public static final String GET_TEACHER_REVIEW_STATIS_LIST_BASE_URL = BASE_SERVER + "Api/Mobile/ST/CommitTask/GetTeacherReviewStatisList";
 }

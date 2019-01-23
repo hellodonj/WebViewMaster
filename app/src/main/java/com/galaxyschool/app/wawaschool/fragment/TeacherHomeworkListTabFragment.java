@@ -23,6 +23,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
+import com.galaxyschool.app.wawaschool.pojo.ReviewInfo;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
@@ -65,6 +66,8 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     private boolean isNeedToUpdateSmallRedPoint;
     private String[] childIdArray;//孩子Id数组
     private UserInfo userInfo;
+    private boolean isFromReviewStatistic;//来自点评统计
+    private ReviewInfo reviewInfo;
     public interface Constants {
         String EXTRA_SCHOOL_ID = "schoolId";
         String EXTRA_CLASS_ID = "classId";
@@ -112,6 +115,10 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                         .EXTRA_CHILD_ID_ARRAY);
             }
             userInfo = (UserInfo) getArguments().getSerializable(UserInfo.class.getSimpleName());
+            reviewInfo = (ReviewInfo) getArguments().getSerializable(ReviewInfo.class.getSimpleName());
+            if (reviewInfo != null){
+                isFromReviewStatistic = true;
+            }
         }
 
         //头布局
@@ -478,45 +485,50 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
      * 模拟数据
      */
     private void loadCommonData() {
-        Map<String, Object> params = new HashMap();
-        //学校Id，必填
-        params.put("SchoolId",schoolId);
-        //班级Id，必填
-        params.put("ClassId",classId);
-        //角色信息，必填，0-学生,1-家长，2-老师
-        int role= Utils.transferRoleType(roleType);
-        if (role!=-1){
-            params.put("RoleType",role);
-        }
+        Map<String, Object> params = new HashMap<>();
+        if (isFromReviewStatistic){
+            params.put("TaskIds", reviewInfo.getTaskIdStr());
+        } else {
+            //学校Id，必填
+            params.put("SchoolId", schoolId);
+            //班级Id，必填
+            params.put("ClassId", classId);
+            //角色信息，必填，0-学生,1-家长，2-老师
+            int role = Utils.transferRoleType(roleType);
+            if (role != -1) {
+                params.put("RoleType", role);
+            }
 //        //任务状态(0-未完成,1-已完成),学生，家长角色时必填。
 //        if (roleType==RoleType.ROLE_TYPE_STUDENT||roleType==RoleType.ROLE_TYPE_PARENT){
 //            //已完成
 //            params.put("TaskState", HomeworkMainFragment.FINISHED);
 //        }
-        //学生ID，非必填，学生、家长角色时必填
-        if (roleType==RoleType.ROLE_TYPE_STUDENT) {
-            params.put("StudentId", getMemeberId());
-        }else if (roleType==RoleType.ROLE_TYPE_PARENT){
-            //家长的话，必须要加载绑定的孩子。
-            if (childId!=null) {
-                params.put("StudentId", childId);
+            //学生ID，非必填，学生、家长角色时必填
+            if (roleType == RoleType.ROLE_TYPE_STUDENT) {
+                params.put("StudentId", getMemeberId());
+            } else if (roleType == RoleType.ROLE_TYPE_PARENT) {
+                //家长的话，必须要加载绑定的孩子。
+                if (childId != null) {
+                    params.put("StudentId", childId);
+                }
             }
-        }
 
-        //	若查询"今日作业"，传当前日期，格式:"yyyy-MM-dd" ，否则为空
-        params.put("SearchTime","");
-        //任务创建者的id,老师角色时必填
-        //目前要放开所有人的查看权限，该字段需要传空。
-        if (roleType == RoleType.ROLE_TYPE_TEACHER || roleType == RoleType.ROLE_TYPE_STUDENT
-                || roleType == RoleType.ROLE_TYPE_PARENT) {
-            params.put("TaskCreateId", "");
+            //	若查询"今日作业"，传当前日期，格式:"yyyy-MM-dd" ，否则为空
+            params.put("SearchTime", "");
+            //任务创建者的id,老师角色时必填
+            //目前要放开所有人的查看权限，该字段需要传空。
+            if (roleType == RoleType.ROLE_TYPE_TEACHER || roleType == RoleType.ROLE_TYPE_STUDENT
+                    || roleType == RoleType.ROLE_TYPE_PARENT) {
+                params.put("TaskCreateId", "");
+            }
+            params.put("Version", 1);
         }
         //分页信息
-        params.put("Pager",getPageHelper().getFetchingPagerArgs());
-        params.put("Version", 1);
+        params.put("Pager", getPageHelper().getFetchingPagerArgs());
 
         RequestHelper.sendPostRequest(getActivity(),
-                ServerUrl.GET_STUDENT_TASK_LIST_URL, params,
+                isFromReviewStatistic ? ServerUrl.GET_TEACHER_REVIEW_STATIS_LIST_BASE_URL :
+                        ServerUrl.GET_STUDENT_TASK_LIST_URL, params,
                 new DefaultPullToRefreshDataListener<HomeworkListResult>(
                         HomeworkListResult.class) {
                     @Override

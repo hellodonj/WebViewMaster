@@ -1754,4 +1754,7 @@
     <string name="str_completion_mode">完成方式:</string>
     <string name="str_task_type_combination">复述课件+语音评测</string>
     <string name="str_task_completion_tip">完成复述课件+语音评测，此任务才是完成。</string>
+    <string name="str_comment_statistic">点评统计</string>
+    <string name="str_already_comment">已点评(%d)</string>
+    <string name="str_unAlready_comment">未点评(%d)</string>
 </resources>

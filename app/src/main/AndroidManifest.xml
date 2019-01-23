@@ -1355,6 +1355,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity
+            android:name="com.galaxyschool.app.wawaschool.CommentStatisticActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1"/>
@@ -1624,6 +1631,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <action android:name="com.galaxyschool.app.wawaschool.OpenJPushClickActivity"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

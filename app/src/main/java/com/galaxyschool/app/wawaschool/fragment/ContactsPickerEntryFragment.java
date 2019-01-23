@@ -1029,6 +1029,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             //学程馆资源的id
                             thirdObject.put("ResCourseId",lookDto.getResCourseId());
                             thirdObject.put("ResPropType", lookDto.getResPropType());
+                            thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
                             thirdTaskList.put(thirdObject);
                         }
                     }
