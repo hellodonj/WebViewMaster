@@ -140,6 +140,11 @@ public class PenBaseConnectActivity extends BaseActivity implements ServiceConne
             }
 
             @Override
+            public void onMemorySizeCallBack(int i) throws RemoteException {
+
+            }
+
+            @Override
             public void onStateChanged(int i, String s) {
 
             }
@@ -156,6 +161,11 @@ public class PenBaseConnectActivity extends BaseActivity implements ServiceConne
 
             @Override
             public void onOffLineNoteSyncFinished(String s, byte[] bytes) {
+
+            }
+
+            @Override
+            public void onLargeOffLineNoteSyncFinished(String adressHead, String adressData) {
 
             }
 

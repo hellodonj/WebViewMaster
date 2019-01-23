@@ -148,6 +148,11 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
     }
 
     @Override
+    public void onLargeOffLineNoteSyncFinished(String adressHead, String adressData) {
+
+    }
+
+    @Override
     public void onRobotKeyEvent(int e) {
     }
 
@@ -262,6 +267,11 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
 
     @Override
     public void requetSleepTimeCallBack(int time) {
+
+    }
+
+    @Override
+    public void requetMemorySizeCallBack(int size) {
 
     }
 
