@@ -960,6 +960,50 @@ public class OnlineCourseHelper {
      * @param language 0 中文 1 英文
      * @param callback 回调对象
      */
+    public static void requestNewOnlineClassifyConfigData(int dataType,
+                                                          @LanguageType.LanguageRes int language,
+                                                          @NonNull DataSource.Callback<List<NewOnlineConfigEntity>> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("language",language);
+        requestVo.addParams("dataType",dataType);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetNewOnlineClassifyConfigDataUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(OnlineCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(OnlineCourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<NewOnlineConfigEntity>>> typeReference = new TypeReference<ResponseVo<List<NewOnlineConfigEntity>>>() {
+                };
+                ResponseVo<List<NewOnlineConfigEntity>> vo = JSON.parseObject(str, typeReference);
+                if (vo.isSucceed()) {
+                    List<NewOnlineConfigEntity> data = vo.getData();
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        callback.onDataLoaded(data);
+                    }
+                } else {
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        Factory.decodeRspCode(vo.getCode(), callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(OnlineCourseHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取新的在线学习的标签列表
+     * @param language 0 中文 1 英文
+     * @param callback 回调对象
+     */
     public static void requestNewOnlineStudyLabelData(@LanguageType.LanguageRes int language,
                                                       @NonNull DataSource.Callback<List<NewOnlineConfigEntity>> callback) {
         RequestVo requestVo = new RequestVo();

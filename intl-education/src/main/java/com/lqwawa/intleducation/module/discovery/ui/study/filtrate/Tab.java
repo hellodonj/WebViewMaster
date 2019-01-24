@@ -18,6 +18,7 @@ public class Tab {
     private int configType;
     private String configValue;
     private int id;
+    private int parentId;
     private int labelId;
     private String level;
     private boolean isAll;
@@ -49,6 +50,14 @@ public class Tab {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public int getLabelId() {
@@ -112,6 +121,7 @@ public class Tab {
         if (entity == null) throw new RuntimeException();
         Tab tab = new Tab();
         tab.id = entity.getId();
+        tab.parentId = entity.getParentId();
         tab.configType = entity.getConfigType();
         tab.configValue = entity.getConfigValue();
         tab.labelId = entity.getLabelId();

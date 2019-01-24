@@ -16,10 +16,14 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoratio
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
+import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicActivity;
@@ -34,6 +38,9 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.livelist.LiveListAc
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyType;
+import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity;
+import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateParams;
+import com.lqwawa.intleducation.module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
@@ -387,10 +394,30 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
     public void onClickTitleLayout(@NonNull int sort) {
         if(sort == OnlineStudyType.SORT_MINORITY_ONLINE_CLASS){
             // 点击名师课更多
-            UIUtil.showToastSafe("点击名师课更多");
+            // UIUtil.showToastSafe("点击名师课更多");
+            // 获取中英文数据
+            int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+            OnlineCourseHelper.requestNewOnlineClassifyConfigData(NewOnlineClassifyFiltrateActivity.DataType.MINORITY_LANGUAGE.getIndex(), languageRes, new DataSource.Callback<List<NewOnlineConfigEntity>>() {
+                @Override
+                public void onDataNotAvailable(int strRes) {
+                    UIUtil.showToastSafe(strRes);
+                }
+
+                @Override
+                public void onDataLoaded(List<NewOnlineConfigEntity> entities) {
+                    String configValue = UIUtil.getString(R.string.label_minority_language_holder_title);
+                    NewOnlineConfigEntity entity = new NewOnlineConfigEntity();
+                    entity.setConfigValue(configValue);
+                    entity.setId(NewOnlineStudyFiltrateActivity.MINORITY_LANGUGAE_ID);
+                    entity.setChildList(entities);
+                    NewOnlineStudyFiltrateParams params = new NewOnlineStudyFiltrateParams(entity.getConfigValue(),entity);
+                    NewOnlineStudyFiltrateActivity.show(getContext(),params);
+                }
+            });
         }else if(sort == OnlineStudyType.SORT_INTERNATIONAL_ONLINE_CLASS){
             // 点击名师课更多
-            UIUtil.showToastSafe("点击名师课更多");
+            // UIUtil.showToastSafe("点击名师课更多");
+            NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.INTERNATIONAL);
         }
     }
 

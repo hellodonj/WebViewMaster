@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +46,8 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
     private static final String KEY_EXTRA_PARENT_ID = "KEY_EXTRA_PARENT_ID";
     private static final String KEY_EXTRA_LEVEL = "KEY_EXTRA_LEVEL";
     private static final String KEY_EXTRA_CONFIG_VALUE = "KEY_EXTRA_CONFIG_VALUE";
+    private static final String KEY_EXTRA_KEY_STRING = "KEY_EXTRA_KEY_STRING";
+    private static final String KEY_VISITOR_SEARCH_MODE = "KEY_VISITOR_SEARCH_MODE";
 
     // 全部文本
     private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
@@ -66,6 +69,7 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
     private int mParentId;
     private String mLevel;
     private String mConfigValue;
+    private boolean mVisitorSearchMode;
     private List<LQCourseConfigEntity> mConfigEntities;
     // 筛选集合1
     private List<Tab> mFiltrateArray1;
@@ -97,7 +101,9 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
         mParentId = bundle.getInt(KEY_EXTRA_PARENT_ID);
         mLevel = bundle.getString(KEY_EXTRA_LEVEL);
         mConfigValue = bundle.getString(KEY_EXTRA_CONFIG_VALUE);
-        if(mParentId <= 0 || EmptyUtil.isEmpty(mConfigValue)) return false;
+        mSearchKey = bundle.getString(KEY_EXTRA_KEY_STRING,null);
+        mVisitorSearchMode = bundle.getBoolean(KEY_VISITOR_SEARCH_MODE);
+        if(EmptyUtil.isEmpty(mConfigValue)) return false;
         return super.initArgs(bundle);
     }
 
@@ -160,8 +166,16 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
         mFiltrateArray1 = new ArrayList<>();
         mFiltrateArray2 = new ArrayList<>();
         mFiltrateArray3 = new ArrayList<>();
-        // 获取标签数据
-        mPresenter.requestBasicConfigData(mParentId,1);
+
+        if(mVisitorSearchMode){
+            mHeaderLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+            requestCourseData(false);
+        }else{
+            // 获取标签数据
+            mHeaderLayout.setVisibility(View.VISIBLE);
+            mPresenter.requestBasicConfigData(mParentId,1);
+        }
     }
 
     @Override
@@ -482,7 +496,7 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
      * @param level 一级标签的Level
      * @param configValue 点击的标题
      */
-    public static void show(@NonNull Context context,int parentId,
+    public static void show(@NonNull Context context, int parentId,
                             @NonNull String level,
                             @NonNull String configValue){
         Intent intent = new Intent(context,LQBasicFiltrateActivity.class);
@@ -490,6 +504,28 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
         bundle.putInt(KEY_EXTRA_PARENT_ID,parentId);
         bundle.putString(KEY_EXTRA_LEVEL,level);
         bundle.putString(KEY_EXTRA_CONFIG_VALUE,configValue);
+        bundle.putBoolean(KEY_VISITOR_SEARCH_MODE,false);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 国家课程二级列表筛选页面的入口
+     * @param context 上下文对象
+     * @param level 一级标签的Level
+     * @param configValue 点击的标题
+     * @param keyString 搜索的字符串
+     */
+    public static void show(@NonNull Context context,
+                            @NonNull String level,
+                            @NonNull String configValue,
+                            @Nullable String keyString){
+        Intent intent = new Intent(context,LQBasicFiltrateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_EXTRA_LEVEL,level);
+        bundle.putString(KEY_EXTRA_CONFIG_VALUE,configValue);
+        bundle.putString(KEY_EXTRA_KEY_STRING,keyString);
+        bundle.putBoolean(KEY_VISITOR_SEARCH_MODE,true);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

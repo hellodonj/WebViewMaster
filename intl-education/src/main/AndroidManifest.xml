@@ -873,6 +873,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--小语种国际国家课程更多页面-->
+        <activity android:name=".module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

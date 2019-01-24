@@ -32,6 +32,8 @@ import com.lqwawa.intleducation.module.discovery.ui.ChildCourseListActivityEA;
 import com.lqwawa.intleducation.module.discovery.ui.ClassifyIndexActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.home.SearchParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
@@ -90,6 +92,8 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
     private static final String KEY_EXTRA_HOST_ENTER = "KEY_EXTRA_HOST_ENTER";
     // 讲授课堂搜索页面的关键参数
     private static final String KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS = "KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS";
+    // 国家课程搜索的参数
+    private static final String KEY_EXTRA_BASIC_COURSE_SEARCH_PARAMS = "KEY_EXTRA_BASIC_COURSE_SEARCH_PARAMS";
 
 
     // 搜索框
@@ -118,6 +122,9 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
 
     // 讲授课堂分类筛选的搜索页面
     private NewOnlineStudyFiltrateParams mFiltrateParams;
+
+    // 国家课程搜索的参数
+    private SearchParams mSearchParams;
 
     private boolean isOnlineSchoolEnter;
     // 是否是选择资源
@@ -152,6 +159,8 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
 
         if(bundle.containsKey(KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS))
         mFiltrateParams = (NewOnlineStudyFiltrateParams) bundle.getSerializable(KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS);
+        if(bundle.containsKey(KEY_EXTRA_BASIC_COURSE_SEARCH_PARAMS))
+        mSearchParams = (SearchParams) bundle.getSerializable(KEY_EXTRA_BASIC_COURSE_SEARCH_PARAMS);
 
         if(mSelectResource)
         mResourceData = (ShopResourceData) bundle.getSerializable(KEY_EXTRA_ORGAN_SHOP_RESOURCE_DATA);
@@ -202,6 +211,11 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
                     setResult(Activity.RESULT_OK,intent);
                     finish();
+                }else if(TextUtils.equals(mSortType,HideSortType.TYPE_BASIC_COURSE_SEARCH)){
+                    String level = mSearchParams.getLevel();
+                    String configValue = mSearchParams.getConfigValue();
+                    LQBasicFiltrateActivity.show(SearchActivity.this,level,key,key);
+                    finish();
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
                     // 班级课程搜索筛选
                     Intent intent = new Intent();
@@ -224,6 +238,11 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     // EventBus.getDefault().postSticky(new EventWrapper(key,EventConstant.TRIGGER_SEARCH_CALLBACK_EVENT));
                     finish();
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_BASIC_GRADE)){
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
+                }else if(TextUtils.equals(mSortType,HideSortType.TYPE_NEW_ONLINE_CLASS)){
                     Intent intent = new Intent();
                     intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
                     setResult(Activity.RESULT_OK,intent);
@@ -293,7 +312,17 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                             NewOnlineStudyFiltrateActivity.show(SearchActivity.this,mFiltrateParams);
                             // EventBus.getDefault().postSticky(new EventWrapper(key,EventConstant.TRIGGER_SEARCH_CALLBACK_EVENT));
                             finish();
+                        }else if(TextUtils.equals(mSortType,HideSortType.TYPE_BASIC_COURSE_SEARCH)){
+                            String level = mSearchParams.getLevel();
+                            String configValue = mSearchParams.getConfigValue();
+                            LQBasicFiltrateActivity.show(SearchActivity.this,level,keyString,keyString);
+                            finish();
                         }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_BASIC_GRADE)){
+                            Intent intent = new Intent();
+                            intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
+                            setResult(Activity.RESULT_OK,intent);
+                            finish();
+                        }else if(TextUtils.equals(mSortType,HideSortType.TYPE_NEW_ONLINE_CLASS)){
                             Intent intent = new Intent();
                             intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
                             setResult(Activity.RESULT_OK,intent);
@@ -358,7 +387,10 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
         }else if(view.getId() == R.id.tv_cancel) {
             List<Activity> listActivity = UIUtil.getListActivity();
             if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_NEW_SCHOOL_SHOP) ||
-                    TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
+                    TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE) ||
+                    TextUtils.equals(mSortType,HideSortType.TYPE_SORT_BASIC_GRADE) ||
+                    TextUtils.equals(mSortType,HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS) ||
+                    TextUtils.equals(mSortType,HideSortType.TYPE_NEW_ONLINE_CLASS)){
                 Intent intent = new Intent();
                 intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,"");
                 setResult(Activity.RESULT_OK,intent);
@@ -519,6 +551,24 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
         bundle.putSerializable(KEY_EXTRA_TEACH_ONLINE_CLASS_PARAMS,params);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,NewOnlineStudyFiltrateActivity.SEARCH_REQUEST_CODE);
+    }
+
+    /**
+     * 国家课程的搜索入口
+     *
+     * @param activity 上下文对象
+     * @param params 核心参数对象
+     */
+    public static void show(@NonNull Activity activity,
+                            @HideSortType.SortRes String sort,
+                            @NonNull SearchParams params){
+        Intent intent = new Intent(activity,SearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_EXTRA_SORT,sort);
+        bundle.putString(KEY_EXTRA_TITLE,params.getConfigValue());
+        bundle.putSerializable(KEY_EXTRA_BASIC_COURSE_SEARCH_PARAMS,params);
+        intent.putExtras(bundle);
+        activity.startActivity(intent);
     }
 
     /**

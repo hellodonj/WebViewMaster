@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.factory.data.entity.online.ParamResponseVo;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coin.donation.DonationCoinContract;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.home.SearchParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
@@ -34,6 +35,7 @@ import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyItemHolder;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyType;
 import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateParams;
+import com.lqwawa.intleducation.module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
@@ -222,7 +224,8 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     public void onClickTitleLayout(@NonNull int sort) {
         if(sort == OnlineStudyType.SORT_ONLINE_CLASS){
             // 点击名师课更多
-            UIUtil.showToastSafe("点击名师课更多");
+            // UIUtil.showToastSafe("点击名师课更多");
+            NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.BASIC_COURSE);
         }
     }
 
@@ -241,10 +244,13 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     public void onClick(View v) {
         int viewId = v.getId();
         if(viewId == R.id.search_layout){
-            ParamResponseVo.Param param = new ParamResponseVo.Param();
+            /*ParamResponseVo.Param param = new ParamResponseVo.Param();
             param.setName(UIUtil.getString(R.string.label_search_course_name_hint));
             NewOnlineStudyFiltrateParams params = new NewOnlineStudyFiltrateParams(param.getName(),param);
-            SearchActivity.show(getActivity(),HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS_SUPER,params);
+            SearchActivity.show(getActivity(),HideSortType.TYPE_SORT_TEACH_ONLINE_CLASS_SUPER,params);*/
+
+            SearchParams params = new SearchParams("2003",UIUtil.getString(R.string.label_search_course_name_hint));
+            SearchActivity.show(getActivity(),HideSortType.TYPE_BASIC_COURSE_SEARCH,params);
         }
     }
 }
