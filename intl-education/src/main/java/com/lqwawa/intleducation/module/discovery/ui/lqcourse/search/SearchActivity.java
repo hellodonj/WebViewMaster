@@ -223,6 +223,11 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     NewOnlineStudyFiltrateActivity.show(SearchActivity.this,mFiltrateParams);
                     // EventBus.getDefault().postSticky(new EventWrapper(key,EventConstant.TRIGGER_SEARCH_CALLBACK_EVENT));
                     finish();
+                }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_BASIC_GRADE)){
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
                 }
             }
         });
@@ -287,6 +292,11 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
 
                             NewOnlineStudyFiltrateActivity.show(SearchActivity.this,mFiltrateParams);
                             // EventBus.getDefault().postSticky(new EventWrapper(key,EventConstant.TRIGGER_SEARCH_CALLBACK_EVENT));
+                            finish();
+                        }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_BASIC_GRADE)){
+                            Intent intent = new Intent();
+                            intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
+                            setResult(Activity.RESULT_OK,intent);
                             finish();
                         }
                     }

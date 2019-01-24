@@ -76,6 +76,11 @@ public class PenServiceCallback extends cn.robotpen.pen.IRemoteRobotServiceCallb
 
     }
 
+    @Override
+    public void onRemoteLargeOffLineNoteSyncFinished(String s, String s1) throws RemoteException {
+
+    }
+
     public void onRemotePenServiceError(final String msg) throws RemoteException {
         try {
             this.b.post(new Runnable() {
@@ -213,6 +218,11 @@ public class PenServiceCallback extends cn.robotpen.pen.IRemoteRobotServiceCallb
 
     @Override
     public void onSleeptimeCallBack(int i) throws RemoteException {
+
+    }
+
+    @Override
+    public void onMemorySizeCallBack(int i) throws RemoteException {
 
     }
 

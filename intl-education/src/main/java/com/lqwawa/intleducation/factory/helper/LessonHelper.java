@@ -190,12 +190,16 @@ public class LessonHelper {
     /**
      * 获取章小节的学习任务列表
      * @param token 家长传孩子的token
+     * @param classId 如果是班级学程入口,并且是老师身份
      * @param courseId 课程Id
      * @param sectionId 小节Id
+     * @param role 1老师 2学生
      */
     public static void requestChapterStudyTask(@NonNull String token,
+                                               @Nullable String classId,
                                                @NonNull String courseId,
                                                @NonNull String sectionId,
+                                               int role,
                                                @NonNull DataSource.Callback<SectionDetailsVo> callback){
         RequestVo requestVo = new RequestVo();
         if(EmptyUtil.isNotEmpty(token)){
@@ -204,6 +208,10 @@ public class LessonHelper {
 
         requestVo.addParams("courseId",courseId);
         requestVo.addParams("sectionId",sectionId);
+        requestVo.addParams("role",role);
+        if(role == 1 && EmptyUtil.isNotEmpty(classId)){
+            requestVo.addParams("classId", classId);
+        }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.courseSectionDetail + requestVo.getParams());
         params.setConnectTimeout(10000);
 
