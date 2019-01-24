@@ -472,9 +472,9 @@ public class TaskRequirementFragment extends ContactsListFragment{
                 String completionModeString  = getString(R.string.str_completion_mode) + "\n" + getString(R.string.str_task_completion_tip);
                 completionModelView.setText(completionModeString);
                 completionModelView.setVisibility(View.VISIBLE);
-                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
+//                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
                     TipMsgHelper.ShowMsg(getActivity(), R.string.str_task_completion_tip);
-                }
+//                }
             }
             //任务要求
             contentTextView.setText(taskRequirements);
