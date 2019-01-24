@@ -1143,7 +1143,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
     @Override
     public void onMoreCourseResourceLoaded(List<CourseVo> courseVos) {
-        onMoreCourseResourceLoaded(courseVos);
+        onMoreCourseLoaded(courseVos);
     }
 
     @Override
