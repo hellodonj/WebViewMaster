@@ -37,6 +37,7 @@ import com.galaxyschool.app.wawaschool.fragment.contacts.ContactsPickerListener.
 import com.galaxyschool.app.wawaschool.fragment.contacts.ContactsPickerListener.GroupPickerListener;
 import com.galaxyschool.app.wawaschool.fragment.contacts.ContactsPickerListener.PersonalContactsPickerListener;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.lqbaselib.net.NetResultListener;
 import com.galaxyschool.app.wawaschool.net.course.UploadCourseManager;
@@ -1492,6 +1493,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         //布置完成刷新布置任务页面
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
                         finish();
                     } else {
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_error);

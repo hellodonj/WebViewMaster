@@ -348,7 +348,7 @@ public class WatchWawaCourseResourceSplicingUtils {
      * @param vo
      * @return
      */
-    private static ResourceInfoTag transferLQProgramData(SectionResListVo vo){
+    public static ResourceInfoTag transferLQProgramData(SectionResListVo vo){
         if (vo == null){
             return null;
         }

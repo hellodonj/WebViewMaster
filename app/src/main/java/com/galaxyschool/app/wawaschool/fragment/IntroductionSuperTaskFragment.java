@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,6 +43,7 @@ import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
+import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.LookResDto;
@@ -78,6 +80,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private TextView finishStudyTaskStatus;
     private TextView taskStartTimeTextV;//开始时间
     private RadioButton immediatelyRb;//立即发布
+    private RadioButton answerByTimeRb;//按时间作答
     private ConstraintLayout publishTimeAndTypeLayout;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private SlideListView listView;
@@ -109,7 +112,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private HomeworkListInfo selectHomeworkInfo;
     private boolean isHistoryClass;
     private String taskFileName;
-
+    private boolean isFromMoocIntroTask;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_introduction_super_task, null);
@@ -124,6 +127,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         loadData();
         registResultBroadcast();
         checkClassPlayEnd();
+        if (isFromMoocIntroTask){
+            notifyAdapterData();
+        }
     }
 
     private void loadData() {
@@ -182,10 +188,15 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
 //                }
             }
             isHistoryClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
+            isFromMoocIntroTask = getArguments().getBoolean("is_from_mooc_intro_task");
+            if (isFromMoocIntroTask){
+                uploadParameters = LqIntroTaskHelper.getInstance().getUploadParameters();
+            }
         }
         taskSortNum = getResources().getStringArray(R.array.str_array_task_num);
     }
 
+    @SuppressLint("WrongViewCast")
     private void initViews() {
         //左侧返回按钮
         ImageView imageView = (ImageView) findViewById(R.id.contacts_header_left_btn);
@@ -219,6 +230,17 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         superTaskHeaderLayout = (LinearLayout) findViewById(R.id.ll_task_detail);
         taskStartTimeTextV = (TextView) findViewById(R.id.tv_publish_start_time);
         immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
+        answerByTimeRb = (RadioButton) findViewById(R.id.rb_publish_according_time);
+        if (isFromMoocIntroTask){
+            boolean answerAtAnyTime = LqIntroTaskHelper.getInstance().getAnswerAtAnyTimeValue();
+            if (answerAtAnyTime){
+                immediatelyRb.setChecked(true);
+                answerByTimeRb.setChecked(false);
+            } else {
+                immediatelyRb.setChecked(false);
+                answerByTimeRb.setChecked(true);
+            }
+        }
         publishTimeAndTypeLayout = (ConstraintLayout) findViewById(R.id.ll_publish_time_and_type);
         if (isOnlineSuperTaskDetail) {
             superTaskHeaderLayout.setVisibility(View.VISIBLE);
@@ -727,6 +749,11 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             if (isPick) {
                 popStack();
             } else {
+                if (isFromMoocIntroTask){
+                    //同步更新数据
+                    LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
+                    LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
+                }
                 finish();
             }
         } else if (viewId == R.id.tv_bottom_confirm) {

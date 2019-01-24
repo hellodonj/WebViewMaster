@@ -1063,9 +1063,21 @@ public class ActivityUtils {
                                                        String title,
                                                        int type,
                                                        SchoolInfo schoolInfo,
-                                                       boolean isFromSuperTask) {
-        enterIntroductionCourseActivity(activity, title, type, schoolInfo, isFromSuperTask,
-                false, null, null, null);
+                                                       boolean isFromSuperTask,
+                                                       boolean isOnlineClass,
+                                                       String classId,
+                                                       String schoolId,
+                                                       UploadParameter uploadParameter) {
+        enterIntroductionCourseActivity(activity,
+                title,
+                type,
+                schoolInfo,
+                isFromSuperTask,
+                isOnlineClass,
+                classId,
+                schoolId,
+                uploadParameter,
+                false);
     }
 
     public static void enterIntroductionCourseActivity(Activity activity,
@@ -1076,7 +1088,8 @@ public class ActivityUtils {
                                                        boolean isOnlineClass,
                                                        String classId,
                                                        String schoolId,
-                                                       UploadParameter uploadParameter) {
+                                                       UploadParameter uploadParameter,
+                                                       boolean isFromMoocIntroTask) {
         if (activity == null) {
             return;
         }
@@ -1099,8 +1112,11 @@ public class ActivityUtils {
         if (uploadParameter != null) {
             intent.putExtra(UploadParameter.class.getSimpleName(), uploadParameter);
         }
+        intent.putExtra("is_from_mooc_intro_task",isFromMoocIntroTask);
         activity.startActivityForResult(intent, ActivityUtils.REQUEST_CODE_RETURN_REFRESH);
     }
+
+
 
 
     //未完成/已完成
