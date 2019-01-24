@@ -1031,6 +1031,9 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             thirdObject.put("ResCourseId",lookDto.getResCourseId());
                             thirdObject.put("ResPropType", lookDto.getResPropType());
                             thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
+                            if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                                thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                            }
                             thirdTaskList.put(thirdObject);
                         }
                     }
@@ -1464,6 +1467,10 @@ public class ContactsPickerEntryFragment extends BaseFragment
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
                     if (lookResDtos != null){
                         if (lookResDtos.size() == 1){
+                            String point = lookResDtos.get(0).getPoint();
+                            if (uploadParameter.NeedScore && !TextUtils.isEmpty(point)) {
+                                taskParams.put("ScoringRule", StudyTaskUtils.getScoringRule(point));
+                            }
                             //完成方式
                             taskParams.put("RepeatCourseCompletionMode",lookResDtos.get(0).getCompletionMode());
                         } else if (lookResDtos.size() > 1){

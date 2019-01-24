@@ -243,6 +243,9 @@ public class StudyTaskUtils {
                     thirdObject.put("ResCourseId", lookDto.getResCourseId());
                     thirdObject.put("ResPropType", lookDto.getResPropType());
                     thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
+                    if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                        thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                    }
                     jsonArray.put(thirdObject);
                 }
                 taskParams.put("TSDXResList", jsonArray);
@@ -396,6 +399,18 @@ public class StudyTaskUtils {
             thumbnail = thumbnail.replace(flag,"_split/1.jpg");
         }
         return thumbnail;
+    }
+
+    public static int getScoringRule(String point){
+        int scoringRule = 2;//默认的百分制
+        if (TextUtils.equals(point,"120")){
+            scoringRule = 3;
+        } else if (TextUtils.equals(point,"150")){
+            scoringRule = 4;
+        } else if (TextUtils.equals(point,"300")){
+            scoringRule = 5;
+        }
+        return scoringRule;
     }
 
 }

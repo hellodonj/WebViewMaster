@@ -93,8 +93,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.courseImageView.setImageResource(R.drawable.add_course_icon);
             holder.evalTextView.setVisibility(View.GONE);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-                holder.rightLayout.setVisibility(View.INVISIBLE);
-                holder.completeType.setVisibility(View.INVISIBLE);
+                holder.rightLayout.setVisibility(View.GONE);
+                holder.completeType.setVisibility(View.GONE);
             }
         } else {
             holder.deleteImage.setVisibility(View.VISIBLE);
@@ -106,10 +106,10 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
             } else if (!TextUtils.isEmpty(info.getPoint())) {
                 holder.evalTextView.setVisibility(View.VISIBLE);
-                holder.multiTypeBtnRB.setVisibility(View.INVISIBLE);
+                holder.multiTypeBtnRB.setVisibility(View.GONE);
             } else {
                 holder.evalTextView.setVisibility(View.GONE);
-                holder.multiTypeBtnRB.setVisibility(View.INVISIBLE);
+                holder.multiTypeBtnRB.setVisibility(View.GONE);
             }
 
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {

@@ -29,7 +29,7 @@
             android:textSize="14sp"/>
     </LinearLayout>
 
-    <include
-        layout="@layout/common_grid_view_without_pull_to_refresh_layout"/>
+    <include layout="@layout/common_grid_view_without_pull_to_refresh_layout"/>
 
+    <include layout="@layout/task_common_grid_view"/>
 </LinearLayout>
