@@ -165,6 +165,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     //看课件支持多任务
     private View courseLayout;
     private GridView courseGridView;//课件列表
+    private GridView listenGridView;
     private WatchWawaCourseListAdapter courseListAdapter;
     private List<ResourceInfoTag> resourceInfoTagList = new ArrayList<>();
     private ImageView addCoursewareImageView;
@@ -177,7 +178,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private View mSelectMark;
     private RadioButton immediatelyRb;//立即发布
     private LinearLayout publishTimeAndTypeLayout;
-
     private int currentStudyType;//空中课堂学习类型
     private Emcee onlineRes;
     private List<ShortSchoolClassInfo> schoolClassInfos;
@@ -200,6 +200,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private boolean needScore = false;
     private LinearLayout llMark;
     private boolean multipleDoTask;//任务多选
+
     public interface EditType {
         int titleType = 0;
         int contentType = 1;
@@ -483,24 +484,30 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else {
             titleTextView.setText(getString(R.string.appoint_course_point));
         }
-        MyGridView listenGridView = (MyGridView) listenLayout.findViewById(R.id.common_grid_view);
-        listenGridView.setNumColumns(4);
-        listenGridView.setVerticalSpacing(20);
-        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE){
+
+        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            findViewById(R.id.common_grid_view).setVisibility(View.GONE);
+            listenGridView = (GridView) listenLayout.findViewById(R.id.gv_task);
+            listenGridView.setVisibility(View.VISIBLE);
             listenGridView.setNumColumns(1);
             //设置分割线
-            listenGridView.setVerticalSpacing(DisplayUtil.dip2px(getActivity(),1));
-            listenGridView.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_gray));
+            listenGridView.setVerticalSpacing(DisplayUtil.dip2px(getActivity(), 1));
+            listenGridView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.light_gray));
+        } else {
+            listenGridView = (GridView) listenLayout.findViewById(R.id.common_grid_view);
+            listenGridView.setNumColumns(4);
+            listenGridView.setVerticalSpacing(20);
         }
         if (listenData.size() == 0) {
             listenData.add(new ResourceInfoTag());
         }
         listenAdapter = new ListenReadAndWriteCourseAdapter(getActivity(),
-                listenData, superTaskType,result -> {
+                listenData, superTaskType, result -> {
             //删除
             int position = (int) result;
             listenData.remove(position);
             listenAdapter.notifyDataSetChanged();
+            updateGridViewHeight();
             boolean flag = showScoreView(true);
             updateScoreView(flag ? View.GONE : View.VISIBLE);
         }, result -> {
@@ -520,18 +527,18 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             readWriteData.add(new ResourceInfoTag());
         }
         readAndWriteAdapter = new ListenReadAndWriteCourseAdapter(getActivity(), readWriteData, superTaskType,
-               result -> {
-                   int position = (int) result;
-                   readWriteData.remove(position);
-                   readAndWriteAdapter.notifyDataSetChanged();
-                   boolean flag = showScoreView(false);
-                   updateScoreView(flag ? View.GONE : View.VISIBLE);
-                   if (hasPointData()) {
-                       mSelectMark.setVisibility(View.GONE);
-                   } else {
-                       mSelectMark.setVisibility(View.VISIBLE);
-                   }
-               },result -> {
+                result -> {
+                    int position = (int) result;
+                    readWriteData.remove(position);
+                    readAndWriteAdapter.notifyDataSetChanged();
+                    boolean flag = showScoreView(false);
+                    updateScoreView(flag ? View.GONE : View.VISIBLE);
+                    if (hasPointData()) {
+                        mSelectMark.setVisibility(View.GONE);
+                    } else {
+                        mSelectMark.setVisibility(View.VISIBLE);
+                    }
+                }, result -> {
             //打开
             int position = (int) result;
             openReadAndWriteData(readAndWriteAdapter.getItem(position));
@@ -549,7 +556,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
     }
 
-    private void openListenData(ResourceInfoTag info){
+    private void openListenData(ResourceInfoTag info) {
         if (TextUtils.isEmpty(info.getResId())) {
             //添加资源
             getEditContent();
@@ -571,7 +578,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
     }
 
-    private void openReadAndWriteData(ResourceInfoTag info){
+    private void openReadAndWriteData(ResourceInfoTag info) {
         if (TextUtils.isEmpty(info.getResId())) {
             //添加资源
             getEditContent();
@@ -1510,6 +1517,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
         if (listenAdapter != null) {
             listenAdapter.notifyDataSetChanged();
+            updateGridViewHeight();
         }
     }
 
@@ -2456,11 +2464,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 int taskType = uploadParameter.getTaskType();
                 if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
-                    if (lookResDtos != null){
-                        if (lookResDtos.size() == 1){
+                    if (lookResDtos != null) {
+                        if (lookResDtos.size() == 1) {
                             //完成方式
-                            taskParams.put("RepeatCourseCompletionMode",lookResDtos.get(0).getCompletionMode());
-                        } else if (lookResDtos.size() > 1){
+                            taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                        } else if (lookResDtos.size() > 1) {
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
                             } else {
@@ -2734,5 +2742,27 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         };
         listener.setShowLoading(true);
         RequestHelper.postRequest(getActivity(), ServerUrl.GET_LISTEN_READANDWRITE_AIRCLASS_TASK_BASE_URL, taskParams.toString(), listener);
+    }
+
+    public void updateGridViewHeight() {
+        if (listenGridView == null) {
+            return;
+        }
+        if (superTaskType != StudyTaskType.RETELL_WAWA_COURSE) {
+            return;
+        }
+        ListAdapter listAdapter = listenGridView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
+            View listItem = listAdapter.getView(i, null, listenGridView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listenGridView.getLayoutParams();
+        params.height = totalHeight;
+        listenGridView.setLayoutParams(params);
     }
 }
