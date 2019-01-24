@@ -1242,6 +1242,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             thirdObject.put("ResCourseId", lookDto.getResCourseId());
                             thirdObject.put("ResPropType", lookDto.getResPropType());
                             thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
+                            if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                                thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                            }
                             thirdTaskList.put(thirdObject);
                         }
                     }
