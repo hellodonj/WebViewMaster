@@ -221,7 +221,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("courseId", mChapterVo.getCourseId());
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
-        requestVo.addParams("sectionId", 1);
+        requestVo.addParams("role", 1);
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.courseSectionDetail + requestVo.getParams());
         params.setConnectTimeout(10000);
