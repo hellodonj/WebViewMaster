@@ -158,6 +158,11 @@ public class LiveResListFragment extends MyBaseFragment {
                         }
                     }
                 }
+
+                @Override
+                public void onItemChoice(int position, View convertView) {
+
+                }
             });
         } else if (!needFlag) {
             listView.setVisibility(View.GONE);

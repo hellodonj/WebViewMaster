@@ -45,12 +45,14 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.MinorityLanguageHolder;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -112,6 +114,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private LinearLayout mBottomLayout;
     private Button mAddSubject;
+    private LinearLayout mBottomActionLayout;
+    private Button mWorkCart,mAddCourse;
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
@@ -208,9 +212,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             public void onClick(View v) {
                 // 返回
                 if(!mResourceFlag){
-                    if(mClassCourseParams.isHeadMaster() && holdState == true){
-                        switchHoldState(false);
-                    }else{
+                    // 弹窗是否取消作业库的发布
+                    boolean haveResource = cancelPublishWorkCart();
+                    if(!haveResource){
+                        // 没有资源,直接finish
                         finish();
                     }
                 }else{
@@ -274,6 +279,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
+        mWorkCart = (Button) findViewById(R.id.btn_work_cart);
+        mAddCourse = (Button) findViewById(R.id.btn_add_course);
+        mWorkCart.setOnClickListener(this);
+        mAddCourse.setOnClickListener(this);
+
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         this.isTeacher = isTeacher;
@@ -282,6 +292,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTvAction.setText(R.string.label_add_course_lines);
             mTvAction.setOnClickListener(this);
             mTvAction.setVisibility(View.VISIBLE);
+            mAddCourse.setVisibility(View.VISIBLE);
+            mAddCourse.setText(R.string.label_add_course);
             /*mTopBar.setRightFunctionText1(R.string.label_add_course,view->{
                 switchHoldState(false);
                 addCourseToClass();
@@ -293,6 +305,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTvAction.setText(R.string.label_request_authorization_lines);
             mTvAction.setOnClickListener(this);
             mTvAction.setVisibility(View.VISIBLE);
+            mAddCourse.setVisibility(View.VISIBLE);
+            mAddCourse.setText(R.string.label_request_authorization);
             /*mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -307,6 +321,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             });*/
         }
 
+        mTvAction.setVisibility(View.GONE);
+
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
             // 搜索
             SearchActivity.show(
@@ -317,11 +333,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         });
 
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
+        mBottomActionLayout = (LinearLayout) findViewById(R.id.bottom_action_layout);
 
         if(mResourceFlag){
             mHeaderLayout.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.VISIBLE);
+            mBottomActionLayout.setVisibility(View.GONE);
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+        }else{
+            mBottomLayout.setVisibility(View.GONE);
+            mBottomActionLayout.setVisibility(View.VISIBLE);
         }
 
         mAddSubject = (Button) findViewById(R.id.btn_add_subject);
@@ -1143,7 +1164,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mSearchContent.getText().clear();
         }else if(viewId == R.id.et_search){
             // 点击搜索框
-        }else if(viewId == R.id.tv_action){
+        }else if(viewId == R.id.tv_action || viewId == R.id.btn_add_course){
             boolean isTeacher = UserHelper.isTeacher(mRoles);
             if(!mResourceFlag && isTeacher){
                 // 只有老师才显示添加学程
@@ -1159,6 +1180,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     return;
                 }
                 requestAuthorizedPermission(isExist);
+            }
+        }else if(viewId == R.id.btn_work_cart){
+            // 点击作业库
+            if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this,mSchoolId,mClassId);
             }
         }else if(viewId == R.id.btn_add_subject){
             // 点击确定
@@ -1265,11 +1291,47 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     @Override
     public void onBackPressed() {
         // 返回
-        if(mClassCourseParams.isHeadMaster() && holdState == true){
-            switchHoldState(false);
+        if(!mResourceFlag){
+            if(mClassCourseParams.isHeadMaster() && holdState == true){
+                switchHoldState(false);
+            }else{
+                boolean haveResource = cancelPublishWorkCart();
+                if(!haveResource){
+                    finish();
+                }
+            }
         }else{
             finish();
         }
+    }
+
+    /**
+     * 取消发布作业库
+     */
+    private boolean cancelPublishWorkCart() {
+        if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+            int taskCount = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            if(taskCount > 0){
+                WorkCartDialogFragment fragment = new WorkCartDialogFragment();
+                fragment.setCallback(new WorkCartDialogFragment.ActionCallback() {
+                    @Override
+                    public void onConfirm() {
+                        if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                            TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId);
+                            fragment.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        finish();
+                    }
+                });
+                fragment.show(getSupportFragmentManager(),WorkCartDialogFragment.class.getSimpleName());
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -50,6 +50,7 @@ import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqresviewlib.LqResViewHelper;
 import com.oosic.apps.iemaker.base.slide_audio.AudioRecorder;
@@ -71,7 +72,9 @@ import java.util.List;
  * @history v1.0
  * **********************************
  */
-public class LessonSourceFragment extends IBaseFragment{
+public class LessonSourceFragment extends IBaseFragment implements LessonSourceNavigator{
+    // 选择资源支持的最大数
+    private static final int MAX_CHOICE_COUNT = 5;
 
     private static final String KEY_EXTRA_NEED_FLAG = "KEY_EXTRA_NEED_FLAG";
     private static final String KEY_EXTRA_CAN_READ = "KEY_EXTRA_CAN_READ";
@@ -100,7 +103,7 @@ public class LessonSourceFragment extends IBaseFragment{
     private LessonSourceParams mSourceParams;
     private ReadWeikeHelper mReadWeikeHelper;
 
-    public static Fragment newInstance(boolean needFlag,
+    public static LessonSourceFragment newInstance(boolean needFlag,
                                        boolean canEdit,
                                        boolean canRead,
                                        boolean isOnlineTeacher,
@@ -108,7 +111,7 @@ public class LessonSourceFragment extends IBaseFragment{
                                        @NonNull String sectionId,
                                        int taskType,
                                        @NonNull LessonSourceParams params){
-        Fragment fragment = new LessonSourceFragment();
+        LessonSourceFragment fragment = new LessonSourceFragment();
         Bundle arguments = new Bundle();
         arguments.putBoolean(KEY_EXTRA_NEED_FLAG,needFlag);
         arguments.putBoolean(KEY_EXTRA_CAN_EDIT,canEdit);
@@ -251,6 +254,25 @@ public class LessonSourceFragment extends IBaseFragment{
                         }*/
                     }
                 }
+
+                @Override
+                public void onItemChoice(int position, View convertView) {
+                    SectionResListVo item = (SectionResListVo) mCourseResListAdapter.getItem(position);
+                    if(item.isIsShield()){
+                        UIUtil.showToastSafe(R.string.res_has_shield);
+                        return;
+                    }
+
+                    // 判断是否已经超过五个选择了
+                    int count = takeChoiceResourceCount();
+                    if(count >= MAX_CHOICE_COUNT){
+                        UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
+                        return;
+                    }
+
+                    item.setActivated(!item.isActivated());
+                    mCourseResListAdapter.notifyDataSetChanged();
+                }
             });
         } else if (!needFlag) {
             // needFlag 是否标记已读的字段
@@ -263,6 +285,51 @@ public class LessonSourceFragment extends IBaseFragment{
     public void onResume() {
         super.onResume();
         getData();
+    }
+
+    @Override
+    public void triggerChoice(boolean open) {
+        if(EmptyUtil.isNotEmpty(mCourseResListAdapter)){
+            mCourseResListAdapter.triggerChoiceMode(open);
+        }
+    }
+
+    /**
+     * 获取已经选择的资源个数
+     * @return
+     */
+    private int takeChoiceResourceCount(){
+        List<SectionResListVo> choiceArray = takeChoiceResource();
+        int count = choiceArray.size();
+        choiceArray.clear();
+        return count;
+    }
+
+    @Override
+    public List<SectionResListVo> takeChoiceResource() {
+        List<SectionResListVo> data =mCourseResListAdapter.getData();
+        List<SectionResListVo> choiceArray = new ArrayList<>();
+        if(EmptyUtil.isNotEmpty(data)){
+            for (SectionResListVo vo:data) {
+                if(vo.isActivated()){
+                    choiceArray.add(vo);
+                }
+            }
+        }
+
+        return choiceArray;
+    }
+
+    @Override
+    public void clearAllResourceState() {
+        List<SectionResListVo> data = mCourseResListAdapter.getData();
+        if(EmptyUtil.isNotEmpty(data)){
+            for (SectionResListVo vo:data) {
+                vo.setActivated(false);
+            }
+        }
+
+        mCourseResListAdapter.notifyDataSetChanged();
     }
 
     private void getData() {

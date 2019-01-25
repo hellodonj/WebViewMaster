@@ -134,8 +134,8 @@
                 android:layout_height="40dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_need_to_commit"
-                android:layout_marginRight="10dp"
                 android:visibility="gone"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="right|center_vertical"/>
 
             <CheckBox
@@ -143,7 +143,6 @@
                 android:visibility="gone"
                 android:clickable="false"
                 android:button="@drawable/com_checkbox_ll"
-                android:layout_marginRight="10dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

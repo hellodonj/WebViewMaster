@@ -51,6 +51,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
     private boolean isLQCourse;
     private boolean lessonDetail;
+    private boolean mChoiceMode;
 
     public CourseResListAdapter(Activity activity, boolean needFlagRead,boolean lessonDetail){
         this(activity,needFlagRead);
@@ -289,8 +290,13 @@ public class CourseResListAdapter extends MyBaseAdapter {
             }
 
             holder.resNameTv.setText(("" + vo.getName()).trim());
-            holder.checkbox.setVisibility(isCourseSelect ? View.VISIBLE : View.GONE);
-            holder.checkbox.setChecked(vo.isChecked());
+            if(mChoiceMode){
+                holder.checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
+                holder.checkbox.setActivated(vo.isActivated());
+            }else{
+                holder.checkbox.setVisibility(isCourseSelect? View.VISIBLE : View.GONE);
+                holder.checkbox.setChecked(vo.isChecked());
+            }
 
             if(isCourseSelect){
                 holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
@@ -366,7 +372,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.mTvAutoMask.setVisibility(View.GONE);
         }
 
-        if(lessonDetail){
+        if(lessonDetail && !mChoiceMode){
             int taskType = vo.getTaskType();
             if(taskType == 1){
                 // 看课件
@@ -396,24 +402,30 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
         @Override
         public void onClick(View view) {
-            if (onItemClickListener != null){
-                onItemClickListener.onItemClick(position,_convertView);
-            }
-            //课件选取
-            if (isCourseSelect) {
-                if (maxSelect == 1) {//单选模式
-                    if(EmptyUtil.isNotEmpty(mSelectListener)){
-                        boolean onSelect = mSelectListener.onSelect(vo);
-                        if(!onSelect){
-                            vo.setChecked(!vo.isChecked());
-                            notifyDataSetChanged();
-                            if (vo.isChecked()) {
-                                RefreshUtil.getInstance().addId(vo.getId());
-                            } else {
-                                RefreshUtil.getInstance().removeId(vo.getId());
+            if(mChoiceMode){
+                // 回调出去
+                if (onItemClickListener != null){
+                    onItemClickListener.onItemChoice(position,_convertView);
+                }
+            }else{
+                if (onItemClickListener != null){
+                    onItemClickListener.onItemClick(position,_convertView);
+                }
+                //课件选取
+                if (isCourseSelect) {
+                    if (maxSelect == 1) {//单选模式
+                        if(EmptyUtil.isNotEmpty(mSelectListener)){
+                            boolean onSelect = mSelectListener.onSelect(vo);
+                            if(!onSelect){
+                                vo.setChecked(!vo.isChecked());
+                                notifyDataSetChanged();
+                                if (vo.isChecked()) {
+                                    RefreshUtil.getInstance().addId(vo.getId());
+                                } else {
+                                    RefreshUtil.getInstance().removeId(vo.getId());
+                                }
                             }
                         }
-                    }
                             /*for (int i = 0; i < list.size(); i++) {
                                 SectionResListVo sectionResListVo = list.get(i);
                                 if (sectionResListVo.isChecked() && !TextUtils.equals(vo.getId(),sectionResListVo.getId())) {
@@ -430,24 +442,24 @@ public class CourseResListAdapter extends MyBaseAdapter {
                             }*/
 
 
-                } else {//多选模式
-                    if(EmptyUtil.isNotEmpty(mSelectListener)){
-                        boolean onSelect = mSelectListener.onSelect(vo);
-                        if(!onSelect){
-                            vo.setChecked(!vo.isChecked());
-                            notifyDataSetChanged();
-                            if (vo.isChecked()) {
-                                selectCount++;
-                                RefreshUtil.getInstance().addId(vo.getId());
-                            } else {
-                                selectCount--;
-                                RefreshUtil.getInstance().removeId(vo.getId());
+                    } else {//多选模式
+                        if(EmptyUtil.isNotEmpty(mSelectListener)){
+                            boolean onSelect = mSelectListener.onSelect(vo);
+                            if(!onSelect){
+                                vo.setChecked(!vo.isChecked());
+                                notifyDataSetChanged();
+                                if (vo.isChecked()) {
+                                    selectCount++;
+                                    RefreshUtil.getInstance().addId(vo.getId());
+                                } else {
+                                    selectCount--;
+                                    RefreshUtil.getInstance().removeId(vo.getId());
+                                }
+                            }else{
+                                ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
+                                notifyDataSetChanged();
                             }
-                        }else{
-                            ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
-                            notifyDataSetChanged();
                         }
-                    }
                             /*if (selectCount < maxSelect || RefreshUtil.getInstance().contains(vo.getId())) {
                                 vo.setChecked(!vo.isChecked());
                                 notifyDataSetChanged();
@@ -462,9 +474,11 @@ public class CourseResListAdapter extends MyBaseAdapter {
                             } else {
                                 ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
                             }*/
-                }
+                    }
 
+                }
             }
+
         }
     }
 
@@ -530,6 +544,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
     public interface OnItemClickListener{
         void onItemClick(int position, View convertView);
+        void onItemChoice(int position,View convertView);
     }
 
     /**
@@ -548,6 +563,14 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
     public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener){
         this.mSelectListener = listener;
+    }
+
+    /**
+     * 打开
+     */
+    public void triggerChoiceMode(boolean open){
+        mChoiceMode = open;
+        notifyDataSetChanged();
     }
 
     /**

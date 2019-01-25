@@ -63,6 +63,9 @@ public class SectionResListVo extends BaseVo {
 
     private SectionTaskOriginVo sectionTaskOriginVo;
 
+    // 是否作业库选中
+    private boolean activated;
+
 
     public String getTaskId() {
         return taskId;
@@ -279,6 +282,14 @@ public class SectionResListVo extends BaseVo {
 
     public void setResProperties(String resProperties) {
         this.resProperties = resProperties;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     /**

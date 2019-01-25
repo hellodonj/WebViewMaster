@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.support.annotation.NonNull;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -30,6 +31,7 @@ import org.xutils.x;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +43,20 @@ public class TaskSliderHelper {
     protected static ProgressDialog progressDialog;
     public static OnTaskSliderListener onTaskSliderListener = null;
     private static OnCommitTaskListener onCommitTaskListener = null;
+    public static OnWorkCartListener onWorkCartListener = null;
+
+    public interface OnWorkCartListener{
+        // 添加到任务库
+        void putResourceToCart(@NonNull ArrayList<SectionResListVo> choiceArray, int taskType);
+        // 清除所有任务库的资源内容
+        void clearCartResource();
+        // 获取任务库的资源数目
+        int takeTaskCount();
+        // 跳转综合任务
+        void enterIntroTaskDetailActivity(@NonNull Activity activity,
+                                          @NonNull String schoolId,
+                                          @NonNull String classId);
+    }
 
     public interface OnTaskSliderListener {
         void doExamTask(Activity activity, String resId, int sourceType);

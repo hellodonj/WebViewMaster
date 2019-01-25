@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.duowan.mobile.netroid.Listener;
@@ -27,6 +28,7 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CheckMarkFragment;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkResult;
@@ -78,6 +80,7 @@ public class MOOCHelper {
 
     public static void init(UserInfo userInfo) {
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
+        TaskSliderHelper.onWorkCartListener = onWorkCartListener;
         UserInfoVo userInfoVo = new UserInfoVo();
         userInfoVo.setUserId(userInfo.getMemberId());
         userInfoVo.setAccount(userInfo.getNickName());
@@ -108,6 +111,29 @@ public class MOOCHelper {
         }
         return schoolIds;
     }
+
+    private static TaskSliderHelper.OnWorkCartListener onWorkCartListener
+            = new TaskSliderHelper.OnWorkCartListener() {
+        @Override
+        public void putResourceToCart(@NonNull ArrayList<SectionResListVo> choiceArray, int taskType) {
+            LqIntroTaskHelper.getInstance().addTask(choiceArray,taskType);
+        }
+
+        @Override
+        public void clearCartResource() {
+            LqIntroTaskHelper.getInstance().clearTaskList();
+        }
+
+        @Override
+        public int takeTaskCount() {
+            return LqIntroTaskHelper.getInstance().getTaskCount();
+        }
+
+        @Override
+        public void enterIntroTaskDetailActivity(@NonNull Activity activity, @NonNull String schoolId, @NonNull String classId) {
+            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity,schoolId,classId);
+        }
+    };
 
     private static TaskSliderHelper.OnTaskSliderListener onTaskSliderListener
             = new TaskSliderHelper.OnTaskSliderListener() {

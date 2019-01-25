@@ -323,6 +323,12 @@
     <string name="label_all_the_arrangement">【全部布置】</string>
     <string name="label_statistical_learning">学习统计</string>
     <string name="label_course_statistics">课程统计</string>
+    <string name="label_work_cart">作业库</string>
+    <string name="label_action_to_cart">添加到作业库</string>
+    <string name="label_work_cart_max_count_tip">任务添加不能超过6个!</string>
+    <string name="label_dialog_cart_left">不发布,清空</string>
+    <string name="label_dialog_cart_right">现在去发布</string>
+    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级学程，将清空作业库，现在去发布吗？</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>
