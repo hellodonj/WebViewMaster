@@ -797,5 +797,13 @@ public final class AppConfig {
         // 获取小语种，国际，国家课程名师课的标签数据
         public static final String GetNewOnlineClassifyConfigDataUrl = ServerBase +
                 "api/config/getZxCourseConfigList?j=";
+
+        // 获取班级学习统计列表
+        public static final String GetLearningStatisticsUserArrayUrl = ServerBase +
+                "api/study/courseStatisticsUserList?j=";
+
+        // 获取班级课程统计列表
+        public static final String GetCourseStatisticsUserArrayUrl = ServerBase +
+                "api/study/courseStatistics?j=";
     }
 }

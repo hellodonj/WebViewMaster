@@ -14,5 +14,6 @@
     <string name="title_my_timetable">My Timetable</string>
     <string name="title_subject_setting">Subject Setting</string>
     <string name="title_donation_coin">Deliver WaWacoins</string>
+    <string name="title_learning_statistics">学习统计</string>
 
 </resources>

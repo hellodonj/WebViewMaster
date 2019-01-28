@@ -878,6 +878,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--课程统计页面-->
+        <activity android:name=".module.discovery.ui.classcourse.statistics.course.CourseStatisticsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--学习统计页面-->
+        <activity android:name=".module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

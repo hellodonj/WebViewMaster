@@ -31,6 +31,9 @@ import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseIntroduceAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.course.CourseStatisticsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.course.CourseStatisticsParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
@@ -170,12 +173,19 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        if(viewId == R.id.btn_statistical_learning){
+        if(view.getId() == R.id.btn_statistical_learning){
             // 学习统计
-            UIUtil.showToastSafe("学习统计");
-        }else if(viewId == R.id.btn_course_statistics){
+            // UIUtil.showToastSafe("学习统计");
+            CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
+            String classId = mCourseDetailParams.getClassId();
+            LearningStatisticsActivity.show(getActivity(),classId,mCourseId,0);
+        }else if(view.getId() == R.id.btn_course_statistics){
             // 课程统计
-            UIUtil.showToastSafe("课程统计");
+            // UIUtil.showToastSafe("课程统计");
+            CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
+            String classId = mCourseDetailParams.getClassId();
+            CourseStatisticsParams params = new CourseStatisticsParams(classId,mCourseId,courseVo.getName());
+            CourseStatisticsActivity.show(getActivity(),params);
         }
     }
 

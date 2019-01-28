@@ -24,6 +24,8 @@ import com.lqwawa.intleducation.factory.data.entity.ClassNotificationEntity;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQTeacherEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseStatisticsEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.LearningProgressEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
@@ -1197,6 +1199,96 @@ public class OnlineCourseHelper {
                 } else {
                     if (!EmptyUtil.isEmpty(callback)) {
                         Factory.decodeRspCode(code, callback);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(OnlineCourseHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 查看一个课程的班级内学生课程进度
+     * @param classId 班级Id
+     * @param type 0 查询所有 1 全部完成 2 完成80-99% 3 完成 60-79% 4完成60%以下
+     * @param callback 回调对象
+     */
+    public static void requestLearningStatisticsData(@NonNull String classId,
+                                                     @NonNull String courseId,
+                                                     int type,
+                                                     @NonNull DataSource.Callback<List<LearningProgressEntity>> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("type", type);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetLearningStatisticsUserArrayUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(OnlineCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(OnlineCourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<LearningProgressEntity>>> typeReference = new TypeReference<ResponseVo<List<LearningProgressEntity>>>() {};
+                ResponseVo<List<LearningProgressEntity>> vo = JSON.parseObject(str, typeReference);
+                if (vo.isSucceed()) {
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        callback.onDataLoaded(vo.getData());
+                    }
+                } else {
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        Factory.decodeRspCode(vo.getCode(), callback);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(OnlineCourseHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 查看一个课程的班级内学生课程进度
+     * @param classId 班级Id
+     * @param callback 回调对象
+     */
+    public static void requestCourseStatisticsData(@NonNull String classId,
+                                                   @NonNull String courseId,
+                                                   @NonNull DataSource.Callback<List<CourseStatisticsEntity>> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetCourseStatisticsUserArrayUrl + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(OnlineCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(OnlineCourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<CourseStatisticsEntity>>> typeReference = new TypeReference<ResponseVo<List<CourseStatisticsEntity>>>() {};
+                ResponseVo<List<CourseStatisticsEntity>> vo = JSON.parseObject(str, typeReference);
+                if (vo.isSucceed()) {
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        callback.onDataLoaded(vo.getData());
+                    }
+                } else {
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        Factory.decodeRspCode(vo.getCode(), callback);
                     }
                 }
 

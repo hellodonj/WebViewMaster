@@ -59,6 +59,12 @@
     <color name="basics_type_color_3">#5496D5</color>
     <color name="basics_type_color_4">#EB9279</color>
 
+    <!--首页基础课程各类型的底色配置-->
+    <color name="statistics_color_1">#89C73D</color>
+    <color name="statistics_color_2">#64BFDC</color>
+    <color name="statistics_color_3">#FBE956</color>
+    <color name="statistics_color_4">#E24D45</color>
+
     <!--课程大纲状态颜色值-->
     <color name="section_state_idle_color">#FF2635</color>
     <color name="section_state_starting_color">#FFBE0D</color>

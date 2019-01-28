@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorLight">
+
+        <com.lqwawa.apps.views.charts.PieView
+            android:id="@+id/pie_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayHighLight">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+
+    <!--<com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowsBackground">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:background="@color/colorLight">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <com.lqwawa.intleducation.base.CourseEmptyView
+                    android:id="@+id/empty_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:empty_text_remind="@string/label_empty_content"
+                    app:empty_text_remind_visible="true"
+                    app:empty_text_loading="@string/label_course_empty_info_2"
+                    app:empty_text_loading_visible="false"
+                    app:empty_icon_drawable="@drawable/ic_course_empty"
+                    app:call_show="true"
+                    android:visibility="gone">
+
+                </com.lqwawa.intleducation.base.CourseEmptyView>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>-->
+
+</LinearLayout>
