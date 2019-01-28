@@ -178,13 +178,14 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             // UIUtil.showToastSafe("学习统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
             String classId = mCourseDetailParams.getClassId();
-            LearningStatisticsActivity.show(getActivity(),classId,mCourseId,0);
+            LearningStatisticsActivity.show(getActivity(),classId,mCourseId,0,mCourseDetailParams);
         }else if(view.getId() == R.id.btn_course_statistics){
             // 课程统计
             // UIUtil.showToastSafe("课程统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
             String classId = mCourseDetailParams.getClassId();
             CourseStatisticsParams params = new CourseStatisticsParams(classId,mCourseId,courseVo.getName());
+            params.setCourseParams(mCourseDetailParams);
             CourseStatisticsActivity.show(getActivity(),params);
         }
     }

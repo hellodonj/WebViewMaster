@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.course;
 
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,7 @@ public class CourseStatisticsParams implements Serializable {
     private String classId;
     private String courseId;
     private String courseName;
+    private CourseDetailParams courseParams;
 
     public CourseStatisticsParams(String classId, String courseId, String courseName) {
         this.classId = classId;
@@ -28,5 +31,13 @@ public class CourseStatisticsParams implements Serializable {
 
     public String getCourseName() {
         return courseName;
+    }
+
+    public CourseDetailParams getCourseParams() {
+        return courseParams;
+    }
+
+    public void setCourseParams(CourseDetailParams courseParams) {
+        this.courseParams = courseParams;
     }
 }

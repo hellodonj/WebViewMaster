@@ -6,24 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.lqwawa.apps.views.charts.PieHelper;
 import com.lqwawa.apps.views.charts.PieView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
-import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SizeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseStatisticsEntity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.learn.LearningStatisticsAdapter;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +43,7 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
     private String configValue;
     private String mClassId;
     private String mCourseId;
+    private CourseDetailParams mCourseParams;
 
     @Override
     protected int getContentLayoutId() {
@@ -67,10 +64,12 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
         configValue = mStatisticsParams.getCourseName();
         mClassId = mStatisticsParams.getClassId();
         mCourseId = mStatisticsParams.getCourseId();
+        mCourseParams = mStatisticsParams.getCourseParams();
 
         if(EmptyUtil.isEmpty(configValue) ||
                 EmptyUtil.isEmpty(mClassId) ||
-                EmptyUtil.isEmpty(mCourseId)){
+                EmptyUtil.isEmpty(mCourseId) ||
+                EmptyUtil.isEmpty(mCourseParams)){
             return false;
         }
 
@@ -103,7 +102,7 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, CourseStatisticsEntity entity) {
                 super.onItemClick(holder, entity);
-                LearningStatisticsActivity.show(CourseStatisticsActivity.this,mClassId,mCourseId,entity.getType());
+                LearningStatisticsActivity.show(CourseStatisticsActivity.this,mClassId,mCourseId,entity.getType(),mCourseParams);
             }
         });
     }

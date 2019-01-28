@@ -888,6 +888,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--老师查看学生章节购买详情-->
+        <activity android:name=".module.discovery.ui.lqcourse.coursedetails.WatchStudentChapterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

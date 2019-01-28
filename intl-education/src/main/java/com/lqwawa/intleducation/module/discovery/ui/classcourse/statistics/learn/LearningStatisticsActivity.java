@@ -7,20 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
-import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.LearningProgressEntity;
-import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.WatchStudentChapterActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -47,6 +45,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
     private String mClassId;
     private String mCourseId;
     private int mType;
+    private CourseDetailParams mCourseParams;
 
     @Override
     protected int getContentLayoutId() {
@@ -64,7 +63,10 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
         mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
         mCourseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         mType = bundle.getInt(KEY_EXTRA_TYPE);
-        if(EmptyUtil.isEmpty(mClassId) || EmptyUtil.isEmpty(mCourseId)){
+        mCourseParams = (CourseDetailParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
+        if(EmptyUtil.isEmpty(mClassId) ||
+                EmptyUtil.isEmpty(mCourseId) ||
+                EmptyUtil.isEmpty(mCourseParams)){
             return false;
         }
         return super.initArgs(bundle);
@@ -102,6 +104,14 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
         mAdapter = new LearningStatisticsAdapter();
         mRecycler.setAdapter(mAdapter);
         mRecycler.addItemDecoration(mItemDecoration = new RecyclerItemDecoration(LearningStatisticsActivity.this,RecyclerItemDecoration.VERTICAL_LIST));
+
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LearningProgressEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, LearningProgressEntity learningProgressEntity) {
+                super.onItemClick(holder, learningProgressEntity);
+                WatchStudentChapterActivity.show(LearningStatisticsActivity.this,learningProgressEntity,mCourseParams);
+            }
+        });
     }
 
     @Override
@@ -137,12 +147,14 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
     public static void show(@NonNull Context context,
                             @NonNull String classId,
                             @NonNull String courseId,
-                            int type){
+                            int type,
+                            @NonNull CourseDetailParams params){
         Intent intent = new Intent(context,LearningStatisticsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putInt(KEY_EXTRA_TYPE,type);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
