@@ -1016,14 +1016,14 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         // 添加到作业库中
         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             // 默认看课件
-            int lqwawaTaskType = 5;
+            int lqwawaTaskType = 9;
             int moocTaskType = choiceArray.get(0).getTaskType();
             if(moocTaskType == 1){
-                lqwawaTaskType = 5;
-            }else if(moocTaskType == 2){
-                lqwawaTaskType = 8;
-            }else{
                 lqwawaTaskType = 9;
+            }else if(moocTaskType == 2){
+                lqwawaTaskType = 5;
+            }else if(moocTaskType == 3){
+                lqwawaTaskType = 8;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray,lqwawaTaskType);
             // 刷新数目
