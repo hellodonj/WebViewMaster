@@ -235,12 +235,12 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
         textView = (TextView) view.findViewById(R.id.tv_homework_assigner);
         if (textView != null) {
             //均显示
-            if (type.equals("11")){
-                textView.setVisibility(View.INVISIBLE);
-            } else {
+//            if (type.equals("11")){
+//                textView.setVisibility(View.INVISIBLE);
+//            } else {
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(data.getTaskCreateName());
-            }
+//            }
         }
 
         //作业状态布局，仅对教师可见。
