@@ -451,6 +451,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     protected void enterSectionTaskDetail(SectionResListVo vo) {
         String curMemberId = mSourceParams.getMemberId();
         int originalRole = mSourceParams.getRole();
+        if(mSourceParams.isTeacherVisitor()){
+            // 这才是真实的角色身份
+            originalRole = mSourceParams.getRealRole();
+        }
+
 
         final String taskId = vo.getTaskId();
         if (originalRole == UserHelper.MoocRoleType.STUDENT && !TextUtils.isEmpty(taskId)) {

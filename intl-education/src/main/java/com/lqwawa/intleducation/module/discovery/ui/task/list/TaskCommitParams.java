@@ -29,6 +29,8 @@ public class TaskCommitParams extends BaseVo implements Cloneable{
     private boolean isAudition;
     // 提交类型
     private int commitType;
+    // 是否是老师看学生
+    private boolean teacherVisitor;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
@@ -63,6 +65,10 @@ public class TaskCommitParams extends BaseVo implements Cloneable{
         this.commitType = commitType;
     }
 
+    public boolean isTeacherVisitor() {
+        return teacherVisitor;
+    }
+
     @Override
     public Object clone() {
         try{
@@ -84,6 +90,7 @@ public class TaskCommitParams extends BaseVo implements Cloneable{
         newParams.isAudition = params.isAudition();
         newParams.memberId = params.getMemberId();
         newParams.courseParams = params.getCourseParams();
+        newParams.teacherVisitor = params.isTeacherVisitor();
         return newParams;
     }
 
