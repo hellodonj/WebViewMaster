@@ -1059,6 +1059,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                     if (result != null && result.isSuccess()) {
                         //布置完成刷新布置任务页面
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
                         finish();
                     } else {
@@ -1500,7 +1501,6 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         //布置完成刷新布置任务页面
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
-                        LqIntroTaskHelper.getInstance().clearTaskList();
                         finish();
                     } else {
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_error);
