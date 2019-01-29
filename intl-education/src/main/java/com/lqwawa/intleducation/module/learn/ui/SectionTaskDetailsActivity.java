@@ -752,8 +752,12 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         if (mOriginalRole == UserHelper.MoocRoleType.TEACHER ||
                 mOriginalRole == UserHelper.MoocRoleType.EDITOR ||
                 mTaskParams.isAudition()) {
-            // 如果是主编和小编,或者是试听,就不传
-            memberId = "";
+            if(mTaskParams.isTeacherVisitor()){
+                memberId = activity.getIntent().getStringExtra("memberId");
+            }else{
+                // 如果是主编和小编,或者是试听,就不传
+                memberId = "";
+            }
         } else if (mOriginalRole == UserHelper.MoocRoleType.STUDENT) {
             // 如果是学生,就传自己的Id
             memberId = UserHelper.getUserId();

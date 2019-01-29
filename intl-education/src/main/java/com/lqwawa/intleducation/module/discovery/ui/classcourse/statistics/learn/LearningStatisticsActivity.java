@@ -109,7 +109,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, LearningProgressEntity learningProgressEntity) {
                 super.onItemClick(holder, learningProgressEntity);
-                WatchStudentChapterActivity.show(LearningStatisticsActivity.this,learningProgressEntity,mCourseParams);
+                WatchStudentChapterActivity.show(LearningStatisticsActivity.this,mCourseId,learningProgressEntity,mCourseParams);
             }
         });
     }

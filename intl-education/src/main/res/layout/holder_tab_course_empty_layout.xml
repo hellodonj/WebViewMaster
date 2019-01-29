@@ -40,5 +40,6 @@
         android:textSize="16sp"
         app:gTouchColor="@color/touch_color"
         app:gTouchCornerRadius="19dp"
-        app:gTouchEffect="ripple" />
+        app:gTouchEffect="ripple"
+        android:visibility="gone"/>
 </LinearLayout>

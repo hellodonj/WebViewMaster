@@ -20,6 +20,8 @@ public class SectionTaskParams extends BaseVo{
     private String memberId;
     // 是否是试听
     private boolean isAudition;
+    // 是否是老师看学生
+    private boolean teacherVisitor;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
@@ -61,6 +63,10 @@ public class SectionTaskParams extends BaseVo{
         isAudition = audition;
     }
 
+    public boolean isTeacherVisitor() {
+        return teacherVisitor;
+    }
+
     /**
      * 配置参数
      * @param params 节资源列表的参数实体
@@ -69,5 +75,6 @@ public class SectionTaskParams extends BaseVo{
         this.isAudition = params.isAudition();
         this.memberId = params.getMemberId();
         this.courseParams = params.getCourseParams();
+        this.teacherVisitor = params.isTeacherVisitor();
     }
 }

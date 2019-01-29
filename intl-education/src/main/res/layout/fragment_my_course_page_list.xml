@@ -70,7 +70,7 @@
                             android:id="@+id/tab_empty_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:tab_empty_text_remind="@string/label_tab_course_empty_remind"
+                            app:tab_empty_text_remind="@string/label_empty_content"
                             app:tab_empty_text_action="@string/label_self_study_class"
                             android:visibility="gone">
 

@@ -111,6 +111,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     private CourseVo courseVo;
 
+    private boolean mTeacherVisitor;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
@@ -143,6 +145,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mDataType = mDetailItemParams.getDataType();
         mNeedReadFlag = isJoin && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN;
         mCourseId = mDetailItemParams.getCourseId();
+        // 是否老师看学生
+        mTeacherVisitor = arguments.getBoolean("teacherVisitor");
         registerBroadcastReceiver();
         initData();
     }
@@ -311,6 +315,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             mCourseChapterAdapter = new CourseChapterAdapter(activity, mCourseId, mNeedReadFlag,isOnlineTeacher,()->getData(false));
             // 已经加入的学程
             mCourseChapterAdapter.setJoinCourse(isJoin);
+            mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);
             mCourseChapterArray = new ArrayList();
             listView.setAdapter(mCourseChapterAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
@@ -383,7 +388,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
      */
     private void requestChapterList(){
         String token = UserHelper.getUserId();
-        if(mDetailItemParams.isParentRole()){
+        if(mDetailItemParams.isParentRole() || mTeacherVisitor){
             // 家长身份
             token = mDetailItemParams.getMemberId();
         }
@@ -397,7 +402,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
         CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
-                UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)){
+                UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)
+                && !mTeacherVisitor){
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
         }else{

@@ -15,6 +15,10 @@ public class LessonSourceParams extends BaseVo{
 
     // 课程大纲已确定的角色信息
     private int role;
+    // 老师看孩子的本人角色信息
+    private int realRole;
+    // 是否是老师看学生
+    private boolean teacherVisitor;
     // 如果是老师，老师的角色类型
     private int teacherType;
     // 当前学生的memberId,家长传孩子的，学生就是自己的
@@ -57,6 +61,22 @@ public class LessonSourceParams extends BaseVo{
         return courseParams;
     }
 
+    public int getRealRole() {
+        return realRole;
+    }
+
+    public void setRealRole(int realRole) {
+        this.realRole = realRole;
+    }
+
+    public boolean isTeacherVisitor() {
+        return teacherVisitor;
+    }
+
+    public void setTeacherVisitor(boolean teacherVisitor) {
+        this.teacherVisitor = teacherVisitor;
+    }
+
     /**
      * 返回是否是讲师
      * @return true 讲师
@@ -92,6 +112,8 @@ public class LessonSourceParams extends BaseVo{
         newParams.role = params.getRole();
         newParams.teacherType = params.getTeacherType();
         newParams.courseParams = params.getCourseParams();
+        newParams.teacherVisitor = params.isTeacherVisitor();
+        newParams.realRole = params.getRealRole();
         return newParams;
     }
 
