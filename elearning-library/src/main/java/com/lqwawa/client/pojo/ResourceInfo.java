@@ -29,7 +29,7 @@ public class ResourceInfo implements Parcelable,Serializable{
     private String ResProperties;
     private int ResCourseId;
     private String Point;//总分
-    private int completionMode;//0 复述课件 1 复述课件+语音评测
+    private int completionMode = 1;//1 复述课件 2 复述课件+语音评测
 
     public int getCompletionMode() {
         return completionMode;
@@ -238,6 +238,7 @@ public class ResourceInfo implements Parcelable,Serializable{
         dest.writeString(ResProperties);
         dest.writeInt(this.ResCourseId);
         dest.writeString(Point);
+        dest.writeInt(this.completionMode);
     }
 
     protected ResourceInfo(Parcel in) {
@@ -259,6 +260,7 @@ public class ResourceInfo implements Parcelable,Serializable{
         this.ResProperties = in.readString();
         this.ResCourseId = in.readInt();
         this.Point = in.readString();
+        this.completionMode = in.readInt();
     }
 
     public static final Creator<ResourceInfo> CREATOR = new Creator<ResourceInfo>() {

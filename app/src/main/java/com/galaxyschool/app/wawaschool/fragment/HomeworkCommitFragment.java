@@ -211,6 +211,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean isOnlineReporter;
     private boolean isOnlineHost;
     private boolean isHeadMaster;
+    private boolean isStudentFinishRetellTask;
+    private boolean isStudentFinishEValTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -515,7 +517,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     CommitTask commitTask = data.get(i);
                     commitTask.setScoreRule(ScoringRule);
                     commitTask.setScreenType(taskCourseOrientation);
-                    if (isAnswerTaskOrderQuestion){
+                    if (isAnswerTaskOrderQuestion) {
                         //答题卡的统计
                         if (!TextUtils.isEmpty(commitTask.getTaskScore())) {
                             handleCommitTypeTask(tenLevelList, studentIdList, list, commitTask);
@@ -529,7 +531,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     }
                 }
             }
-            if (answerCardParam != null){
+            if (answerCardParam != null) {
                 answerCardParam.setTaskId(TaskId);
                 answerCardParam.setCommitTaskTitle(task.getTaskTitle());
                 answerCardParam.setIsHeadMaster(isHeadMaster);
@@ -649,6 +651,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         args.putBoolean(HomeworkMainFragment.Constants.EXTRA_IS_HEAD_MASTER,
                 getArguments().getBoolean(HomeworkMainFragment.Constants.EXTRA_IS_HEAD_MASTER));
         args.putBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS, isHistoryClass);
+        args.putInt(HomeworkMainFragment.Constants.EXTRA_COURSE_TYPE_PROPERTIES, propertiesType);
         return args;
     }
 
@@ -903,6 +906,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         HomeworkCommitObjectInfo homeworkCommitObjectInfo = result.getModel().getData();
         if (homeworkCommitObjectInfo != null) {
             studyTask = homeworkCommitObjectInfo.getTaskInfo();
+            dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
 //            updateCommitBtn(homeworkCommitObjectInfo);
             if (studyTask != null) {
                 ScoringRule = studyTask.getScoringRule();
@@ -912,6 +916,18 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     checkTaskOrderAnswerQuestionCard();
                 }
             }
+        }
+    }
+
+    public void dealTaskTypeFinishDetail(HomeworkCommitObjectInfo homeworkCommitObjectInfo){
+        if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT){
+            if (roleType == RoleType.ROLE_TYPE_STUDENT){
+                StudentId = getMemeberId();
+            }
+            isStudentFinishRetellTask =
+                    StudyTaskUtils.isStudentFinishStudyTask(StudentId,homeworkCommitObjectInfo.getListCommitTask(),false);
+            isStudentFinishEValTask =
+                    StudyTaskUtils.isStudentFinishStudyTask(StudentId,homeworkCommitObjectInfo.getListCommitTask(),true);
         }
     }
 
@@ -1065,8 +1081,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     //全部完成
                     finishStatus.setText(getString(R.string.n_finish_all, String.valueOf(taskNum)));
                 }
-                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStatus,
-                        taskFinishCount,taskNum);
+                StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(), finishStatus,
+                        taskFinishCount, taskNum);
             }
         }
     }
@@ -1322,11 +1338,33 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     || taskResType == ResType.RES_TYPE_IMG)) {
                 openPptAndPdf();
             } else {
-                openImage(task,false);
+                openImage(task, false);
             }
-        } else {
-            super.onClick(v);
+        } else if (v.getId() == R.id.contacts_header_left_btn){
+            onBackPress();
         }
+    }
+
+    public void onBackPress(){
+        if (showTaskFinishDialogCondition()) {
+            StudyTaskUtils.processTaskFinishDetailDialog(getActivity(),
+                    task.getRepeatCourseCompletionMode() == 2,isStudentFinishRetellTask,isStudentFinishEValTask);
+        } else {
+            finish();
+        }
+    }
+
+    private boolean showTaskFinishDialogCondition() {
+        if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
+            if (task != null) {
+                if (task.getRepeatCourseCompletionMode() == 1 && propertiesType == 1 && !isStudentFinishRetellTask) {
+                    return true;
+                } else if (task.getRepeatCourseCompletionMode() == 2 && (!isStudentFinishRetellTask || !isStudentFinishEValTask)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -1366,7 +1404,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     /**
      * 打开图片
      */
-    public void openImage(StudyTask task,boolean isDoTaskOrder) {
+    public void openImage(StudyTask task, boolean isDoTaskOrder) {
         if (task == null) {
             return;
         }
@@ -1397,7 +1435,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                         CourseData courseData = info.getCourseData();
                         if (courseData != null) {
                             courseData.setIsPublicRes(false);
-                            processOpenImageData(courseData,isDoTaskOrder);
+                            processOpenImageData(courseData, isDoTaskOrder);
                         }
                     }
                 }
@@ -1411,7 +1449,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 @Override
                 public void onCourseDetailFinish(CourseData courseData) {
                     courseData.setIsPublicRes(false);
-                    processOpenImageData(courseData,isDoTaskOrder);
+                    processOpenImageData(courseData, isDoTaskOrder);
                 }
             });
         }
@@ -1422,7 +1460,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
      *
      * @param courseData
      */
-    private void processOpenImageData(CourseData courseData,boolean isDoTaskOrder) {
+    private void processOpenImageData(CourseData courseData, boolean isDoTaskOrder) {
         if (courseData != null) {
             PlaybackParam mParam = new PlaybackParam();
             //隐藏收藏按钮
@@ -1629,7 +1667,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                             createCourse();
                         } else if (getString(R.string.look_through_courseware).equals(title)) {
                             //看课件
-                            openImage(task,false);
+                            openImage(task, false);
                         }
                     }
                 }, getString(R.string.cancel), null);
@@ -1669,7 +1707,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     if (isAnswerTaskOrderQuestion) {
                         //答题卡
                         if (hasEnabledDoToTaskOrderTips()) {
-                            openImage(task,true);
+                            openImage(task, true);
                         }
                     } else {
                         //做任务单
@@ -2399,7 +2437,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             bundle.putBoolean(HomeworkFinishStatusActivity.Constants.EXTRA_ISONLINEREPORTER, homeworkListInfo.isOnlineReporter() || homeworkListInfo.isOnlineHost());
         }
         bundle.putBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS, isHistoryClass);
-        if (studyTask != null){
+        if (studyTask != null) {
             bundle.putString(HomeworkFinishStatusActivity.Constants.EXTRA_IS_TASK_COURSE_RESID, studyTask.getResId());
         }
         intent.putExtras(bundle);
@@ -3256,7 +3294,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 @Override
                 public void onBack(Object result) {
                     //答题卡
-                    openImage(task,true);
+                    openImage(task, true);
                 }
             });
             doTaskTipDialog.setCancelable(true);

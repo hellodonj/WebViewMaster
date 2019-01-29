@@ -8,22 +8,17 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.view.View;
 import android.widget.TextView;
-
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.LookResDto;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
-import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
-import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
-import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.ResourceInfo;
-import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -31,16 +26,11 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
-import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
-import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectPresenter;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.annotation.Nullable;
 
 /**
@@ -242,7 +232,7 @@ public class StudyTaskUtils {
                     //学程馆资源的id
                     thirdObject.put("ResCourseId", lookDto.getResCourseId());
                     thirdObject.put("ResPropType", lookDto.getResPropType());
-                    thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
+                    thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
                     if (!TextUtils.isEmpty(lookDto.getPoint())) {
                         thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
                     }
@@ -295,17 +285,17 @@ public class StudyTaskUtils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        AddSubjectActivity.show((Activity) context,false, 0);
+                        AddSubjectActivity.show((Activity) context, false, 0);
                     }
                 });
         messageDialog.show();
     }
 
     public static void showAnswerCardViewDetail(Activity activity,
-                                          String resId,
-                                          String resUrl,
-                                          String resName,
-                                          TextView picImageView) {
+                                                String resId,
+                                                String resUrl,
+                                                String resName,
+                                                TextView picImageView) {
         if (!TextUtils.isEmpty(resUrl)) {
             //显示图片
             picImageView.setBackgroundDrawable(ContextCompat.getDrawable(activity, R.drawable
@@ -372,45 +362,103 @@ public class StudyTaskUtils {
     }
 
 
-    public static String getResourceThumbnail(String thumbnail){
-        if (TextUtils.isEmpty(thumbnail)){
+    public static String getResourceThumbnail(String thumbnail) {
+        if (TextUtils.isEmpty(thumbnail)) {
             return thumbnail;
         }
         String flag = null;
-        if (thumbnail.endsWith(".pdf")){
+        if (thumbnail.endsWith(".pdf")) {
             flag = ".pdf";
         }
-        if (thumbnail.endsWith(".pdfx")){
+        if (thumbnail.endsWith(".pdfx")) {
             flag = ".pdfx";
         }
-        if (thumbnail.endsWith(".ppt")){
+        if (thumbnail.endsWith(".ppt")) {
             flag = ".ppt";
         }
-        if (thumbnail.endsWith(".pptx")){
+        if (thumbnail.endsWith(".pptx")) {
             flag = ".pptx";
         }
-        if (thumbnail.endsWith(".doc")){
+        if (thumbnail.endsWith(".doc")) {
             flag = ".doc";
         }
-        if (thumbnail.endsWith(".docx")){
+        if (thumbnail.endsWith(".docx")) {
             flag = ".docx";
         }
-        if (!TextUtils.isEmpty(flag)){
-            thumbnail = thumbnail.replace(flag,"_split/1.jpg");
+        if (!TextUtils.isEmpty(flag)) {
+            thumbnail = thumbnail.replace(flag, "_split/1.jpg");
         }
         return thumbnail;
     }
 
-    public static int getScoringRule(String point){
+    public static int getScoringRule(String point) {
         int scoringRule = 2;//默认的百分制
-        if (TextUtils.equals(point,"120")){
+        if (TextUtils.equals(point, "120")) {
             scoringRule = 3;
-        } else if (TextUtils.equals(point,"150")){
+        } else if (TextUtils.equals(point, "150")) {
             scoringRule = 4;
-        } else if (TextUtils.equals(point,"300")){
+        } else if (TextUtils.equals(point, "300")) {
             scoringRule = 5;
         }
         return scoringRule;
     }
 
+    /**
+     * @param studentId 学生的id
+     * @param list      提交列表
+     * @param isEval    是不是语音评测
+     * @return 是否完成
+     */
+    public static boolean isStudentFinishStudyTask(String studentId,
+                                                   List<CommitTask> list,
+                                                   boolean isEval) {
+        boolean isFinishStudyTask = false;
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                CommitTask commitTask = list.get(i);
+                if (TextUtils.equals(studentId, commitTask.getStudentId())) {
+                    if (isEval) {
+                        if (commitTask.isEvalType()) {
+                            isFinishStudyTask = true;
+                            break;
+                        }
+                    } else {
+                        if (!commitTask.isEvalType()) {
+                            isFinishStudyTask = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return isFinishStudyTask;
+    }
+
+    public static void processTaskFinishDetailDialog(Activity activity,
+                                                     boolean isEval,
+                                                     boolean isStudentFinishRetellTask,
+                                                     boolean isStudentFinishEValTask) {
+        if (activity == null) {
+            return;
+        }
+        String messageContent = activity.getString(R.string.str_do_not_a_question);
+        if (isEval){
+            if (isStudentFinishRetellTask && !isStudentFinishEValTask){
+                messageContent = activity.getString(R.string.str_do_not_eval_course);
+            } else if (isStudentFinishEValTask && !isStudentFinishRetellTask){
+                messageContent = activity.getString(R.string.str_do_not_retell_course);
+            }
+        }
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                activity, null,
+                messageContent,
+                activity.getString(R.string.str_do_it_later),
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    activity.finish();
+                },
+                activity.getString(R.string.str_do_it_now),
+                (dialog, which) -> dialog.dismiss());
+        messageDialog.show();
+    }
 }

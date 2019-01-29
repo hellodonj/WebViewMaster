@@ -78,6 +78,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
         String EXTRA_CHILD_ID_ARRAY = "childIdArray";
         String EXTRA_IS_ONLINE_SCHOOL_CLASS = "isOnlineSchoolClass";
         String EXTRA_IS_FROM_REVIEW_DATA = "from_review_data";
+        String EXTRA_COURSE_TYPE_PROPERTIES = "course_type_properties";
     }
 
     private TextView finishedTab, unfinishedTab;

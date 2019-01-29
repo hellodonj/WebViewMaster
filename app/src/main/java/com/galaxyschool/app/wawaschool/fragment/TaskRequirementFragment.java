@@ -17,6 +17,7 @@ import com.galaxyschool.app.wawaschool.HomeworkFinishStatusActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
@@ -100,6 +101,7 @@ public class TaskRequirementFragment extends ContactsListFragment{
             shouldShowCommitBtn = getArguments().getBoolean(HomeworkFinishStatusActivity.Constants
                     .SHOULD_SHOW_COMMIT_BTN);
             isHistoryClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
+            propertiesType= getArguments().getInt(HomeworkMainFragment.Constants.EXTRA_COURSE_TYPE_PROPERTIES);
         }
 
         //头布局
@@ -462,19 +464,41 @@ public class TaskRequirementFragment extends ContactsListFragment{
             //完成方式
             TextView completionModelView = (TextView) findViewById(R.id.tv_completion_mode);
             int completionMode = task.getRepeatCourseCompletionMode();
-            if (completionMode == 1){
+            if ((completionMode == 1 && propertiesType == 1) || completionMode == 2){
+                //复述课件
                 if (TextUtils.isEmpty(taskRequirements)){
                     taskRequirements = getString(R.string.str_no_analyse_tip);
                 }
                 taskRequirements = getString(R.string.student_should_complete_task) + "\n" + taskRequirements;
-
                 //完成方式的string
-                String completionModeString  = getString(R.string.str_completion_mode) + "\n" + getString(R.string.str_task_completion_tip);
+                String modeTips = null;
+                if (completionMode == 1){
+                    modeTips = getString(R.string.retell_course_new);
+                } else {
+                    modeTips = getString(R.string.str_task_type_combination);
+                }
+                String completionModeString  = getString(R.string.str_completion_mode) + "\n" + modeTips;
                 completionModelView.setText(completionModeString);
                 completionModelView.setVisibility(View.VISIBLE);
-//                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
-                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_task_completion_tip);
-//                }
+                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
+                    if (roleType == RoleType.ROLE_TYPE_STUDENT){
+                        //学生自己
+                       studentId = getMemeberId();
+                    }
+                    boolean isStudentFinishTask = false;
+                    boolean isRetellTaskFinish = StudyTaskUtils.isStudentFinishStudyTask(studentId,
+                            homeworkCommitObjectInfo.getListCommitTask(),false);
+                    if (completionMode == 1){
+                        isStudentFinishTask = isRetellTaskFinish;
+                    } else {
+                        isStudentFinishTask = isRetellTaskFinish && StudyTaskUtils.isStudentFinishStudyTask(studentId,
+                                homeworkCommitObjectInfo.getListCommitTask(),true);
+                    }
+                    if (!isStudentFinishTask){
+                        //没有完成给于toast提示
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.str_completion_mode) + modeTips);
+                    }
+                }
             }
             //任务要求
             contentTextView.setText(taskRequirements);

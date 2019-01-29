@@ -118,12 +118,12 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.completeType.setVisibility(View.VISIBLE);
                 holder.radioGroup.setOnCheckedChangeListener((group,checkedId) -> {
                     if (checkedId == R.id.rb_retell_course){
-                        info.setCompletionMode(0);
-                    } else if (checkedId == R.id.rb_multi_type){
                         info.setCompletionMode(1);
+                    } else if (checkedId == R.id.rb_multi_type){
+                        info.setCompletionMode(2);
                     }
                 });
-                holder.radioGroup.check(info.getCompletionMode() == 0 ? R.id.rb_retell_course :
+                holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :
                         R.id.rb_multi_type);
             }
         }

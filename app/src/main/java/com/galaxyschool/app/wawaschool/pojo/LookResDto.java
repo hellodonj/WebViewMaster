@@ -33,7 +33,7 @@ public class LookResDto implements Serializable{
     private boolean isSelect;
     private String Point;
     private int ResPropType;
-    private int completionMode;//0 复述课件 1 复述课件+语音评测
+    private int completionMode = 1;//1 复述课件 2 复述课件+语音评测
 
     public int getCompletionMode() {
         return completionMode;

@@ -31,10 +31,10 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
         String TAG;
         if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                 || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
-                || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
+                || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE) {
             fragment = new ListenReadAndWriteStudyTaskFragment();
             TAG = ListenReadAndWriteStudyTaskFragment.TAG;
-        } else if (taskType == StudyTaskType.SUPER_TASK){
+        } else if (taskType == StudyTaskType.SUPER_TASK) {
             fragment = new IntroductionSuperTaskFragment();
             TAG = IntroductionSuperTaskFragment.TAG;
         } else {
@@ -43,7 +43,7 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
         }
         fragment.setArguments(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.activity_body, fragment,TAG);
+        ft.replace(R.id.activity_body, fragment, TAG);
         ft.commit();
     }
 
@@ -57,27 +57,37 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             if (fragment != null && fragment instanceof HomeworkCommitFragment) {
                 HomeworkCommitFragment commitFragment = (HomeworkCommitFragment) fragment;
                 CompletedHomeworkListFragment listFragment = commitFragment
                         .getCompletedHomeworkListFragment();
-                if (listFragment != null && listFragment.isVisible()){
-                    listFragment.upDateDeleteButtonShowStatus(null,false);
+                if (listFragment != null && listFragment.isVisible()) {
+                    listFragment.upDateDeleteButtonShowStatus(null, false);
                 }
 
                 EvalHomeworkListFragment evalHomeworkListFragment = commitFragment
                         .getEvalHomeworkListFragment();
-                if (evalHomeworkListFragment != null && evalHomeworkListFragment.isVisible()){
-                    evalHomeworkListFragment.upDateDeleteButtonShowStatus(null,false);
+                if (evalHomeworkListFragment != null && evalHomeworkListFragment.isVisible()) {
+                    evalHomeworkListFragment.upDateDeleteButtonShowStatus(null, false);
                 }
 
                 CheckMarkFragment checkMarkFragment = (CheckMarkFragment) getSupportFragmentManager().findFragmentByTag(CheckMarkFragment.TAG);
                 if (checkMarkFragment != null && checkMarkFragment.isVisible()) {
-                    checkMarkFragment.upDateDeleteButtonShowStatus(null,false);
+                    checkMarkFragment.upDateDeleteButtonShowStatus(null, false);
                 }
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragment instanceof HomeworkCommitFragment) {
+            HomeworkCommitFragment homeworkCommitFragment = (HomeworkCommitFragment) fragment;
+            homeworkCommitFragment.onBackPress();
+            return;
+        }
+        super.onBackPressed();
     }
 }

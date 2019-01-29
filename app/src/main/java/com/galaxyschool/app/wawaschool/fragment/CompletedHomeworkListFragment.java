@@ -1698,6 +1698,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         }
         HomeworkCommitObjectInfo homeworkCommitObjectInfo = result.getModel().getData();
         if (homeworkCommitObjectInfo != null) {
+            dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
             task = homeworkCommitObjectInfo.getTaskInfo();
             if (!isAnswerTaskOrderQuestion && task != null) {
                 //答题卡的信息
@@ -1775,6 +1776,13 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
             if (adapterViewHelper != null) {
                 adapterViewHelper.setData(resultList);
             }
+        }
+    }
+
+    private void dealTaskTypeFinishDetail(HomeworkCommitObjectInfo homeworkCommitObjectInfo){
+        Fragment fragment = getParentFragment();
+        if (fragment instanceof HomeworkCommitFragment){
+            ((HomeworkCommitFragment) fragment).dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
         }
     }
 
