@@ -327,6 +327,7 @@
     <!--V5.13字符串-->
     <string name="label_minority_language_holder_title">小语种名师课</string>
     <string name="label_international_holder_title">国际课程名师课</string>
+    <string name="label_basic_holder_title">国家课程名师课</string>
     <string name="label_all_the_arrangement">【全部布置】</string>
     <string name="label_statistical_learning">学习统计</string>
     <string name="label_course_statistics">课程统计</string>

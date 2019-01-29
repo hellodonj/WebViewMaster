@@ -124,7 +124,7 @@ public class NewOnlineClassifyFiltrateActivity extends PresenterActivity<NewOnli
         }else if(mDataType == DataType.INTERNATIONAL){
             mTopBar.setTitle(R.string.label_international_holder_title);
         }else if(mDataType == DataType.BASIC_COURSE){
-            mTopBar.setTitle(R.string.label_basics_course);
+            mTopBar.setTitle(R.string.label_basic_holder_title);
         }
 
         mHeaderLayout = (LinearLayout) findViewById(R.id.header_layout);
