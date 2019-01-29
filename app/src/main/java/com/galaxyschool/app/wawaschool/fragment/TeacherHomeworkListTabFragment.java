@@ -488,6 +488,8 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
         Map<String, Object> params = new HashMap<>();
         if (isFromReviewStatistic){
             params.put("TaskIds", reviewInfo.getTaskIdStr());
+            //学生的studentId
+            params.put("StudentId", reviewInfo.getStudentId());
         } else {
             //学校Id，必填
             params.put("SchoolId", schoolId);
