@@ -434,7 +434,7 @@
     <string name="some_user_online">%s in class</string>
     <string name="my_live_search_hint">Search by title/host</string>
     <string name="my_host_live_search_hint">Search by title</string>
-    <string name="my_course_search_hint">Search by title/host/institution</string>
+    <string name="my_course_search_hint">Search by title/institution</string>
     <string name="some_browse">%s viewers</string>
     <string name="xx_joined_live">\'s Live Broadcast</string>
     <string name="x_joined_live">  Live Broadcast</string>

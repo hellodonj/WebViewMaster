@@ -411,7 +411,7 @@
     <string name="some_user_online">%s人在上课</string>
     <string name="my_live_search_hint">搜索直播名称/主持人</string>
     <string name="my_host_live_search_hint">搜索直播名称</string>
-    <string name="my_course_search_hint">搜索课程名称/主持人/机构名</string>
+    <string name="my_course_search_hint">搜索课程名称/机构名</string>
     <string name="some_browse">%s人浏览</string>
     <string name="xx_joined_live">的直播</string>
     <string name="x_joined_live">的直播</string>
