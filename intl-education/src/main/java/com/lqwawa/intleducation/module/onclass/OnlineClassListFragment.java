@@ -31,6 +31,7 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoratio
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
@@ -38,11 +39,14 @@ import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity
 import com.lqwawa.intleducation.factory.data.entity.online.ParamResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyContract;
 import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateParams;
+import com.lqwawa.intleducation.module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailActivity;
@@ -359,7 +363,32 @@ public class OnlineClassListFragment extends PresenterFragment<OnlineClassContra
             if(EmptyUtil.isEmpty(mParam)) return;
             String configValue = mParam.getName();
 
-            mPresenter.requestOnlineStudyLabelData();
+            if(mParam.getDataType() == NewOnlineClassifyFiltrateActivity.DataType.MINORITY_LANGUAGE.getIndex()){
+                // 获取中英文数据
+                int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+                OnlineCourseHelper.requestNewOnlineClassifyConfigData(NewOnlineClassifyFiltrateActivity.DataType.MINORITY_LANGUAGE.getIndex(), languageRes, new DataSource.Callback<List<NewOnlineConfigEntity>>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        UIUtil.showToastSafe(strRes);
+                    }
+
+                    @Override
+                    public void onDataLoaded(List<NewOnlineConfigEntity> entities) {
+                        String configValue = UIUtil.getString(R.string.label_minority_language_holder_title);
+                        NewOnlineConfigEntity entity = new NewOnlineConfigEntity();
+                        entity.setConfigValue(configValue);
+                        entity.setId(NewOnlineStudyFiltrateActivity.MINORITY_LANGUGAE_ID);
+                        entity.setChildList(entities);
+                        NewOnlineStudyFiltrateParams params = new NewOnlineStudyFiltrateParams(entity.getConfigValue(),entity);
+                        NewOnlineStudyFiltrateActivity.show(getActivity(),params);
+                    }
+                });
+            }else if(mParam.getDataType() == NewOnlineClassifyFiltrateActivity.DataType.BASIC_COURSE.getIndex()){
+                NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.BASIC_COURSE);
+            }else if(mParam.getDataType() == NewOnlineClassifyFiltrateActivity.DataType.INTERNATIONAL.getIndex()){
+                NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.INTERNATIONAL);
+            }
+            // mPresenter.requestOnlineStudyLabelData();
             // UIUtil.showToastSafe(R.string.label_watch_more_teach_course);
         }
     }
