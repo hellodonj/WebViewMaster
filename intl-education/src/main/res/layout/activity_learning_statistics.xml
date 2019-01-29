@@ -34,7 +34,6 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
-                    android:background="@color/colorLight"
                     android:visibility="gone">
 
                 </android.support.v7.widget.RecyclerView>
