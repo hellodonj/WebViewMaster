@@ -49,7 +49,7 @@
                             android:id="@+id/empty_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            app:tab_empty_text_remind="@string/label_new_tab_class_empty_remind"
+                            app:tab_empty_text_remind="@string/label_empty_content"
                             app:tab_empty_text_action="@string/label_new_go_online_study"
                             android:visibility="gone">
 
