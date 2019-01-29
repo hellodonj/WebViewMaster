@@ -14,4 +14,5 @@
     <string name="tip_balance_succeed">Delivery succeeded</string>
     <string name="tip_balance_failed">Delivery failed</string>
     <string name="tip_not_sufficient_funds">Insufficient WaWacoins</string>
+    <string name="tip_course_teacher_visitor_not_watch">不能查看学生未购买的章节</string>
 </resources>

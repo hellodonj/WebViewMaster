@@ -73,6 +73,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     private boolean isOnlineTeacher;
     private boolean buyAll;
 
+    // 是否老师看孩子
+    private boolean mTeacherVisitor;
+
     private OnSelectListener mOnSelectListener;//课程选择
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -374,6 +377,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                                     if(!firstChapter && isJoinCourse && !vo.isBuyed() && !isAuthorized){
+
+                                        // TODO 添加老师看学生的逻辑
+                                        if(mTeacherVisitor){
+                                            UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
+                                            return;
+                                        }
+
                                         if(role == UserHelper.MoocRoleType.PARENT){
                                             if(activity instanceof FragmentActivity){
                                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
@@ -457,19 +467,20 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             // V5.11.X改版
             holder.chapter_flag_iv.setVisibility(View.GONE);
 
-            if(TextUtils.equals(activity.getClass().getSimpleName(),"MyCourseDetailsActivity")) {
+            if(TextUtils.equals(activity.getClass().getSimpleName(),"MyCourseDetailsActivity") ||
+                    TextUtils.equals(activity.getClass().getSimpleName(),"WatchStudentChapterActivity")) {
                 holder.mTvChapterState.setVisibility(View.VISIBLE);
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    if(isClassTeacher()){
+                    if(isClassTeacher() && !mTeacherVisitor){
                         holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                     }else{
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
-                    if(isClassTeacher()){
+                    if(isClassTeacher() && !mTeacherVisitor){
                         holder.mTvChapterState.setVisibility(View.GONE);
                     }else{
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
@@ -481,14 +492,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             final boolean isTeacher = isTeacher();
 
-            if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
+            if(isCourseSelect || !isJoinCourse || (isTeacher && !mTeacherVisitor && !isClassTeacher())){
                 // 是老师但不是班级学程的老师
                 holder.mTvChapterState.setVisibility(View.GONE);
             }else{
                 if(vo.isBuyed()){
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                     // 添加班级学程的逻辑
-                    if(isClassTeacher() && vo.getStatus() == 0){
+                    if(isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0){
                         // 班级学程的老师没有布置完成
                         holder.mTvChapterState.setVisibility(View.GONE);
                     }else{
@@ -507,7 +518,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             holder.auditionTv.setVisibility(View.GONE);
             boolean isOwner = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
             // if (position == 0 && (!canReadAll() || !vo.isBuyed())) {//发现页面 第一张 显示试听字样
-            if (position == 0 && !vo.isBuyed() && !isOwner) {//发现页面 第一张 显示试听字样
+            // TODO 加判断逻辑 老师看孩子
+            if (position == 0 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {//发现页面 第一张 显示试听字样
                 holder.auditionTv.setVisibility(View.VISIBLE);
                 if(!isCourseSelect){
                     holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),200));
@@ -527,7 +539,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             // 是否是老师
             // boolean isTeacher = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
             // final boolean isTeacher = isTeacher();
-            if(isTeacher){
+            // TODO 加判断逻辑 老师看孩子
+            if(isTeacher && !mTeacherVisitor){
                 holder.tvPrice.setVisibility(View.INVISIBLE);
             }else{
                 if(!(vo.getPrice() == 0) && !isCourseSelect){
@@ -564,6 +577,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         LoginHelper.enterLogin(activity);
                         return;
                     }
+
+                    // TODO 加判断逻辑 老师看孩子
+                    if(mTeacherVisitor) return;
 
                     if(vo.isBuyed()){
                         // 必须要是没有购买
@@ -824,6 +840,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.isJoinCourse = joinCourse;
     }
 
+    public void setTeacherVisitor(boolean visitor){
+        this.mTeacherVisitor = visitor;
+    }
+
     public void setCourseSelect(boolean b) {
         isCourseSelect = b;
     }
@@ -1020,10 +1040,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         }
 
         int role = handleBusinessRole();
+        // 自己的真实角色 和 老师类型
+        int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
         if(courseParams.isClassTeacher()){
             // 班级学程的老师
-            role = UserHelper.MoocRoleType.TEACHER;
+            if(mTeacherVisitor){
+                realRole = UserHelper.MoocRoleType.TEACHER;
+            }else{
+                role = UserHelper.MoocRoleType.TEACHER;
+            }
             // 类型等于讲师
             teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
         }
@@ -1034,13 +1060,18 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 // 已经是老师了,不需要变换成老师角色
                 // 班级学程的家长,辅导老师身份处理
                 // 机构的授权老师,辅导老师身份处理
-                role = UserHelper.MoocRoleType.TEACHER;
+                if(mTeacherVisitor){
+                    realRole = UserHelper.MoocRoleType.TEACHER;
+                }else{
+                    role = UserHelper.MoocRoleType.TEACHER;
+                }
                 // 类型等于辅导老师
                 teacherType = UserHelper.TeacherType.TEACHER_COUNSELOR;
             }
         }
 
         CourseChapterParams params = new CourseChapterParams(memberId,role,teacherType,isFreeUser);
+        params.fillVisitorInfo(mTeacherVisitor,realRole);
         params.setCourseParams(courseParams);
 
         boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE,false);
