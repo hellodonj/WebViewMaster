@@ -57,6 +57,10 @@ public class LqIntroTaskHelper {
         if (list == null || list.size() == 0) {
             return;
         }
+        if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE){
+            //满足布置任务看课件参数需求
+            taskType = StudyTaskType.WATCH_WAWA_COURSE;
+        }
         String tasktitle = list.get(0).getName();
         if (!TextUtils.isEmpty(tasktitle) && tasktitle.length() > 40) {
             tasktitle = tasktitle.substring(0, 40);
@@ -126,6 +130,7 @@ public class LqIntroTaskHelper {
             ResourceInfoTag info = WatchWawaCourseResourceSplicingUtils.transferLQProgramData(list.get(i));
             lookResDto = new LookResDto();
             lookResDto.setResId(info.getResId());
+            lookResDto.setCourseResType(info.getResourceType());
             lookResDto.setResTitle(info.getTitle());
             lookResDto.setAuthor(info.getAuthorId());
             lookResDto.setResUrl(info.getResourcePath());
