@@ -690,17 +690,21 @@ public class CheckMarkFragment extends ContactsListFragment {
                         false, arguments);
             }
         } else if (v.getId() == R.id.contacts_header_left_btn) {
-            if (isFromMOOC || isAnswerTaskOrderQuestion) {
-                getActivity().finish();
-            } else {
-                popStack();
-            }
+            backPress();
         } else if (v.getId() == R.id.ll_course) {
             if (isAnswerTaskOrderQuestion) {
                 openQuestion();
             } else {
                 openCourse(resId,false);
             }
+        }
+    }
+
+    public void backPress(){
+        if (isFromMOOC || isAnswerTaskOrderQuestion) {
+            getActivity().finish();
+        } else {
+            popStack();
         }
     }
 
