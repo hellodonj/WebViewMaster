@@ -336,8 +336,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                             if (!canReadAll() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
-                                ToastUtil.showToast(activity,
-                                        activity.getResources().getString(R.string.buy_course_please));
+                                if(mTeacherVisitor){
+                                    UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
+                                }else{
+                                    ToastUtil.showToast(activity,
+                                            activity.getResources().getString(R.string.buy_course_please));
+                                }
                             }else {
                                 /*if(!UserHelper.isLogin()){
                                     // 前去登录
@@ -419,6 +423,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                         return;
                                     }
+                                }
+
+                                if(mTeacherVisitor){
+                                    UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
+                                    return;
                                 }
 
                                 // 用户从我的授课进来，在没购买的章节 小节点击之前，需要判断是否是家长，如果是家长，判断
@@ -691,9 +700,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     private boolean canReadAll(){
         boolean isCourseDetails = activity.getClass().getSimpleName().equals("CourseDetailsActivity");
-        // 章节购买,不能用这个判断
-        // isCourseDetails = true;
-        if(!isCourseDetails){
+        boolean isClassTeacherDetails = activity.getClass().getSimpleName().equalsIgnoreCase("WatchStudentChapterActivity");
+        if (!isCourseDetails && !isClassTeacherDetails) {
             return true;
         } else {
             boolean isFree = activity.getIntent().getIntExtra("payType", 0) == 0;
