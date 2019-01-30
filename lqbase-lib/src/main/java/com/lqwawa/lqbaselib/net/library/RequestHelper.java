@@ -14,6 +14,7 @@ import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.lqwawa.lqbaselib.views.ContactsLoadingDialog;
 import com.lqwawa.lqresviewlib.R;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -352,8 +353,7 @@ public class RequestHelper {
                 return;
             }
             if (isShowErrorTips()) {
-                Toast.makeText(getContext(), R.string.lqbase_network_error, Toast
-                        .LENGTH_SHORT).show();
+                TipMsgHelper.ShowMsg(getContext(),R.string.lqbase_network_error);
             }
         }
     }
@@ -376,8 +376,7 @@ public class RequestHelper {
             if (getResult() == null || !getResult().isSuccess()) {
                 if (isShowErrorTips()) {
                     if (!TextUtils.isEmpty(getResult().getErrorMessage())) {
-                        Toast.makeText(getContext(), getResult().getErrorMessage(), Toast
-                                .LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getContext(),getResult().getErrorMessage());
                     }
                 }
             }
@@ -404,8 +403,7 @@ public class RequestHelper {
             } else {
                 if (isShowErrorTips()) {
                     if (!TextUtils.isEmpty(getResult().getErrorMessage())) {
-                        Toast.makeText(getContext(), getResult().getErrorMessage(), Toast
-                                .LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getContext(),getResult().getErrorMessage());
                     }
                 }
             }
@@ -431,8 +429,7 @@ public class RequestHelper {
             if (getResult() == null || !getResult().isSuccess()) {
                 if (isShowErrorTips()) {
                     if (!TextUtils.isEmpty(getResult().getMsg())) {
-                        Toast.makeText(getContext(), getResult().getMsg(), Toast
-                                .LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getContext(),getResult().getMsg());
                     }
                 }
             }

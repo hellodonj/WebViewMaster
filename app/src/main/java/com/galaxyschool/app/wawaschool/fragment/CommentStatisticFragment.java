@@ -106,9 +106,8 @@ public class CommentStatisticFragment extends ContactsListFragment {
     }
 
     private void initTimeData() {
-        startTime = DateUtils.getDateStr(new Date(), "yyyy-MM-dd");
-        Date endDate = DateUtils.getNextDate(new Date());
-        endTime = DateUtils.getDateStr(endDate, "yyyy-MM-dd");
+        endTime = DateUtils.getDateStr(new Date(), DateUtils.DATE_PATTERN_yyyy_MM_dd);
+        startTime = DateUtils.getWeekDayString(0,endTime,DateUtils.DATE_PATTERN_yyyy_MM_dd);
         startTimeTextV.setText(startTime);
         endTimeTextV.setText(endTime);
     }

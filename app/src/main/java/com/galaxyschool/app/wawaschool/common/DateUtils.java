@@ -644,4 +644,44 @@ public class DateUtils {
         return endTime;
     }
 
+    /**
+     * 把格式化过的时间转换毫秒值
+     *
+     * @param time      时间
+     * @param formatSrt 时间格式 如 yyyy-MM-dd
+     * @return 当前日期的毫秒值
+     */
+    public static long getMillis(String time, String formatSrt) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat(formatSrt);
+        return format.parse(time).getTime();
+    }
+
+    public static List<Long> getWeekDayList(String date, String formatSrt) {
+        long M24HOURMS = 86400000;
+        // 存放每一天时间的集合
+        List<Long> weekMillisList = new ArrayList<Long>();
+        long dateMill = 0;
+        try {
+            // 获取date的毫秒值
+            dateMill = getMillis(date, formatSrt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // Calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(dateMill);
+        // 本周的第几天
+        int weekNumber = calendar.get(Calendar.DAY_OF_WEEK);
+        // 获取本周一的毫秒值
+        long mondayMill = dateMill - M24HOURMS * (weekNumber - 2);
+
+        for (int i = 0; i < 7; i++) {
+            weekMillisList.add(mondayMill + M24HOURMS * i);
+        }
+        return weekMillisList;
+    }
+
+    public static String getWeekDayString(int position,String date,String format){
+        return format(getWeekDayList(date,format).get(position),format);
+    }
 }

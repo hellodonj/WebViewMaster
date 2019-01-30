@@ -51,7 +51,7 @@ import java.util.Map;
  * 老师作业列表
  */
 
-public class TeacherHomeworkListTabFragment extends ContactsListFragment{
+public class TeacherHomeworkListTabFragment extends ContactsListFragment {
 
     public static final String TAG = TeacherHomeworkListTabFragment.class.getSimpleName();
 
@@ -68,6 +68,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     private UserInfo userInfo;
     private boolean isFromReviewStatistic;//来自点评统计
     private ReviewInfo reviewInfo;
+
     public interface Constants {
         String EXTRA_SCHOOL_ID = "schoolId";
         String EXTRA_CLASS_ID = "classId";
@@ -102,12 +103,12 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
     void initViews() {
 
-        if (getArguments()!=null){
-            roleType=getArguments().getInt(Constants.EXTRA_ROLE_TYPE);
-            classId=getArguments().getString(Constants.EXTRA_CLASS_ID);
-            schoolId=getArguments().getString(Constants.EXTRA_SCHOOL_ID);
+        if (getArguments() != null) {
+            roleType = getArguments().getInt(Constants.EXTRA_ROLE_TYPE);
+            classId = getArguments().getString(Constants.EXTRA_CLASS_ID);
+            schoolId = getArguments().getString(Constants.EXTRA_SCHOOL_ID);
             isHeadMaster = getArguments().getBoolean(Constants.EXTRA_IS_HEAD_MASTER);
-            if (roleType==RoleType.ROLE_TYPE_PARENT) {
+            if (roleType == RoleType.ROLE_TYPE_PARENT) {
                 childId = getArguments().getString("childId");
                 sortStudentId = getArguments().getString("sortStudentId");
                 //孩子数组
@@ -116,14 +117,14 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
             }
             userInfo = (UserInfo) getArguments().getSerializable(UserInfo.class.getSimpleName());
             reviewInfo = (ReviewInfo) getArguments().getSerializable(ReviewInfo.class.getSimpleName());
-            if (reviewInfo != null){
+            if (reviewInfo != null) {
                 isFromReviewStatistic = true;
             }
         }
 
         //头布局
         View headerView = findViewById(R.id.contacts_header_layout);
-        if (headerView != null){
+        if (headerView != null) {
             headerView.setVisibility(View.GONE);
         }
 
@@ -143,7 +144,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
             //作业通用列表
             AdapterViewHelper listViewHelper = new HomeworkResourceAdapterViewHelper(getActivity(),
-                    listView,roleType,getMemeberId(),isHeadMaster) {
+                    listView, roleType, getMemeberId(), isHeadMaster) {
                 @Override
                 public void loadData() {
                     loadCommonData();
@@ -187,14 +188,14 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                     }
                     HomeworkListInfo data = (HomeworkListInfo) holder.data;
                     //不是来自空中课堂和任务的创建者是自己
-                    if (data.getAirClassId() == 0){
+                    if (data.getAirClassId() == 0) {
                         //打开学习任务列表
                         CourseOpenUtils.openStudyTask(getActivity(), data, roleType, isHeadMaster,
                                 getMemeberId(), sortStudentId, childId, userInfo, false);
-                    }else {
+                    } else {
                         accordingAirClassIdAnalysisData(data);
                     }
-                    super.onItemClick(parent,view,position,id);
+                    super.onItemClick(parent, view, position, id);
                 }
 
                 /**
@@ -205,7 +206,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                  */
                 @Override
                 protected void UpdateStudentIsRead(String taskId, String memberId, String taskType) {
-                    updateStudentReadState(taskId,memberId,taskType);
+                    updateStudentReadState(taskId, memberId, taskType);
                 }
 
                 /**
@@ -226,6 +227,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
     /**
      * 更新话题讨论和交作业未读状态
+     *
      * @param taskId
      * @param memberId
      * @param taskType
@@ -233,9 +235,9 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     private void updateStudentReadState(final String taskId, String memberId, String taskType) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TaskId",taskId);
-        params.put("StudentId",memberId);
-        params.put("TaskType",taskType);
+        params.put("TaskId", taskId);
+        params.put("StudentId", memberId);
+        params.put("TaskType", taskType);
         RequestHelper.RequestListener listener =
                 new RequestHelper.RequestDataResultListener<DataModelResult>(
                         getActivity(), DataModelResult.class) {
@@ -250,10 +252,10 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                         } else {
                             //更新小红点
                             isNeedToUpdateSmallRedPoint = true;
-                            if (getCurrAdapterViewHelper().hasData()){
-                                List<HomeworkListInfo> list=getCurrAdapterViewHelper().getData();
-                                for (HomeworkListInfo task: list){
-                                    if (task.getTaskId().equals(taskId)){
+                            if (getCurrAdapterViewHelper().hasData()) {
+                                List<HomeworkListInfo> list = getCurrAdapterViewHelper().getData();
+                                for (HomeworkListInfo task : list) {
+                                    if (task.getTaskId().equals(taskId)) {
                                         task.setStudentIsRead(true);
                                         break;
                                     }
@@ -271,14 +273,15 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
     /**
      * 更新阅读状态
+     *
      * @param taskId
      * @param memberId
      */
     private void updateReadState(final String taskId, String memberId) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TaskId",taskId);
-        params.put("StudentId",memberId);
+        params.put("TaskId", taskId);
+        params.put("StudentId", memberId);
         RequestHelper.RequestListener listener =
                 new RequestHelper.RequestDataResultListener<DataModelResult>(
                         getActivity(), DataModelResult.class) {
@@ -293,15 +296,15 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                         } else {
                             //更新小红点
                             isNeedToUpdateSmallRedPoint = true;
-                            if (getCurrAdapterViewHelper().hasData()){
-                                List<HomeworkListInfo> list=getCurrAdapterViewHelper().getData();
-                                for (HomeworkListInfo task: list){
-                                    if (task.getTaskId().equals(taskId)){
+                            if (getCurrAdapterViewHelper().hasData()) {
+                                List<HomeworkListInfo> list = getCurrAdapterViewHelper().getData();
+                                for (HomeworkListInfo task : list) {
+                                    if (task.getTaskId().equals(taskId)) {
                                         task.setStudentIsRead(true);
                                         break;
                                     }
                                 }
-                            getCurrAdapterViewHelper().update();
+                                getCurrAdapterViewHelper().update();
                             }
                         }
                     }
@@ -314,18 +317,19 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
     /**
      * 删除框Dialog
+     *
      * @param data
      */
     private void showDeleteDialog(final HomeworkListInfo data) {
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(getActivity(), null,
-                getString(R.string.want_to_delete_sb,data.getTaskTitle()),getString(R.string
-                        .cancel) ,
+                getString(R.string.want_to_delete_sb, data.getTaskTitle()), getString(R.string
+                .cancel),
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }, getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -346,14 +350,15 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     }
 
     /**
-     *删除条目
+     * 删除条目
+     *
      * @param data
      */
     private void deleteItem(final HomeworkListInfo data) {
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("TaskCreateId",data.getTaskCreateId());
-        params.put("TaskId",data.getTaskId());
+        params.put("TaskCreateId", data.getTaskCreateId());
+        params.put("TaskId", data.getTaskId());
         RequestHelper.RequestListener listener =
                 new RequestHelper.RequestDataResultListener<DataModelResult>(
                         getActivity(), DataModelResult.class) {
@@ -383,9 +388,9 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     /**
      * 根据直播的id拉取详情页数据分析权限问题
      */
-    private void accordingAirClassIdAnalysisData(final HomeworkListInfo data){
+    private void accordingAirClassIdAnalysisData(final HomeworkListInfo data) {
         Map<String, Object> params = new HashMap<>();
-        params.put("Id",data.getAirClassId());
+        params.put("Id", data.getAirClassId());
         DefaultDataListener listener = new DefaultDataListener<DataModelResult>(
                 DataModelResult.class) {
             @Override
@@ -404,8 +409,8 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                     JSONObject model = jsonObject.optJSONObject("Model");
                     Emcee emcee = com.alibaba.fastjson.JSONObject.parseObject(model.toString(),
                             Emcee.class);
-                    analysisCurrentUserIsReporter(data,emcee);
-                }catch (Exception e){
+                    analysisCurrentUserIsReporter(data, emcee);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -429,9 +434,10 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
 
     /**
      * 分析当前的用户是不是小编的身份
+     *
      * @param model
      */
-    private void analysisCurrentUserIsReporter(HomeworkListInfo data,Emcee model){
+    private void analysisCurrentUserIsReporter(HomeworkListInfo data, Emcee model) {
         if (model != null) {
             List<EmceeList> reporters = model.getEmceeList();
             boolean flag = false;
@@ -486,7 +492,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
      */
     private void loadCommonData() {
         Map<String, Object> params = new HashMap<>();
-        if (isFromReviewStatistic){
+        if (isFromReviewStatistic) {
             params.put("TaskIds", reviewInfo.getTaskIdStr());
             //学生的studentId
             params.put("StudentId", reviewInfo.getStudentId());
@@ -527,26 +533,26 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
         }
         //分页信息
         params.put("Pager", getPageHelper().getFetchingPagerArgs());
+        DefaultPullToRefreshDataListener listener = new DefaultPullToRefreshDataListener<HomeworkListResult>(
+                HomeworkListResult.class) {
+            @Override
+            public void onSuccess(String jsonString) {
+                if (getActivity() == null) {
+                    return;
+                }
+                super.onSuccess(jsonString);
+                if (getResult() == null || !getResult().isSuccess()
+                        || getResult().getModel() == null) {
+                    return;
+                }
 
+                updateResourceListView(getResult());
+            }
+        };
+        listener.setShowErrorTips(false);
         RequestHelper.sendPostRequest(getActivity(),
                 isFromReviewStatistic ? ServerUrl.GET_TEACHER_REVIEW_STATIS_LIST_BASE_URL :
-                        ServerUrl.GET_STUDENT_TASK_LIST_URL, params,
-                new DefaultPullToRefreshDataListener<HomeworkListResult>(
-                        HomeworkListResult.class) {
-                    @Override
-                    public void onSuccess(String jsonString) {
-                        if (getActivity() == null) {
-                            return;
-                        }
-                        super.onSuccess(jsonString);
-                        if (getResult() == null || !getResult().isSuccess()
-                                || getResult().getModel() == null) {
-                            return;
-                        }
-
-                        updateResourceListView(getResult());
-                    }
-                });
+                        ServerUrl.GET_STUDENT_TASK_LIST_URL, params, listener);
 
     }
 
@@ -615,13 +621,13 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //更新讨论
-        if (data == null){
+        if (data == null) {
             //更新小红点
-            if (isNeedToUpdateSmallRedPoint){
+            if (isNeedToUpdateSmallRedPoint) {
                 isNeedToUpdateSmallRedPoint = false;
                 //刷新页面
                 refreshData();
-            }else {
+            } else {
                 if (requestCode == CampusPatrolPickerFragment.REQUEST_CODE_DISCUSSION_TOPIC) {
                     //讨论话题
                     if (TopicDiscussionFragment.hasCommented()) {
@@ -677,7 +683,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                         //需要刷新
                         refreshData();
                     }
-                }else if (requestCode == CampusPatrolPickerFragment
+                } else if (requestCode == CampusPatrolPickerFragment
                         .REQUEST_CODE_ENGLISH_WRITING_COMMIT) {
                     //从英文写作提交作业列表页面返回，是否要刷新页面。
                     if (EnglishWritingCommitFragment.hasCommented()) {
@@ -686,7 +692,7 @@ public class TeacherHomeworkListTabFragment extends ContactsListFragment{
                         //需要刷新
                         refreshData();
                     }
-                    if (EnglishWritingBuildFragment.hasCommented()){
+                    if (EnglishWritingBuildFragment.hasCommented()) {
                         EnglishWritingBuildFragment.setHasCommented(false);
                         refreshData();
                     }
