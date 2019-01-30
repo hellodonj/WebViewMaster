@@ -323,6 +323,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         mTvAction.setVisibility(View.GONE);
 
+        // 班级学程进入参数
+        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
+        if(isResult){
+            mWorkCart.setVisibility(View.VISIBLE);
+        }else{
+            mWorkCart.setVisibility(View.GONE);
+        }
+
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
             // 搜索
             SearchActivity.show(
@@ -342,7 +350,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
         }else{
             mBottomLayout.setVisibility(View.GONE);
-            mBottomActionLayout.setVisibility(View.VISIBLE);
+            if(!isTeacher && UserHelper.isParent(mRoles)){
+                // 家长身份没有添加学程，申请授权，作业库等功能
+                mBottomActionLayout.setVisibility(View.GONE);
+            }else{
+                mBottomActionLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         mAddSubject = (Button) findViewById(R.id.btn_add_subject);

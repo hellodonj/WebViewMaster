@@ -22,6 +22,8 @@ public class ParamResponseVo<T> extends ResponseVo<T> {
     public static class Param extends BaseVo{
 
         private String name;
+        private String dataName;
+        private int dataType;
         private int firstId;
         private int fourthId;
         private int secondId;
@@ -33,6 +35,22 @@ public class ParamResponseVo<T> extends ResponseVo<T> {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getDataName() {
+            return dataName;
+        }
+
+        public void setDataName(String dataName) {
+            this.dataName = dataName;
+        }
+
+        public int getDataType() {
+            return dataType;
+        }
+
+        public void setDataType(int dataType) {
+            this.dataType = dataType;
         }
 
         public int getFirstId() {

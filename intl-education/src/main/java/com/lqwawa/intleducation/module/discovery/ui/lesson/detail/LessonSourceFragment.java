@@ -1,7 +1,10 @@
 package com.lqwawa.intleducation.module.discovery.ui.lesson.detail;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -73,6 +76,7 @@ import java.util.List;
  * **********************************
  */
 public class LessonSourceFragment extends IBaseFragment implements LessonSourceNavigator{
+
     // 选择资源支持的最大数
     private static final int MAX_CHOICE_COUNT = 5;
 
@@ -282,8 +286,9 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void initData() {
+        super.initData();
+        registerBroadcastReceiver();
         getData();
     }
 
@@ -743,6 +748,31 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         return taskName;
     }
 
+
+
+    /**
+     * 注册广播事件,接收事件刷新
+     */
+    protected void registerBroadcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE);//读写单
+        //注册广播
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    /**
+     * 数据刷新广播的处理
+     */
+    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE)) {// 读写单
+                getData();
+            }
+        }
+    };
+
     /**
      * 标志任务已读
      * @param vo 任务实体
@@ -805,6 +835,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         super.onDestroy();
         if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
             mReadWeikeHelper.release();
+        }
+
+
+        if(EmptyUtil.isNotEmpty(getActivity())){
+            getActivity().unregisterReceiver(mBroadcastReceiver);
         }
     }
 }

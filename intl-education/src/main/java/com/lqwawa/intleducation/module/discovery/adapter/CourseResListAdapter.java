@@ -302,7 +302,12 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
             }else{
                 holder.itemRootLay.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+                if(mChoiceMode){
+                    holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
+                }
             }
+
+
         }else{
             holder.itemRootLay.setVisibility(View.GONE);
         }
@@ -405,7 +410,11 @@ public class CourseResListAdapter extends MyBaseAdapter {
             if(mChoiceMode){
                 // 回调出去
                 if (onItemClickListener != null){
-                    onItemClickListener.onItemChoice(position,_convertView);
+                    if(view.getId() == R.id.checkbox){
+                        onItemClickListener.onItemChoice(position,_convertView);
+                    }else{
+                        onItemClickListener.onItemClick(position,_convertView);
+                    }
                 }
             }else{
                 if (onItemClickListener != null){
