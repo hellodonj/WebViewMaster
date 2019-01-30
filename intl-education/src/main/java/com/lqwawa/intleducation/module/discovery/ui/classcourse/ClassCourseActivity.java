@@ -323,6 +323,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         mTvAction.setVisibility(View.GONE);
 
+        // 班级学程进入参数
+        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
+        if(isResult){
+            mWorkCart.setVisibility(View.VISIBLE);
+        }else{
+            mWorkCart.setVisibility(View.GONE);
+        }
+
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
             // 搜索
             SearchActivity.show(
