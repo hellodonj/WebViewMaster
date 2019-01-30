@@ -45,6 +45,7 @@ import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
@@ -166,6 +167,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
         mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag,true);
+        CourseDetailParams courseParams = mSourceParams.getCourseParams();
+        mCourseResListAdapter.setClassTeacher(courseParams.isClassCourseEnter() && courseParams.isClassTeacher());
         // canRead 是否可以查阅资源
         // 试听功能，都可以查阅资源，以及学程馆授权的
         if (canRead) {

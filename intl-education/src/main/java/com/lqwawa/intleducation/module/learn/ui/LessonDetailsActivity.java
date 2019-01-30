@@ -998,6 +998,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             navigator.clearAllResourceState();
         }
         switchAdapterMode(false);
+        refreshCartPoint();
     }
 
     /**

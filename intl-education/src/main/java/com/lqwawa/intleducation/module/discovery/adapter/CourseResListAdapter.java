@@ -52,6 +52,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private boolean isLQCourse;
     private boolean lessonDetail;
     private boolean mChoiceMode;
+    private boolean mClassTeacher;
 
     public CourseResListAdapter(Activity activity, boolean needFlagRead,boolean lessonDetail){
         this(activity,needFlagRead);
@@ -390,7 +391,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.mIvNeedCommit.setVisibility(View.GONE);
         }
 
-        if(mChoiceMode && vo.isAssigned()){
+        if(mClassTeacher && vo.isAssigned()){
             holder.mTvAssgined.setVisibility(View.VISIBLE);
         }else{
             holder.mTvAssgined.setVisibility(View.GONE);
@@ -580,6 +581,16 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
     public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener){
         this.mSelectListener = listener;
+    }
+
+
+
+    /**
+     * @author 是否是班级学程的老师
+     * @param isClassTeacher true 班级学程的老师
+     */
+    public void setClassTeacher(@NonNull boolean isClassTeacher){
+        this.mClassTeacher = isClassTeacher;
     }
 
     /**
