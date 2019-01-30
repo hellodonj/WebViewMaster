@@ -339,6 +339,7 @@
     <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级学程，将清空作业库，现在去发布吗？</string>
     <string name="label_learning_progress">学习进度：</string>
     <string name="label_many_people">%d人</string>
+    <string name="label_assigned">【已布置】</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>

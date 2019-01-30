@@ -390,6 +390,12 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.mIvNeedCommit.setVisibility(View.GONE);
         }
 
+        if(mChoiceMode && vo.isAssigned()){
+            holder.mTvAssgined.setVisibility(View.VISIBLE);
+        }else{
+            holder.mTvAssgined.setVisibility(View.GONE);
+        }
+
         return  convertView;
     }
 
@@ -503,6 +509,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     protected class ViewHolder {
         private CheckBox checkbox;
         private LinearLayout titleLay;
+        private TextView mTvAssgined;
         private TextView titleNameTv;
         private ImageView arrowIv;
         private LinearLayout itemRootLay;
@@ -515,6 +522,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
         public ViewHolder(View view) {
             titleLay = (LinearLayout) view.findViewById(R.id.title_lay);
             titleNameTv = (TextView) view.findViewById(R.id.title_name_tv);
+            mTvAssgined = (TextView) view.findViewById(R.id.tv_assigned);
             arrowIv = (ImageView) view.findViewById(R.id.arrow_iv);
             splitView = (View) view.findViewById(R.id.split_view);
             itemRootLay = (LinearLayout) view.findViewById(R.id.item_root_lay);

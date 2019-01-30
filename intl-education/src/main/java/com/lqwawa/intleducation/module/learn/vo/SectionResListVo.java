@@ -61,6 +61,9 @@ public class SectionResListVo extends BaseVo {
     // V5.12
     private int resPropType;
 
+    // V5.13新添加的字段
+    private boolean assigned;
+
     private SectionTaskOriginVo sectionTaskOriginVo;
 
     // 是否作业库选中
@@ -282,6 +285,14 @@ public class SectionResListVo extends BaseVo {
 
     public void setResProperties(String resProperties) {
         this.resProperties = resProperties;
+    }
+
+    public boolean isAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(boolean assigned) {
+        this.assigned = assigned;
     }
 
     public boolean isActivated() {

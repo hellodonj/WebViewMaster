@@ -425,7 +425,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     }
                                 }
 
-                                if(mTeacherVisitor){
+                                if(mTeacherVisitor && !vo.isBuyed()){
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
                                     return;
                                 }
