@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.codingmaster.slib.S;
 import com.osastudio.apps.BaseFragmentActivity;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import cn.robotpen.model.DevicePoint;
 import cn.robotpen.pen.IRemoteRobotService;
@@ -62,7 +63,7 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
         if(requestCode == 0 && grantResults.length > 1 && grantResults[0] == 0 && grantResults[1] == 0) {
             this.bindRobotPenService();
         } else {
-            Toast.makeText(this, "Require SD read/write permisson!", Toast.LENGTH_LONG).show();
+            TipMsgHelper.ShowMsg(this, "Require SD read/write permisson!");
         }
 
     }

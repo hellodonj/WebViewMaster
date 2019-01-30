@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
@@ -105,8 +106,7 @@ public class DiagnoseActivity extends BaseActivity implements OnClickListener {
 					@Override
 					public void run() {
 						progressDialog.dismiss();
-						Toast.makeText(DiagnoseActivity.this, st,
-								Toast.LENGTH_SHORT).show();
+						TipMsgHelper.ShowMsg(DiagnoseActivity.this, st);
 					}
 				});
 			}
@@ -132,8 +132,7 @@ public class DiagnoseActivity extends BaseActivity implements OnClickListener {
 					@Override
 					public void run() {
 						progressDialog.dismiss();
-						Toast.makeText(DiagnoseActivity.this, st3,
-								Toast.LENGTH_SHORT).show();
+						TipMsgHelper.ShowMsg(DiagnoseActivity.this, st3);
 					}
 				});
 

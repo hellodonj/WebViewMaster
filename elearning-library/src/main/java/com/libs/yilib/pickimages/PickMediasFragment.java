@@ -26,6 +26,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.osastudio.common.utils.LQImageLoader;
 import com.osastudio.common.utils.LogUtils;
+import com.osastudio.common.utils.TipMsgHelper;
 import com.osastudio.common.utils.Utils;
 
 import java.io.File;
@@ -229,13 +230,9 @@ public class PickMediasFragment extends LBaseGridFragment implements
 						mSelectImageInfos.clear();
 					} else {
 						if (mParam.mLimitReachedTips != null) {
-							Toast.makeText(getActivity(),
-									mParam.mLimitReachedTips, Toast.LENGTH_LONG)
-									.show();
+							TipMsgHelper.ShowMsg(getActivity(), mParam.mLimitReachedTips);
 						} else {
-							Toast.makeText(getActivity(),
-									"Can not select more", Toast.LENGTH_LONG)
-									.show();
+							TipMsgHelper.ShowMsg(getActivity(), "Can not select more");
 						}
 						return;
 					}

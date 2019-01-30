@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.lqwawa.tools.BitmapUtils;
 import com.lqwawa.tools.DialogHelper;
+import com.osastudio.common.utils.TipMsgHelper;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -135,7 +136,7 @@ public class BaseShareUtils {
 
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                Toast.makeText(mContext,mContext.getResources().getString(R.string.share_success),Toast.LENGTH_SHORT).show();
+                TipMsgHelper.ShowLMsg(mContext,mContext.getResources().getString(R.string.share_success));
                 if (mContext != null && isFinish) {
                     mContext.finish();
                 }

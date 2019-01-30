@@ -26,6 +26,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.db.InviteMessgeDao;
 import com.galaxyschool.app.wawaschool.chat.domain.InviteMessage;
 import com.galaxyschool.app.wawaschool.chat.domain.InviteMessage.InviteMesageStatus;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.chat.EMClient;
 
 import java.util.List;
@@ -167,7 +168,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 						@Override
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(context, str3 + e.getMessage(), Toast.LENGTH_LONG).show();
+							TipMsgHelper.ShowMsg(context, str3 + e.getMessage());
 						}
 					});
 

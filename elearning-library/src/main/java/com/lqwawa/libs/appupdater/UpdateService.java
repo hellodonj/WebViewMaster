@@ -25,6 +25,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 import com.lqwawa.apps.R;
 import com.osastudio.common.utils.FileProviderHelper;
+import com.osastudio.common.utils.TipMsgHelper;
 import com.osastudio.common.utils.Utils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -161,8 +162,7 @@ public abstract class UpdateService extends Service {
             }
 
             if (forceUpdate) {
-                Toast.makeText(this, R.string.au_already_newest_version,
-                        Toast.LENGTH_SHORT).show();
+                TipMsgHelper.ShowMsg(this, R.string.au_already_newest_version);
             }
             return;
         }

@@ -24,6 +24,7 @@ import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMChatRoomChangeListener;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
@@ -217,9 +218,7 @@ public class PublicChatRoomsActivity extends BaseActivity {
                             isLoading = false;
                             pb.setVisibility(View.INVISIBLE);
                             footLoadingLayout.setVisibility(View.GONE);
-                            Toast.makeText(PublicChatRoomsActivity.this, "加载数据失败，请检查网络或稍后重试",
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                            TipMsgHelper.ShowMsg(PublicChatRoomsActivity.this, "加载数据失败，请检查网络或稍后重试");
                         }
                     });
                 }

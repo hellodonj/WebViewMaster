@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMGroupInfo;
@@ -83,8 +84,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							progressBar.setVisibility(View.INVISIBLE);
-							Toast.makeText(GroupSimpleDetailActivity.this, st1 + e.getMessage(),
-									Toast.LENGTH_LONG).show();
+							TipMsgHelper.ShowMsg(GroupSimpleDetailActivity.this, st1 + e.getMessage());
 						}
 					});
 				}
@@ -119,11 +119,9 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 						public void run() {
 							pd.dismiss();
 							if(group.isMembersOnly())
-								Toast.makeText(GroupSimpleDetailActivity.this, st3, Toast
-										.LENGTH_SHORT).show();
+							TipMsgHelper.ShowMsg(GroupSimpleDetailActivity.this, st3);
 							else
-								Toast.makeText(GroupSimpleDetailActivity.this, st4, Toast
-										.LENGTH_SHORT).show();
+								TipMsgHelper.ShowMsg(GroupSimpleDetailActivity.this, st4);
 							btn_add_group.setEnabled(false);
 						}
 					});
@@ -132,8 +130,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(GroupSimpleDetailActivity.this, st5 + e.getMessage(), Toast
-									.LENGTH_SHORT).show();
+							TipMsgHelper.ShowMsg(GroupSimpleDetailActivity.this, st5 + e.getMessage());
 						}
 					});
 				}

@@ -64,6 +64,7 @@ import com.lqwawa.libs.mediapaper.player.CustomizeParams;
 import com.lqwawa.libs.videorecorder.SimpleVideoRecorder;
 import com.lqwawa.tools.ResourceUtils;
 import com.osastudio.common.utils.PhotoUtils;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -842,8 +843,7 @@ public class MediaPaper extends FrameLayout implements OnClickListener {
 
 			mTitleStr = mTitleEdit.getEditableText().toString();
 			if (TextUtils.isEmpty(mTitleStr)) {
-				Toast.makeText(mContext, R.string.no_title, Toast.LENGTH_LONG)
-						.show();
+				TipMsgHelper.ShowMsg(mContext, R.string.no_title);
 			} else if (mMediaPaperExitHandler != null) {
 				mMediaPaperExitHandler.backAndSend(mPaperManger.isEdit());
 			}
@@ -1237,8 +1237,7 @@ public class MediaPaper extends FrameLayout implements OnClickListener {
 				if (!mbBegin) {
 					mTitleStr = mTitleEdit.getEditableText().toString();
 					if (TextUtils.isEmpty(mTitleStr)) {
-						Toast.makeText(mContext, R.string.no_title,
-								Toast.LENGTH_LONG).show();
+						TipMsgHelper.ShowMsg(mContext, R.string.no_title);
 						mbEditMode = true;
 						mPaperManger.EnableOrDisableAllChild(mbEditMode);
 						return;

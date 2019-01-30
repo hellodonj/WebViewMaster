@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.lqwawa.zbarlib.QRCodeCreator;
 import com.oosic.apps.iemaker.base.BaseUtils;
 import com.oosic.apps.iemaker.base.Md5FileNameGenerator;
@@ -91,10 +92,9 @@ public class QRCodeDialog extends Dialog{
                     if (mSaveQRCodeListener != null) {
                         mSaveQRCodeListener.onSaveQRCodeImage(qrCodeImage);
                     }
-                    Toast.makeText(mContext, mContext.getString(R.string.image_saved_to, qrCodeImage),
-                            Toast.LENGTH_LONG).show();
+                    TipMsgHelper.ShowMsg(mContext, mContext.getString(R.string.image_saved_to));
                 } else {
-                    Toast.makeText(mContext, mContext.getString(R.string.save_failed), Toast.LENGTH_LONG).show();
+                    TipMsgHelper.ShowMsg(mContext, mContext.getString(R.string.save_failed));
                 }
                 QRCodeDialog.this.dismiss();
             }

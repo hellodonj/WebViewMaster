@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 import com.osastudio.common.utils.PhotoUtils;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.File;
 
@@ -178,7 +179,7 @@ public class QRCodeScanFragment extends Fragment implements ZXingScannerView.Res
                     listener.onScanFinish(result);
                 }
             } else {
-                Toast.makeText(getActivity(), R.string.scan_failed, Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(getActivity(), R.string.scan_failed);
             }
         }
     }

@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.osastudio.common.utils.TipMsgHelper;
+
 /**
  * @author mrmedici
  * @time 2018/07/10 14:38
@@ -75,7 +77,7 @@ public class FaceInputFilterEditText extends EditText {
                         CharSequence input = s.subSequence(cursorPos, cursorPos + count);
                         if (containsEmoji(input.toString())) {
                             resetText = true;
-                            Toast.makeText(mContext, com.lqwawa.apps.R.string.input_valid, Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(mContext, com.lqwawa.apps.R.string.input_valid);
                             //是表情符号就将文本还原为输入表情符号之前的内容
                             setText(inputAfterText);
                             CharSequence text = getText();
@@ -109,7 +111,7 @@ public class FaceInputFilterEditText extends EditText {
                     //设置新光标所在的位置
                     Selection.setSelection(editable, selEndIndex);
                     String info = mContext.getString(com.lqwawa.apps.R.string.input_max_len, maxLen);
-                    Toast.makeText(mContext, info, Toast.LENGTH_SHORT).show();
+                    TipMsgHelper.ShowMsg(mContext,info);
                 }
             }
 

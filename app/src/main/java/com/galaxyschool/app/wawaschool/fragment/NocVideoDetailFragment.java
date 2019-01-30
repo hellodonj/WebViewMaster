@@ -106,7 +106,7 @@ public class NocVideoDetailFragment extends ContactsListFragment {
         if (intent != null) {
             mBundle = intent.getBundleExtra(DATA);
             if (mBundle == null) {
-                Toast.makeText(getActivity(), "no data", Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(getActivity(), "no data");
                 return;
             } else {
                 mPlayMode = mBundle.getInt(PlayerParams.KEY_PLAY_MODE, -1);

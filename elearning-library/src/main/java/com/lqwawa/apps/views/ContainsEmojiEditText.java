@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.lqwawa.apps.R;
+import com.osastudio.common.utils.TipMsgHelper;
 
 public class ContainsEmojiEditText extends EditText {
     //输入表情前的光标位置
@@ -74,7 +75,7 @@ public class ContainsEmojiEditText extends EditText {
                         CharSequence input = s.subSequence(cursorPos, cursorPos + count);
                         if (containsEmoji(input.toString())) {
                             resetText = true;
-                            Toast.makeText(mContext, R.string.input_valid, Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(mContext,R.string.input_valid);
                             //是表情符号就将文本还原为输入表情符号之前的内容
                             setText(inputAfterText);
                             CharSequence text = getText();
@@ -109,7 +110,7 @@ public class ContainsEmojiEditText extends EditText {
                     Selection.setSelection(editable, selEndIndex);
                     String info = mContext.getString(R.string.input_max_len, String.valueOf
                             (maxLen));
-                    Toast.makeText(mContext, info, Toast.LENGTH_SHORT).show();
+                    TipMsgHelper.ShowMsg(mContext, info);
                 }
                 if (listener != null) {
                     listener.onTextChange(getText().toString().trim());

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.chat.EMClient;
 
 public class OfflinePushNickActivity extends BaseActivity {
@@ -48,8 +49,7 @@ public class OfflinePushNickActivity extends BaseActivity {
 						if (!updatenick) {
 							runOnUiThread(new Runnable() {
 								public void run() {
-									Toast.makeText(OfflinePushNickActivity.this, "update nickname failed!",
-											Toast.LENGTH_SHORT).show();
+									TipMsgHelper.ShowMsg(OfflinePushNickActivity.this, "update nickname failed!");
 									dialog.dismiss();
 								}
 							});
@@ -57,8 +57,7 @@ public class OfflinePushNickActivity extends BaseActivity {
 							runOnUiThread(new Runnable() {
 								public void run() {
 									dialog.dismiss();
-									Toast.makeText(OfflinePushNickActivity.this, "update nickname success!",
-											Toast.LENGTH_SHORT).show();
+									TipMsgHelper.ShowMsg(OfflinePushNickActivity.this, "update nickname success!");
 								}
 							});
 							finish();

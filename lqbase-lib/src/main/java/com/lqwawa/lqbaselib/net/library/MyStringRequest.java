@@ -13,6 +13,7 @@ import com.duowan.mobile.netroid.NetworkError;
 import com.duowan.mobile.netroid.request.StringRequest;
 import com.lqwawa.lqbaselib.net.Netroid;
 import com.lqwawa.lqresviewlib.R;
+import com.osastudio.common.utils.TipMsgHelper;
 
 public class MyStringRequest extends StringRequest {
 
@@ -66,7 +67,7 @@ public class MyStringRequest extends StringRequest {
 							new Exception("Network not available")));
 				}
 			}
-			Toast.makeText(context, R.string.lqbase_network_unavailable, Toast.LENGTH_SHORT).show();
+			TipMsgHelper.ShowMsg(context, R.string.lqbase_network_unavailable);
 			return;
 		}
 

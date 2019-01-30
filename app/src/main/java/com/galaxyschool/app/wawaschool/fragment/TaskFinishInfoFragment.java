@@ -919,7 +919,7 @@ private void upReadTipEvent(String taskId){
     if(unReadBtnClickState==UNREAD_STATE_0){
         return;
     }else if(unReadBtnClickState==UNREAD_STATE_2){
-        Toast.makeText(getActivity(), getString(R.string.all_read), Toast.LENGTH_SHORT).show();
+        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.all_read));
         return;
     }
     if (task == null) return;
@@ -937,12 +937,10 @@ private void upReadTipEvent(String taskId){
                     super.onSuccess(jsonString);
                     DataModelResult result = getResult();
                     if (result == null || !result.isSuccess()) {
-                        Toast.makeText(getActivity(), getString(R.string.not_read_tip_failure),
-                                Toast.LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.not_read_tip_failure));
                         return;
                     }
-                    Toast.makeText(getActivity(), getString(R.string.not_read_tip_success),
-                            Toast.LENGTH_SHORT).show();
+                    TipMsgHelper.ShowMsg(getActivity(), getString(R.string.not_read_tip_success));
                 }
             });
 
@@ -960,8 +958,7 @@ private void upReadTipEvent(String taskId){
         if (task == null) return;
         String content = commentEditText.getText().toString();
         if (content.length() == 0) {
-            Toast.makeText(getActivity(), getString(R.string.pls_input_comment_content),
-                    Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.pls_input_comment_content));
             return;
         }
         String commentId = null;
@@ -1001,16 +998,12 @@ private void upReadTipEvent(String taskId){
                         super.onSuccess(jsonString);
                         DataModelResult result = getResult();
                         if (result == null || !result.isSuccess()) {
-                            Toast.makeText(getActivity(), getString(R.string.upload_comment_error),
-                                    Toast.LENGTH_SHORT)
-                                    .show();
+                            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.upload_comment_error));
                             return;
                         }
                         //发送评论成功
                         setHasCommented(true);
-                        Toast.makeText(getActivity(), getString(R.string.upload_comment_success),
-                                Toast.LENGTH_SHORT)
-                                .show();
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.upload_comment_success));
                         UIUtils.hideSoftKeyboard1(getActivity(), commentEditText);
                         replaySuccessOrGiveup();
                         loadTaskComments();
@@ -1040,12 +1033,10 @@ private void upReadTipEvent(String taskId){
                         super.onSuccess(jsonString);
                         DataModelResult result = getResult();
                         if (result == null || !result.isSuccess()) {
-                            Toast.makeText(getActivity(), getString(R.string.praise_fail),
-                                    Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.praise_fail));
                             return;
                         }
-                        Toast.makeText(getActivity(), getString(R.string.praise_success),
-                                Toast.LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.praise_success));
                         data.setHasPraised(true);
                         loadTaskComments();
                     }

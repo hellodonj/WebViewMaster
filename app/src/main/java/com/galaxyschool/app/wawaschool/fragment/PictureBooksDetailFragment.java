@@ -1354,7 +1354,7 @@ public class PictureBooksDetailFragment extends ResourceBaseFragment
                                     null);
                         }
                     } else {
-                        Toast.makeText(getActivity(), R.string.no_share_play, Toast.LENGTH_LONG).show();
+                        TipMsgHelper.ShowMsg(getActivity(), R.string.no_share_play);
                     }
                 }
             }
@@ -1610,7 +1610,7 @@ public class PictureBooksDetailFragment extends ResourceBaseFragment
                     playLocalCourse(info, true);
                 }
             } else {
-                Toast.makeText(getActivity(), R.string.no_share_play, Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(getActivity(), R.string.no_share_play);
             }
         }
     }

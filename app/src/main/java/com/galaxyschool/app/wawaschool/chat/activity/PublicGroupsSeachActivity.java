@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
@@ -69,9 +70,9 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                             searchedGroup = null;
                             containerLayout.setVisibility(View.GONE);
                             if(e.getErrorCode() == EMError.GROUP_NOT_EXIST){
-                                Toast.makeText(getApplicationContext(), "不存在的群组", Toast.LENGTH_SHORT).show();
+                                TipMsgHelper.ShowMsg(getApplicationContext(), "不存在的群组");
                             }else{
-                                Toast.makeText(getApplicationContext(), "搜索失败，" + getString(R.string.connect_failuer_toast),Toast.LENGTH_SHORT).show();
+                                TipMsgHelper.ShowMsg(getApplicationContext(), "搜索失败，" + getString(R.string.connect_failuer_toast));
                             }
                         }
                     });

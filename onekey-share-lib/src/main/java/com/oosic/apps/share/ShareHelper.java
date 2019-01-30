@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.osastudio.common.library.LqBase64Helper;
+import com.osastudio.common.utils.TipMsgHelper;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -293,7 +294,7 @@ public class ShareHelper {
     public static boolean isQQInstall(Activity activity) {
         boolean isInstall = isAppInstall(activity, SHARE_MEDIA.QQ);
         if (!isInstall) {
-            Toast.makeText(activity, R.string.install_qq, Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(activity, R.string.install_qq);
         }
         return isInstall;
     }
@@ -301,7 +302,7 @@ public class ShareHelper {
     public static boolean isWeChatInstall(Activity activity) {
         boolean isInstall = isAppInstall(activity, SHARE_MEDIA.WEIXIN);
         if (!isInstall) {
-            Toast.makeText(activity, R.string.install_wechat, Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(activity, R.string.install_wechat);
         }
         return isInstall;
     }

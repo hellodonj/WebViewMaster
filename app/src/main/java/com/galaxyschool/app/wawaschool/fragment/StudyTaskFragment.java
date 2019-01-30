@@ -891,12 +891,10 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                         super.onSuccess(jsonString);
                         DataModelResult result = getResult();
                         if (result == null || !result.isSuccess()) {
-                            Toast.makeText(getActivity(), getString(R.string.delete_request_failed),
-                                    Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.delete_request_failed));
                             return;
                         }
-                        Toast.makeText(getActivity(), getString(R.string.delete_request_success),
-                                Toast.LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.delete_request_success));
                         List<StudyTaskClassInfo> classInfos = (List<StudyTaskClassInfo>)
                                 getCurrListViewHelper().getData();
                         for (StudyTaskClassInfo classInfo1 : classInfos) {

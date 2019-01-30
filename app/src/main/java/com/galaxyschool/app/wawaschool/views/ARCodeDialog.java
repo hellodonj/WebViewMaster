@@ -23,6 +23,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.oosic.apps.iemaker.base.BaseUtils;
 import com.oosic.apps.iemaker.base.Md5FileNameGenerator;
 import com.osastudio.common.utils.LQImageLoader;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.File;
 
@@ -74,10 +75,9 @@ public class ARCodeDialog extends Dialog{
                     if (mSaveQRCodeListener != null) {
                         mSaveQRCodeListener.onSaveQRCodeImage(qrCodeImage);
                     }
-                    Toast.makeText(mContext, mContext.getString(R.string.image_saved_to, qrCodeImage),
-                            Toast.LENGTH_LONG).show();
+                    TipMsgHelper.ShowLMsg(mContext,mContext.getString(R.string.image_saved_to, qrCodeImage));
                 } else {
-                    Toast.makeText(mContext, mContext.getString(R.string.save_failed), Toast.LENGTH_LONG).show();
+                    TipMsgHelper.ShowLMsg(mContext,mContext.getString(R.string.save_failed));
                 }
                 ARCodeDialog.this.dismiss();
             }

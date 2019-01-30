@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.chat.EMClient;
 
 public class AddContactActivity extends BaseActivity{
@@ -120,7 +121,7 @@ public class AddContactActivity extends BaseActivity{
 						public void run() {
 							progressDialog.dismiss();
 							String s1 = getResources().getString(R.string.send_successful);
-							Toast.makeText(getApplicationContext(), s1, Toast.LENGTH_LONG).show();
+							TipMsgHelper.ShowLMsg(getApplicationContext(),s1);
 						}
 					});
 				} catch (final Exception e) {
