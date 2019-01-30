@@ -1371,6 +1371,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             ResourceInfoTag info = listenData.get(i);
             lookResDto = new LookResDto();
             lookResDto.setResId(info.getResId());
+            lookResDto.setCourseResType(info.getResourceType());
             lookResDto.setResTitle(info.getTitle());
             lookResDto.setAuthor(info.getAuthorId());
             lookResDto.setResUrl(info.getResourcePath());
@@ -1397,6 +1398,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             ResourceInfoTag info = readWriteData.get(i);
             lookResDto = new LookResDto();
             lookResDto.setResId(info.getResId());
+            lookResDto.setCourseResType(info.getResourceType());
             lookResDto.setResTitle(info.getTitle());
             lookResDto.setAuthor(info.getAuthorId());
             lookResDto.setResUrl(info.getResourcePath());
@@ -1430,6 +1432,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 LookResDto info = lookResDtos.get(i);
                 infoTag = new ResourceInfoTag();
                 infoTag.setResId(info.getResId());
+                infoTag.setResourceType(info.getCourseResType());
                 infoTag.setTitle(info.getResTitle());
                 infoTag.setAuthorId(info.getAuthor());
                 infoTag.setResourcePath(info.getResUrl());
