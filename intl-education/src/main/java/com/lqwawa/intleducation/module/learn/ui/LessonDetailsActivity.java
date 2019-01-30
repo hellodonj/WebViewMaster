@@ -1058,7 +1058,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             mTvPoint.setText(Integer.toString(count));
-            if(count == 0){
+            if(count == 0 || mBottomLayout.isActivated()){
                 mTvPoint.setVisibility(View.GONE);
             }else{
                 mTvPoint.setVisibility(View.VISIBLE);
