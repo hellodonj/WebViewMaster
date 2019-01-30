@@ -261,8 +261,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
-        if(mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER &&
-                courseParams.isClassCourseEnter()){
+        if(courseParams.isClassCourseEnter() &&
+                courseParams.isClassTeacher()){
             mBottomLayout.setVisibility(View.VISIBLE);
             mCartContainer.setOnClickListener(this);
             mAddCartContainer.setOnClickListener(this);

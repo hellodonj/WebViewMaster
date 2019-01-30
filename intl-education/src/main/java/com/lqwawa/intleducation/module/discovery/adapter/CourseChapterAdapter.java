@@ -982,7 +982,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
      */
     private boolean isClassTeacher(){
         CourseDetailParams params = getCourseDetailParams(null, false);
-        return params.isClassCourseEnter() && isTeacher();
+        return params.isClassCourseEnter() && params.isClassTeacher();
     }
 
     /**

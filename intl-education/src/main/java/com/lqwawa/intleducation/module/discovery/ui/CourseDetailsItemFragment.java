@@ -402,7 +402,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
         CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
-                UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher)
+                courseParams.isClassTeacher()
                 && !mTeacherVisitor){
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
