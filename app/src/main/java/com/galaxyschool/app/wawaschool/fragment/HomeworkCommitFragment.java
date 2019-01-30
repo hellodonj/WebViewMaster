@@ -213,6 +213,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean isHeadMaster;
     private boolean isStudentFinishRetellTask;
     private boolean isStudentFinishEValTask;
+    private boolean isFistIn = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -920,14 +921,31 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     }
 
     public void dealTaskTypeFinishDetail(HomeworkCommitObjectInfo homeworkCommitObjectInfo){
-        if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT){
-            if (roleType == RoleType.ROLE_TYPE_STUDENT){
-                StudentId = getMemeberId();
+        if (TaskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
+                if (roleType == RoleType.ROLE_TYPE_STUDENT) {
+                    StudentId = getMemeberId();
+                }
+                isStudentFinishRetellTask =
+                        StudyTaskUtils.isStudentFinishStudyTask(StudentId, homeworkCommitObjectInfo.getListCommitTask(), false);
+                isStudentFinishEValTask =
+                        StudyTaskUtils.isStudentFinishStudyTask(StudentId, homeworkCommitObjectInfo.getListCommitTask(), true);
+                if (isFistIn) {
+                    isFistIn = false;
+                    //没有完成给于toast提示
+                    if (studyTask.getRepeatCourseCompletionMode() == 1 && propertiesType == 1){
+                        if (!isStudentFinishRetellTask){
+                            TipMsgHelper.ShowMsg(getActivity(),
+                                    getString(R.string.str_completion_mode) + getString(R.string.retell_course_new));
+                        }
+                    } else if (studyTask.getRepeatCourseCompletionMode() == 2){
+                        if (!isStudentFinishRetellTask || !isStudentFinishEValTask){
+                            TipMsgHelper.ShowMsg(getActivity(),
+                                    getString(R.string.str_completion_mode) + getString(R.string.str_task_type_combination));
+                        }
+                    }
+                }
             }
-            isStudentFinishRetellTask =
-                    StudyTaskUtils.isStudentFinishStudyTask(StudentId,homeworkCommitObjectInfo.getListCommitTask(),false);
-            isStudentFinishEValTask =
-                    StudyTaskUtils.isStudentFinishStudyTask(StudentId,homeworkCommitObjectInfo.getListCommitTask(),true);
         }
     }
 

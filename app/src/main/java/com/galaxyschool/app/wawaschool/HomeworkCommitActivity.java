@@ -85,8 +85,15 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
     public void onBackPressed() {
         if (fragment instanceof HomeworkCommitFragment) {
             HomeworkCommitFragment homeworkCommitFragment = (HomeworkCommitFragment) fragment;
-            homeworkCommitFragment.onBackPress();
-            return;
+            if (homeworkCommitFragment.isVisible()) {
+                homeworkCommitFragment.onBackPress();
+                return;
+            }
+            CheckMarkFragment checkMarkFragment = (CheckMarkFragment) getSupportFragmentManager().findFragmentByTag(CheckMarkFragment.TAG);
+            if (checkMarkFragment != null && checkMarkFragment.isVisible()) {
+                checkMarkFragment.backPress();
+                return;
+            }
         }
         super.onBackPressed();
     }

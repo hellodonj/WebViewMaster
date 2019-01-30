@@ -142,6 +142,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     public void onResume() {
         super.onResume();
         if (CampusPatrolUtils.hasStudyTaskAssigned()) {
+            if (isFromMoocIntroTask) {
+                CampusPatrolUtils.setHasStudyTaskAssigned(false);
+            }
             //布置作业完成，需要刷新页面。
             finish();
         }

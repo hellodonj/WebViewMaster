@@ -480,25 +480,6 @@ public class TaskRequirementFragment extends ContactsListFragment{
                 String completionModeString  = getString(R.string.str_completion_mode) + "\n" + modeTips;
                 completionModelView.setText(completionModeString);
                 completionModelView.setVisibility(View.VISIBLE);
-                if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
-                    if (roleType == RoleType.ROLE_TYPE_STUDENT){
-                        //学生自己
-                       studentId = getMemeberId();
-                    }
-                    boolean isStudentFinishTask = false;
-                    boolean isRetellTaskFinish = StudyTaskUtils.isStudentFinishStudyTask(studentId,
-                            homeworkCommitObjectInfo.getListCommitTask(),false);
-                    if (completionMode == 1){
-                        isStudentFinishTask = isRetellTaskFinish;
-                    } else {
-                        isStudentFinishTask = isRetellTaskFinish && StudyTaskUtils.isStudentFinishStudyTask(studentId,
-                                homeworkCommitObjectInfo.getListCommitTask(),true);
-                    }
-                    if (!isStudentFinishTask){
-                        //没有完成给于toast提示
-                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.str_completion_mode) + modeTips);
-                    }
-                }
             }
             //任务要求
             contentTextView.setText(taskRequirements);
