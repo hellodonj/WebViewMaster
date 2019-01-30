@@ -41,6 +41,7 @@ import android.widget.*;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.utils.CommonUtils;
 import com.galaxyschool.app.wawaschool.chat.video.util.Utils;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 
@@ -224,7 +225,7 @@ public class RecorderVideoActivity extends BaseActivity implements
 			// start recording
 		    if(!startRecording())
 		        return;
-			Toast.makeText(this, R.string.The_video_to_start, Toast.LENGTH_SHORT).show();
+			TipMsgHelper.ShowMsg(this, R.string.The_video_to_start);
 			btn_switch.setVisibility(View.INVISIBLE);
 			btnStart.setVisibility(View.INVISIBLE);
 			btnStop.setVisibility(View.VISIBLE);
@@ -530,9 +531,8 @@ public class RecorderVideoActivity extends BaseActivity implements
 	public void onError(MediaRecorder mr, int what, int extra) {
 		EMLog.e("video", "recording onError:");
 		stopRecording();
-		Toast.makeText(this,
-				"Recording error has occurred. Stopping the recording",
-				Toast.LENGTH_SHORT).show();
+		TipMsgHelper.ShowMsg(this,
+				"Recording error has occurred. Stopping the recording");
 
 	}
 

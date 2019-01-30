@@ -16,6 +16,7 @@ import com.lecloud.skin.videoview.vod.UIVodVideoView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.lqresviewlib.leplay.utils.VideoLayoutParams;
 import com.osastudio.apps.BaseActivity;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class PlayActivity extends BaseActivity {
         if (intent != null) {
             mBundle = intent.getBundleExtra(DATA);
             if (mBundle == null) {
-                Toast.makeText(this, "no data", Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(this, "no data");
                 return;
             } else {
                 mPlayMode = mBundle.getInt(PlayerParams.KEY_PLAY_MODE, -1);

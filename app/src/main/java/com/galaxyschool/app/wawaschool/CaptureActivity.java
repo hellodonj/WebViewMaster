@@ -187,7 +187,7 @@ public class CaptureActivity extends ScanActivity {
                 }
             }
         } else {
-            Toast.makeText(CaptureActivity.this, R.string.scanning_failed, Toast.LENGTH_LONG).show();
+            TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.scanning_failed);
         }
     }
 

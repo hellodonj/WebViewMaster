@@ -34,6 +34,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommentListVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommentVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -236,8 +237,7 @@ public class TaskCommentListFragment extends MyBaseFragment{
             content = commentEditText.getText().toString();
         }
         if (content.length() == 0) {
-            Toast.makeText(getActivity(), getString(R.string.pls_input_comment_content),
-                    Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.pls_input_comment_content));
             return;
         }
         RequestVo requestVo = new RequestVo();

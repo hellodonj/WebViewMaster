@@ -36,6 +36,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.osastudio.common.utils.TipMsgHelper;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -212,8 +214,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
                 robotService.connectDevice(address);//通过监听获取连接状态
                 showProgress(getResources().getString(R.string.connecting));
             } else {
-                Toast.makeText(BleConnectActivity.this,
-                        getResources().getString(R.string.disconnect_device_please), Toast.LENGTH_SHORT).show();
+                TipMsgHelper.ShowMsg(BleConnectActivity.this,
+                        getResources().getString(R.string.disconnect_device_please));
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -339,9 +341,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
                                 BleConnectActivity.this.robotDevice = robotDevice;
                                 if (robotDevice.getDeviceType() > 0) {//针对固件bug进行解决 STATE_DEVICE_INFO 返回两次首次无设备信息第二次会上报设备信息
                                     if (robotDevice.getDeviceType() == DeviceType.P1.getValue()) { //如果连接上的是usb设备
-                                        Toast.makeText(BleConnectActivity.this,
-                                                getResources().getString(R.string.disconnect_usb_device_please),
-                                                Toast.LENGTH_SHORT).show();
+                                        TipMsgHelper.ShowMsg(BleConnectActivity.this,
+                                                getResources().getString(R.string.disconnect_usb_device_please));
                                     } else {//如果连接的是蓝牙设备
                                         saveConnectInfo(robotDevice, robotDevice.getName(), robotDevice.getAddress());
                                         connectingAddress = robotDevice.getAddress();
@@ -369,9 +370,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
                         break;
                     case RemoteState.STATE_ENTER_SYNC_MODE_SUCCESS://笔记同步成功
                         closeProgress();
-                        Toast.makeText(BleConnectActivity.this,
-                                getResources().getString(R.string.disconnect_usb_device_please),
-                                Toast.LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(BleConnectActivity.this,
+                                getResources().getString(R.string.disconnect_usb_device_please));
                         break;
                     case RemoteState.STATE_ERROR:
                         closeProgress();
@@ -421,7 +421,7 @@ public class BleConnectActivity extends PenBaseConnectActivity
             public void onUpdateFirmwareFinished() {
                 updateFirmwareButton.setVisibility(View.GONE);
                 closeProgress();
-                Toast.makeText(BleConnectActivity.this, "固件升级完毕", Toast.LENGTH_SHORT).show();
+                TipMsgHelper.ShowMsg(BleConnectActivity.this, "固件升级完毕");
             }
 
             @Override
@@ -467,9 +467,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
                     // 通过监听获取连接状态
                     robotService.connectDevice(deviceEntity.getAddress());
                 } else {
-                    Toast.makeText(BleConnectActivity.this,
-                            getResources().getString(R.string.disconnect_device_please),
-                            Toast.LENGTH_SHORT).show();
+                    TipMsgHelper.ShowMsg(BleConnectActivity.this,
+                            getResources().getString(R.string.disconnect_device_please));
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -552,9 +551,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
 
     private void scanDevice() {
         if (bluetoothAdapter == null) {
-            Toast.makeText(this,
-                    getResources().getString(R.string.your_device_not_support_bt),
-                    Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(this,
+                    getResources().getString(R.string.your_device_not_support_bt));
             finish();
         } else if (!bluetoothAdapter.isEnabled()) {//蓝牙未开启
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -587,8 +585,7 @@ public class BleConnectActivity extends PenBaseConnectActivity
             scanDevice();
         } else {
             //定位服务没打开，给提示退出页面
-            Toast.makeText(BleConnectActivity.this, R.string.pls_open_location_service,
-                    Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(BleConnectActivity.this, R.string.pls_open_location_service);
             finish();
         }
     }
@@ -747,9 +744,8 @@ public class BleConnectActivity extends PenBaseConnectActivity
                     }
                     break;
                 case UPDATEFAILURE:
-                    Toast.makeText(BleConnectActivity.this,
-                            getResources().getString(R.string.update_failed),
-                            Toast.LENGTH_SHORT).show();
+                    TipMsgHelper.ShowMsg(BleConnectActivity.this,
+                            getResources().getString(R.string.update_failed));
                     break;
                 default:
                     break;

@@ -393,7 +393,7 @@ public class TaskOrderDetailFragment extends ContactsListFragment
             if (shareManager.getSharedDevices() != null) {
                 ActivityUtils.openOnlineOnePage(getActivity(), newResourceInfo, true, null);
             } else {
-                Toast.makeText(getActivity(), R.string.no_share_play, Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(getActivity(), R.string.no_share_play);
             }
         }
     }

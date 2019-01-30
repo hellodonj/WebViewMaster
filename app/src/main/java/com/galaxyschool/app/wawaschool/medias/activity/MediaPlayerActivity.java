@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.CollectionHelper;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 
 import static com.galaxyschool.app.wawaschool.medias.activity.VodPlayActivity.KEY_COLLECTIONSCHOOLID;
@@ -52,7 +53,7 @@ public class MediaPlayerActivity extends com.libs.mediaplay.MediaPlayerActivity 
         if (intent != null) {
            Bundle mBundle = intent.getBundleExtra(DATA);
             if (mBundle == null) {
-                Toast.makeText(this, "no data", Toast.LENGTH_LONG).show();
+                TipMsgHelper.ShowMsg(this, "no data");
             } else {
                 mResId = mBundle.getString(KEY_RESID);
                 mResourceType = mBundle.getInt(KEY_RESOURCETYPE,-1);

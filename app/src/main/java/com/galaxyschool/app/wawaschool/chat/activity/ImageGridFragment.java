@@ -24,6 +24,7 @@ import com.galaxyschool.app.wawaschool.chat.video.util.ImageCache;
 import com.galaxyschool.app.wawaschool.chat.video.util.ImageResizer;
 import com.galaxyschool.app.wawaschool.chat.video.util.Utils;
 import com.galaxyschool.app.wawaschool.chat.widget.RecyclingImageView;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.util.DateUtils;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.TextFormater;
@@ -166,7 +167,7 @@ public class ImageGridFragment extends Fragment implements OnItemClickListener {
 			// 限制大小不能超过10M
 			if (vEntty.size > 1024 * 1024 * 10) {
 				String st = getResources().getString(R.string.temporary_does_not);
-				Toast.makeText(getActivity(), st, Toast.LENGTH_SHORT).show();
+				TipMsgHelper.ShowMsg(getActivity(), st);
 				return;
 			}
 			Intent intent=getActivity().getIntent().putExtra("path", vEntty.filePath).putExtra("dur", vEntty.duration);

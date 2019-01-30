@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.*;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -94,7 +95,7 @@ public class GroupBlacklistActivity extends BaseActivity {
 			e.printStackTrace();
 			runOnUiThread(new Runnable() {
 				public void run() {
-					Toast.makeText(getApplicationContext(), st2, Toast.LENGTH_SHORT).show();
+					TipMsgHelper.ShowMsg(getApplicationContext(), st2);
 				}
 			});
 		}

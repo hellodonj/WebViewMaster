@@ -13,6 +13,8 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,7 +92,7 @@ public class ExampleUtil {
 			@Override
 			public void run() {
 				Looper.prepare();
-				Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+                TipMsgHelper.ShowMsg(context, toast);
 				Looper.loop();
 			}
 		}).start();

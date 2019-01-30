@@ -12,6 +12,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.galaxyschool.app.wawaschool.chat.Constant;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMCallManager;
@@ -176,7 +177,7 @@ public class CallActivity extends BaseActivity {
                             } else if (e.getErrorCode() == EMError.NETWORK_ERROR) {
                                 st2 = getResources().getString(R.string.can_not_connect_chat_server_connection);
                             }
-                            Toast.makeText(CallActivity.this, st2, Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(CallActivity.this, st2);
                             finish();
                         }
                     });

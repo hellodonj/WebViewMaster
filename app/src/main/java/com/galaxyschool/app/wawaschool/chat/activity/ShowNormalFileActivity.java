@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMFileMessageBody;
@@ -62,7 +63,7 @@ public class ShowNormalFileActivity extends BaseActivity {
                                 if(file != null && file.exists()&&file.isFile())
                                     file.delete();
                                 String str4 = getResources().getString(R.string.Failed_to_download_file);
-                                Toast.makeText(ShowNormalFileActivity.this, str4 + msg, Toast.LENGTH_SHORT).show();
+                                TipMsgHelper.ShowMsg(ShowNormalFileActivity.this, str4 + msg);
                                 finish();
                             }
                         });

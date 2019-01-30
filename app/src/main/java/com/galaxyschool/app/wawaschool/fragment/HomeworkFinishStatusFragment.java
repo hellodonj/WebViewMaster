@@ -15,6 +15,7 @@ import com.galaxyschool.app.wawaschool.HomeworkFinishStatusActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.StudentFinishedHomeworkListActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.*;
@@ -533,7 +534,7 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
      */
     private void upReadTipEvent(String taskId) {
         if (isAllFinish) {
-            Toast.makeText(getActivity(), getString(R.string.all_read), Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.all_read));
             return;
         }
         if (TextUtils.isEmpty(taskId)) {
@@ -553,12 +554,10 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                         super.onSuccess(jsonString);
                         DataModelResult result = getResult();
                         if (result == null || !result.isSuccess()) {
-                            Toast.makeText(getActivity(), getString(R.string.not_read_tip_failure),
-                                    Toast.LENGTH_SHORT).show();
+                            TipMsgHelper.ShowMsg(getActivity(), getString(R.string.not_read_tip_failure));
                             return;
                         }
-                        Toast.makeText(getActivity(), getString(R.string.not_read_tip_success),
-                                Toast.LENGTH_SHORT).show();
+                        TipMsgHelper.ShowMsg(getActivity(), getString(R.string.not_read_tip_success));
                     }
                 });
     }

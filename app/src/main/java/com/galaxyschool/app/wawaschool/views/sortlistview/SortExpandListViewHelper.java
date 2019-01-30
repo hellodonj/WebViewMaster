@@ -12,6 +12,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ExpandListViewHelper;
 import com.galaxyschool.app.wawaschool.views.sortlistview.SideBar.OnTouchingLetterChangedListener;
 
@@ -127,8 +129,8 @@ public abstract class SortExpandListViewHelper extends ExpandListViewHelper {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				Toast.makeText(context, ((SortModel) sortAdapter.getGroup(
-						position)).getName(), Toast.LENGTH_SHORT).show();
+				TipMsgHelper.ShowMsg(context, ((SortModel) sortAdapter.getGroup(
+						position)).getName());
                 onItemClick(parent, view, position, id);
 			}
 		});

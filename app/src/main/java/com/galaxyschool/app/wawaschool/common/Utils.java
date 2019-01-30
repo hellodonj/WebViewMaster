@@ -1071,7 +1071,7 @@ public class Utils {
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(title);
         if (m.find()) {
-            Toast.makeText(activity, R.string.invalid_characters, Toast.LENGTH_LONG).show();
+            TipMsgHelper.ShowMsg(activity, R.string.invalid_characters);
             return false;
         }
         return true;
@@ -1674,7 +1674,7 @@ public class Utils {
             for (int i = 0; i < len; i++) {
                 char codePoint = source.charAt(i);
                 if (!isEmojiCharacter(codePoint)) { //如果不能匹配,则该字符是Emoji表情
-                    Toast.makeText(activity, R.string.input_valid, Toast.LENGTH_LONG).show();
+                    TipMsgHelper.ShowMsg(activity, R.string.input_valid);
                     return true;
                 }
             }

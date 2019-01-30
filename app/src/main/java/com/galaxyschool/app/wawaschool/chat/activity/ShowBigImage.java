@@ -30,6 +30,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.task.LoadLocalBigImgTask;
 import com.galaxyschool.app.wawaschool.chat.utils.ImageCache;
 import com.galaxyschool.app.wawaschool.chat.widget.photoview.PhotoView;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
@@ -271,10 +272,10 @@ public class ShowBigImage extends BaseActivity {
 				File dstFile = new File(getSaveFilePath(filename));
 				boolean result = saveFile(srcFile, dstFile);
 				if (result) {
-					Toast.makeText(this, getString(R.string.image_saved_to,
-							dstFile.getAbsolutePath()), Toast.LENGTH_LONG).show();
+					TipMsgHelper.ShowMsg(this, getString(R.string.image_saved_to,
+							dstFile.getAbsolutePath()));
 				} else {
-					Toast.makeText(this, getString(R.string.save_failed), Toast.LENGTH_SHORT).show();
+					TipMsgHelper.ShowMsg(this, getString(R.string.save_failed));
 				}
             }
         }

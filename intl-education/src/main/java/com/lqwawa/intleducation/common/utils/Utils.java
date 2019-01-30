@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.common.slide.CourseType;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -246,7 +247,7 @@ public class Utils {
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(str);
         if( m.find()){
-            Toast.makeText(activity, R.string.invalid_characters, Toast.LENGTH_LONG).show();
+            TipMsgHelper.ShowMsg(activity, R.string.invalid_characters);
             return false;
         }
         return true;

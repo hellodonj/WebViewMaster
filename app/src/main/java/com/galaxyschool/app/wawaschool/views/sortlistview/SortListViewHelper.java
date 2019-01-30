@@ -15,6 +15,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.views.sortlistview.SideBar.OnTouchingLetterChangedListener;
 
@@ -132,8 +134,8 @@ public abstract class SortListViewHelper extends AdapterViewHelper {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 									int position, long id) {
-				Toast.makeText(context, ((SortModel) sortAdapter.getItem(
-						position)).getName(), Toast.LENGTH_SHORT).show();
+				TipMsgHelper.ShowMsg(context, ((SortModel) sortAdapter.getItem(
+						position)).getName());
                 onItemClick(parent, view, position, id);
 			}
 		});

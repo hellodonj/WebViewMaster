@@ -33,6 +33,8 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 //import com.lqwawa.intleducation.module.chat.db.DemoDBManager;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
+import com.osastudio.common.utils.TipMsgHelper;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -141,12 +143,12 @@ public class LoginActivity extends MyBaseActivity implements View.OnClickListene
         String passwordString = editTextPassword.getText().toString();
 
         if (TextUtils.isEmpty(accountString)) {
-            Toast.makeText(LoginActivity.this, "账号不能为空!", Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(LoginActivity.this, "账号不能为空!");
             return;
         }
 
         if (TextUtils.isEmpty(passwordString)) {
-            Toast.makeText(LoginActivity.this, "请输入密码!", Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(LoginActivity.this, "请输入密码!");
             return;
         }
 
