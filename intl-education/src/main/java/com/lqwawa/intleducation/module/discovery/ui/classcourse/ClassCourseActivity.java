@@ -350,7 +350,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
         }else{
             mBottomLayout.setVisibility(View.GONE);
-            mBottomActionLayout.setVisibility(View.VISIBLE);
+            if(UserHelper.isParent(mRoles)){
+                // 家长身份没有添加学程，申请授权，作业库等功能
+                mBottomActionLayout.setVisibility(View.GONE);
+            }else{
+                mBottomActionLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         mAddSubject = (Button) findViewById(R.id.btn_add_subject);
