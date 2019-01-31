@@ -52,6 +52,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private boolean isLQCourse;
     private boolean lessonDetail;
     private boolean mChoiceMode;
+    private boolean mClassTeacher;
 
     public CourseResListAdapter(Activity activity, boolean needFlagRead,boolean lessonDetail){
         this(activity,needFlagRead);
@@ -293,6 +294,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             if(mChoiceMode){
                 holder.checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
                 holder.checkbox.setActivated(vo.isActivated());
+                holder.checkbox.setChecked(false);
             }else{
                 holder.checkbox.setVisibility(isCourseSelect? View.VISIBLE : View.GONE);
                 holder.checkbox.setChecked(vo.isChecked());
@@ -388,6 +390,12 @@ public class CourseResListAdapter extends MyBaseAdapter {
             }
         }else{
             holder.mIvNeedCommit.setVisibility(View.GONE);
+        }
+
+        if(mClassTeacher && vo.isAssigned()){
+            holder.mTvAssgined.setVisibility(View.VISIBLE);
+        }else{
+            holder.mTvAssgined.setVisibility(View.GONE);
         }
 
         return  convertView;
@@ -503,6 +511,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     protected class ViewHolder {
         private CheckBox checkbox;
         private LinearLayout titleLay;
+        private TextView mTvAssgined;
         private TextView titleNameTv;
         private ImageView arrowIv;
         private LinearLayout itemRootLay;
@@ -515,6 +524,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
         public ViewHolder(View view) {
             titleLay = (LinearLayout) view.findViewById(R.id.title_lay);
             titleNameTv = (TextView) view.findViewById(R.id.title_name_tv);
+            mTvAssgined = (TextView) view.findViewById(R.id.tv_assigned);
             arrowIv = (ImageView) view.findViewById(R.id.arrow_iv);
             splitView = (View) view.findViewById(R.id.split_view);
             itemRootLay = (LinearLayout) view.findViewById(R.id.item_root_lay);
@@ -572,6 +582,16 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
     public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener){
         this.mSelectListener = listener;
+    }
+
+
+
+    /**
+     * @author 是否是班级学程的老师
+     * @param isClassTeacher true 班级学程的老师
+     */
+    public void setClassTeacher(@NonNull boolean isClassTeacher){
+        this.mClassTeacher = isClassTeacher;
     }
 
     /**

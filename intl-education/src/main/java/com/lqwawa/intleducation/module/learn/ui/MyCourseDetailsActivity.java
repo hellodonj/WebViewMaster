@@ -1363,12 +1363,12 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             String description = courseVo.getOrganName();
             titleBuilder.append(UIUtil.getString(R.string.label_share_course_title));
             titleBuilder.append(title);
-
-            String teachers = courseVo.getTeachersName();
+            // V5.13取消老师信息的分享
+            /*String teachers = courseVo.getTeachersName();
             if(EmptyUtil.isNotEmpty(teachers) && teachers.length() > 7){
                 teachers = teachers.substring(0,7) + "...";
             }
-            descriptionBuilder.append(teachers + "\n");
+            descriptionBuilder.append(teachers + "\n");*/
             if(courseVo.getPrice() == 0){
                 descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
             }else{

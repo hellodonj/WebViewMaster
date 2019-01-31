@@ -45,6 +45,7 @@ import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
@@ -147,7 +148,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
 
-        if(mTaskType == 1 || mTaskType == 2){
+        if(mTaskType == 1 || mTaskType == 4 || mTaskType == 2){
             // 看课件  或者是  复述课件(没有复述课件权限的)
             mReadWeikeHelper = new ReadWeikeHelper(getActivity());
         }
@@ -166,6 +167,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
         mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag,true);
+        CourseDetailParams courseParams = mSourceParams.getCourseParams();
+        mCourseResListAdapter.setClassTeacher(courseParams.isClassCourseEnter() && courseParams.isClassTeacher());
         // canRead 是否可以查阅资源
         // 试听功能，都可以查阅资源，以及学程馆授权的
         if (canRead) {
@@ -184,8 +187,9 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
                     boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER,false);
 
-                    if (resVo.getTaskType() == 1) {
+                    if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
                         // 看课件
+                        // V5.14 换成看课本,视频课
                         mReadWeikeHelper.readWeike(resVo);
 
                         if((needFlag && !mSourceParams.isParentRole())){
@@ -267,11 +271,15 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         return;
                     }
 
-                    // 判断是否已经超过五个选择了
-                    int count = takeChoiceResourceCount();
-                    if(count >= MAX_CHOICE_COUNT){
-                        UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
-                        return;
+                    if(!item.isActivated()){
+                        // 点击的当前条目不是选择的状态,需判断上限
+                        // 判断是否已经超过五个选择了
+                        int count = takeChoiceResourceCount();
+                        if(count >= MAX_CHOICE_COUNT){
+                            UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
+                            mCourseResListAdapter.notifyDataSetChanged();
+                            return;
+                        }
                     }
 
                     item.setActivated(!item.isActivated());
@@ -420,6 +428,25 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }
 
                         if(mSectionDetailsVo.getTaskList().get(2).getTaskType() == mTaskType){
+                            mCourseResListAdapter.addData(voList);
+                        }
+
+                    }
+                }
+
+                if (mSectionDetailsVo.getTaskList().size() > 3) {
+                    if (mSectionDetailsVo.getTaskList().get(3).getData() != null) {
+                        // this.textViewLessonIntroduction.setText("" + sectionDetailsVo.getIntroduction());
+                        List<SectionResListVo> voList = mSectionDetailsVo.getTaskList().get(3).getData();
+                        if (voList.size() > 0) {
+                            voList.get(0).setIsTitle(true);
+                        }
+                        for (SectionResListVo vo : voList) {
+                            vo.setTaskName(getTaskName(3));
+                            vo.setTaskType(mSectionDetailsVo.getTaskList().get(3).getTaskType());
+                        }
+
+                        if(mSectionDetailsVo.getTaskList().get(3).getTaskType() == mTaskType){
                             mCourseResListAdapter.addData(voList);
                         }
 
@@ -736,15 +763,15 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
     @NonNull
     private String getTaskName(int i) {
-        String taskName = "";
-        int taskType = mSectionDetailsVo.getTaskList().get(i).getTaskType();
+        String taskName = mSectionDetailsVo.getTaskList().get(i).getTaskName();
+        /*int taskType = mSectionDetailsVo.getTaskList().get(i).getTaskType();
         if (taskType == 1) {//看课件
             taskName = getString(R.string.lq_watch_course);
         } else if (taskType == 2) {//复述课件
             taskName = getResources().getString(R.string.retell_course);
         } else if (taskType == 3) {//任务单
             taskName = getResources().getString(R.string.coursetask);
-        }
+        }*/
         return taskName;
     }
 

@@ -12,6 +12,7 @@ import android.widget.ExpandableListView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
+import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +58,7 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     private static final String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
 
 
+    private PullToRefreshView mRefreshLayout;
     private ExpandableListView mExpandableView;
     private MyCourseConfigAdapter mConfigAdapter;
     private TabCourseEmptyView mTabEmptyLayout;
@@ -99,6 +102,17 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     @Override
     protected void initWidget() {
         super.initWidget();
+        mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
+        mRefreshLayout.setLoadMoreEnable(false);
+        mRefreshLayout.setLastUpdated(new Date().toLocaleString());
+
+        mRefreshLayout.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(PullToRefreshView view) {
+                mPresenter.requestStudentConfigData(mCurMemberId);
+            }
+        });
+
         mExpandableView = (ExpandableListView) mRootView.findViewById(R.id.expandable_view);
         mTabEmptyLayout = (TabCourseEmptyView) mRootView.findViewById(R.id.tab_empty_layout);
         mTabEmptyLayout.setSubmitListener(new View.OnClickListener() {
@@ -136,6 +150,7 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
 
     @Override
     public void updateStudentConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+        mRefreshLayout.onHeaderRefreshComplete();
         if(EmptyUtil.isEmpty(entities)){
             mExpandableView.setVisibility(View.GONE);
             mTabEmptyLayout.setVisibility(View.VISIBLE);

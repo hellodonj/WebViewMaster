@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <ExpandableListView
-        android:id="@+id/expandable_view"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:groupIndicator="@null"
         android:scrollbars="none">
 
-    </ExpandableListView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView
-        android:id="@+id/tab_empty_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:tab_empty_text_remind="@string/label_empty_content"
-        app:tab_empty_text_action="@string/label_self_study_class"
-        android:visibility="gone">
+            <com.lqwawa.intleducation.base.widgets.NestedExpandableListView
+                android:id="@+id/expandable_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:groupIndicator="@null"
+                android:scrollbars="none">
 
-    </com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView>
+            </com.lqwawa.intleducation.base.widgets.NestedExpandableListView>
 
-</FrameLayout>
+            <com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView
+                android:id="@+id/tab_empty_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:tab_empty_text_remind="@string/label_empty_content"
+                app:tab_empty_text_action="@string/label_self_study_class"
+                android:visibility="gone">
+
+            </com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView>
+
+        </FrameLayout>
+
+    </ScrollView>
+
+</com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>

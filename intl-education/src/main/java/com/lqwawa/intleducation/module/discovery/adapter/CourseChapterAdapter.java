@@ -305,7 +305,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
                         holder.mTvLessonState.setVisibility(View.GONE);
                     }else{
-                        if(vo.isBuyed()){
+                        if(vo.isBuyed() || mTeacherVisitor){
                             holder.mTvLessonState.setVisibility(View.VISIBLE);
                         }else{
                             holder.mTvLessonState.setVisibility(View.GONE);
@@ -425,7 +425,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     }
                                 }
 
-                                if(mTeacherVisitor){
+                                if(mTeacherVisitor && !vo.isBuyed()){
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
                                     return;
                                 }
@@ -478,7 +478,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             if(TextUtils.equals(activity.getClass().getSimpleName(),"MyCourseDetailsActivity") ||
                     TextUtils.equals(activity.getClass().getSimpleName(),"WatchStudentChapterActivity")) {
-                holder.mTvChapterState.setVisibility(View.VISIBLE);
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
@@ -487,6 +486,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     }else{
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
+
+                    holder.mTvChapterState.setVisibility(View.VISIBLE);
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
                     if(isClassTeacher() && !mTeacherVisitor){
@@ -501,11 +502,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             final boolean isTeacher = isTeacher();
 
-            if(isCourseSelect || !isJoinCourse || (isTeacher && !mTeacherVisitor && !isClassTeacher())){
+            if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
                 // 是老师但不是班级学程的老师
                 holder.mTvChapterState.setVisibility(View.GONE);
             }else{
-                if(vo.isBuyed()){
+                if(vo.isBuyed() || mTeacherVisitor){
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                     // 添加班级学程的逻辑
                     if(isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0){

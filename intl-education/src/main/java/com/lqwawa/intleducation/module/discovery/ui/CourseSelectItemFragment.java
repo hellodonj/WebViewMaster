@@ -81,6 +81,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     public static final int KEY_WATCH_COURSE = 9;//看课件
     public static final int KEY_RELL_COURSE = 5;//复述课件
     public static final int KEY_TASK_ORDER = 8;//任务单
+    public static final int KEY_TEXT_BOOK = 9;// 看课本
     public static final String RESULT_LIST = "result_list";
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
@@ -187,7 +188,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
-                if(sectionResListVo.getTaskType() == 1){
+                if(sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4){
                     // 看课件类型
                     if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
                         mReadWeikeHelper.readWeike(sectionResListVo);
@@ -277,6 +278,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                                 updateData(i);
                             } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
                                 updateData(i);
+                            }else if(mTaskType == KEY_TEXT_BOOK && taskType == 4){
+                                updateData(i);
                             }
 
                         }
@@ -355,15 +358,15 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
     @NonNull
     private String getTaskName(int i) {
-        String taskName = "";
-        int taskType = sectionDetailsVo.getTaskList().get(i).getTaskType();
+        String taskName = sectionDetailsVo.getTaskList().get(i).getTaskName();
+        /*int taskType = sectionDetailsVo.getTaskList().get(i).getTaskType();
         if (taskType == 1) {//看课件
             taskName = getString(R.string.lq_watch_course);
         } else if (taskType == 2) {//复述课件
             taskName = getResources().getString(R.string.retell_course);
         }else if (taskType == 3) {//任务单
             taskName = getResources().getString(R.string.coursetask);
-        }
+        }*/
         return taskName;
     }
 

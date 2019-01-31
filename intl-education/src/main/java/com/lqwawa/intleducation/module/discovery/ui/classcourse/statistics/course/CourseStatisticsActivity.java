@@ -93,7 +93,13 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
         layoutParams.height = width;
         mPieView.setLayoutParams(layoutParams);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        mRecycler.setNestedScrollingEnabled(false);
         mRecycler.setLayoutManager(layoutManager);
         mAdapter = new CourseStatisticsAdapter();
         mRecycler.setAdapter(mAdapter);
