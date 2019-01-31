@@ -226,7 +226,7 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                     textView = (TextView) view.findViewById(R.id.time);
                     if (textView != null) {
                         //暂时隐藏时间
-                        textView.setVisibility(View.INVISIBLE);
+                        textView.setVisibility(View.VISIBLE);
                         textView.setText(data.getCommitTime());
                     }
 

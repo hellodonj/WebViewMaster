@@ -35,6 +35,7 @@ public class IntroductionForReadCourseActivity extends BaseFragmentActivity{
         ft.addToBackStack(null);
         ft.commit();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -46,6 +47,13 @@ public class IntroductionForReadCourseActivity extends BaseFragmentActivity{
 
     @Override
     public void onBackPressed() {
+        if (fragment instanceof IntroductionSuperTaskFragment) {
+            IntroductionSuperTaskFragment superTaskFragment = (IntroductionSuperTaskFragment) fragment;
+            if (superTaskFragment.isVisible()) {
+                superTaskFragment.backPress();
+                return;
+            }
+        }
         if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         }

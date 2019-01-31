@@ -749,16 +749,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     public void onClick(View v) {
         int viewId = v.getId();
         if (viewId == R.id.contacts_header_left_btn) {
-            if (isPick) {
-                popStack();
-            } else {
-                if (isFromMoocIntroTask){
-                    //同步更新数据
-                    LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
-                    LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
-                }
-                finish();
-            }
+            backPress();
         } else if (viewId == R.id.tv_bottom_confirm) {
             showEditTaskNameDialog();
         } else if (viewId == R.id.rl_add_new_task) {
@@ -768,6 +759,18 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         }
     }
 
+    public void backPress(){
+        if (isPick) {
+            popStack();
+        } else {
+            if (isFromMoocIntroTask){
+                //同步更新数据
+                LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
+                LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
+            }
+            finish();
+        }
+    }
 
     //未完成/已完成
     private void enterHomeworkFinishStatusActivity() {
