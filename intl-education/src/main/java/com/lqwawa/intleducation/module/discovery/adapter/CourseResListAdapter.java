@@ -603,6 +603,14 @@ public class CourseResListAdapter extends MyBaseAdapter {
     }
 
     /**
+     * @author mrmedici
+     * @return 返回当前选择状态
+     */
+    public boolean getChoiceMode(){
+        return mChoiceMode;
+    }
+
+    /**
      * 设置多选条目
      * @param isLQCourse 是否是LQwawa调用，关联学程调用
      * @param multipleChoiceCount 条目个数

@@ -76,7 +76,7 @@ import java.util.List;
  * @history v1.0
  * **********************************
  */
-public class LessonSourceFragment extends IBaseFragment implements LessonSourceNavigator{
+public class LessonSourceFragment extends IBaseFragment implements LessonSourceNavigator {
 
     // 选择资源支持的最大数
     private static final int MAX_CHOICE_COUNT = 5;
@@ -109,23 +109,23 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private ReadWeikeHelper mReadWeikeHelper;
 
     public static LessonSourceFragment newInstance(boolean needFlag,
-                                       boolean canEdit,
-                                       boolean canRead,
-                                       boolean isOnlineTeacher,
-                                       @NonNull String courseId,
-                                       @NonNull String sectionId,
-                                       int taskType,
-                                       @NonNull LessonSourceParams params){
+                                                   boolean canEdit,
+                                                   boolean canRead,
+                                                   boolean isOnlineTeacher,
+                                                   @NonNull String courseId,
+                                                   @NonNull String sectionId,
+                                                   int taskType,
+                                                   @NonNull LessonSourceParams params) {
         LessonSourceFragment fragment = new LessonSourceFragment();
         Bundle arguments = new Bundle();
-        arguments.putBoolean(KEY_EXTRA_NEED_FLAG,needFlag);
-        arguments.putBoolean(KEY_EXTRA_CAN_EDIT,canEdit);
-        arguments.putBoolean(KEY_EXTRA_CAN_READ,canRead);
-        arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
-        arguments.putString(KEY_EXTRA_COURSE_ID,courseId);
-        arguments.putString(KEY_EXTRA_SECTION_ID,sectionId);
-        arguments.putInt(KEY_EXTRA_TASK_TYPE,taskType);
-        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        arguments.putBoolean(KEY_EXTRA_NEED_FLAG, needFlag);
+        arguments.putBoolean(KEY_EXTRA_CAN_EDIT, canEdit);
+        arguments.putBoolean(KEY_EXTRA_CAN_READ, canRead);
+        arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher);
+        arguments.putString(KEY_EXTRA_COURSE_ID, courseId);
+        arguments.putString(KEY_EXTRA_SECTION_ID, sectionId);
+        arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
+        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -144,16 +144,16 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         mTaskType = bundle.getInt(KEY_EXTRA_TASK_TYPE);
-        if(bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)){
+        if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
 
-        if(mTaskType == 1 || mTaskType == 4 || mTaskType == 2){
+        if (mTaskType == 1 || mTaskType == 4 || mTaskType == 2) {
             // 看课件  或者是  复述课件(没有复述课件权限的)
             mReadWeikeHelper = new ReadWeikeHelper(getActivity());
         }
 
-        if(EmptyUtil.isEmpty(courseId) ||
+        if (EmptyUtil.isEmpty(courseId) ||
                 EmptyUtil.isEmpty(sectionId) ||
                 EmptyUtil.isEmpty(mSourceParams)) return false;
         return super.initArgs(bundle);
@@ -166,7 +166,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
-        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag,true);
+        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, true);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher(courseParams.isClassCourseEnter() && courseParams.isClassTeacher());
         // canRead 是否可以查阅资源
@@ -185,17 +185,37 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         return;
                     }
 
-                    boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER,false);
+                    if(mCourseResListAdapter.getChoiceMode()){
+                        if(resVo.getTaskType() == 1 || resVo.getTaskType() == 4){
+                            // 看课件类型
+                            if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+                                mReadWeikeHelper.readWeike(resVo);
+                            }
+                        }else{
+                            if (TaskSliderHelper.onTaskSliderListener != null &&
+                                    resVo != null) {
+                                TaskSliderHelper.onTaskSliderListener.viewCourse(
+                                        getActivity(), resVo.getResId(),
+                                        resVo.getResType(),
+                                        getActivity().getIntent().getStringExtra("schoolId"),
+                                        SourceFromType.LQ_COURSE);
+                            }
+                        }
+                        return;
+                    }
+
+
+                    boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER, false);
 
                     if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
                         // 看课件
                         // V5.14 换成看课本,视频课
                         mReadWeikeHelper.readWeike(resVo);
 
-                        if((needFlag && !mSourceParams.isParentRole())){
+                        if ((needFlag && !mSourceParams.isParentRole())) {
                             // 是已经加入的课程, 并且不是家长身份
-                            if(mSourceParams.getRole() != UserHelper.MoocRoleType.EDITOR &&
-                                    mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER){
+                            if (mSourceParams.getRole() != UserHelper.MoocRoleType.EDITOR &&
+                                    mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER) {
                                 // 如果不是主编或者小编
                                 // 看课件才FlagRead
                                 flagRead(resVo, position);
@@ -212,11 +232,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }*/
                     } else if (resVo.getTaskType() == 2) {
                         //复述微课
-                        if((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()){
+                        if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
                             // 或者是试听身份
                             enterSectionTaskDetail(resVo);
-                        }else{
+                        } else {
                             // 其它情况，只能看微课
                             mReadWeikeHelper.readWeike(resVo);
                         }
@@ -228,12 +248,12 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             readWeike(resVo, position);
                         }*/
                     } else if (resVo.getTaskType() == 3) {
-                        if((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()){
+                        if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
                             // 或者是试听身份
                             enterSectionTaskDetail(resVo);
-                        }else{
-                            if(TaskSliderHelper.onTaskSliderListener != null) {
+                        } else {
+                            if (TaskSliderHelper.onTaskSliderListener != null) {
                                 TaskSliderHelper.onTaskSliderListener.viewCourse(getActivity(),
                                         resVo.getResId(), resVo.getResType(),
                                         getActivity().getIntent().getStringExtra("schoolId"),
@@ -266,17 +286,17 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                 @Override
                 public void onItemChoice(int position, View convertView) {
                     SectionResListVo item = (SectionResListVo) mCourseResListAdapter.getItem(position);
-                    if(item.isIsShield()){
+                    if (item.isIsShield()) {
                         UIUtil.showToastSafe(R.string.res_has_shield);
                         return;
                     }
 
-                    if(!item.isActivated()){
+                    if (!item.isActivated()) {
                         // 点击的当前条目不是选择的状态,需判断上限
                         // 判断是否已经超过五个选择了
                         int count = takeChoiceResourceCount();
-                        if(count >= MAX_CHOICE_COUNT){
-                            UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
+                        if (count >= MAX_CHOICE_COUNT) {
+                            UIUtil.showToastSafe(getString(R.string.str_select_count_tips, MAX_CHOICE_COUNT));
                             mCourseResListAdapter.notifyDataSetChanged();
                             return;
                         }
@@ -302,16 +322,17 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
     @Override
     public void triggerChoice(boolean open) {
-        if(EmptyUtil.isNotEmpty(mCourseResListAdapter)){
+        if (EmptyUtil.isNotEmpty(mCourseResListAdapter)) {
             mCourseResListAdapter.triggerChoiceMode(open);
         }
     }
 
     /**
      * 获取已经选择的资源个数
+     *
      * @return
      */
-    private int takeChoiceResourceCount(){
+    private int takeChoiceResourceCount() {
         List<SectionResListVo> choiceArray = takeChoiceResource();
         int count = choiceArray.size();
         choiceArray.clear();
@@ -320,11 +341,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
     @Override
     public List<SectionResListVo> takeChoiceResource() {
-        List<SectionResListVo> data =mCourseResListAdapter.getData();
+        List<SectionResListVo> data = mCourseResListAdapter.getData();
         List<SectionResListVo> choiceArray = new ArrayList<>();
-        if(EmptyUtil.isNotEmpty(data)){
-            for (SectionResListVo vo:data) {
-                if(vo.isActivated()){
+        if (EmptyUtil.isNotEmpty(data)) {
+            for (SectionResListVo vo : data) {
+                if (vo.isActivated()) {
                     choiceArray.add(vo);
                 }
             }
@@ -336,8 +357,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     @Override
     public void clearAllResourceState() {
         List<SectionResListVo> data = mCourseResListAdapter.getData();
-        if(EmptyUtil.isNotEmpty(data)){
-            for (SectionResListVo vo:data) {
+        if (EmptyUtil.isNotEmpty(data)) {
+            for (SectionResListVo vo : data) {
                 vo.setActivated(false);
             }
         }
@@ -348,16 +369,16 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private void getData() {
         String token = mSourceParams.getMemberId();
         int role = 2;
-        if(mSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER){
+        if (mSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
             role = 1;
         }
 
         String classId = "";
-        if(role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()){
+        if (role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()) {
             classId = mSourceParams.getCourseParams().getClassId();
         }
 
-        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
+        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -366,7 +387,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             @Override
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
                 mSectionDetailsVo = sectionDetailsVo;
-                if(EmptyUtil.isEmpty(sectionDetailsVo)) return;
+                if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
                 updateView();
             }
         });
@@ -392,7 +413,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             vo.setTaskName(getTaskName(0));
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(0).getTaskType());
                         }
-                        if(mSectionDetailsVo.getTaskList().get(0).getTaskType() == mTaskType){
+                        if (mSectionDetailsVo.getTaskList().get(0).getTaskType() == mTaskType) {
                             mCourseResListAdapter.setData(voList);
                         }
                         mListView.setAdapter(mCourseResListAdapter);
@@ -409,7 +430,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             vo.setTaskName(getTaskName(1));
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(1).getTaskType());
                         }
-                        if(mSectionDetailsVo.getTaskList().get(1).getTaskType() == mTaskType){
+                        if (mSectionDetailsVo.getTaskList().get(1).getTaskType() == mTaskType) {
                             mCourseResListAdapter.addData(voList);
                         }
 
@@ -427,7 +448,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(2).getTaskType());
                         }
 
-                        if(mSectionDetailsVo.getTaskList().get(2).getTaskType() == mTaskType){
+                        if (mSectionDetailsVo.getTaskList().get(2).getTaskType() == mTaskType) {
                             mCourseResListAdapter.addData(voList);
                         }
 
@@ -446,7 +467,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(3).getTaskType());
                         }
 
-                        if(mSectionDetailsVo.getTaskList().get(3).getTaskType() == mTaskType){
+                        if (mSectionDetailsVo.getTaskList().get(3).getTaskType() == mTaskType) {
                             mCourseResListAdapter.addData(voList);
                         }
 
@@ -456,10 +477,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             }
         }
 
-        if(mCourseResListAdapter.getCount() > 0){
+        if (mCourseResListAdapter.getCount() > 0) {
             mListView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             mListView.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }
@@ -478,12 +499,13 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
     /**
      * 进入复述课件，任务单详情
+     *
      * @param vo 复述课件，任务单消息实体
      */
     protected void enterSectionTaskDetail(SectionResListVo vo) {
         String curMemberId = mSourceParams.getMemberId();
         int originalRole = mSourceParams.getRole();
-        if(mSourceParams.isTeacherVisitor()){
+        if (mSourceParams.isTeacherVisitor()) {
             // 这才是真实的角色身份
             originalRole = mSourceParams.getRealRole();
         }
@@ -498,20 +520,20 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         // 处理需要转换的角色
         int handleRole = originalRole;
         boolean isAudition = mSourceParams.isAudition();
-        if(mSourceParams.isCounselor() || mSourceParams.isAudition()){
+        if (mSourceParams.isCounselor() || mSourceParams.isAudition()) {
             // 如果是辅导老师身份 或者试听
             // 角色按照浏览者，家长身份处理
             handleRole = UserHelper.MoocRoleType.PARENT;
         }
 
-        if(handleRole != UserHelper.MoocRoleType.PARENT){
+        if (handleRole != UserHelper.MoocRoleType.PARENT) {
             // 家长身份优先
-            if(TextUtils.equals(UserHelper.getUserId(),vo.getCreateId())){
+            if (TextUtils.equals(UserHelper.getUserId(), vo.getCreateId())) {
                 // 任务的创建者 小编
                 handleRole = UserHelper.MoocRoleType.TEACHER;
             }
 
-            if(mSourceParams.isLecturer()){
+            if (mSourceParams.isLecturer()) {
                 // 如果是讲师身份 主编身份处理
                 handleRole = UserHelper.MoocRoleType.EDITOR;
             }
@@ -519,13 +541,13 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
 
         // 生成任务详情参数
-        SectionTaskParams params = new SectionTaskParams(originalRole,handleRole);
+        SectionTaskParams params = new SectionTaskParams(originalRole, handleRole);
         params.fillParams(mSourceParams);
 
         SectionTaskDetailsActivity.startForResultEx(getActivity(), vo, curMemberId, getActivity().getIntent
-                ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
-                (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
-                null, originalRole,handleRole, null,isAudition,params);
+                        ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
+                        (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
+                null, originalRole, handleRole, null, isAudition, params);
 
 
         /*String memberId = getActivity().getIntent().getStringExtra("memberId");
@@ -737,7 +759,9 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         startActivity(intent);
     }
 
-    *//**
+    */
+
+    /**
      * 音视频播放
      *
      * @param resVo
@@ -760,7 +784,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                 .setIsPublic(getActivity().getIntent().getBooleanExtra("isPublic", false))
                 .create();
     }*/
-
     @NonNull
     private String getTaskName(int i) {
         String taskName = mSectionDetailsVo.getTaskList().get(i).getTaskName();
@@ -774,7 +797,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         }*/
         return taskName;
     }
-
 
 
     /**
@@ -802,7 +824,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
     /**
      * 标志任务已读
-     * @param vo 任务实体
+     *
+     * @param vo       任务实体
      * @param position 位置
      */
     private void flagRead(final SectionResListVo vo, final int position) {
@@ -860,12 +883,12 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+        if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
             mReadWeikeHelper.release();
         }
 
 
-        if(EmptyUtil.isNotEmpty(getActivity())){
+        if (EmptyUtil.isNotEmpty(getActivity())) {
             getActivity().unregisterReceiver(mBroadcastReceiver);
         }
     }
