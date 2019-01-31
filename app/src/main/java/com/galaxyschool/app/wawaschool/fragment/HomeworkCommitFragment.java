@@ -907,7 +907,6 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         HomeworkCommitObjectInfo homeworkCommitObjectInfo = result.getModel().getData();
         if (homeworkCommitObjectInfo != null) {
             studyTask = homeworkCommitObjectInfo.getTaskInfo();
-            dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
 //            updateCommitBtn(homeworkCommitObjectInfo);
             if (studyTask != null) {
                 ScoringRule = studyTask.getScoringRule();
@@ -3200,6 +3199,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (viewPager == null) {
                 initViewPager();
                 updateTabData(result);
+                dealTaskTypeFinishDetail(result.getModel().getData());
             }
             return;
         }
@@ -3219,6 +3219,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     if (viewPager == null) {
                         initViewPager();
                         updateTabData(result);
+                        dealTaskTypeFinishDetail(result.getModel().getData());
                     }
                     if (propertiesType == 1) {
                         //设置成绩统计可见
