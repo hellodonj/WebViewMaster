@@ -294,6 +294,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             if(mChoiceMode){
                 holder.checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
                 holder.checkbox.setActivated(vo.isActivated());
+                holder.checkbox.setChecked(false);
             }else{
                 holder.checkbox.setVisibility(isCourseSelect? View.VISIBLE : View.GONE);
                 holder.checkbox.setChecked(vo.isChecked());

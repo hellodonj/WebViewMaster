@@ -270,11 +270,15 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         return;
                     }
 
-                    // 判断是否已经超过五个选择了
-                    int count = takeChoiceResourceCount();
-                    if(count >= MAX_CHOICE_COUNT){
-                        UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
-                        return;
+                    if(!item.isActivated()){
+                        // 点击的当前条目不是选择的状态,需判断上限
+                        // 判断是否已经超过五个选择了
+                        int count = takeChoiceResourceCount();
+                        if(count >= MAX_CHOICE_COUNT){
+                            UIUtil.showToastSafe(getString(R.string.str_select_count_tips,MAX_CHOICE_COUNT));
+                            mCourseResListAdapter.notifyDataSetChanged();
+                            return;
+                        }
                     }
 
                     item.setActivated(!item.isActivated());
