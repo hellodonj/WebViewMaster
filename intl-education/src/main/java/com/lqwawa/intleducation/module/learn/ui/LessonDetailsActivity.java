@@ -972,14 +972,18 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 }
             }
 
-
-            mBottomLayout.setActivated(!originalActivated);
-            initBottomLayout();
             if(originalActivated){
-                confirmResourceCart();
+                int count = confirmResourceCart();
+                if(count > 0){
+                    mBottomLayout.setActivated(!originalActivated);
+                }
             }else{
                 triggerToCartAction();
+                mBottomLayout.setActivated(!originalActivated);
             }
+
+            initBottomLayout();
+            refreshCartPoint();
         }
     }
 
@@ -1019,8 +1023,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
     /**
      * 确定所有作业库中的资源
+     * @return 添加了几条资源
      */
-    private void confirmResourceCart(){
+    private int confirmResourceCart(){
         // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
         int currentPosition = mViewPager.getCurrentItem();
@@ -1028,7 +1033,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         List<SectionResListVo> choiceArray = navigator.takeChoiceResource();
         if(EmptyUtil.isEmpty(choiceArray)){
             UIUtil.showToastSafe(R.string.str_select_tips);
-            return;
+            return 0;
         }
         // 添加到作业库中
         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
@@ -1050,6 +1055,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         // 清楚所有的作业库资源选中状态
         clearAllResource();
         switchAdapterMode(false);
+
+        return choiceArray.size();
     }
 
     /**
