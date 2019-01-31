@@ -23,6 +23,7 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
@@ -30,6 +31,7 @@ import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -115,7 +117,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private LinearLayout mBottomLayout;
     private Button mAddSubject;
     private LinearLayout mBottomActionLayout;
+    private FrameLayout mCartContainer,mActionContainer;
     private Button mWorkCart,mAddCourse;
+    private TextView mTvPoint;
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
@@ -279,10 +283,18 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
+
+        mCartContainer = (FrameLayout) findViewById(R.id.cart_container);
+        mActionContainer = (FrameLayout) findViewById(R.id.action_container);
+        mTvPoint = (TextView) findViewById(R.id.tv_point);
         mWorkCart = (Button) findViewById(R.id.btn_work_cart);
         mAddCourse = (Button) findViewById(R.id.btn_add_course);
         mWorkCart.setOnClickListener(this);
         mAddCourse.setOnClickListener(this);
+
+        int color = UIUtil.getColor(R.color.colorPink);
+        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
+        mTvPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
 
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
@@ -291,6 +303,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // 只有老师才显示添加学程
             mTvAction.setText(R.string.label_add_course_lines);
             mTvAction.setOnClickListener(this);
+
+            mActionContainer.setVisibility(View.VISIBLE);
             mTvAction.setVisibility(View.VISIBLE);
             mAddCourse.setVisibility(View.VISIBLE);
             mAddCourse.setText(R.string.label_add_course);
@@ -305,6 +319,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mTvAction.setText(R.string.label_request_authorization_lines);
             mTvAction.setOnClickListener(this);
             mTvAction.setVisibility(View.VISIBLE);
+
+            mActionContainer.setVisibility(View.VISIBLE);
             mAddCourse.setVisibility(View.VISIBLE);
             mAddCourse.setText(R.string.label_request_authorization);
             /*mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
@@ -327,7 +343,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
         if(isResult){
             mWorkCart.setVisibility(View.VISIBLE);
+            mCartContainer.setVisibility(View.VISIBLE);
         }else{
+            mCartContainer.setVisibility(View.GONE);
             mWorkCart.setVisibility(View.GONE);
         }
 
@@ -457,14 +475,33 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 获取标签
         mPresenter.requestClassConfigData(mClassId);
         // requestClassCourse(false);
+
+        refreshCartPoint();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        // 刷新数目
+        refreshCartPoint();
         // requestClassCourse(false);
         // 刷新标签和课程
         // mPresenter.requestClassConfigData(mClassId);
+    }
+
+    /**
+     * 刷新红点
+     */
+    private void refreshCartPoint(){
+        if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            mTvPoint.setText(Integer.toString(count));
+            if(count == 0 || mBottomLayout.isActivated()){
+                mTvPoint.setVisibility(View.GONE);
+            }else{
+                mTvPoint.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
