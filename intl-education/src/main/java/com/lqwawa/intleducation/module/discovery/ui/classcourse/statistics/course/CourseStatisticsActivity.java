@@ -88,7 +88,7 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
 
         ViewGroup.LayoutParams layoutParams = mPieView.getLayoutParams();
 
-        int width = DisplayUtil.getMobileWidth(this) / 2;
+        int width = DisplayUtil.getMobileWidth(this) * 3 / 4;
         layoutParams.width = width;
         layoutParams.height = width;
         mPieView.setLayoutParams(layoutParams);

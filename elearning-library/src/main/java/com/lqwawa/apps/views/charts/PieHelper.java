@@ -1,14 +1,14 @@
 package com.lqwawa.apps.views.charts;
 
- /**
-  * ================================================
-  * 作    者：Blizzard-liu
-  * 版    本：1.0
-  * 创建日期：2017/10/13 9:41
-  * 描    述：饼状图参数设置
-  * 修订历史：
-  * ================================================
-  */
+/**
+ * ================================================
+ * 作    者：Blizzard-liu
+ * 版    本：1.0
+ * 创建日期：2017/10/13 9:41
+ * 描    述：饼状图参数设置
+ * 修订历史：
+ * ================================================
+ */
 public class PieHelper {
 
     int velocity = 5;
@@ -87,7 +87,9 @@ public class PieHelper {
 
     String getPercentStr() {
         float percent = sweepDegree / 360 * 100;
-        return String.valueOf((int) percent) + "%";
+        // return String.valueOf((int) percent) + "%";
+        int intPercent = (int) Math.floor(percent + 0.5f);
+        return String.valueOf(intPercent) + "%";
     }
 
     public int getColor() {
