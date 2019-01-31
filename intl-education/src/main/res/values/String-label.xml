@@ -349,10 +349,11 @@
         <item>Tutorial</item>
     </string-array>
 
-    <string-array name="label_lesson_sourse_tabs">
-        <item>Reading courseware</item>
-        <item>Listen-Read Course</item>
-        <item>Read-Write Task</item>
+    <string-array name="label_lesson_source_tabs">
+        <item>视频课</item>
+        <item>练听说</item>
+        <item>练读写</item>
+        <item>看课本</item>
     </string-array>
 
     <string-array name="label_course_shop_tabs">

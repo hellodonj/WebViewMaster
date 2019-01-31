@@ -765,18 +765,27 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             boolean showReadWare = false;
             boolean showListenRead = false;
             boolean showReadWrite = false;
+            boolean showTextBook = false;
             if(EmptyUtil.isNotEmpty(taskList)){
                 for (SectionTaskListVo taskListVo:taskList) {
                     if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[0] = taskListVo.getTaskName();
                         showReadWare = true;
                     }
 
                     if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[1] = taskListVo.getTaskName();
                         showListenRead = true;
                     }
 
                     if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[2] = taskListVo.getTaskName();
                         showReadWrite = true;
+                    }
+
+                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[3] = taskListVo.getTaskName();
+                        showTextBook = true;
                     }
                 }
             }
@@ -802,6 +811,13 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             if(showReadWrite){
                 mTabLists.add(mTabs[2]);
                 LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,3,params);
+                mTabSourceNavigator.add(fragment);
+                fragments.add(fragment);
+            }
+
+            if(showTextBook){
+                mTabLists.add(mTabs[3]);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
@@ -1125,5 +1141,5 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private static String[] mTabs = UIUtil.getStringArray(R.array.label_lesson_sourse_tabs);
+    private static String[] mTabs = UIUtil.getStringArray(R.array.label_lesson_source_tabs);
 }

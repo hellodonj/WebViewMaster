@@ -33,7 +33,6 @@ import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
-import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
@@ -41,10 +40,8 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CourseSelectItemOuterFragment extends MyBaseFragment implements ResourceSelectListener{
@@ -70,7 +67,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
     private ArrayList<Integer> mFilterArray;
 
     private List<Fragment> mFragments;
-    private static String[] mTabs = UIUtil.getStringArray(R.array.label_lesson_sourse_tabs);
+    private static String[] mTabs = UIUtil.getStringArray(R.array.label_lesson_source_tabs);
     private List<String> mTabLists = new ArrayList<>(Arrays.asList(mTabs));
 
     @Nullable
@@ -197,6 +194,32 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         fragment.setArguments(arguments);
         fragments.add(fragment);
 
+        List<SectionTaskListVo> taskList = vo.getTaskList();
+        boolean showReadWare = false;
+        boolean showListenRead = false;
+        boolean showReadWrite = false;
+        boolean showTextBook = false;
+        if(EmptyUtil.isNotEmpty(taskList)){
+            for (SectionTaskListVo taskListVo:taskList) {
+                if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    showReadWare = true;
+                }
+
+                if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    showListenRead = true;
+                }
+
+                if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    showReadWrite = true;
+                }
+
+                if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(3,taskListVo.getTaskName());
+                    showTextBook = true;
+                }
+            }
+        }
+
         if(mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE){
             // 复述课件 移除读写单
             mTabLists.remove(2);
@@ -215,39 +238,37 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             cloneArguments.putInt("tasktype",CourseSelectItemFragment.KEY_TASK_ORDER);
             taskFragment.setArguments(cloneArguments);
             fragments.add(taskFragment);
+        }else{
+            mTabLists.remove(1);
+            mTabLists.remove(1);
         }
 
-        List<SectionTaskListVo> taskList = vo.getTaskList();
-        boolean showReadWare = false;
-        boolean showListenRead = false;
-        boolean showReadWrite = false;
-        if(EmptyUtil.isNotEmpty(taskList)){
-            for (SectionTaskListVo taskListVo:taskList) {
-                if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    showReadWare = true;
-                }
-
-                if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    showListenRead = true;
-                }
-
-                if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    showReadWrite = true;
-                }
-            }
-        }
+        // 写死看课本类型
+        CourseSelectItemFragment textBookFragment = new CourseSelectItemFragment();
+        textBookFragment.setOnResourceSelectListener(this);
+        Bundle textBookArguments = (Bundle) arguments.clone();
+        textBookArguments.putInt("tasktype",CourseSelectItemFragment.KEY_TEXT_BOOK);
+        textBookFragment.setArguments(textBookArguments);
+        fragments.add(textBookFragment);
 
         if((!showListenRead && mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE) ||
                 (!showReadWrite && mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
-            // 没有听说课
+            // 没有听说课 读写单
             fragments.remove(1);
             mTabLists.remove(1);
         }
 
-        if(!showReadWare){
-            // 没有看课件
+        if(!showReadWare ||
+                (mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
+            // 没有视频课
             fragments.remove(0);
             mTabLists.remove(0);
+        }
+
+        if(!showTextBook){
+            // 没有看课本
+            fragments.remove(mTabLists.size() - 1);
+            mTabLists.remove(mTabLists.size() - 1);
         }
 
         this.mFragments = fragments;

@@ -356,10 +356,13 @@
         <item>习教辅</item>
     </string-array>
 
-    <string-array name="label_lesson_sourse_tabs">
-        <item>看课件</item>
-        <item>听读课</item>
-        <item>读写单</item>
+
+
+    <string-array name="label_lesson_source_tabs">
+        <item>视频课</item>
+        <item>练听说</item>
+        <item>练读写</item>
+        <item>看课本</item>
     </string-array>
 
     <string-array name="label_course_shop_tabs">
