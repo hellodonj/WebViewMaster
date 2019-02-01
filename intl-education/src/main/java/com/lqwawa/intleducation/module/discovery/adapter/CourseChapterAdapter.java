@@ -334,7 +334,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             }
 
 
-                            if (!canReadAll() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
+                            if (!vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
                                 if(mTeacherVisitor){
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
@@ -353,7 +353,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         .getStringExtra("memberId"), courseVo);
 
                                 // 是否试听权限 没有阅读全部
-                                boolean isFreeUser = (!canReadAll() || !vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+                                boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
 
                                 if (role == UserHelper.MoocRoleType.STUDENT ||
                                         role == UserHelper.MoocRoleType.PARENT) {
@@ -610,7 +610,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         // 没有购买 点击购买
                         int intId = Integer.parseInt(vo.getId());
                         // 是否试听权限 没有阅读全部
-                        boolean isFreeUser = (!canReadAll() || !vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
                         CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                         if(role == UserHelper.MoocRoleType.PARENT){
