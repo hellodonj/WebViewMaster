@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.lqwawa.apps.views.charts.PieHelper;
 import com.lqwawa.apps.views.charts.PieView;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.TopBar;
@@ -37,6 +40,8 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
     private TopBar mTopBar;
     private PieView mPieView;
     private RecyclerView mRecycler;
+    private LinearLayout mContentLayout;
+    private CourseEmptyView mEmptyLayout;
     private CourseStatisticsAdapter mAdapter;
 
     private CourseStatisticsParams mStatisticsParams;
@@ -82,6 +87,9 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mPieView = (PieView) findViewById(R.id.pie_view);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
+
+        mContentLayout = (LinearLayout) findViewById(R.id.content_layout);
+        mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
 
         mTopBar.setBack(true);
         mTopBar.setTitle(configValue);
@@ -139,16 +147,23 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
             totalCount += entity.getCount();
         }
 
-        for (CourseStatisticsEntity entity : entities) {
-            int entityType = entity.getType();
-            entity.setColor(mPieColors[entityType - 1]);
-            if (entity.getCount() > 0) {
-                pieHelperArrayList.add(new PieHelper(100f * entity.getCount() / totalCount, mPieColors[entityType - 1]));
+        if(totalCount > 0){
+            for (CourseStatisticsEntity entity : entities) {
+                int entityType = entity.getType();
+                entity.setColor(mPieColors[entityType - 1]);
+                if (entity.getCount() > 0) {
+                    pieHelperArrayList.add(new PieHelper(100f * entity.getCount() / totalCount, mPieColors[entityType - 1]));
+                }
             }
-        }
 
-        mPieView.setDate(pieHelperArrayList);
-        mAdapter.replace(entities);
+            mPieView.setDate(pieHelperArrayList);
+            mAdapter.replace(entities);
+            mContentLayout.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+        }else{
+            mContentLayout.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
