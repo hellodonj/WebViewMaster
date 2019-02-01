@@ -231,6 +231,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             isAudition = mTaskParams.isAudition();
         }
 
+        if(mTaskParams.isTeacherVisitor()){
+            isAudition = false;
+        }
+
         mTabLayout.setupWithViewPager(mViewPager);
 
         //来自直播两个角色一致

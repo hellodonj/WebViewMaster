@@ -468,7 +468,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                             // 成绩统计没有主编概念
                             resultRoleType = RoleType.ROLE_TYPE_TEACHER;
                         }
-                        if (isAudition) {
+                        if (isAudition && !mTaskParams.isTeacherVisitor()) {
                             // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
                             resultRoleType = RoleType.ROLE_TYPE_VISITOR;
                         }

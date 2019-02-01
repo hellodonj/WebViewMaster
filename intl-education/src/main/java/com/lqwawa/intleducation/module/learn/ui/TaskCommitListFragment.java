@@ -150,7 +150,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         }
 
         // 只有学生才显示读写单和复述课件
-        if(mRoleType == UserHelper.MoocRoleType.STUDENT || isAudition){
+        if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
             // 试听身份可以查看到按钮
             mBtnDone.setVisibility(View.VISIBLE);
             // 只有学生，支持语音评测的听读课才显示语音评测
