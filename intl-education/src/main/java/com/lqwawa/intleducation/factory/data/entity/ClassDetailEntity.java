@@ -624,6 +624,7 @@ public class ClassDetailEntity extends BaseVo{
         private String paramTwoId;
         private String paramThreeId;
         private String parentId;
+        private String relationName;
 
         public String getLevel() {
             return level;
@@ -655,6 +656,14 @@ public class ClassDetailEntity extends BaseVo{
 
         public void setParentId(String parentId) {
             this.parentId = parentId;
+        }
+
+        public String getRelationName() {
+            return relationName;
+        }
+
+        public void setRelationName(String relationName) {
+            this.relationName = relationName;
         }
     }
 

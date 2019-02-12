@@ -144,6 +144,8 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
     @Override
     public void updateConfigView(@NonNull int parentId, @NonNull ClassDetailEntity.ParamBean param, @NonNull List<LQCourseConfigEntity> entities) {
         if(EmptyUtil.isNotEmpty(entities)){
+            // 解决标签不对应的问题
+            boolean haveEntity = false;
             for (LQCourseConfigEntity entity:entities) {
                 if(entity.getId() == parentId){
                     // 找到该实体
@@ -152,8 +154,23 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                     entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
                     // 如果基础课程可能会，标题错误
                     CourseFiltrateActivity.show(getActivity(),entity,state);
+
+                    haveEntity = true;
                     break;
                 }
+            }
+
+            if(!haveEntity){
+                LQCourseConfigEntity entity = new LQCourseConfigEntity();
+                entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
+                entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
+                entity.setId(parentId);
+                entity.setLevel(param.getLevel());
+                entity.setConfigType(2);
+                entity.setConfigValue(param.getRelationName());
+                GroupFiltrateState state = new GroupFiltrateState(entity);
+                // 如果基础课程可能会，标题错误
+                CourseFiltrateActivity.show(getActivity(),entity,state);
             }
         }
     }
