@@ -78,6 +78,8 @@ import java.util.List;
  */
 public class LessonSourceFragment extends IBaseFragment implements LessonSourceNavigator {
 
+    public static final String LESSON_RESOURCE_CHOICE_PUBLISH_ACTION = "LESSON_RESOURCE_CHOICE_PUBLISH_ACTION";
+
     // 选择资源支持的最大数
     private static final int MAX_CHOICE_COUNT = 5;
 
@@ -411,6 +413,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }
                         for (SectionResListVo vo : voList) {
                             vo.setTaskName(getTaskName(0));
+                            vo.setChapterId(vo.getId());
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(0).getTaskType());
                         }
                         if (mSectionDetailsVo.getTaskList().get(0).getTaskType() == mTaskType) {
@@ -804,7 +807,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
      */
     protected void registerBroadcastReceiver() {
         IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE);//读写单
+        myIntentFilter.addAction(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE);// 读写单
+        myIntentFilter.addAction(LESSON_RESOURCE_CHOICE_PUBLISH_ACTION);// 作业库发布更新
         //注册广播
         getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
@@ -816,7 +820,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE)) {// 读写单
+            if (action.equals(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE) ||
+                    action.equalsIgnoreCase(LESSON_RESOURCE_CHOICE_PUBLISH_ACTION)) {
+                // 读写单
+                // 作业库发布
                 getData();
             }
         }

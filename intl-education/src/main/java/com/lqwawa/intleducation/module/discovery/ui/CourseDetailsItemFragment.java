@@ -35,6 +35,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.cours
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.course.CourseStatisticsParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
@@ -582,7 +583,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                     || action.equals(AppConfig.ServerUrl.joinInCourse)// 课程参加成功
                     || action.equals(LQWAWA_ACTION_CAN_COURSEWARE) // 看课件
                     || action.equals(LQWAWA_ACTION_LISTEN_AND_WRITE) // 听说课
-                    || action.equals(LQWAWA_ACTION_READ_WRITE_SINGLE)) {// 读写单
+                    || action.equals(LQWAWA_ACTION_READ_WRITE_SINGLE)// 读写单
+                    || action.equalsIgnoreCase(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION)){
+                // 作业库发布更新
                 getData(false);
             }
         }
@@ -606,6 +609,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         myIntentFilter.addAction(LQWAWA_ACTION_LISTEN_AND_WRITE);
         // 读写单
         myIntentFilter.addAction(LQWAWA_ACTION_READ_WRITE_SINGLE);
+        // 作业库发布更新
+        myIntentFilter.addAction(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION);
         // 注册广播
         activity.registerReceiver(mBroadcastReceiver, myIntentFilter);
     }

@@ -348,7 +348,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             holder.titleLay.setVisibility(View.GONE);
         }
 
-        if(isCourseSelect /*|| lessonDetail*/){
+        if(isCourseSelect /*|| lessonDetail*/ || mChoiceMode){
             // 是课件选取,添加自动批阅
             // v5.10 LQ学程浏览的时候也要添加语音评测,还有一个直播课前课后的调用
             // v5.10 LQ学程浏览的时候不需要添加语音评测
