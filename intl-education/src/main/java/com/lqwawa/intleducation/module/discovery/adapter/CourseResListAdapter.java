@@ -385,7 +385,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
         if(lessonDetail && !mChoiceMode){
             int taskType = vo.getTaskType();
-            if(taskType == 1){
+            if(taskType == 1 || taskType == 4){
                 // 看课件
                 holder.mIvNeedCommit.setVisibility(View.GONE);
             }else {
