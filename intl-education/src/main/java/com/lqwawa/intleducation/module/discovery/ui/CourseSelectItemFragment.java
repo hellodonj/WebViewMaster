@@ -81,7 +81,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     public static final int KEY_WATCH_COURSE = 9;//看课件
     public static final int KEY_RELL_COURSE = 5;//复述课件
     public static final int KEY_TASK_ORDER = 8;//任务单
-    public static final int KEY_TEXT_BOOK = 9;// 看课本
+    public static final int KEY_TEXT_BOOK = 13;// 看课本
     public static final String RESULT_LIST = "result_list";
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
