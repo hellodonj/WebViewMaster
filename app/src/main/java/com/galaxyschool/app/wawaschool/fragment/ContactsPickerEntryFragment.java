@@ -39,6 +39,7 @@ import com.galaxyschool.app.wawaschool.fragment.contacts.ContactsPickerListener.
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.lqbaselib.net.NetResultListener;
 import com.galaxyschool.app.wawaschool.net.course.UploadCourseManager;
 import com.lqwawa.lqbaselib.net.library.DataResult;
@@ -1061,6 +1062,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
                         LqIntroTaskHelper.getInstance().clearTaskList();
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
+                        //发送广播刷新mooc的数据
+                        getActivity().sendBroadcast(new Intent().setAction(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION));
                         finish();
                     } else {
                         String errorMessage = getString(R.string.publish_course_error);
