@@ -9,6 +9,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
+
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
@@ -27,10 +28,13 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -442,23 +446,24 @@ public class StudyTaskUtils {
             return;
         }
         String messageContent = activity.getString(R.string.str_do_not_a_question);
-        if (isEval){
-            if (isStudentFinishRetellTask && !isStudentFinishEValTask){
+        if (isEval) {
+            if (isStudentFinishRetellTask && !isStudentFinishEValTask) {
                 messageContent = activity.getString(R.string.str_do_not_eval_course);
-            } else if (isStudentFinishEValTask && !isStudentFinishRetellTask){
+            } else if (isStudentFinishEValTask && !isStudentFinishRetellTask) {
                 messageContent = activity.getString(R.string.str_do_not_retell_course);
             }
         }
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
                 activity, null,
                 messageContent,
+                activity.getString(R.string.str_do_it_now),
+                (dialog, which) -> dialog.dismiss()
+                ,
                 activity.getString(R.string.str_do_it_later),
                 (dialog, which) -> {
                     dialog.dismiss();
                     activity.finish();
-                },
-                activity.getString(R.string.str_do_it_now),
-                (dialog, which) -> dialog.dismiss());
+                });
         messageDialog.show();
     }
 }
