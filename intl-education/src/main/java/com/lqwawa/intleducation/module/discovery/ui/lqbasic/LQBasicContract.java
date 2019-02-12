@@ -24,7 +24,7 @@ public interface LQBasicContract {
         void requestConfigData();
         // 获取国家课程标签
         void requestNewBasicConfig();
-        // 获取国家课程的热门数据和名师课
+        // 获取国家课程的热门数据和在线课堂
         void requestLQRmCourseData();
         // 点击基础课程科目
         void requestConfigWithBasicsEntity(@NonNull LQBasicsOuterEntity.LQBasicsInnerEntity entity);
@@ -43,7 +43,7 @@ public interface LQBasicContract {
         void updateNewBasicsConfigView(@NonNull List<LQBasicsOuterEntity> entities);
         // 获取国家课程的热门数据的回调
         void updateLQRmCourseData(List<CourseVo> entities);
-        // 获取国家课程的名师课的回调
+        // 获取国家课程的在线课堂的回调
         void updateLQRmOnlineCourseData(List<OnlineClassEntity> entities);
         // 点击基础课程科目后跳转的回调
         void updateConfigView(@NonNull int parentId, @NonNull LQBasicsOuterEntity.LQBasicsInnerEntity entity, @NonNull List<LQCourseConfigEntity> entities);

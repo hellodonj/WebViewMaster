@@ -794,7 +794,7 @@ public final class AppConfig {
         public static final String GetBasicCourseConfigDataUrl = ServerBase +
                 "api/config/getGjConfigList?j=";
 
-        // 获取小语种，国际，国家课程名师课的标签数据
+        // 获取小语种，国际，国家课程在线课堂的标签数据
         public static final String GetNewOnlineClassifyConfigDataUrl = ServerBase +
                 "api/config/getZxCourseConfigList?j=";
 

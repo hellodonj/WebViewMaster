@@ -141,13 +141,13 @@ public class OnlineStudyItemHolder extends FrameLayout{
             // 最新数据
             mTitleContent.setText(UIUtil.getString(R.string.label_online_study_latest_data));
         }else if(sort == OnlineStudyType.SORT_ONLINE_CLASS){
-            // 名师课
+            // 在线课堂
             mTitleContent.setText(UIUtil.getString(R.string.label_teach_course));
         }else if(sort == OnlineStudyType.SORT_MINORITY_ONLINE_CLASS){
-            // 多语种小语种名师课
+            // 多语种小语种在线课堂
             mTitleContent.setText(UIUtil.getString(R.string.label_minority_language_holder_title));
         }else if(sort == OnlineStudyType.SORT_INTERNATIONAL_ONLINE_CLASS){
-            // 多语种国际名师课
+            // 多语种国际在线课堂
             mTitleContent.setText(UIUtil.getString(R.string.label_international_holder_title));
         }
         mClassAdapter.replace(entities);

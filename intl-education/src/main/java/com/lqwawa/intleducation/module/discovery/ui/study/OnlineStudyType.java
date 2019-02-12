@@ -25,11 +25,11 @@ public interface OnlineStudyType {
     int SORT_ORGAN = 100;
     // 搜索标志
     int SORT_ONLINE_STUDY_SEARCH = 200;
-    // 国家课程Tab的名师课
+    // 国家课程Tab的在线课堂
     int SORT_ONLINE_CLASS = 300;
-    // 多语种课程Tab小语种名师课
+    // 多语种课程Tab小语种在线课堂
     int SORT_MINORITY_ONLINE_CLASS = 400;
-    // 多语种课程Tab国际名师课
+    // 多语种课程Tab国际在线课堂
     int SORT_INTERNATIONAL_ONLINE_CLASS = 500;
 
     @Target(ElementType.PARAMETER)

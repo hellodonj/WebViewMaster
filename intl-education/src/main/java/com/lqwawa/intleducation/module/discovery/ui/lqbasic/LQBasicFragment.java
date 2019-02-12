@@ -60,7 +60,7 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     private NewBasicsCourseHolder mNewBasicHolder;
     // 热门推荐View
     private DiscoveryHolder mDiscoveryHolder;
-    // 名师课View
+    // 在线课堂View
     private OnlineStudyItemHolder mOnlineItemHolder;
 
     private List<LQCourseConfigEntity> mConfigEntities;
@@ -223,8 +223,8 @@ public class LQBasicFragment extends PresenterFragment<LQBasicContract.Presenter
     @Override
     public void onClickTitleLayout(@NonNull int sort) {
         if(sort == OnlineStudyType.SORT_ONLINE_CLASS){
-            // 点击名师课更多
-            // UIUtil.showToastSafe("点击名师课更多");
+            // 点击在线课堂更多
+            // UIUtil.showToastSafe("点击在线课堂更多");
             NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.BASIC_COURSE);
         }
     }
