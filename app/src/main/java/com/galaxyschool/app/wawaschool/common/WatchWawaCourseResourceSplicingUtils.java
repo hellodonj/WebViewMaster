@@ -226,7 +226,7 @@ public class WatchWawaCourseResourceSplicingUtils {
      * 判断LQ学程资源是否要加入到图片集
      * @return
      */
-    private static boolean isLQProgramNeedAddToPictureSet(int type){
+    public static boolean isLQProgramNeedAddToPictureSet(int type){
         return type == MaterialResourceType.PICTURE;
     }
 
