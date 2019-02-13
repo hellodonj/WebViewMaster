@@ -806,6 +806,7 @@
         <!--班级学程页面-->
         <activity android:name=".module.discovery.ui.classcourse.ClassCourseActivity"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Common"/>
 
         <!--班级学程选择列表页面-->
@@ -841,6 +842,7 @@
         <!--新讲授课堂筛选列表-->
         <activity android:name=".module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Common"/>
 
         <!--科目设置页面-->
@@ -876,6 +878,7 @@
         <!--小语种国际国家课程更多页面-->
         <activity android:name=".module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Common"/>
 
         <!--课程统计页面-->
