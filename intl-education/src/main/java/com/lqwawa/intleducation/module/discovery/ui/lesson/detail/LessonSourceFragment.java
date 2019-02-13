@@ -431,6 +431,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }
                         for (SectionResListVo vo : voList) {
                             vo.setTaskName(getTaskName(1));
+                            vo.setChapterId(vo.getId());
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(1).getTaskType());
                         }
                         if (mSectionDetailsVo.getTaskList().get(1).getTaskType() == mTaskType) {
@@ -448,6 +449,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }
                         for (SectionResListVo vo : voList) {
                             vo.setTaskName(getTaskName(2));
+                            vo.setChapterId(vo.getId());
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(2).getTaskType());
                         }
 
@@ -467,6 +469,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         }
                         for (SectionResListVo vo : voList) {
                             vo.setTaskName(getTaskName(3));
+                            vo.setChapterId(vo.getId());
                             vo.setTaskType(mSectionDetailsVo.getTaskList().get(3).getTaskType());
                         }
 

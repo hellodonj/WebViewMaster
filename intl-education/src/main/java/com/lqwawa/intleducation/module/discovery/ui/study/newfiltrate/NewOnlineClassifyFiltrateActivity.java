@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * @author mrmedici
- * @desc 小语种,国际课程,国家课程 名师课更多页面
+ * @desc 小语种,国际课程,国家课程 在线课堂更多页面
  */
 public class NewOnlineClassifyFiltrateActivity extends PresenterActivity<NewOnlineClassifyFiltrateContract.Presenter>
     implements NewOnlineClassifyFiltrateContract.View,ActivityNavigator {
@@ -666,7 +666,7 @@ public class NewOnlineClassifyFiltrateActivity extends PresenterActivity<NewOnli
     }
 
     /**
-     * 小语种,国际课程,国家课程 名师课更多页面的入口
+     * 小语种,国际课程,国家课程 在线课堂更多页面的入口
      * @param context 上下文对象
      */
     public static void show(@NonNull Context context,

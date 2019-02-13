@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @author mrmedici
- * @desc 小语种,国际课程,国家课程 名师课更多页面的Presenter
+ * @desc 小语种,国际课程,国家课程 在线课堂更多页面的Presenter
  */
 public class NewOnlineClassifyFiltratePresenter extends BasePresenter<NewOnlineClassifyFiltrateContract.View>
     implements NewOnlineClassifyFiltrateContract.Presenter{

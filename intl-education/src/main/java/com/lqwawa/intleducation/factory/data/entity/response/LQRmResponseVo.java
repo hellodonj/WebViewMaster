@@ -20,9 +20,9 @@ public class LQRmResponseVo extends BaseVo {
     private String message;
     // 热门推荐
     private List<CourseVo> rmCourseList;
-    // 国家或者国际课程名师课
+    // 国家或者国际课程在线课堂
     private List<OnlineClassEntity> gjOnlineCourseList;
-    // 小语种名师课
+    // 小语种在线课堂
     private List<OnlineClassEntity> xyzOnlineCourseList;
 
     public int getCode() {

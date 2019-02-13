@@ -48,7 +48,7 @@ public interface HideSortType {
     String TYPE_SORT_NEW_SCHOOL_SHOP = "1004";
     // 国家课程学段搜索
     String TYPE_SORT_BASIC_GRADE = "1005";
-    // 新名师课搜索
+    // 新在线课堂搜索
     String TYPE_NEW_ONLINE_CLASS = "1006";
     // 国家课程一级页面搜索
     String TYPE_BASIC_COURSE_SEARCH = "1007";

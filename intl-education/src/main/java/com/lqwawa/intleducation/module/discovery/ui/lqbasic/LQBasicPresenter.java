@@ -139,11 +139,11 @@ public class LQBasicPresenter extends BasePresenter<LQBasicContract.View>
                     }
 
 
-                    // 名师课数据
+                    // 在线课堂数据
                     List<OnlineClassEntity> reOnlineCourseList = lqRmResponseVo.getGjOnlineCourseList();
                     if(reOnlineCourseList != null) {
                         if(reOnlineCourseList.size() > 2){
-                            // 只显示3个名师课数据,包头不包尾
+                            // 只显示3个在线课堂数据,包头不包尾
                             reOnlineCourseList = new ArrayList<>(reOnlineCourseList.subList(0, 2));
                         }
 

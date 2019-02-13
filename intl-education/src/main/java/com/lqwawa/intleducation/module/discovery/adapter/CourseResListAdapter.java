@@ -358,7 +358,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 holder.mTvAutoMask.setVisibility(View.VISIBLE);
                 holder.mTvAutoMask.setText(R.string.label_voice_evaluating);
                 // 如果是语音评测类型，设置最大宽度
-                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),160));
+                int dpValue = 160;
+                if(mClassTeacher && vo.isAssigned()) dpValue = 100;
+                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),dpValue));
             }else if((mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER || vo.getTaskType() == 3) &&
                     EmptyUtil.isNotEmpty(vo.getPoint())){
                 // 只有读写单,才显示自动批阅
@@ -366,7 +368,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 // 自动批阅
                 holder.mTvAutoMask.setText(R.string.label_auto_mark);
                 // 如果是自动批阅类型，设置最大宽度
-                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),160));
+                int dpValue = 160;
+                if(mClassTeacher && vo.isAssigned()) dpValue = 100;
+                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),dpValue));
             }else{
                 // 如果不是自动批阅类型，取消设置最大宽度
                 holder.resNameTv.setMaxWidth(Integer.MAX_VALUE);
@@ -381,7 +385,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
 
         if(lessonDetail && !mChoiceMode){
             int taskType = vo.getTaskType();
-            if(taskType == 1){
+            if(taskType == 1 || taskType == 4){
                 // 看课件
                 holder.mIvNeedCommit.setVisibility(View.GONE);
             }else {

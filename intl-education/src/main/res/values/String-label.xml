@@ -223,25 +223,25 @@
     <string name="label_join_course">+My Courses</string>
 
     <!--V5.11版本字符串-->
-    <string name="label_share_online_class_title">【LQ Lecture】</string>
+    <string name="label_share_online_class_title">【LQ Online Class】</string>
     <string name="label_share_course_title">【LQ Tutorial】</string>
     <string name="label_timetable">Timetable</string>
     <string name="label_today">Today</string>
     <string name="label_study_number">%d attended</string>
     <!--<string name="label_teach_class">Lecture</string>-->
-    <string name="label_teach_class">Lecture</string>
-    <string name="label_teach_course">Lecture</string>
+    <string name="label_teach_class">Online Class</string>
+    <string name="label_teach_course">Online Class</string>
     <!--<string name="label_tab_course_chapter">Outline</string>-->
     <string name="label_tab_course_chapter">Tutorial</string>
-    <string name="label_study_course">Tutorial</string>
+    <string name="label_study_course">Online Class</string>
     <string name="label_tab_new_study_course">My Tutorial</string>
-    <string name="label_tab_new_teach_course">My Lecture</string>
+    <string name="label_tab_new_teach_course">My Online Class</string>
     <string name="label_tab_new_give_study_course">Tutorial</string>
     <string name="label_tab_new_give_teach_course">Lecture</string>
-    <string name="label_new_tab_class_empty_remind">No lecture attended?</string>
-    <string name="label_new_go_online_study">Enter Lecture</string>
+    <string name="label_new_tab_class_empty_remind">No online class attended?</string>
+    <string name="label_new_go_online_study">Enter Online Class</string>
     <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
-    <string name="label_watch_more_teach_course">More Lectures</string>
+    <string name="label_watch_more_teach_course">More Online Class</string>
     <string name="label_history_give">History</string>
     <string name="label_give_complete">Ended</string>
     <string name="label_history_setting">Set as History</string>
@@ -249,7 +249,7 @@
     <string name="label_live_source">From: %s</string>
     <string name="label_online_class_give_history_tip">You are now setting the lecture as history and will not be able to create new live stream or mark learning tasks, etc.</string>
     <string name="label_this_class_give_history">Lecture has been set as history</string>
-    <string name="label_delete_live_status_warning">Lecture with this live stream was ended/set as history, unable to delete</string>
+    <string name="label_delete_live_status_warning">Online Class with this live stream was ended/set as history, unable to delete</string>
     <string name="label_search_course_name_hint">Search by lecture title</string>
 
     <string name="label_colon_type">Type:</string>
@@ -281,7 +281,7 @@
     <string name="label_name">Name:</string>
     <string name="label_course_buy_warning">Unable to buy the course/lecture</string>
     <string name="label_choice_other_null">Buy course/lecture for</string>
-    <string name="label_online_member_in_class_warning">User already attended the lecture</string>
+    <string name="label_online_member_in_class_warning">User already attended the online class</string>
     <string name="label_not_have_realname">Real name not found</string>
     <string name="label_other_order_disabled">Order paid by others, please re-purchase</string>
     <string name="label_task_complete">[Finished]</string>
@@ -318,9 +318,9 @@
 
 
     <!--V5.13字符串-->
-    <string name="label_minority_language_holder_title">小语种名师课</string>
-    <string name="label_international_holder_title">国际课程名师课</string>
-    <string name="label_basic_holder_title">国家课程名师课</string>
+    <string name="label_minority_language_holder_title">小语种在线课堂</string>
+    <string name="label_international_holder_title">国际课程在线课堂</string>
+    <string name="label_basic_holder_title">国家课程在线课堂</string>
     <string name="label_all_the_arrangement">【全部布置】</string>
     <string name="label_statistical_learning">学习统计</string>
     <string name="label_course_statistics">课程统计</string>
