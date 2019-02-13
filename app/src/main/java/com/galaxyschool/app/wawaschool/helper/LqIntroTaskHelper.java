@@ -11,6 +11,7 @@ import com.galaxyschool.app.wawaschool.pojo.LookResDto;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
+import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
 import java.util.ArrayList;
@@ -127,7 +128,16 @@ public class LqIntroTaskHelper {
         List<LookResDto> lookResDtoList = new ArrayList<>();
         LookResDto lookResDto = null;
         for (int i = 0; i < list.size(); i++) {
-            ResourceInfoTag info = WatchWawaCourseResourceSplicingUtils.transferLQProgramData(list.get(i));
+            SectionResListVo vo = list.get(i);
+            ResourceInfoTag info = WatchWawaCourseResourceSplicingUtils.transferLQProgramData(vo);
+            if (info != null && WatchWawaCourseResourceSplicingUtils.isLQProgramNeedAddToPictureSet(vo.getResType())){
+                //图片是单个资源（单张图片当成只有一张图片的图片集处理）
+                ResourceInfo resourceInfo = info.toResourceInfo();
+                //图片加入到图片集数组
+                List<ResourceInfo> splitInfoList = new ArrayList<>();
+                splitInfoList.add(resourceInfo);
+                info.setSplitInfoList(splitInfoList);
+            }
             lookResDto = new LookResDto();
             lookResDto.setResId(info.getResId());
             lookResDto.setCourseResType(info.getResourceType());
