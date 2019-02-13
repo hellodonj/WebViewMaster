@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.galaxyschool.app.wawaschool.fragment.AnswerParsingFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
@@ -31,7 +30,6 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private ExerciseAnswerCardParam cardParam;
     private boolean fromAnswerAnalysis;
     private List<ExerciseItem> exerciseItemList;
-
     public interface Constants {
         String SINGLE_QUESTION_ANSWER = "single_question_answer";
         String FROM_ANSWER_ANALYSIS = "from_answer_analysis";
