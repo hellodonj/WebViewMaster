@@ -777,7 +777,7 @@
     <string name="catalog">目录</string>
     <string name="finished">已完成</string>
     <string name="unfinished">未完成</string>
-    <string name="school_space">空中学校</string>
+    <string name="school_space">空中课堂</string>
     <string name="store_count">人放入我的书架</string>
     <string name="class_right">课程权限：</string>
     <string name="always_use">常用</string>
@@ -1014,7 +1014,7 @@
     <string name="collect_different_to_personalLibrary">已收藏到个人空间/个人资源库/%s</string>
     <string name="add_school">加入机构</string>
     <string name="open_consultion_content">
-        “空中学校-精品资源库”是两栖蛙蛙优质课程的展示平台，其中包括幼儿园、小学、初中、高中等多个学科的精品教学资源和特色课程。\n如需开通，请联系两栖蛙蛙客服。
+        “空中课堂-精品资源库”是两栖蛙蛙优质课程的展示平台，其中包括幼儿园、小学、初中、高中等多个学科的精品教学资源和特色课程。\n如需开通，请联系两栖蛙蛙客服。
     </string>
     1-复述微课,2-做任务,3-提问,4-创作
     <string name="make_task">读写单</string>
@@ -1453,7 +1453,7 @@
 
     <string name="str_follow_people">%s人关注</string>
     <string name="Str_view_people">%s人浏览</string>
-    <string name="follow_success_tips">关注成功，进入空中学校，切换机构可查看关注的学校</string>
+    <string name="follow_success_tips">关注成功，进入空中课堂，切换机构可查看关注的学校</string>
     <string name="pls_input_real_name">请完善个人资料中的真实姓名</string>
     <string name="pls_select_a_teacher">至少选择一个老师</string>
     <string name="auto_mark">语音评测</string>
@@ -1556,7 +1556,7 @@
     <string name="str_resources_tag">【%1$s】%2$s</string>
     <string name="str_lqcourse_shop">100%习课程</string>
     <string name="str_online_study">名师课程</string>
-    <string name="air_classroom">在线课堂</string>
+    <string name="air_classroom">空中课堂</string>
     <string name="str_display_source">来源:</string>
     <!--5.12需求-->
     <string name="str_make_task_order_answer_tips">
