@@ -399,10 +399,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 super.onItemClick(holder, entity);
 
                 if(mResourceFlag) {
-                    if (!isAuthorized) {
+                    // V5.13版本逻辑更改
+                    // 无需授权,也能选择班级学程
+                    /*if (!isAuthorized) {
                         UIUtil.showToastSafe(R.string.label_please_request_authorization);
                         return;
-                    }
+                    }*/
 
                     String courseId = entity.getCourseId();
                     // 进入选择资源的Activity
@@ -467,7 +469,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 检查授权
         if(mResourceFlag){
             // 如果是学习任务的选择,默认检查授权
-            mPresenter.requestCheckSchoolPermission(mSchoolId,0,true);
+            // V5.14版本更改,也不是自动Request
+            // mPresenter.requestCheckSchoolPermission(mSchoolId,0,true);
+            mPresenter.requestCheckSchoolPermission(mSchoolId,0,false);
         }else{
             mPresenter.requestCheckSchoolPermission(mSchoolId,0,false);
         }
