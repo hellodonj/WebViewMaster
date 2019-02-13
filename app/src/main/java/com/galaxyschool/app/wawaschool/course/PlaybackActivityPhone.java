@@ -28,10 +28,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.Request;
@@ -63,6 +65,7 @@ import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
+import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.views.AnswerCardPopWindow;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
@@ -107,6 +110,7 @@ import com.umeng.socialize.media.UMImage;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -136,6 +140,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     private long recordTime;
     private AnswerCardPopWindow answerCardPopWindow;
     protected boolean isAnswerCardQuestion;
+    private List<ExerciseItem> exerciseItems;
     protected Handler handler = new Handler();
 
     Runnable runnable = new Runnable() {
@@ -169,16 +174,6 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             return;
         }
         TextView answerBtn = (TextView) findViewById(R.id.exercise_btn);
-        if (answerCardPopWindow == null){
-            answerCardPopWindow = new AnswerCardPopWindow(PlaybackActivityPhone.this,cardParam);
-            if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-                //横屏
-                answerCardPopWindow.resizePopupWindowWith(0.5f);
-            } else {
-                //竖屏
-                answerCardPopWindow.resizePopupWindowWith(0.7f);
-            }
-        }
         if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
             answerCardPopWindow.showPopupMenuRight();
         } else {
@@ -230,6 +225,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                     if (isAnswerCardQuestion) {
                         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        //初始化答题卡的popWindow
+                        initAnswerPopWindowData();
                     }
                 }
             }
@@ -959,16 +956,6 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         });
         //确认
         middleBtn.setOnClickListener(v -> {
-            if (answerCardPopWindow == null){
-                answerCardPopWindow = new AnswerCardPopWindow(PlaybackActivityPhone.this,cardParam);
-                if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-                    //横屏
-                    answerCardPopWindow.resizePopupWindowWith(0.5f);
-                } else {
-                    //竖屏
-                    answerCardPopWindow.resizePopupWindowWith(0.7f);
-                }
-            }
             answerCardPopWindow.commitAnswerQuestion();
         });
         mCommitDialog = new AlertDialog.Builder(PlaybackActivityPhone.this).create();
@@ -1742,7 +1729,6 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 shareInfo.setParentId(sharedResource.getParentId());
                 shareInfo.setSharedResource(sharedResource);
             }
-
             shareInfo.setTargetUrl(shareAddress);
             UMImage umImage;
             if (!TextUtils.isEmpty(shareData.getThumbnail())) {
@@ -1756,6 +1742,36 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             }
         }
         return shareInfo;
+    }
+
+    private void initAnswerPopWindowData(){
+        if (answerCardPopWindow == null){
+            JSONArray jsonArray = JSONObject.parseArray(cardParam.getExerciseAnswerString());
+            if (jsonArray != null && jsonArray.size() > 0) {
+                JSONObject jsonObject = jsonArray.getJSONObject(0);
+                LearnTaskInfo taskInfo = JSONObject.parseObject(jsonObject.toString(), LearnTaskInfo.class);
+                if (taskInfo != null){
+                    exerciseItems = taskInfo.getExercise_item_list();
+                    if (exerciseItems != null && exerciseItems.size() > 0){
+                        answerCardPopWindow = new AnswerCardPopWindow(
+                                PlaybackActivityPhone.this, cardParam, exerciseItems);
+                        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+                            //横屏
+                            answerCardPopWindow.resizePopupWindowWith(0.5f);
+                        } else {
+                            //竖屏
+                            answerCardPopWindow.resizePopupWindowWith(0.7f);
+                        }
+                    }
+                }
+            }
+            answerCardPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+
+                }
+            });
+        }
     }
 
     @Override
