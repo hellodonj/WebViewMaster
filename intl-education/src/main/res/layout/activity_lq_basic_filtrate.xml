@@ -127,8 +127,43 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/body_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLight">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"
+            android:layout_gravity="bottom"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sort_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:tabTextColor="@color/textSecond"
+            app:tabSelectedTextColor="@color/textPrimary"
+            app:tabIndicatorHeight="3dp"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabMode="fixed"/>
+
+    </FrameLayout>
+
+
+    <com.lqwawa.intleducation.base.widgets.ControlViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+    </com.lqwawa.intleducation.base.widgets.ControlViewPager>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
             android:id="@+id/refresh_layout"
