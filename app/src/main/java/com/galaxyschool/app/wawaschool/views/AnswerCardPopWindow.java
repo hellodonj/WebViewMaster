@@ -3,6 +3,7 @@ package com.galaxyschool.app.wawaschool.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,12 +18,14 @@ import android.widget.PopupWindow;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.ScreenUtils;
 import com.galaxyschool.app.wawaschool.helper.DoAnswerCardHelper;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.lqwawa.client.pojo.LearnTaskCardType;
+
 import java.util.List;
 
 /**
@@ -33,27 +36,39 @@ public class AnswerCardPopWindow extends PopupWindow {
 
     private Activity mContext;
     private View mRootView;
+    private LinearLayout testQuestionsLayout;
     //题目答题list选项
     private List<ExerciseItem> exerciseItems;
     private ExerciseAnswerCardParam cardParam;
     private DoAnswerCardHelper cardHelper;
+    private boolean isShowSingleState;
 
     public AnswerCardPopWindow(Context context,
                                ExerciseAnswerCardParam cardParam,
-                               List<ExerciseItem> exerciseItems) {
+                               List<ExerciseItem> exerciseItems,
+                               int screenType) {
         super(context);
         this.mContext = (Activity) context;
         this.cardParam = cardParam;
         this.exerciseItems = exerciseItems;
         this.mRootView = LayoutInflater.from(mContext).inflate(R.layout.layout_answercard_popwindow, null);
-        LinearLayout testQuestionsLayout = (LinearLayout) mRootView.findViewById(R.id.ll_root_layout);
-        cardHelper = new DoAnswerCardHelper(mContext,testQuestionsLayout);
+        testQuestionsLayout = (LinearLayout) mRootView.findViewById(R.id.ll_root_layout);
+        cardHelper = new DoAnswerCardHelper(mContext, testQuestionsLayout);
         setProperty();
-        initData();
+        if (screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            //横屏
+            resizePopupWindowWith(0.5f);
+        } else {
+            //竖屏
+            resizePopupWindowWith(0.7f);
+        }
+        initAllData();
     }
 
-    private void initData() {
+    public void initAllData() {
         if (exerciseItems != null && exerciseItems.size() > 0) {
+            isShowSingleState = false;
+            testQuestionsLayout.removeAllViews();
             for (int i = 0; i < exerciseItems.size(); i++) {
                 ExerciseItem item = exerciseItems.get(i);
                 if (item != null && !TextUtils.isEmpty(item.getType())) {
@@ -73,13 +88,31 @@ public class AnswerCardPopWindow extends PopupWindow {
                 ExerciseItem item = exerciseItems.get(i);
                 if (item != null && !TextUtils.isEmpty(item.getType())) {
                     int type = Integer.valueOf(item.getType());
-                    cardHelper.getStudentCommitData(type,item,i);
+                    cardHelper.getStudentCommitData(type, item, i);
                 }
             }
             DoTaskOrderHelper helper = new DoTaskOrderHelper(mContext);
             helper.setExerciseAnswerCardParam(cardParam).
                     setExerciseItem(exerciseItems).
                     commit();
+        }
+    }
+
+    public void updateAnswerDetail(CallbackListener listener){
+        if (exerciseItems != null && exerciseItems.size() > 0) {
+            for (int i = 0; i < exerciseItems.size(); i++) {
+                ExerciseItem item = exerciseItems.get(i);
+                if (item != null && !TextUtils.isEmpty(item.getType())) {
+                    int type = Integer.valueOf(item.getType());
+                    cardHelper.getStudentCommitData(type, item, i);
+                }
+            }
+            DoTaskOrderHelper helper = new DoTaskOrderHelper(mContext);
+            helper.setExerciseItem(exerciseItems).setIsUpdateAnswerDetail(true);
+            String dataList = helper.getStudentAnswerData();
+            if (listener != null && !TextUtils.isEmpty(dataList)){
+                listener.onBack(dataList);
+            }
         }
     }
 
@@ -94,7 +127,7 @@ public class AnswerCardPopWindow extends PopupWindow {
                 ExerciseItem item = exerciseItems.get(i);
                 if (item != null && !TextUtils.isEmpty(item.getType())) {
                     int type = Integer.valueOf(item.getType());
-                    cardHelper.getStudentCommitData(type,item,i);
+                    cardHelper.getStudentCommitData(type, item, i);
                 }
             }
             for (int m = 0; m < exerciseItems.size(); m++) {
@@ -143,10 +176,24 @@ public class AnswerCardPopWindow extends PopupWindow {
         return true;
     }
 
-    public void setRequestCodeData(int requestCode, Intent data) {
-        if (cardHelper != null){
-            cardHelper.setRequestCodeData(requestCode,data);
+    public void showSingleQuestionDetail(int index) {
+        if (exerciseItems != null && exerciseItems.size() > 0) {
+            isShowSingleState = true;
+            testQuestionsLayout.removeAllViews();
+            ExerciseItem item = exerciseItems.get(index);
+            int type = Integer.valueOf(item.getType());
+            cardHelper.dealDiffTypeData(type, item);
         }
+    }
+
+    public void setRequestCodeData(int requestCode, Intent data) {
+        if (cardHelper != null) {
+            cardHelper.setRequestCodeData(requestCode, data);
+        }
+    }
+
+    public boolean isShowSingleState(){
+        return isShowSingleState;
     }
 
     private void setProperty() {

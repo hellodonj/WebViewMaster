@@ -136,6 +136,7 @@ public class DoAnswerCardHelper {
                 if (childCount > 0) {
                     List<learnTaskCardData> judgmentData = data.getCardData();
                     if (judgmentData == null || judgmentData.size() == 0) {
+                        judgmentData = new ArrayList<>();
                         for (int i = 0; i < childCount; i++) {
                             learnTaskCardData cardData = new learnTaskCardData();
                             cardData.setSelectType(0);

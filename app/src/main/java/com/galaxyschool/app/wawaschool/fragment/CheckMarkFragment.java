@@ -252,16 +252,15 @@ public class CheckMarkFragment extends ContactsListFragment {
                             deleteImageVLeft.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    deleteImageVLeft.setVisibility(View.GONE);
                                     upDateDeleteButtonShowStatus(null, true);
                                     deleteData(data);
                                 }
                             });
                         }
-
                     }
 
                     if (deleteImageVRight != null) {
-
                         if (!data.isIsTeacher()) {
                             if (data.isShowDeleted()) {
                                 deleteImageVRight.setVisibility(View.VISIBLE);
@@ -271,6 +270,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                             deleteImageVRight.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    deleteImageVRight.setVisibility(View.GONE);
                                     upDateDeleteButtonShowStatus(null, true);
                                     deleteData(data);
                                 }

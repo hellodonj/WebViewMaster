@@ -131,6 +131,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     private UserInfo userInfo;
     private LinearLayout menuLayout;
     private TextView markView;
+    private TextView answerBtn;
     private boolean isPraise;
     private boolean mInEditMode;
     private String mUrl;
@@ -169,16 +170,11 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     private MarkScoreDialog mMarkScoreDialog;
 
     @Override
-    public void onExerciseButtonClick(){
-        if (cardParam == null || TextUtils.isEmpty(cardParam.getExerciseAnswerString())){
+    public void onExerciseButtonClick() {
+        if (cardParam == null || TextUtils.isEmpty(cardParam.getExerciseAnswerString())) {
             return;
         }
-        TextView answerBtn = (TextView) findViewById(R.id.exercise_btn);
-        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-            answerCardPopWindow.showPopupMenuRight();
-        } else {
-            answerCardPopWindow.showAsDropDown(answerBtn);
-        }
+        showAnswerPopWindow(true, 0);
     }
 
     @Override
@@ -219,14 +215,14 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 setUserType(taskMarkParam != null ? taskMarkParam.roleType : 0);
                 //任务单答题卡
                 cardParam = mParam.exerciseCardParam;
-                if (cardParam != null){
-                   isAnswerCardQuestion = cardParam.isShowExerciseButton();
-                   //设置软键盘的弹出方式
+                if (cardParam != null) {
+                    isAnswerCardQuestion = cardParam.isShowExerciseButton();
+                    //设置软键盘的弹出方式
                     if (isAnswerCardQuestion) {
                         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                         //初始化答题卡的popWindow
-                        initAnswerPopWindowData();
+                        new Handler().postDelayed(() -> initAnswerPopWindowData(), 100);
                     }
                 }
             }
@@ -349,7 +345,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAnswerCardQuestion){
+                if (isAnswerCardQuestion) {
                     showCommitAnswerDialog(false);
                 } else if (!mInEditMode) {
                     edit();
@@ -397,8 +393,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         }
     }
 
-    private void updateCommitView(TextView commitView){
-        if (commitView != null){
+    private void updateCommitView(TextView commitView) {
+        if (commitView != null) {
             commitView.setVisibility(View.VISIBLE);
             commitView.setText(getString(R.string.commit));
         }
@@ -839,7 +835,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         if (isFinishing()) {
             return;
         }
-        if (isAnswerCardQuestion){
+        if (isAnswerCardQuestion) {
             showCommitAnswerDialog(true);
         } else {
             processBackPressed();
@@ -923,20 +919,20 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         }
     }
 
-    protected void showCommitAnswerDialog(boolean isBackPress){
+    protected void showCommitAnswerDialog(boolean isBackPress) {
         View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_mark_score_commit, null);
         TextView messageTextV = (TextView) inflate.findViewById(R.id.tv_tip_message);
         TextView leftBtn = (TextView) inflate.findViewById(R.id.tv_btn_left);
         TextView middleBtn = (TextView) inflate.findViewById(R.id.tv_btn_middle);
         String message = getString(R.string.commit_or_mot);
-        String leftString  = getString(R.string.discard);
+        String leftString = getString(R.string.discard);
         String rightString = getString(R.string.ok);
         boolean isFinishAllQuestion = false;
-        if (answerCardPopWindow != null){
+        if (answerCardPopWindow != null) {
             isFinishAllQuestion = answerCardPopWindow.isFinishAllQuestion();
         }
-        if (!isBackPress){
-            if (!isFinishAllQuestion){
+        if (!isBackPress) {
+            if (!isFinishAllQuestion) {
                 message = getString(R.string.str_unfinish_answer);
                 leftString = getString(R.string.str_continue_answer);
                 rightString = getString(R.string.commit);
@@ -948,7 +944,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         //放弃
         boolean finalIsFinishAllQuestion = isFinishAllQuestion;
         leftBtn.setOnClickListener(v -> {
-            if (finalIsFinishAllQuestion || isBackPress){
+            if (finalIsFinishAllQuestion || isBackPress) {
                 finish();
             } else {
                 mCommitDialog.dismiss();
@@ -982,36 +978,36 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 null,
                 getString(R.string.confirm),
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String score = ((MarkScoreDialog) dialog).getScore();
-                if (TextUtils.isEmpty(score)) return;
-                if (taskMarkParam.isPercent) {
-                    double scores = Double.valueOf(score);
-                    if (taskMarkParam.cardParam != null){
-                        ExerciseItem itemData = taskMarkParam.cardParam.getExerciseItem();
-                        if (itemData == null){
-                            return;
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String score = ((MarkScoreDialog) dialog).getScore();
+                        if (TextUtils.isEmpty(score)) return;
+                        if (taskMarkParam.isPercent) {
+                            double scores = Double.valueOf(score);
+                            if (taskMarkParam.cardParam != null) {
+                                ExerciseItem itemData = taskMarkParam.cardParam.getExerciseItem();
+                                if (itemData == null) {
+                                    return;
+                                }
+                                double totalScore = Double.valueOf(itemData.getScore());
+                                if (scores > totalScore) {
+                                    TipMsgHelper.ShowLMsg(PlaybackActivityPhone.this, getString(R.string
+                                            .str_single_question_total_score, Utils.changeDoubleToInt(String.valueOf(totalScore))));
+                                    return;
+                                }
+                            } else {
+                                if (scores > 100) {
+                                    TipMsgHelper.ShowLMsg(getApplicationContext(), getString(R.string.str_tips_markscores));
+                                    return;
+                                }
+                            }
+                            score = Utils.changeDoubleToInt(String.valueOf(scores));
                         }
-                        double totalScore = Double.valueOf(itemData.getScore());
-                        if (scores > totalScore) {
-                            TipMsgHelper.ShowLMsg(PlaybackActivityPhone.this,getString(R.string
-                                    .str_single_question_total_score, Utils.changeDoubleToInt(String.valueOf(totalScore))));
-                            return;
-                        }
-                    } else {
-                        if (scores > 100) {
-                            TipMsgHelper.ShowLMsg(getApplicationContext(), getString(R.string.str_tips_markscores));
-                            return;
-                        }
-                    }
-                    score = Utils.changeDoubleToInt(String.valueOf(scores));
-                }
-                dialog.dismiss();
-                commitCourse(score);
+                        dialog.dismiss();
+                        commitCourse(score);
 
-            }
-        }, getString(R.string.discard), new DialogInterface.OnClickListener() {
+                    }
+                }, getString(R.string.discard), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -1020,7 +1016,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 exit(true);
             }
         },
-        true);
+                true);
         mMarkScoreDialog.show();
         mMarkScoreDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -1282,7 +1278,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         Map<String, Object> params = new ArrayMap<>();
         if (isMarkScore) {
             //学生提问,老师批阅
-            if (taskMarkParam.fromOnlineStudyTask){
+            if (taskMarkParam.fromOnlineStudyTask) {
                 params.put("CommitTaskOnlineId", taskMarkParam.commitTaskId);
             } else {
                 params.put("CommitTaskId", taskMarkParam.commitTaskId);
@@ -1291,7 +1287,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             params.put("ResUrl", data.resourceurl);
             params.put("IsTeacher", isTeacherOrEditor());
             params.put("CreateId", data.code);
-            if (taskMarkParam.cardParam != null){
+            if (taskMarkParam.cardParam != null) {
                 int unFinishSubjectCount = taskMarkParam.cardParam.getUnFinishSubjectCount();
                 if (unFinishSubjectCount <= 1) {
                     //之前作答的总分
@@ -1300,8 +1296,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                         double totalDoubleScore = Double.valueOf(totalScore);
                         double commitScore = Double.valueOf(score);
                         double studentTotalScore = DoubleOperationUtil.add(totalDoubleScore, commitScore);
-                        if (unFinishSubjectCount == 0 && !TextUtils.isEmpty(taskMarkParam.score)){
-                            params.put("TotalScore", DoubleOperationUtil.sub(studentTotalScore,Double.valueOf(taskMarkParam.score)));
+                        if (unFinishSubjectCount == 0 && !TextUtils.isEmpty(taskMarkParam.score)) {
+                            params.put("TotalScore", DoubleOperationUtil.sub(studentTotalScore, Double.valueOf(taskMarkParam.score)));
                         } else {
                             if (TextUtils.isEmpty(taskMarkParam.score)) {
                                 params.put("TotalScore", studentTotalScore);
@@ -1335,8 +1331,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         }
 
         String serverUrl = null;
-        if (isMarkScore){
-            if (taskMarkParam.cardParam != null){
+        if (isMarkScore) {
+            if (taskMarkParam.cardParam != null) {
                 //任务单答题卡的主观题
                 serverUrl = ServerUrl.ADD_SUBJECTIVE_REVIEW_BASE_URL;
             } else {
@@ -1744,42 +1740,62 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         return shareInfo;
     }
 
-    private void initAnswerPopWindowData(){
-        if (answerCardPopWindow == null){
+    private void initAnswerPopWindowData() {
+        if (answerCardPopWindow == null) {
+            answerBtn = (TextView) findViewById(R.id.exercise_btn);
             JSONArray jsonArray = JSONObject.parseArray(cardParam.getExerciseAnswerString());
             if (jsonArray != null && jsonArray.size() > 0) {
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
                 LearnTaskInfo taskInfo = JSONObject.parseObject(jsonObject.toString(), LearnTaskInfo.class);
-                if (taskInfo != null){
+                if (taskInfo != null) {
                     exerciseItems = taskInfo.getExercise_item_list();
-                    if (exerciseItems != null && exerciseItems.size() > 0){
+                    if (exerciseItems != null && exerciseItems.size() > 0) {
                         answerCardPopWindow = new AnswerCardPopWindow(
-                                PlaybackActivityPhone.this, cardParam, exerciseItems);
-                        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
-                            //横屏
-                            answerCardPopWindow.resizePopupWindowWith(0.5f);
-                        } else {
-                            //竖屏
-                            answerCardPopWindow.resizePopupWindowWith(0.7f);
-                        }
+                                PlaybackActivityPhone.this,
+                                cardParam,
+                                exerciseItems,
+                                mOrientation);
                     }
                 }
             }
-            answerCardPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
+            if (answerCardPopWindow != null) {
+                answerCardPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        //更新数据
+                        answerCardPopWindow.updateAnswerDetail(result -> {
+                            String dataList = (String) result;
 
-                }
-            });
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+    private void showAnswerPopWindow(boolean showAllData, int questionIndex) {
+        if (showAllData) {
+            //显示所有的
+            if (answerCardPopWindow.isShowSingleState()) {
+                answerCardPopWindow.initAllData();
+            }
+        } else {
+            //显示单题的
+            answerCardPopWindow.showSingleQuestionDetail(questionIndex);
+        }
+        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            answerCardPopWindow.showPopupMenuRight();
+        } else {
+            answerCardPopWindow.showAsDropDown(answerBtn);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
-        if (answerCardPopWindow != null){
+        if (answerCardPopWindow != null) {
             //答题时拍照和从相册选取资源
-            answerCardPopWindow.setRequestCodeData(requestCode,resultData);
+            answerCardPopWindow.setRequestCodeData(requestCode, resultData);
         }
     }
 }

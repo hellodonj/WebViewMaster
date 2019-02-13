@@ -85,6 +85,7 @@ public class DoTaskOrderHelper {
     private UploadDialog.UploadDialogHandler handler;
     private ExerciseItem itemData;
     private String markScore;
+    private boolean isUpdateAnswerDetail;
 
     public DoTaskOrderHelper(Context mContext) {
         this.mContext = mContext;
@@ -105,6 +106,11 @@ public class DoTaskOrderHelper {
         return this;
     }
 
+    public DoTaskOrderHelper setIsUpdateAnswerDetail(boolean isUpdateAnswerDetail){
+        this.isUpdateAnswerDetail = isUpdateAnswerDetail;
+        return this;
+    }
+
     public DoTaskOrderHelper setUploadDialogHandler(UploadDialog.UploadDialogHandler handler) {
         this.handler = handler;
         return this;
@@ -112,6 +118,10 @@ public class DoTaskOrderHelper {
 
     public void commit() {
         commitStudentAnswerData();
+    }
+
+    public String getStudentAnswerData(){
+        return getStudentDataList().toJSONString();
     }
 
     /**
@@ -624,17 +634,26 @@ public class DoTaskOrderHelper {
                 handleFillInData(index, type, dataList, item);
             } else if (type == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                 //主观题
-                String resId = getSubjectResIdOrResUrl(true, item);
-                String resUrl = getSubjectResIdOrResUrl(false, item);
-                if (TextUtils.isEmpty(resId)) {
-                    jsonObject.put("EQState", 5);
+                if (isUpdateAnswerDetail){
+                    List<MediaInfo> mediaInfos = getSubjectProblemImage();
+                    if (mediaInfos != null && mediaInfos.size() > 0){
+                        jsonObject.put("EQState", 3);
+                    } else {
+                        jsonObject.put("EQState", 5);
+                    }
                 } else {
-                    jsonObject.put("EQState", 3);
+                    String resId = getSubjectResIdOrResUrl(true, item);
+                    String resUrl = getSubjectResIdOrResUrl(false, item);
+                    if (TextUtils.isEmpty(resId)) {
+                        jsonObject.put("EQState", 5);
+                    } else {
+                        jsonObject.put("EQState", 3);
+                    }
+                    jsonObject.put("EQScore", 0);
+                    jsonObject.put("EQAnswer", "");
+                    jsonObject.put("SubjectiveResId", resId);
+                    jsonObject.put("SubjectiveResUrl", resUrl);
                 }
-                jsonObject.put("EQScore", 0);
-                jsonObject.put("EQAnswer", "");
-                jsonObject.put("SubjectiveResId", resId);
-                jsonObject.put("SubjectiveResUrl", resUrl);
                 dataList.add(jsonObject);
             } else {
                 jsonObject.put("EQAnswer", item.getStudent_answer());
