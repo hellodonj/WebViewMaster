@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -77,6 +78,7 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
     private TextView mTabLabel1,mTabLabel2,mTabLabel3;
     private TabLayout mTabLayout1,mTabLayout2,mTabLayout3;
 
+    private FrameLayout mBodyLayout;
     private TabLayout mSortLayout;
     private ControlViewPager mViewPager;
 
@@ -149,6 +151,7 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
 
+        mBodyLayout = (FrameLayout) findViewById(R.id.body_layout);
         mSortLayout = (TabLayout) findViewById(R.id.sort_layout);
         mViewPager = (ControlViewPager) findViewById(R.id.view_pager);
 
@@ -224,11 +227,13 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
 
         if(mVisitorSearchMode){
             mHeaderLayout.setVisibility(View.GONE);
+            mBodyLayout.setVisibility(View.GONE);
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
-            requestCourseData(false);
+            mPresenter.requestBasicConfigData(mParentId,1);
         }else{
             // 获取标签数据
             mHeaderLayout.setVisibility(View.VISIBLE);
+            mBodyLayout.setVisibility(View.VISIBLE);
             mPresenter.requestBasicConfigData(mParentId,1);
         }
     }
@@ -267,27 +272,30 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
             TabPagerAdapter mAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
             mViewPager.setAdapter(mAdapter);
             mViewPager.setOffscreenPageLimit(fragments.size());
+            if(!mVisitorSearchMode){
+                mSortLayout.setupWithViewPager(mViewPager);
 
-            mSortLayout.setupWithViewPager(mViewPager);
+                // 设置TabLayout最后一个节点有upDown
+                TabLayout.Tab tabAt = mSortLayout.getTabAt(mSortLayout.getTabCount() - 1);
+                PriceArrowView view = new PriceArrowView(this);
+                view.setTabTitle(mTabTitles[mSortLayout.getTabCount() - 1]);
+                tabAt.setCustomView(view.getRootView());
+                mPriceArrowView = view;
 
-            // 设置TabLayout最后一个节点有upDown
-            TabLayout.Tab tabAt = mSortLayout.getTabAt(mSortLayout.getTabCount() - 1);
-            PriceArrowView view = new PriceArrowView(this);
-            view.setTabTitle(mTabTitles[mSortLayout.getTabCount() - 1]);
-            tabAt.setCustomView(view.getRootView());
-            mPriceArrowView = view;
-
-            mPriceArrowView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
-                        int state = mPriceArrowView.triggerSwitch();
-                        triggerPriceSwitch(state);
-                        return true;
+                mPriceArrowView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
+                            int state = mPriceArrowView.triggerSwitch();
+                            triggerPriceSwitch(state);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
+                });
+            }else{
+                mViewPager.setScanScroll(false);
+            }
         }
     }
 
@@ -477,35 +485,38 @@ public class LQBasicFiltrateActivity extends PresenterActivity<LQBasicFiltrateCo
 
         int[] params = new int[]{0,0,0};
 
-        // 获取筛选条件
-        int paramOneId = 0,paramTwoId = 0,paramThreeId = 0;
-
         if(EmptyUtil.isEmpty(mSearchKey)) mSearchKey = "";
 
-        for (Tab tab : mFiltrateArray1){
-            if(tab.isChecked()){
-                paramOneId = tab.getLabelId();
-                break;
-            }
-        }
+        if(!mVisitorSearchMode){
+            // 获取筛选条件
+            int paramOneId = 0,paramTwoId = 0,paramThreeId = 0;
 
-        for (Tab tab : mFiltrateArray2){
-            if(tab.isChecked()){
-                paramTwoId = tab.getLabelId();
-                break;
-            }
-        }
 
-        for (Tab tab : mFiltrateArray3){
-            if(tab.isChecked()){
-                paramThreeId = tab.getLabelId();
-                break;
+            for (Tab tab : mFiltrateArray1){
+                if(tab.isChecked()){
+                    paramOneId = tab.getLabelId();
+                    break;
+                }
             }
-        }
 
-        params[0] = paramOneId;
-        params[1] = paramTwoId;
-        params[2] = paramThreeId;
+            for (Tab tab : mFiltrateArray2){
+                if(tab.isChecked()){
+                    paramTwoId = tab.getLabelId();
+                    break;
+                }
+            }
+
+            for (Tab tab : mFiltrateArray3){
+                if(tab.isChecked()){
+                    paramThreeId = tab.getLabelId();
+                    break;
+                }
+            }
+
+            params[0] = paramOneId;
+            params[1] = paramTwoId;
+            params[2] = paramThreeId;
+        }
 
         return params;
 
