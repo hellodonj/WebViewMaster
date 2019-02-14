@@ -31,10 +31,12 @@ public class DoTaskOrderAnswerQuestionAdapter extends BaseAdapter {
     private boolean isSingle;//单选
     private int layoutId;
 
-    public DoTaskOrderAnswerQuestionAdapter(Context context, List<learnTaskCardData> list) {
+    public DoTaskOrderAnswerQuestionAdapter(Context context,
+                                            List<learnTaskCardData> list,
+                                            boolean isSubjectProblem) {
         this.context = context;
         this.list = list;
-        if (this.list == null || this.list.size() == 0) {
+        if (isSubjectProblem) {
             //主观题
             layoutId = R.layout.item_answer_subject_problem_detail;
         } else {

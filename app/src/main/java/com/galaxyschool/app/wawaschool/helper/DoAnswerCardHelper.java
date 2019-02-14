@@ -174,7 +174,7 @@ public class DoAnswerCardHelper {
         MyGridView myGridView = (MyGridView) rootLayout.findViewById(R.id.gv_check_answer);
         myGridView.setVisibility(View.VISIBLE);
         DoTaskOrderAnswerQuestionAdapter answerQuestionAdapter =
-                new DoTaskOrderAnswerQuestionAdapter(activity, data.getCardData());
+                new DoTaskOrderAnswerQuestionAdapter(activity, data.getCardData(),false);
         myGridView.setAdapter(answerQuestionAdapter);
         if (TextUtils.equals(data.getType(), String.valueOf(LearnTaskCardType.SINGLE_CHOICE_CORRECTION))) {
             //单选改错
@@ -233,7 +233,7 @@ public class DoAnswerCardHelper {
         //主观题显示3个tab
         myGridView.setNumColumns(3);
         DoTaskOrderAnswerQuestionAdapter answerQuestionAdapter =
-                new DoTaskOrderAnswerQuestionAdapter(activity, cardDatas);
+                new DoTaskOrderAnswerQuestionAdapter(activity, cardDatas,true);
         myGridView.setAdapter(answerQuestionAdapter);
         rootLayout.findViewById(R.id.tv_take_photo).setOnClickListener(v -> taskPhoto(answerQuestionAdapter));
         rootLayout.findViewById(R.id.tv_photo).setOnClickListener(v -> loadPhotoPic(answerQuestionAdapter));
