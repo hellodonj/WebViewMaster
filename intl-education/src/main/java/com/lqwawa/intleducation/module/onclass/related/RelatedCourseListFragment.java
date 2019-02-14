@@ -160,7 +160,7 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                 }
             }
 
-            /*if(!haveEntity){
+            if(!haveEntity){
                 LQCourseConfigEntity entity = new LQCourseConfigEntity();
                 entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
                 entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
@@ -171,7 +171,7 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                 GroupFiltrateState state = new GroupFiltrateState(entity);
                 // 如果基础课程可能会，标题错误
                 CourseFiltrateActivity.show(getActivity(),entity,state);
-            }*/
+            }
         }
     }
 
