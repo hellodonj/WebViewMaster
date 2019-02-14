@@ -42,6 +42,7 @@ public class AnswerCardPopWindow extends PopupWindow {
     private ExerciseAnswerCardParam cardParam;
     private DoAnswerCardHelper cardHelper;
     private boolean isShowSingleState;
+    private int singleQuestionIndex;
 
     public AnswerCardPopWindow(Context context,
                                ExerciseAnswerCardParam cardParam,
@@ -104,7 +105,16 @@ public class AnswerCardPopWindow extends PopupWindow {
                 ExerciseItem item = exerciseItems.get(i);
                 if (item != null && !TextUtils.isEmpty(item.getType())) {
                     int type = Integer.valueOf(item.getType());
-                    cardHelper.getStudentCommitData(type, item, i);
+                    if (isShowSingleState){
+                        //当前的单题
+                        if (singleQuestionIndex == i) {
+                            //就一个子view 选择下标0
+                            cardHelper.getStudentCommitData(type, item, 0);
+                            break;
+                        }
+                    } else {
+                        cardHelper.getStudentCommitData(type, item, i);
+                    }
                 }
             }
             DoTaskOrderHelper helper = new DoTaskOrderHelper(mContext);
@@ -179,6 +189,7 @@ public class AnswerCardPopWindow extends PopupWindow {
     public void showSingleQuestionDetail(int index) {
         if (exerciseItems != null && exerciseItems.size() > 0) {
             isShowSingleState = true;
+            singleQuestionIndex = index;
             testQuestionsLayout.removeAllViews();
             ExerciseItem item = exerciseItems.get(index);
             int type = Integer.valueOf(item.getType());

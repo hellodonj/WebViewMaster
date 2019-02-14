@@ -586,6 +586,8 @@ public class DoTaskOrderHelper {
             if (TextUtils.isEmpty(item.getStudent_answer())) {
                 //没做
                 jsonObject.put("EQState", 5);
+            } else if (isUpdateAnswerDetail){
+                jsonObject.put("EQState", 6);
             } else if (TextUtils.equals(item.getStudent_score(), item.getScore())) {
                 //正确
                 jsonObject.put("EQState", 1);
@@ -637,7 +639,7 @@ public class DoTaskOrderHelper {
                 if (isUpdateAnswerDetail){
                     List<MediaInfo> mediaInfos = getSubjectProblemImage();
                     if (mediaInfos != null && mediaInfos.size() > 0){
-                        jsonObject.put("EQState", 3);
+                        jsonObject.put("EQState", 6);
                     } else {
                         jsonObject.put("EQState", 5);
                     }
@@ -751,7 +753,10 @@ public class DoTaskOrderHelper {
                         if (TextUtils.isEmpty(itemIndex)) {
                             //没做
                             jsonObject.put("EQState", 5);
-                        } else if (TextUtils.equals(itemIndex, rightIndex)) {
+                        } else if (isUpdateAnswerDetail) {
+                            jsonObject.put("EQState", 6);
+                        } else if (TextUtils.equals(itemIndex,
+                                rightIndex)) {
                             //正确
                             jsonObject.put("EQState", 1);
                         } else {
@@ -762,6 +767,8 @@ public class DoTaskOrderHelper {
                         if (TextUtils.isEmpty(answerText)) {
                             //没做
                             jsonObject.put("EQState", 5);
+                        } else if (isUpdateAnswerDetail) {
+                            jsonObject.put("EQState", 6);
                         } else if (TextUtils.equals(answerText, rightText)) {
                             //正确
                             jsonObject.put("EQState", 1);
@@ -801,6 +808,8 @@ public class DoTaskOrderHelper {
                 if (TextUtils.isEmpty(singleQuestion)) {
                     //没做
                     jsonObject.put("EQState", 5);
+                } else if (isUpdateAnswerDetail) {
+                    jsonObject.put("EQState", 6);
                 } else if (TextUtils.equals(singleQuestion, singleRight)) {
                     //正确
                     jsonObject.put("EQState", 1);
@@ -1319,12 +1328,10 @@ public class DoTaskOrderHelper {
             mParam.mIsHideCollectTip = true;
             //任务单答题操作
             ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
+            cardParam.setShowExerciseNode(true);
             if (isDoExercise) {
                 //做读写单
                 cardParam.setShowExerciseButton(true);
-            } else {
-                //查看详情
-                cardParam.setShowExerciseNode(true);
             }
             cardParam.setExerciseAnswerString(exerciseString);
             cardParam.setTaskId(TaskId);

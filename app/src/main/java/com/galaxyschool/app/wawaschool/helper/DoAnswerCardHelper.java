@@ -207,8 +207,7 @@ public class DoAnswerCardHelper {
             String title = activity.getString(R.string.str_space) + (i + 1);
             spaceTitle.setText(title);
             //防止编辑的title为空
-            ContainsEmojiEditText editText = (ContainsEmojiEditText) fillInBlankLayout.findViewById(R.id
-                    .et_input_content);
+            ContainsEmojiEditText editText = (ContainsEmojiEditText) fillInView.findViewById(R.id.et_input_content);
             if (studentArray != null && i < studentArray.size()){
                 //存在拿出来显示
                 editText.setText(studentArray.get(i).toString());
@@ -445,6 +444,9 @@ public class DoAnswerCardHelper {
 
     private void getCheckChoiceAnswer(ExerciseItem data, int position) {
         View itemView = answerRootLayout.getChildAt(position);
+        if (itemView == null){
+            return;
+        }
         List<learnTaskCardData> list = data.getCardData();
         if (list != null && list.size() > 0) {
             StringBuilder stringBuilder = new StringBuilder();
