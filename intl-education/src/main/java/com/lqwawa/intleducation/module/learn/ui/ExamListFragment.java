@@ -56,7 +56,7 @@ public class ExamListFragment extends MyBaseFragment implements View.OnClickList
     private CourseVo courseVo;
     private CourseDetailParams courseDetailParams;
     private OnLoadStatusChangeListener onLoadStatusChangeListener;
-    // 是否是在线课堂老师进来的
+    // 是否是空中课堂老师进来的
     private boolean isOnlineTeacher;
 
     @Override

@@ -220,7 +220,7 @@ public class HistoryClassActivity extends PresenterActivity<HistoryClassContract
     }
 
     /**
-     * 点击在线课堂班级
+     * 点击空中课堂班级
      * @param onlineClassEntity 班级实体
      */
     private void onClickClass(OnlineClassEntity onlineClassEntity) {

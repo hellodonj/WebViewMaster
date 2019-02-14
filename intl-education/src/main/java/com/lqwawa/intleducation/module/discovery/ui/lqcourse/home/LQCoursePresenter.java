@@ -202,11 +202,11 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
                     }
 
 
-                    // 小语种在线课堂数据
+                    // 小语种空中课堂数据
                     List<OnlineClassEntity> xyzOnlineCourseList = lqRmResponseVo.getXyzOnlineCourseList();
                     if(xyzOnlineCourseList != null) {
                         if(xyzOnlineCourseList.size() > 2){
-                            // 只显示3个在线课堂数据,包头不包尾
+                            // 只显示3个空中课堂数据,包头不包尾
                             xyzOnlineCourseList = new ArrayList<>(xyzOnlineCourseList.subList(0, 2));
                         }
 
@@ -214,11 +214,11 @@ public class LQCoursePresenter extends BasePresenter<LQCourseContract.View>
                         view.updateXyzOnlineClassView(xyzOnlineCourseList);
                     }
 
-                    // 国际在线课堂数据
+                    // 国际空中课堂数据
                     List<OnlineClassEntity> reOnlineCourseList = lqRmResponseVo.getGjOnlineCourseList();
                     if(reOnlineCourseList != null) {
                         if(reOnlineCourseList.size() > 2){
-                            // 只显示3个在线课堂数据,包头不包尾
+                            // 只显示3个空中课堂数据,包头不包尾
                             reOnlineCourseList = new ArrayList<>(reOnlineCourseList.subList(0, 2));
                         }
 

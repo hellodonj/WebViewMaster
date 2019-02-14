@@ -85,7 +85,7 @@ import java.util.List;
  * @param canEdit 家长身份 false
  */
 public class LessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
-    // 是否是在线课堂老师
+    // 是否是空中课堂老师
     public static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";
     // 是否是游离的身份
     public static final String KEY_ROLE_FREE_USER = "KEY_ROLE_FREE_USER";
@@ -198,7 +198,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private String sectionName;
     private String sectionTitle;
 
-    // 是否是在线课堂老师过来的
+    // 是否是空中课堂老师过来的
     private boolean isOnlineTeacher;
 
     private SectionDetailsVo sectionDetailsVo;
@@ -725,7 +725,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         // 辅导老师的身份等同家长处理 已经角色处理过的 role
         int role = originRole;
         if(UserHelper.isCourseCounselor(courseVo,isOnlineTeacher)){
-            // 如果是在线课堂的老师,当做家长处理
+            // 如果是空中课堂的老师,当做家长处理
             originRole = UserHelper.MoocRoleType.PARENT;
         }
 

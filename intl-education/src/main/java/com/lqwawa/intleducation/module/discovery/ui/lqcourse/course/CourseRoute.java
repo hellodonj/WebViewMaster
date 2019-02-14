@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class CourseRoute {
 
-    // 是否是在线课堂的老师
+    // 是否是空中课堂的老师
     private boolean isOnlineTeacher;
     // 是否已经作学程的辅导老师处理？优先学生购买，免费
     private boolean isOnlineCounselor;
@@ -113,7 +113,7 @@ public class CourseRoute {
         // 判断是否是学程的老师身份
         if(entity.isCourseTeacher(memberId) || isOnlineCounselor){
             // 如果是课程的老师
-            // 并且是在线课堂的老师(在线课堂老师辅导老师身份处理)
+            // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if(EmptyUtil.isNotEmpty(listener)){
                 listener.route(true);
                 return;
@@ -190,7 +190,7 @@ public class CourseRoute {
                 isOnlineCounselor){
             // 如果是机构辅导老师
             // 如果是课程的老师
-            // 并且是在线课堂的老师(在线课堂老师辅导老师身份处理)
+            // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if(EmptyUtil.isNotEmpty(listener)){
                 listener.route(true);
                 return;
@@ -284,7 +284,7 @@ public class CourseRoute {
 
             // 如果是机构辅导老师
             // 如果是课程的老师
-            // 并且是在线课堂的老师(在线课堂老师辅导老师身份处理)
+            // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if(EmptyUtil.isNotEmpty(listener)){
                 listener.route(true);
                 return;
@@ -372,14 +372,14 @@ public class CourseRoute {
     /**
      * 内部调用
      * @param entity 课程信息实体
-     * @param isOnlineTeacher 是否是在线课堂的老师
-     * @return true 已经作为在线课堂老师处理了。
+     * @param isOnlineTeacher 是否是空中课堂的老师
+     * @return true 已经作为空中课堂老师处理了。
      */
     private boolean isOnlineCounselor(@NonNull CourseRouteEntity entity, boolean isOnlineTeacher){
         boolean isLearnPermission = (entity.getPrice() == 0 && entity.isJoin()) ||
                 // 过期让进入课程详情 ，由课程详情强制退出
                 (entity.getPrice() != 0 && entity.isBuy() && !entity.isExpire() && entity.isJoin());
-        // 没有购买,并且是在线课堂老师
+        // 没有购买,并且是空中课堂老师
         boolean isOnlineCounselor = !isLearnPermission && isOnlineTeacher;
         return isOnlineCounselor;
     }
@@ -419,7 +419,7 @@ public class CourseRoute {
 
     /**
      * 如果已经购买或者能参加学习，就是学生身份进去
-     * @return true 在线课堂的老师作学程的辅导老师处理了。
+     * @return true 空中课堂的老师作学程的辅导老师处理了。
      */
     public boolean isOnlineCounselor() {
         return isOnlineCounselor;

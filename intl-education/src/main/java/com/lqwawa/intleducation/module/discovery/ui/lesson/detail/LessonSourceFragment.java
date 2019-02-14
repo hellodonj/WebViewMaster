@@ -573,7 +573,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         // 辅导老师的身份等同家长处理 已经角色处理过的 role
         int role = originRole;
         if(UserHelper.isCourseCounselor(courseVo,isOnlineTeacher) || freeUser){
-            // 如果是在线课堂的老师,当做家长处理 如果是游客身份,试听也是做家长身份处理
+            // 如果是空中课堂的老师,当做家长处理 如果是游客身份,试听也是做家长身份处理
             role = UserHelper.MoocRoleType.PARENT;
         }
 

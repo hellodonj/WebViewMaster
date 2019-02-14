@@ -70,7 +70,7 @@
     <!--占位图-->
     <string name="label_net_error">您的手机不太顺畅哦~\n无法连接到相应的页面</string>
 
-    <!--在线课堂相关字符串资源-->
+    <!--空中课堂相关字符串资源-->
     <string name="label_many_people_join_desc">%d人已报名</string>
     <string name="label_online_class_search_hint">搜索培训班/授课老师</string>
     <string name="label_online_class_detail_time">开课时间：</string>
@@ -96,7 +96,7 @@
     <string name="label_no_permission">您不是该班级成员，无查看权限</string>
 
     <!--机构信息-->
-    <string name="label_online_course">在线课堂</string>
+    <string name="label_online_course">空中课堂</string>
     <string name="label_course">课程</string>
     <!--学程馆改成自习课程-->
     <string name="label_course_shop">学程馆</string>
@@ -171,9 +171,9 @@
     <!--<string name="label_tab_autonomously_study">我的自主学习</string>-->
     <!--<string name="label_tab_autonomously_study">我的自习课程</string>-->
     <string name="label_tab_autonomously_study">&#8195;我的学程&#8195;</string>
-    <string name="label_tab_online_study">我的在线课堂</string>
+    <string name="label_tab_online_study">我的空中课堂</string>
     <string name="label_tab_give_course">&#8195;我开设的课程&#8195;</string>
-    <string name="label_tab_give_online_study">我开设的在线课堂</string>
+    <string name="label_tab_give_online_study">我开设的空中课堂</string>
     <string name="label_online_study_latest_data">最新课堂</string>
     <string name="label_online_study_hot_data">热门推荐</string>
     <string name="label_online_study_organ_data">入驻机构</string>
@@ -189,12 +189,12 @@
     <string name="label_image_save_failed">图片保存失败</string>
     <string name="label_image_save_to_photo">保存到相册</string>
     <string name="label_tab_course_empty_remind">还没有参加习教辅学习？</string>
-    <string name="label_tab_class_empty_remind">还没有参加在线课堂？</string>
+    <string name="label_tab_class_empty_remind">还没有参加空中课堂？</string>
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
     <!--<string name="label_go_course_shop">去自习课程</string>-->
     <string name="label_go_course_shop">去学程馆</string>
-    <string name="label_go_online_study">去在线课堂</string>
+    <string name="label_go_online_study">去空中课堂</string>
 
     <string name="label_update_time">最后更新：</string>
     <string name="label_empty_comment_remind">暂无评论，写点什么吧~</string>
@@ -230,25 +230,25 @@
     <string name="label_join_course">+我的学程</string>
 
     <!--V5.11版本字符串-->
-    <string name="label_share_online_class_title">【两栖在线课堂】</string>
+    <string name="label_share_online_class_title">【两栖空中课堂】</string>
     <string name="label_share_course_title">【两栖习教辅】</string>
     <string name="label_timetable">课程表</string>
     <string name="label_today">今天</string>
     <string name="label_study_number">%d人报名</string>
-    <!--<string name="label_teach_class">在线课堂</string>-->
-    <string name="label_teach_class">在线课堂</string>
-    <string name="label_teach_course">在线课堂</string>
+    <!--<string name="label_teach_class">空中课堂</string>-->
+    <string name="label_teach_class">空中课堂</string>
+    <string name="label_teach_course">空中课堂</string>
     <!--<string name="label_tab_course_chapter">课程大纲</string>-->
     <string name="label_tab_course_chapter">习教辅</string>
     <string name="label_study_course">习教辅</string>
     <string name="label_tab_new_study_course">我的习教辅</string>
-    <string name="label_tab_new_teach_course">我的在线课堂</string>
+    <string name="label_tab_new_teach_course">我的空中课堂</string>
     <string name="label_tab_new_give_study_course">我开设的习教辅</string>
-    <string name="label_tab_new_give_teach_course">我开设的在线课堂</string>
-    <string name="label_new_tab_class_empty_remind">还没有参加在线课堂？</string>
-    <string name="label_new_go_online_study">去在线课堂</string>
-    <!--<string name="label_new_go_online_study">去在线课堂</string>-->
-    <string name="label_watch_more_teach_course">查看更多在线课堂</string>
+    <string name="label_tab_new_give_teach_course">我开设的空中课堂</string>
+    <string name="label_new_tab_class_empty_remind">还没有参加空中课堂？</string>
+    <string name="label_new_go_online_study">去空中课堂</string>
+    <!--<string name="label_new_go_online_study">去空中课堂</string>-->
+    <string name="label_watch_more_teach_course">查看更多空中课堂</string>
     <string name="label_history_give">历史授课</string>
     <string name="label_give_complete">完成授课</string>
     <string name="label_history_setting">设成历史课</string>
@@ -256,7 +256,7 @@
     <string name="label_live_source">来源：%s</string>
     <string name="label_online_class_give_history_tip">您正在将课程设成历史课，确认后，将不能再对课程进行开课、批阅等操作</string>
     <string name="label_this_class_give_history">该班级已设成历史课</string>
-    <string name="label_delete_live_status_warning">该直播所在的在线课堂已完成授课/设成历史课，无法删除</string>
+    <string name="label_delete_live_status_warning">该直播所在的空中课堂已完成授课/设成历史课，无法删除</string>
     <string name="label_search_course_name_hint">搜索课程名称</string>
 
     <string name="label_colon_type">类型：</string>
@@ -288,7 +288,7 @@
     <string name="label_name">姓名：</string>
     <string name="label_course_buy_warning">该课程/课堂无法购买</string>
     <string name="label_choice_other_null">请确认此课程为谁购买</string>
-    <string name="label_online_member_in_class_warning">此用户已参加该在线课堂</string>
+    <string name="label_online_member_in_class_warning">此用户已参加该空中课堂</string>
     <string name="label_not_have_realname">暂未设置真实姓名</string>
     <string name="label_other_order_disabled">该订单他人已付款，无法参加，请重新下单</string>
     <string name="label_task_complete">【已完成】</string>
@@ -325,9 +325,9 @@
 
 
     <!--V5.13字符串-->
-    <string name="label_minority_language_holder_title">小语种在线课堂</string>
-    <string name="label_international_holder_title">国际课程在线课堂</string>
-    <string name="label_basic_holder_title">国家课程在线课堂</string>
+    <string name="label_minority_language_holder_title">小语种空中课堂</string>
+    <string name="label_international_holder_title">国际课程空中课堂</string>
+    <string name="label_basic_holder_title">国家课程空中课堂</string>
     <string name="label_all_the_arrangement">【全部布置】</string>
     <string name="label_statistical_learning">学习统计</string>
     <string name="label_course_statistics">课程统计</string>

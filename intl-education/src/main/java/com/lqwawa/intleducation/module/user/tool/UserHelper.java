@@ -200,7 +200,7 @@ public class UserHelper {
     /**
      * 判断课程的讲师，助教，辅导老师是否包含当前用户
      * @param courseVo 课程信息
-     * @param isOnlineCounselor 只有用户没有购买过,并且是在线课堂的老师,才是辅导老师身份
+     * @param isOnlineCounselor 只有用户没有购买过,并且是空中课堂的老师,才是辅导老师身份
      * @return true 老师身份
      */
     public static boolean checkCourseAuthor(CourseVo courseVo,boolean isOnlineCounselor) {
@@ -227,8 +227,8 @@ public class UserHelper {
     }
 
     /**
-     * 判断在线课堂的讲师，助教，辅导老师是否包含当前用户
-     * @param dataBean 在线课堂班级信息
+     * 判断空中课堂的讲师，助教，辅导老师是否包含当前用户
+     * @param dataBean 空中课堂班级信息
      * @return true 老师身份
      */
     public static boolean checkOnlineCourseAuthor(ClassDetailEntity.DataBean dataBean) {
@@ -443,7 +443,7 @@ public class UserHelper {
     /**
      * 判断当前登录用户在课程中,是否是辅导老师角色
      * @param courseVo 课程信息
-     * @param isOnlineTeacher 是否是在线课堂老师
+     * @param isOnlineTeacher 是否是空中课堂老师
      * @return true 辅导老师角色
      */
     public static boolean isCourseCounselor(CourseVo courseVo,boolean isOnlineTeacher) {
@@ -456,7 +456,7 @@ public class UserHelper {
      * 判断当在课程中,是否是辅导老师角色
      * @param memberId 用户Id
      * @param courseVo 课程信息
-     * @param isOnlineTeacher 是否是在线课堂老师
+     * @param isOnlineTeacher 是否是空中课堂老师
      * @return true 辅导老师角色
      */
     public static boolean isCourseCounselor(@NonNull String memberId,@NonNull CourseVo courseVo,boolean isOnlineTeacher){

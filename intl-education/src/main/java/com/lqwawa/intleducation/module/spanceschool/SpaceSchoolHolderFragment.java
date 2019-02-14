@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author MrMedici
  * @email mr.medici@foxmail.com
- * @function 空中学校在线课堂功能列表的容器
+ * @function 空中学校空中课堂功能列表的容器
  * @date 2018/07/04 11:36
  * @history v1.0
  * **********************************

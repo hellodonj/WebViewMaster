@@ -7,7 +7,7 @@ import com.lqwawa.intleducation.base.vo.BaseVo;
  *
  * @author MrMedici
  * @email mr.medici@foxmail.com
- * @function 在线课堂班级详情通知实体
+ * @function 空中课堂班级详情通知实体
  * @date 2018/06/04 16:10
  * @history v1.0
  * **********************************

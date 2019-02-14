@@ -325,7 +325,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待付款
                     // TODO: 2017/7/18 去付款
                     if(vo.getType() == 3){
-                        // 3是在线课堂
+                        // 3是空中课堂
                         // 发送请求获取schoolId
                         // 发送获取班级详情细信息的请求
                         if(vo.isDeleted()){
@@ -537,7 +537,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                         true, UserHelper.getUserId());
                             }else if(vo.getType() == 3){
-                                // 3是在线课堂
+                                // 3是空中课堂
                                 // 发送请求获取schoolId
                                 // 发送获取班级详情细信息的请求
                                 OnlineCourseHelper.loadOnlineClassInfo(UserHelper.getUserId(), vo.getClassId(), new DataSource.Callback<JoinClassEntity>() {
@@ -607,7 +607,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     vo.getThumbnailUrl(),
                     imageOptions);
         }else{
-            // 在线课堂
+            // 空中课堂
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
@@ -635,7 +635,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
         }else{
-            // 在线课堂
+            // 空中课堂
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.course_iv.getLayoutParams();
             layoutParams.width = img_height;
             layoutParams.height = img_width;
@@ -768,7 +768,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     }
 
     /**
-     * 获取在线课堂角色信息
+     * 获取空中课堂角色信息
      * @param entity 数据实体
      * @return 判断顺序 老师->家长->学生
      */
@@ -939,7 +939,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     }
 
     /**
-     * 课程直播重新加入，在线课堂不许reJoin
+     * 课程直播重新加入，空中课堂不许reJoin
      * @param courseId
      * @param type
      */

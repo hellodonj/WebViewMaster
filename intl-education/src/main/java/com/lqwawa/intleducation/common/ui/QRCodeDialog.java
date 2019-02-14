@@ -124,7 +124,7 @@ public class QRCodeDialog extends Dialog{
     }
 
     /**
-     * 在线课堂之前传图片显示扫描二维码信息
+     * 空中课堂之前传图片显示扫描二维码信息
      * @param bitmap
      * @param id
      * @param dialogTitle

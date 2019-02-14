@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author MrMedici
  * @email mr.medici@foxmail.com
- * @function 在线课堂评论数据实体
+ * @function 空中课堂评论数据实体
  * @date 2018/06/02 17:38
  * @history v1.0
  * **********************************

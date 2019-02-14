@@ -583,13 +583,13 @@ public final class AppConfig {
 
         /**
          * ========================
-         * 在线课堂所有接口
+         * 空中课堂所有接口
          * ========================
          */
-        // 某机构的在线课堂列表
+        // 某机构的空中课堂列表
         public static final String GetOnlineCourseDataInSchool =
                 ServerBase + "api/online/getOnlineCourseList?j=";
-        // 课程关联的在线课堂列表
+        // 课程关联的空中课堂列表
         public static final String GetOnlineClassDataByCourseId =
                 ServerBase + "api/course/getCourseOnlineByCourseId?j=";
 
@@ -597,15 +597,15 @@ public final class AppConfig {
         public static final String GetJoinInOnlineGratisCourse =
                 ServerBase + "api/online/joinInOnlineCourse?j=";
 
-        // 获取在线课堂班级信息
+        // 获取空中课堂班级信息
         public static final String PostLoadClassInfo =
                 LQWAWA_BASE_SERVER + "Api/AmWaWa/SchoolLife/Class/ClassInfo/LoadClassInfo";
 
-        // 获取在线课堂详情信息
+        // 获取空中课堂详情信息
         public static final String GetClassDetailInfo =
                 ServerBase + "api/online/getOnlineCourseDetail?j=";
 
-        // 在线课堂班级详情列表课堂简介图文混排地址
+        // 空中课堂班级详情列表课堂简介图文混排地址
         public static final String WebViewOnlineClassDetailIntroduction =
                 ServerBase + "api/online/intro?id={id}";
 
@@ -629,11 +629,11 @@ public final class AppConfig {
         public static final String GetOnlineClassCommentData =
                 ServerBase + "api/online/getCommentList?j=";
 
-        // 提交在线课堂班级评论
+        // 提交空中课堂班级评论
         public static final String GetOnlineClassCommitComment =
                 ServerBase + "api/online/addComment?j=";
 
-        // 获取在线课堂班级详情的通知数据
+        // 获取空中课堂班级详情的通知数据
         public static final String PostOnlineClassNotificationData =
                 LQWAWA_BASE_SERVER + "Api/AmWaWa/PublishInfo/PublishInfo/PublishInfo/PublishList";
 
@@ -651,7 +651,7 @@ public final class AppConfig {
         public static final String PostRemoveSubscribeSchool =
                 LQWAWA_BASE_SERVER + "api/Mobile/SubscribeNo/SubscribeNo/SubscribeNo/CancelSubscribeNo";
 
-        // 在线课堂分享
+        // 空中课堂分享
         public static final String OnlineSchoolClassShareUrl =
                 ServerBase + "courseOnlineShare?id={id}";
 
@@ -663,11 +663,11 @@ public final class AppConfig {
         public static final String CourseLabelShareUrl =
                 ServerBase + "courseLabelShare?level={level}&parentId={parentId}&paramTwoId={paramTwoId}&paramThreeId={paramThreeId}";
 
-        // 在线课堂根据班级Id获取关联的课程Id
+        // 空中课堂根据班级Id获取关联的课程Id
         public static final String GetClassRelevanceCourse =
                 ServerBase + "api/online/getCourseIdByClassId?j=";
 
-        // 在线课堂生成二维码Url 分享
+        // 空中课堂生成二维码Url 分享
         public static final String QRCODE_SHARE_URL = LQWAWA_BASE_SERVER+
                 "mobileHtml/ShareSchoolInfo.aspx?Id={id}";
         // public static final String QRCODE_SHARE_URL = "http://platformtestop.lqwawa.com/mobileHtml/ShareSchoolInfo.aspx?Id={id}";
@@ -741,7 +741,7 @@ public final class AppConfig {
         public static final String PostRequestAirClassData =
                 LQWAWA_BASE_SERVER + "NewApi/AirClass/LoadAirClassByClassIdList";
 
-        // 根据ClassId获取在线课堂Id
+        // 根据ClassId获取空中课堂Id
         public static final String GetOnlineIdByCourseId =
                 ServerBase + "api/online/getOnlineIdByClassId?j=";
 
@@ -794,7 +794,7 @@ public final class AppConfig {
         public static final String GetBasicCourseConfigDataUrl = ServerBase +
                 "api/config/getGjConfigList?j=";
 
-        // 获取小语种，国际，国家课程在线课堂的标签数据
+        // 获取小语种，国际，国家课程空中课堂的标签数据
         public static final String GetNewOnlineClassifyConfigDataUrl = ServerBase +
                 "api/config/getZxCourseConfigList?j=";
 

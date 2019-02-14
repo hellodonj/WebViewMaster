@@ -472,7 +472,7 @@ public class CourseHelper {
      * 检查用户是否可以购买某个课堂
      * @param courseId 课程Id
      * @param memberId 用户Id
-     * @param type 0 课程 3 在线课堂
+     * @param type 0 课程 3 空中课堂
      * @param callback 请求回调对象
      */
     public static void requestCheckCourseBuy(@NonNull int courseId,

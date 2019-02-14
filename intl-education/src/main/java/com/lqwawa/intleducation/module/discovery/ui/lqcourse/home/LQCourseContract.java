@@ -57,7 +57,7 @@ public interface LQCourseContract {
 
         // 回调国际小语种
         void updateXyzOnlineClassView(@NonNull List<OnlineClassEntity> entities);
-        // 回调国际在线课堂
+        // 回调国际空中课堂
         void updateInternationalOnlineClassView(@NonNull List<OnlineClassEntity> entities);
     }
 

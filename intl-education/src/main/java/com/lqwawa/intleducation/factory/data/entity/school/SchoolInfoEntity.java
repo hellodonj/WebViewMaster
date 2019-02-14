@@ -37,7 +37,7 @@ public class SchoolInfoEntity extends BaseVo{
     private String LiveShowUrl;//校园直播台URL
     public boolean IsSchoolInspector;//是否有校园巡查权限
     private boolean IsLiveShowMgr;//是否是直播管理员
-    private boolean IsOnlineSchool;//是不是在线课堂的机构
+    private boolean IsOnlineSchool;//是不是空中课堂的机构
     private String SchoolIntranetIP;//校园内网的ip
 
     private String PName;//省

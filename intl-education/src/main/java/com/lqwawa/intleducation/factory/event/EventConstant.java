@@ -15,7 +15,7 @@ public abstract class EventConstant {
 	 */
 	public static final String ONLINE_CLASS_COMPLETE_GIVE_EVENT = "ONLINE_CLASS_COMPLETE_GIVE_EVENT";
 	/**
-	 * 参加在线课堂
+	 * 参加空中课堂
 	 */
 	public static final String JOIN_IN_CLASS_EVENT = "JOIN_IN_CLASS_EVENT";
 

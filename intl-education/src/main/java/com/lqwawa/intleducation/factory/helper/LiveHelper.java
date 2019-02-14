@@ -127,7 +127,7 @@ public class LiveHelper {
     }
 
     /**
-     * 请求获取在线课堂班级的直播列表
+     * 请求获取空中课堂班级的直播列表
      * @param schoolId 机构Id
      * @param classId 班级Id
      * @param pageIndex 页数
@@ -191,7 +191,7 @@ public class LiveHelper {
 
 
     /**
-     * 请求获取在线课堂班级的直播列表
+     * 请求获取空中课堂班级的直播列表
      * @param classIds 直播发布的班级Id
      * @param callback 数据回调对象
      */

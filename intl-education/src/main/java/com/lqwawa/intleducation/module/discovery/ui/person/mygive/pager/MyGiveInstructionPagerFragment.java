@@ -71,7 +71,7 @@ public class MyGiveInstructionPagerFragment extends PresenterFragment<MyGiveInst
     // 页码
     private int pageIndex;
 
-    // 当前点击的在线课堂班级
+    // 当前点击的空中课堂班级
     private OnlineClassEntity mCurrentClickEntity;
 
     public static MyGiveInstructionPagerFragment newInstance(){
@@ -246,7 +246,7 @@ public class MyGiveInstructionPagerFragment extends PresenterFragment<MyGiveInst
     }
 
     /**
-     * 点击在线课堂班级
+     * 点击空中课堂班级
      * @param onlineClassEntity 班级实体
      */
     private void onClickClass(OnlineClassEntity onlineClassEntity) {

@@ -196,7 +196,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     // 热门推荐搜索
                     LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,key,isOnlineSchoolEnter);
                 }else if(TextUtils.equals(mSortType, HideSortType.TYPE_SORT_ONLINE_COURSE)){
-                    // 在线课堂列表搜索
+                    // 空中课堂列表搜索
                     LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,key,mSchoolId,isOnlineSchoolEnter);
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_SCHOOL_SHOP)) {
                     OrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, key,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
@@ -276,7 +276,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                             // 热门推荐搜索
                             LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,keyString,isOnlineSchoolEnter);
                         }else if(TextUtils.equals(mSortType, HideSortType.TYPE_SORT_ONLINE_COURSE)){
-                            // 在线课堂列表搜索
+                            // 空中课堂列表搜索
                             LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,keyString,mSchoolId,isOnlineSchoolEnter);
                         }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_SCHOOL_SHOP)) {
                             OrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, keyString,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
@@ -419,7 +419,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
     }
 
     /**
-     * 在线课堂搜索页面的入口
+     * 空中课堂搜索页面的入口
      *
      * @param context 上下问对象
      * @param sort    "1"是热门推荐 "-1"分类数据

@@ -98,9 +98,9 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
     private LiveHolder mLiveHolder;
     // 所有课程信息View
     private DiscoveryHolder mDiscoveryHolder;
-    // 小语种在线课堂
+    // 小语种空中课堂
     private OnlineStudyItemHolder mMinorityLanguageClassHolder;
-    // 国际在线课堂
+    // 国际空中课堂
     private OnlineStudyItemHolder mInternationalClassHolder;
 
     // 我的学程按钮
@@ -393,8 +393,8 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
     @Override
     public void onClickTitleLayout(@NonNull int sort) {
         if(sort == OnlineStudyType.SORT_MINORITY_ONLINE_CLASS){
-            // 点击在线课堂更多
-            // UIUtil.showToastSafe("点击在线课堂更多");
+            // 点击空中课堂更多
+            // UIUtil.showToastSafe("点击空中课堂更多");
             // 获取中英文数据
             int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
             OnlineCourseHelper.requestNewOnlineClassifyConfigData(NewOnlineClassifyFiltrateActivity.DataType.MINORITY_LANGUAGE.getIndex(), languageRes, new DataSource.Callback<List<NewOnlineConfigEntity>>() {
@@ -415,8 +415,8 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                 }
             });
         }else if(sort == OnlineStudyType.SORT_INTERNATIONAL_ONLINE_CLASS){
-            // 点击在线课堂更多
-            // UIUtil.showToastSafe("点击在线课堂更多");
+            // 点击空中课堂更多
+            // UIUtil.showToastSafe("点击空中课堂更多");
             NewOnlineClassifyFiltrateActivity.show(getActivity(),NewOnlineClassifyFiltrateActivity.DataType.INTERNATIONAL);
         }
     }

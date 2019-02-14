@@ -723,7 +723,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
 
-        <!-- 在线课堂学程馆课程列表 -->
+        <!-- 空中课堂学程馆课程列表 -->
         <activity
             android:name=".module.organcourse.online.CourseShopListActivity"
             android:screenOrientation="portrait"
@@ -793,7 +793,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
-        <!--在线课堂历史班页面-->
+        <!--空中课堂历史班页面-->
         <activity android:name=".module.discovery.ui.person.myhistory.HistoryClassActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>

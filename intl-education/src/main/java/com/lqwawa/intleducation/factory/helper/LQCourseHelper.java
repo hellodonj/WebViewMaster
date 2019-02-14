@@ -326,7 +326,7 @@ public class LQCourseHelper {
     }
 
     /**
-     * 获取多语种课程，国家课程热门数据和在线课堂
+     * 获取多语种课程，国家课程热门数据和空中课堂
      * @param dataType 1 国家课程,0 非国家课程
      * @param callback 数据回调接口
      */

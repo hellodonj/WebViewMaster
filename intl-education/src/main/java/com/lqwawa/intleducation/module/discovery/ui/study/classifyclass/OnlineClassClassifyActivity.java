@@ -270,7 +270,7 @@ public class OnlineClassClassifyActivity extends PresenterActivity<OnlineClassCl
 
     /**
      * 点击在线班级
-     * @param entity 点击在线课堂班级的实体
+     * @param entity 点击空中课堂班级的实体
      */
     private void onClickClass(@NonNull OnlineClassEntity entity){
         mCurrentClickEntity = entity;
