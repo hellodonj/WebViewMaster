@@ -873,6 +873,7 @@
         <!--国家课程二级列表筛选页面-->
         <activity android:name=".module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity"
             android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.Common"/>
 
         <!--小语种国际国家课程更多页面-->
