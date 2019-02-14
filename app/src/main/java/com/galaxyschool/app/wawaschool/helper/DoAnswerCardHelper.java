@@ -183,6 +183,19 @@ public class DoAnswerCardHelper {
             fillInBlankLayout.setVisibility(View.VISIBLE);
             TextView spaceTitle = (TextView) rootLayout.findViewById(R.id.tv_input_title);
             spaceTitle.setText(activity.getString(R.string.str_revising));
+            ContainsEmojiEditText editText = (ContainsEmojiEditText) rootLayout.findViewById(R.id.et_input_content);
+            if (editText != null){
+                String fillString  = data.getStudent_answer();
+                if (!TextUtils.isEmpty(fillString)){
+                    JSONObject studentAnswerString = JSONObject.parseObject(fillString);
+                    if (studentAnswerString != null) {
+                        String answerText = studentAnswerString.getString("answer_text");
+                        if (!TextUtils.isEmpty(answerText)){
+                            editText.setText(answerText);
+                        }
+                    }
+                }
+            }
         }
         answerRootLayout.addView(rootLayout);
     }
