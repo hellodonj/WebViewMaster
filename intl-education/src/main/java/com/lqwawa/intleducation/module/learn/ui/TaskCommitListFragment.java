@@ -142,6 +142,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         // 班级学程入口，才有成绩统计
         CourseDetailParams courseParams = mCommitParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
+                !mCommitParams.isTeacherVisitor() &&
                 (sectionResListVo.getTaskType() == 2 || sectionResListVo.getTaskType() == 3)){
             // 听读课 和 读写单都有成绩统计
             mBtnStatisticalScores.setVisibility(View.VISIBLE);
