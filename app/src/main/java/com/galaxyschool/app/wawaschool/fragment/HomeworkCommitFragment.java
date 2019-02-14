@@ -1512,6 +1512,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             //任务单答题操作
             ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
             cardParam.setShowExerciseButton(true);
+            cardParam.setShowExerciseNode(true);
             cardParam.setExerciseAnswerString(answerCardParam.getExerciseAnswerString());
             cardParam.setTaskId(TaskId);
             cardParam.setResId(courseData.id + "-" + courseData.type);

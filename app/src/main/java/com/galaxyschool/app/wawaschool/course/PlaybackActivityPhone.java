@@ -1765,7 +1765,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                         //更新数据
                         answerCardPopWindow.updateAnswerDetail(result -> {
                             String dataList = (String) result;
-
+                            updateExerciseNodes(dataList);
                         });
                     }
                 });
@@ -1787,6 +1787,21 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             answerCardPopWindow.showPopupMenuRight();
         } else {
             answerCardPopWindow.showAsDropDown(answerBtn);
+        }
+    }
+
+
+    /**
+     * 单题的点击事件
+     * @param exerciseIndex
+     */
+    @Override
+    public void onExerciseNodeClicked(int exerciseIndex) {
+        if (isAnswerCardQuestion){
+            showAnswerPopWindow(false,exerciseIndex-1);
+        } else {
+            //浏览模式
+            reviewExerciseDetails(exerciseIndex);
         }
     }
 
