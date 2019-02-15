@@ -597,16 +597,19 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         });
 
         if(vo.getType() == 1){
+            holder.teacher_name.setVisibility(View.VISIBLE);
             // 直播
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
         }else if(vo.getType() == 0){
+            holder.teacher_name.setVisibility(View.GONE);
             // 课程
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
         }else{
+            holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),

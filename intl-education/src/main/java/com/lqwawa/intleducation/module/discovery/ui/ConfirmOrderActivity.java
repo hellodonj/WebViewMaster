@@ -203,6 +203,7 @@ public class ConfirmOrderActivity extends MyBaseActivity implements View.OnClick
             updateView();
         } else if (courseVo != null) {
             courseId = courseVo.getId();
+            teacherNameTv.setVisibility(View.GONE);
             if(EmptyUtil.isNotEmpty(mEntities)){
                 mChapterLayout.setVisibility(View.VISIBLE);
                 mSubTotalLayout.setVisibility(View.GONE);
@@ -213,8 +214,10 @@ public class ConfirmOrderActivity extends MyBaseActivity implements View.OnClick
             }
             updateView();
         } else if (courseId != null) {
+            teacherNameTv.setVisibility(View.GONE);
             initData();
         } else if (mClassDetailEntity != null) {
+            teacherNameTv.setVisibility(View.VISIBLE);
             updateView();
         } else {
             ToastUtil.showToast(activity, getResources().getString(R.string.data_is_empty));
