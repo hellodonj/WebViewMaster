@@ -43,6 +43,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.course.DownloadOnePageTask;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.EvalHomeworkListFragment;
+import com.galaxyschool.app.wawaschool.fragment.HomeworkCommitFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.DataAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.helper.AudioPlayerHelper;
@@ -944,6 +945,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                     LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getContext());
                     broadcastManager.sendBroadcast(new Intent(EvalHomeworkListFragment
                             .ACTION_MARK_SCORE).putExtra("commit_resId", courseData.id));
+                    HomeworkCommitFragment.setHasCommented(true);
                     //删除本地制作的文件夹
                     FileUtils.deleteDir(folderPath);
                     EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_COURSE));
