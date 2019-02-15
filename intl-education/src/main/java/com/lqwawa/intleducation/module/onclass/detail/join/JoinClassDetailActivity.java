@@ -203,8 +203,8 @@ public class JoinClassDetailActivity extends BaseClassDetailActivity<JoinClassDe
         // 判断是否是班主任
         ClassDetailEntity.DataBean data = mCurrentEntity.getData().get(0);
         boolean isHeadMaster = UserHelper.getUserId().equals(data.getCreateId());
-        if(!isGiveHistory && isHeadMaster){
-            // 不是历史班且是班主任,添加历史班功能
+        if(!isGiveHistory && isHeadMaster && !isParent){
+            // 不是历史班且是班主任,并且不是家长身份入口,添加历史班功能
             EntryBean shareBean = new EntryBean(R.drawable.ic_history_course, getString(R.string.label_history_setting), TYPE_MENU_HISTORY);
             items.add(shareBean);
         }
