@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.learn.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -43,13 +44,17 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerSelectedAdapter;
+import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LetvVodHelperNew;
 import com.lqwawa.intleducation.common.utils.TabLayoutUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.LessonDetailLiveAdapter;
@@ -60,6 +65,9 @@ import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFr
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
@@ -85,6 +93,9 @@ import java.util.List;
  * @param canEdit 家长身份 false
  */
 public class LessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
+
     // 是否是空中课堂老师
     public static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";
     // 是否是游离的身份
@@ -945,6 +956,17 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (requestCode == SectionTaskDetailsActivity.Rs_task_commit) {
             // getData();
         }
+
+        if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+            // 科目设置成功的回调
+            Bundle extras = data.getExtras();
+            if(EmptyUtil.isNotEmpty(extras)){
+                boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                if(completed){
+                }
+            }
+        }
+
     }
 
     @Override
@@ -958,7 +980,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 initBottomLayout();
                 cancelResource();
             }else{
-                triggerWatchCart();
+                // triggerWatchCart();
+                handleSubjectSettingData(this,UserHelper.getUserId());
             }
         }else if(viewId == R.id.action_container){
             boolean originalActivated = mBottomLayout.isActivated();
@@ -986,6 +1009,51 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             initBottomLayout();
             refreshCartPoint();
         }
+    }
+
+    public void handleSubjectSettingData(Context context,
+                                         String memberId) {
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                //没有数据
+                popChooseSubjectDialog(context);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                if (entities == null || entities.size() == 0) {
+                    popChooseSubjectDialog(context);
+                } else {
+                    //有数据
+                    triggerWatchCart();
+                }
+            }
+        });
+    }
+
+    private static void popChooseSubjectDialog(Context context) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                context,
+                null,
+                context.getString(R.string.label_unset_choose_subject),
+                context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                context.getString(R.string.label_choose_subject),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddSubjectActivity.show((Activity) context, false, SUBJECT_SETTING_REQUEST_CODE);
+                    }
+                });
+        messageDialog.show();
     }
 
     /**

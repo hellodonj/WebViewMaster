@@ -333,6 +333,8 @@
     <string name="label_learning_progress">学习进度：</string>
     <string name="label_many_people">%d人</string>
     <string name="label_assigned">【已布置】</string>
+    <string name="label_unset_choose_subject">您尚未选择科目，请前往选择科目</string>
+    <string name="label_choose_subject">选择科目</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>
