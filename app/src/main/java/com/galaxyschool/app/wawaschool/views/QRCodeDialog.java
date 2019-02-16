@@ -92,7 +92,7 @@ public class QRCodeDialog extends Dialog{
                     if (mSaveQRCodeListener != null) {
                         mSaveQRCodeListener.onSaveQRCodeImage(qrCodeImage);
                     }
-                    TipMsgHelper.ShowMsg(mContext, mContext.getString(R.string.image_saved_to));
+                    TipMsgHelper.ShowMsg(mContext, mContext.getString(R.string.image_saved_to,qrCodeImage));
                 } else {
                     TipMsgHelper.ShowMsg(mContext, mContext.getString(R.string.save_failed));
                 }
