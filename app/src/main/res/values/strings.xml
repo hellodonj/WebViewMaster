@@ -1749,16 +1749,16 @@
     <string name="str_tutoring_center">Tutorial</string>
     <string name="str_lecture_hall">Lecture</string>
     <!--5.13-->
-    <string name="str_national_course">国家课程</string>
-    <string name="str_multilingual">多语种</string>
-    <string name="str_completion_mode">完成以下任务:</string>
-    <string name="str_task_type_combination">复述课件+语音评测</string>
-    <string name="str_comment_statistic">点评统计</string>
-    <string name="str_already_comment">已点评(%d)</string>
-    <string name="str_unAlready_comment">未点评(%d)</string>
-    <string name="str_do_it_now">现在去做</string>
-    <string name="str_do_it_later">稍后再做</string>
-    <string name="str_do_not_a_question">任务还没有完成呢</string>
-    <string name="str_do_not_retell_course">还有复述课件没有完成呢</string>
-    <string name="str_do_not_eval_course">还有语音测评没有完成呢</string>
+    <string name="str_national_course">Domestic</string>
+    <string name="str_multilingual">Multilang</string>
+    <string name="str_completion_mode">Please complete：</string>
+    <string name="str_task_type_combination">Retelling + Oral Test</string>
+    <string name="str_comment_statistic">Marking Statistics</string>
+    <string name="str_already_comment">Marked(%d)</string>
+    <string name="str_unAlready_comment">Unmarked(%d)</string>
+    <string name="str_do_it_now">Do</string>
+    <string name="str_do_it_later">Later</string>
+    <string name="str_do_not_a_question">Task not completed</string>
+    <string name="str_do_not_retell_course">Retelling not completed</string>
+    <string name="str_do_not_eval_course">Oral test not completed</string>
 </resources>
