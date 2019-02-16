@@ -318,23 +318,23 @@
 
 
     <!--V5.13字符串-->
-    <string name="label_minority_language_holder_title">小语种空中课堂</string>
-    <string name="label_international_holder_title">国际课程空中课堂</string>
-    <string name="label_basic_holder_title">国家课程空中课堂</string>
-    <string name="label_all_the_arrangement">【全部布置】</string>
-    <string name="label_statistical_learning">学习统计</string>
-    <string name="label_course_statistics">课程统计</string>
-    <string name="label_work_cart">作业库</string>
-    <string name="label_action_to_cart">添加到作业库</string>
-    <string name="label_work_cart_max_count_tip">任务添加不能超过6个!</string>
-    <string name="label_dialog_cart_left">不发布,清空</string>
-    <string name="label_dialog_cart_right">现在去发布</string>
-    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级学程，将清空作业库，现在去发布吗？</string>
-    <string name="label_learning_progress">学习进度：</string>
-    <string name="label_many_people">%d人</string>
-    <string name="label_assigned">【已布置】</string>
-    <string name="label_unset_choose_subject">您尚未选择科目，请前往选择科目</string>
-    <string name="label_choose_subject">选择科目</string>
+    <string name="label_minority_language_holder_title">Minority Language Class</string>
+    <string name="label_international_holder_title">International Class</string>
+    <string name="label_basic_holder_title">Domestic Class</string>
+    <string name="label_all_the_arrangement">[All Assigned]</string>
+    <string name="label_statistical_learning">Progress</string>
+    <string name="label_course_statistics">Statistics</string>
+    <string name="label_work_cart">Homework</string>
+    <string name="label_action_to_cart">Add to Homework</string>
+    <string name="label_work_cart_max_count_tip">Cannot add more than 6 tasks!</string>
+    <string name="label_dialog_cart_left">Clear &amp; Exit</string>
+    <string name="label_dialog_cart_right">Assign Now</string>
+    <string name="label_dialog_cart_content">Homework not assigned will be cleared after exit, assign now?</string>
+    <string name="label_learning_progress">Learning progress:</string>
+    <string name="label_many_people">%d person</string>
+    <string name="label_assigned">[Assigned]</string>
+    <string name="label_unset_choose_subject">Subject not set, please select subject</string>
+    <string name="label_choose_subject">Select Subject</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>
