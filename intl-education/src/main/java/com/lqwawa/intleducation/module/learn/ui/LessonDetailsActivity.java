@@ -981,7 +981,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 cancelResource();
             }else{
                 // triggerWatchCart();
-                handleSubjectSettingData(this,UserHelper.getUserId());
+                handleSubjectSettingData(this,UserHelper.getUserId(),false);
             }
         }else if(viewId == R.id.action_container){
             boolean originalActivated = mBottomLayout.isActivated();
@@ -1002,8 +1002,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                     mBottomLayout.setActivated(!originalActivated);
                 }
             }else{
-                triggerToCartAction();
-                mBottomLayout.setActivated(!originalActivated);
+                // triggerToCartAction();
+                // mBottomLayout.setActivated(!originalActivated);
+                handleSubjectSettingData(this,UserHelper.getUserId(),true);
             }
 
             initBottomLayout();
@@ -1012,7 +1013,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void handleSubjectSettingData(Context context,
-                                         String memberId) {
+                                         String memberId,
+                                         final boolean rightAction) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
@@ -1026,8 +1028,15 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 if (entities == null || entities.size() == 0) {
                     popChooseSubjectDialog(context);
                 } else {
-                    //有数据
-                    triggerWatchCart();
+                    if(rightAction){
+                        triggerToCartAction();
+                        mBottomLayout.setActivated(true);
+                        initBottomLayout();
+                        refreshCartPoint();
+                    }else{
+                        //有数据
+                        triggerWatchCart();
+                    }
                 }
             }
         });
