@@ -33,6 +33,7 @@ import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -66,6 +67,7 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
     private boolean isFromChoiceLib;//来自精品资源库
     private boolean isLqcourseShop;//来自学程馆
     private int selectMaxCount;
+    private BookStoreListFragment bookListFragment;
     private OnEnterSchoolSpaceListener listener;
 
     public interface OnEnterSchoolSpaceListener {
@@ -426,7 +428,7 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
                 return;
             }
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            BookStoreListFragment fragment = new BookStoreListFragment();
+            bookListFragment = new BookStoreListFragment();
             Bundle args = getArguments();
             int taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             args.putBoolean(ActivityUtils.EXTRA_IS_PICK, isPick);
@@ -434,8 +436,8 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
             args.putString(BookDetailActivity.SCHOOL_ID, schoolInfo.getSchoolId());
             args.putString(BookDetailActivity.ORIGIN_SCHOOL_ID, "");
             args.putBoolean(ActivityUtils.IS_FROM_CHOICE_LIB, isFromChoiceLib);
-            fragment.setArguments(args);
-            ft.replace(R.id.activity_body, fragment, BookStoreListFragment.TAG);
+            bookListFragment.setArguments(args);
+            ft.replace(R.id.activity_body, bookListFragment, BookStoreListFragment.TAG);
             ft.addToBackStack(null);
             ft.commit();
         }
@@ -444,7 +446,10 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
+        if (bookListFragment != null && requestCode == NewOnlineStudyFiltrateActivity.SEARCH_REQUEST_CODE){
+            //支持搜索的回调
+            bookListFragment.onActivityResult(requestCode,resultCode,data);
+        } else if (data != null){
             getActivity().setResult(Activity.RESULT_OK, data);
             getActivity().finish();
         }
