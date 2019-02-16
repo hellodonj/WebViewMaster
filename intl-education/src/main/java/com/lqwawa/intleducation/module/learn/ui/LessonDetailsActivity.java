@@ -841,8 +841,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
 
             // 设置Indicator长度
-            if(fragments.size() > 1)
-            TabLayoutUtil.setIndicatorMargin(UIUtil.getContext(),mTabLayout,20,20);
+            /*if(fragments.size() > 1)
+            TabLayoutUtil.setIndicatorMargin(UIUtil.getContext(),mTabLayout,20,20);*/
 
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
 
