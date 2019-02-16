@@ -691,7 +691,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 super.route(needToLearn);
                 if(needToLearn){
                     // 去详情页面
-                    MyCourseDetailsActivity.start(activity, courseId,  false, true, memberId);
+                    MyCourseDetailsActivity.start(activity, courseId,  false, true, memberId,vo);
                 }else{
                     // 去未加入页面
                     activity.startActivity(new Intent(activity, CourseDetailsActivity.class)
@@ -1039,6 +1039,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         Bundle bundle2 = new Bundle();
         // bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
         bundle2.putSerializable(CourseVo.class.getSimpleName(), courseVo);
+        if(getIntent().getExtras().containsKey("CourseVo")){
+            CourseVo vo = (CourseVo) getIntent().getSerializableExtra("CourseVo");
+            bundle2.putSerializable(CourseVo.class.getSimpleName(), vo);
+        }
         // 课程大纲传参
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);

@@ -257,6 +257,15 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 CourseDetailsActivity.Rs_collect);
     }
 
+    public static void start(Activity activity, String id, boolean isComeFromDetail,
+                             boolean canEdit, String memberId,CourseVo vo) {
+        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
+                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
+                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
+                        .putExtra("CourseVo",vo),
+                CourseDetailsActivity.Rs_collect);
+    }
+
     /**
      * 班级学程和机构学程的入口
      * @param activity
@@ -704,6 +713,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
         bundle2.putSerializable(CourseVo.class.getSimpleName(), courseVo);
+        if(getIntent().getExtras().containsKey("CourseVo")){
+            CourseVo vo = (CourseVo) getIntent().getSerializableExtra("CourseVo");
+            bundle2.putSerializable(CourseVo.class.getSimpleName(), vo);
+        }
 
         // 传入课程Item详情参数
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();

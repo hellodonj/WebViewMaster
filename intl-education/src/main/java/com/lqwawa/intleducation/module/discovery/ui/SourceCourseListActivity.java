@@ -52,7 +52,7 @@ public class SourceCourseListActivity  extends MyBaseActivity implements View.On
         }
         if(courseList.size() == 1){
             CourseDetailsActivity.start(activity, courseList.get(0).getCourseId(),true,
-                    1, courseList.get(0), UserHelper.getUserId());
+                    0, courseList.get(0), UserHelper.getUserId());
             activity.finish();
         }else{
             activity.startActivity(new Intent(activity, SourceCourseListActivity.class)
@@ -80,7 +80,7 @@ public class SourceCourseListActivity  extends MyBaseActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
-                CourseDetailsActivity.start(activity, vo.getCourseId(), true, 1, vo,
+                CourseDetailsActivity.start(activity, vo.getCourseId(), true, 0, vo,
                         UserHelper.getUserId());
                 if(scanActivity != null){
                     scanActivity.finish();

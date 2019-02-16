@@ -146,6 +146,18 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mDataType = mDetailItemParams.getDataType();
         mNeedReadFlag = isJoin && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN;
         mCourseId = mDetailItemParams.getCourseId();
+
+        if(mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN){
+            CourseVo vo = (CourseVo) getArguments().getSerializable("CourseVo");
+            if(vo != null){
+                if(vo.getChapList() != null){
+                    if(vo.getChapList().size() > 0){
+                        this.flagCourseData = vo;
+                    }
+                }
+            }
+        }
+
         // 是否老师看学生
         mTeacherVisitor = arguments.getBoolean("teacherVisitor");
         registerBroadcastReceiver();
