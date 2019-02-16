@@ -1375,7 +1375,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         Intent intent = new Intent(getActivity(), EnglishWritingCommentRecordActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("roleType", roleType);
-        bundle.putBoolean("isOnlineReporter", isOnlineReporter);
+        bundle.putBoolean("isOnlineReporter", isOnlineReporter || isOnlineHost);
         String studentId = data.getStudentId();
         if (!TextUtils.isEmpty(studentId)) {
             bundle.putString(EnglishWritingCompletedFragment.Constant.STUDENTID,
