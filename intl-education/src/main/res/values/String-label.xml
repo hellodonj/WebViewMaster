@@ -327,7 +327,7 @@
     <string name="label_work_cart">Homework</string>
     <string name="label_action_to_cart">Add to Homework</string>
     <string name="label_work_cart_max_count_tip">Cannot add more than 6 tasks!</string>
-    <string name="label_dialog_cart_left">Clear &amp; Exit</string>
+    <string name="label_dialog_cart_left">Clear &#038; Exit</string>
     <string name="label_dialog_cart_right">Assign Now</string>
     <string name="label_dialog_cart_content">Homework not assigned will be cleared after exit, assign now?</string>
     <string name="label_learning_progress">Learning progress:</string>
