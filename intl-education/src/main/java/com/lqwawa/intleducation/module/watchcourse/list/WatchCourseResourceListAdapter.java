@@ -64,6 +64,7 @@ public class WatchCourseResourceListAdapter extends RecyclerAdapter<String> {
                         CourseVo courseVo = courseDetailsVo.getCourse().get(0);
                         mCourseName.setText(courseVo.getName());
                         mCourseTeachers.setText(courseVo.getTeachersName());
+                        mCourseTeachers.setVisibility(View.GONE);
                         String courseUrl = courseVo.getThumbnailUrl().trim();
                         ImageUtil.fillCourseIcon(mCourseIcon,courseUrl);
                     }
