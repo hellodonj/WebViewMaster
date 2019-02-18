@@ -84,7 +84,7 @@ public class OnlineCourseHelper {
 
         // 1或者不传,过滤测试数据,0测试版本不过滤
         requestVo.addParams("isAppStore",Common.Constance.isAppStore);
-        
+
         if (!EmptyUtil.isEmpty(keyWord)) {
             try {
                 requestVo.addParams("keyWord", URLEncoder.encode(keyWord, "UTF-8"));
