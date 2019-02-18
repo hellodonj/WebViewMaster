@@ -80,6 +80,11 @@ public class OnlineCourseHelper {
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize", pageSize);
         requestVo.addParams("sort", sort);
+
+
+        // 1或者不传,过滤测试数据,0测试版本不过滤
+        requestVo.addParams("isAppStore",Common.Constance.isAppStore);
+        
         if (!EmptyUtil.isEmpty(keyWord)) {
             try {
                 requestVo.addParams("keyWord", URLEncoder.encode(keyWord, "UTF-8"));
