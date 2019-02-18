@@ -445,10 +445,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isAutoMark) {
                     needScore = isChecked;
-                } else {
-                    if (taskType != StudyTaskType.Q_DUBBING) {
-                        mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                    }
+                } else if (taskType != StudyTaskType.Q_DUBBING){
+                    mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 }
             }
         });
