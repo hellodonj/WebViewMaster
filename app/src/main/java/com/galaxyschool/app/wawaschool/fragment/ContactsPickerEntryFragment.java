@@ -1428,10 +1428,12 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 }
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
+                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING){
                     taskParams.put("ResCourseId",uploadParameter.getResCourseId());
                 }
-                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
+                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING){
                     taskParams.put("ResPropType",uploadParameter.getResPropType());
                 }
                 if (uploadParameter.getWorkOrderId() != null) {

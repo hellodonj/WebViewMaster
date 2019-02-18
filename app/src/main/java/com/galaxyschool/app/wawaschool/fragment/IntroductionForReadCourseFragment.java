@@ -64,6 +64,7 @@ import com.galaxyschool.app.wawaschool.db.NoteDao;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
+import com.galaxyschool.app.wawaschool.pojo.StudyResPropType;
 import com.galaxyschool.app.wawaschool.views.MyGridView;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
@@ -389,7 +390,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         initCourseLayout();
     }
 
-    private void setIntroTypeTitle(String typeTitle){
+    private void setIntroTypeTitle(String typeTitle) {
         TextView typeView = (TextView) findViewById(R.id.tv_appoint_course);
         if (typeView != null) {
             typeView.setText(typeTitle);
@@ -399,13 +400,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     /**
      * 初始化配音的数据
      */
-    private void initDubbingView(){
+    private void initDubbingView() {
         initMarkSore();
         //按句配音
         dubbingBySentenceRb = (RadioButton) findViewById(R.id.rb_dubbing_by_sentence);
         //显示配音类型的标识
         findViewById(R.id.ll_q_dubbing).setVisibility(View.VISIBLE);
     }
+
     /**
      * 打分功能
      */
@@ -457,7 +459,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     updateScoreView(View.GONE);
                 }
             }, 1);
-        } else if (taskType == StudyTaskType.Q_DUBBING){
+        } else if (taskType == StudyTaskType.Q_DUBBING) {
             mSelectMark.setVisibility(View.GONE);
             mRbMarkNo.setVisibility(View.GONE);
             mRbMarkYes.setChecked(true);
@@ -1267,7 +1269,13 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             returnSelectData();
             return;
         }
+        //发布类型
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
+        if (taskType == StudyTaskType.Q_DUBBING) {
+            //q配音
+            uploadParameter.setResPropType(dubbingBySentenceRb.isChecked() ?
+                    StudyResPropType.DUBBING_BY_SENTENCE : StudyResPropType.DUBBING_BY_WHOLE);
+        }
         if (multipleDoTask) {
             //多选的读写单和听说课
             configMultipleBaseData();
@@ -2448,10 +2456,12 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 }
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
+                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
                     taskParams.put("ResCourseId", uploadParameter.getResCourseId());
                 }
-                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
+                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
                     taskParams.put("ResPropType", uploadParameter.getResPropType());
                 }
                 if (uploadParameter.getWorkOrderId() != null) {
