@@ -177,6 +177,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private RadioButton mRbPercentageSystem, mRbTenSystem;
     private View mSelectMark;
     private RadioButton immediatelyRb;//立即发布
+    private RadioButton dubbingBySentenceRb;//按句配音
     private LinearLayout publishTimeAndTypeLayout;
     private int currentStudyType;//空中课堂学习类型
     private Emcee onlineRes;
@@ -331,20 +332,20 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else if (taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE) {//导读
             findViewById(R.id.ll_connect_task_list).setVisibility(View.VISIBLE);
             findViewById(R.id.re_connect_task_list).setVisibility(View.VISIBLE);
-            TextView view = (TextView) findViewById(R.id.tv_appoint_course);
-            view.setText(getString(R.string.appoint_course_point));
+            setIntroTypeTitle(getString(R.string.appoint_course_point));
         } else if (taskType == StudyTaskType.TASK_ORDER) {//做任务单
             initMarkSore();
-            TextView view = (TextView) findViewById(R.id.tv_appoint_course);
-            view.setText(getString(R.string.pls_add_work_task));
+            setIntroTypeTitle(getString(R.string.pls_add_work_task));
 //            findViewById(R.id.ll_connect_task_list).setVisibility(View.VISIBLE);
 //            findViewById(R.id.re_connect_task_list).setVisibility(View.VISIBLE);
 //            TextView view = (TextView) findViewById(R.id.tv_str_select);
 //            view.setText(getString(R.string.forcedchoice));
         } else if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             initMarkSore();
-            TextView view = (TextView) findViewById(R.id.tv_appoint_course);
-            view.setText(getString(R.string.appoint_course_point));
+            setIntroTypeTitle(getString(R.string.appoint_course_point));
+        } else if (taskType == StudyTaskType.Q_DUBBING) {
+            initDubbingView();
+            setIntroTypeTitle(getString(R.string.appoint_course_point));
         } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
             //配置听说+读写数据
             if (isFromSuperTask) {
@@ -388,13 +389,29 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         initCourseLayout();
     }
 
+    private void setIntroTypeTitle(String typeTitle){
+        TextView typeView = (TextView) findViewById(R.id.tv_appoint_course);
+        if (typeView != null) {
+            typeView.setText(typeTitle);
+        }
+    }
+
+    /**
+     * 初始化配音的数据
+     */
+    private void initDubbingView(){
+        initMarkSore();
+        //按句配音
+        dubbingBySentenceRb = (RadioButton) findViewById(R.id.rb_dubbing_by_sentence);
+        //显示配音类型的标识
+        findViewById(R.id.ll_q_dubbing).setVisibility(View.VISIBLE);
+    }
     /**
      * 打分功能
      */
     private void initMarkSore() {
         llMark = (LinearLayout) findViewById(R.id.ll_mark);
         llMark.setVisibility(View.VISIBLE);
-
         //评分标准
         mSelectMark = findViewById(R.id.ll_select_mark);
         //是
@@ -427,7 +444,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 if (isAutoMark) {
                     needScore = isChecked;
                 } else {
-                    mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    if (taskType != StudyTaskType.Q_DUBBING) {
+                        mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    }
                 }
             }
         });
@@ -438,6 +457,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     updateScoreView(View.GONE);
                 }
             }, 1);
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            mSelectMark.setVisibility(View.GONE);
+            mRbMarkNo.setVisibility(View.GONE);
+            mRbMarkYes.setChecked(true);
+            mRbPercentageSystem.setChecked(true);
         }
     }
 
@@ -1306,7 +1330,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private void addMarkScore(UploadParameter uploadParameter) {
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
-                || taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
+                || taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                || taskType == StudyTaskType.Q_DUBBING) {
             //听说课  任务单
             if (mRbMarkYes != null && mRbPercentageSystem != null) {
                 uploadParameter.NeedScore = mRbMarkYes.isChecked();

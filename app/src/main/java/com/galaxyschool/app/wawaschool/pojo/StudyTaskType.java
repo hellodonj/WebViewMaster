@@ -23,5 +23,6 @@ public interface StudyTaskType {
     int MULTIPLE_RETELL_COURSE = 12;
     //读写单多选
     int MULTIPLE_TASK_ORDER = 13;
-
+    //q配音
+    int Q_DUBBING = 14;
 }
