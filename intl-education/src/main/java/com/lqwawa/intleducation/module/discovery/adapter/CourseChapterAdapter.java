@@ -334,7 +334,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             }
 
 
-                            if (!vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
+                            if (!isTeacher && !vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
                                 if(mTeacherVisitor){
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
