@@ -682,7 +682,6 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="30dp"
                                 android:button="@drawable/com_checkbox"
                                 android:padding="10dp"
                                 android:text="@string/str_dubbing_by_whole"
