@@ -67,9 +67,16 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.title = (TextView) convertView.findViewById(R.id.tv_course_title);
             holder.completeType = (LinearLayout) convertView.findViewById(R.id.ll_completion_mode);
             holder.multiTypeBtnRB = (RadioButton) convertView.findViewById(R.id.rb_multi_type);
+            holder.rellTypeBtnRB = (RadioButton) convertView.findViewById(R.id.rb_retell_course);
             holder.radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+            } else if (taskType == StudyTaskType.TASK_ORDER) {
+                holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+                //自动批阅
+                holder.rellTypeBtnRB.setText(context.getString(R.string.str_auto_mark));
+                //人工点评
+                holder.multiTypeBtnRB.setText(context.getString(R.string.str_manual_marking));
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
             }
@@ -92,7 +99,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.courseImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.courseImageView.setImageResource(R.drawable.add_course_icon);
             holder.evalTextView.setVisibility(View.GONE);
-            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            if (taskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || taskType == StudyTaskType.TASK_ORDER) {
                 holder.rightLayout.setVisibility(View.GONE);
                 holder.completeType.setVisibility(View.GONE);
             }
@@ -101,30 +109,47 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.courseImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             MyApplication.getThumbnailManager((Activity) context).displayImageWithDefault(info.getImgPath(), holder
                     .courseImageView, R.drawable.default_cover);
-            if (TextUtils.equals(info.getResProperties(), "1")) {
+            if (TextUtils.equals(info.getResProperties(), "1")
+                    || !TextUtils.isEmpty(info.getPoint())) {
                 holder.evalTextView.setVisibility(View.VISIBLE);
                 holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
-            } else if (!TextUtils.isEmpty(info.getPoint())) {
-                holder.evalTextView.setVisibility(View.VISIBLE);
-                holder.multiTypeBtnRB.setVisibility(View.GONE);
             } else {
                 holder.evalTextView.setVisibility(View.GONE);
-                holder.multiTypeBtnRB.setVisibility(View.GONE);
+                if (taskType == StudyTaskType.TASK_ORDER){
+                    holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
+                    holder.rellTypeBtnRB.setVisibility(View.GONE);
+                } else {
+                    holder.multiTypeBtnRB.setVisibility(View.GONE);
+                }
             }
 
-            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            if (taskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || taskType == StudyTaskType.TASK_ORDER) {
                 holder.title.setText(info.getTitle());
                 holder.rightLayout.setVisibility(View.VISIBLE);
                 holder.completeType.setVisibility(View.VISIBLE);
                 holder.radioGroup.setOnCheckedChangeListener((group,checkedId) -> {
                     if (checkedId == R.id.rb_retell_course){
-                        info.setCompletionMode(1);
+                        if (taskType == StudyTaskType.TASK_ORDER){
+                            info.setResPropertyMode(1);
+                        } else {
+                            info.setCompletionMode(1);
+                        }
                     } else if (checkedId == R.id.rb_multi_type){
-                        info.setCompletionMode(2);
+                        if (taskType == StudyTaskType.TASK_ORDER){
+                            info.setResPropertyMode(2);
+                        } else {
+                            info.setCompletionMode(2);
+                        }
                     }
                 });
-                holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :
-                        R.id.rb_multi_type);
+                if (taskType == StudyTaskType.TASK_ORDER){
+                    holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
+                            R.id.rb_multi_type);
+                } else {
+                    holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :
+                            R.id.rb_multi_type);
+                }
             }
         }
         return convertView;
@@ -150,6 +175,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         public LinearLayout completeType;
         public LinearLayout rightLayout;
         public RadioButton multiTypeBtnRB;
+        public RadioButton rellTypeBtnRB;
         public RadioGroup radioGroup;
     }
 }

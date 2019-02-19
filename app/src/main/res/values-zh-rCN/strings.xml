@@ -1668,5 +1668,10 @@
     <string name="str_do_not_a_question">任务还没有完成呢</string>
     <string name="str_do_not_retell_course">还有复述课件没有完成呢</string>
     <string name="str_do_not_eval_course">还有语音测评没有完成呢</string>
-
+    <!--5.14-->
+    <string name="str_q_dubbing">q配音</string>
+    <string name="str_dubbing_type">配音类型</string>
+    <string name="str_dubbing_by_sentence">按句配音</string>
+    <string name="str_dubbing_by_whole">通篇配音</string>
+    <string name="str_manual_marking">人工批阅</string>
 </resources>
