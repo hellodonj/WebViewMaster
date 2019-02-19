@@ -433,9 +433,15 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                         //目前复述微课也要显示
                         //导读类型也需要显示
                         if (!TextUtils.isEmpty(type)) {
-                            if (type.equals("3") || type.equals("5") || type.equals("6") || type
-                                    .equals("7") || type.equals("8") || type.equals("10") || type
-                                    .equals("12") || type.equals("13") ||
+                            if (type.equals("3")
+                                    || type.equals("5")
+                                    || type.equals("6")
+                                    || type.equals("7")
+                                    || type.equals("8")
+                                    || type.equals("10")
+                                    || type.equals("12")
+                                    || type.equals("13")
+                                    || type.equals("14") ||
                                     (type.equals("11") && data.isNeedCommit())) {
                                 imageView.setVisibility(View.VISIBLE);
                             } else {
@@ -482,6 +488,9 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                             } else if (type.equals("11")) {
                                 //综合任务
                                 textView.setBackgroundResource(R.drawable.icon_super_task);
+                            } else if (type.equals("14")){
+                                //Q配音
+                                textView.setBackgroundResource(R.drawable.icon_q_dubbing);
                             }
                         }
                     }

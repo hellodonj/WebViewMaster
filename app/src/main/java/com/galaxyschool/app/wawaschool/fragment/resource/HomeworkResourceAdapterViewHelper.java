@@ -138,6 +138,7 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
             //目前复述微课也要显示
             //目前导读也需要显示
             //英文写作也需要显示
+            //Q配音
             if (!TextUtils.isEmpty(type)){
                 if (type.equals("3")
                         || type.equals("5")
@@ -147,6 +148,7 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || type.equals("10")
                         || type.equals("12")
                         || type.equals("13")
+                        || type.equals("14")
                         || (type.equals("11") && data.isNeedCommit())){
                     imageView.setVisibility(View.VISIBLE);
                 }else {
@@ -165,34 +167,38 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                 if (type.equals("0")){
                     //目前“看微课”名称改为“看课件”，图标替换为看课件的图标，原来的看课件暂时不管，仍然隐藏。
                     textView.setBackgroundResource(R.drawable.scan_class_course);
-                }else if (type.equals("1")){
+                } else if (type.equals("1")){
                     textView.setBackgroundResource(R.drawable.scan_class_course);
-                }else if (type.equals("2")){
+                } else if (type.equals("2")){
                     //看作业
                     textView.setBackgroundResource(R.drawable.icon_other);
-                }else if (type.equals("3")){
+                } else if (type.equals("3")){
                     //交作业，目前看作业和交作业背景图片是一致的，只是用“需提交”来区分。
                     textView.setBackgroundResource(R.drawable.icon_other);
-                }else if (type.equals("4")){
+                } else if (type.equals("4")){
                     textView.setBackgroundResource(R.drawable.discuss_topic);
                 } else if (type.equals("5") || type.equals("12")) {
                     textView.setBackgroundResource(R.drawable.retell_course_ico);
-                }else if (type.equals("6")){
+                } else if (type.equals("6")){
                     textView.setBackgroundResource(R.drawable.introduction_type);
-                }else if (type.equals("7")){
+                } else if (type.equals("7")){
                     //英文写作
                     textView.setBackgroundResource(R.drawable.english_writing_icon);
-                }else if (type.equals("8") || type.equals("13")){
+                } else if (type.equals("8") || type.equals("13")){
                     //做任务单
                     textView.setBackgroundResource(R.drawable.icon_do_task);
-                }else if (type.equals("9")){
+                } else if (type.equals("9")){
                     //新版看课件
                     textView.setBackgroundResource(R.drawable.scan_class_course);
-                }else if (type.equals("10")){
+                } else if (type.equals("10")){
                     //听说 + 读写
                     textView.setBackgroundResource(R.drawable.listen_read_and_write_icon);
-                }else if (type.equals("11")){
+                } else if (type.equals("11")){
+                    //综合任务
                     textView.setBackgroundResource(R.drawable.icon_super_task);
+                } else if (type.equals("14")){
+                    //Q配音
+                    textView.setBackgroundResource(R.drawable.icon_q_dubbing);
                 }
             }
         }
@@ -341,7 +347,8 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                         || taskType == StudyTaskType.SUPER_TASK
                         || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
-                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
+                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
+                        || taskType == StudyTaskType.Q_DUBBING){
                     //学生更新提交作业和讨论话题已读接口
                     UpdateStudentIsRead(data.getTaskId(),memberId,String.valueOf(taskType));
                 }else {

@@ -1762,7 +1762,7 @@
     <string name="str_do_not_retell_course">Retelling not completed</string>
     <string name="str_do_not_eval_course">Oral test not completed</string>
     <!--5.14-->
-    <string name="str_q_dubbing">q配音</string>
+    <string name="str_q_dubbing">Q配音</string>
     <string name="str_dubbing_type">配音类型</string>
     <string name="str_dubbing_by_sentence">按句配音</string>
     <string name="str_dubbing_by_whole">通篇配音</string>
