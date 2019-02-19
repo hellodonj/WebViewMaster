@@ -26,12 +26,14 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.TabLayoutUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -161,7 +163,10 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         String token = UserHelper.getUserId();
         String courseId = mChapterVo.getCourseId();
         String sectionId = mChapterVo.getId();
-        LessonHelper.requestChapterStudyTask(token, null, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
+
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestChapterStudyTask(languageRes,token, null, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

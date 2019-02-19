@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
@@ -195,13 +196,16 @@ public class LessonHelper {
      * @param sectionId 小节Id
      * @param role 1老师 2学生
      */
-    public static void requestChapterStudyTask(@NonNull String token,
+    public static void requestChapterStudyTask(@LanguageType.LanguageRes int isZh,
+                                               @NonNull String token,
                                                @Nullable String classId,
                                                @NonNull String courseId,
                                                @NonNull String sectionId,
                                                int role,
                                                @NonNull DataSource.Callback<SectionDetailsVo> callback){
         RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language",isZh);
         if(EmptyUtil.isNotEmpty(token)){
             requestVo.addParams("token",token);
         }

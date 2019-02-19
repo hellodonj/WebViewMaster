@@ -1271,10 +1271,13 @@ public class OnlineCourseHelper {
      * @param classId 班级Id
      * @param callback 回调对象
      */
-    public static void requestCourseStatisticsData(@NonNull String classId,
+    public static void requestCourseStatisticsData(@LanguageType.LanguageRes int isZh,
+                                                   @NonNull String classId,
                                                    @NonNull String courseId,
                                                    @NonNull DataSource.Callback<List<CourseStatisticsEntity>> callback) {
         RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language",isZh);
         requestVo.addParams("classId", classId);
         requestVo.addParams("courseId", courseId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetCourseStatisticsUserArrayUrl + requestVo.getParams());

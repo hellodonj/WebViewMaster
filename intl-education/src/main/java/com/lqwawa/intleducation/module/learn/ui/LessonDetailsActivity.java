@@ -707,7 +707,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             classId = mChapterParams.getCourseParams().getClassId();
         }
 
-        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestChapterStudyTask(languageRes,token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
