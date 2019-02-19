@@ -35,6 +35,15 @@ public class LookResDto implements Serializable{
     private int ResPropType;
     private int completionMode = 1;//1 复述课件 2 复述课件+语音评测
     private int courseResType;
+    private int resPropertyMode = 2; //1 自动评测 2 人工评测
+
+    public int getResPropertyMode() {
+        return resPropertyMode;
+    }
+
+    public void setResPropertyMode(int resPropertyMode) {
+        this.resPropertyMode = resPropertyMode;
+    }
 
     public int getCourseResType() {
         return courseResType;
