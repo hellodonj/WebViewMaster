@@ -1381,6 +1381,9 @@ public class Utils {
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
             //看课件
             result = activity.getString(R.string.look_through_courseware);
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            //Q配音
+            result = activity.getString(R.string.str_q_dubbing);
         }
         return result;
     }

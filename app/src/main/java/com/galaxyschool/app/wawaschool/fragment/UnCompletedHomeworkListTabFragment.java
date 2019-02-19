@@ -20,6 +20,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkResourceAdapterViewHelper;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;

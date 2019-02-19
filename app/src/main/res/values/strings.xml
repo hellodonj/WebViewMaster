@@ -1767,4 +1767,5 @@
     <string name="str_dubbing_by_sentence">按句配音</string>
     <string name="str_dubbing_by_whole">通篇配音</string>
     <string name="str_manual_marking">人工批阅</string>
+    <string name="str_start_dubbing">开始配音</string>
 </resources>

@@ -617,7 +617,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (TaskType == StudyTaskType.SUBMIT_HOMEWORK
                 || TaskType == StudyTaskType.WATCH_HOMEWORK
                 || TaskType == StudyTaskType.ENGLISH_WRITING
-                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
+                || TaskType == StudyTaskType.Q_DUBBING) {
             hidden = true;
         }
         return hidden;
