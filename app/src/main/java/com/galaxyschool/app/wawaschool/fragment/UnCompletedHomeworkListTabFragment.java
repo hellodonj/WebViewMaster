@@ -187,6 +187,7 @@ public class UnCompletedHomeworkListTabFragment extends ContactsListFragment{
                         return;
                     }
                     HomeworkListInfo data = (HomeworkListInfo) holder.data;
+                    data.setTaskType("14");
                     //打开学习任务列表
                     CourseOpenUtils.openStudyTask(getActivity(),data,roleType,isHeadMaster,
                             getMemeberId(),sortStudentId,childId,userInfo,false);

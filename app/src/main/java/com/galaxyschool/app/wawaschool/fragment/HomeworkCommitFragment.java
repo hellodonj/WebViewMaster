@@ -1341,13 +1341,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
 
         } else if (v.getId() == R.id.iv_icon || v.getId() == R.id.layout_assign_homework) {
-
             if (TaskType == StudyTaskType.ENGLISH_WRITING
                     || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                 return;
                 //英文写作/新版看课件不跳转
             }
-
             //点击图片直接打开
             if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER)
                     && (taskResType == ResType.RES_TYPE_PPT
@@ -1355,6 +1353,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     || taskResType == ResType.RES_TYPE_DOC
                     || taskResType == ResType.RES_TYPE_IMG)) {
                 openPptAndPdf();
+            } else if (TaskType == StudyTaskType.Q_DUBBING) {
+                //打开Q配音的视频
+                openQDubbingVideo();
             } else {
                 openImage(task, false);
             }
@@ -1527,6 +1528,13 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
             mParam.exerciseCardParam = cardParam;
         }
+    }
+
+    /**
+     * 打开Q配音的原视频
+     */
+    private void openQDubbingVideo(){
+        TipMsgHelper.ShowMsg(getActivity(),"点击了播放配音原视频");
     }
 
     private void enterEnglishWritingCompositionRequirementsActivity() {

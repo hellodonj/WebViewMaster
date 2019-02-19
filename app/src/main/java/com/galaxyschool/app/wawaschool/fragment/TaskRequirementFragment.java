@@ -296,7 +296,9 @@ public class TaskRequirementFragment extends ContactsListFragment{
                 commitBtn.setVisibility(View.GONE);
             } else if (taskType == StudyTaskType.TASK_ORDER) {
                 result = getString(R.string.do_task);
-            }else {
+            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                result = getString(R.string.str_q_dubbing);
+            } else {
                 commitBtn.setVisibility(View.GONE);
             }
             commitBtn.setText(result);

@@ -1159,6 +1159,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 mCommitBtnFl.setVisibility(View.GONE);
             } else if (taskType == StudyTaskType.TASK_ORDER) {
                 result = getString(R.string.do_task);
+            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                result = getString(R.string.str_q_dubbing);
             } else {
                 mCommitBtnFl.setVisibility(View.GONE);
             }
