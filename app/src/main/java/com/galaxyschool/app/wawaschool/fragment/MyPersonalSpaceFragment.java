@@ -824,8 +824,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 //        itemList.add(item);
 //        entryMap.put(item.type, item);
 
-        //我的课程(我的授课)
-        if (!TextUtils.isEmpty(getMemeberId()) && getUserInfo().isTeacher()) {
+        // 有在线机构老师身份才显示我的授课
+        if (!TextUtils.isEmpty(getMemeberId()) && isOnlineTeacher()) {
             item = new TabEntityPOJO();
             item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_MY_COURSE;
             item.title = getString(R.string.str_my_Lecture);
@@ -935,6 +935,22 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 
         getAdapterViewHelper(topGridViewTag).setData(itemList);
     }
+
+    /**
+     * 是否是在线机构的老师
+     *
+     * @param
+     */
+    private boolean isOnlineTeacher() {
+        if (schoolList != null && schoolList.size() > 0) {
+            for (SchoolInfo info : schoolList) {
+                if (!info.isOnlineSchool()) continue;
+                if (info.isTeacher()) return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 是否是实体机构的老师

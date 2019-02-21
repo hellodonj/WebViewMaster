@@ -21,6 +21,7 @@ public class ServerUrl {
     public static String SHARE_BASE_SERVER;
     public static String NOC_BASE_SERVER;
     public static String LQMOOC_BASE_SERVER;
+    public static String BASE_SHARE_URL;
     /**
      * 天赋密码
      */
@@ -34,6 +35,7 @@ public class ServerUrl {
         if (Config.DEBUG) {
             VERSION = VER_SIMULATE;
             BASE_SERVER = "http://platformtestop.lqwawa.com/";
+            BASE_SHARE_URL = "http://www.lqwawa.com/";
 //            BASE_SERVER = "http://platformop.lqwawa.com/";
             FILE_SERVER = "http://filetestop.lqwawa.com/";
             WEIKE_SERVER = "http://resop.lqwawa.com/kukewebservice/";
@@ -53,6 +55,7 @@ public class ServerUrl {
         } else {
             VERSION = VER_RELEASE;
             BASE_SERVER = "http://hdapi.lqwawa.com/";
+            BASE_SHARE_URL = "http://www.lqwawa.com/";
             FILE_SERVER = "http://file.lqwawa.com/";
             WEIKE_SERVER = "http://mcourse.lqwawa.com/kukewebservice/";
             WEIKE_UPLOAD_SERVER = "http://lqwwupload.lqwawa.com/uploadservice/";
@@ -78,7 +81,7 @@ public class ServerUrl {
     public static String IMG_ROOT_URL = FILE_SERVER + "UploadFiles/";
 
     // recommend app
-    public static String RECOMMEND_APP_URL = BASE_SERVER + "mobileHtml/app_download.aspx";
+    public static String RECOMMEND_APP_URL = BASE_SHARE_URL + "mobileHtml/app_download.aspx";
     // login
     public static String LOGIN_URL = SERVER + "Setting/Login/Login/Login";
     // get back password

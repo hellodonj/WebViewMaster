@@ -1083,6 +1083,18 @@
     {
       "errorCode": "00274",
       "errorMessage": "Failed to create Zoom live stream！"
+    },
+    {
+      "errorCode": "00275",
+      "errorMessage": "JPush device ID is blank！"
+    },
+    {
+      "errorCode": "00276",
+      "errorMessage": "Incorrect JPush category！"
+    },
+    {
+      "errorCode": "00277",
+      "errorMessage": "Statistical number of days exceeds limit！"
     }
   ]
 }

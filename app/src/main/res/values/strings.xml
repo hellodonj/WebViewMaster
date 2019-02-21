@@ -1649,7 +1649,7 @@
     <string name="str_resources_tag">【%1$s】%2$s</string>
     <string name="str_lqcourse_shop">Study Hall</string>
     <string name="str_online_study">Lecture Hall</string>
-    <string name="air_classroom">Online Class</string>
+    <string name="air_classroom">Class Live</string>
     <string name="str_display_source">From:</string>
     <!--5.11.x需求-->
     <string name="str_make_task_order_answer_tips">
