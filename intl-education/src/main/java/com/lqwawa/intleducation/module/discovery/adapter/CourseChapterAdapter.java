@@ -434,10 +434,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 // 是不是学程的老师，如果是学程的老师，则提示不允许学习自己的学程
                                 if(!vo.isBuyed() && role == UserHelper.MoocRoleType.PARENT){
                                     // 家长身份，需要判断，自己是不是老师
-                                    if(UserHelper.isCourseTeacher(courseVo) || UserHelper.isCourseTutor(courseVo)){
-                                        // 如果是讲师，就是自己的课程
-                                        UIUtil.showToastSafe(R.string.label_not_study_course_for_me);
-                                        return;
+                                    if((UserHelper.isCourseTeacher(courseVo) ||
+                                            UserHelper.isCourseTutor(courseVo))){
+                                        boolean firstChapter = vo.getParentId().equals(list.get(0).getId());
+                                        if(firstChapter)
+                                        isFreeUser = true;
+                                        if(isJoinCourse) {
+                                            // 如果是讲师，就是自己的课程
+                                            UIUtil.showToastSafe(R.string.label_not_study_course_for_me);
+                                            return;
+                                        }
                                     }
                                 }
 
