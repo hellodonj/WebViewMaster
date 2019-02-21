@@ -20,6 +20,7 @@ import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
@@ -436,6 +437,13 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 List<LqTaskCommitVo> markList = new ArrayList<>();
                 for (LqTaskCommitVo vo : lqTaskCommitVoList) {
                     if (vo != null) {
+                        // 如果是自动批阅的读写单,还有支持人工和自动批阅的
+                        if(sectionResListVo.isAutoMark() &&
+                                EmptyUtil.isNotEmpty(vo.getStudentResId())){
+                            // 过滤人工批阅的
+                            continue;
+                        }
+
                         if(vo.isSpeechEvaluation()){
                             if(!vo.isHasVoiceReview()){
                                 unmarkList.add(vo);
