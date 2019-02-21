@@ -782,24 +782,25 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             boolean showTextBook = false;
             if(EmptyUtil.isNotEmpty(taskList)){
                 for (SectionTaskListVo taskListVo:taskList) {
-                    if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+
+                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[0] = taskListVo.getTaskName();
+                        showTextBook = true;
+                    }
+
+                    if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[1] = taskListVo.getTaskName();
                         showReadWare = true;
                     }
 
                     if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                        mTabs[1] = taskListVo.getTaskName();
+                        mTabs[2] = taskListVo.getTaskName();
                         showListenRead = true;
                     }
 
                     if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                        mTabs[2] = taskListVo.getTaskName();
-                        showReadWrite = true;
-                    }
-
-                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[3] = taskListVo.getTaskName();
-                        showTextBook = true;
+                        showReadWrite = true;
                     }
                 }
             }
@@ -808,30 +809,33 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             LessonSourceParams params = LessonSourceParams.buildParams(mChapterParams);
 
-            if(showReadWare){
+
+
+
+            if(showTextBook){
                 mTabLists.add(mTabs[0]);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
+                mTabSourceNavigator.add(fragment);
+                fragments.add(fragment);
+            }
+
+            if(showReadWare){
+                mTabLists.add(mTabs[1]);
                 LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,1,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
 
             if(showListenRead){
-                mTabLists.add(mTabs[1]);
+                mTabLists.add(mTabs[2]);
                 LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,2,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
 
             if(showReadWrite){
-                mTabLists.add(mTabs[2]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,3,params);
-                mTabSourceNavigator.add(fragment);
-                fragments.add(fragment);
-            }
-
-            if(showTextBook){
                 mTabLists.add(mTabs[3]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,3,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }

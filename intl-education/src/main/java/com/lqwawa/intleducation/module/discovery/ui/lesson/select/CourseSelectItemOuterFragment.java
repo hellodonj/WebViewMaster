@@ -276,6 +276,15 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             mTabLists.remove(mTabLists.size() - 1);
         }
 
+        if(showTextBook){
+            // 存在看课本类型
+            Fragment showTextBookFragment = fragments.remove(fragments.size() - 1);
+            fragments.add(0,showTextBookFragment);
+
+            String removeTab = mTabLists.remove(mTabLists.size() - 1);
+            mTabLists.add(0,removeTab);
+        }
+
         this.mFragments = fragments;
         if(fragments.size() > 0){
             mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.VISIBLE);
