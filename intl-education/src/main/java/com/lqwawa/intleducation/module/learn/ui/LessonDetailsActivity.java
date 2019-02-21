@@ -783,14 +783,14 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             if(EmptyUtil.isNotEmpty(taskList)){
                 for (SectionTaskListVo taskListVo:taskList) {
 
-                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[0] = taskListVo.getTaskName();
-                        showTextBook = true;
+                        showReadWare = true;
                     }
 
-                    if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[1] = taskListVo.getTaskName();
-                        showReadWare = true;
+                        showTextBook = true;
                     }
 
                     if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
@@ -809,19 +809,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             LessonSourceParams params = LessonSourceParams.buildParams(mChapterParams);
 
-
-
-
-            if(showTextBook){
+            if(showReadWare){
                 mTabLists.add(mTabs[0]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,1,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
 
-            if(showReadWare){
+            if(showTextBook){
                 mTabLists.add(mTabs[1]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,1,params);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }

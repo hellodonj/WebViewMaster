@@ -279,10 +279,18 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         if(showTextBook){
             // 存在看课本类型
             Fragment showTextBookFragment = fragments.remove(fragments.size() - 1);
-            fragments.add(0,showTextBookFragment);
-
             String removeTab = mTabLists.remove(mTabLists.size() - 1);
-            mTabLists.add(0,removeTab);
+
+            if(!showReadWare ||
+                    (mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
+                // 没有视频课
+                fragments.add(0,showTextBookFragment);
+                mTabLists.add(0,removeTab);
+            }else{
+                // 有视频课
+                fragments.add(1,showTextBookFragment);
+                mTabLists.add(1,removeTab);
+            }
         }
 
         this.mFragments = fragments;
