@@ -207,14 +207,17 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         if(EmptyUtil.isNotEmpty(taskList)){
             for (SectionTaskListVo taskListVo:taskList) {
                 if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(0,taskListVo.getTaskName());
                     showReadWare = true;
                 }
 
                 if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(1,taskListVo.getTaskName());
                     showListenRead = true;
                 }
 
                 if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(2,taskListVo.getTaskName());
                     showReadWrite = true;
                 }
 
