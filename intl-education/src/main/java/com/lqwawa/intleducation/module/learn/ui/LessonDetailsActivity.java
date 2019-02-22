@@ -1127,6 +1127,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 lqwawaTaskType = 5;
             }else if(moocTaskType == 3){
                 lqwawaTaskType = 8;
+            }else if(moocTaskType == 4){
+                // 多出来的看课本类型
+                lqwawaTaskType = 9;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray,lqwawaTaskType);
             // 刷新数目
