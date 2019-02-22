@@ -1504,9 +1504,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
             //兼容point
             if (!TextUtils.isEmpty(tag.getPoint())) {
-                if (!isSuperTask) {
+//                if (!isSuperTask) {
                     tag.setResPropertyMode(1);
-                }
+//                }
                 if (pointFlag) {
                     updateScoreView(View.GONE);
                     mSelectMark.setVisibility(View.GONE);

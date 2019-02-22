@@ -79,6 +79,10 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.multiTypeBtnRB.setText(context.getString(R.string.str_manual_marking));
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
+                //复述课件
+                holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
+                //复述课件+语音评测
+                holder.multiTypeBtnRB.setText(context.getString(R.string.str_task_type_combination));
             }
             convertView.setTag(holder);
             viewMap.put(position, convertView);
@@ -112,13 +116,15 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             if (TextUtils.equals(info.getResProperties(), "1")
                     || !TextUtils.isEmpty(info.getPoint())) {
                 holder.evalTextView.setVisibility(View.VISIBLE);
+                holder.rellTypeBtnRB.setVisibility(View.VISIBLE);
                 holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
             } else {
                 holder.evalTextView.setVisibility(View.GONE);
                 if (taskType == StudyTaskType.TASK_ORDER){
-                    holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
                     holder.rellTypeBtnRB.setVisibility(View.GONE);
+                    holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
                 } else {
+                    holder.rellTypeBtnRB.setVisibility(View.VISIBLE);
                     holder.multiTypeBtnRB.setVisibility(View.GONE);
                 }
             }
