@@ -429,6 +429,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
      * @param lqTaskCommitVoList 列表数据
      */
     private void filterAutoMark(List<LqTaskCommitVo> lqTaskCommitVoList){
+        if(EmptyUtil.isEmpty(lqTaskCommitVoList)) return;
         ListIterator<LqTaskCommitVo> iterator = lqTaskCommitVoList.listIterator();
         while(iterator.hasNext()){
             LqTaskCommitVo vo = iterator.next();
