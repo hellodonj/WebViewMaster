@@ -148,6 +148,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                             info.setCompletionMode(2);
                         }
                     }
+                    notifyDataSetChanged();
                 });
                 if (taskType == StudyTaskType.TASK_ORDER){
                     holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
