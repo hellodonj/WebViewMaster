@@ -1796,7 +1796,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
      * @param exerciseIndex
      */
     @Override
-    public void onExerciseNodeClicked(int exerciseIndex) {
+    public void onExerciseNodeClick(int exerciseIndex) {
         if (isAnswerCardQuestion){
             showAnswerPopWindow(false,exerciseIndex-1);
         } else {
