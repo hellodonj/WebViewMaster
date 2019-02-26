@@ -170,14 +170,6 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     private MarkScoreDialog mMarkScoreDialog;
 
     @Override
-    public void onExerciseButtonClick() {
-        if (cardParam == null || TextUtils.isEmpty(cardParam.getExerciseAnswerString())) {
-            return;
-        }
-        showAnswerPopWindow(true, 0);
-    }
-
-    @Override
     public void addButtonToAttachedBarHandler(LinearLayout attachedBar) {
         menuLayout = attachedBar;
         // 课件是受保护的，隐藏侧边工具栏, 允许试看15s
@@ -1791,12 +1783,20 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     }
 
 
+    @Override
+    public void onExerciseButtonClick() {
+        if (cardParam == null || TextUtils.isEmpty(cardParam.getExerciseAnswerString())) {
+            return;
+        }
+        showAnswerPopWindow(true, 0);
+    }
+
     /**
      * 单题的点击事件
      * @param exerciseIndex
      */
     @Override
-    public void onExerciseNodeClicked(int exerciseIndex) {
+    public void onExerciseNodeClick(int exerciseIndex) {
         if (isAnswerCardQuestion){
             showAnswerPopWindow(false,exerciseIndex-1);
         } else {
