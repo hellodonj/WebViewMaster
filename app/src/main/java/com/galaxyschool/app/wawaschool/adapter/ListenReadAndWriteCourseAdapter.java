@@ -72,6 +72,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+                //完成方式
+                holder.completionTitle.setText(R.string.str_complete_method);
             } else if (taskType == StudyTaskType.TASK_ORDER) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
                 //自动批阅
