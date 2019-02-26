@@ -107,7 +107,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:minHeight="40dp"
-            android:text="@string/str_completion_mode"/>
+            android:text="@string/str_mark_method"/>
 
         <RadioGroup
             android:id="@+id/radio_group"
