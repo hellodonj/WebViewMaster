@@ -1030,8 +1030,12 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             thirdObject.put("Author", authorId == null ? "" : authorId);
                             //学程馆资源的id
                             thirdObject.put("ResCourseId",lookDto.getResCourseId());
-                            thirdObject.put("ResPropType", lookDto.getResPropType());
-                            thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
+                            if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
+                                thirdObject.put("ResPropType", lookDto.getResPropType());
+                            }
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
+                            }
                             if (!TextUtils.isEmpty(lookDto.getPoint())) {
                                 thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
                             }
@@ -1475,8 +1479,10 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             if (uploadParameter.NeedScore && !TextUtils.isEmpty(point)) {
                                 taskParams.put("ScoringRule", StudyTaskUtils.getScoringRule(point));
                             }
-                            //完成方式
-                            taskParams.put("RepeatCourseCompletionMode",lookResDtos.get(0).getCompletionMode());
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                //完成方式
+                                taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                            }
                         } else if (lookResDtos.size() > 1){
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
