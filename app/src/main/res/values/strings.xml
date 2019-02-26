@@ -1768,4 +1768,5 @@
     <string name="str_dubbing_by_whole">通篇配音</string>
     <string name="str_manual_marking">Manual Mark</string>
     <string name="str_mark_method">Marking method：</string>
+    <string name="str_complete_method">Complete method：</string>
 </resources>

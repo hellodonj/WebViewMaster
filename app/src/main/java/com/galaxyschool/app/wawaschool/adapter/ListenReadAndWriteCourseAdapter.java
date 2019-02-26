@@ -68,6 +68,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.completeType = (LinearLayout) convertView.findViewById(R.id.ll_completion_mode);
             holder.multiTypeBtnRB = (RadioButton) convertView.findViewById(R.id.rb_multi_type);
             holder.rellTypeBtnRB = (RadioButton) convertView.findViewById(R.id.rb_retell_course);
+            holder.completionTitle = (TextView) convertView.findViewById(R.id.tv_completion_title);
             holder.radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
@@ -77,12 +78,16 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.rellTypeBtnRB.setText(context.getString(R.string.str_auto_mark));
                 //人工点评
                 holder.multiTypeBtnRB.setText(context.getString(R.string.str_manual_marking));
+                //批阅方式
+                holder.completionTitle.setText(R.string.str_mark_method);
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
                 //复述课件
                 holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
                 //复述课件+语音评测
                 holder.multiTypeBtnRB.setText(context.getString(R.string.str_task_type_combination));
+                //完成方式
+                holder.completionTitle.setText(R.string.str_complete_method);
             }
             convertView.setTag(holder);
             viewMap.put(position, convertView);
@@ -183,6 +188,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         public LinearLayout rightLayout;
         public RadioButton multiTypeBtnRB;
         public RadioButton rellTypeBtnRB;
+        public TextView completionTitle;
         public RadioGroup radioGroup;
     }
 }
