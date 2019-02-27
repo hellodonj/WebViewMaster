@@ -1649,7 +1649,7 @@
     <string name="str_resources_tag">【%1$s】%2$s</string>
     <string name="str_lqcourse_shop">Study Hall</string>
     <string name="str_online_study">Lecture Hall</string>
-    <string name="air_classroom">Online Class</string>
+    <string name="air_classroom">Class Live</string>
     <string name="str_display_source">From:</string>
     <!--5.11.x需求-->
     <string name="str_make_task_order_answer_tips">
@@ -1766,6 +1766,8 @@
     <string name="str_dubbing_type">配音类型</string>
     <string name="str_dubbing_by_sentence">按句配音</string>
     <string name="str_dubbing_by_whole">通篇配音</string>
-    <string name="str_manual_marking">人工批阅</string>
     <string name="str_start_dubbing">开始配音</string>
+    <string name="str_manual_marking">Manual Mark</string>
+    <string name="str_mark_method">Marking method：</string>
+    <string name="str_complete_method">Complete method：</string>
 </resources>

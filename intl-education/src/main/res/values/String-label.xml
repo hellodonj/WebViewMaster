@@ -233,11 +233,11 @@
     <string name="label_teach_course">Class Live</string>
     <!--<string name="label_tab_course_chapter">Outline</string>-->
     <string name="label_tab_course_chapter">Tutorial</string>
-    <string name="label_study_course">Class Live</string>
+    <string name="label_study_course">Tutorial</string>
     <string name="label_tab_new_study_course">My Tutorial</string>
     <string name="label_tab_new_teach_course">My Class Live</string>
     <string name="label_tab_new_give_study_course">Tutorial</string>
-    <string name="label_tab_new_give_teach_course">Lecture</string>
+    <string name="label_tab_new_give_teach_course">Class Live</string>
     <string name="label_new_tab_class_empty_remind">No class live attended?</string>
     <string name="label_new_go_online_study">Enter Class Live</string>
     <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
@@ -250,7 +250,7 @@
     <string name="label_online_class_give_history_tip">You are now setting the lecture as history and will not be able to create new live stream or mark learning tasks, etc.</string>
     <string name="label_this_class_give_history">Lecture has been set as history</string>
     <string name="label_delete_live_status_warning">Class Live with this live stream was ended/set as history, unable to delete</string>
-    <string name="label_search_course_name_hint">Search by lecture title</string>
+    <string name="label_search_course_name_hint">Search by tutorial title</string>
 
     <string name="label_colon_type">Type:</string>
     <string name="label_colon_grade">Grade:</string>
@@ -352,10 +352,10 @@
     </string-array>
 
     <string-array name="label_lesson_source_tabs">
-        <item>视频课</item>
-        <item>练听说</item>
-        <item>练读写</item>
-        <item>看课本</item>
+        <item>Video Lesson</item>
+        <item>Listen &#038; Speak</item>
+        <item>Read &#038; Write</item>
+        <item>Textbook</item>
     </string-array>
 
     <string-array name="label_course_shop_tabs">

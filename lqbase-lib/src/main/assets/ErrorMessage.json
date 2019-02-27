@@ -1078,6 +1078,18 @@
     {
       "errorCode": "00274",
       "errorMessage": "创建Zoom直播失败！"
+    },
+    {
+      "errorCode": "00275",
+      "errorMessage": "极光设备ID为空！"
+    },
+    {
+      "errorCode": "00276",
+      "errorMessage": "极光应用类型不正确！"
+    },
+    {
+      "errorCode": "00277",
+      "errorMessage": "统计天数超出限制！"
     }
   ]
 }

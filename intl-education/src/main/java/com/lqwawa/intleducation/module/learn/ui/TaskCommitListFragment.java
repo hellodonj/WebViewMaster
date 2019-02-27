@@ -20,6 +20,7 @@ import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
@@ -42,6 +43,7 @@ import org.xutils.http.RequestParams;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by XChen on 2017/7/7.
@@ -356,7 +358,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                     public void onDataLoaded(LqTaskCommitListVo lqTaskCommitListVo) {
                         pullToRefreshView.onHeaderRefreshComplete();
                         mLqTaskCommitListVo = lqTaskCommitListVo;
-                        
+                        filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
                         committedTasksAdapter.setData(getCommitTaskList(mLqTaskCommitListVo.getListCommitTaskOnline()));
                         committedTasksAdapter.setDoWorkListener(doWorkListener);
                         committedTasksAdapter.setAnswerData(mAnswerData);
@@ -423,6 +425,26 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     }
 
     /**
+     * 过滤人工批阅的自动批阅读写单
+     * @param lqTaskCommitVoList 列表数据
+     */
+    private void filterAutoMark(List<LqTaskCommitVo> lqTaskCommitVoList){
+        if(EmptyUtil.isEmpty(lqTaskCommitVoList)) return;
+        ListIterator<LqTaskCommitVo> iterator = lqTaskCommitVoList.listIterator();
+        while(iterator.hasNext()){
+            LqTaskCommitVo vo = iterator.next();
+            if (EmptyUtil.isNotEmpty(vo)) {
+                // 如果是自动批阅的读写单,还有支持人工和自动批阅的
+                if (sectionResListVo.isAutoMark() &&
+                        EmptyUtil.isNotEmpty(vo.getStudentResId())) {
+                    // 过滤人工批阅的
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    /**
      * 所有提交列表，老师查看未批阅提到前面
      * @param lqTaskCommitVoList 批阅列表
      * @return 处理过的集合数据
@@ -436,6 +458,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 List<LqTaskCommitVo> markList = new ArrayList<>();
                 for (LqTaskCommitVo vo : lqTaskCommitVoList) {
                     if (vo != null) {
+
                         if(vo.isSpeechEvaluation()){
                             if(!vo.isHasVoiceReview()){
                                 unmarkList.add(vo);

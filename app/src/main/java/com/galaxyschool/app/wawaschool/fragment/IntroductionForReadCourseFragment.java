@@ -1519,6 +1519,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     public void setReadWriteData(List<ResourceInfoTag> readWriteData, boolean isSuperTask) {
+        // 只对新加入数据处理自动批阅标识
+        if (!readWriteData.isEmpty()) {
+            for (ResourceInfoTag item : readWriteData) {
+                if (item != null && !TextUtils.isEmpty(item.getPoint()) && !isSuperTask) {
+                    item.setResPropertyMode(1);
+                }
+            }
+        }
         int length = this.readWriteData.size() - 1;
         this.readWriteData.addAll(length, readWriteData);
         boolean flag = true;
@@ -1535,9 +1543,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
             //兼容point
             if (!TextUtils.isEmpty(tag.getPoint())) {
-                if (!isSuperTask) {
-                    tag.setResPropertyMode(1);
-                }
+//                if (!isSuperTask) {
+//                    tag.setResPropertyMode(1);
+//                }
                 if (pointFlag) {
                     updateScoreView(View.GONE);
                     mSelectMark.setVisibility(View.GONE);

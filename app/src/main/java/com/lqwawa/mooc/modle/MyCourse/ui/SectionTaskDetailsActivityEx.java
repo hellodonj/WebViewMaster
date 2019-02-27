@@ -926,6 +926,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         if (EmptyUtil.isNotEmpty(data)) {
             // 循环遍历提交列表，复述课件提交和语音评测
             for (LqTaskCommitVo vo : data) {
+                if(sectionResListVo.isAutoMark() &&
+                        EmptyUtil.isNotEmpty(vo.getStudentResId())){
+                    // 过滤人工批阅的
+                    continue;
+                }
+
                 CommitTask commitTask = CommitTask.buildVo(vo);
                 commitTask.setCommitTaskId(commitTask.getId());
                 if (EmptyUtil.isEmpty(commitTask.getTaskScore())) continue;

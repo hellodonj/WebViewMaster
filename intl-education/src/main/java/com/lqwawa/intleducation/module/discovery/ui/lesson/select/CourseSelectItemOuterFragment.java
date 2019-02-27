@@ -26,12 +26,14 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.TabLayoutUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -161,7 +163,10 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         String token = UserHelper.getUserId();
         String courseId = mChapterVo.getCourseId();
         String sectionId = mChapterVo.getId();
-        LessonHelper.requestChapterStudyTask(token, null, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
+
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestChapterStudyTask(languageRes,token, null, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -202,14 +207,17 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         if(EmptyUtil.isNotEmpty(taskList)){
             for (SectionTaskListVo taskListVo:taskList) {
                 if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(0,taskListVo.getTaskName());
                     showReadWare = true;
                 }
 
                 if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(1,taskListVo.getTaskName());
                     showListenRead = true;
                 }
 
                 if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    mTabLists.set(2,taskListVo.getTaskName());
                     showReadWrite = true;
                 }
 
@@ -269,6 +277,23 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             // 没有看课本
             fragments.remove(mTabLists.size() - 1);
             mTabLists.remove(mTabLists.size() - 1);
+        }
+
+        if(showTextBook){
+            // 存在看课本类型
+            Fragment showTextBookFragment = fragments.remove(fragments.size() - 1);
+            String removeTab = mTabLists.remove(mTabLists.size() - 1);
+
+            if(!showReadWare ||
+                    (mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
+                // 没有视频课
+                fragments.add(0,showTextBookFragment);
+                mTabLists.add(0,removeTab);
+            }else{
+                // 有视频课
+                fragments.add(1,showTextBookFragment);
+                mTabLists.add(1,removeTab);
+            }
         }
 
         this.mFragments = fragments;

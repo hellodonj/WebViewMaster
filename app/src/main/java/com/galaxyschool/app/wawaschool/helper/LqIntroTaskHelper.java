@@ -155,6 +155,7 @@ public class LqIntroTaskHelper {
             lookResDto.setPoint(info.getPoint());
             if (!TextUtils.isEmpty(info.getPoint())) {
                 lookResDto.setResPropType(1);
+                lookResDto.setResPropertyMode(1);
             }
             lookResDto.setCompletionMode(info.getCompletionMode());
             lookResDtoList.add(lookResDto);

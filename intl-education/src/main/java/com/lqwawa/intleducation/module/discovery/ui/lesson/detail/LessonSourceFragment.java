@@ -40,12 +40,14 @@ import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LetvVodHelperNew;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
@@ -380,7 +382,9 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             classId = mSourceParams.getCourseParams().getClassId();
         }
 
-        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestChapterStudyTask(languageRes,token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

@@ -1673,6 +1673,8 @@
     <string name="str_dubbing_type">配音类型</string>
     <string name="str_dubbing_by_sentence">按句配音</string>
     <string name="str_dubbing_by_whole">通篇配音</string>
-    <string name="str_manual_marking">人工批阅</string>
     <string name="str_start_dubbing">开始配音</string>
+    <string name="str_manual_marking">人工批阅</string>
+    <string name="str_mark_method">批阅方式：</string>
+    <string name="str_complete_method">完成方式：</string>
 </resources>

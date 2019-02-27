@@ -1226,7 +1226,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
      */
     private void initData(final boolean refresh) {
         String token = UserHelper.getUserId();
-        if(!mCanEdit){
+        if(!mCanEdit && isMyCourse){
             token = mCurMemberId;
         }
 
@@ -1238,6 +1238,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         }else if(UserHelper.isLogin() && mCanEdit) {
             schoolIds =  UserHelper.getUserInfo().getSchoolIds();
         }
+
         LQCourseHelper.requestCourseDetailByCourseId(token, courseId,schoolIds, dataType, 0, AppConfig.PAGE_SIZE, new DataSource.Callback<CourseDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {

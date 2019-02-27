@@ -707,7 +707,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             classId = mChapterParams.getCourseParams().getClassId();
         }
 
-        LessonHelper.requestChapterStudyTask(token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestChapterStudyTask(languageRes,token, classId, courseId, sectionId, role,new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -780,24 +782,25 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             boolean showTextBook = false;
             if(EmptyUtil.isNotEmpty(taskList)){
                 for (SectionTaskListVo taskListVo:taskList) {
+
                     if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[0] = taskListVo.getTaskName();
                         showReadWare = true;
                     }
 
-                    if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[1] = taskListVo.getTaskName();
+                        showTextBook = true;
+                    }
+
+                    if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
+                        mTabs[2] = taskListVo.getTaskName();
                         showListenRead = true;
                     }
 
                     if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                        mTabs[2] = taskListVo.getTaskName();
-                        showReadWrite = true;
-                    }
-
-                    if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
                         mTabs[3] = taskListVo.getTaskName();
-                        showTextBook = true;
+                        showReadWrite = true;
                     }
                 }
             }
@@ -813,23 +816,23 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 fragments.add(fragment);
             }
 
-            if(showListenRead){
+            if(showTextBook){
                 mTabLists.add(mTabs[1]);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
+                mTabSourceNavigator.add(fragment);
+                fragments.add(fragment);
+            }
+
+            if(showListenRead){
+                mTabLists.add(mTabs[2]);
                 LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,2,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
 
             if(showReadWrite){
-                mTabLists.add(mTabs[2]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,3,params);
-                mTabSourceNavigator.add(fragment);
-                fragments.add(fragment);
-            }
-
-            if(showTextBook){
                 mTabLists.add(mTabs[3]);
-                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,4,params);
+                LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag,canEdit,canRead,isOnlineTeacher,courseId,sectionId,3,params);
                 mTabSourceNavigator.add(fragment);
                 fragments.add(fragment);
             }
@@ -1124,6 +1127,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 lqwawaTaskType = 5;
             }else if(moocTaskType == 3){
                 lqwawaTaskType = 8;
+            }else if(moocTaskType == 4){
+                // 多出来的看课本类型
+                lqwawaTaskType = 9;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray,lqwawaTaskType);
             // 刷新数目
