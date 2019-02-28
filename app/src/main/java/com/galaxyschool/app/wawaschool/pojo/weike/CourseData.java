@@ -306,6 +306,8 @@ public class CourseData implements Serializable {
         info.setScreenType(screentype);
         info.setDescription(description);
         info.setSplitFlag(splitFlag);
+        info.setLeValue(leValue);
+        info.setLeStatus(leStatus);
 
         //设置学习任务
         info.setStudyTaskInfo(studyTaskInfo);
