@@ -81,7 +81,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     public static final int KEY_WATCH_COURSE = 9;//看课件
     public static final int KEY_RELL_COURSE = 5;//复述课件
     public static final int KEY_TASK_ORDER = 8;//任务单
-    public static final int KEY_TEXT_BOOK = 13;// 看课本
+    public static final int KEY_TEXT_BOOK = 14;// 看课本 // V5.14兼容Q配音的类型
     public static final String RESULT_LIST = "result_list";
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
@@ -320,6 +320,13 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                         // 过滤18,19
                         continue;
                     }
+                }
+            }
+
+            if(mRealTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
+                // Q配音的选择
+                if(resType != 30){
+                    continue;
                 }
             }
 

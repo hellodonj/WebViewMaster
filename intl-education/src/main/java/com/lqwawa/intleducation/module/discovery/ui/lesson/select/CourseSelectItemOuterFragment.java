@@ -191,6 +191,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         Bundle arguments = getArguments();
         arguments.putSerializable("ChapterVo",mChapterVo);
         // 写死看课件类型
+        // V5.14 视频课类型
         arguments.putInt("tasktype",CourseSelectItemFragment.KEY_WATCH_COURSE);
         arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT,mMultipleChoiceCount);
         arguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION,mFilterArray);
@@ -252,6 +253,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         }
 
         // 写死看课本类型
+        // V5.14 看课件类型
         CourseSelectItemFragment textBookFragment = new CourseSelectItemFragment();
         textBookFragment.setOnResourceSelectListener(this);
         Bundle textBookArguments = (Bundle) arguments.clone();
@@ -273,8 +275,11 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             mTabLists.remove(0);
         }
 
-        if(!showTextBook){
+        if(!showTextBook || mTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
+            // V5.14版本更改
+            // 当前查看的是视频课类型
             // 没有看课本
+            showTextBook = false;
             fragments.remove(mTabLists.size() - 1);
             mTabLists.remove(mTabLists.size() - 1);
         }
