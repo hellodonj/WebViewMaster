@@ -836,5 +836,13 @@ public final class AppConfig {
         // 助教拉取帮辅机构
         public static final String PostRequestTutorialOrgan =
                 LQWAWA_BASE_SERVER + "Api/Mobile/Setting/PersonalInfo/PersonalInfo/LoadMemberSchoolList";
+
+        // 根据条件查询我帮辅的课程
+        public static final String GetRequestTutorialCourses =
+                ServerBase + "api/tutor/getMyTutorCourses?j=";
+
+        // 学生查询我的帮辅老师列表
+        public static final String GetRequestTutorialByStudentId =
+                ServerBase + "api/tutor/getMyTutorsByStuId?j=";
     }
 }

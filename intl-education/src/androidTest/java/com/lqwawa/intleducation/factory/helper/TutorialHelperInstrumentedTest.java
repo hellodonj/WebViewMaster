@@ -9,6 +9,8 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,6 +79,50 @@ public class TutorialHelperInstrumentedTest{
 
             @Override
             public void onDataLoaded(List<MemberSchoolEntity> entities) {
+                System.out.println(entities);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestTutorialCourses() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestTutorialCourses("0018356f-ad4b-439f-88fa-e4cdbf4de32b", "", 1,0,10, new DataSource.Callback<List<CourseVo>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(List<CourseVo> courseVos) {
+                System.out.println(courseVos);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestMyTutorData() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestMyTutorData("0018356f-ad4b-439f-88fa-e4cdbf4de32b", "",0,10, new DataSource.Callback<List<TutorEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(List<TutorEntity> entities) {
                 System.out.println(entities);
                 downLatch.countDown();
             }

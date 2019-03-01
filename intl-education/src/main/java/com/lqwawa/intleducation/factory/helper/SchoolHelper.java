@@ -33,6 +33,7 @@ import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolStarEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
+import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 

@@ -18,12 +18,16 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
+import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
+import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
@@ -31,6 +35,7 @@ import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -139,6 +144,110 @@ public class TutorialHelper {
             @Override
             public void onError(Throwable throwable, boolean b) {
                 LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+
+    /**
+     * 根据条件查询我帮辅的课程或课堂
+     * @param memberId 会员Id
+     * @param name 课程名称过滤条件
+     * @param type 1 课程 2 课堂
+     * @param pageIndex 当前页数
+     * @param pageSize 每页加载条数
+     */
+    public static void requestTutorialCourses(@NonNull String memberId,
+                                              @Nullable String name,
+                                              int type, int pageIndex, int pageSize,
+                                              @NonNull DataSource.Callback<List<CourseVo>> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("type", type);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize",pageSize);
+        try{
+            requestVo.addParams("name", URLEncoder.encode(name, "UTF-8"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestTutorialCourses + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<CourseVo>>> typeReference = new TypeReference<ResponseVo<List<CourseVo>>>(){};
+                ResponseVo<List<CourseVo>> responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 学生查询关注的助教列表
+     * @param memberId 用户Id
+     * @param tutorName 帮辅老师过滤条件
+     * @param pageIndex 当前页数
+     * @param pageSize 每页加载条数
+     */
+    public static void requestMyTutorData(@NonNull String memberId,
+                                          @Nullable String tutorName,
+                                          int pageIndex, int pageSize,
+                                          @NonNull DataSource.Callback<List<TutorEntity>> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize",pageSize);
+        try{
+            requestVo.addParams("tutorName", URLEncoder.encode(tutorName, "UTF-8"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestTutorialByStudentId + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorEntity>>>(){};
+                ResponseVo<List<TutorEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
                 if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
