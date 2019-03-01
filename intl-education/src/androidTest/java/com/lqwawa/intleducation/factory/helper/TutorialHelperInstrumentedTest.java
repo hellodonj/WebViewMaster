@@ -9,6 +9,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
@@ -124,6 +125,138 @@ public class TutorialHelperInstrumentedTest{
             @Override
             public void onDataLoaded(List<TutorEntity> entities) {
                 System.out.println(entities);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestAddTutorByStudentId() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestAddTutorByStudentId("0018356f-ad4b-439f-88fa-e4cdbf4de32b","0018356f-ad4b-439f-88fa-e4cdbf4de32b" ,"", new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println(aBoolean);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestQueryAddedTutorByTutorId() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestQueryAddedTutorByTutorId("0018356f-ad4b-439f-88fa-e4cdbf4de32b","0018356f-ad4b-439f-88fa-e4cdbf4de32b" , new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println(aBoolean);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestTutorCommentData() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestTutorCommentData("95eab099-0cf8-4b69-866b-83c85dfad8a0","95eab099-0cf8-4b69-866b-83c85dfad8a0",0,10 , new DataSource.Callback<List<TutorCommentEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(List<TutorCommentEntity> entities) {
+                System.out.println(entities);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestTutorSingleCommentState() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestTutorSingleCommentState("95eab099-0cf8-4b69-866b-83c85dfad8a0",1,0, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println(aBoolean);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestAddPraiseByCommentId() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestAddPraiseByCommentId("95eab099-0cf8-4b69-866b-83c85dfad8a0",1, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println(aBoolean);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestAddTutorialComment() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        TutorialHelper.requestAddTutorialComment("95eab099-0cf8-4b69-866b-83c85dfad8a0","95eab099-0cf8-4b69-866b-83c85dfad8a0","测试内容", new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println(aBoolean);
                 downLatch.countDown();
             }
         });

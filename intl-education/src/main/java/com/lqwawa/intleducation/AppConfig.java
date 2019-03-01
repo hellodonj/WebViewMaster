@@ -844,5 +844,30 @@ public final class AppConfig {
         // 学生查询我的帮辅老师列表
         public static final String GetRequestTutorialByStudentId =
                 ServerBase + "api/tutor/getMyTutorsByStuId?j=";
+
+        // 学生查询是否已经添加帮辅老师
+        public static final String GetQueryAddedTutorState =
+                ServerBase + "api/tutor/qryWhetherAddedTurtor?j=";
+
+        // 学生添加帮辅老师
+        public static final String GetRequestAddTutor =
+                ServerBase + "api/tutor/addMyTutorByStuId?j=";
+
+        // 获取帮辅老师的评论列表
+        public static final String GetRequestTutorCommentData =
+                ServerBase + "api/tutor/getEstimateList?j=";
+
+        // 帮辅评价显示和隐藏
+        public static final String GetRequestUpdateTutorialCommentStatus =
+                ServerBase + "api/tutor/updateEstimateStatus?j=";
+
+        // 对帮辅评价内容点赞
+        public static final String GetTutorialCommentAddPraise =
+                ServerBase + "api/tutor/addEstimatePraise?j=";
+
+        // 对帮辅老师进行评论
+        public static final String GetRequestAddTutorialComment =
+                ServerBase + "api/tutor/addTutorEstimate?j=";
+
     }
 }

@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
@@ -239,6 +240,268 @@ public class TutorialHelper {
                 if (responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 查询是否已经关注该帮辅老师
+     * @param memberId 用户Id
+     * @param tutorMemberId 帮辅老师Id
+     * @param callback 回调对象
+     */
+    public static void requestQueryAddedTutorByTutorId(@NonNull String memberId,
+                                                       @NonNull String tutorMemberId,
+                                                       @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetQueryAddedTutorState + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<Map<String,Boolean>>> typeReference = new TypeReference<ResponseVo<Map<String,Boolean>>>(){};
+                ResponseVo<Map<String,Boolean>> responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        boolean added = responseVo.getData() != null ? responseVo.getData().get("added") : false;
+                        callback.onDataLoaded(added);
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 学生添加帮辅老师
+     * @param memberId 学生memberId
+     * @param tutorMemberId 助教memberId
+     * @param tutorName 助教姓名
+     */
+    public static void requestAddTutorByStudentId(@NonNull String memberId,
+                                                  @NonNull String tutorMemberId,
+                                                  @NonNull String tutorName,
+                                                  @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        requestVo.addParams("tutorName",tutorName);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutor + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 帮辅老师评价列表
+     * @param memberId 学生的Id
+     * @param tutorMemberId 帮辅老师的Id
+     * @param pageIndex 当前页数
+     * @param pageSize 每页加载的条数
+     */
+    public static void requestTutorCommentData(@NonNull String memberId,
+                                               @NonNull String tutorMemberId,
+                                               int pageIndex, int pageSize,
+                                               @NonNull DataSource.Callback<List<TutorCommentEntity>> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize",pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestTutorCommentData + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorCommentEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorCommentEntity>>>(){};
+                ResponseVo<List<TutorCommentEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 帮辅评价显示和隐藏
+     * @param memberId 用户Id
+     * @param id 评价实体主键
+     * @param status 0 隐藏 1 显示
+     */
+    public static void requestTutorSingleCommentState(@NonNull String memberId,
+                                                      int id, int status,
+                                                      @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("id", id);
+        requestVo.addParams("status",status);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestUpdateTutorialCommentStatus + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 对帮辅老师的评价内容点赞
+     * @param memberId 用户Id
+     * @param id 评论Id
+     */
+    public static void requestAddPraiseByCommentId(@NonNull String memberId,
+                                                   int id,
+                                                   @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("id", id);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetTutorialCommentAddPraise + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 对帮辅老师评论
+     * @param memberId 用户Id
+     * @param tutorMemberId 帮辅老师Id
+     * @param content 评论内容
+     * @param callback 回调对象
+     */
+    public static void requestAddTutorialComment(@NonNull String memberId,
+                                                 @NonNull String tutorMemberId,
+                                                 @NonNull String content,
+                                                 @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        requestVo.addParams("content", content);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
                     }
                 } else {
                     Factory.decodeRspCode(responseVo.getCode(), callback);

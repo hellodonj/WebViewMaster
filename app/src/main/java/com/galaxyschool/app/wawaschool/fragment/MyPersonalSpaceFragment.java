@@ -77,6 +77,7 @@ import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
 import com.lqwawa.mooc.common.MOOCHelper;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.oosic.apps.share.ShareHelper;
 import com.oosic.apps.share.ShareInfo;
 import com.oosic.apps.share.SharedResource;
@@ -1679,10 +1680,15 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         startActivity(intent);
     }
 
+    private void enterTutorialSpace(){
+        TutorialHomePageActivity.show(getActivity());
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.im_user_icon) {
-            enterPersonalSpace();
+            // enterPersonalSpace();
+            enterTutorialSpace();
         } else {
             super.onClick(v);
         }
