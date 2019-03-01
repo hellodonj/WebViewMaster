@@ -44,6 +44,13 @@ public class SchoolInfoEntity extends BaseVo{
     private String CName;//市
     private String DName;//区
 
+    // V5.15添加的字段
+    private String Id;
+    private String SName;
+    private String Type;
+    private String SchoolType;
+    private String SchoolLevel;
+
     public String getSchoolId() {
         return SchoolId;
     }
@@ -234,6 +241,46 @@ public class SchoolInfoEntity extends BaseVo{
 
     public void setDName(String DName) {
         this.DName = DName;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getSName() {
+        return SName;
+    }
+
+    public void setSName(String SName) {
+        this.SName = SName;
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public String getSchoolType() {
+        return SchoolType;
+    }
+
+    public void setSchoolType(String schoolType) {
+        SchoolType = schoolType;
+    }
+
+    public String getSchoolLevel() {
+        return SchoolLevel;
+    }
+
+    public void setSchoolLevel(String schoolLevel) {
+        SchoolLevel = schoolLevel;
     }
 
     public boolean isTeacher() {

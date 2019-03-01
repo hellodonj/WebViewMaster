@@ -805,5 +805,36 @@ public final class AppConfig {
         // 获取班级课程统计列表
         public static final String GetCourseStatisticsUserArrayUrl = ServerBase +
                 "api/study/courseStatistics?j=";
+
+        /**
+         * V5.15相关接口
+         */
+        // 获取符合过滤条件的机构列表
+        public static final String PostRequestFilterOrganUrl =
+                LQWAWA_BASE_SERVER + "NewApi/DataStatisticsForOMS/LoadFilterSchoolList";
+
+        // 获取省市区信息
+        public static final String PostRequestLocationDataUrl =
+                LQWAWA_BASE_SERVER + "Api/Platform/User/Apply/SchoolSettledApply/BindLocation";
+
+        // 学生申请机构助教
+        public static final String GetRequestApplyForTutor =
+                ServerBase + "api/tutor/applyOrganTutor?j=";
+
+        // 学生助教获取作业列表时间标记
+        public static final String PostRequestWorkDateFlag =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetDateSignForAssist";
+
+        // 学生助教拉取作业列表
+        public static final String PostRequestWorkTaskList =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetAssistTaskList";
+
+        // 助教拉取帮辅的学生列表
+        public static final String PostRequestPullTutorialStudents =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetAssistStudentList";
+
+        // 助教拉取帮辅机构
+        public static final String PostRequestTutorialOrgan =
+                LQWAWA_BASE_SERVER + "Api/Mobile/Setting/PersonalInfo/PersonalInfo/LoadMemberSchoolList";
     }
 }

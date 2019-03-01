@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.vo.PagerArgs;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -26,10 +27,12 @@ import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolStarEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
@@ -368,6 +371,132 @@ public class SchoolHelper {
                 CheckPermissionResponseVo<Void> vo = JSON.parseObject(str, typeReference);
                 if (EmptyUtil.isNotEmpty(callback) || EmptyUtil.isNotEmpty(vo)) {
                     callback.onDataLoaded(vo);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 获取机构列表
+     *
+     * @param name 关键词过滤
+     * @param pageIndex 分页信息
+     * @param pageSize 单分页条数
+     * @param onlyIncludeOnline 是否只拉取线上机构
+     * @return 返回机构信息接口回调
+     */
+    public static void requestFilterOrganData(@Nullable String name,
+                                              int pageIndex,int pageSize,
+                                              boolean onlyIncludeOnline,
+                                              @NonNull DataSource.Callback<List<SchoolInfoEntity>> callback) {
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("SName", name);
+        requestVo.addParams("Pager", new PagerArgs(pageIndex, pageSize), true);
+        requestVo.addParams("OnlyIncludeOnline", onlyIncludeOnline);
+
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestFilterOrganUrl);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(1000);
+        LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(SchoolHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<LQModelMultipleParamIncludePagerResponse<SchoolInfoEntity>> typeReference = new TypeReference<LQModelMultipleParamIncludePagerResponse<SchoolInfoEntity>>() {};
+                LQModelMultipleParamIncludePagerResponse<SchoolInfoEntity> response = JSON.parseObject(str, typeReference);
+                if (!response.isHasError()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        if(EmptyUtil.isNotEmpty(response.getModel())) {
+                            callback.onDataLoaded(response.getModel().getDataList());
+                        }
+                    }
+                } else {
+                    String ErrorMessage = (String) response.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 拉取用户相关的机构列表
+     * @param MemberId 用户Id
+     * @param SchoolName 机构过滤条件
+     * @param Roles 角色信息 0 老师 1 学生 2 家长 3助教(传3时不能与其他值同时传)
+     * @param callback
+     */
+    public static void requestLoadMemberSchoolData(@NonNull String MemberId,
+                                                   @Nullable String SchoolName,
+                                                   @NonNull String Roles,
+                                                   @NonNull DataSource.Callback<List<MemberSchoolEntity>> callback){
+        /* Lambda 从简入繁的演变过程
+        View view = new View(null);
+        view.setOnClickListener(View::toString);
+        view.setOnClickListener(v -> v.toString());
+        view.setOnClickListener((v) -> {
+            v.toString();
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.toString();
+            }
+        });*/
+
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("MemberId", MemberId);
+        requestVo.addParams("SchoolName", SchoolName);
+        requestVo.addParams("Roles", Roles);
+
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestTutorialOrgan);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(1000);
+        LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(SchoolHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<LQwawaBaseResponse<List<MemberSchoolEntity>>> typeReference = new TypeReference<LQwawaBaseResponse<List<MemberSchoolEntity>>>() {};
+                LQwawaBaseResponse<List<MemberSchoolEntity>> response = JSON.parseObject(str, typeReference);
+                if (!response.isHasError()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(response.getModel());
+                    }
+                } else {
+                    String ErrorMessage = (String) response.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
                 }
             }
 

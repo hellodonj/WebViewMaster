@@ -897,6 +897,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--申请成为帮辅，注册信息的入口-->
+        <activity android:name=".module.tutorial.regist.TutorialRegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

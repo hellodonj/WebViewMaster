@@ -46,6 +46,7 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
+import com.lqwawa.intleducation.module.tutorial.regist.TutorialRegisterActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -154,7 +155,8 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                         }
                     }
                 }else{
-                    ClassifyListActivity.show(getActivity(),entity);
+                    // ClassifyListActivity.show(getActivity(),entity);
+                    TutorialRegisterActivity.show(getActivity());
                 }
                 // EmptyActivity.show(getActivity());
             }
