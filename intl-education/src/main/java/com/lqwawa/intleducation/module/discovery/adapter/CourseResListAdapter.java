@@ -161,6 +161,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
                     }
                     break;
                 case 3:
+                case 30:
                     if(vo.isIsShield()){
                         holder.resIconIv.setImageDrawable(
                                 activity.getResources().getDrawable(R.drawable.ic_video_shiled));
