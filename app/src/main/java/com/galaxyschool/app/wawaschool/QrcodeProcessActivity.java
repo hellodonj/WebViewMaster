@@ -187,7 +187,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
 //                toolbarTopView.getTitleView().setText(R.string.join_school);
 //                name.setText(qrcodeSchoolInfo.getSname());
 //                thumbnail.setImageResource(R.drawable.ic_launcher);
-//                imageLoader.loadImage(AppSettings.getFileUrl(qrcodeSchoolInfo.getLogoUrl()), null, thumbnail);
+//                imageLoader.setContent(AppSettings.getFileUrl(qrcodeSchoolInfo.getLogoUrl()), null, thumbnail);
                 qrcode_process_type = QrcodeProcessType.TEACHER_ADDTO_SCHOOL;
                 name.setText(userName);
                 toolbarTopView.getTitleView().setText(getString(R.string.str_i_am_teacher));
