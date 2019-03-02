@@ -36,6 +36,7 @@ import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
+import com.icedcap.dubbing.DubbingActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.oosic.apps.share.ShareHelper;
