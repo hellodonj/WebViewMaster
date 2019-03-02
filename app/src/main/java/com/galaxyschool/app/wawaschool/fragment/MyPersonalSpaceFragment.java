@@ -78,6 +78,7 @@ import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 import com.oosic.apps.share.ShareHelper;
 import com.oosic.apps.share.ShareInfo;
 import com.oosic.apps.share.SharedResource;
@@ -1681,7 +1682,9 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
     }
 
     private void enterTutorialSpace(){
-        TutorialHomePageActivity.show(getActivity());
+        String memberId = userInfo.getMemberId();
+        TutorialParams params = new TutorialParams(memberId);
+        TutorialHomePageActivity.show(getActivity(),params);
     }
 
     @Override

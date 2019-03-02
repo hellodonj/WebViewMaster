@@ -343,6 +343,9 @@
     <string name="label_unset_choose_subject">您尚未选择科目，请前往选择科目</string>
     <string name="label_choose_subject">选择科目</string>
 
+    <!--V5.15字符串信息-->
+    <string name="label_add_tutorial">+帮辅</string>
+
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>
         <item>授课计划</item>

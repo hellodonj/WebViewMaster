@@ -336,6 +336,9 @@
     <string name="label_unset_choose_subject">Subject not set, please select subject</string>
     <string name="label_choose_subject">Select Subject</string>
 
+    <!--V5.15字符串信息-->
+    <string name="label_add_tutorial">+帮辅</string>
+
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>
         <item>Schedule</item>

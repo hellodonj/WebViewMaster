@@ -15,5 +15,6 @@
     <string name="title_subject_setting">Subject Setting</string>
     <string name="title_donation_coin">Deliver WaWacoins</string>
     <string name="title_learning_statistics">Progress</string>
+    <string name="title_personal_page">个人主页</string>
 
 </resources>
