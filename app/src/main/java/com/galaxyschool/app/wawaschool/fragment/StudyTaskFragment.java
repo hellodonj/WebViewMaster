@@ -441,8 +441,9 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                                     || type.equals("10")
                                     || type.equals("12")
                                     || type.equals("13")
-                                    || type.equals("14") ||
-                                    (type.equals("11") && data.isNeedCommit())) {
+                                    || type.equals("14")
+                                    || type.equals("15")
+                                    || (type.equals("11") && data.isNeedCommit())) {
                                 imageView.setVisibility(View.VISIBLE);
                             } else {
                                 imageView.setVisibility(View.GONE);
@@ -488,7 +489,7 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                             } else if (type.equals("11")) {
                                 //综合任务
                                 textView.setBackgroundResource(R.drawable.icon_super_task);
-                            } else if (type.equals("14")){
+                            } else if (type.equals("14") || type.equals("15")){
                                 //Q配音
                                 textView.setBackgroundResource(R.drawable.icon_q_dubbing);
                             }

@@ -54,6 +54,7 @@ import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
+import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -72,6 +73,7 @@ import com.galaxyschool.app.wawaschool.pojo.AutoMarkText;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkTextResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTaskResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.views.DoTaskOrderTipsDialog;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -1534,7 +1536,14 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
      * 打开Q配音的原视频
      */
     private void openQDubbingVideo(){
-        TipMsgHelper.ShowMsg(getActivity(),"点击了播放配音原视频");
+        if (task == null){
+            return;
+        }
+        ResourceInfoTag info = new ResourceInfoTag();
+        info.setResId(task.getResId());
+        info.setResourcePath(task.getResUrl());
+        WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
+                true, false, true);
     }
 
     private void enterEnglishWritingCompositionRequirementsActivity() {
@@ -1554,11 +1563,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
             //导读
             showIntroductionWaWaCoursePopupWindow();
-
         } else if (taskType == StudyTaskType.SUBMIT_HOMEWORK) {
             //提交作业
             showSubmitHomeworkPopupWindow();
-
         } else if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             //复述课件
             retellCourse();
@@ -1579,6 +1586,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             } else {
                 takeTask(true);
             }
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            startDubbingVideo();
         }
     }
 
@@ -3415,6 +3424,13 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
     public EvalHomeworkListFragment getEvalHomeworkListFragment() {
         return evalHomeworkListFragment;
+    }
+
+    /**
+     * 开始配音的动作
+     */
+    private void startDubbingVideo(){
+
     }
 
     private class MyBroadCastReceiver extends BroadcastReceiver {

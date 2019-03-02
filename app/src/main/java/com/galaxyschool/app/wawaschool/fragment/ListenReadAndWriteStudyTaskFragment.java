@@ -172,6 +172,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 headTitleView.setText(getString(R.string.microcourse));
             } else if (taskType == StudyTaskType.MULTIPLE_TASK_ORDER) {
                 headTitleView.setText(getString(R.string.make_task));
+            } else if (taskType == StudyTaskType.MULTIPLE_Q_DUBBING) {
+                headTitleView.setText(getString(R.string.str_q_dubbing));
             } else {
                 headTitleView.setText(getString(R.string.str_listen_read_and_write));
             }
@@ -189,7 +191,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             } else if (lookStudentTaskFinish
                     || isSuperChildTask
                     || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
-                    || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE) {
+                    || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
+                    || taskType == StudyTaskType.MULTIPLE_Q_DUBBING) {
                 textView.setVisibility(View.INVISIBLE);
             } else {
                 textView.setText(getString(R.string.share));
@@ -386,16 +389,18 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             }
             if ((info.getType() == StudyTaskType.LISTEN_READ_AND_WRITE
                     || info.getType() == StudyTaskType.MULTIPLE_RETELL_COURSE
-                    || info.getType() == StudyTaskType.MULTIPLE_TASK_ORDER)
+                    || info.getType() == StudyTaskType.MULTIPLE_TASK_ORDER
+                    || info.getType() == StudyTaskType.MULTIPLE_Q_DUBBING)
                     && !lookStudentTaskFinish) {
                 //听说 + 读写 任务对象
                 homeworkListInfo = info;
                 updateFinishStatus();
             } else if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
-                    || (isSuperChildTask && (info.getType() == StudyTaskType.WATCH_HOMEWORK || info.getType() ==
-                    StudyTaskType.SUBMIT_HOMEWORK))
+                    || (isSuperChildTask && (info.getType() == StudyTaskType.WATCH_HOMEWORK
+                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))
                     || (lookStudentTaskFinish && (info.getType() == StudyTaskType.WATCH_HOMEWORK
-                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))) {
+                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))
+                    || info.getType() == StudyTaskType.Q_DUBBING) {
                 //听说课
                 if (isSuperChildTask) {
                     if (TextUtils.equals(info.getId() + "", TaskId)) {

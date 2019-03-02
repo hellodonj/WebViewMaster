@@ -149,6 +149,7 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || type.equals("12")
                         || type.equals("13")
                         || type.equals("14")
+                        || type.equals("15")
                         || (type.equals("11") && data.isNeedCommit())){
                     imageView.setVisibility(View.VISIBLE);
                 }else {
@@ -196,7 +197,7 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                 } else if (type.equals("11")){
                     //综合任务
                     textView.setBackgroundResource(R.drawable.icon_super_task);
-                } else if (type.equals("14")){
+                } else if (type.equals("14") || type.equals("15")){
                     //Q配音
                     textView.setBackgroundResource(R.drawable.icon_q_dubbing);
                 }
@@ -348,7 +349,8 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || taskType == StudyTaskType.SUPER_TASK
                         || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
-                        || taskType == StudyTaskType.Q_DUBBING){
+                        || taskType == StudyTaskType.Q_DUBBING
+                        || taskType == StudyTaskType.MULTIPLE_Q_DUBBING){
                     //学生更新提交作业和讨论话题已读接口
                     UpdateStudentIsRead(data.getTaskId(),memberId,String.valueOf(taskType));
                 }else {
