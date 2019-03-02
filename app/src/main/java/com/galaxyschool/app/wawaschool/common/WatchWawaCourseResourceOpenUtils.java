@@ -86,6 +86,7 @@ public class WatchWawaCourseResourceOpenUtils {
                     mediaPlay(context,resourceInfoTag,showCourseAndReading,isPersonalSpace);
                     break;
                 case MaterialResourceType.VIDEO:
+                case MaterialResourceType.Q_DUBBING_VIDEO:
                     //非分页信息
                     WawaCourseUtils wawaCourseUtils = new WawaCourseUtils((Activity) context);
                     wawaCourseUtils.loadCourseDetail(resId);

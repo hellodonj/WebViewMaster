@@ -635,67 +635,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!--配音类型-->
-                <LinearLayout
-                    android:id="@+id/ll_q_dubbing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:minHeight="@dimen/item_height"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/txt_wawa_big_black"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:gravity="center_vertical"
-                            android:minHeight="40dp"
-                            android:text="@string/str_dubbing_type"/>
-
-                        <RadioGroup
-                            android:layout_width="0dp"
-                            android:layout_weight="2"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/rb_dubbing_by_sentence"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="wrap_content"
-                                android:button="@drawable/com_checkbox"
-                                android:checked="true"
-                                android:padding="10dp"
-                                android:text="@string/str_dubbing_by_sentence"
-                                android:textSize="14sp"/>
-
-                            <RadioButton
-                                android:id="@+id/rb_dubbing_by_whole"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="wrap_content"
-                                android:button="@drawable/com_checkbox"
-                                android:padding="10dp"
-                                android:text="@string/str_dubbing_by_whole"
-                                android:textSize="14sp"/>
-                        </RadioGroup>
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#c3c3c3"/>
-                </LinearLayout>
-
-
                 <!--================================需要学生提交====================================-->
                 <LinearLayout
                     android:id="@+id/commit_task_layout"

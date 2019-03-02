@@ -90,6 +90,7 @@ public class ArrangeLearningTasksUtil {
 
         if (isIntroSuperTask) {
             taskTypes = new String[]{
+                    activity.getString(R.string.str_q_dubbing),
                     activity.getString(R.string.do_task),
                     activity.getString(R.string.retell_course),
                     activity.getString(R.string.look_through_courseware),

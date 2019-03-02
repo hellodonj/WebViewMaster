@@ -1,12 +1,10 @@
 package com.galaxyschool.app.wawaschool.fragment;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -17,12 +15,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -31,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
@@ -49,7 +44,6 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
-import com.galaxyschool.app.wawaschool.common.LogUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -63,9 +57,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.db.NoteDao;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
-import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyResPropType;
-import com.galaxyschool.app.wawaschool.views.MyGridView;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
@@ -104,11 +96,9 @@ import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.libs.mediapaper.MediaPaper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.oosic.apps.iemaker.base.BaseUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -179,7 +169,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private RadioButton mRbPercentageSystem, mRbTenSystem;
     private View mSelectMark;
     private RadioButton immediatelyRb;//立即发布
-    private RadioButton dubbingBySentenceRb;//按句配音
     private LinearLayout publishTimeAndTypeLayout;
     private int currentStudyType;//空中课堂学习类型
     private Emcee onlineRes;
@@ -239,7 +228,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             isFromSuperTask = getArguments().getBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK);
             if (!isFromSuperTask
                     && (taskType == StudyTaskType.RETELL_WAWA_COURSE
-                    || taskType == StudyTaskType.TASK_ORDER)) {
+                    || taskType == StudyTaskType.TASK_ORDER
+                    || taskType == StudyTaskType.Q_DUBBING)) {
                 //读写单、听说课支持多选
                 isFromSuperTask = true;
                 multipleDoTask = true;
@@ -249,7 +239,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 if (taskType == StudyTaskType.TASK_ORDER
                         || taskType == StudyTaskType.RETELL_WAWA_COURSE
                         || taskType == StudyTaskType.WATCH_HOMEWORK
-                        || taskType == StudyTaskType.SUBMIT_HOMEWORK) {
+                        || taskType == StudyTaskType.SUBMIT_HOMEWORK
+                        || taskType == StudyTaskType.Q_DUBBING) {
                     taskType = StudyTaskType.LISTEN_READ_AND_WRITE;
                 }
                 uploadParameter = (UploadParameter) getArguments().getSerializable(UploadParameter
@@ -345,9 +336,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             initMarkSore();
             setIntroTypeTitle(getString(R.string.appoint_course_point));
-        } else if (taskType == StudyTaskType.Q_DUBBING) {
-            initDubbingView();
-            setIntroTypeTitle(getString(R.string.appoint_course_point));
         } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
             //配置听说+读写数据
             if (isFromSuperTask) {
@@ -399,17 +387,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     /**
-     * 初始化配音的数据
-     */
-    private void initDubbingView() {
-        initMarkSore();
-        //按句配音
-        dubbingBySentenceRb = (RadioButton) findViewById(R.id.rb_dubbing_by_sentence);
-        //显示配音类型的标识
-        findViewById(R.id.ll_q_dubbing).setVisibility(View.VISIBLE);
-    }
-
-    /**
      * 打分功能
      */
     private void initMarkSore() {
@@ -446,8 +423,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isAutoMark) {
                     needScore = isChecked;
-                } else if (taskType != StudyTaskType.Q_DUBBING){
-                    mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                 }
             }
         });
@@ -458,11 +433,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     updateScoreView(View.GONE);
                 }
             }, 1);
-        } else if (taskType == StudyTaskType.Q_DUBBING) {
-            mSelectMark.setVisibility(View.GONE);
-            mRbMarkNo.setVisibility(View.GONE);
-            mRbMarkYes.setChecked(true);
-            mRbPercentageSystem.setChecked(true);
         }
     }
 
@@ -510,7 +480,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             titleTextView.setText(getString(R.string.appoint_course_point));
         }
 
-        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
+        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE
+                || superTaskType == StudyTaskType.Q_DUBBING) {
             findViewById(R.id.common_grid_view).setVisibility(View.GONE);
             listenGridView = (GridView) listenLayout.findViewById(R.id.gv_task);
             listenGridView.setVisibility(View.VISIBLE);
@@ -581,7 +552,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         });
         readWriteGridView.setAdapter(readAndWriteAdapter);
         if (isFromSuperTask) {
-            if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE || isOtherHomeWork()) {
+            if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || isOtherHomeWork()
+                    || superTaskType == StudyTaskType.Q_DUBBING) {
                 listenReadAndWriteLayout.addView(listenLayout);
             } else if (superTaskType == StudyTaskType.TASK_ORDER) {
                 listenReadAndWriteLayout.addView(readWriteLayout);
@@ -640,7 +613,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || superTaskType == StudyTaskType.RETELL_WAWA_COURSE
-                || superTaskType == StudyTaskType.TASK_ORDER) {
+                || superTaskType == StudyTaskType.TASK_ORDER
+                || superTaskType == StudyTaskType.Q_DUBBING) {
             for (ResourceInfoTag tag : isListenData ? listenData : readWriteData) {
                 if (tag.isSelected()) {
                     return true;
@@ -735,7 +709,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         } else if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
             setReadWriteData(getResourceData(), true);
             configMarkData();
-        } else if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE) {
+        } else if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
+                || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
             setListenData(getResourceData(), true);
             configMarkData();
         } else if (uploadParameter.getTaskType() == StudyTaskType.WATCH_WAWA_COURSE) {
@@ -1209,7 +1184,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             uploadParameter.setWorkOrderUrl(resourceUrl);
         } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
             if (isFromSuperTask) {
-                if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE
+                        || superTaskType == StudyTaskType.Q_DUBBING) {
                     if (listenData == null || listenData.size() <= 1) {
                         TipMsgHelper.ShowMsg(getActivity(), getString(R.string.appoint_cousrse_cannot_null));
                         return;
@@ -1281,11 +1257,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
         //发布类型
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
-        if (taskType == StudyTaskType.Q_DUBBING) {
-            //q配音
-            uploadParameter.setResPropType(dubbingBySentenceRb.isChecked() ?
-                    StudyResPropType.DUBBING_BY_SENTENCE : StudyResPropType.DUBBING_BY_WHOLE);
-        }
         if (multipleDoTask) {
             //多选的读写单和听说课
             configMultipleBaseData();
@@ -1348,15 +1319,12 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private void addMarkScore(UploadParameter uploadParameter) {
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
-                || taskType == StudyTaskType.LISTEN_READ_AND_WRITE
-                || taskType == StudyTaskType.Q_DUBBING) {
+                || taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
             //听说课  任务单
             if (mRbMarkYes != null && mRbPercentageSystem != null) {
                 uploadParameter.NeedScore = mRbMarkYes.isChecked();
                 uploadParameter.ScoringRule = mRbPercentageSystem.isChecked() ? 2 : 1;
-
             }
-
         }
     }
 
@@ -1419,7 +1387,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setAuthor(info.getAuthorId());
             lookResDto.setResUrl(info.getResourcePath());
             lookResDto.setResProperties(info.getResProperties());
-            if (isOtherHomeWork) {
+            if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
                 lookResDto.setTaskId(superTaskType);
             } else {
                 lookResDto.setTaskId(5);
@@ -1433,6 +1401,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setPoint(info.getPoint());
             if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
                 lookResDto.setResPropType(1);
+            } else if (superTaskType == StudyTaskType.Q_DUBBING){
+                lookResDto.setResPropType(info.getResPropType());
             }
             lookResDto.setResPropertyMode(info.getResPropertyMode());
             lookResDto.setCompletionMode(info.getCompletionMode());
@@ -1446,7 +1416,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setResTitle(info.getTitle());
             lookResDto.setAuthor(info.getAuthorId());
             lookResDto.setResUrl(info.getResourcePath());
-            if (isOtherHomeWork) {
+            if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
                 lookResDto.setTaskId(superTaskType);
             } else {
                 lookResDto.setTaskId(8);
@@ -1460,6 +1430,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             lookResDto.setPoint(info.getPoint());
             if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
                 lookResDto.setResPropType(1);
+            } else if (superTaskType == StudyTaskType.Q_DUBBING){
+                lookResDto.setResPropType(info.getResPropType());
             }
             lookResDto.setResPropertyMode(info.getResPropertyMode());
             lookResDto.setCompletionMode(info.getCompletionMode());
@@ -1492,6 +1464,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 infoTag.setPoint(info.getPoint());
                 infoTag.setResPropertyMode(info.getResPropertyMode());
                 infoTag.setCompletionMode(info.getCompletionMode());
+                infoTag.setResPropType(info.getResPropType());
                 resourceInfoTags.add(infoTag);
             }
         }
@@ -1570,13 +1543,21 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 //        }
         int length = this.listenData.size() - 1;
         this.listenData.addAll(length, listenData);
+        boolean flag = true;
         for (ResourceInfoTag tag : this.listenData) {
-            if (tag.isSelected()) {
+            if (tag.isSelected() && flag) {
                 if (!isSuperTask) {
                     TipMsgHelper.ShowMsg(getActivity(), R.string.str_show_select_lqcourse_mark_score_tip);
                 }
                 updateScoreView(View.GONE);
-                break;
+                flag = false;
+            }
+            if (superTaskType == StudyTaskType.Q_DUBBING){
+                //配音
+                if (!isSuperTask) {
+                    tag.setResPropType(2);
+                }
+                mSelectMark.setVisibility(View.GONE);
             }
         }
         if (listenAdapter != null) {
@@ -1943,7 +1924,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || taskType == StudyTaskType.TASK_ORDER
                 || superTaskType == StudyTaskType.RETELL_WAWA_COURSE
-                || superTaskType == StudyTaskType.TASK_ORDER) {
+                || superTaskType == StudyTaskType.TASK_ORDER
+                || superTaskType == StudyTaskType.Q_DUBBING) {
             if (visible == View.VISIBLE) {
                 isAutoMark = false;
                 mRbMarkNo.setVisibility(View.VISIBLE);
@@ -2488,8 +2470,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
                     taskParams.put("ResCourseId", uploadParameter.getResCourseId());
                 }
-                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
-                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
+                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
                     taskParams.put("ResPropType", uploadParameter.getResPropType());
                 }
                 if (uploadParameter.getWorkOrderId() != null) {
@@ -2528,7 +2509,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
                 //判断是不是任务单和听说课的多选
                 int taskType = uploadParameter.getTaskType();
-                if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                if (taskType == StudyTaskType.TASK_ORDER
+                        || taskType == StudyTaskType.RETELL_WAWA_COURSE
+                        || taskType == StudyTaskType.Q_DUBBING) {
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
                     if (lookResDtos != null) {
                         if (lookResDtos.size() == 1) {
@@ -2536,11 +2519,17 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                             if (uploadParameter.NeedScore && !TextUtils.isEmpty(point)) {
                                 taskParams.put("ScoringRule", StudyTaskUtils.getScoringRule(point));
                             }
-                            //完成方式
-                            taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                //完成方式
+                                taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
+                            }
                         } else if (lookResDtos.size() > 1) {
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_Q_DUBBING);
                             } else {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
                             }
@@ -2820,7 +2809,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (listenGridView == null) {
                 return;
             }
-            if (superTaskType != StudyTaskType.RETELL_WAWA_COURSE) {
+            if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || superTaskType == StudyTaskType.Q_DUBBING) {
+
+            } else {
                 return;
             }
             listAdapter = listenGridView.getAdapter();

@@ -717,6 +717,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE || taskType == StudyTaskType
                 .WATCH_WAWA_COURSE) {
             return getString(R.string.look_through_courseware);
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            return getString(R.string.str_q_dubbing);
         }
         return "";
     }

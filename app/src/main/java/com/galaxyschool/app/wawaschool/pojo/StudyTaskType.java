@@ -25,4 +25,6 @@ public interface StudyTaskType {
     int MULTIPLE_TASK_ORDER = 13;
     //q配音
     int Q_DUBBING = 14;
+    //多选配音
+    int MULTIPLE_Q_DUBBING = 15;
 }
