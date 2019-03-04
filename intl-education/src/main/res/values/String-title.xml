@@ -16,5 +16,7 @@
     <string name="title_donation_coin">Deliver WaWacoins</string>
     <string name="title_learning_statistics">Progress</string>
     <string name="title_personal_page">个人主页</string>
+    <string name="title_tutorial_courses">我帮辅的课程</string>
+    <string name="title_tutorial_schools">我的帮辅机构</string>
 
 </resources>

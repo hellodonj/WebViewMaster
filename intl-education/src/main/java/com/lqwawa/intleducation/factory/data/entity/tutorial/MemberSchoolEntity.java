@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.factory.data.entity.tutorial;
 
+import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
+
 import java.io.Serializable;
 
 /**
@@ -70,5 +72,13 @@ public class MemberSchoolEntity implements Serializable {
 
     public void setSchoolName(String SchoolName) {
         this.SchoolName = SchoolName;
+    }
+
+    public OnlineStudyOrganEntity buildOnlineStudyOrganEntitiy(){
+        OnlineStudyOrganEntity entity = new OnlineStudyOrganEntity();
+        entity.setId(this.getSchoolId());
+        entity.setName(this.getSchoolName());
+        entity.setThumbnail(this.getSchoolLogo());
+        return entity;
     }
 }

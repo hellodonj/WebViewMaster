@@ -902,6 +902,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--我的帮辅课程列表-->
+        <activity android:name=".module.tutorial.courses.TutorialCoursesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--我的帮辅机构列表-->
+        <activity android:name=".module.tutorial.schools.TutorialSchoolsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>
