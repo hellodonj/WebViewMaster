@@ -1,11 +1,9 @@
-package com.lqwawa.intleducation.module.tutorial.schools;
+package com.lqwawa.intleducation.module.tutorial.teacher.schools;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
-import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
 import java.util.List;
 

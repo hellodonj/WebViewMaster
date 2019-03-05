@@ -1,4 +1,4 @@
-package com.lqwawa.intleducation.module.tutorial.courses;
+package com.lqwawa.intleducation.module.tutorial.teacher.courses;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

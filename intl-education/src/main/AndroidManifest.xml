@@ -903,12 +903,17 @@
             android:theme="@style/AppTheme.Common"/>
 
         <!--我的帮辅课程列表-->
-        <activity android:name=".module.tutorial.courses.TutorialCoursesActivity"
+        <activity android:name=".module.tutorial.teacher.courses.TutorialCoursesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
         <!--我的帮辅机构列表-->
-        <activity android:name=".module.tutorial.schools.TutorialSchoolsActivity"
+        <activity android:name=".module.tutorial.teacher.schools.TutorialSchoolsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--学生帮辅列表页面-->
+        <activity android:name=".module.tutorial.student.courses.StudentTutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 

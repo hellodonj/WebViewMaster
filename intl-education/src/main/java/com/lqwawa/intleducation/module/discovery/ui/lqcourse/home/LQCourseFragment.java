@@ -12,7 +12,6 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.BannerHeaderView;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -26,7 +25,6 @@ import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntit
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.basics.BasicsCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.classifylist.ClassifyListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
@@ -46,11 +44,13 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
-import com.lqwawa.intleducation.module.tutorial.courses.TutorialCoursesActivity;
-import com.lqwawa.intleducation.module.tutorial.courses.TutorialCoursesParams;
+import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialActivity;
+import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesActivity;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesParams;
 import com.lqwawa.intleducation.module.tutorial.regist.TutorialRegisterActivity;
-import com.lqwawa.intleducation.module.tutorial.schools.TutorialSchoolsActivity;
-import com.lqwawa.intleducation.module.tutorial.schools.TutorialSchoolsParams;
+import com.lqwawa.intleducation.module.tutorial.teacher.schools.TutorialSchoolsActivity;
+import com.lqwawa.intleducation.module.tutorial.teacher.schools.TutorialSchoolsParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -165,6 +165,8 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                     TutorialCoursesActivity.show(getActivity(),params);
                     TutorialSchoolsParams schoolsParams = new TutorialSchoolsParams("sa",getString(R.string.title_tutorial_schools));
                     TutorialSchoolsActivity.show(getActivity(),schoolsParams);
+                    StudentTutorialParams studentTutorialParams = new StudentTutorialParams(false,"SF",getString(R.string.title_student_tutorial));
+                    StudentTutorialActivity.show(getActivity(),studentTutorialParams);
                 }
                 // EmptyActivity.show(getActivity());
             }

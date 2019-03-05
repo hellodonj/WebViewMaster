@@ -1,4 +1,4 @@
-package com.lqwawa.intleducation.module.tutorial.courses;
+package com.lqwawa.intleducation.module.tutorial.teacher.courses;
 
 import java.io.Serializable;
 
