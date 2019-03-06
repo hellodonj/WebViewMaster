@@ -1,4 +1,4 @@
-package com.galaxyschool.app.wawaschool.pojo;
+package com.lqwawa.client.pojo;
 
 /**
  * 资源任务类型type

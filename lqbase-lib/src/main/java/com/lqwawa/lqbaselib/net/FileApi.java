@@ -110,7 +110,6 @@ public class FileApi {
 		boolean isOk = false;
 		try {
 			newurl = new URL(url);
-
 			URLConnection conn = newurl.openConnection();
 			conn .setRequestProperty("Accept-Encoding", "identity");
 			conn.setConnectTimeout(20 * 1000);

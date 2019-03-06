@@ -9,4 +9,5 @@
     <string name="edit_course">Add click reading</string>
     <string name="downloading">Loading, please wait…</string>
     <string name="cs_loading_error">Loading error</string>
+    <string name="lrc_label">暂无字幕</string>
 </resources>

@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="15dp"
-    android:background="@drawable/dubbing_item_bg"
-    android:padding="15dp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/ll_root_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/dubbing_item_bg"
+                android:padding="15dp">
 
-    <TextView
-        android:id="@+id/tv_index"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="15sp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/tv_index"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:background="@drawable/icon_q_dubbing_score"
+            android:gravity="center|top"
+            android:paddingTop="3dp"
+            android:layout_marginRight="10dp"
+            android:text="14"
+            android:textColor="@color/possible_result_points"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_index"
+        android:layout_below="@id/linear_layout"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"/>
 
     <ImageView
         android:id="@+id/iv_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tv_content"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +70,7 @@
             app:zpb_open_gradient="true"
             app:zpb_padding="0px"
             app:zpb_round_rect_radius="3dp"
-            app:zpb_show_mode="round_rect" />
+            app:zpb_show_mode="round_rect"/>
 
         <TextView
             android:id="@+id/tv_time"
@@ -68,21 +78,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="00s"
-            tools:text="0.0s" />
+            tools:text="0.0s"/>
 
         <ImageView
             android:id="@+id/iv_play"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
-            android:src="@drawable/icon_dubbing_play" />
+            android:src="@drawable/icon_dubbing_play"/>
 
         <ImageView
             android:id="@+id/iv_record"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="10dp"
-            android:src="@drawable/btn_record_bg" />
+            android:src="@drawable/btn_record_bg"/>
     </LinearLayout>
 
 </RelativeLayout>

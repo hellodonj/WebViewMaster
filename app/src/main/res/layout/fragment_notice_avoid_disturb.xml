@@ -26,7 +26,7 @@
             android:layout_weight="1.0"
             android:text="@string/voice"/>
 
-        <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+        <com.lqwawa.apps.views.switchbutton.SwitchButton
             android:id="@+id/voice_switch_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_weight="1.0"
             android:text="@string/shake"/>
 
-        <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+        <com.lqwawa.apps.views.switchbutton.SwitchButton
             android:id="@+id/shake_switch_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

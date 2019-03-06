@@ -99,8 +99,8 @@ public class DubbingItemView extends LinearLayout {
         }
     }
 
-    public void setScore(int score) {
-        scoreTextView.setVisibility(score >= 0 ? VISIBLE : INVISIBLE);
+    public void setScore(int score, boolean isRecord) {
+        scoreTextView.setVisibility(isRecord ? VISIBLE : INVISIBLE);
         scoreTextView.setText(String.valueOf(score));
     }
 

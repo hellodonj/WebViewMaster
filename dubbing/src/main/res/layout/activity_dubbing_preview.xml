@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#282828"
-    android:clipChildren="false">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/bottom_bg"
+             android:clipChildren="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,11 +21,12 @@
             <ImageView
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:scaleType="center"
-                android:src="@drawable/dubbing_icon_cancel" />
+                android:src="@drawable/dubbing_icon_cancel"/>
 
             <TextView
                 android:id="@+id/video_time"
@@ -34,7 +36,7 @@
                 android:gravity="center"
                 android:text="00:00/00:00"
                 android:textColor="@color/white"
-                android:textSize="14.0sp" />
+                android:textSize="14.0sp"/>
 
             <TextView
                 android:id="@+id/complete"
@@ -44,7 +46,8 @@
                 android:gravity="center_vertical"
                 android:text="保存"
                 android:textColor="#ffbdbdbd"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <FrameLayout
@@ -55,7 +58,7 @@
             <com.icedcap.dubbing.view.DubbingVideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="200.0dp" />
+                android:layout_height="200.0dp"/>
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -66,14 +69,30 @@
                 android:max="100"
                 android:maxHeight="2.0dp"
                 android:minHeight="2.0dp"
-                android:progressDrawable="@drawable/dubbing_progressbar3" />
+                android:progressDrawable="@drawable/dubbing_progressbar3"/>
+
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
+                android:maxHeight="2dp"
+                android:minHeight="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:progressDrawable="@drawable/uvv_star_play_progress_seek"
+                android:thumb="@drawable/uvv_seek_dot"
+                android:thumbOffset="10dip"
+                android:visibility="gone"/>
 
             <com.icedcap.dubbing.view.PreviewSubtitleView
                 android:id="@+id/preview_subtitle_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/rb_video_time"
@@ -85,13 +104,33 @@
                 android:gravity="bottom|end"
                 android:text="00:00/00:00"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
         </FrameLayout>
+
+        <!--显示通篇配音-->
+        <com.lqwawa.apps.views.lrcview.LrcView
+            android:id="@+id/lrc_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_white_rectrangle"
+            android:padding="10dp"
+            app:lrcAnimationDuration="1000"
+            app:lrcCurrentTextColor="#00FF00"
+            app:lrcDividerHeight="24dp"
+            app:lrcLabel=""
+            app:lrcNormalTextColor="#000000"
+            app:lrcPadding="40dp"
+            app:lrcTextGravity="center"
+            app:lrcTextSize="18sp"
+            app:lrcTimeTextColor="#BDBDBD"
+            app:lrcTimelineColor="#80BDBDBD"
+            app:lrcTimelineTextColor="#9FA8DA"/>
 
     </LinearLayout>
 
     <include
         android:id="@+id/art_process_view"
         layout="@layout/process_view"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </FrameLayout>

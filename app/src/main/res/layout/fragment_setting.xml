@@ -118,7 +118,7 @@
                 android:layout_weight="1.0"
                 android:text="@string/auto_upload_resources"/>
 
-            <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+            <com.lqwawa.apps.views.switchbutton.SwitchButton
                 android:id="@+id/setting_switch_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

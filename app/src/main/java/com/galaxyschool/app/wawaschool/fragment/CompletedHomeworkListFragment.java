@@ -36,6 +36,7 @@ import com.galaxyschool.app.wawaschool.EnglishWritingCommentDetailsActivity;
 import com.galaxyschool.app.wawaschool.EnglishWritingCommentRecordActivity;
 import com.galaxyschool.app.wawaschool.HomeworkFinishStatusActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.QDubbingActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.TeacherReviewDetailActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -542,12 +543,17 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         }
 
                         //语音评测点评按钮的显示
-                        if (data.isEvalType()) {
+                        if (data.isEvalType() || data.isVideoType()) {
                             //立即点评老师点评
                             if (data.isHasVoiceReview()) {
                                 //已经评测
                                 tvCheckMark.setVisibility(View.VISIBLE);
-                                tvCheckMark.setText(getString(R.string.str_teacher_review));
+                                if (data.isVideoType()){
+                                    //q配音显示查看点评
+                                    tvCheckMark.setText(getString(R.string.str_look_review));
+                                } else {
+                                    tvCheckMark.setText(getString(R.string.str_teacher_review));
+                                }
                                 tvCheckMark.setBackgroundResource(R.drawable.green_10dp_gray);
                                 tvCheckMark.setTextColor(getResources().getColor(R.color.text_green));
                             } else {
@@ -571,7 +577,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 if (isAnswerTaskOrderQuestion) {
                                     //任务单的答题卡
                                     enterStudentAnswerDetailActivity(data, true);
-                                } else if (data.isEvalType()) {
+                                } else if (data.isEvalType() || data.isVideoType()) {
                                     //进入点评的详情页
                                     enterTeacherReviewDetailActivity(data, true);
                                 } else {
@@ -614,6 +620,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                     //语音评测资源
                                     enterSpeechAssessmentActivity(data);
+                                } else if (data.isVideoType()) {
+                                    enterQDubbingDetailActivity(data);
                                 } else {
                                     if (!isPlaying) {
                                         isPlaying = true;
@@ -647,6 +655,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     enterStudentAnswerDetailActivity(data, false);
                                 } else if (data.isEvalType()) {
                                     enterTeacherReviewDetailActivity(data, false);
+                                } else if (data.isVideoType()) {
+                                    enterQDubbingDetailActivity(data);
                                 } else {
                                     if ((taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE)) {
                                         //老师只能批阅自己布置的作业,学生只能提问自己的作业
@@ -1946,6 +1956,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         if (mBroadcastManager == null) {
             mBroadcastManager = LocalBroadcastManager.getInstance(getMyApplication());
             IntentFilter filter = new IntentFilter(ACTION_MARK_SCORE);
+            //点评刷新
+            filter.addAction(EvalHomeworkListFragment.ACTION_MARK_SCORE);
             mBroadcastManager.registerReceiver(mReceiver, filter);
         }
 
@@ -2046,7 +2058,11 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
     private void enterTeacherReviewDetailActivity(CommitTask commitTask, boolean isTeacherEval) {
         if (commitTask.isHasVoiceReview()) {
-            enterTeacherEvalDetail(commitTask);
+            if (commitTask.isVideoType()){
+                enterQDubbingDetailActivity(commitTask);
+            } else {
+                enterTeacherEvalDetail(commitTask);
+            }
         } else {
             if (isTeacherEval && !isHistoryClass) {
                 //没有点评
@@ -2062,7 +2078,11 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         scoreRule,
                         commitTask.getTaskScore());
             } else {
-                enterTeacherEvalDetail(commitTask);
+                if (commitTask.isVideoType()){
+                    enterQDubbingDetailActivity(commitTask);
+                } else {
+                    enterTeacherEvalDetail(commitTask);
+                }
             }
         }
     }
@@ -2235,5 +2255,16 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         LqCourseHelper.updateLookCourseState(getActivity(), data.getResCourseId(), task.getClassId
                 (), task.getSchoolId(), memberId);
         LqCourseHelper.updateSourceReadState(getActivity(), data.getResCourseId(), data.getResId(), memberId);
+    }
+
+    /**
+     * 进入q配音的详情页
+     */
+    private void enterQDubbingDetailActivity(CommitTask data){
+        TipMsgHelper.ShowMsg(getActivity(),"点击了视频的item");
+        HomeworkCommitFragment parentFragment = (HomeworkCommitFragment) getParentFragment();
+        if (parentFragment != null){
+            parentFragment.startDubbingVideo(data,hasEvalReviewPermission());
+        }
     }
 }

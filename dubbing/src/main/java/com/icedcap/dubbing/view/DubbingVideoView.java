@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -69,6 +70,7 @@ public class DubbingVideoView extends FrameLayout implements
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.d("TTT","进度="+getCurrentPosition());
             switch (msg.what) {
                 case SHOW_PROGRESS:
                     if (mIjkVideoView != null && mIsPlaying) {
@@ -146,7 +148,6 @@ public class DubbingVideoView extends FrameLayout implements
     private ImageView mThumb;
     private IjkVideoView mIjkVideoView;
     private String mVideoPath;
-
 
     private long seekPlay;
     private int endTime;
@@ -442,7 +443,6 @@ public class DubbingVideoView extends FrameLayout implements
         this.onEventListener = onEventListener;
         mActivity = activity;
         setPara(videoPath, audioPathUrl);
-
     }
 
     public void setStackThumb(long time) {
@@ -475,6 +475,18 @@ public class DubbingVideoView extends FrameLayout implements
         mIjkVideoView.seekTo((int) seek);
         play(mode);
     }
+
+    public void startPlayTaskVideo(long seek, long endTime,String videoPath){
+        this.endTime = (int) endTime;
+        seekPlay = seek;
+        mode = MODE_ALLPLAY;
+        // TODO: 2017/4/26 START DUBBING
+        mDubbingStartPos = seek;
+        mIjkVideoView.setVideoPath(videoPath);
+        mIjkVideoView.seekTo((int) seek);
+        play(mode);
+    }
+
 
     /**
      * start dubbing
@@ -621,6 +633,7 @@ public class DubbingVideoView extends FrameLayout implements
             }
 
         } else if (i == R.id.play) {
+            //播放 或者 暂停
             if (type == 0) {
                 mode = MODE_ALLPLAY;
                 playStill(seekPlay);

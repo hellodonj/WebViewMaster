@@ -12,5 +12,11 @@
     <color name="uvv_titlebar_bg">#7f000000</color>
     <color name="uvv_green">#ff50b100</color>
     <color name="uvv_gray">#ffbbbbbb</color>
+    <color name="text_green">#56b37b</color>
 
+    <color name="lrc_normal_text_color">#9E9E9E</color>
+    <color name="lrc_current_text_color">#FF4081</color>
+    <color name="lrc_timeline_text_color">#F8BBD0</color>
+    <color name="lrc_timeline_color">#809E9E9E</color>
+    <color name="lrc_time_text_color">#809E9E9E</color>
 </resources>

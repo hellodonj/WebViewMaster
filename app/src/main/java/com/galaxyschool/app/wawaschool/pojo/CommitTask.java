@@ -78,6 +78,19 @@ public class CommitTask implements Serializable, Parcelable {
         return false;
     }
 
+    /**
+     * @return 提交类型是不是视频类型
+     */
+    public boolean isVideoType(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_VIDEO;
+            }
+        }
+        return false;
+    }
+
     public int getScoreRule() {
         return scoreRule;
     }
@@ -455,6 +468,8 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeString(this.TaskScoreRemark);
         dest.writeInt(this.screenType);
         dest.writeInt(this.scoreRule);
+        dest.writeInt(this.AutoEvalCompanyType);
+        dest.writeString(this.AutoEvalContent);
     }
 
     public CommitTask() {
@@ -499,6 +514,8 @@ public class CommitTask implements Serializable, Parcelable {
         this.TaskScoreRemark = in.readString();
         this.screenType = in.readInt();
         this.scoreRule = in.readInt();
+        this.AutoEvalCompanyType = in.readInt();
+        this.AutoEvalContent = in.readString();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

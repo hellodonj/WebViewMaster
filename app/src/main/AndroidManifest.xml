@@ -1362,6 +1362,13 @@
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+
+        <activity android:name="com.galaxyschool.app.wawaschool.QDubbingActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+                  android:screenOrientation="portrait"
+                  android:hardwareAccelerated="true"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1"/>

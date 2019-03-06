@@ -1,4 +1,4 @@
-package com.galaxyschool.app.wawaschool.views.switchbutton;
+package com.lqwawa.apps.views.switchbutton;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
@@ -6,7 +6,8 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
-import com.galaxyschool.app.wawaschool.R;
+
+import com.lqwawa.apps.R;
 
 /**
  * Generate thumb and background color state list use tintColor

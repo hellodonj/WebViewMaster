@@ -69,7 +69,7 @@
                 android:textColor="@color/contacts_class_status_text_color"
                 android:text="@string/history_class" />
 
-            <com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton
+            <com.lqwawa.apps.views.switchbutton.SwitchButton
                 android:id="@+id/class_status_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

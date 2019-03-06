@@ -21,8 +21,8 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfoResult;
+import com.lqwawa.apps.views.switchbutton.SwitchButton;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
-import com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 
 import java.util.HashMap;

@@ -1,15 +1,28 @@
 package com.icedcap.dubbing.audio;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lqwawa.libs.audio.RawAudioRecorder;
+import com.lqwawa.tools.DialogHelper;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateItem;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateListener;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateManager;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateResult;
+import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
+import com.osastudio.common.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.PipedReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -21,22 +34,32 @@ import java.util.Timer;
  */
 public class AudioRecordHelper {
 
+    private DialogHelper.LoadingDialog mLoadingDialog;
+    private Context context;
     private List<File> mp3FileList;
+    private List<String> audioRefText;
     private MediaPlayer mediaPlayer;
-
     private RawAudioRecorder audioRecorder;
+    private CallbackListener listener;
 
     public List<File> getMp3FileList() {
         return mp3FileList;
     }
 
-
-    public AudioRecordHelper() {
-        mp3FileList = new ArrayList<>();
+    public List<String> getAudioRefText() {
+        return audioRefText;
     }
 
-    public void startRecord(Context context, int position) {
-        recordAudio(context, position);
+
+    public AudioRecordHelper(Context context,CallbackListener listener) {
+        mp3FileList = new ArrayList<>();
+        audioRefText = new ArrayList<>();
+        this.context = context;
+        this.listener = listener;
+    }
+
+    public void startRecord(int position) {
+        recordAudio(position);
     }
 
 
@@ -73,7 +96,7 @@ public class AudioRecordHelper {
         stopRecord();
     }
 
-    private void recordAudio(Context context, final int position) {
+    private void recordAudio(final int position) {
         final String savePath = mp3FileList.get(position).getAbsolutePath();
         if (audioRecorder == null) {
             audioRecorder = new RawAudioRecorder(context);
@@ -86,20 +109,51 @@ public class AudioRecordHelper {
                 @Override
                 public void onRawRecordingEnd(String encodedFilePath, String rawFilePath) {
                     if (!TextUtils.isEmpty(encodedFilePath) && !TextUtils.isEmpty(rawFilePath)) {
-//                            showLoadingDialog();
-//                            evaluateRecordData(encodedFilePath, rawFilePath);
+                        showLoadingDialog();
+                        evaluateRecordData(position,encodedFilePath, rawFilePath);
                     }
                 }
 
                 @Override
                 public void onRawRecordingError() {
+                    dismissLoadingDialog();
 //                        deleteFile(savePath);
 //                        TipsHelper.showToast(SpeechAssessmentActivity.this, R.string.str_record_err);
                 }
             });
         }
-//            deleteFile(savePath);
         audioRecorder.start(savePath);
+    }
+
+    private void evaluateRecordData(int position,
+                                    final String mp3FilePath,
+                                    final String rawFilePath) {
+        final EvaluateManager evaluateManager = new EvaluateManager(context);
+        EvaluateItem evaluateItem = EvaluateHelper.getEvaluateItem(1,
+                audioRefText.get(position), rawFilePath);
+        List<EvaluateItem> itemList = new ArrayList<>();
+        itemList.add(evaluateItem);
+        evaluateManager.evaluateAsync(itemList, new EvaluateListener() {
+            @Override
+            public void onEvaluateResult(EvaluateResult result) {
+                dismissLoadingDialog();
+                deleteFile(rawFilePath);
+                if (result == null || !result.isSuccess()) {
+                    return;
+                }
+                int evalScore = Math.round(result.getScore());
+                if (listener != null){
+                    listener.onBack(evalScore);
+                }
+            }
+        });
+    }
+
+    public boolean deleteFile(String path) {
+        if (FileUtils.isFileExists(path)) {
+            return FileUtils.deleteFile(path);
+        }
+        return true;
     }
 
     private void playWavFile(File file, final float volume, final long seek) {
@@ -144,6 +198,20 @@ public class AudioRecordHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public Dialog showLoadingDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            return mLoadingDialog;
+        }
+        mLoadingDialog = DialogHelper.getIt((Activity) context).GetLoadingDialog(0);
+        return mLoadingDialog;
+    }
+
+    public void dismissLoadingDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
         }
     }
 

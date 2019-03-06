@@ -1,11 +1,15 @@
-package com.galaxyschool.app.wawaschool.views.switchbutton;
+package com.lqwawa.apps.views.switchbutton;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
@@ -15,7 +19,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
-import com.galaxyschool.app.wawaschool.R;
+
+import com.lqwawa.apps.R;
 
 
 /**
