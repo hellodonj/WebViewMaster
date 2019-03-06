@@ -266,6 +266,7 @@ public abstract class UpdateService extends Service {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false)
                 .build();
+        notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
         if (nm != null) {
             nm.notify(appInfo.getId().hashCode(), notification);
         }
