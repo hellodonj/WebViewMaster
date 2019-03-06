@@ -338,6 +338,10 @@
 
     <!--V5.15字符串信息-->
     <string name="label_add_tutorial">+帮辅</string>
+    <string name="label_un_mark">未批阅</string>
+    <string name="label_have_mark">已批阅</string>
+    <string name="label_watch_task_requirement">查看任务要求</string>
+    <string name="label_task_type_template">"[%s]"</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>

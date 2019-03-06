@@ -917,6 +917,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--帮辅批阅列表页面-->
+        <activity android:name=".module.tutorial.marking.list.TutorialMarkingListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

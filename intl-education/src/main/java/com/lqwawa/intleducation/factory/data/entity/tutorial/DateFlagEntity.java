@@ -11,8 +11,19 @@ public class DateFlagEntity implements Serializable {
     private String Date;
     private boolean bolHaveData;
 
-    public DateFlagEntity(String date, boolean bolHaveData) {
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
         Date = date;
+    }
+
+    public boolean isBolHaveData() {
+        return bolHaveData;
+    }
+
+    public void setBolHaveData(boolean bolHaveData) {
         this.bolHaveData = bolHaveData;
     }
 }

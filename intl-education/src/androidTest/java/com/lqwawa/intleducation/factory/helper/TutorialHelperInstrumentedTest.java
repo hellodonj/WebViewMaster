@@ -28,7 +28,7 @@ public class TutorialHelperInstrumentedTest{
         Context appContext = InstrumentationRegistry.getTargetContext();
         x.Ext.init((Application) appContext.getApplicationContext());
         CountDownLatch downLatch = new CountDownLatch(1);
-        TutorialHelper.requestWorkDataWithIdentityId("", "", "1", "", "", "", 0, 0, 10, new DataSource.Callback<List<TaskEntity>>() {
+        TutorialHelper.requestWorkDataWithIdentityId("", "", "1", "", "","","", "", 0, 0,0, 10, new DataSource.Callback<List<TaskEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 System.out.println(strRes);

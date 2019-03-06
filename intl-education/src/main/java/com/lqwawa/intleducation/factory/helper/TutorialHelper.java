@@ -584,9 +584,12 @@ public class TutorialHelper {
      * @param MemberId 助教会员Id 非必填
      * @param AssistStudent_Id 拉取学生助教的作业列表，主键Id 非必填
      * @param Title 任务标题 非必填
-     * @param CreateTimeBegin 作业发布检索时间
-     * @param CreateTimeEnd 作业发布检索时间
+     * @param CreateTimeBegin 作业发布时间开始
+     * @param CreateTimeEnd 作业发布时间结束
+     * @param StartTimeBegin 作业发布检索时间开始
+     * @param StartTimeEnd 作业发布检索时间结束
      * @param State 批阅状态 0 未批阅 1 已批阅 不传默认全部
+     * @param OrderByType 1 批阅状态正序 2 批阅状态倒叙 3 批阅状态正序 创建时间倒叙 4 批阅状态倒叙 创建时间倒叙 不传默认时间倒叙
      * @param pageIndex 当前页
      * @param pageSize 每页数据条数
      * @return 获取助教学生的作业列表
@@ -597,7 +600,10 @@ public class TutorialHelper {
                                            @Nullable String Title,
                                            @Nullable String CreateTimeBegin,
                                            @Nullable String CreateTimeEnd,
-                                           int State,int pageIndex,int pageSize,
+                                           @Nullable String StartTimeBegin,
+                                           @Nullable String StartTimeEnd,
+                                           int State,int OrderByType,
+                                           int pageIndex,int pageSize,
                                            @NonNull DataSource.Callback<List<TaskEntity>> callback) {
         // 准备数据
         RequestVo requestVo = new RequestVo();
@@ -607,6 +613,9 @@ public class TutorialHelper {
         requestVo.addParams("Title", Title);
         requestVo.addParams("CreateTimeBegin", CreateTimeBegin);
         requestVo.addParams("CreateTimeEnd", CreateTimeEnd);
+        requestVo.addParams("StartTimeBegin", StartTimeBegin);
+        requestVo.addParams("StartTimeEnd", StartTimeEnd);
+        requestVo.addParams("OrderByType", OrderByType);
         requestVo.addParams("State", State);
         requestVo.addParams("Pager", new PagerArgs(pageIndex, pageSize), true);
 

@@ -44,6 +44,9 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesActivity;
@@ -167,6 +170,11 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                     TutorialSchoolsActivity.show(getActivity(),schoolsParams);
                     StudentTutorialParams studentTutorialParams = new StudentTutorialParams(false,"SF",getString(R.string.title_student_tutorial));
                     StudentTutorialActivity.show(getActivity(),studentTutorialParams);
+
+                    // 批阅列表页面
+                    // 测试数据
+                    TutorialMarkingParams markingParams = new TutorialMarkingParams("0018356f-ad4b-439f-88fa-e4cdbf4de32b",TutorialRoleType.TUTORIAL_TYPE_TUTOR);
+                    TutorialMarkingListActivity.show(getActivity(),markingParams);
                 }
                 // EmptyActivity.show(getActivity());
             }
