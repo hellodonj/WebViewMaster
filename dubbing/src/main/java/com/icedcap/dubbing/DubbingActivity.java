@@ -4,11 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -32,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSONArray;
 import com.icedcap.dubbing.audio.AudioRecordHelper;
 import com.icedcap.dubbing.listener.OnAudioEventListener;
@@ -52,15 +48,10 @@ import com.lqwawa.apps.views.switchbutton.SwitchButton;
 import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
-import com.osastudio.common.utils.FileUtils;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,22 +74,6 @@ public class DubbingActivity extends AppCompatActivity implements
         String HAS_REVIEW_COMMENT_PERMISSION = "has_review_comment_permission";
         String VIDEO_RES_PROPERTIES_VALUE = "video_res_properties_value";
     }
-
-    private static final String[] VIDEO = new String[]{
-            "material/4803081086444687938.mp4",
-            "material2/4911222198272423589.mp4"
-    };
-
-    private static final String[] SRT = new String[]{
-            "material/5358306446323949054.srt",
-            "material2/5339513282283280902.srt"
-    };
-
-    private static final String[] AUDIO = {
-            "material/5314291602012189567.mp3",
-            "material2/4961513952477274315.mp3"
-    };
-
 
     private DubbingSubtitleView dubbingSubtitleView;
     private TextView currentTimeTextView;
@@ -352,13 +327,9 @@ public class DubbingActivity extends AppCompatActivity implements
 
             @Override
             protected Void doInBackground(Void... params) {
-//                videoFilePath = downloadFile(VIDEO[MATERIAL]);
-//                backgroundFilePath = downloadFile(AUDIO[MATERIAL]);
-//                srtEntityList = SrtUtils.processSrtFromFile(downloadFile(SRT[MATERIAL]));
                 if (!isOnlineOpen) {
                     videoFilePath = downloadFile(videoFilePath);
                 }
-//                studentCommitFilePath = downloadFile(studentCommitFilePath);
                 if (!TextUtils.isEmpty(backgroundFilePath) && !isOnlineOpen) {
                     backgroundFilePath = downloadFile(backgroundFilePath);
                 }
