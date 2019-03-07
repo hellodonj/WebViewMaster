@@ -23,5 +23,9 @@
     <string name="au_retry">重试</string>
     <string name="au_new_version_downloaded">新版本已准备好，请点击安装</string>
     <string name="lrc_label">暂无字幕</string>
+    <string name="to_expand_hint_prefix">展</string>
+    <string name="to_shrink_hint_prefix">收</string>
+    <string name="to_expand_hint">展开</string>
+    <string name="to_shrink_hint">收起</string>
 
 </resources>

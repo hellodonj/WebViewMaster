@@ -258,6 +258,32 @@ public class AudioPlayHelper {
         }
     }
 
+    private void mediaPlaySeekTo(int seekTime){
+        if (mMediaPlayer != null && !mMediaPlayer.isPlaying()){
+            mMediaPlayer.seekTo(seekTime);
+            mMediaPlayer.start();
+        }
+    }
+
+    private void waveMediaSeekTo(int seekTime){
+        if (mWaveMediaPlayer != null && !mWaveMediaPlayer.isPlaying()){
+            mWaveMediaPlayer.seekTo(seekTime);
+            mWaveMediaPlayer.start();
+        }
+    }
+
+    private void pauseMediaPlayer(){
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()){
+            mMediaPlayer.pause();
+        }
+    }
+
+    private void pauseWaveMediaPlayer(){
+        if (mWaveMediaPlayer != null && mWaveMediaPlayer.isPlaying()) {
+            mWaveMediaPlayer.pause();
+        }
+    }
+
     private void stopMediaPlayer() {
         if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
             mMediaPlayer.stop();
@@ -414,10 +440,18 @@ public class AudioPlayHelper {
         }
     }
 
-    public void onPause() {
+    public void seekTo(int seekTime){
+        mediaPlaySeekTo(seekTime);
+        waveMediaSeekTo(seekTime);
+    }
+
+    public void onPause(){
+        pauseMediaPlayer();
+        pauseWaveMediaPlayer();
+    }
+
+    public void onStop() {
         stopPlay();
         stopCombineAudio();
-        stopMediaPlayer();
-        stopWaveMediaPlayer();
     }
 }

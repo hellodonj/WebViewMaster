@@ -55,6 +55,9 @@ public class MediaUtil {
     }
 
     public static String generateTime(long time) {
+        if (time < 0){
+            time = 0;
+        }
         int k = (int) Math.floor(time / 1000.0D);
         int i = k % 60;
         int j = k / 60 % 60;

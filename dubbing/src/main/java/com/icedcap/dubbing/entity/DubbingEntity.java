@@ -14,6 +14,7 @@ public class DubbingEntity extends SrtEntity {
     private int videoTime;
     private boolean isRecord;
     private boolean isSelect;
+    private boolean isRecording;
 
     public DubbingEntity() {
 
@@ -80,6 +81,13 @@ public class DubbingEntity extends SrtEntity {
         return this;
     }
 
+    public boolean isRecording() {
+        return isRecording;
+    }
+
+    public void setIsRecording(boolean recording) {
+        isRecording = recording;
+    }
 
     @Override
     public int describeContents() {
@@ -94,6 +102,7 @@ public class DubbingEntity extends SrtEntity {
         dest.writeInt(this.videoTime);
         dest.writeByte(this.isRecord ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isSelect ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isRecording ? (byte) 1 : (byte) 0);
     }
 
     protected DubbingEntity(Parcel in) {
@@ -103,6 +112,7 @@ public class DubbingEntity extends SrtEntity {
         this.videoTime = in.readInt();
         this.isRecord = in.readByte() != 0;
         this.isSelect = in.readByte() != 0;
+        this.isRecording = in.readByte() != 0;
     }
 
     public static final Creator<DubbingEntity> CREATOR = new Creator<DubbingEntity>() {

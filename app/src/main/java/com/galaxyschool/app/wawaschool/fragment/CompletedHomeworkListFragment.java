@@ -458,6 +458,11 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     //显示作文内容
                                     content = data.getWritingContent();
                                 }
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                if (task != null) {
+                                    //显示作文内容
+                                    content = task.getTaskTitle();
+                                }
                             } else {
                                 content = data.getStudentResTitle();
                             }
@@ -2261,7 +2266,6 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
      * 进入q配音的详情页
      */
     private void enterQDubbingDetailActivity(CommitTask data){
-        TipMsgHelper.ShowMsg(getActivity(),"点击了视频的item");
         HomeworkCommitFragment parentFragment = (HomeworkCommitFragment) getParentFragment();
         if (parentFragment != null){
             parentFragment.startDubbingVideo(data,hasEvalReviewPermission());

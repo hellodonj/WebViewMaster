@@ -826,6 +826,10 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         mTargetState = STATE_PAUSED;
     }
 
+    public boolean isPausing(){
+        return mTargetState == STATE_PAUSED;
+    }
+
     public void suspend() {
         release(false);
     }

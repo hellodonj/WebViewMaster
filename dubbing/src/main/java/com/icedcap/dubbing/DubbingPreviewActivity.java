@@ -53,15 +53,21 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private List<String> mRecordListPath;
     private int videoTime;
     private static long start;
-
-    public static void launch(Activity who, String videoFile,
-                              String backgroundFile, List<SrtEntity> entity, List<String> listRecordFile) {
+    private int resPropertyValue;
+    private long playTime;
+    public static void launch(Activity who,
+                              String videoFile,
+                              String backgroundFile,
+                              List<SrtEntity> entity,
+                              List<String> listRecordFile,
+                              int resPropertyValue) {
         start = System.currentTimeMillis();
         Intent intent = new Intent(who, DubbingPreviewActivity.class);
         intent.putExtra(EXTRA_VIDEO_FILE_PATH_KEY, videoFile);
         intent.putExtra(EXTRA_BACKGROUND_FILE_PATH_KEY, backgroundFile);
         intent.putStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY, (ArrayList<String>) listRecordFile);
         intent.putParcelableArrayListExtra(EXTRA_SRT_SUBTITLE_KEY, (ArrayList) entity);
+        intent.putExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE,resPropertyValue);
         who.startActivity(intent);
     }
 
@@ -99,10 +105,14 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
     private void initData() {
         Intent extraData = getIntent();
-        mVideoFilePath = extraData.getStringExtra(EXTRA_VIDEO_FILE_PATH_KEY);
-        mBackgroundFilePath = extraData.getStringExtra(EXTRA_BACKGROUND_FILE_PATH_KEY);
-        mSRTEntities = extraData.getParcelableArrayListExtra(EXTRA_SRT_SUBTITLE_KEY);
-        mRecordListPath = extraData.getStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY);
+        if (extraData != null) {
+            mVideoFilePath = extraData.getStringExtra(EXTRA_VIDEO_FILE_PATH_KEY);
+            mBackgroundFilePath = extraData.getStringExtra(EXTRA_BACKGROUND_FILE_PATH_KEY);
+            mSRTEntities = extraData.getParcelableArrayListExtra(EXTRA_SRT_SUBTITLE_KEY);
+            mRecordListPath = extraData.getStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY);
+            resPropertyValue =
+                    extraData.getIntExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE, StudyResPropType.DUBBING_BY_SENTENCE);
+        }
         mSubtitleView.setSRTEntities(mSRTEntities);
         mAudioHelper = new AudioPlayHelper(this);
     }
@@ -126,7 +136,6 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         mArtProcess.setVisibility(View.GONE);
-        mDubbingVideoView.onResume();
         long end = System.currentTimeMillis();
     }
 
@@ -148,7 +157,8 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         mDubbingVideoView.findViewById(R.id.preview_text_view).setVisibility(View.GONE);
         mDubbingVideoView.setMode(MODE_FINALLY_REVIEW);
         mDubbingVideoView.setType(1);
-        mDubbingVideoView.onResume();
+        mDubbingVideoView.setIsSupportPause(true);
+//        mDubbingVideoView.onResume();
         mDubbingVideoView.setOnEventListener(new OnVideoEventListener() {
             @Override
             public void onVideoPrepared(long duration) {
@@ -166,7 +176,19 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
             @Override
             public void onFinalReviewComplete() {
+                mAudioHelper.stopCombineAudio();
                 resetTime();
+            }
+
+            @Override
+            public void onVideoPause(){
+                //暂停播放
+                mAudioHelper.onPause();
+            }
+
+            @Override
+            public void onVideoResume(){
+                mAudioHelper.seekTo((int) playTime);
             }
 
             @Override
@@ -191,6 +213,11 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             public int fixThePlayMode() {
                 return MODE_FINALLY_REVIEW;
             }
+
+            @Override
+            public int onPreviewPrepared() {
+                return (int) playTime;
+            }
         });
     }
 
@@ -213,6 +240,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     }
 
     private void refreshTime(long playTime, long totalTime) {
+        this.playTime = playTime;
         String str = MediaUtil.generateTime(playTime, totalTime);
         mTime.setText(str);
         mRbTime.setText(str);
@@ -236,10 +264,10 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.back) {
-            onBackPressed();
+            backPress();
         } else if (i == R.id.complete) {
             mDubbingVideoView.onPause();
-            mAudioHelper.onPause();
+            mAudioHelper.onStop();
 
             ProcessUtils processUtils = new ProcessUtils();
             processUtils.process(DubbingPreviewActivity.this, mRecordListPath, null,
@@ -257,6 +285,13 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
                     });
 
         }
+    }
+
+    private void backPress(){
+        mDubbingVideoView.onPause();
+        mDubbingVideoView.stop();
+        mAudioHelper.onStop();
+        finish();
     }
 
     @Override

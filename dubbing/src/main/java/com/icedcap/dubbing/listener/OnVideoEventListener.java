@@ -78,6 +78,11 @@ public class OnVideoEventListener implements DubbingVideoView.OnEventListener {
     }
 
     @Override
+    public void onVideoResume() {
+
+    }
+
+    @Override
     public void onVideoPause() {
 
     }

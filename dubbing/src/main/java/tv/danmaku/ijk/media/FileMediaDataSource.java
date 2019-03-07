@@ -51,7 +51,9 @@ public class FileMediaDataSource implements IMediaDataSource {
     @Override
     public void close() throws IOException {
         mFileSize = 0;
-        mFile.close();
-        mFile = null;
+        if (mFile != null) {
+            mFile.close();
+            mFile = null;
+        }
     }
 }

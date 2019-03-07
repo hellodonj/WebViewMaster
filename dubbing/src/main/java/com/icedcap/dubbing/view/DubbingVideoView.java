@@ -12,15 +12,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.icedcap.dubbing.DubbingActivity;
 import com.icedcap.dubbing.DubbingPreviewActivity;
 import com.icedcap.dubbing.R;
 import com.icedcap.dubbing.utils.AudioMedia;
 import com.icedcap.dubbing.utils.DimenUtil;
 import com.icedcap.dubbing.utils.MediaUtil;
-
-
 import tv.danmaku.ijk.media.IjkVideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.ITrackInfo;
@@ -151,6 +148,10 @@ public class DubbingVideoView extends FrameLayout implements
 
     private long seekPlay;
     private int endTime;
+    private boolean supportPause;//是否支持暂停
+    public void setIsSupportPause(boolean supportPause){
+        this.supportPause = supportPause;
+    }
 
     public void setSeekPlay(long seekPlay, int endTime) {
         this.seekPlay = seekPlay;
@@ -277,15 +278,30 @@ public class DubbingVideoView extends FrameLayout implements
                 }
                 break;
             case MODE_FINALLY_REVIEW:
-                stopFinalReview();
-                if (getContext() instanceof DubbingPreviewActivity && null != onEventListener) {
-                    onEventListener.onWhiteVideoStop();
+//                stopFinalReview();
+//                if (getContext() instanceof DubbingPreviewActivity && null != onEventListener) {
+//                    onEventListener.onWhiteVideoStop();
+//                }
+                mIjkVideoView.pause();
+                if (audioMedia != null){
+                    audioMedia.pause();
+                }
+                if (getContext() instanceof  DubbingPreviewActivity
+                        && onEventListener != null){
+                    //暂停
+                    onEventListener.onVideoPause();
+                }
+                if (supportPause) {
+                    mPlayButton.setVisibility(VISIBLE);
                 }
                 break;
             case MODE_ALLPLAY:
                 mIjkVideoView.pause();
                 if (null != audioMedia) {
                     audioMedia.pause();
+                }
+                if (supportPause) {
+                    mPlayButton.setVisibility(VISIBLE);
                 }
                 break;
         }
@@ -346,13 +362,25 @@ public class DubbingVideoView extends FrameLayout implements
             // TODO: 2017/4/27 play dubbed audio and video
             mIjkVideoView.deselectTrack(mIjkVideoView.getSelectedTrack(ITrackInfo.MEDIA_TRACK_TYPE_AUDIO));
             isPlaySourceAudio = false;
+            boolean isPausing = false;
             if (mode == MODE_FINALLY_REVIEW) {
-                mIjkVideoView.seekTo(0);
+                if (supportPause && mIjkVideoView.isPausing() && mIjkVideoView.getCurrentPosition() > 0){
+                    mIjkVideoView.seekTo(mIjkVideoView.getCurrentPosition());
+                    isPausing = true;
+                } else {
+                    mIjkVideoView.seekTo(0);
+                }
             }
             mIjkVideoView.start();
             if (onEventListener != null) {
                 onEventListener.onPlayback(mIjkVideoView.getCurrentPosition());
-                onEventListener.onWhiteVideoPlay();
+                if (mode == MODE_FINALLY_REVIEW
+                        && supportPause
+                        && isPausing) {
+                       onEventListener.onVideoResume();
+                } else {
+                    onEventListener.onWhiteVideoPlay();
+                }
             }
         } else if (mode == MODE_ALLPLAY) {
             mIjkVideoView.start();
@@ -471,8 +499,17 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
     public void playStill(long seek) {
-        mIjkVideoView.setVideoPath(mVideoPath);
-        mIjkVideoView.seekTo((int) seek);
+        if (supportPause
+                && mode == MODE_ALLPLAY
+                && lasttime > 0
+                && (lasttime <= (endTime -5))
+                && mIjkVideoView.isPausing()) {
+            //支持暂停继续播放
+            mIjkVideoView.seekTo(lasttime);
+        } else {
+            mIjkVideoView.setVideoPath(mVideoPath);
+            mIjkVideoView.seekTo((int) seek);
+        }
         play(mode);
     }
 
@@ -580,14 +617,17 @@ public class DubbingVideoView extends FrameLayout implements
                 break;
             case MODE_DUBBING:
             case MODE_FINALLY_REVIEW:
+            case MODE_ALLPLAY:
                 resetAV();
                 mPlayButton.setVisibility(VISIBLE);
                 mHandler.removeMessages(SHOW_PROGRESS);
                 if (onEventListener != null) {
                     if (mode == MODE_DUBBING) {
                         onEventListener.onDubbingComplete();
-                    } else {
+                    } else if (mode == MODE_FINALLY_REVIEW){
                         onEventListener.onFinalReviewComplete();
+                    } else if (mode == MODE_ALLPLAY) {
+                        lasttime = 0;
                     }
                 }
                 break;
@@ -628,10 +668,11 @@ public class DubbingVideoView extends FrameLayout implements
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.videoView) {
-            if (mode == MODE_PREVIEW || mode == MODE_FINALLY_REVIEW) {
+            if (mode == MODE_PREVIEW
+                    || mode == MODE_FINALLY_REVIEW
+                    || (mode == MODE_ALLPLAY && supportPause)) {
                 pause();
             }
-
         } else if (i == R.id.play) {
             //播放 或者 暂停
             if (type == 0) {
@@ -640,8 +681,6 @@ public class DubbingVideoView extends FrameLayout implements
             } else {
                 play(mode);
             }
-
-
         }
     }
 
@@ -689,6 +728,8 @@ public class DubbingVideoView extends FrameLayout implements
         void onStopTrackingTouch();
 
         void onVideoCompletion();
+
+        void onVideoResume();
 
         void onVideoPause();
 

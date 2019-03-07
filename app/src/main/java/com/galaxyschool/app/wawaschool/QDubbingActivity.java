@@ -1,17 +1,27 @@
 package com.galaxyschool.app.wawaschool;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
+import com.galaxyschool.app.wawaschool.views.OnlineIntroPopwindow;
 import com.icedcap.dubbing.DubbingActivity;
+import com.icedcap.dubbing.utils.Config;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.lqbaselib.net.FileApi;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +37,7 @@ import java.net.URLConnection;
  */
 public class QDubbingActivity extends DubbingActivity {
     public static int COMMIT_Q_DUBBING_TASK_SUCCESS = 0x1000;
-
+    private CommitTask commitTask;
     public static void start(Activity context,
                              CourseData videoData,
                              CommitTask commitTask,
@@ -63,6 +73,17 @@ public class QDubbingActivity extends DubbingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -76,7 +97,10 @@ public class QDubbingActivity extends DubbingActivity {
             resPropertyValue = args.getInt(Constant.VIDEO_RES_PROPERTIES_VALUE);
             CommitTask data = (CommitTask) args.getSerializable(CommitTask.class.getSimpleName());
             if (data != null){
+                Config.KEY_PLAYER_DEFAULT_VALUE = 1;
                 handleOnlinePageData(data);
+            } else {
+                Config.KEY_PLAYER_DEFAULT_VALUE = 0;
             }
         }
     }
@@ -84,6 +108,7 @@ public class QDubbingActivity extends DubbingActivity {
     private void handleOnlinePageData(CommitTask data){
         isOnlineOpen = true;
         studentCommitFilePath = data.getStudentResUrl();
+        commitTask = data;
         String pageScore = data.getAutoEvalContent();
         if (!TextUtils.isEmpty(pageScore)){
             pageScoreArray = JSONArray.parseArray(pageScore);
@@ -99,6 +124,16 @@ public class QDubbingActivity extends DubbingActivity {
                 teacherReviewScore = Integer.valueOf(data.getTaskScore());
             }
         }
+    }
+
+    @Override
+    protected void enterTeacherReviewActivity(){
+        TeacherReviewDetailActivity.start(
+                this,
+                "",
+                String.valueOf(commitTask.getCommitTaskId()),
+                2,
+                commitTask.getTaskScore());
     }
 
     @Override
@@ -132,5 +167,52 @@ public class QDubbingActivity extends DubbingActivity {
             }
         }
         return filePath;
+    }
+
+    @Override
+    public void backDubbing() {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                this, null,
+                getString(R.string.str_unfinish_dubbing_back),
+                getString(R.string.discard_save),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                },
+                getString(R.string.str_continue_dubbing),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        messageDialog.show();
+    }
+
+    @Override
+    protected void showTeacherReviewPopWindow(int height){
+        OnlineIntroPopwindow popwindow = new OnlineIntroPopwindow(this,height, reviewComment);
+        popwindow.showPopupMenu();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (messageEvent != null) {
+            Bundle args = messageEvent.getBundle();
+            if (args != null){
+
+                String score = args.getString("evalScore");
+                String comment = args.getString("evalComment");
+                hasVideoReview = true;
+                if (!TextUtils.isEmpty(score)){
+                    teacherReviewScore = Integer.valueOf(score);
+                }
+                reviewComment = comment;
+                showViewData();
+            }
+        }
     }
 }

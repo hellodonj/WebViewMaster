@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.icedcap.dubbing.R;
 import com.lqwawa.libs.audio.RawAudioRecorder;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
@@ -18,6 +19,7 @@ import com.oosic.apps.iemaker.base.evaluate.EvaluateManager;
 import com.oosic.apps.iemaker.base.evaluate.EvaluateResult;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
 import com.osastudio.common.utils.FileUtils;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -51,7 +53,7 @@ public class AudioRecordHelper {
     }
 
 
-    public AudioRecordHelper(Context context,CallbackListener listener) {
+    public AudioRecordHelper(Context context, CallbackListener listener) {
         mp3FileList = new ArrayList<>();
         audioRefText = new ArrayList<>();
         this.context = context;
@@ -91,7 +93,7 @@ public class AudioRecordHelper {
 
     }
 
-    public void onPause() {
+    public void onStop() {
         stopMediaPlayer();
         stopRecord();
     }
@@ -110,18 +112,19 @@ public class AudioRecordHelper {
                 public void onRawRecordingEnd(String encodedFilePath, String rawFilePath) {
                     if (!TextUtils.isEmpty(encodedFilePath) && !TextUtils.isEmpty(rawFilePath)) {
                         showLoadingDialog();
-                        evaluateRecordData(position,encodedFilePath, rawFilePath);
+                        evaluateRecordData(position, encodedFilePath, rawFilePath);
                     }
                 }
 
                 @Override
                 public void onRawRecordingError() {
                     dismissLoadingDialog();
-//                        deleteFile(savePath);
-//                        TipsHelper.showToast(SpeechAssessmentActivity.this, R.string.str_record_err);
+                    deleteFile(savePath);
+                    TipMsgHelper.ShowMsg(context, context.getString(R.string.str_record_err));
                 }
             });
         }
+        deleteFile(savePath);
         audioRecorder.start(savePath);
     }
 
@@ -139,10 +142,12 @@ public class AudioRecordHelper {
                 dismissLoadingDialog();
                 deleteFile(rawFilePath);
                 if (result == null || !result.isSuccess()) {
+                    deleteFile(mp3FilePath);
+                    TipMsgHelper.ShowMsg(context, context.getString(R.string.str_evaluate_fail));
                     return;
                 }
                 int evalScore = Math.round(result.getScore());
-                if (listener != null){
+                if (listener != null) {
                     listener.onBack(evalScore);
                 }
             }
@@ -154,6 +159,14 @@ public class AudioRecordHelper {
             return FileUtils.deleteFile(path);
         }
         return true;
+    }
+
+    public void deleteMp3FileList() {
+        if (mp3FileList != null && mp3FileList.size() > 0) {
+            for (File mp3File : mp3FileList) {
+                deleteFile(mp3File.getAbsolutePath());
+            }
+        }
     }
 
     private void playWavFile(File file, final float volume, final long seek) {

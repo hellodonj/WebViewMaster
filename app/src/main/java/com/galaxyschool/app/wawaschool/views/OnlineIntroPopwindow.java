@@ -52,6 +52,14 @@ public class OnlineIntroPopwindow extends PopupWindow implements View.OnClickLis
         setProperty();
     }
 
+    public OnlineIntroPopwindow(Context mContext,int height,String commentDetail){
+        super(mContext);
+        this.mContext = mContext;
+        this.height = height;
+        initCommentDetailData(commentDetail);
+        setProperty();
+    }
+
     /**
      * 表演课堂的数据
      */
@@ -208,6 +216,27 @@ public class OnlineIntroPopwindow extends PopupWindow implements View.OnClickLis
             return "";
         }
         return showTime;
+    }
+
+    private void initCommentDetailData(String commentDetail){
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.fragment_act_production_introduction, null);
+        TextView actIntro = (TextView) mRootView.findViewById(R.id.act_introduction);
+        TextView actDefaultThumbnail = (TextView) mRootView.findViewById(R.id.act_default_thumbnail);
+        if (actIntro != null) {
+            actDefaultThumbnail.setVisibility(View.GONE);
+            actIntro.setText(commentDetail);
+            actIntro.setVisibility(View.VISIBLE);
+        }
+
+        TextView tvTitle = (TextView) mRootView.findViewById(R.id.tv_online_title);
+        if (tvTitle != null) {
+            //显示老师评语
+            tvTitle.setText(mContext.getString(R.string.str_teacher_comment_no_point));
+        }
+        ImageView ivArrow = (ImageView) mRootView.findViewById(R.id.iv_arrow);
+        if (ivArrow != null) {
+            ivArrow.setOnClickListener(v -> dismiss());
+        }
     }
 
     private void setProperty() {
