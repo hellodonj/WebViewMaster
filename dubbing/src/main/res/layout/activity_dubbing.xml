@@ -355,33 +355,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/sub_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    android:background="#ff282828"
-                    android:visibility="gone">
-
-
-                    <com.icedcap.dubbing.view.DubbingSubtitleView
-                        android:id="@+id/subtitleView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                </FrameLayout>
-
-            </LinearLayout>
-        </FrameLayout>
     </LinearLayout>
 
     <include

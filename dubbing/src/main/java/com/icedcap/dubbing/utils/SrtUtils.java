@@ -1,21 +1,11 @@
 package com.icedcap.dubbing.utils;
 
-import android.content.Context;
-import android.support.annotation.RawRes;
-import android.util.Log;
-
 import com.icedcap.dubbing.entity.SrtEntity;
 import com.icedcap.dubbing.entity.SRTSubtitleEntity;
-import com.icedcap.dubbing.view.DubbingSubtitleView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,26 +15,6 @@ import java.util.List;
  */
 
 public class SrtUtils {
-
-    public static List<SRTSubtitleEntity> processToSubtitleList(List<SrtEntity> list) {
-        List<SRTSubtitleEntity> result = new ArrayList<>(list.size());
-
-        for (int i = 0; i < list.size(); i++) {
-            SrtEntity cur = list.get(i);
-            boolean isShowAnim;
-            int type;
-            if (i == 0) {
-                isShowAnim = cur.getStartTime() >= DubbingSubtitleView.LONG_BREAK_TIME;
-                type = SRTSubtitleEntity.SHOWROLE_TYPE;
-            } else {
-                isShowAnim = cur.getStartTime() - list.get(i - 1).getEndTime() >= DubbingSubtitleView.LONG_BREAK_TIME;
-                type = cur.getRole().equals(list.get(i - 1).getRole()) ? SRTSubtitleEntity.SHOWNORMAL_TYPE : SRTSubtitleEntity.SHOWROLE_TYPE;
-            }
-
-            result.add(new SRTSubtitleEntity(type, cur, isShowAnim));
-        }
-        return result;
-    }
 
     public static List<SrtEntity> processSrtFromFile(String srtPath) {
         List<SrtEntity> srtEntityList = new ArrayList<>();

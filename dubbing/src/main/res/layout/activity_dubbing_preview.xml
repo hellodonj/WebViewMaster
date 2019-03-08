@@ -86,14 +86,6 @@
                 android:thumbOffset="10dip"
                 android:visibility="gone"/>
 
-            <com.icedcap.dubbing.view.PreviewSubtitleView
-                android:id="@+id/preview_subtitle_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"/>
-
             <TextView
                 android:id="@+id/rb_video_time"
                 android:layout_width="match_parent"

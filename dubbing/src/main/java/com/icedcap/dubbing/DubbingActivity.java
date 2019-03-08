@@ -38,7 +38,6 @@ import com.icedcap.dubbing.listener.OnVideoEventListener;
 import com.icedcap.dubbing.utils.MediaUtil;
 import com.icedcap.dubbing.utils.ProcessUtils;
 import com.icedcap.dubbing.utils.SrtUtils;
-import com.icedcap.dubbing.view.DubbingSubtitleView;
 import com.icedcap.dubbing.view.DubbingVideoView;
 import com.icedcap.dubbing.view.DubbingItemView;
 import com.lqwawa.apps.views.ExpandableTextView;
@@ -75,7 +74,6 @@ public class DubbingActivity extends AppCompatActivity implements
         String VIDEO_RES_PROPERTIES_VALUE = "video_res_properties_value";
     }
 
-    private DubbingSubtitleView dubbingSubtitleView;
     private TextView currentTimeTextView;
     private TextView totalTimeTextView;
     private ProgressBar progressBar;
@@ -306,7 +304,6 @@ public class DubbingActivity extends AppCompatActivity implements
     }
 
     private void initView() {
-        dubbingSubtitleView = (DubbingSubtitleView) findViewById(R.id.subtitleView);
         artProcessView = findViewById(R.id.art_process_view);
         final ProgressBar pb = (ProgressBar) findViewById(R.id.art_progress_bar);
         pb.getIndeterminateDrawable().setColorFilter(0xFFCECECE, android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -705,46 +702,6 @@ public class DubbingActivity extends AppCompatActivity implements
     protected String downloadFile(String resUrl) {
         return null;
     }
-//    /**
-//     * 将Assets目录下文件拷贝到sdk目录下, 后续从服务器下载
-//     *
-//     * @param url
-//     * @return
-//     */
-//    private String downloadFile(String url) {
-//        if (TextUtils.isEmpty(url)) {
-//            return null;
-//        }
-//        String fileName = url.split("/")[1];
-//
-//        File dirFile = getExternalFilesDir("material");
-//        File localFile = new File(dirFile, fileName);
-//        InputStream is;
-//        if (!localFile.exists()) {
-//            AssetManager manager = getAssets();
-//            FileOutputStream fos = null;
-//            try {
-//                is = manager.open(url);
-//                fos = new FileOutputStream(localFile);
-//                byte[] bytes = new byte[1024];
-//                int read;
-//                while ((read = is.read(bytes)) != -1) {
-//                    fos.write(bytes, 0, read);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                if (fos != null) {
-//                    try {
-//                        fos.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }
-//        return localFile.getAbsolutePath();
-//    }
 
     /**
      * THIS SRT SUBTITLE SHOULD FETCH FROM SDCARD BY PRE-ACTIVITY DOWNLOADED
@@ -780,20 +737,6 @@ public class DubbingActivity extends AppCompatActivity implements
             audioRecordHelper.getMp3FileList().add(file);
             audioRecordHelper.getAudioRefText().add(srtBuilder.toString());
         }
-
-        dubbingSubtitleView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRecording || isReviewing) {
-                    return;
-                }
-                if (dubbingVideoView.isPlaying()) {
-                    dubbingVideoView.pause(DubbingVideoView.MODE_PREVIEW);
-                }
-            }
-        });
-
-        dubbingSubtitleView.init(srtEntityList);
 
         commonAdapter = new CommonAdapter<DubbingEntity>(this, R.layout.item_dubbing_srt, dubbingEntityList) {
             @Override
@@ -884,13 +827,6 @@ public class DubbingActivity extends AppCompatActivity implements
         refreshLrcLineText(playTime);
         currentTimeTextView.setText(MediaUtil.generateTime(playTime));
         totalTimeTextView.setText(MediaUtil.generateTime(totalTime));
-        if (dubbingSubtitleView != null) {
-            if (videoMode == MODE_IDLE) {
-                dubbingSubtitleView.refresh((int) playTime);
-            } else {
-                dubbingSubtitleView.processTime((int) playTime);
-            }
-        }
         int i = (int) (100L * playTime / totalTime);
         if (videoMode == MODE_DUBBING || videoMode == MODE_IDLE) {
             progressBar.setSecondaryProgress(i);
@@ -960,11 +896,8 @@ public class DubbingActivity extends AppCompatActivity implements
 
         @Override
         public void onPreviewStop(int resetPos) {
-            dubbingSubtitleView.reset();
-
             int i = (int) (100L * resetPos / duration);
             progressBar.setSecondaryProgress(i);
-            dubbingSubtitleView.refresh(resetPos);
         }
 
         @Override
@@ -991,14 +924,12 @@ public class DubbingActivity extends AppCompatActivity implements
                     lastSeek = 0;
                 }
             }
-            dubbingSubtitleView.setEditted(!isRecording);
         } else {
             isRecording = false;
             if (dubbingVideoView.isPlaying()) {
                 audioRecordHelper.stopRecord();
             }
             dubbingVideoView.stopDubbing();
-            dubbingSubtitleView.setEditted(!isRecording);
         }
         startOrStopProgress();
     }
@@ -1010,7 +941,6 @@ public class DubbingActivity extends AppCompatActivity implements
 
         // play the recorded audio from indicator pos
         lastSeek = playTime;
-        dubbingSubtitleView.refresh((int) playTime);
         audioRecordHelper.play(0, curPosition);
 //        dubbingVideoView.startDubbing(newPlayTime);
         dubbingVideoView.startReview(newPlayTime);
