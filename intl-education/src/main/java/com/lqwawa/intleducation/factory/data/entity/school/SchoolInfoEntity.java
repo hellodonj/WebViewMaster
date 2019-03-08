@@ -47,7 +47,7 @@ public class SchoolInfoEntity extends BaseVo{
     // V5.15添加的字段
     private String Id;
     private String SName;
-    private String Type;
+    private int Type;
     private String SchoolType;
     private String SchoolLevel;
 
@@ -259,11 +259,11 @@ public class SchoolInfoEntity extends BaseVo{
         this.SName = SName;
     }
 
-    public String getType() {
+    public int getType() {
         return Type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         Type = type;
     }
 
@@ -313,5 +313,8 @@ public class SchoolInfoEntity extends BaseVo{
         }
     }
 
-
+    @Override
+    public String toString() {
+        return getSName();
+    }
 }

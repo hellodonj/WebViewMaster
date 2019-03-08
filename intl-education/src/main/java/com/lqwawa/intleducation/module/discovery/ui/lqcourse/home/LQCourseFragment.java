@@ -51,7 +51,6 @@ import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialA
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesActivity;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesParams;
-import com.lqwawa.intleducation.module.tutorial.regist.TutorialRegisterActivity;
 import com.lqwawa.intleducation.module.tutorial.teacher.schools.TutorialSchoolsActivity;
 import com.lqwawa.intleducation.module.tutorial.teacher.schools.TutorialSchoolsParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -163,7 +162,6 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                     }
                 }else{
                     // ClassifyListActivity.show(getActivity(),entity);
-                    TutorialRegisterActivity.show(getActivity());
                     TutorialCoursesParams params = new TutorialCoursesParams("sfa",getString(R.string.title_tutorial_courses));
                     TutorialCoursesActivity.show(getActivity(),params);
                     TutorialSchoolsParams schoolsParams = new TutorialSchoolsParams("sa",getString(R.string.title_tutorial_schools));

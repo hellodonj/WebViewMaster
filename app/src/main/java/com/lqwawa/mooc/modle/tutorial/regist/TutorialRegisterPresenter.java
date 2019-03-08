@@ -1,4 +1,4 @@
-package com.lqwawa.intleducation.module.tutorial.regist;
+package com.lqwawa.mooc.modle.tutorial.regist;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +10,8 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
+import com.lqwawa.intleducation.module.tutorial.regist.IDType;
+import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 
 import java.util.List;
 
@@ -86,7 +88,10 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
     }
 
     @Override
-    public void requestApplyForTutor(@IDType.IDTypeRes int IDType,
+    public void requestApplyForTutor(@NonNull String name,
+                                     @NonNull String phoneNumber,
+                                     @NonNull String verificationCode,
+                                     @IDType.IDTypeRes int IDType,
                                      @NonNull String IDNumber,
                                      @NonNull String memberId,
                                      @NonNull String tutorName,
@@ -102,7 +107,81 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
                                      @NonNull String workingLife,
                                      @NonNull String educationUrl,
                                      @NonNull String seniorityUrl) {
+        final TutorialRegisterContract.View view = getView();
+        if(EmptyUtil.isEmpty(name)){
+            view.showError(com.lqwawa.intleducation.R.string.label_user_name_hint);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(phoneNumber)){
+            view.showError(com.lqwawa.intleducation.R.string.label_phone_number_hint);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(verificationCode)){
+            view.showError(com.lqwawa.intleducation.R.string.label_verification_code_hint);
+            return;
+        }
+
+        if(IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_IDENTITY_CARD ||
+                IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_PASSPORT){
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(IDNumber)){
+            view.showError(com.lqwawa.intleducation.R.string.label_identify_number_hint);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(tutorName) ||
+                EmptyUtil.isEmpty(tutorOrganId) ||
+                EmptyUtil.isEmpty(tutorOrganName)){
+            view.showError(com.lqwawa.intleducation.R.string.label_choice_organ_hint);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(provinceId) ||
+                EmptyUtil.isEmpty(provinceName)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(cityId) ||
+                EmptyUtil.isEmpty(cityName)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(countyId) ||
+                EmptyUtil.isEmpty(countyName)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(markingPrice)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(workingLife)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(educationUrl)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
+        if(EmptyUtil.isEmpty(seniorityUrl)){
+            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            return;
+        }
+
         TutorialHelper.requestApplyForTutor(
+                name,
+                phoneNumber,
+                verificationCode,
                 IDType,
                 IDNumber,
                 memberId,

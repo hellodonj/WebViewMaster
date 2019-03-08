@@ -1,12 +1,13 @@
-package com.lqwawa.intleducation.module.tutorial.regist;
+package com.lqwawa.mooc.modle.tutorial.regist;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.lqwawa.intleducation.factory.data.entity.OnlineSchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
+import com.lqwawa.intleducation.module.tutorial.regist.IDType;
+import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 
 import java.util.List;
 
@@ -18,12 +19,15 @@ public interface TutorialRegisterContract {
 
     interface Presenter extends BaseContract.Presenter {
         // 查询省市区数据
-        void requestLocationWithParams(@LocationType.LocationTypeRes int locationType,@Nullable String parentLocationId);
+        void requestLocationWithParams(@LocationType.LocationTypeRes int locationType, @Nullable String parentLocationId);
         // 查询线下机构数据
-        void requestTutorialOrgan(boolean onlyIncludeOnline,int pageIndex);
+        void requestTutorialOrgan(boolean onlyIncludeOnline, int pageIndex);
 
         /**
          * 学生申请成为机构助教
+         * @param name 姓名
+         * @param phoneNumber 手机号码
+         * @param verificationCode 验证码
          * @param IDType 证件类型 1 身份证 2 护照
          * @param IDNumber 身份证或者护照号码
          * @param memberId 助教memberId
@@ -41,7 +45,10 @@ public interface TutorialRegisterContract {
          * @param educationUrl 学历认证
          * @param seniorityUrl 资历认证
          */
-        void requestApplyForTutor(@IDType.IDTypeRes int IDType,
+        void requestApplyForTutor(@NonNull String name,
+                                  @NonNull String phoneNumber,
+                                  @NonNull String verificationCode,
+                                  @IDType.IDTypeRes int IDType,
                                   @NonNull String IDNumber,
                                   @NonNull String memberId,
                                   @NonNull String tutorName,

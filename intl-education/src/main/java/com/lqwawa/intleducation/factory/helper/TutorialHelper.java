@@ -676,7 +676,10 @@ public class TutorialHelper {
      * @param educationUrl 学历认证
      * @param seniorityUrl 资历认证
      */
-    public static void requestApplyForTutor(@IDType.IDTypeRes int IDType,
+    public static void requestApplyForTutor(@NonNull String name,
+                                            @NonNull String phoneNumber,
+                                            @NonNull String verificationCode,
+                                            @IDType.IDTypeRes int IDType,
                                             @NonNull String IDNumber,
                                             @NonNull String memberId,
                                             @NonNull String tutorName,
@@ -694,6 +697,9 @@ public class TutorialHelper {
                                             @NonNull String seniorityUrl,
                                             @NonNull DataSource.Callback<Boolean> callback){
         RequestVo requestVo = new RequestVo();
+        requestVo.addParams("Name",name);
+        requestVo.addParams("PhoneNumber",phoneNumber);
+        requestVo.addParams("VerificationCode",verificationCode);
         requestVo.addParams("IDType",IDType);
         requestVo.addParams("IDNumber",IDNumber);
         requestVo.addParams("memberId",memberId);

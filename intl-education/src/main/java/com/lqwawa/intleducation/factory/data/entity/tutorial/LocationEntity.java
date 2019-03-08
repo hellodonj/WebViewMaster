@@ -102,5 +102,10 @@ public class LocationEntity implements Serializable {
         public void setValue(String Value) {
             this.Value = Value;
         }
+
+        @Override
+        public String toString() {
+            return getText();
+        }
     }
 }

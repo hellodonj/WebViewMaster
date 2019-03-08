@@ -19,5 +19,7 @@
     <string name="title_tutorial_courses">我帮辅的课程</string>
     <string name="title_tutorial_schools">我的帮辅机构</string>
     <string name="title_student_tutorial">我的帮辅</string>
+    <string name="title_fill_information">填写资料</string>
+    <string name="title_tutorial_audit">提交申请</string>
 
 </resources>
