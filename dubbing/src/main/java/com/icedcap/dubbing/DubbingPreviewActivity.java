@@ -11,13 +11,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.icedcap.dubbing.audio.AudioPlayHelper;
-import com.icedcap.dubbing.entity.DubbingEntity;
 import com.icedcap.dubbing.entity.SrtEntity;
 import com.icedcap.dubbing.listener.OnVideoEventListener;
 import com.icedcap.dubbing.utils.ProcessUtils;
 import com.icedcap.dubbing.utils.MediaUtil;
 import com.icedcap.dubbing.view.DubbingVideoView;
-import com.icedcap.dubbing.view.PreviewSubtitleView;
 import com.lqwawa.apps.views.lrcview.LrcEntry;
 import com.lqwawa.apps.views.lrcview.LrcView;
 import com.lqwawa.client.pojo.StudyResPropType;
@@ -46,7 +44,6 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private TextView mTime;
     private TextView mRbTime;
     private ProgressBar mProgressBar;
-    private PreviewSubtitleView mSubtitleView;
     private LrcView lrcView;
     private SeekBar seekBar;
     private View mArtProcess;
@@ -95,7 +92,6 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         mTime = (TextView) findViewById(R.id.video_time);
         mRbTime = (TextView) findViewById(R.id.rb_video_time);
         mProgressBar = (ProgressBar) findViewById(R.id.progress);
-        mSubtitleView = (PreviewSubtitleView) findViewById(R.id.preview_subtitle_text_view);
         //通篇配音
         lrcView = (LrcView) findViewById(R.id.lrc_view);
         seekBar = (SeekBar) findViewById(R.id.seekbar);
@@ -113,7 +109,6 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             resPropertyValue =
                     extraData.getIntExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE, StudyResPropType.DUBBING_BY_SENTENCE);
         }
-        mSubtitleView.setSRTEntities(mSRTEntities);
         mAudioHelper = new AudioPlayHelper(this);
     }
 

@@ -188,18 +188,16 @@ public class ProcessUtils {
         command = FFmpegUtil.extractVideo(videoFilePath,
                 extractVideoFilePath);
         commandList.add(command);
+        command = FFmpegUtil.mediaMux(extractVideoFilePath, mixFilePath, muxFilePath);
+        commandList.add(command);
         if (!commandList.isEmpty()) {
             int result = FFmpegCmd.execute(commandList);
             if (result == 0) {
                 deleteFiles(mp3FilePaths);
                 deleteFiles(tmpMixFilePaths);
-                boolean isMuxOk = Config.Mp4ParseUtil.muxAacMp4(mixFilePath, extractVideoFilePath,
-                        muxFilePath);
-                if (isMuxOk) {
-                    deleteFile(mixFilePath);
-                    deleteFile(extractVideoFilePath);
-                    return muxFilePath;
-                }
+                deleteFile(mixFilePath);
+                deleteFile(extractVideoFilePath);
+                return muxFilePath;
             }
         }
         return null;

@@ -79,15 +79,13 @@ public class FFmpegUtil {
      *
      * @param videoFile 视频文件
      * @param audioFile 音频文件
-     * @param duration  视频时长
      * @param muxFile   目标文件
      * @return 合成后的文件
      */
     @SuppressLint("DefaultLocale")
-    public static String mediaMux(String videoFile, String audioFile, int duration, String muxFile) {
-        //-t:时长  如果忽略音视频时长，则把"-t %d"去掉
-        String mixAudioCmd = "ffmpeg -i %s -i %s -t %d %s";
-        mixAudioCmd = String.format(mixAudioCmd, videoFile, audioFile, duration, muxFile);
+    public static String mediaMux(String videoFile, String audioFile, String muxFile) {
+        String mixAudioCmd = "ffmpeg -i %s -i %s -vcodec copy -acodec aac -map 0:v:0 -map 1:a:0 -shortest %s";
+        mixAudioCmd = String.format(mixAudioCmd, videoFile, audioFile, muxFile);
         return mixAudioCmd;
     }
 
