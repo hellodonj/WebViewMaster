@@ -272,6 +272,7 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                                 //语音评测资源
                                 enterSpeechAssessmentActivity(data.getStudentResUrl());
                             } else if (data.isVideoType()) {
+                                updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 enterQDubbingDetailActivity(data);
                             } else {
                                 if (!isPlaying) {
