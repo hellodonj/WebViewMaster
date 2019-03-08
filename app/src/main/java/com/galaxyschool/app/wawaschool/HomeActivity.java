@@ -38,6 +38,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
+import com.galaxyschool.app.wawaschool.views.ThirdLoginSuccessTipsDialog;
 import com.galaxyschool.app.wawaschool.views.ToolbarBottomView;
 import com.lecloud.skin.init.InitResultListener;
 import com.lecloud.skin.init.LqInit;
@@ -70,6 +71,7 @@ public class HomeActivity extends BaseCompatActivity
 
     public static final String ACTION_ACCOUNT_LOGOUT = "com.galaxyschool.app.wawaschool.ACTION_LOGOUT";
     public static final String ACTION_CHANGE_LQCOURSE_TAB = "action_change_lqCourse_tab";
+    public static final String EXTRA_THIRD_LOGIN_TIP_MESSAGE = "third_login_tip_message";
     private static final int TAB_LQ_COURSE = 0;//lq学程、学程馆
     private static final int TAB_ONLINE_STUDY = 1;//在线学习
     private static final int TAB_MY_COURSE = 2;//我的课程
@@ -121,7 +123,6 @@ public class HomeActivity extends BaseCompatActivity
     private ToolbarBottomView bottomBar;
     private MyShareManager mShareManager;
     private ImageView myCourseImage;
-
     Map<String, Integer> hashMap = new HashMap<String, Integer>();
 
     static {
@@ -170,7 +171,6 @@ public class HomeActivity extends BaseCompatActivity
 
         this.app = (MyApplication) getApplication();
         this.app.setAccountListener(this);
-
         initViews();
 
 //        initChatModule();
@@ -578,6 +578,7 @@ public class HomeActivity extends BaseCompatActivity
         filter.addAction(MyCourseListPagerFragment.ACTION_GO_COURSE_SHOP);
         //接收系统网络切换的广播
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(EXTRA_THIRD_LOGIN_TIP_MESSAGE);
         registerReceiver(homeReceiver, filter);
     }
 
@@ -628,6 +629,8 @@ public class HomeActivity extends BaseCompatActivity
             } else if (TextUtils.equals(MyCourseListPagerFragment.ACTION_GO_COURSE_SHOP, intent.getAction())) {
                 // 去学程馆
                 setCurrPage(TAB_LQ_COURSE);
+            } else if (TextUtils.equals(intent.getAction(),EXTRA_THIRD_LOGIN_TIP_MESSAGE)) {
+                showThirdLoginTipMessage();
             }
         }
     }
@@ -675,4 +678,12 @@ public class HomeActivity extends BaseCompatActivity
         }
     };
 
+    private void showThirdLoginTipMessage(){
+        UserInfo userInfo = DemoApplication.getInstance().getUserInfo();
+        if (userInfo != null){
+            ThirdLoginSuccessTipsDialog dialog = new ThirdLoginSuccessTipsDialog(this,userInfo);
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+    }
 }

@@ -765,6 +765,10 @@ public class DubbingActivity extends AppCompatActivity implements
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (isRecording){
+                    TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
+                    return;
+                }
                 if (dubbingEntityList != null && position < dubbingEntityList.size()) {
                     if (curPosition != position) {
                         dubbingEntityList.get(curPosition).setSelect(false);

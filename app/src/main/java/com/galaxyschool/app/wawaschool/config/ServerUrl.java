@@ -1096,4 +1096,14 @@ public class ServerUrl {
      * 获取老师点评统计学生作业列表
      */
     public static final String GET_TEACHER_REVIEW_STATIS_LIST_BASE_URL = BASE_SERVER + "Api/Mobile/ST/CommitTask/GetTeacherReviewStatisList";
+
+    /**
+     * 根据UnionId加载关联的账号列表
+     */
+    public static final String LOAD_ASSOCIATED_BY_UNIONID_BASE_URL = BASE_SERVER + "Api/Mobile/Setting/Login/Login/LoadAssociatedAccountByUnionId";
+
+    /**
+     * 一键解除当前UnionId绑定的账号并绑定新的账号
+     */
+    public static final String GET_BIND_NEWACCOUNT_FOR_UNIONID_BASE_URL = BASE_SERVER + "Api/Mobile/Setting/Login/Login/BindNewAccountForUnionId";
 }

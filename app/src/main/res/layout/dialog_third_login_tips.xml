@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/do_task_order_tips_content_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/separate_20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:text="@string/str_third_login_tip0"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_tip_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center|left"
+            android:text="@string/str_tip_account"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_tip_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center|left"
+            android:text="@string/str_tip_password"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center|left"
+            android:text="@string/str_thrid_login_tip1"
+            android:textColor="@color/red"
+            android:textSize="16sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_corner_text_green_20_dp"
+            android:gravity="center"
+            android:minWidth="120dp"
+            android:padding="10dp"
+            android:text="@string/str_ok"
+            android:textColor="@color/text_white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</LinearLayout>

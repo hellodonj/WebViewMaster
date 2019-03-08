@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.galaxyschool.app.wawaschool.AssociateAccountActivity;
 import com.galaxyschool.app.wawaschool.HomeActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
@@ -19,9 +19,9 @@ import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
+import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
-import com.lqwawa.lqbaselib.net.library.Result;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.oosic.apps.share.ShareHelper;
 import com.osastudio.common.utils.TipMsgHelper;
@@ -225,7 +225,8 @@ public class ThirdPartyLoginHelper {
         if (functionType == FUNCTION_TYPE.BIND_AUTH){
             mParams.put("MemberId", DemoApplication.getInstance().getMemberId());
         }
-        mParams.put("Unionid", map.get("unionid"));
+        final String mediaUnonId =  map.get("unionid");
+        mParams.put("Unionid",mediaUnonId);
         mParams.put("IdentityType", mediaType == SHARE_MEDIA.QQ ? 2 : 1);
         mParams.put("NickName", map.get("name"));
         mParams.put("HeadPicUrl", map.get("iconurl"));
@@ -247,7 +248,12 @@ public class ThirdPartyLoginHelper {
                 UserInfoResult userInfoResult = getResult();
                 if (userInfoResult != null) {
                     if (userInfoResult.isHasError()){
-                        TipMsgHelper.ShowMsg(mContext, userInfoResult.getErrorMessage());
+                        if (functionType == FUNCTION_TYPE.BIND_AUTH) {
+                            //绑定授权
+                            loadBindAuthUserInfo(mediaUnonId);
+                        } else {
+                            TipMsgHelper.ShowMsg(mContext, userInfoResult.getErrorMessage());
+                        }
                         return;
                     }
                     if (functionType == FUNCTION_TYPE.THIRDPARTY_LOGIN) {
@@ -265,6 +271,7 @@ public class ThirdPartyLoginHelper {
             }
         };
         listener.setShowLoading(true);
+        listener.setShowErrorTips(false);
         String url = ServerUrl.GET_THIRD_PARTY_AUTHORIZED_LOGIN_BASE_URL;
         if (functionType == FUNCTION_TYPE.BIND_AUTH){
             url = ServerUrl.GET_BIND_THIRDPARTY_AUTHORIZATION;
@@ -293,6 +300,7 @@ public class ThirdPartyLoginHelper {
         PushUtils.resumePush(mContext);
         if (isBackHome) {
             Intent intent = new Intent(mContext, HomeActivity.class);
+            mContext.sendBroadcast(new Intent(HomeActivity.EXTRA_THIRD_LOGIN_TIP_MESSAGE));
             mContext.startActivity(intent);
         }
         if (mContext != null) {
@@ -301,10 +309,93 @@ public class ThirdPartyLoginHelper {
         }
     }
 
+    private void loadBindAuthUserInfo(String unionid) {
+        Map<String, Object> mParams = new HashMap<String, Object>();
+        mParams.put("Unionid", unionid);
+        if (mediaType == SHARE_MEDIA.QQ) {
+            mParams.put("IdentityType", 2);
+        } else if (mediaType == SHARE_MEDIA.WEIXIN) {
+            mParams.put("IdentityType", 1);
+        }
+        RequestHelper.RequestModelResultListener listener = new RequestHelper.RequestModelResultListener<UserInfoResult>(mContext, UserInfoResult.class) {
+            @Override
+            public void onSuccess(String jsonString) {
+                if (!TextUtils.isEmpty(jsonString)) {
+                    JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                    boolean hasError = jsonObject.getBoolean("HasError");
+                    if (!hasError) {
+                        JSONObject modelObj = jsonObject.getJSONObject("Model");
+                        if (modelObj != null) {
+                            JSONArray dataList = modelObj.getJSONArray("DataList");
+                            if (dataList != null && dataList.size() > 0) {
+                                JSONObject bindInfo = dataList.getJSONObject(0);
+                                if (bindInfo != null) {
+                                    String bindId = bindInfo.getString("MemberId");
+                                    String bindName = bindInfo.getString("RealName");
+                                    String bindAccount = bindInfo.getString("NickName");
+                                    String bindUserName = bindName + " " + bindAccount;
+                                    String shareTypeString  = mContext.getString(R.string.str_qq);
+                                    if (mediaType == SHARE_MEDIA.WEIXIN) {
+                                        shareTypeString = mContext.getString(R.string.str_weixin);
+                                    }
+                                    String message = mContext.getString(R.string.str_third_account_already_bind,shareTypeString,bindUserName);
+                                    if (!TextUtils.isEmpty(bindId)) {
+                                        popBindSelfDialog(message, bindId,unionid);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        RequestHelper.sendPostRequest(mContext, ServerUrl.LOAD_ASSOCIATED_BY_UNIONID_BASE_URL, mParams, listener);
+    }
+
+    private void popBindSelfDialog(String message,String memberId,String unionid) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                mContext,
+                null,
+                message,
+                mContext.getString(R.string.cancel),
+                (dialog, which) -> {
+                    dialog.dismiss();
+                },
+                mContext.getString(R.string.str_bind_current_account),
+                (dialog, which) -> {
+                    dialog.dismiss();
+                    bindCurrentAccount(memberId,unionid);
+                });
+        messageDialog.resizeDialog(0.8f);
+        messageDialog.show();
+    }
+
+    private void bindCurrentAccount(String memberId,String unionid){
+        Map<String, Object> mParams = new HashMap<String, Object>();
+        mParams.put("MemberId", memberId);
+        mParams.put("NewMemberId", DemoApplication.getInstance().getMemberId());
+        mParams.put("Unionid", unionid);
+        RequestHelper.RequestModelResultListener listener = new RequestHelper.RequestModelResultListener<UserInfoResult>(mContext, UserInfoResult.class) {
+            @Override
+            public void onSuccess(String jsonString) {
+                if (!TextUtils.isEmpty(jsonString)) {
+                    JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                    boolean hasError = jsonObject.getBoolean("HasError");
+                    if (!hasError) {
+                        if (callbackListener != null) {
+                            callbackListener.onBack(true);
+                        }
+                    }
+                }
+            }
+        };
+        listener.setShowLoading(true);
+        RequestHelper.sendPostRequest(mContext, ServerUrl.GET_BIND_NEWACCOUNT_FOR_UNIONID_BASE_URL, mParams, listener);
+    }
+
     private void showLoadingDialog() {
         loadingDialog = DialogHelper.getIt(mContext).GetLoadingDialog(0);
     }
-
 
     private void dismissLoadingDialog() {
         try {

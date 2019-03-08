@@ -1771,4 +1771,10 @@
     <string name="str_mark_method">Marking method：</string>
     <string name="str_complete_method">Complete method：</string>
     <string name="str_look_review">查看点评</string>
+    <string name="str_third_login_tip0">微信/QQ授权成功，已同步生成新的两个蛙蛙账号</string>
+    <string name="str_thrid_login_tip1">登录后，请尽快到个人空间，点击头像，进入个人详情中修改密码</string>
+    <string name="str_tip_account">您的两栖蛙蛙账号：%s</string>
+    <string name="str_tip_password">初始密码：%s</string>
+    <string name="str_third_account_already_bind">此%1$s账号已关联其他两栖蛙蛙账号（%2$s），是否需要绑定到当前账号？</string>
+    <string name="str_bind_current_account">绑定当前账号</string>
 </resources>
