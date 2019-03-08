@@ -97,10 +97,7 @@ public class QDubbingActivity extends DubbingActivity {
             resPropertyValue = args.getInt(Constant.VIDEO_RES_PROPERTIES_VALUE);
             CommitTask data = (CommitTask) args.getSerializable(CommitTask.class.getSimpleName());
             if (data != null){
-                Config.KEY_PLAYER_DEFAULT_VALUE = 1;
                 handleOnlinePageData(data);
-            } else {
-                Config.KEY_PLAYER_DEFAULT_VALUE = 0;
             }
         }
     }

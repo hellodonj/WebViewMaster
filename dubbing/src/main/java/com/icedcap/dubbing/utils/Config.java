@@ -50,7 +50,7 @@ public class Config {
 
     public int getPlayer() {
         String key = mAppContext.getString(R.string.pref_key_player);
-        String value = mSharedPreferences.getString(key, String.valueOf(KEY_PLAYER_DEFAULT_VALUE));
+        String value = mSharedPreferences.getString(key,"");
         try {
             return Integer.valueOf(value).intValue();
         } catch (NumberFormatException e) {
