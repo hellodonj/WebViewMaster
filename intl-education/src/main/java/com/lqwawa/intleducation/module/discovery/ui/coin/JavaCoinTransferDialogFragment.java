@@ -161,7 +161,7 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
         if(EmptyUtil.isNotEmpty(entities)){
             // 获取到用户信息
             UserEntity entity = entities.get(0);
-            if(entity.isIsExist()){
+            if(entity.isExist()){
                 // 获取到对应实体的信息，就set进去
                 mChildContainer.setTag(entity);
                 StringUtil.fillSafeTextView(mQueryName,entity.getRealName());
@@ -248,7 +248,7 @@ public class JavaCoinTransferDialogFragment extends PresenterDialogFragment<Java
                                                 if(EmptyUtil.isNotEmpty(entities)){
                                                     // 获取到用户信息
                                                     UserEntity entity = entities.get(0);
-                                                    if(entity.isIsExist()){
+                                                    if(entity.isExist()){
                                                         UserParams user = UserParams.buildUser(entity);
                                                         if(EmptyUtil.isNotEmpty(mNavigator)){
                                                             mNavigator.onChoiceConfirm(user);
