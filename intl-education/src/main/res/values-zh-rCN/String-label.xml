@@ -380,6 +380,18 @@
     <string name="label_telephone_hot_line">垂询热线：%s</string>
     <string name="label_apply_for_have_commit">申请已提交</string>
     <string name="label_applying_for">机构管理员正在审核，请耐心等待</string>
+    <string name="label_tutorial_space">帮辅空间</string>
+    <string name="label_course_box">我的课程</string>
+    <string name="label_tutorial_work">作业列表</string>
+    <string name="label_tutorial_student">我帮辅的学生</string>
+    <string name="label_tutorial_course">我帮辅的课程</string>
+    <string name="label_tutorial_organ">我的帮辅机构</string>
+    <string name="label_student_work">我的作业</string>
+    <string name="label_student_tutorial">我的帮辅</string>
+    <string name="label_student_course">我的习教辅</string>
+    <string name="label_student_live">我的空中课堂</string>
+    <string name="label_my">我的</string>
+    <string name="label_tutorial_student_review_count">%d未批</string>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>

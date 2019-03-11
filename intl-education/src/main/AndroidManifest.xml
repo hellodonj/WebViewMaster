@@ -902,6 +902,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--我的帮辅学生列表-->
+        <activity android:name=".module.tutorial.teacher.students.TutorialStudentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
         <!--我的帮辅机构列表-->
         <activity android:name=".module.tutorial.teacher.schools.TutorialSchoolsActivity"
             android:screenOrientation="portrait"
@@ -914,6 +919,11 @@
 
         <!--帮辅批阅列表页面-->
         <activity android:name=".module.tutorial.marking.list.TutorialMarkingListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--Fragment公共容器的入口-->
+        <activity android:name=".base.widgets.ui.CommonContainerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 

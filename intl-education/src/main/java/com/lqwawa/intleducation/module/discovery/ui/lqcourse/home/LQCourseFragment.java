@@ -161,18 +161,7 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                         }
                     }
                 }else{
-                    // ClassifyListActivity.show(getActivity(),entity);
-                    TutorialCoursesParams params = new TutorialCoursesParams("sfa",getString(R.string.title_tutorial_courses));
-                    TutorialCoursesActivity.show(getActivity(),params);
-                    TutorialSchoolsParams schoolsParams = new TutorialSchoolsParams("sa",getString(R.string.title_tutorial_schools));
-                    TutorialSchoolsActivity.show(getActivity(),schoolsParams);
-                    StudentTutorialParams studentTutorialParams = new StudentTutorialParams(false,"SF",getString(R.string.title_student_tutorial));
-                    StudentTutorialActivity.show(getActivity(),studentTutorialParams);
-
-                    // 批阅列表页面
-                    // 测试数据
-                    TutorialMarkingParams markingParams = new TutorialMarkingParams("0018356f-ad4b-439f-88fa-e4cdbf4de32b",TutorialRoleType.TUTORIAL_TYPE_TUTOR);
-                    TutorialMarkingListActivity.show(getActivity(),markingParams);
+                    ClassifyListActivity.show(getActivity(),entity);
                 }
                 // EmptyActivity.show(getActivity());
             }

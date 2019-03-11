@@ -44,4 +44,9 @@ public abstract class EventConstant {
 	 */
 	public static final String TRIGGER_EXIT_COURSE = "TRIGGER_EXIT_COURSE";
 
+	/**
+	 * 触发切换模式
+	 */
+	public static final String TRIGGER_SWITCH_APPLICATION_MODE = "TRIGGER_SWITCH_APPLICATION_MODE";
+
 }
