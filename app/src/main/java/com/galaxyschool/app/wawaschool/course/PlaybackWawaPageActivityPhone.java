@@ -26,7 +26,7 @@ public class PlaybackWawaPageActivityPhone extends PlaybackActivityPhone {
 	@Override
 	protected void onSelfCreate() {
 		// TODO Auto-generated method stub
-		if (taskMarkParam != null) {
+		if (taskMarkParam != null || isAnswerCardQuestion) {
 			super.onSelfCreate();
 		} else {
 			setupPlaybackActivityHandler(this);
@@ -51,7 +51,7 @@ public class PlaybackWawaPageActivityPhone extends PlaybackActivityPhone {
 	}
 
 	protected void addMenuOrView(LinearLayout attachedBar) {
-		if (taskMarkParam != null || isAnswerCardQuestion) {
+		if (taskMarkParam != null) {
 			addMarkView(attachedBar);
 		} else {
 			addMenu(attachedBar);

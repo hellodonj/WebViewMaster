@@ -86,6 +86,8 @@ public class DoTaskOrderHelper {
     private ExerciseItem itemData;
     private String markScore;
     private boolean isUpdateAnswerDetail;
+    private String resId;
+    private String resUrl;
 
     public DoTaskOrderHelper(Context mContext) {
         this.mContext = mContext;
@@ -113,6 +115,16 @@ public class DoTaskOrderHelper {
 
     public DoTaskOrderHelper setUploadDialogHandler(UploadDialog.UploadDialogHandler handler) {
         this.handler = handler;
+        return this;
+    }
+
+    public DoTaskOrderHelper setResId(String resId){
+        this.resId = resId;
+        return this;
+    }
+
+    public DoTaskOrderHelper setResUrl(String resUrl){
+        this.resUrl = resUrl;
         return this;
     }
 
@@ -372,6 +384,8 @@ public class DoTaskOrderHelper {
         param.put("TaskId", cardParam.getTaskId());
         param.put("StudentId", cardParam.getStudentId());
         param.put("StudentResTitle", cardParam.getCommitTaskTitle());
+        param.put("StudentResId", resId);
+        param.put("StudentResUrl", resUrl);
         if (cardParam.isFromOnlineStudyTask()) {
             param.put("SchoolId", cardParam.getSchoolId());
             param.put("SchoolName", cardParam.getSchoolName());

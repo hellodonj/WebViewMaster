@@ -83,7 +83,7 @@ public class AnswerCardPopWindow extends PopupWindow {
     /**
      * 获取学生提交的答案
      */
-    public void commitAnswerQuestion() {
+    public void commitAnswerQuestion(String resId,String resUrl) {
         if (exerciseItems != null && exerciseItems.size() > 0) {
             for (int i = 0; i < exerciseItems.size(); i++) {
                 ExerciseItem item = exerciseItems.get(i);
@@ -95,6 +95,8 @@ public class AnswerCardPopWindow extends PopupWindow {
             DoTaskOrderHelper helper = new DoTaskOrderHelper(mContext);
             helper.setExerciseAnswerCardParam(cardParam).
                     setExerciseItem(exerciseItems).
+                    setResId(resId).
+                    setResUrl(resUrl).
                     commit();
         }
     }

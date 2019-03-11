@@ -211,6 +211,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                     isAnswerCardQuestion = cardParam.isShowExerciseButton();
                     //设置软键盘的弹出方式
                     if (isAnswerCardQuestion) {
+                        //强制改成学生的身份
+                        setUserType(RoleType.ROLE_TYPE_STUDENT);
                         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                         //初始化答题卡的popWindow
@@ -228,6 +230,9 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             }
         }
         onSelfCreate();
+        if (isAnswerCardQuestion) {
+            edit();
+        }
         //根据条件判断是否需要记录观看的时间
         if (isNeedTimerRecorder()) {
             recordTime = System.currentTimeMillis();
@@ -252,7 +257,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 mSlideInPlaybackParam.mRayMenusV[mSlideInPlaybackParam.mRayMenusV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
             }
 
-            if (mParam != null) {
+            if (mParam != null && !isAnswerCardQuestion) {
                 //提问批阅时放出文本按钮
                 mSlideInPlaybackParam.mRayMenusH = new int[]{
                         BaseSlideManager.MENU_ID_TEXT_POINTER, BaseSlideManager.MENU_ID_PAGE_HORN_RECORD,
@@ -329,11 +334,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             markView = mMarkBtn;
             changeMarkViewSize();
         }
-        if (isAnswerCardQuestion) {
-            updateCommitView(markView);
-        } else {
-            updateMarkView(taskMarkParam, markView);
-        }
+        updateMarkView(taskMarkParam, markView);
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,6 +363,10 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
      */
 
     private void updateMarkView(TaskMarkParam param, TextView markView) {
+        if (isAnswerCardQuestion) {
+            updateCommitView(markView);
+            return;
+        }
         if (param == null || markView == null) {
             return;
         }
@@ -386,9 +391,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     }
 
     private void updateCommitView(TextView commitView) {
-        if (commitView != null) {
-            commitView.setVisibility(View.VISIBLE);
-            commitView.setText(getString(R.string.commit));
+//        if (commitView != null) {
+//            commitView.setVisibility(View.VISIBLE);
+//            commitView.setText(getString(R.string.commit));
+//        }
+        if (mSaveBtn != null) {
+            mSaveBtn.setVisibility(mInEditMode ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -944,7 +952,9 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         });
         //确认
         middleBtn.setOnClickListener(v -> {
-            answerCardPopWindow.commitAnswerQuestion();
+            //确定提交
+            mCommitDialog.dismiss();
+            commitCourse(null);
         });
         mCommitDialog = new AlertDialog.Builder(PlaybackActivityPhone.this).create();
         mCommitDialog.show();
@@ -1132,8 +1142,14 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                     public void run() {
                                                                         if (data != null) {
                                                                             final CourseUploadResult uploadResult = (CourseUploadResult) data;
-                                                                            if (doUploadResult(uploadResult, isMarkScore, score, data))
-                                                                                return;
+                                                                            if (isAnswerCardQuestion) {
+                                                                                if (uploadResult.code == 0) {
+                                                                                    CourseData courseData = uploadResult.data.get(0);
+                                                                                    answerCardPopWindow.commitAnswerQuestion(courseData.getIdType(), courseData.resourceurl);
+                                                                                }
+                                                                            } else if (doUploadResult(uploadResult, isMarkScore, score, data)) {
+
+                                                                            }
                                                                         } else {
                                                                             TipMsgHelper.ShowLMsg(PlaybackActivityPhone.this, R.string.upload_comment_error);
                                                                         }

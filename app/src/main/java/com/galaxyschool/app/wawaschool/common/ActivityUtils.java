@@ -261,6 +261,7 @@ public class ActivityUtils {
         param.destActivity = PlaybackWawaPageActivityPhone.class; // 跳转Activity
         param.isShareScreen = isShareScreen;  // 是否投屏
         param.playbackParam = playbackParam;  // 播放其他参数
+        param.url = info.getResourceUrl();
         CreateSlideHelper.loadAndOpenSlideByCHWUrl(param);
     }
 
