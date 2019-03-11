@@ -515,19 +515,19 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 .layout_add_course_res, listenReadAndWriteLayout, false);
         titleTextView = (TextView) readWriteLayout.findViewById(R.id.tv_appoint_course);
         titleTextView.setText(getString(R.string.pls_add_work_task_point));
-        if (superTaskType == StudyTaskType.TASK_ORDER) {
-            findViewById(R.id.common_grid_view).setVisibility(View.GONE);
-            readWriteGridView = (GridView) readWriteLayout.findViewById(R.id.gv_task);
-            readWriteGridView.setVisibility(View.VISIBLE);
-            readWriteGridView.setNumColumns(1);
-            //设置分割线
-            readWriteGridView.setVerticalSpacing(DisplayUtil.dip2px(getActivity(), 1));
-            readWriteGridView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.light_gray));
-        } else {
+//        if (superTaskType == StudyTaskType.TASK_ORDER) {
+//            findViewById(R.id.common_grid_view).setVisibility(View.GONE);
+//            readWriteGridView = (GridView) readWriteLayout.findViewById(R.id.gv_task);
+//            readWriteGridView.setVisibility(View.VISIBLE);
+//            readWriteGridView.setNumColumns(1);
+//            //设置分割线
+//            readWriteGridView.setVerticalSpacing(DisplayUtil.dip2px(getActivity(), 1));
+//            readWriteGridView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.light_gray));
+//        } else {
             readWriteGridView = (GridView) readWriteLayout.findViewById(R.id.common_grid_view);
             readWriteGridView.setNumColumns(4);
             readWriteGridView.setVerticalSpacing(20);
-        }
+//        }
         if (readWriteData.size() == 0) {
             readWriteData.add(new ResourceInfoTag());
         }
@@ -536,7 +536,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     int position = (int) result;
                     readWriteData.remove(position);
                     readAndWriteAdapter.notifyDataSetChanged();
-                    updateGridViewHeight(false);
+//                    updateGridViewHeight(false);
                     boolean flag = showScoreView(false);
                     updateScoreView(flag ? View.GONE : View.VISIBLE);
                     if (hasPointData()) {
@@ -1528,7 +1528,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
         if (readAndWriteAdapter != null) {
             readAndWriteAdapter.notifyDataSetChanged();
-            updateGridViewHeight(false);
+//            updateGridViewHeight(false);
         }
     }
 
