@@ -213,7 +213,6 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                         } else {
                             iconLayout.setVisibility(View.VISIBLE);
                         }
-
                     }
 
                     //显示任务类型
@@ -228,8 +227,8 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                     }
 
                     //语音评测的图片布局
-                    if (data.isEvalType() || isAnswerTaskOrderQuestion) {
-                        ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
+                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
+                    if (data.isEvalType() || (data.isMarkCard() && !data.isCourseType())) {
                         if (imageView != null) {
                             //之前宽 90 高 120  //设置布局为A4比例
                             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) imageView.getLayoutParams();
@@ -237,14 +236,20 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                             layoutParams.width = width;
                             layoutParams.height = width * 210 / 297;
                             imageView.setLayoutParams(layoutParams);
-                            if (isAnswerTaskOrderQuestion){
-                                MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
-                                        "", imageView, R.drawable.icon_exercise_card);
-                            } else {
+                            if (data.isEvalType()){
                                 MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
                                         "", imageView, R.drawable.icon_student_task_eval);
+                            } else {
+                                MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
+                                        "", imageView, R.drawable.icon_exercise_card);
                             }
                         }
+                    }
+                    if (imageView != null) {
+                        imageView.setOnClickListener(v -> {
+                            //点击缩略图
+                            onViewClick(data,true);
+                        });
                     }
 
                     //如果来自校园巡查的数据都不是显示小红点
@@ -256,7 +261,7 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                     }
 
                     View courseDetails = view.findViewById(R.id.tv_access_details);
-                    if (taskType == StudyTaskType.ENGLISH_WRITING || isAnswerTaskOrderQuestion) {
+                    if (taskType == StudyTaskType.ENGLISH_WRITING || data.isMarkCard()) {
                         courseDetails.setVisibility(View.GONE);
                     } else {
                         courseDetails.setVisibility(View.VISIBLE);
@@ -312,20 +317,7 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                     if (data != null) {
                         //更新小红点
                         updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
-                        if (isAnswerTaskOrderQuestion){
-                            enterStudentAnswerDetailActivity(data,false);
-                        } else if (data.isEvalType()) {
-                            enterTeacherEvalDetail(data);
-                        } else if (data.isVideoType()) {
-                            enterQDubbingDetailActivity(data);
-                        } else {
-                            if (taskType == StudyTaskType.ENGLISH_WRITING) {
-                                //英文写作点评记录页面
-                                englishWritingPageSkip(data);
-                            } else {
-                                openImage(data);
-                            }
-                        }
+                        onViewClick(data,false);
                     }
                 }
 
@@ -345,6 +337,27 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
         }
     }
 
+    public void onViewClick(CommitTask data,
+                            boolean thumbnailClick){
+        if (thumbnailClick && data.isMarkCard() && data.isCourseType()) {
+            openImage(data);
+        } else {
+            if (data.isMarkCard()) {
+                enterStudentAnswerDetailActivity(data, false);
+            } else if (data.isEvalType()) {
+                enterTeacherEvalDetail(data);
+            } else if (data.isVideoType()) {
+                enterQDubbingDetailActivity(data);
+            } else {
+                if (taskType == StudyTaskType.ENGLISH_WRITING) {
+                    //英文写作点评记录页面
+                    englishWritingPageSkip(data);
+                } else {
+                    openImage(data);
+                }
+            }
+        }
+    }
     /**
      * 打开图片
      *
@@ -541,9 +554,10 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
             task = homeworkCommitObjectInfo.getTaskInfo();
             if (task != null) {
                 loadTaskCourseDetail(task.getResId());
-                if (task.getResPropType() == 1){
-                    checkTaskOrderAnswerQuestionCard();
-                }
+//                if (task.getResPropType() == 1){
+//                    checkTaskOrderAnswerQuestionCard();
+//                }
+                checkTaskOrderAnswerQuestionCard();
             }
         }
 

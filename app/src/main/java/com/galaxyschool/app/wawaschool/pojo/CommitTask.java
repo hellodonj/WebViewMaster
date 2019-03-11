@@ -91,6 +91,33 @@ public class CommitTask implements Serializable, Parcelable {
         return false;
     }
 
+    public boolean isCourseType(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_COURSE_SPEAKER || type == ResType.RES_TYPE_ONEPAGE;
+            }
+        }
+        return false;
+    }
+
+    public boolean isStudyCard(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_STUDY_CARD;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return 任务单自动批阅的数据
+     */
+    public boolean isMarkCard(){
+        return CommitType == 6;
+    }
+
     public int getScoreRule() {
         return scoreRule;
     }

@@ -433,7 +433,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 String taskScore = data.getTaskScore();
                                 if (TextUtils.isEmpty(taskScore)) {
                                     ivWarn.setVisibility(View.GONE);
-                                } else if (isAnswerTaskOrderQuestion) {
+                                } else if (data.isMarkCard()) {
                                     //答题卡得分
                                     ivWarn.setVisibility(Double.valueOf(taskScore) < fullMarkScore * 0.6 ? View.VISIBLE : View.GONE);
                                 } else if (data.isHasCommitTaskReview()) {
@@ -489,9 +489,9 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             }
                         }
 
+                        ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
                         //语音评测的图片布局
-                        if (data.isEvalType() || isAnswerTaskOrderQuestion) {
-                            ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
+                        if (data.isEvalType() || (data.isMarkCard() && !data.isCourseType())) {
                             if (imageView != null) {
                                 //之前宽 90 高 120  //设置布局为A4比例
                                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) imageView.getLayoutParams();
@@ -499,15 +499,22 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 layoutParams.width = width;
                                 layoutParams.height = width * 210 / 297;
                                 imageView.setLayoutParams(layoutParams);
-                                if (isAnswerTaskOrderQuestion) {
+                                if (data.isEvalType()) {
+                                    MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
+                                            "", imageView, R.drawable.icon_student_task_eval);
+                                } else {
                                     //答题卡
                                     MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
                                             "", imageView, R.drawable.icon_exercise_card);
-                                } else {
-                                    MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
-                                            "", imageView, R.drawable.icon_student_task_eval);
                                 }
                             }
+                        }
+
+                        if (imageView != null) {
+                            imageView.setOnClickListener(v -> {
+                                //缩略图的点击事件
+                                onViewClick(data,true);
+                            });
                         }
 
                         //如果来自校园巡查的数据都不是显示小红点
@@ -579,7 +586,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             public void onClick(View v) {
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
-                                if (isAnswerTaskOrderQuestion) {
+                                if (data.isMarkCard()) {
                                     //任务单的答题卡
                                     enterStudentAnswerDetailActivity(data, true);
                                 } else if (data.isEvalType() || data.isVideoType()) {
@@ -608,7 +615,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     commitTimeTextV.setText(commitTime);
                                 }
                             }
-                        } else if (isAnswerTaskOrderQuestion) {
+                        } else if (data.isMarkCard()) {
                             courseDetails.setVisibility(View.GONE);
                         } else {
                             courseDetails.setVisibility(View.VISIBLE);
@@ -618,7 +625,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         courseDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (isAnswerTaskOrderQuestion) {
+                                if (data.isMarkCard()) {
                                     //任务单答题卡
                                     enterStudentAnswerDetailActivity(data, false);
                                 } else if (data.isEvalType()) {
@@ -656,24 +663,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             public void onClick(View v) {
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
-                                if (isAnswerTaskOrderQuestion) {
-                                    enterStudentAnswerDetailActivity(data, false);
-                                } else if (data.isEvalType()) {
-                                    enterTeacherReviewDetailActivity(data, false);
-                                } else if (data.isVideoType()) {
-                                    enterQDubbingDetailActivity(data);
-                                } else {
-                                    if ((taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE)) {
-                                        //老师只能批阅自己布置的作业,学生只能提问自己的作业
-                                        //听说课  读写单
-                                        loadMarkData(null, data, null, true);//加载最新数据
-                                    } else if (taskType == StudyTaskType.ENGLISH_WRITING) {
-                                        //英文写作点评记录页面
-                                        englishWritingPageSkip(data);
-                                    } else {
-                                        openImage(data);
-                                    }
-                                }
+                                onViewClick(data,false);
                             }
                         });
 
@@ -797,6 +787,32 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
             }
         });
+    }
+
+    public void onViewClick(CommitTask data,
+                            boolean thumbnailClick){
+        if (thumbnailClick && data.isMarkCard() && data.isCourseType()) {
+            openImage(data);
+        } else {
+            if (data.isMarkCard()) {
+                enterStudentAnswerDetailActivity(data, false);
+            } else if (data.isEvalType()) {
+                enterTeacherReviewDetailActivity(data, false);
+            } else if (data.isVideoType()) {
+                enterQDubbingDetailActivity(data);
+            } else {
+                if ((taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE)) {
+                    //老师只能批阅自己布置的作业,学生只能提问自己的作业
+                    //听说课  读写单
+                    loadMarkData(null, data, null, true);//加载最新数据
+                } else if (taskType == StudyTaskType.ENGLISH_WRITING) {
+                    //英文写作点评记录页面
+                    englishWritingPageSkip(data);
+                } else {
+                    openImage(data);
+                }
+            }
+        }
     }
 
     public void upDateDeleteButtonShowStatus(CommitTask data, boolean onClick) {
