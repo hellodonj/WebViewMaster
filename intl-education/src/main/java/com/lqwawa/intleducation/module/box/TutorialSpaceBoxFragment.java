@@ -53,7 +53,7 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
         // 传送模式
         // EventBus.getDefault().post(new EventWrapper(KEY_TUTORIAL_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
         // EventBus.getDefault().post(new EventWrapper(KEY_COURSE_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
-        if(tutorialMode || true){
+        if(tutorialMode){
             // 帮辅模式
             mNavHelper.performClickMenu(KEY_TUTORIAL_MODE_ID);
         }else{

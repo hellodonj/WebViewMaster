@@ -1693,8 +1693,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.im_user_icon) {
-            // enterPersonalSpace();
-            enterTutorialSpace();
+            enterPersonalSpace();
+            // enterTutorialSpace();
         } else {
             super.onClick(v);
         }
