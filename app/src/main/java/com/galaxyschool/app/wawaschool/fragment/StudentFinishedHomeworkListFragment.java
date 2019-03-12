@@ -261,7 +261,9 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                     }
 
                     View courseDetails = view.findViewById(R.id.tv_access_details);
-                    if (taskType == StudyTaskType.ENGLISH_WRITING || data.isMarkCard()) {
+                    if (taskType == StudyTaskType.ENGLISH_WRITING
+                            || data.isMarkCard()
+                            || data.isVideoType()) {
                         courseDetails.setVisibility(View.GONE);
                     } else {
                         courseDetails.setVisibility(View.VISIBLE);

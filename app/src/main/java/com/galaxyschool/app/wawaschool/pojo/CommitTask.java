@@ -27,6 +27,7 @@ public class CommitTask implements Serializable, Parcelable {
     private String StudentResId;//ѧ���ύ��ҵ����ԴID
     private String StudentResTitle;//ѧ���ύ����Դ��ҵ����
     private String StudentResUrl;//ѧ���ύ��ҵ����ԴURL
+    private String StudentResThumbnailUrl;
     private boolean IsRead;//��ʦ�Ƿ��Ѳ鿴��ҵ
     private String ReadTime;//��ʦ�鿴��ҵʱ��
     private String CreateId;
@@ -450,6 +451,14 @@ public class CommitTask implements Serializable, Parcelable {
         Deleted = deleted;
     }
 
+    public String getStudentResThumbnailUrl() {
+        return StudentResThumbnailUrl;
+    }
+
+    public void setStudentResThumbnailUrl(String studentResThumbnailUrl) {
+        StudentResThumbnailUrl = studentResThumbnailUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -497,6 +506,7 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeInt(this.scoreRule);
         dest.writeInt(this.AutoEvalCompanyType);
         dest.writeString(this.AutoEvalContent);
+        dest.writeString(this.StudentResThumbnailUrl);
     }
 
     public CommitTask() {
@@ -543,6 +553,7 @@ public class CommitTask implements Serializable, Parcelable {
         this.scoreRule = in.readInt();
         this.AutoEvalCompanyType = in.readInt();
         this.AutoEvalContent = in.readString();
+        this.StudentResThumbnailUrl = in.readString();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

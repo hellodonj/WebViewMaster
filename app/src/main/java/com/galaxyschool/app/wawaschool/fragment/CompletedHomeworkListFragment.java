@@ -615,7 +615,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     commitTimeTextV.setText(commitTime);
                                 }
                             }
-                        } else if (data.isMarkCard()) {
+                        } else if (data.isMarkCard() || data.isVideoType()) {
                             courseDetails.setVisibility(View.GONE);
                         } else {
                             courseDetails.setVisibility(View.VISIBLE);

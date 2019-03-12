@@ -45,6 +45,7 @@ import com.lqwawa.apps.views.lrcview.LrcEntry;
 import com.lqwawa.apps.views.lrcview.LrcView;
 import com.lqwawa.apps.views.switchbutton.SwitchButton;
 import com.lqwawa.client.pojo.StudyResPropType;
+import com.lqwawa.tools.DensityUtils;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
 import com.osastudio.common.utils.TipMsgHelper;
@@ -995,7 +996,7 @@ public class DubbingActivity extends AppCompatActivity implements
     }
 
     private int getWindowHeight() {
-        return dubbingVideoView.getMeasuredHeight() + teacherOperationLayout.getMeasuredHeight();
+        return dubbingVideoView.getMeasuredHeight() + teacherOperationLayout.getMeasuredHeight() + DensityUtils.dp2px(this,10);
     }
 
     private void refreshLrcLineText(long playTime) {

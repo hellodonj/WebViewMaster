@@ -362,6 +362,8 @@ public class WatchWawaCourseResourceSplicingUtils {
             if (resourceUrl.contains(suffix)){
                 resourceUrl = resourceUrl.substring(0,resourceUrl.lastIndexOf(suffix));
                 resourceUrl += headSuffix;
+            } else if (resourceUrl.endsWith(".mp4")) {
+                resourceUrl = resourceUrl.replace(".mp4",".jpg");
             }
         }
         //仅图片路径需要处理
