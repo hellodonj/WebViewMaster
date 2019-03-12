@@ -76,6 +76,9 @@ public class CourseVo extends BaseVo {
     private String bindSchoolId;
     private String bindClassId;
 
+    // V5.15新添加的字段
+    private int joinCount;
+
     public boolean isTag() {
         return tag;
     }
@@ -505,5 +508,13 @@ public class CourseVo extends BaseVo {
 
     public void setBindClassId(String bindClassId) {
         this.bindClassId = bindClassId;
+    }
+
+    public int getJoinCount() {
+        return joinCount;
+    }
+
+    public void setJoinCount(int joinCount) {
+        this.joinCount = joinCount;
     }
 }

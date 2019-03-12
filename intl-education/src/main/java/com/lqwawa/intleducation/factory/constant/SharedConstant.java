@@ -16,5 +16,7 @@ public interface SharedConstant {
     String KEY_FILTRATE_TO_GROUP_POSITION = "KEY_FILTRATE_TO_GROUP_POSITION";
     // 是否已经提醒过自动批阅读写单
     String KEY_AUTO_MARK_WARNING = "KEY_AUTO_MARK_WARNING";
+    // 是否打开帮辅模式
+    String KEY_APPLICATION_MODE = "KEY_APPLICATION_MODE";
 
 }

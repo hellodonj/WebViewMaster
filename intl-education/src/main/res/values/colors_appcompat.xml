@@ -52,6 +52,8 @@
 
     <!--不可用主题-->
     <color name="unusable_color">#2EA65E</color>
+    <color name="tutorial_task_type_color">#2BC881</color>
+    <color name="colorRange">#FF7800</color>
 
     <!--首页基础课程各类型的底色配置-->
     <color name="basics_type_color_1">#FFC80B</color>
