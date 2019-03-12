@@ -69,10 +69,11 @@
     <string name="str_dubbing_preview">预览</string>
     <string name="str_dubbing_commit">提交</string>
     <string name="str_dubbing_finish_all_tips">完成所有的配音才可以提交</string>
+    <string name="str_dubbing_preview_all_dubbing">完成所有的配音才可以预览</string>
     <string name="str_dubbing_recording">正在配音中...</string>
     <string name="str_preview_origin_voice">预览原声</string>
     <string name="str_listen_voice">听原音</string>
-    <string name="str_unfinish_dubbing_back">还有没有完成所有的配音，确定返回？</string>
+    <string name="str_unfinish_dubbing_back">配音还未完成，确认退出吗？</string>
     <string name="str_continue_dubbing">继续配音</string>
     <string name="str_record_err">录制异常，请重新录制</string>
     <string name="str_evaluate_fail">评测失败，请重新提交评测</string>

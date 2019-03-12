@@ -18,16 +18,16 @@
             android:id="@+id/media_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/default_cover"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_cover"/>
 
         <ImageView
             android:id="@+id/media_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
-            android:src="@drawable/unselect"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:src="@drawable/unselect"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,31 +36,31 @@
             android:background="#77000000"
             android:gravity="center">
 
-        <ImageView
-            android:id="@+id/icon_collect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_star"
-            android:scaleType="centerCrop"
-            android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/icon_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_star"
+                android:visibility="gone"/>
 
-        <TextView
-            style="@style/txt_wawa_normal_white"
-            android:id="@+id/media_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:ellipsize="end"
-            android:singleLine="true"/>
+            <TextView
+                android:id="@+id/media_name"
+                style="@style/txt_wawa_normal_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <!--place holder-->
         <TextView
-            style="@style/txt_wawa_normal_gray"
             android:id="@+id/media_time"
+            style="@style/txt_wawa_normal_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -71,20 +71,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
             android:scaleType="fitCenter"
-            android:src="@drawable/icon_dubbing_play"/>
+            android:src="@drawable/icon_play"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/iv_video_type_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:padding="10dp"
+            android:src="@drawable/icon_q_dubbing"
+            android:visibility="gone"/>
     </FrameLayout>
 
 
     <TextView
-        style="@style/txt_wawa_big_green"
         android:id="@+id/media_split_btn"
+        style="@style/txt_wawa_big_green"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="40dp"
         android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/show_split_course"/>
+        android:minHeight="40dp"
+        android:text="@string/show_split_course"
+        android:visibility="gone"/>
 
 </LinearLayout>

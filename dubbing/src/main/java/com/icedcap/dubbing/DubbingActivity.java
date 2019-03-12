@@ -132,6 +132,7 @@ public class DubbingActivity extends AppCompatActivity implements
     protected String reviewComment;
     protected int resPropertyValue;
     private boolean checkDubbingBySentence;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -613,7 +614,7 @@ public class DubbingActivity extends AppCompatActivity implements
             if (isRecordAll()) {
                 launchDubbingPreview();
             } else {
-                TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_finish_all_tips));
+                TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_preview_all_dubbing));
             }
         } else if (v.getId() == R.id.tv_confirm) {
             if (isRecordAll()) {

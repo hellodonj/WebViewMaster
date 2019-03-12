@@ -41,6 +41,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.medias.activity.MyLocalVideoListActivity;
+import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -308,6 +309,15 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
                             View.INVISIBLE : View.VISIBLE);
                     flag.setImageResource(data.isSelect() ? R.drawable.select :
                             R.drawable.unselect);
+
+                    ImageView videoTypeView = (ImageView) view.findViewById(R.id.iv_video_type_flag);
+                    if (videoTypeView != null) {
+                        if (data.getResourceType() == MaterialResourceType.Q_DUBBING_VIDEO) {
+                            videoTypeView.setVisibility(View.VISIBLE);
+                        } else {
+                            videoTypeView.setVisibility(View.GONE);
+                        }
+                    }
 
                     view.setTag(holder);
                     return view;
