@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class TutorCommentEntity implements Serializable {
 
+    public static final int STATUS_SHOWING = 1;
+    public static final int STATUS_HIDE = 0;
 
     /**
      * HeadPicUrl : http://filetestop.lqwawa.com/UploadFiles/2018/06/07/37985aee-a85a-47d9-84df-adb5ebb3320a/ed7d03f2-27b6-42cd-aa8b-594e921520aa.jpg
@@ -91,5 +93,13 @@ public class TutorCommentEntity implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isShowing(){
+        return this.status == STATUS_SHOWING;
+    }
+
+    public boolean isHide(){
+        return this.status == STATUS_HIDE;
     }
 }

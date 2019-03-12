@@ -15,6 +15,8 @@ import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
@@ -22,6 +24,8 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 
 import com.galaxyschool.app.wawaschool.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.List;
@@ -179,6 +183,8 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
 
     @Override
     public void updateQueryAddedTutorStateView(boolean added) {
+        // 广播出去,判断是否显示评论框
+        EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
         if(added){
            mBottomLayout.setVisibility(View.GONE);
         }else{
@@ -200,6 +206,8 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         if(result){
             // 加帮辅成功
             mBottomLayout.setVisibility(View.GONE);
+            // 广播出去,判断是否显示评论框
+            EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
         }
     }
 

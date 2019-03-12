@@ -395,6 +395,8 @@
     <string name="label_viewer_count">%d人浏览</string>
     <string name="label_attention_count">%d人关注</string>
     <string name="label_personal_introduce">个人介绍</string>
+    <string name="label_showing">显示</string>
+    <string name="label_hide">隐藏</string>
 
     <string-array name="label_tutorial_page_tabs">
         <item>帮辅的课程</item>

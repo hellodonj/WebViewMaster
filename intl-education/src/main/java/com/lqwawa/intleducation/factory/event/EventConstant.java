@@ -49,4 +49,12 @@ public abstract class EventConstant {
 	 */
 	public static final String TRIGGER_SWITCH_APPLICATION_MODE = "TRIGGER_SWITCH_APPLICATION_MODE";
 
+
+	/**
+	 * 帮辅关注状态的更新
+	 */
+	public static final String TRIGGER_ATTENTION_TUTORIAL_UPDATE = "TRIGGER_ATTENTION_TUTORIAL_UPDATE";
+
+
+
 }

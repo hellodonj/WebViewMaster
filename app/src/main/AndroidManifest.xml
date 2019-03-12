@@ -1366,6 +1366,7 @@
         <activity
             android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.Common"/>
