@@ -15,6 +15,7 @@ public class DubbingEntity extends SrtEntity {
     private boolean isRecord;
     private boolean isSelect;
     private boolean isRecording;
+    private boolean isRecordPlaying;
 
     public DubbingEntity() {
 
@@ -89,6 +90,14 @@ public class DubbingEntity extends SrtEntity {
         isRecording = recording;
     }
 
+    public boolean isRecordPlaying() {
+        return isRecordPlaying;
+    }
+
+    public void setIsRecordPlaying(boolean recordPlaying) {
+        isRecordPlaying = recordPlaying;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -103,6 +112,7 @@ public class DubbingEntity extends SrtEntity {
         dest.writeByte(this.isRecord ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isSelect ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isRecording ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isRecordPlaying ? (byte) 1 : (byte) 0);
     }
 
     protected DubbingEntity(Parcel in) {
@@ -113,6 +123,7 @@ public class DubbingEntity extends SrtEntity {
         this.isRecord = in.readByte() != 0;
         this.isSelect = in.readByte() != 0;
         this.isRecording = in.readByte() != 0;
+        this.isRecordPlaying = in.readByte() != 0;
     }
 
     public static final Creator<DubbingEntity> CREATOR = new Creator<DubbingEntity>() {

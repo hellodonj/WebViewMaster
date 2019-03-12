@@ -72,11 +72,11 @@ public class AudioRecordHelper {
         }
     }
 
-    public void play(final long seek, final int position) {
+    public void play(final long seek, final int position, final CallbackListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                playWavFile(mp3FileList.get(position), 1, seek);
+                playWavFile(mp3FileList.get(position), 1, seek,listener);
             }
         }).start();
 
@@ -169,7 +169,7 @@ public class AudioRecordHelper {
         }
     }
 
-    private void playWavFile(File file, final float volume, final long seek) {
+    private void playWavFile(File file, final float volume, final long seek, final CallbackListener listener) {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
@@ -196,6 +196,9 @@ public class AudioRecordHelper {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    if (listener != null){
+                        listener.onBack(true);
+                    }
                     mp.release();
                     mediaPlayer = null;
                 }

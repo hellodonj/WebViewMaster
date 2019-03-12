@@ -2948,7 +2948,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                                 CourseData courseData = new CourseData();
                                 courseData.id = mediaData.id;
                                 courseData.type = ResType.RES_TYPE_VIDEO;
-                                courseData.nickname = mediaData.savename;
+                                courseData.nickname = task.getTaskTitle();
                                 courseData.resourceurl = mediaData.resourceurl;
                                 commitStudentCourse(userInfo, courseData, null,dubbingEntityList);
                             }

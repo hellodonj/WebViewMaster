@@ -137,14 +137,20 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        mDubbingVideoView.onPause();
-        mAudioHelper.onPause();
+        if (mDubbingVideoView.isPlaying()) {
+            mDubbingVideoView.onPause();
+        }
+        if (mAudioHelper.isMediaPlaying()) {
+            mAudioHelper.onPause();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mArtProcess.setVisibility(View.GONE);
+        mDubbingVideoView.stop();
+        mAudioHelper.onStop();
     }
 
     private void initVideoView() {
@@ -178,7 +184,9 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             @Override
             public void onVideoPause(){
                 //暂停播放
-                mAudioHelper.onPause();
+                if (mAudioHelper.isMediaPlaying()) {
+                    mAudioHelper.onPause();
+                }
             }
 
             @Override
@@ -283,7 +291,12 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     }
 
     private void backPress(){
-        mDubbingVideoView.onPause();
+        if (mDubbingVideoView.isPlaying()) {
+            mDubbingVideoView.onPause();
+        }
+        if (mAudioHelper.isMediaPlaying()) {
+            mAudioHelper.onPause();
+        }
         mDubbingVideoView.stop();
         mAudioHelper.onStop();
         finish();
