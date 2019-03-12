@@ -805,5 +805,69 @@ public final class AppConfig {
         // 获取班级课程统计列表
         public static final String GetCourseStatisticsUserArrayUrl = ServerBase +
                 "api/study/courseStatistics?j=";
+
+        /**
+         * V5.15相关接口
+         */
+        // 获取符合过滤条件的机构列表
+        public static final String PostRequestFilterOrganUrl =
+                LQWAWA_BASE_SERVER + "NewApi/DataStatisticsForOMS/LoadFilterSchoolList";
+
+        // 获取省市区信息
+        public static final String PostRequestLocationDataUrl =
+                LQWAWA_BASE_SERVER + "Api/Platform/User/Apply/SchoolSettledApply/BindLocation";
+
+        // 学生申请机构助教
+        public static final String GetRequestApplyForTutor =
+                ServerBase + "api/tutor/applyOrganTutor?j=";
+
+        // 学生助教获取作业列表时间标记
+        public static final String PostRequestWorkDateFlag =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetDateSignForAssist";
+
+        // 学生助教拉取作业列表
+        public static final String PostRequestWorkTaskList =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetAssistTaskList";
+
+        // 助教拉取帮辅的学生列表
+        public static final String PostRequestPullTutorialStudents =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/GetAssistStudentList";
+
+        // 助教拉取帮辅机构
+        public static final String PostRequestTutorialOrgan =
+                LQWAWA_BASE_SERVER + "Api/Mobile/Setting/PersonalInfo/PersonalInfo/LoadMemberSchoolList";
+
+        // 根据条件查询我帮辅的课程
+        public static final String GetRequestTutorialCourses =
+                ServerBase + "api/tutor/getMyTutorCourses?j=";
+
+        // 学生查询我的帮辅老师列表
+        public static final String GetRequestTutorialByStudentId =
+                ServerBase + "api/tutor/getMyTutorsByStuId?j=";
+
+        // 学生查询是否已经添加帮辅老师
+        public static final String GetQueryAddedTutorState =
+                ServerBase + "api/tutor/qryWhetherAddedTurtor?j=";
+
+        // 学生添加帮辅老师
+        public static final String GetRequestAddTutor =
+                ServerBase + "api/tutor/addMyTutorByStuId?j=";
+
+        // 获取帮辅老师的评论列表
+        public static final String GetRequestTutorCommentData =
+                ServerBase + "api/tutor/getEstimateList?j=";
+
+        // 帮辅评价显示和隐藏
+        public static final String GetRequestUpdateTutorialCommentStatus =
+                ServerBase + "api/tutor/updateEstimateStatus?j=";
+
+        // 对帮辅评价内容点赞
+        public static final String GetTutorialCommentAddPraise =
+                ServerBase + "api/tutor/addEstimatePraise?j=";
+
+        // 对帮辅老师进行评论
+        public static final String GetRequestAddTutorialComment =
+                ServerBase + "api/tutor/addTutorEstimate?j=";
+
     }
 }

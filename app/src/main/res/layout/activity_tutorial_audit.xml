@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <FrameLayout
+        android:id="@+id/telephone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorRange"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tv_telephone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textColor="@color/textLight"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="4dp"
+            android:text="@string/label_telephone_hot_line"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_launcher"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/textPrimary"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginTop="20dp"
+                android:text="@string/label_apply_for_have_commit"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/textSecond"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginTop="20dp"
+                android:text="@string/label_applying_for"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+</LinearLayout>

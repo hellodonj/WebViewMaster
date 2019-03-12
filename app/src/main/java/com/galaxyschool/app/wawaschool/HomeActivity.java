@@ -44,6 +44,7 @@ import com.lecloud.skin.init.InitResultListener;
 import com.lecloud.skin.init.LqInit;
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicFragment;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.TabCourseFragment;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
@@ -377,9 +378,12 @@ public class HomeActivity extends BaseCompatActivity
         LQBasicFragment lqBasicFragment = LQBasicFragment.newInstance();
         fragments.add(lqBasicFragment);
 
-        //我的课程
-        TabCourseFragment tabCourseFragment = TabCourseFragment.newInstance();
-        fragments.add(tabCourseFragment);
+        // 我的课程
+        // TabCourseFragment tabCourseFragment = TabCourseFragment.newInstance();
+        // fragments.add(tabCourseFragment);
+        // 帮辅盒子
+        TutorialSpaceBoxFragment boxFragment = TutorialSpaceBoxFragment.newInstance();
+        fragments.add(boxFragment);
 
         //空中学校
         MySchoolSpaceFragment mySchoolSpaceFragment = new MySchoolSpaceFragment();
