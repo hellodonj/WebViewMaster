@@ -67,7 +67,6 @@ public class DubbingVideoView extends FrameLayout implements
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.d("TTT","进度="+getCurrentPosition());
             switch (msg.what) {
                 case SHOW_PROGRESS:
                     if (mIjkVideoView != null && mIsPlaying) {
@@ -83,6 +82,9 @@ public class DubbingVideoView extends FrameLayout implements
 //                                playStill(seekPlay);
                                 mIjkVideoView.pause();
                                 mPlayButton.setVisibility(VISIBLE);
+                                if (onEventListener != null) {
+                                    onEventListener.onVideoCompletion();
+                                }
                             } else {
                                 mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1);
                             }
@@ -396,7 +398,7 @@ public class DubbingVideoView extends FrameLayout implements
         // should show preview thumbnail on DubbingVideoView
         mThumb.setImageBitmap(MediaUtil.getThumbnail(mContext, mPreviewStart/*maybe change*/, mVideoPath));
         mThumb.setVisibility(VISIBLE);
-        seekTo(mPreviewStart);
+//        seekTo(mPreviewStart);
     }
 
     public void onPause() {
@@ -629,6 +631,7 @@ public class DubbingVideoView extends FrameLayout implements
                     } else if (mode == MODE_ALLPLAY) {
                         lasttime = 0;
                     }
+                    onEventListener.onVideoCompletion();
                 }
                 break;
             case MODE_REVIEW:

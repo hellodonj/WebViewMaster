@@ -258,6 +258,13 @@ public class AudioPlayHelper {
         }
     }
 
+    public boolean isMediaPlaying(){
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            return true;
+        }
+        return false;
+    }
+
     private void mediaPlaySeekTo(int seekTime){
         if (mMediaPlayer != null && !mMediaPlayer.isPlaying()){
             mMediaPlayer.seekTo(seekTime);
