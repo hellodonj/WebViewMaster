@@ -470,7 +470,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         if (data.getType() == StudyTaskType.RETELL_WAWA_COURSE
                                 || data.getType() == StudyTaskType.TASK_ORDER
                                 || data.getType() == StudyTaskType.WATCH_HOMEWORK
-                                || data.getType() == StudyTaskType.SUBMIT_HOMEWORK) {
+                                || data.getType() == StudyTaskType.SUBMIT_HOMEWORK
+                                || data.getType() == StudyTaskType.Q_DUBBING) {
                             data.setIsSuperChildTask(true);
                             data.setTaskType(StudyTaskType.LISTEN_READ_AND_WRITE + "");
                             if (lookStudentTaskFinish) {

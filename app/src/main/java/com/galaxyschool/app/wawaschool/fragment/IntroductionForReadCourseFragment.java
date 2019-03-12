@@ -57,6 +57,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.db.NoteDao;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
+import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
@@ -1554,7 +1555,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (superTaskType == StudyTaskType.Q_DUBBING){
                 //配音
                 if (!isSuperTask) {
-                    tag.setResPropType(2);
+                    if (tag.getResPropType() == StudyResPropType.DUBBING_BY_WHOLE) {
+
+                    } else {
+                        tag.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
+                    }
                 }
                 mSelectMark.setVisibility(View.GONE);
             }
@@ -1933,7 +1938,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 isAutoMark = true;
                 mRbMarkYes.setChecked(true);
                 mRbMarkNo.setVisibility(View.INVISIBLE);
-                mSelectMark.setVisibility(View.VISIBLE);
+                if (superTaskType == StudyTaskType.Q_DUBBING) {
+                    mSelectMark.setVisibility(View.GONE);
+                } else {
+                    mSelectMark.setVisibility(View.VISIBLE);
+                }
                 mRbPercentageSystem.setChecked(true);
                 mRbTenSystem.setVisibility(View.INVISIBLE);
             }

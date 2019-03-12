@@ -237,7 +237,7 @@ public class DubbingActivity extends AppCompatActivity implements
         }
         if (isRecording) {
             isDubbing = false;
-            dubbing();
+            dubbing(true);
         }
     }
 
@@ -314,13 +314,10 @@ public class DubbingActivity extends AppCompatActivity implements
         dubbingVideoView = (DubbingVideoView) findViewById(R.id.videoView);
         handleDataView();
         new AsyncTask<Void, Void, Void>() {
-            AlertDialog dialog = new AlertDialog.Builder(DubbingActivity.this)
-                    .setMessage("正在加载视频资源...")
-                    .create();
 
             @Override
             protected void onPreExecute() {
-                dialog.show();
+                showLoadingDialog();
             }
 
             @Override
@@ -351,7 +348,7 @@ public class DubbingActivity extends AppCompatActivity implements
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                dialog.cancel();
+                dismissLoadingDialog();
                 dubbingVideoView.setPara(isOnlineOpen ? studentCommitFilePath : videoFilePath, "",
                         false, 0, "", new VideoViewListener(), DubbingActivity.this);
                 if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
@@ -670,7 +667,7 @@ public class DubbingActivity extends AppCompatActivity implements
     private void startRecord() {
         isDubbing = true;
         progress = 0;
-        dubbing();
+        dubbing(false);
 //        dubbingEntityList.get(curPosition).setRecord(true);
 //        if (curPosition == (dubbingEntityList.size() - 1)) {
 //            confirmTextView.setVisibility(View.VISIBLE);
@@ -890,7 +887,7 @@ public class DubbingActivity extends AppCompatActivity implements
         public void onDubbingComplete() {
             isDubbing = false;
             audioRecordHelper.stopRecord();
-            dubbing();
+            dubbing(false);
 //            launchDubbingPreview();
         }
 
@@ -927,7 +924,7 @@ public class DubbingActivity extends AppCompatActivity implements
     /**
      * ACTION-BTN PERFORM CLICK
      */
-    public void dubbing() {
+    public void dubbing(boolean isPause) {
         if (isDubbing) {
             isRecording = true;
             audioRecordHelper.startRecord(curPosition);
@@ -942,6 +939,13 @@ public class DubbingActivity extends AppCompatActivity implements
         } else {
             isRecording = false;
             if (dubbingVideoView.isPlaying()) {
+                if (isPause) {
+                    //不要评测分数
+                    audioRecordHelper.setNeedEvalAudio(false);
+                    dubbingEntityList.get(curPosition).setProgress(0);
+                    dubbingEntityList.get(curPosition).setIsRecording(false);
+                    commonAdapter.notifyDataSetChanged();
+                }
                 audioRecordHelper.stopRecord();
             }
             dubbingVideoView.stopDubbing();

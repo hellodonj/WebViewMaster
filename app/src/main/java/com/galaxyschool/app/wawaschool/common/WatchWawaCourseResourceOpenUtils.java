@@ -36,54 +36,55 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 打开看课件资源
+     *
      * @param context
      * @param resourceInfoTag
      * @param showCourseAndReading 是否显示点读和做课件
-     * @param isPersonalSpace 是否来自个人资源库
+     * @param isPersonalSpace      是否来自个人资源库
      */
     public static void openResource(final Context context, final ResourceInfoTag resourceInfoTag,
                                     final boolean isPersonalSpace,
                                     final boolean showCourseAndReading) {
-       openResource(context,resourceInfoTag,isPersonalSpace,showCourseAndReading,false);
+        openResource(context, resourceInfoTag, isPersonalSpace, showCourseAndReading, false);
 
     }
 
     public static void openResource(final Context context, final ResourceInfoTag resourceInfoTag,
                                     final boolean isPersonalSpace,
-                                    final boolean showCourseAndReading,boolean isFromMooc) {
-        if (context == null || resourceInfoTag == null){
+                                    final boolean showCourseAndReading, boolean isFromMooc) {
+        if (context == null || resourceInfoTag == null) {
             return;
         }
         String path = resourceInfoTag.getResourcePath();
-        if (!TextUtils.isEmpty(path)){
+        if (!TextUtils.isEmpty(path)) {
             String resId = resourceInfoTag.getResId();
             int resourceType = Utils.getResourceTypeBySplitingResId(resId);
             int type = resourceType % MaterialResourceType.BASE_TYPE_NUM;
             //LQ课件、音频、图片、视频、PPT、PDF
-            switch (type){
+            switch (type) {
 
                 //LQ课件/有声相册
                 case MaterialResourceType.OLD_COURSE:
                 case MaterialResourceType.OLD_COURSE_ANOTHER:
                 case MaterialResourceType.MICRO_COURSE:
                 case MaterialResourceType.ONE_PAGE:
-                    openCourse(context,resourceInfoTag,isFromMooc);
+                    openCourse(context, resourceInfoTag, isFromMooc);
                     break;
 
                 case MaterialResourceType.PICTURE:
-                    openPictureSetImage(context,resourceInfoTag,isPersonalSpace,
-                            showCourseAndReading,isFromMooc);
+                    openPictureSetImage(context, resourceInfoTag, isPersonalSpace,
+                            showCourseAndReading, isFromMooc);
                     break;
 
                 case MaterialResourceType.PPT:
                 case MaterialResourceType.PDF:
                 case MaterialResourceType.DOC:
-                    openPDFAndPPTDetails(context,resourceInfoTag,isPersonalSpace,
-                            showCourseAndReading,isFromMooc);
+                    openPDFAndPPTDetails(context, resourceInfoTag, isPersonalSpace,
+                            showCourseAndReading, isFromMooc);
                     break;
 
                 case MaterialResourceType.AUDIO:
-                    mediaPlay(context,resourceInfoTag,showCourseAndReading,isPersonalSpace);
+                    mediaPlay(context, resourceInfoTag, showCourseAndReading, isPersonalSpace);
                     break;
                 case MaterialResourceType.VIDEO:
                 case MaterialResourceType.Q_DUBBING_VIDEO:
@@ -94,11 +95,11 @@ public class WatchWawaCourseResourceOpenUtils {
                             OnCourseDetailFinishListener() {
                         @Override
                         public void onCourseDetailFinish(CourseData courseData) {
-                            if (courseData != null){
+                            if (courseData != null) {
                                 String leValue = courseData.getLeValue();
-                                if (!TextUtils.isEmpty(leValue)){
-                                    if (resourceInfoTag != null){
-                                        String [] values = leValue.split("&");
+                                if (!TextUtils.isEmpty(leValue)) {
+                                    if (resourceInfoTag != null) {
+                                        String[] values = leValue.split("&");
                                         String uUid = values[1].split("=")[1];
                                         String vUid = values[2].split("=")[1];
                                         resourceInfoTag.setLeValue(leValue);
@@ -106,7 +107,7 @@ public class WatchWawaCourseResourceOpenUtils {
                                         resourceInfoTag.setLeStatus(courseData.getLeStatus());
                                     }
                                 }
-                                mediaPlay(context,resourceInfoTag,showCourseAndReading,isPersonalSpace);
+                                mediaPlay(context, resourceInfoTag, showCourseAndReading, isPersonalSpace);
                             }
                         }
                     });
@@ -117,12 +118,11 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 打开ppt或者pdf
-     *
      */
     public static void openPDFAndPPTDetails(final Context context, final ResourceInfoTag data,
-                                             final boolean isPersonalSpace,
-                                             final boolean showCourseAndReading, final boolean isShowCollect) {
-        if (context == null || data == null){
+                                            final boolean isPersonalSpace,
+                                            final boolean showCourseAndReading, final boolean isShowCollect) {
+        if (context == null || data == null) {
             return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -146,12 +146,12 @@ public class WatchWawaCourseResourceOpenUtils {
                     if (result != null) {
                         List<PPTAndPDFCourseInfo> splitCourseInfo = result.getData();
                         if (splitCourseInfo == null || splitCourseInfo.size() == 0) {
-                            TipMsgHelper.ShowLMsg(context,R.string.ppt_pdf_not_have_pic);
+                            TipMsgHelper.ShowLMsg(context, R.string.ppt_pdf_not_have_pic);
                             return;
                         }
                         List<SplitCourseInfo> splitList = splitCourseInfo.get(0).getSplitList();
-                        if (splitList == null || splitList.size() == 0){
-                            TipMsgHelper.ShowLMsg(context,R.string.ppt_pdf_not_have_pic);
+                        if (splitList == null || splitList.size() == 0) {
+                            TipMsgHelper.ShowLMsg(context, R.string.ppt_pdf_not_have_pic);
                             return;
                         }
                         if (splitList != null && splitList.size() > 0) {
@@ -173,8 +173,8 @@ public class WatchWawaCourseResourceOpenUtils {
                                 }
                             }
                             //打开资源
-                            ActivityUtils.openImage((Activity) context,newResourceInfos,true,0,
-                                    isPersonalSpace,showCourseAndReading,isShowCollect);
+                            ActivityUtils.openImage((Activity) context, newResourceInfos, true, 0,
+                                    isPersonalSpace, showCourseAndReading, isShowCollect);
                         }
                     }
                 }
@@ -195,23 +195,25 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 打开课件
+     *
      * @param context
      * @param info
      */
-    public static void openCourse(Context context, ResourceInfo info,boolean isFromMooc) {
-        if (context == null || info == null){
+    public static void openCourse(Context context, ResourceInfo info, boolean isFromMooc) {
+        if (context == null || info == null) {
             return;
         }
-        CourseOpenUtils.openCourseDirectly((Activity) context,info.getResId(),true,"",isFromMooc);
+        CourseOpenUtils.openCourseDirectly((Activity) context, info.getResId(), true, "", isFromMooc);
     }
 
     /**
      * resourceInfoTag
+     *
      * @param resourceInfoTag
      */
-    public static void openPictureSetImage(Context context,ResourceInfoTag resourceInfoTag,
-                                           boolean isPersonalSpace,boolean showReadingAndCourse,boolean isShowCollect) {
-        if (context == null){
+    public static void openPictureSetImage(Context context, ResourceInfoTag resourceInfoTag,
+                                           boolean isPersonalSpace, boolean showReadingAndCourse, boolean isShowCollect) {
+        if (context == null) {
             return;
         }
         List<ImageInfo> mediaInfos = toPictureSetMediaInfos(resourceInfoTag);
@@ -219,7 +221,7 @@ public class WatchWawaCourseResourceOpenUtils {
         boolean shouldShowPageNumber = mediaInfos != null
                 && mediaInfos.size() > 1;
         ActivityUtils.openImage((Activity) context, mediaInfos, shouldShowPageNumber, 0,
-                isPersonalSpace, showReadingAndCourse,isShowCollect);
+                isPersonalSpace, showReadingAndCourse, isShowCollect);
     }
 
     private static boolean isPPTOrPDF(int resourceType) {
@@ -242,9 +244,9 @@ public class WatchWawaCourseResourceOpenUtils {
                         //处理图片
                         String resId = resourceInfo.getResId();
                         int resourceType = resourceInfo.getResourceType();
-                        if (!TextUtils.isEmpty(resId)){
-                            if (resId.contains("-")){
-                                String microId = resId.substring(0,resId.indexOf("-"));
+                        if (!TextUtils.isEmpty(resId)) {
+                            if (resId.contains("-")) {
+                                String microId = resId.substring(0, resId.indexOf("-"));
                                 newResourceInfo.setMicroId(microId);
                                 resourceType = Integer
                                         .parseInt(resId.substring(resId.lastIndexOf("-") + 1));
@@ -266,9 +268,10 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 音频、视频播放
+     *
      * @param data
      */
-    public static void mediaPlay(Context context,ResourceInfoTag data,boolean showMenuList,
+    public static void mediaPlay(Context context, ResourceInfoTag data, boolean showMenuList,
                                  boolean isPersonSpace) {
         if (context == null || data == null) {
             return;
@@ -301,17 +304,18 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 根据类型获取默认图片
+     *
      * @param resourceInfoTag
      * @return
      */
-    public static int getItemDefaultIcon(ResourceInfoTag resourceInfoTag){
+    public static int getItemDefaultIcon(ResourceInfoTag resourceInfoTag) {
         int defaultIcon = -1;
-        if (resourceInfoTag != null){
+        if (resourceInfoTag != null) {
             String resId = resourceInfoTag.getResId();
             int resourceType = Utils.getResourceTypeBySplitingResId(resId);
             int type = resourceType % MaterialResourceType.BASE_TYPE_NUM;
             //LQ课件、音频、图片、视频、PPT、PDF
-            switch (type){
+            switch (type) {
 
                 //LQ课件/有声相册
                 case MaterialResourceType.OLD_COURSE:
@@ -321,36 +325,37 @@ public class WatchWawaCourseResourceOpenUtils {
                     defaultIcon = R.drawable.icon_lq_course;
                     break;
 
-                case MaterialResourceType.AUDIO :
+                case MaterialResourceType.AUDIO:
                     defaultIcon = R.drawable.resource_audio_ico;
                     break;
 
-                case MaterialResourceType.PICTURE :
+                case MaterialResourceType.PICTURE:
                     List<ResourceInfo> resourceInfoList = resourceInfoTag.getSplitInfoList();
-                    if (resourceInfoList != null && resourceInfoList.size() > 0){
-                        if (resourceInfoList.size() == 1){
+                    if (resourceInfoList != null && resourceInfoList.size() > 0) {
+                        if (resourceInfoList.size() == 1) {
                             //单张图片
                             defaultIcon = R.drawable.resource_pic_ico;
-                        }else {
+                        } else {
                             //多张图片
                             defaultIcon = R.drawable.icon_album;
                         }
                     }
                     break;
 
-                case MaterialResourceType.VIDEO :
+                case MaterialResourceType.VIDEO:
+                case MaterialResourceType.Q_DUBBING_VIDEO:
                     defaultIcon = R.drawable.resource_video_ico;
                     break;
 
-                case MaterialResourceType.PPT :
+                case MaterialResourceType.PPT:
                     defaultIcon = R.drawable.icon_ppt;
                     break;
 
-                case MaterialResourceType.PDF :
+                case MaterialResourceType.PDF:
                     defaultIcon = R.drawable.icon_personal_resource_pdf;
                     break;
 
-                case MaterialResourceType.DOC :
+                case MaterialResourceType.DOC:
                     defaultIcon = R.drawable.icon_doc;
                     break;
 
@@ -364,10 +369,11 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 获得标题
+     *
      * @param resourceInfoTag
      * @return
      */
-    public static String getItemTitle(ResourceInfoTag resourceInfoTag){
+    public static String getItemTitle(ResourceInfoTag resourceInfoTag) {
         String title = "";
         if (resourceInfoTag != null) {
             int mediaType = resourceInfoTag.getResourceType();
@@ -389,15 +395,16 @@ public class WatchWawaCourseResourceOpenUtils {
 
     /**
      * 处理LQ课件zip包的图片
+     *
      * @param imagePath
      * @return
      */
     public static String transferImagePath(String imagePath) {
-        if (!TextUtils.isEmpty(imagePath)){
+        if (!TextUtils.isEmpty(imagePath)) {
             String suffix = ".zip";
             String headSuffix = "/head.jpg";
-            if (imagePath.contains(suffix)){
-                imagePath = imagePath.substring(0,imagePath.lastIndexOf(suffix));
+            if (imagePath.contains(suffix)) {
+                imagePath = imagePath.substring(0, imagePath.lastIndexOf(suffix));
                 imagePath += headSuffix;
                 return imagePath;
             }

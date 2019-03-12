@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.QDubbingActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.SpeechAssessmentActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -132,6 +133,14 @@ public class AchievementStatisticsItemFragment extends ContactsListFragment {
                     if (data.isEvalType()) {
                         SpeechAssessmentActivity.start(getActivity(),data.getScreenType(),data
                                 .getStudentResUrl(),data.getScoreRule());
+                    } else if (data.isVideoType()) {
+                        //打开配音
+                        QDubbingActivity.start(getActivity(),
+                                data.getParentResourceUrl(),
+                                data.getLevel(),
+                                data,
+                                false,
+                                data.getResPropType());
                     } else if (cardParam != null) {
 //                        cardParam.setStudentName(data.getStudentName());
 //                        cardParam.setStudentId(data.getStudentId());

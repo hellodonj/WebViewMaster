@@ -551,7 +551,6 @@ public class DubbingVideoView extends FrameLayout implements
         mHandler.removeMessages(SHOW_PROGRESS);
     }
 
-
     public void stopPlayback(int pos) {
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(pos);
