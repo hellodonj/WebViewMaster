@@ -133,6 +133,8 @@ public class DubbingActivity extends AppCompatActivity implements
     protected int resPropertyValue;
     private boolean checkDubbingBySentence;
     private int listenType; //0 表示播放的配音  1 表示原音
+    private boolean isCheckGridViewItem;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -352,12 +354,12 @@ public class DubbingActivity extends AppCompatActivity implements
                 dismissLoadingDialog();
                 dubbingVideoView.setPara(isOnlineOpen ? studentCommitFilePath : videoFilePath, "",
                         false, 0, "", new VideoViewListener(), DubbingActivity.this);
-                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
+//                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
                     //播放状态直接到结束
                     dubbingVideoView.startPlay(0, dubbingEntityList.get(dubbingEntityList.size() - 1).getEndTime());
-                } else {
-                    dubbingVideoView.startPlay(0, getVideoTime(dubbingEntityList, 0));
-                }
+//                } else {
+//                    dubbingVideoView.startPlay(0, getVideoTime(dubbingEntityList, 0));
+//                }
                 matchingLrcText();
                 updateViews();
             }
@@ -542,7 +544,12 @@ public class DubbingActivity extends AppCompatActivity implements
         LrcEntry lrcEntry = null;
         for (int i = 0; i < dubbingEntityList.size(); i++) {
             DubbingEntity dubbingEntity = dubbingEntityList.get(i);
-            lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), dubbingEntity.getContent());
+            String content = dubbingEntity.getContent();
+            if (!TextUtils.isEmpty(content)) {
+                content = getSubStringContent(content);
+            }
+            dubbingEntity.setContent(content);
+            lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), content);
             lrcEntries.add(lrcEntry);
         }
         if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE
@@ -550,6 +557,14 @@ public class DubbingActivity extends AppCompatActivity implements
             //加载字幕
             lrcView.onLrcLoaded(lrcEntries);
         }
+    }
+
+    private String getSubStringContent(String content){
+        if (content.endsWith("\n")) {
+            content = content.substring(0,content.lastIndexOf("\n"));
+            content = getSubStringContent(content);
+        }
+        return content;
     }
 
     public int getProgressMax(List<DubbingEntity> dubbingEntityList, int position) {
@@ -736,7 +751,7 @@ public class DubbingActivity extends AppCompatActivity implements
         StringBuilder srtBuilder = new StringBuilder();
         for (int i = 0; i < dubbingEntityList.size(); i++) {
             DubbingEntity dubbingEntity = dubbingEntityList.get(i);
-            dubbingEntity.setSelect(i == 0);
+            dubbingEntity.setSelect(false);
             dubbingEntity.setProgressMax(getProgressMax(dubbingEntityList, i));
             dubbingEntity.setVideoTime(getVideoTime(dubbingEntityList, i));
             if (!isOnlineOpen) {
@@ -800,12 +815,13 @@ public class DubbingActivity extends AppCompatActivity implements
                 }
                 stopPlayRecordingAudio();
                 if (dubbingEntityList != null && position < dubbingEntityList.size()) {
-                    if (curPosition != position) {
+                    if (curPosition != position || !isCheckGridViewItem) {
                         dubbingEntityList.get(curPosition).setSelect(false);
                         dubbingEntityList.get(position).setSelect(true);
                         commonAdapter.notifyDataSetChanged();
                         curPosition = position;
                         switchDubbingVideo(position, false);
+                        isCheckGridViewItem = true;
                     }
                 }
             }
