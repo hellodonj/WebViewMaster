@@ -132,7 +132,7 @@ public class DubbingActivity extends AppCompatActivity implements
     protected String reviewComment;
     protected int resPropertyValue;
     private boolean checkDubbingBySentence;
-
+    private int listenType; //0 表示播放的配音  1 表示原音
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -483,6 +483,8 @@ public class DubbingActivity extends AppCompatActivity implements
     private void changeDubbingTypeShow(boolean checkChange) {
         if (isOnlineOpen) {
             if (checkDubbingBySentence) {
+                //重置学生提交的path
+                dubbingVideoView.setVideoPath(studentCommitFilePath);
                 dubbingVideoView.setIsSupportPause(false);
                 gridView.setVisibility(View.VISIBLE);
                 lrcView.setVisibility(View.GONE);
@@ -496,6 +498,11 @@ public class DubbingActivity extends AppCompatActivity implements
                 }
             } else {
                 dubbingVideoView.setIsSupportPause(true);
+                if (listenType == 0) {
+                    dubbingVideoView.setVideoPath(studentCommitFilePath);
+                } else {
+                    dubbingVideoView.setVideoPath(videoFilePath);
+                }
                 gridView.setVisibility(View.GONE);
                 lrcView.setVisibility(View.VISIBLE);
                 listenSoundTextV.setVisibility(View.VISIBLE);
@@ -660,9 +667,25 @@ public class DubbingActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * 播放原音
+     */
     private void listenToTheSoundVideo() {
         dubbingVideoView.setIsSupportPause(true);
-        dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, videoFilePath);
+        if (listenType == 0) {
+            //配音
+            listenSoundTextV.setText(getString(R.string.str_listen_dubbing_voice));
+            dubbingVideoView.setVideoPath(videoFilePath);
+//            dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, videoFilePath);
+            listenType = 1;
+        } else {
+            //原音
+            listenSoundTextV.setText(getString(R.string.str_listen_voice));
+            dubbingVideoView.setVideoPath(studentCommitFilePath);
+//            dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, studentCommitFilePath);
+            listenType = 0;
+        }
+        dubbingVideoView.startPlay(0, DubbingActivity.this.duration);
     }
 
     private void startRecord() {
