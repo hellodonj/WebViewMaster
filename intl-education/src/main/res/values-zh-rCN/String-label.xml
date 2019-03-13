@@ -404,6 +404,11 @@
     <string name="label_added_tutorial_succeed">+帮辅成功</string>
     <string name="label_added_tutorial_failed">+帮辅失败</string>
 
+    <string-array name="label_tutorial_group_tabs">
+        <item>最新</item>
+        <item>热门</item>
+    </string-array>
+
     <string-array name="label_tutorial_page_tabs">
         <item>帮辅的课程</item>
         <item>学员评价</item>

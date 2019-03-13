@@ -5,12 +5,16 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
 import org.junit.Test;
@@ -257,6 +261,29 @@ public class TutorialHelperInstrumentedTest{
             @Override
             public void onDataLoaded(Boolean aBoolean) {
                 System.out.println(aBoolean);
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
+    @Test
+    public void requestTutorialConfigData() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        int languageRes = Utils.isZh(appContext) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        TutorialHelper.requestTutorialConfigData(languageRes,1,0, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                System.out.println(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                System.out.println(entities);
                 downLatch.countDown();
             }
         });

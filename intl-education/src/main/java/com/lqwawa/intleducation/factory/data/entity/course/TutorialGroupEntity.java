@@ -17,6 +17,17 @@ public class TutorialGroupEntity implements Serializable {
     private String createId;
 
 
+
+    // 字段转换
+    public void buildEntity(){
+        this.addedTutor = hasAttention;
+        this.HeadPicUrl = headPic;
+        this.markingPrice = markingPriceStr;
+        this.createName = tutorName;
+        this.taskNum = markingNum;
+    }
+
+
     public boolean isAddedTutor() {
         return addedTutor;
     }
@@ -79,5 +90,106 @@ public class TutorialGroupEntity implements Serializable {
 
     public void setCreateId(String createId) {
         this.createId = createId;
+    }
+
+
+    private boolean hasAttention;
+    private String headPic;
+    private String level;
+    private String levelName;
+    private int markingNum;
+    private String markingPriceStr;
+    private String memberId;
+    private String tutorName;
+    private String tutorOrganId;
+    private String tutorOrganName;
+    private int verifyStatus;
+
+    public boolean isHasAttention() {
+        return hasAttention;
+    }
+
+    public void setHasAttention(boolean hasAttention) {
+        this.hasAttention = hasAttention;
+    }
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
+    public int getMarkingNum() {
+        return markingNum;
+    }
+
+    public void setMarkingNum(int markingNum) {
+        this.markingNum = markingNum;
+    }
+
+    public String getMarkingPriceStr() {
+        return markingPriceStr;
+    }
+
+    public void setMarkingPriceStr(String markingPriceStr) {
+        this.markingPriceStr = markingPriceStr;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getTutorName() {
+        return tutorName;
+    }
+
+    public void setTutorName(String tutorName) {
+        this.tutorName = tutorName;
+    }
+
+    public String getTutorOrganId() {
+        return tutorOrganId;
+    }
+
+    public void setTutorOrganId(String tutorOrganId) {
+        this.tutorOrganId = tutorOrganId;
+    }
+
+    public String getTutorOrganName() {
+        return tutorOrganName;
+    }
+
+    public void setTutorOrganName(String tutorOrganName) {
+        this.tutorOrganName = tutorOrganName;
+    }
+
+    public int getVerifyStatus() {
+        return verifyStatus;
+    }
+
+    public void setVerifyStatus(int verifyStatus) {
+        this.verifyStatus = verifyStatus;
     }
 }

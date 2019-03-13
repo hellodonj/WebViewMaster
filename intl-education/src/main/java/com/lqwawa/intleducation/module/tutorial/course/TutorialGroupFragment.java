@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrateGroupActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.List;
  * @desc 帮辅群功能
  */
 public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContract.Presenter>
-    implements TutorialGroupContract.View{
+    implements TutorialGroupContract.View,View.OnClickListener{
 
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
@@ -84,6 +85,7 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         mBtnMoreGroup = (Button) mRootView.findViewById(R.id.btn_more_group);
+        mBtnMoreGroup.setOnClickListener(this);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2){
             @Override
@@ -180,10 +182,19 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
     }
 
     @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+        if(viewId == R.id.btn_more_group){
+            TutorialFiltrateGroupActivity.show(getActivity(),mCurMemberId);
+        }
+    }
+
+    @Override
     public void showError(int str) {
         super.showError(str);
         if(EmptyUtil.isNotEmpty(mListener)){
             mListener.onLoadFlailed();
         }
     }
+
 }
