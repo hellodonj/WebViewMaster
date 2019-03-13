@@ -43,6 +43,7 @@ public class AudioRecordHelper {
     private MediaPlayer mediaPlayer;
     private RawAudioRecorder audioRecorder;
     private CallbackListener listener;
+    private boolean needEvalAudio = true;
 
     public List<File> getMp3FileList() {
         return mp3FileList;
@@ -110,9 +111,13 @@ public class AudioRecordHelper {
 
                 @Override
                 public void onRawRecordingEnd(String encodedFilePath, String rawFilePath) {
-                    if (!TextUtils.isEmpty(encodedFilePath) && !TextUtils.isEmpty(rawFilePath)) {
-                        showLoadingDialog();
-                        evaluateRecordData(position, encodedFilePath, rawFilePath);
+                    if (needEvalAudio) {
+                        if (!TextUtils.isEmpty(encodedFilePath) && !TextUtils.isEmpty(rawFilePath)) {
+                            showLoadingDialog();
+                            evaluateRecordData(position, encodedFilePath, rawFilePath);
+                        }
+                    } else {
+                        needEvalAudio = true;
                     }
                 }
 
@@ -215,6 +220,10 @@ public class AudioRecordHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void  setNeedEvalAudio(boolean needEvalAudio){
+        this.needEvalAudio = needEvalAudio;
     }
 
     public Dialog showLoadingDialog() {

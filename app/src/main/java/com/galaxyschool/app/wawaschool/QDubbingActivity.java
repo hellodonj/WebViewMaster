@@ -5,20 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-
 import com.alibaba.fastjson.JSONArray;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
-import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.OnlineIntroPopwindow;
 import com.icedcap.dubbing.DubbingActivity;
-import com.icedcap.dubbing.utils.Config;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.lqbaselib.net.FileApi;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,35 +33,33 @@ import java.net.URLConnection;
 public class QDubbingActivity extends DubbingActivity {
     public static int COMMIT_Q_DUBBING_TASK_SUCCESS = 0x1000;
     private CommitTask commitTask;
+
     public static void start(Activity context,
-                             CourseData videoData,
+                             String resourceUrl,
+                             String level,
                              CommitTask commitTask,
                              boolean hasReviewPermission,
                              int resPropertyValue) {
         Intent intent = new Intent(context, QDubbingActivity.class);
-        if (videoData != null) {
-            String videoUrl = videoData.resourceurl;
-            if (TextUtils.isEmpty(videoUrl)) {
-                return;
-            }
-            String level = videoData.level;
-            if (!TextUtils.isEmpty(level) && TextUtils.equals(level,"3")) {
-                if (videoUrl.endsWith(".mp4")) {
-                    String bgAudioUrl = videoUrl.replace(".mp4", ".mp3");
-                    intent.putExtra(Constant.VIDEO_BACKGROUND_VOICE, bgAudioUrl);
-                }
-            }
-            intent.putExtra(Constant.VIDEO_RESOURCE_URL_PATH, videoUrl);
-            if (videoUrl.endsWith(".mp4")) {
-                String srtText = videoUrl.replace(".mp4", ".srt");
-                intent.putExtra(Constant.VIDEO_SRT_TEXT, srtText);
-            }
-            if (commitTask != null) {
-                intent.putExtra(CommitTask.class.getSimpleName(), (Serializable) commitTask);
-            }
-            intent.putExtra(Constant.HAS_REVIEW_COMMENT_PERMISSION,hasReviewPermission);
-            intent.putExtra(Constant.VIDEO_RES_PROPERTIES_VALUE,resPropertyValue);
+        if (TextUtils.isEmpty(resourceUrl)) {
+            return;
         }
+        if (!TextUtils.isEmpty(level) && TextUtils.equals(level, "3")) {
+            if (resourceUrl.endsWith(".mp4")) {
+                String bgAudioUrl = resourceUrl.replace(".mp4", ".mp3");
+                intent.putExtra(Constant.VIDEO_BACKGROUND_VOICE, bgAudioUrl);
+            }
+        }
+        intent.putExtra(Constant.VIDEO_RESOURCE_URL_PATH, resourceUrl);
+        if (resourceUrl.endsWith(".mp4")) {
+            String srtText = resourceUrl.replace(".mp4", ".srt");
+            intent.putExtra(Constant.VIDEO_SRT_TEXT, srtText);
+        }
+        if (commitTask != null) {
+            intent.putExtra(CommitTask.class.getSimpleName(), (Serializable) commitTask);
+        }
+        intent.putExtra(Constant.HAS_REVIEW_COMMENT_PERMISSION, hasReviewPermission);
+        intent.putExtra(Constant.VIDEO_RES_PROPERTIES_VALUE, resPropertyValue);
         context.startActivityForResult(intent, COMMIT_Q_DUBBING_TASK_SUCCESS);
     }
 
@@ -87,44 +80,44 @@ public class QDubbingActivity extends DubbingActivity {
     }
 
     @Override
-    public void loadIntentData(){
+    public void loadIntentData() {
         Bundle args = getIntent().getExtras();
-        if (args != null){
+        if (args != null) {
             videoFilePath = args.getString(Constant.VIDEO_RESOURCE_URL_PATH);
             backgroundFilePath = args.getString(Constant.VIDEO_BACKGROUND_VOICE);
             srtTextUrl = args.getString(Constant.VIDEO_SRT_TEXT);
             hasReviewPermission = args.getBoolean(Constant.HAS_REVIEW_COMMENT_PERMISSION);
             resPropertyValue = args.getInt(Constant.VIDEO_RES_PROPERTIES_VALUE);
             CommitTask data = (CommitTask) args.getSerializable(CommitTask.class.getSimpleName());
-            if (data != null){
+            if (data != null) {
                 handleOnlinePageData(data);
             }
         }
     }
 
-    private void handleOnlinePageData(CommitTask data){
+    private void handleOnlinePageData(CommitTask data) {
         isOnlineOpen = true;
         studentCommitFilePath = data.getStudentResUrl();
         commitTask = data;
         String pageScore = data.getAutoEvalContent();
-        if (!TextUtils.isEmpty(pageScore)){
+        if (!TextUtils.isEmpty(pageScore)) {
             pageScoreArray = JSONArray.parseArray(pageScore);
-            for (int i = 0; i < pageScoreArray.size(); i++){
+            for (int i = 0; i < pageScoreArray.size(); i++) {
                 systemScore = systemScore + Integer.valueOf(pageScoreArray.get(i).toString());
             }
             systemScore = systemScore / pageScoreArray.size();
             hasVideoReview = data.isHasVoiceReview();
-            if (hasVideoReview){
+            if (hasVideoReview) {
                 reviewComment = data.getTaskScoreRemark();
             }
-            if (!TextUtils.isEmpty(data.getTaskScore())){
+            if (!TextUtils.isEmpty(data.getTaskScore())) {
                 teacherReviewScore = Integer.valueOf(data.getTaskScore());
             }
         }
     }
 
     @Override
-    protected void enterTeacherReviewActivity(){
+    protected void enterTeacherReviewActivity() {
         TeacherReviewDetailActivity.start(
                 this,
                 "",
@@ -134,8 +127,8 @@ public class QDubbingActivity extends DubbingActivity {
     }
 
     @Override
-    public String downloadFile(String srtUrl){
-        if (TextUtils.isEmpty(srtUrl)){
+    public String downloadFile(String srtUrl) {
+        if (TextUtils.isEmpty(srtUrl)) {
             return null;
         }
         String filename = new MD5FileNameGenerator().generate(srtUrl);
@@ -190,21 +183,21 @@ public class QDubbingActivity extends DubbingActivity {
     }
 
     @Override
-    protected void showTeacherReviewPopWindow(int height){
-        OnlineIntroPopwindow popwindow = new OnlineIntroPopwindow(this,height, reviewComment);
+    protected void showTeacherReviewPopWindow(int height) {
+        OnlineIntroPopwindow popwindow = new OnlineIntroPopwindow(this, height, reviewComment);
         popwindow.showPopupMenu();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent messageEvent){
+    public void onMessageEvent(MessageEvent messageEvent) {
         if (messageEvent != null) {
             Bundle args = messageEvent.getBundle();
-            if (args != null){
+            if (args != null) {
 
                 String score = args.getString("evalScore");
                 String comment = args.getString("evalComment");
                 hasVideoReview = true;
-                if (!TextUtils.isEmpty(score)){
+                if (!TextUtils.isEmpty(score)) {
                     teacherReviewScore = Integer.valueOf(score);
                 }
                 reviewComment = comment;

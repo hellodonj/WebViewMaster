@@ -529,6 +529,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     CommitTask commitTask = data.get(i);
                     commitTask.setScoreRule(ScoringRule);
                     commitTask.setScreenType(taskCourseOrientation);
+                    commitTask.setResPropType(task.getResPropType());
+                    if (taskData != null){
+                        commitTask.setParentResourceUrl(taskData.resourceurl);
+                        commitTask.setLevel(taskData.level);
+                    }
                     if (isAnswerTaskOrderQuestion) {
                         //答题卡的统计
                         if (!TextUtils.isEmpty(commitTask.getTaskScore())) {
@@ -3532,7 +3537,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
      * 开始配音的动作
      */
     public void startDubbingVideo(CommitTask data,boolean hasReviewPermission){
-        QDubbingActivity.start(getActivity(),taskData,data,hasReviewPermission,task.getResPropType());
+        QDubbingActivity.start(getActivity(),taskData.resourceurl,taskData.level,data,
+                hasReviewPermission, task.getResPropType());
     }
 
     private class MyBroadCastReceiver extends BroadcastReceiver {

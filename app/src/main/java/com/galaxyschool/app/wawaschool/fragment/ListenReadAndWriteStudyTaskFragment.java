@@ -526,6 +526,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             if (listenTitleTextV != null) {
                 if (isSuperOtherHomeWork()) {
                     listenTitleTextV.setText(getString(R.string.other));
+                } else if (isQDubbingTask()) {
+                    listenTitleTextV.setText(getString(R.string.str_q_dubbing));
                 } else {
                     listenTitleTextV.setText(getString(R.string.microcourse));
                 }
@@ -872,6 +874,16 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         if ((listenData == null || listenData.size() == 0) && readAndWriteData != null &&
                 readAndWriteData.size() > 0) {
             return true;
+        }
+        return false;
+    }
+
+    private boolean isQDubbingTask(){
+        if (listenData != null && listenData.size() > 0) {
+            int type = listenData.get(0).getType();
+            if (type == StudyTaskType.Q_DUBBING || type == StudyTaskType.MULTIPLE_Q_DUBBING) {
+                return true;
+            }
         }
         return false;
     }

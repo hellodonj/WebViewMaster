@@ -253,7 +253,9 @@ public class ScreeningHomeworkResultListFragment extends ContactsListFragment{
 
                     //按时间作答题的任务
                     RelativeLayout rlLocking = (RelativeLayout) view.findViewById(R.id.rl_locking);
-                    if (data.getSubmitType() == 1 && !TextUtils.isEmpty(data.getServerNowTime())){
+                    if (roleType == RoleType.ROLE_TYPE_TEACHER) {
+                        rlLocking.setVisibility(View.GONE);
+                    } else if (data.getSubmitType() == 1 && !TextUtils.isEmpty(data.getServerNowTime())){
                         boolean arriveDoTime = StudyTaskUtils.compareStudyTaskTime(data
                                 .getServerNowTime(),data.getStartTime(),true);
                         if (arriveDoTime){

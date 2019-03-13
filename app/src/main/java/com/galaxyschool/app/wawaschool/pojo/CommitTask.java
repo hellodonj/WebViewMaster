@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 
 import java.io.Serializable;
@@ -65,7 +66,9 @@ public class CommitTask implements Serializable, Parcelable {
     private String TaskScoreRemark;
     private int screenType;
     private int scoreRule;
-
+    private int ResPropType;
+    private String parentResourceUrl;
+    private String level;
     /**
      * @return 是否是语音评测类型
      */
@@ -459,6 +462,30 @@ public class CommitTask implements Serializable, Parcelable {
         StudentResThumbnailUrl = studentResThumbnailUrl;
     }
 
+    public int getResPropType() {
+        return ResPropType;
+    }
+
+    public void setResPropType(int resPropType) {
+        ResPropType = resPropType;
+    }
+
+    public String getParentResourceUrl() {
+        return parentResourceUrl;
+    }
+
+    public void setParentResourceUrl(String parentResourceUrl) {
+        this.parentResourceUrl = parentResourceUrl;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -507,6 +534,9 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeInt(this.AutoEvalCompanyType);
         dest.writeString(this.AutoEvalContent);
         dest.writeString(this.StudentResThumbnailUrl);
+        dest.writeInt(this.ResPropType);
+        dest.writeString(this.level);
+        dest.writeString(this.parentResourceUrl);
     }
 
     public CommitTask() {
@@ -554,6 +584,9 @@ public class CommitTask implements Serializable, Parcelable {
         this.AutoEvalCompanyType = in.readInt();
         this.AutoEvalContent = in.readString();
         this.StudentResThumbnailUrl = in.readString();
+        this.ResPropType = in.readInt();
+        this.level = in.readString();
+        this.parentResourceUrl = in.readString();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

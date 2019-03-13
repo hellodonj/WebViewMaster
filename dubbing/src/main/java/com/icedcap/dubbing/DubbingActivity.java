@@ -132,6 +132,7 @@ public class DubbingActivity extends AppCompatActivity implements
     protected String reviewComment;
     protected int resPropertyValue;
     private boolean checkDubbingBySentence;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -237,7 +238,7 @@ public class DubbingActivity extends AppCompatActivity implements
         }
         if (isRecording) {
             isDubbing = false;
-            dubbing();
+            dubbing(true);
         }
     }
 
@@ -314,13 +315,10 @@ public class DubbingActivity extends AppCompatActivity implements
         dubbingVideoView = (DubbingVideoView) findViewById(R.id.videoView);
         handleDataView();
         new AsyncTask<Void, Void, Void>() {
-            AlertDialog dialog = new AlertDialog.Builder(DubbingActivity.this)
-                    .setMessage("正在加载视频资源...")
-                    .create();
 
             @Override
             protected void onPreExecute() {
-                dialog.show();
+                showLoadingDialog();
             }
 
             @Override
@@ -351,7 +349,7 @@ public class DubbingActivity extends AppCompatActivity implements
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                dialog.cancel();
+                dismissLoadingDialog();
                 dubbingVideoView.setPara(isOnlineOpen ? studentCommitFilePath : videoFilePath, "",
                         false, 0, "", new VideoViewListener(), DubbingActivity.this);
                 if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
@@ -616,7 +614,7 @@ public class DubbingActivity extends AppCompatActivity implements
             if (isRecordAll()) {
                 launchDubbingPreview();
             } else {
-                TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_finish_all_tips));
+                TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_preview_all_dubbing));
             }
         } else if (v.getId() == R.id.tv_confirm) {
             if (isRecordAll()) {
@@ -670,7 +668,7 @@ public class DubbingActivity extends AppCompatActivity implements
     private void startRecord() {
         isDubbing = true;
         progress = 0;
-        dubbing();
+        dubbing(false);
 //        dubbingEntityList.get(curPosition).setRecord(true);
 //        if (curPosition == (dubbingEntityList.size() - 1)) {
 //            confirmTextView.setVisibility(View.VISIBLE);
@@ -755,7 +753,12 @@ public class DubbingActivity extends AppCompatActivity implements
                             R.drawable.icon_record_playing : R.drawable.icon_dubbing_play);
                     dubbingItemView.getRecordBtn().setImageLevel(item.isSelect() || item.isRecord() ? 1 : 0);
                     dubbingItemView.getRecordBtn().setEnabled(item.isSelect());
-                    if (!isOnlineOpen) {
+                    if (isOnlineOpen) {
+                        //播放原视频
+                        dubbingItemView.getRecordBtn().setImageResource(item.isRecording() ?
+                                R.drawable.icon_record_playing : R.drawable.icon_record);
+                    } else {
+                        //录制
                         dubbingItemView.getRecordBtn().setImageResource(item.isRecording() ?
                                 R.drawable.icon_record_pause : R.drawable.icon_record);
                     }
@@ -849,6 +852,7 @@ public class DubbingActivity extends AppCompatActivity implements
         stopPlayRecordingAudio();
         if (isOnlineOpen) {
             //播放原视频资源
+            startPlayRecordAudio(false);
             switchDubbingVideo(curPosition, true);
         } else {
             if (isRecording) {
@@ -861,9 +865,10 @@ public class DubbingActivity extends AppCompatActivity implements
 
     @Override
     public void onAudioPlay() {
+        stopPlayRecordingAudio();
+        startPlayRecordAudio(true);
         if (isOnlineOpen) {
             //播放这个时间点的视频
-            startPlayRecordAudio();
             switchDubbingVideo(curPosition, false);
         } else {
             //回放录制的视频
@@ -890,7 +895,7 @@ public class DubbingActivity extends AppCompatActivity implements
         public void onDubbingComplete() {
             isDubbing = false;
             audioRecordHelper.stopRecord();
-            dubbing();
+            dubbing(false);
 //            launchDubbingPreview();
         }
 
@@ -927,7 +932,7 @@ public class DubbingActivity extends AppCompatActivity implements
     /**
      * ACTION-BTN PERFORM CLICK
      */
-    public void dubbing() {
+    public void dubbing(boolean isPause) {
         if (isDubbing) {
             isRecording = true;
             audioRecordHelper.startRecord(curPosition);
@@ -942,6 +947,13 @@ public class DubbingActivity extends AppCompatActivity implements
         } else {
             isRecording = false;
             if (dubbingVideoView.isPlaying()) {
+                if (isPause) {
+                    //不要评测分数
+                    audioRecordHelper.setNeedEvalAudio(false);
+                    dubbingEntityList.get(curPosition).setProgress(0);
+                    dubbingEntityList.get(curPosition).setIsRecording(false);
+                    commonAdapter.notifyDataSetChanged();
+                }
                 audioRecordHelper.stopRecord();
             }
             dubbingVideoView.stopDubbing();
@@ -951,7 +963,6 @@ public class DubbingActivity extends AppCompatActivity implements
 
 
     public void startReview() {
-        startPlayRecordAudio();
         isReviewing = true;
         //todo play background audio
 
@@ -975,9 +986,13 @@ public class DubbingActivity extends AppCompatActivity implements
         isReviewing = false;
     }
 
-    private void startPlayRecordAudio(){
+    private void startPlayRecordAudio(boolean isLeftBtnPlay){
         if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
-            dubbingEntityList.get(curPosition).setIsRecordPlaying(true);
+            if (isLeftBtnPlay) {
+                dubbingEntityList.get(curPosition).setIsRecordPlaying(true);
+            } else {
+                dubbingEntityList.get(curPosition).setIsRecording(true);
+            }
             commonAdapter.notifyDataSetChanged();
         }
     }
@@ -986,6 +1001,9 @@ public class DubbingActivity extends AppCompatActivity implements
         if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
             if (dubbingEntityList.get(curPosition).isRecordPlaying()) {
                 dubbingEntityList.get(curPosition).setIsRecordPlaying(false);
+                commonAdapter.notifyDataSetChanged();
+            } else if (dubbingEntityList.get(curPosition).isRecording()) {
+                dubbingEntityList.get(curPosition).setIsRecording(false);
                 commonAdapter.notifyDataSetChanged();
             }
         }

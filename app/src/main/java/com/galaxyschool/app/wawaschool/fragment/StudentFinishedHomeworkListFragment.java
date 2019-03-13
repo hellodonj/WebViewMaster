@@ -800,7 +800,8 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
     }
 
     private void enterQDubbingDetailActivity(CommitTask data){
-        QDubbingActivity.start(getActivity(),taskData,data,false,task.getResPropType());
+        QDubbingActivity.start(getActivity(),taskData.resourceurl,taskData.level,data,false,
+                task.getResPropType());
     }
 
     public static void setHasContentChanged(boolean hasContentChanged) {
