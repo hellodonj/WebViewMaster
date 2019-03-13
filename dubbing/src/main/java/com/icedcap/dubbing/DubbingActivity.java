@@ -132,6 +132,8 @@ public class DubbingActivity extends AppCompatActivity implements
     protected String reviewComment;
     protected int resPropertyValue;
     private boolean checkDubbingBySentence;
+    private int listenType; //0 表示播放的配音  1 表示原音
+    private boolean isCheckGridViewItem;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
@@ -352,12 +354,12 @@ public class DubbingActivity extends AppCompatActivity implements
                 dismissLoadingDialog();
                 dubbingVideoView.setPara(isOnlineOpen ? studentCommitFilePath : videoFilePath, "",
                         false, 0, "", new VideoViewListener(), DubbingActivity.this);
-                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
+//                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE || isOnlineOpen) {
                     //播放状态直接到结束
                     dubbingVideoView.startPlay(0, dubbingEntityList.get(dubbingEntityList.size() - 1).getEndTime());
-                } else {
-                    dubbingVideoView.startPlay(0, getVideoTime(dubbingEntityList, 0));
-                }
+//                } else {
+//                    dubbingVideoView.startPlay(0, getVideoTime(dubbingEntityList, 0));
+//                }
                 matchingLrcText();
                 updateViews();
             }
@@ -406,35 +408,7 @@ public class DubbingActivity extends AppCompatActivity implements
             dubbingVideoView.findViewById(R.id.preview_text_view).setVisibility(View.GONE);
             qDubbingDetailLayout.setVisibility(View.VISIBLE);
             teacherReviewTextV.setOnClickListener(this);
-            if (hasVideoReview) {
-                teacherReviewFl.setVisibility(View.GONE);
-                //老师点评了
-                teacherOperationLayout.setVisibility(View.VISIBLE);
-                systemScoreView.setText(String.valueOf(systemScore));
-                teacherScoreView.setText(String.valueOf(teacherReviewScore));
-                //显示老师的评语
-                if (TextUtils.isEmpty(reviewComment)) {
-                    reviewComment = getString(R.string.no_content);
-                }
-                teacherReviewView.setText(reviewComment);
-                teacherReviewView.setNeedOnClickExpand(false);
-                teacherReviewView.setExpandListener(new ExpandableTextView.OnExpandListener() {
-                    @Override
-                    public void onExpand(ExpandableTextView view) {
-                        showTeacherReviewPopWindow(getWindowHeight());
-                    }
-
-                    @Override
-                    public void onShrink(ExpandableTextView view) {
-                        showTeacherReviewPopWindow(getWindowHeight());
-                    }
-                });
-            } else {
-                systemScoreView.setText(String.valueOf(teacherReviewScore));
-                if (hasReviewPermission) {
-                    teacherReviewFl.setVisibility(View.VISIBLE);
-                }
-            }
+            showReviewViewData();
             if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
                 dubbingBySentenceLayout.setVisibility(View.VISIBLE);
                 changDubbingTypeBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -480,9 +454,43 @@ public class DubbingActivity extends AppCompatActivity implements
         }
     }
 
+    protected void showReviewViewData(){
+        if (hasVideoReview) {
+            teacherReviewFl.setVisibility(View.GONE);
+            //老师点评了
+            teacherOperationLayout.setVisibility(View.VISIBLE);
+            systemScoreView.setText(String.valueOf(systemScore));
+            teacherScoreView.setText(String.valueOf(teacherReviewScore));
+            //显示老师的评语
+            if (TextUtils.isEmpty(reviewComment)) {
+                reviewComment = getString(R.string.no_content);
+            }
+            teacherReviewView.setText(reviewComment);
+            teacherReviewView.setNeedOnClickExpand(false);
+            teacherReviewView.setExpandListener(new ExpandableTextView.OnExpandListener() {
+                @Override
+                public void onExpand(ExpandableTextView view) {
+                    showTeacherReviewPopWindow(getWindowHeight());
+                }
+
+                @Override
+                public void onShrink(ExpandableTextView view) {
+                    showTeacherReviewPopWindow(getWindowHeight());
+                }
+            });
+        } else {
+            systemScoreView.setText(String.valueOf(teacherReviewScore));
+            if (hasReviewPermission) {
+                teacherReviewFl.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     private void changeDubbingTypeShow(boolean checkChange) {
         if (isOnlineOpen) {
             if (checkDubbingBySentence) {
+                //重置学生提交的path
+                dubbingVideoView.setVideoPath(studentCommitFilePath);
                 dubbingVideoView.setIsSupportPause(false);
                 gridView.setVisibility(View.VISIBLE);
                 lrcView.setVisibility(View.GONE);
@@ -496,6 +504,11 @@ public class DubbingActivity extends AppCompatActivity implements
                 }
             } else {
                 dubbingVideoView.setIsSupportPause(true);
+                if (listenType == 0) {
+                    dubbingVideoView.setVideoPath(studentCommitFilePath);
+                } else {
+                    dubbingVideoView.setVideoPath(videoFilePath);
+                }
                 gridView.setVisibility(View.GONE);
                 lrcView.setVisibility(View.VISIBLE);
                 listenSoundTextV.setVisibility(View.VISIBLE);
@@ -535,7 +548,12 @@ public class DubbingActivity extends AppCompatActivity implements
         LrcEntry lrcEntry = null;
         for (int i = 0; i < dubbingEntityList.size(); i++) {
             DubbingEntity dubbingEntity = dubbingEntityList.get(i);
-            lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), dubbingEntity.getContent());
+            String content = dubbingEntity.getContent();
+            if (!TextUtils.isEmpty(content)) {
+                content = getSubStringContent(content);
+            }
+            dubbingEntity.setContent(content);
+            lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), content);
             lrcEntries.add(lrcEntry);
         }
         if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE
@@ -543,6 +561,14 @@ public class DubbingActivity extends AppCompatActivity implements
             //加载字幕
             lrcView.onLrcLoaded(lrcEntries);
         }
+    }
+
+    private String getSubStringContent(String content){
+        if (content.endsWith("\n")) {
+            content = content.substring(0,content.lastIndexOf("\n"));
+            content = getSubStringContent(content);
+        }
+        return content;
     }
 
     public int getProgressMax(List<DubbingEntity> dubbingEntityList, int position) {
@@ -660,9 +686,25 @@ public class DubbingActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * 播放原音
+     */
     private void listenToTheSoundVideo() {
         dubbingVideoView.setIsSupportPause(true);
-        dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, videoFilePath);
+        if (listenType == 0) {
+            //配音
+            listenSoundTextV.setText(getString(R.string.str_listen_dubbing_voice));
+            dubbingVideoView.setVideoPath(videoFilePath);
+//            dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, videoFilePath);
+            listenType = 1;
+        } else {
+            //原音
+            listenSoundTextV.setText(getString(R.string.str_listen_voice));
+            dubbingVideoView.setVideoPath(studentCommitFilePath);
+//            dubbingVideoView.startPlayTaskVideo(0, DubbingActivity.this.duration, studentCommitFilePath);
+            listenType = 0;
+        }
+        dubbingVideoView.startPlay(0, DubbingActivity.this.duration);
     }
 
     private void startRecord() {
@@ -713,7 +755,7 @@ public class DubbingActivity extends AppCompatActivity implements
         StringBuilder srtBuilder = new StringBuilder();
         for (int i = 0; i < dubbingEntityList.size(); i++) {
             DubbingEntity dubbingEntity = dubbingEntityList.get(i);
-            dubbingEntity.setSelect(i == 0);
+            dubbingEntity.setSelect(false);
             dubbingEntity.setProgressMax(getProgressMax(dubbingEntityList, i));
             dubbingEntity.setVideoTime(getVideoTime(dubbingEntityList, i));
             if (!isOnlineOpen) {
@@ -777,12 +819,13 @@ public class DubbingActivity extends AppCompatActivity implements
                 }
                 stopPlayRecordingAudio();
                 if (dubbingEntityList != null && position < dubbingEntityList.size()) {
-                    if (curPosition != position) {
+                    if (curPosition != position || !isCheckGridViewItem) {
                         dubbingEntityList.get(curPosition).setSelect(false);
                         dubbingEntityList.get(position).setSelect(true);
                         commonAdapter.notifyDataSetChanged();
                         curPosition = position;
                         switchDubbingVideo(position, false);
+                        isCheckGridViewItem = true;
                     }
                 }
             }

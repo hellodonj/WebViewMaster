@@ -258,7 +258,7 @@
                     android:padding="10dp"
                     app:lrcAnimationDuration="200"
                     app:lrcCurrentTextColor="#00FF00"
-                    app:lrcDividerHeight="5dp"
+                    app:lrcDividerHeight="25dp"
                     app:lrcLabel=""
                     app:lrcNormalTextColor="#000000"
                     app:lrcPadding="5dp"

@@ -367,16 +367,23 @@ public class AudioPlayHelper {
     }
 
     public void playCombineAudio(String backgroundAudioPath,
-                                 float personalVolume, float backgroundVolume, List<String> recordListPath) {
+                                 float personalVolume,
+                                 float backgroundVolume,
+                                 List<String> recordListPath) {
         if (mExecutorService == null) {
             mExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
         }
         this.mRecordListPath = recordListPath;
         AudioPlayTask personalAudio = new AudioPlayTask(NAME_AUDIO_PERSONAL, mRecordListPath.get(position), personalVolume);
-        AudioPlayTask backgroundAudio = new AudioPlayTask(NAME_AUDIO_BACKGROUND, backgroundAudioPath, backgroundVolume);
+        AudioPlayTask backgroundAudio = null;
+        if (!TextUtils.isEmpty(backgroundAudioPath)) {
+            backgroundAudio = new AudioPlayTask(NAME_AUDIO_BACKGROUND, backgroundAudioPath, backgroundVolume);
+        }
         mShouldContinue = true;
         mExecutorService.execute(personalAudio);
-        mExecutorService.execute(backgroundAudio);
+        if (backgroundAudio != null) {
+            mExecutorService.execute(backgroundAudio);
+        }
     }
 
     /**

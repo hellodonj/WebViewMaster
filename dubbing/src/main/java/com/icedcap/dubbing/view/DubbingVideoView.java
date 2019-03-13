@@ -475,6 +475,10 @@ public class DubbingVideoView extends FrameLayout implements
         setPara(videoPath, audioPathUrl);
     }
 
+    public void setVideoPath(String videoPath){
+        this.mVideoPath = videoPath;
+    }
+
     public void setStackThumb(long time) {
         mThumb.setImageBitmap(MediaUtil.getThumbnail(mContext, time, mVideoPath));
         mThumb.setVisibility(VISIBLE);

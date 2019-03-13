@@ -52,7 +52,9 @@ import java.util.List;
  * @author 作者 shouyi
  * @version 创建时间：Mar 31, 2016 3:15:31 PM 类说明
  */
-public class SlideWawaPageActivity extends PenServiceActivity implements OnClickListener {
+public class SlideWawaPageActivity extends PenServiceActivity implements OnClickListener,
+		BaseSlideManager.ExerciseNodeClickListener {
+
 	public final static String LOAD_FILE_PATH = SlideManager.LOAD_FILE_PATH;
 	public final static String LOAD_FILE_PAGES = SlideManager.LOAD_FILE_PAGES;
 	public final static String TITLE = SlideManager.LOAD_FILE_TITLE;
@@ -64,6 +66,12 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	public final static String COURSE_SECTION_DATA_STRING="course_section_data_string";
 	public final static String COURSE_FROM_TYPE="course_from_type";
 	public final static String MODEL_SOURCE_FROM = "model_source_from";
+
+	public final static String EXTRA_EXERCISE_STRING = "exerciseString";
+	public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
+	public final static String EXTRA_PAGE_INDEX = "pageIndex";
+	public final static String EXTRA_EDIT_EXERCISE = "editExercise";
+
 	//扫码识任务需要以下两个字段
 	public final static String SCHOOL_ID = "school_id";
 	public final static String CLASS_ID = "class_id";
@@ -152,6 +160,16 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 
 		mSlideManager.setPenUserServiceHelper(getPenUserServiceHelper());
 		mSlideManager.setUserType(mUserType);
+		boolean editExercise = getIntent().getBooleanExtra(EXTRA_EDIT_EXERCISE, false);
+		if (editExercise) {
+			mSlideManager.setEditExercise(editExercise);
+			mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
+			mSlideManager.setExerciseNodeClickListener(this);
+			mSlideManager.getExerciseNodeManager().setExerciseString(
+					getIntent().getStringExtra(EXTRA_EXERCISE_STRING));
+			mSlideManager.getExerciseNodeManager().setStudentAnswerString(
+					getIntent().getStringExtra(EXTRA_EXERCISE_ANSWER_STRING));
+		}
 		mSlideManager.onCreate(mOrientation);
 		initTitle();
 		mSlideManager.setTitleColor(getResources().getColor(
@@ -374,6 +392,17 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 				getPenUserServiceHelper().updatePenState(false);
 				break;
 			}
+		}
+	}
+
+	@Override
+	public void onExerciseNodeClick(int exerciseIndex) {
+
+	}
+
+	protected void reviewExerciseDetails(int exerciseIndex) {
+		if (mSlideManager != null) {
+			mSlideManager.reviewExerciseDetails(exerciseIndex);
 		}
 	}
 
