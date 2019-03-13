@@ -65,7 +65,7 @@ public class TutorialHelper {
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
         params.setConnectTimeout(1000);
-        LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
             @Override
@@ -118,12 +118,12 @@ public class TutorialHelper {
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
         params.setConnectTimeout(1000);
-        LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
             @Override
             public void onSuccess(String str) {
-                LogUtil.i(SchoolHelper.class, "request " + params.getUri() + " result :" + str);
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<LQModelMultipleParamIncludePagerResponse<AssistStudentEntity>> typeReference = new TypeReference<LQModelMultipleParamIncludePagerResponse<AssistStudentEntity>>() {};
                 LQModelMultipleParamIncludePagerResponse<AssistStudentEntity> response = JSON.parseObject(str, typeReference);
                 if (!response.isHasError()) {
@@ -144,7 +144,7 @@ public class TutorialHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
                 if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
@@ -324,11 +324,12 @@ public class TutorialHelper {
                 LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
                 ResponseVo responseVo = JSON.parseObject(str, typeReference);
-                if (responseVo.isSucceed()) {
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(true);
-                    }
-                } else {
+
+                boolean isSucceed = responseVo.isSucceed();
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(isSucceed);
+                }
+                if (!isSucceed) {
                     Factory.decodeRspCode(responseVo.getCode(), callback);
                 }
             }

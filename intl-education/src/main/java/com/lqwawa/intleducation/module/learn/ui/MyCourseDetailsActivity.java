@@ -72,6 +72,7 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.ui.course.notice.CourseNoticeListActivity;
 import com.oosic.apps.share.BaseShareUtils;
@@ -174,7 +175,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private int img_height;
     private ImageOptions imageOptions;
     // 课程评价可以下拉刷新
-    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false};
+    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false,false};
     // 是否加载更多的状态
     private boolean mCanLoadMore;
     private boolean isComeFromDetail = false;//是否是从首页的课程详情跳转过来的
@@ -194,6 +195,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     // @func   :V5.7 直播修改为在线课堂
     // private ClassroomFragment mClassroomFragment;
     private OnlineClassListFragment mOnlineClassFragment;
+    // 帮辅群
+    private TutorialGroupFragment mTutorialGroupFragment;
 
     // 学习进度容器
     private LinearLayout mProgressLayout;
@@ -502,6 +505,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     examListFragment.getMore();
                 }else if(mOnlineClassFragment.isVisible()){
                     mOnlineClassFragment.getMore();
+                }else if(mTutorialGroupFragment.isVisible()){
+                    mTutorialGroupFragment.getMore();
                 }
             }
         });
@@ -671,6 +676,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 pullToRefreshView.onFooterRefreshComplete();
                 if (courseCommentFragment.isVisible()) {
                     pullToRefreshView.setLoadMoreEnable(canLoadMore);
+                }else if(mTutorialGroupFragment.isVisible()){
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore);
                 }
 
                 MyCourseDetailsActivity.this.mCanLoadMore = canLoadMore;
@@ -702,6 +709,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mClassroomFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);*/
         mOnlineClassFragment = OnlineClassListFragment.newInstance(id);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+
+        // 帮辅群
+        mTutorialGroupFragment = TutorialGroupFragment.newInstance(id,mCurMemberId);
+        mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+
         Bundle bundle1 = new Bundle();
 
         CourseDetailItemParams params1 = new CourseDetailItemParams(true,mCurMemberId,!mCanEdit,mCourseId);
@@ -763,6 +775,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @func   :V5.7 直播修改为在线课堂
         // fragmentTransaction.add(R.id.fragment_container, mClassroomFragment);
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        // 添加帮辅群
+        fragmentTransaction.add(R.id.fragment_container,mTutorialGroupFragment);
 
         // @func   :V5.9默认先显示课程大纲
         fragmentTransaction.hide(courseCommentFragment);
@@ -773,6 +787,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @func   :V5.7 直播修改为在线课堂
         // fragmentTransaction.hide(mClassroomFragment);
         fragmentTransaction.hide(mOnlineClassFragment);
+        fragmentTransaction.hide(mTutorialGroupFragment);
         // fragmentTransaction.hide(introductionFragment);
         fragmentTransaction.commit();
         rg_tab.setOnCheckedChangeListener(tabChangeListener);
@@ -794,6 +809,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 // @func   :V5.7将直播换成了在线课堂
                 // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
+                fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
                 /*if (checkedId == R.id.rb_course_introduction) {
@@ -824,6 +840,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab_f.check(R.id.rb_live_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
+                }else if(checkedId == R.id.rb_tutorial_group){
+                    fragmentTransaction.show(mTutorialGroupFragment);
+                    rg_tab_f.check(R.id.rb_tutorial_group_f);
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
+                    pullToRefreshView.setLoadMoreEnable(mCanLoadMore);
                 }
 
                 fragmentTransaction.commitAllowingStateLoss();
@@ -839,6 +860,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 // @func   :V5.7将直播换成了在线课堂
                 // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
+                fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
                 /*if (checkedId == R.id.rb_course_introduction_f) {
@@ -869,6 +891,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab.check(R.id.rb_live);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
+                } else if(checkedId == R.id.rb_tutorial_group_f){
+                    fragmentTransaction.show(mTutorialGroupFragment);
+                    rg_tab.check(R.id.rb_tutorial_group);
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
             }
@@ -888,7 +914,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             return 4;
         } else if (id == R.id.rb_live || id == R.id.rb_live_f) {
             return 5;
-        } else {
+        } else if (id == R.id.rb_tutorial_group || id == R.id.rb_tutorial_group_f){
+            return 6;
+        }else {
             return 0;
         }
     }
@@ -955,6 +983,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         } else if (examListFragment.isVisible()) {
             examListFragment.updateData();
         } else if(mOnlineClassFragment.isVisible()){
+            // 下拉刷新
+            mOnlineClassFragment.onHeaderRefresh();
+        }else if(mTutorialGroupFragment.isVisible()){
             // 下拉刷新
             mOnlineClassFragment.onHeaderRefresh();
         }

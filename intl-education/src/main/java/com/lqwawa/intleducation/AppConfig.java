@@ -869,5 +869,9 @@ public final class AppConfig {
         public static final String GetRequestAddTutorialComment =
                 ServerBase + "api/tutor/addTutorEstimate?j=";
 
+        // 课程助教列表
+        public static final String GetTutorListByCourseId =
+                ServerBase + "api/tutor/getTutorListByCourseId?j=";
+
     }
 }

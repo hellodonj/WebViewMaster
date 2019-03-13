@@ -391,6 +391,12 @@
     <string name="label_personal_introduce">个人介绍</string>
     <string name="label_showing">显示</string>
     <string name="label_hide">隐藏</string>
+    <string name="label_tutorial_group">帮辅群</string>
+    <string name="label_watch_more_tutorial_group">查看更多帮辅</string>
+    <string name="label_tutorial_free">限时免费</string>
+    <string name="label_placeholder_task_have_mark">%d任务已批阅</string>
+    <string name="label_added_tutorial_succeed">+帮辅成功</string>
+    <string name="label_added_tutorial_failed">+帮辅失败</string>
 
     <string-array name="label_tutorial_page_tabs">
         <item>帮辅的课程</item>
