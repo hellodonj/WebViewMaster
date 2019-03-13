@@ -201,7 +201,7 @@ public class QDubbingActivity extends DubbingActivity {
                     teacherReviewScore = Integer.valueOf(score);
                 }
                 reviewComment = comment;
-                showViewData();
+                showReviewViewData();
             }
         }
     }

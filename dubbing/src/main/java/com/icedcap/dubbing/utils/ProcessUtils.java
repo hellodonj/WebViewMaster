@@ -149,8 +149,7 @@ public class ProcessUtils {
 
     private String concatMp3(Context context, List<String> mp3FilePaths, String backgroundFilePath,
                              String videoFilePath) {
-        if (mp3FilePaths == null || mp3FilePaths.isEmpty() || TextUtils.isEmpty(backgroundFilePath)
-                || TextUtils.isEmpty(videoFilePath)) {
+        if (mp3FilePaths == null || mp3FilePaths.isEmpty() || TextUtils.isEmpty(videoFilePath)) {
             return null;
         }
         String extractVideoFilePath
@@ -182,9 +181,13 @@ public class ProcessUtils {
         } else {
             wholeMp3FilePath = mp3FilePaths.get(0);
         }
-        command = FFmpegUtil.mixAudio(backgroundFilePath,
-                wholeMp3FilePath, mixFilePath);
-        commandList.add(command);
+        if (TextUtils.isEmpty(backgroundFilePath)) {
+            mixFilePath = wholeMp3FilePath;
+        } else {
+            command = FFmpegUtil.mixAudio(backgroundFilePath,
+                    wholeMp3FilePath, mixFilePath);
+            commandList.add(command);
+        }
         command = FFmpegUtil.extractVideo(videoFilePath,
                 extractVideoFilePath);
         commandList.add(command);

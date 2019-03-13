@@ -408,35 +408,7 @@ public class DubbingActivity extends AppCompatActivity implements
             dubbingVideoView.findViewById(R.id.preview_text_view).setVisibility(View.GONE);
             qDubbingDetailLayout.setVisibility(View.VISIBLE);
             teacherReviewTextV.setOnClickListener(this);
-            if (hasVideoReview) {
-                teacherReviewFl.setVisibility(View.GONE);
-                //老师点评了
-                teacherOperationLayout.setVisibility(View.VISIBLE);
-                systemScoreView.setText(String.valueOf(systemScore));
-                teacherScoreView.setText(String.valueOf(teacherReviewScore));
-                //显示老师的评语
-                if (TextUtils.isEmpty(reviewComment)) {
-                    reviewComment = getString(R.string.no_content);
-                }
-                teacherReviewView.setText(reviewComment);
-                teacherReviewView.setNeedOnClickExpand(false);
-                teacherReviewView.setExpandListener(new ExpandableTextView.OnExpandListener() {
-                    @Override
-                    public void onExpand(ExpandableTextView view) {
-                        showTeacherReviewPopWindow(getWindowHeight());
-                    }
-
-                    @Override
-                    public void onShrink(ExpandableTextView view) {
-                        showTeacherReviewPopWindow(getWindowHeight());
-                    }
-                });
-            } else {
-                systemScoreView.setText(String.valueOf(teacherReviewScore));
-                if (hasReviewPermission) {
-                    teacherReviewFl.setVisibility(View.VISIBLE);
-                }
-            }
+            showReviewViewData();
             if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
                 dubbingBySentenceLayout.setVisibility(View.VISIBLE);
                 changDubbingTypeBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -479,6 +451,38 @@ public class DubbingActivity extends AppCompatActivity implements
                     }
                 }
             });
+        }
+    }
+
+    protected void showReviewViewData(){
+        if (hasVideoReview) {
+            teacherReviewFl.setVisibility(View.GONE);
+            //老师点评了
+            teacherOperationLayout.setVisibility(View.VISIBLE);
+            systemScoreView.setText(String.valueOf(systemScore));
+            teacherScoreView.setText(String.valueOf(teacherReviewScore));
+            //显示老师的评语
+            if (TextUtils.isEmpty(reviewComment)) {
+                reviewComment = getString(R.string.no_content);
+            }
+            teacherReviewView.setText(reviewComment);
+            teacherReviewView.setNeedOnClickExpand(false);
+            teacherReviewView.setExpandListener(new ExpandableTextView.OnExpandListener() {
+                @Override
+                public void onExpand(ExpandableTextView view) {
+                    showTeacherReviewPopWindow(getWindowHeight());
+                }
+
+                @Override
+                public void onShrink(ExpandableTextView view) {
+                    showTeacherReviewPopWindow(getWindowHeight());
+                }
+            });
+        } else {
+            systemScoreView.setText(String.valueOf(teacherReviewScore));
+            if (hasReviewPermission) {
+                teacherReviewFl.setVisibility(View.VISIBLE);
+            }
         }
     }
 
