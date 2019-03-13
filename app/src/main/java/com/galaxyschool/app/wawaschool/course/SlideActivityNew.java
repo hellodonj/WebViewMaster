@@ -37,6 +37,7 @@ import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
 import com.galaxyschool.app.wawaschool.views.MakingCourseTipsDialog;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.oosic.apps.iemaker.base.BaseSlideManager;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.iemaker.base.SlideManager.CourseHandler;
 import com.oosic.apps.iemaker.base.SlideManager.SendCourseHandler;
@@ -45,6 +46,7 @@ import com.oosic.apps.iemaker.base.SlideManagerForHorn;
 import com.oosic.apps.iemaker.base.data.NodeOwner;
 import com.oosic.apps.iemaker.base.data.NormalProperty;
 import com.oosic.apps.iemaker.base.evaluate.EvaluateParams;
+import com.oosic.apps.iemaker.base.exercisenode.ExerciseNodeManager;
 import com.oosic.apps.iemaker.base.pen.PenServiceActivity;
 import com.osastudio.common.utils.TimerUtils;
 import com.umeng.socialize.UMShareAPI;
@@ -54,7 +56,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlideActivityNew extends PenServiceActivity implements CommitHelper.NoteCommitListener {
+public class SlideActivityNew extends PenServiceActivity implements CommitHelper.NoteCommitListener,
+        BaseSlideManager.ExerciseNodeClickListener {
     public final static String LOAD_FILE_TITLE = SlideManager.LOAD_FILE_TITLE;
     public final static String LOAD_FILE_PATH = SlideManager.LOAD_FILE_PATH;
     public final static String LOAD_FILE_PAGES = SlideManager.LOAD_FILE_PAGES;
@@ -67,6 +70,12 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
 
     public final static String COURSE_ID = "SlideActivityNew_course_id";
     public final static String AUTO_MARK = "SlideActivityNew_auto_mark";
+
+    public final static String EXTRA_EXERCISE_STRING = "exerciseString";
+    public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
+    public final static String EXTRA_PAGE_INDEX = "pageIndex";
+    public final static String EXTRA_EDIT_EXERCISE = "editExercise";
+
     private LocalCourseDao localCourseDao;
 
     private SlideManager mSlideManager = null;
@@ -632,6 +641,17 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
                 mSlideManager.setEvaluateResId(courseId);
             }
         }
+
+        boolean editExercise = getIntent().getBooleanExtra(EXTRA_EDIT_EXERCISE, false);
+        if (editExercise) {
+            mSlideManager.setEditExercise(editExercise);
+            mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
+            mSlideManager.setExerciseNodeClickListener(this);
+            mSlideManager.getExerciseNodeManager().setExerciseString(
+                    getIntent().getStringExtra(EXTRA_EXERCISE_STRING));
+            mSlideManager.getExerciseNodeManager().setStudentAnswerString(
+                    getIntent().getStringExtra(EXTRA_EXERCISE_ANSWER_STRING));
+        }
         mSlideManager.onCreate(mOrientation);
         mSlideManager.setTitleColor(getResources().getColor(R.color.toolbar_bg_color));
 //        mSlideManager.setClipMusicHandler(mClipMusicHandler);
@@ -768,6 +788,17 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
                     getPenUserServiceHelper().updatePenState(false);
                     break;
             }
+        }
+    }
+
+    @Override
+    public void onExerciseNodeClick(int exerciseIndex) {
+
+    }
+
+    protected void reviewExerciseDetails(int exerciseIndex) {
+        if (mSlideManager != null) {
+            mSlideManager.reviewExerciseDetails(exerciseIndex);
         }
     }
 
