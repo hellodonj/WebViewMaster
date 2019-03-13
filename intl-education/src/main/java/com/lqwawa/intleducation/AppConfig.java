@@ -869,6 +869,10 @@ public final class AppConfig {
         public static final String GetRequestAddTutorialComment =
                 ServerBase + "api/tutor/addTutorEstimate?j=";
 
+        // 获取符合筛选条件的帮辅列表
+        public static final String GetTutorList =
+                ServerBase + "api/tutor/getTutorList?j=";
+
         // 课程助教列表
         public static final String GetTutorListByCourseId =
                 ServerBase + "api/tutor/getTutorListByCourseId?j=";

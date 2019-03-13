@@ -17,7 +17,9 @@ import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
+import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
@@ -28,6 +30,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
@@ -739,6 +742,108 @@ public class TutorialHelper {
             public void onError(Throwable throwable, boolean b) {
                 LogUtil.w(TutorialHelper.class,"request "+params.getUri()+" failed");
                 if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取帮辅标签数据
+     * {@link LanguageType.LanguageRes}
+     * @param isZh 是否中文显示 0 chinese 1 other
+     * @param level 返回level级别课程
+     * @param parentId 父级Id
+     * @param callback 数据回调接口
+     */
+    public static void requestTutorialConfigData(@LanguageType.LanguageRes int isZh,
+                                                 int level,int parentId,
+                                                 @NonNull final DataSource.Callback<List<LQCourseConfigEntity>> callback){
+        final RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language",isZh);
+        requestVo.addParams("level",level);
+        requestVo.addParams("parentId",parentId);
+        requestVo.addParams("version",0);
+        requestVo.addParams("isTutorConfig",true);
+        final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetConfigList+requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class,"send request ==== " +params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class,"request "+params.getUri()+" result :"+str);
+                TypeReference<ResponseVo<List<LQCourseConfigEntity>>> typeReference =
+                        new TypeReference<ResponseVo<List<LQCourseConfigEntity>>>(){};
+                ResponseVo<List<LQCourseConfigEntity>> result = JSON.parseObject(str, typeReference);
+                if(result.isSucceed()){
+                    List<LQCourseConfigEntity> data = result.getData();
+                    if(!EmptyUtil.isEmpty(callback)){
+                        callback.onDataLoaded(data);
+                    }
+                }else{
+                    Factory.decodeRspCode(result.getCode(),callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取符合筛选条件的帮辅群
+     * @param level 课程Id
+     * @param paramOneId 条件1
+     * @param paramTwoId 条件2
+     * @param paramThreeId 条件3
+     * @param sort 排序条件
+     * @param callback 请求回调对象
+     */
+    public static void requestTutorData(@NonNull String level,
+                                                  int paramOneId,
+                                                  int paramTwoId,
+                                                  int paramThreeId,
+                                                  @NonNull String sort,
+                                                  int pageIndex,int pageSize,
+                                                  @NonNull final DataSource.Callback<List<TutorialGroupEntity>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("level", level);
+        requestVo.addParams("paramOneId", paramOneId);
+        requestVo.addParams("paramTwoId", paramTwoId);
+        requestVo.addParams("paramThreeId", paramThreeId);
+        requestVo.addParams("sort", sort);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetTutorList + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>(){};
+                ResponseVo<List<TutorialGroupEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }

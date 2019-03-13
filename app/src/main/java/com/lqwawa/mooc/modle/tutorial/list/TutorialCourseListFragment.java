@@ -15,6 +15,7 @@ import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
@@ -208,6 +209,10 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
             mBottomLayout.setVisibility(View.GONE);
             // 广播出去,判断是否显示评论框
             EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
+
+            UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
+        }else{
+            UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
         }
     }
 

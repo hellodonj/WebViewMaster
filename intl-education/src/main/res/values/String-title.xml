@@ -21,5 +21,6 @@
     <string name="title_student_tutorial">我的帮辅</string>
     <string name="title_fill_information">填写资料</string>
     <string name="title_tutorial_audit">提交申请</string>
+    <string name="title_add_tutorial">添加帮辅</string>
 
 </resources>
