@@ -475,6 +475,12 @@
                                 android:visibility="gone"/>
 
                             <RadioButton
+                                android:id="@+id/rb_tutorial_group"
+                                style="@style/CourseRadioButton"
+                                android:drawableTop="@drawable/rb_icon_exam"
+                                android:text="@string/label_tutorial_group" />
+
+                            <RadioButton
                                 android:id="@+id/rb_scoring_criteria"
                                 style="@style/CourseRadioButton"
                                 android:drawableTop="@drawable/rb_icon_scoring_criteria"
@@ -541,6 +547,12 @@
                     android:drawableTop="@drawable/rb_icon_exam"
                     android:text="@string/exam"
                     android:visibility="gone"/>
+
+                <RadioButton
+                    android:id="@+id/rb_tutorial_group_f"
+                    style="@style/CourseRadioButton"
+                    android:drawableTop="@drawable/rb_icon_exam"
+                    android:text="@string/label_tutorial_group" />
 
                 <RadioButton
                     android:id="@+id/rb_scoring_criteria_f"

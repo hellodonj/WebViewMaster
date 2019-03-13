@@ -9,11 +9,11 @@ import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.CourseProcessVo;
@@ -225,7 +226,7 @@ public class CourseHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                com.lqwawa.intleducation.common.utils.LogUtil.i(CourseHelper.class, "获取课程详情失败:type" + ",msg:" + throwable.getMessage());
+                LogUtil.i(CourseHelper.class, "获取课程详情失败:type" + ",msg:" + throwable.getMessage());
             }
 
             @Override
@@ -563,6 +564,54 @@ public class CourseHelper {
             @Override
             public void onError(Throwable throwable, boolean b) {
 
+            }
+        });
+    }
+
+    /**
+     * 获取课程助教列表
+     * @param courseId 课程Id
+     * @param memberId 用户Id
+     * @type 1 课程 2 课堂
+     * @param callback 请求回调对象
+     */
+    public static void requestTutorDataByCourseId(@NonNull String courseId,
+                                                  @NonNull String memberId,
+                                                  int type,
+                                                  int pageIndex,int pageSize,
+                                                  @NonNull final DataSource.Callback<List<TutorialGroupEntity>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("type", type);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetTutorListByCourseId + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>(){};
+                ResponseVo<List<TutorialGroupEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
             }
         });
     }
