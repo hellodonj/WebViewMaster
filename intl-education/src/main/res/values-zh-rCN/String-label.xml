@@ -322,6 +322,7 @@
     <string name="label_add_course_lines">添加\n学程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
     <string name="label_confirm_authorization">确定</string>
+    <string name="label_choice_tutor_tip">请选择帮辅老师</string>
 
 
     <!--V5.13字符串-->

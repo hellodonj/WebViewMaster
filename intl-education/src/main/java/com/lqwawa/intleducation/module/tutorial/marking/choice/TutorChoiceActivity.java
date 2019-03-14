@@ -1,0 +1,198 @@
+package com.lqwawa.intleducation.module.tutorial.marking.choice;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+
+import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.CourseEmptyView;
+import com.lqwawa.intleducation.base.PresenterActivity;
+import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
+
+import java.util.Date;
+import java.util.List;
+
+public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.Presenter>
+    implements TutorChoiceContract.View,View.OnClickListener{
+
+    private TopBar mTopBar;
+    private PullToRefreshView mRefreshLayout;
+    private RecyclerView mRecycler;
+    private CourseEmptyView mEmptyView;
+    private Button mBtnConfirm;
+
+    private TutorChoiceAdapter mAdapter;
+
+    private TutorChoiceParams mChoiceParams;
+    private String mCurMemberId;
+    private String mCourseId;
+    private String mChapterId;
+    private QuestionResourceModel mResourceModel;
+    private int pageIndex;
+
+    @Override
+    protected TutorChoiceContract.Presenter initPresenter() {
+        return new TutorChoicePresenter(this);
+    }
+
+    @Override
+    protected int getContentLayoutId() {
+        return R.layout.activity_tutor_choice;
+    }
+
+    @Override
+    protected boolean initArgs(@NonNull Bundle bundle) {
+        mChoiceParams = (TutorChoiceParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
+        if(EmptyUtil.isNotEmpty(mChoiceParams)){
+            mCurMemberId = mChoiceParams.getMemberId();
+            mCourseId = mChoiceParams.getCourseId();
+            mChapterId = mChoiceParams.getChapterId();
+            mResourceModel = mChoiceParams.getModel();
+
+            if(EmptyUtil.isEmpty(mCurMemberId) ||
+                    (EmptyUtil.isEmpty(mCourseId) && EmptyUtil.isEmpty(mChapterId))){
+                return false;
+            }
+        }
+        return super.initArgs(bundle);
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        mTopBar = (TopBar) findViewById(R.id.top_bar);
+        mTopBar.setBack(true);
+        mTopBar.setTitle(R.string.title_choice_tutor);
+        mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
+        mEmptyView = (CourseEmptyView) findViewById(R.id.empty_layout);
+        mBtnConfirm = (Button) findViewById(R.id.btn_confirm);
+        mBtnConfirm.setOnClickListener(this);
+
+        mRecycler = (RecyclerView) findViewById(R.id.recycler);
+        mRecycler.setNestedScrollingEnabled(false);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecycler.setLayoutManager(mLayoutManager);
+        mAdapter = new TutorChoiceAdapter();
+        mRecycler.setAdapter(mAdapter);
+        mRecycler.addItemDecoration(new RecyclerItemDecoration(this,RecyclerItemDecoration.VERTICAL_LIST));
+
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TutorChoiceEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorChoiceEntity tutorChoiceEntity) {
+                super.onItemClick(holder, tutorChoiceEntity);
+                List<TutorChoiceEntity> items = mAdapter.getItems();
+                for (TutorChoiceEntity item : items) {
+                    item.setChecked(false);
+                }
+
+                tutorChoiceEntity.setChecked(true);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        // 下拉刷新
+        mRefreshLayout.setLastUpdated(new Date().toLocaleString());
+        mRefreshLayout.showRefresh();
+        mRefreshLayout.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(PullToRefreshView view) {
+                requestTutorData(false);
+            }
+        });
+
+        mRefreshLayout.setLoadMoreEnable(false);
+        mRefreshLayout.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
+            @Override
+            public void onFooterRefresh(PullToRefreshView view) {
+                requestTutorData(true);
+            }
+        });
+    }
+
+    /**
+     * 获取帮辅老师列表
+     * @param moreData 是否更多数据
+     */
+    private void requestTutorData(boolean moreData){
+        if(!moreData){
+            pageIndex = 0;
+        }else{
+            pageIndex ++;
+        }
+
+        mPresenter.requestChoiceTutorData(mCurMemberId,mCourseId,mChapterId,pageIndex);
+    }
+
+    @Override
+    public void updateChoiceTutorView(List<TutorChoiceEntity> entities) {
+        // 判断有无更多数据,打开或者关闭加载更多
+        mRefreshLayout.onHeaderRefreshComplete();
+        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mAdapter.replace(entities);
+
+        if(EmptyUtil.isEmpty(entities)){
+            // 数据为空
+            mRefreshLayout.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }else{
+            // 数据不为空
+            mRefreshLayout.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void updateMoreChoiceTutorView(List<TutorChoiceEntity> entities) {
+        // 关闭加载更多
+        mRefreshLayout.onFooterRefreshComplete();
+        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        // 设置数据
+        mAdapter.add(entities);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+        if(viewId == R.id.btn_confirm){
+            List<TutorChoiceEntity> items = mAdapter.getItems();
+            boolean trigger = false;
+            for (TutorChoiceEntity item : items) {
+                if(item.isChecked()){
+                    trigger = true;
+                    // 发送作业
+                    break;
+                }
+            }
+
+            if(!trigger){
+                UIUtil.showToastSafe(R.string.label_choice_tutor_tip);
+            }
+        }
+    }
+
+    /**
+     * 申请批阅选择入口
+     * @param context 上下文对象
+     * @param params 参数
+     */
+    public static void show(@NonNull Context context,@NonNull TutorChoiceParams params){
+        Intent intent = new Intent(context,TutorChoiceActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+}

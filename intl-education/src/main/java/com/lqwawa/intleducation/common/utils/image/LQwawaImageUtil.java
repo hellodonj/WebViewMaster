@@ -8,12 +8,15 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 
 /**
  * @author medici
@@ -88,6 +91,26 @@ public class LQwawaImageUtil {
         Glide.with(context)
                 .applyDefaultRequestOptions(options)
                 .load(url)
+                .into(v);
+    }
+
+    /**
+     * 加载图片的基本方式 并且带有圆角
+     * @param context 上下文对象
+     * @param v 要显示到的VIEW
+     * @param url 图片Url地址
+     */
+    public static void loadCommonCircular(@NonNull Context context,
+                                          @NonNull ImageView v,
+                                          @NonNull String url,
+                                          int dpSize){
+        if(!verificationUrl(url)) return;
+        int pixels = DisplayUtil.dip2px(UIUtil.getContext(),dpSize);
+        RequestOptions options = new RequestOptions();
+        Glide.with(context)
+                .applyDefaultRequestOptions(options)
+                .load(url)
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(pixels)))
                 .into(v);
     }
 

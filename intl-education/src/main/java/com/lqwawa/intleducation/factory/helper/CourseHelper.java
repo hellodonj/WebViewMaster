@@ -9,7 +9,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -22,11 +21,10 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.learn.vo.CourseProcessVo;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -596,6 +594,62 @@ public class CourseHelper {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>(){};
                 ResponseVo<List<TutorialGroupEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 查看课程的帮辅列表
+     * @param courseId 课程Id
+     * @param chapterId 资源Id
+     * @param memberId 用户Id
+     * @param callback 请求回调对象
+     */
+    public static void requestTutorsByCourseId(@NonNull String memberId,
+                                               @Nullable String courseId,
+                                               @Nullable String chapterId,
+                                               int pageIndex,int pageSize,
+                                               @NonNull final DataSource.Callback<List<TutorChoiceEntity>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        if(EmptyUtil.isNotEmpty(courseId)) {
+            requestVo.addParams("courseId", courseId);
+        }
+
+        if(EmptyUtil.isNotEmpty(chapterId)){
+            requestVo.addParams("chapterId", chapterId);
+        }
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostTutorsByCourseId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorChoiceEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorChoiceEntity>>>(){};
+                ResponseVo<List<TutorChoiceEntity>> responseVo = JSON.parseObject(str, typeReference);
                 if(responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
