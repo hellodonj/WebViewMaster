@@ -3,6 +3,8 @@ package com.lqwawa.intleducation.module.box.course.inner;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +16,8 @@ import com.lqwawa.intleducation.base.widgets.ui.CommonContainerActivity;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.box.FunctionAdapter;
 import com.lqwawa.intleducation.module.box.FunctionEntity;
+import com.lqwawa.intleducation.module.box.common.CommonMarkingListFragment;
+import com.lqwawa.intleducation.module.box.common.CommonMarkingParams;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
@@ -107,6 +111,13 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
         entities.add(new FunctionEntity(R.string.label_student_course,R.drawable.ic_student_course));
         entities.add(new FunctionEntity(R.string.label_student_live,R.drawable.ic_student_live));
         mAdapter.replace(entities);
+
+        CommonMarkingParams params = new CommonMarkingParams(false,mCurMemberId);
+        Fragment fragment = CommonMarkingListFragment.newInstance(params);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.lay_content,fragment)
+                .commit();
     }
 
     private void skipStudentWork(){

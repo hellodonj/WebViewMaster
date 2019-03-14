@@ -11,6 +11,7 @@ public class TaskEntity implements Serializable {
     private String AssHeadPicUrl;
     private String AssMemberId;
     private String AssNickName;
+    private String AssRealName;
     private int AssistStudent_Id;
     private String CreateId;
     private String CreateName;
@@ -67,6 +68,14 @@ public class TaskEntity implements Serializable {
 
     public void setAssNickName(String AssNickName) {
         this.AssNickName = AssNickName;
+    }
+
+    public String getAssRealName() {
+        return AssRealName;
+    }
+
+    public void setAssRealName(String assRealName) {
+        AssRealName = assRealName;
     }
 
     public int getAssistStudent_Id() {

@@ -397,6 +397,8 @@
     <string name="label_placeholder_task_have_mark">%d任务已批阅</string>
     <string name="label_added_tutorial_succeed">+帮辅成功</string>
     <string name="label_added_tutorial_failed">+帮辅失败</string>
+    <string name="label_new_work">最新作业</string>
+    <string name="label_commit_placeholder_teacher">提交给%s</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.module.box.course.inner.MyCourseInnerFragment;
 import com.lqwawa.intleducation.module.box.tutorial.TutorialSpaceContract;
 import com.lqwawa.intleducation.module.box.tutorial.TutorialSpaceFragment;
 import com.lqwawa.intleducation.module.box.tutorial.TutorialSpacePresenter;
+import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.TabType;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseTypeFragment;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
@@ -47,6 +48,8 @@ import java.util.Locale;
  */
 public class MyCourseFragment extends PresenterFragment<MyCourseContract.Presenter>
         implements MyCourseContract.View{
+
+    private static final String LOGIN_ACTION = "MySchoolSpaceFragment_action_load_data";
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -80,8 +83,9 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         super.initData();
         // 注册刷新数据的广播
         registerBroadcastReceiver();
-
-        mPresenter.requestParentChildData();
+        if(UserHelper.isLogin()){
+            mPresenter.requestParentChildData();
+        }
     }
 
     @Override
@@ -174,6 +178,8 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         myIntentFilter.addAction(AppConfig.ServerUrl.joinInCourse);
         //登录成功
         myIntentFilter.addAction(AppConfig.ServerUrl.Login);
+        //登录广播
+        myIntentFilter.addAction(LOGIN_ACTION);
         //注册广播
         getContext().registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
@@ -186,7 +192,10 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(action.equals(AppConfig.ServerUrl.Login))) {
+            if (action.equals(AppConfig.ServerUrl.Login)) {
+                // 获取到登录的广播
+                mPresenter.requestParentChildData();
+            }else if(action.equals(LOGIN_ACTION)){
                 // 获取到登录的广播
                 mPresenter.requestParentChildData();
             }

@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.factory.helper;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -12,6 +13,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.BaseEntity;
@@ -21,6 +23,7 @@ import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.module.discovery.vo.BannerInfoVo;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -28,6 +31,7 @@ import org.xutils.x;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author medici
@@ -53,14 +57,19 @@ public class MyCourseHelper {
             public void onSuccess(String str) {
                 LogUtil.i(MyCourseHelper.class,"request "+params.getUri()+" result :"+str);
                 LqResponseDataVo<List<ChildrenListVo>> result = JSON.parseObject(str,new TypeReference<LqResponseDataVo<List<ChildrenListVo>>>() {});
-                if (!result.isHasError()) {
+                if (result.isSucceed()) {
                     List<ChildrenListVo> data = result.getModel().getData();
                     if(!EmptyUtil.isEmpty(callback)){
                         // 接口回调数据到Presenter
                         callback.onDataLoaded(data);
                     }
                 }else{
-                    Factory.decodeRspCode(result.getErrorCode(),callback);
+                    String ErrorMessage = (String) result.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
                 }
             }
 

@@ -32,6 +32,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
@@ -606,7 +607,7 @@ public class TutorialHelper {
                                            @Nullable String CreateTimeEnd,
                                            @Nullable String StartTimeBegin,
                                            @Nullable String StartTimeEnd,
-                                           int State,int OrderByType,
+                                           int State,@OrderByType.OrderByTypeRes int OrderByType,
                                            int pageIndex,int pageSize,
                                            @NonNull DataSource.Callback<List<TaskEntity>> callback) {
         // 准备数据

@@ -1,6 +1,8 @@
 package com.lqwawa.intleducation.module.box.tutorial;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,6 +13,8 @@ import com.lqwawa.intleducation.module.box.FunctionAdapter;
 import com.lqwawa.intleducation.module.box.FunctionEntity;
 import com.lqwawa.intleducation.module.box.TutorialSpaceBoxContract;
 import com.lqwawa.intleducation.module.box.TutorialSpaceBoxPresenter;
+import com.lqwawa.intleducation.module.box.common.CommonMarkingListFragment;
+import com.lqwawa.intleducation.module.box.common.CommonMarkingParams;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
@@ -92,6 +96,14 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
         entities.add(new FunctionEntity(R.string.label_tutorial_course,R.drawable.ic_tutorial_course));
         entities.add(new FunctionEntity(R.string.label_tutorial_organ,R.drawable.ic_tutorial_organ));
         mAdapter.replace(entities);
+
+        String memberId = UserHelper.getUserId();
+        CommonMarkingParams params = new CommonMarkingParams(false,memberId);
+        Fragment fragment = CommonMarkingListFragment.newInstance(params);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.lay_content,fragment)
+                .commit();
     }
 
     // 去作业列表页面

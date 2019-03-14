@@ -10,6 +10,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
+import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListContract;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class TutorialMarkingPagerPresenter extends BasePresenter<TutorialMarking
                                               @Nullable String assistStudent_Id, @Nullable String title,
                                               @Nullable String createTimeBegin, @Nullable String createTimeEnd,
                                               @Nullable String startTimeBegin, @Nullable String startTimeEnd,
-                                              int state, int orderByType, int pageIndex) {
+                                              int state, @OrderByType.OrderByTypeRes int orderByType, int pageIndex) {
         // TODO 测试数据
         assistStudent_Id = "1";
         memberId = "";
