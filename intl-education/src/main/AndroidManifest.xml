@@ -924,6 +924,7 @@
 
         <!--Fragment公共容器的入口-->
         <activity android:name=".base.widgets.ui.CommonContainerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
