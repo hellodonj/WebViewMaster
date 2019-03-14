@@ -690,4 +690,10 @@ public class HomeActivity extends BaseCompatActivity
             dialog.show();
         }
     }
+
+    public void updateBottomViewText(int position,String text){
+        if (bottomBar != null){
+            bottomBar.updateBottomViewText(position,text);
+        }
+    }
 }

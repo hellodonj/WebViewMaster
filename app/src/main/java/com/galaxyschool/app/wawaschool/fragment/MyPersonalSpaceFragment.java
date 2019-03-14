@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -21,6 +23,7 @@ import com.galaxyschool.app.wawaschool.AssociateAccountActivity;
 import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.ClassContactsActivity;
 import com.galaxyschool.app.wawaschool.DeviceManagementActivity;
+import com.galaxyschool.app.wawaschool.HomeActivity;
 import com.galaxyschool.app.wawaschool.MediaMainActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.MyCollectionListActivity;
@@ -40,6 +43,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.AnimationUtil;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
+import com.galaxyschool.app.wawaschool.common.SwitchButton;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WebUtils;
@@ -67,6 +71,9 @@ import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.google.gson.Gson;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity;
 import com.lqwawa.intleducation.module.discovery.ui.person.mygive.MyGiveInstructionActivity;
@@ -76,6 +83,7 @@ import com.lqwawa.intleducation.module.user.ui.MyOrderListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
@@ -87,6 +95,7 @@ import com.osastudio.common.utils.TipMsgHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,6 +120,9 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
     private TextView userNameTxt;
     private TextView authLoginWxTxt;
     private TextView authLoginQqTxt;
+    private LinearLayout openAssistanceLayout;
+    private LinearLayout assistanceModeLayout;
+    private SwitchButton switchButton;
 
     private String topGridViewTag;
     private Map<Integer, TabEntityPOJO> entryMap = new HashMap();
@@ -313,11 +325,43 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             shareView.setOnClickListener(v -> showMoreMenu(v));
         }
 
+        initAssistanceView();
         final PullToRefreshView pullToRefreshView = (PullToRefreshView) findViewById(
                 R.id.contacts_pull_to_refresh);
         setStopPullUpState(true);
         setPullToRefreshView(pullToRefreshView);
         initGridView();
+    }
+
+    private void initAssistanceView(){
+        assistanceModeLayout = (LinearLayout) findViewById(R.id.ll_assistance_mode);
+        openAssistanceLayout = (LinearLayout) findViewById(R.id.ll_open_assistance);
+        openAssistanceLayout.setOnClickListener(v -> {
+            //申请开通帮辅
+            TutorialRegisterActivity.show(getActivity());
+        });
+        switchButton = (SwitchButton) findViewById(R.id.sb_btn);
+        switchButton.setOnCheckedChangeListener((view,check) -> {
+            //切换模式
+            HomeActivity activity = null;
+            if (getActivity() instanceof HomeActivity){
+                activity = (HomeActivity) getActivity();
+            }
+            if (check) {
+                //帮辅模式
+                if (activity != null) {
+                    activity.updateBottomViewText(2,getString(R.string.str_assistance_space));
+                }
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            } else {
+                if (activity != null) {
+                    activity.updateBottomViewText(2,getString(R.string.my_course));
+                }
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            }
+        });
     }
 
     private void initGridView() {
@@ -1134,6 +1178,19 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         popupMenu.showAsDropDown(view, view.getWidth(), 0);
     }
 
+    private void updateAssistanceViewData(){
+        if (userInfo != null) {
+            if (userInfo.isTeacher() || userInfo.isAssistant()) {
+                //助教和老师身份
+                openAssistanceLayout.setVisibility(View.GONE);
+                assistanceModeLayout.setVisibility(View.VISIBLE);
+            } else {
+                assistanceModeLayout.setVisibility(View.GONE);
+                openAssistanceLayout.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     private void enterCaptureActivity() {
 
         Intent intent = new Intent(getActivity(), CaptureActivity.class);
@@ -1221,6 +1278,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                         userNameTxt.setText(userName);
                         getMyApplication().setUserInfo(userInfo);
                         loadEntityData();
+                        updateAssistanceViewData();
                     }
                 });
         prepareLoadPushMessage();
