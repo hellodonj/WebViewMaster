@@ -25,10 +25,16 @@ import org.xutils.x;
  */
 public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
+    private boolean tutorialMode;
     private EntityCallback mCallback;
 
-    public TutorialTaskAdapter(EntityCallback mCallback) {
+    public TutorialTaskAdapter(boolean tutorialMode) {
+        this(tutorialMode,null);
+    }
+
+    public TutorialTaskAdapter(boolean tutorialMode, EntityCallback mCallback) {
         super();
+        this.tutorialMode = tutorialMode;
         this.mCallback = mCallback;
     }
 
@@ -52,6 +58,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
         private ImageView mStudentAvatar;
         private ImageView mRedPoint;
         private TextView mStudentName;
+        private TextView mTvRequire;
 
         private LinearLayout mBodyLayout;
         private ImageView mTaskAvatar;
@@ -69,6 +76,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             mStudentAvatar = (ImageView) itemView.findViewById(R.id.iv_student_avatar);
             mRedPoint = (ImageView) itemView.findViewById(R.id.red_point);
             mStudentName = (TextView) itemView.findViewById(R.id.tv_student_name);
+            mTvRequire = (TextView)itemView.findViewById(R.id.tv_require);
             mBodyLayout = (LinearLayout) itemView.findViewById(R.id.body_layout);
             mTaskAvatar = (ImageView) itemView.findViewById(R.id.iv_task_icon);
             mTaskType = (TextView) itemView.findViewById(R.id.tv_task_type);
@@ -89,10 +97,31 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     mCallback.onRequireClick(v,position,entity);
                 }
             });
-            // 显示用户头像
-            ImageUtil.fillCircleView(mStudentAvatar,taskEntity.getStuHeadPicUrl(),R.drawable.user_header_def);
-            // 显示用户姓名
-            StringUtil.fillSafeTextView(mStudentName,taskEntity.getStuRealName());
+
+            if(tutorialMode){
+                mStudentAvatar.setVisibility(View.VISIBLE);
+                // 显示用户头像
+                ImageUtil.fillCircleView(mStudentAvatar,taskEntity.getStuHeadPicUrl(),R.drawable.user_header_def);
+            }else{
+                mStudentAvatar.setVisibility(View.GONE);
+            }
+
+            if(tutorialMode){
+                // 显示用户姓名
+                StringUtil.fillSafeTextView(mStudentName,taskEntity.getStuRealName());
+            }else{
+                // 显示提交给某个老师
+                String name = EmptyUtil.isEmpty(taskEntity.getAssRealName()) ? taskEntity.getAssNickName() : taskEntity.getAssRealName();
+                StringUtil.fillSafeTextView(mStudentName,String.format(UIUtil.getString(R.string.label_commit_placeholder_teacher),name));
+            }
+
+            if(tutorialMode){
+                // 查看任务要求
+                mTvRequire.setText(R.string.label_watch_task_requirement);
+            }else{
+                mTvRequire.setText(R.string.label_courseware_detail);
+            }
+
             // 任务头像
             ImageUtil.fillNotificationView(mTaskAvatar,taskEntity.getResThumbnailUrl());
             // 任务标题
@@ -100,6 +129,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             // 任务类型
             String typeName = String.format(UIUtil.getString(R.string.label_task_type_template),taskEntity.getT_TaskTypeName());
             StringUtil.fillSafeTextView(mTaskType,typeName);
+
             if(EmptyUtil.isNotEmpty(taskEntity.getT_ClassName())){
                 // 任务班级
                 StringUtil.fillSafeTextView(mTaskClass,taskEntity.getT_ClassName());
@@ -125,6 +155,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             }
 
             StringUtil.fillSafeTextView(mTaskChapter,taskEntity.getT_CourseName());
+
             // 设置批阅状态
             if(taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE){
                 // 已批阅
@@ -137,6 +168,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 mCheckMark.setTextColor(UIUtil.getColor(android.R.color.holo_red_light));
                 mCheckMark.setText(R.string.label_un_mark);
             }
+
             mCheckMark.setOnClickListener(v->{
                 // 点击已批阅未批阅
                 if(EmptyUtil.isNotEmpty(mCallback)){
@@ -158,7 +190,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
         }
     }
 
-    interface EntityCallback{
+    public interface EntityCallback{
         void onRequireClick(View it,int position,@NonNull TaskEntity entity);
         void onEntityClick(View it,int position,@NonNull TaskEntity entity,int state);
         void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state);

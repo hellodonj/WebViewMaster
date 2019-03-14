@@ -30,9 +30,12 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
+import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+
+import org.xutils.db.Selector;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -111,7 +114,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
         mRecycler.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mLayoutManager);
-        mTutorialAdapter = new TutorialTaskAdapter(null);
+        mTutorialAdapter = new TutorialTaskAdapter(true);
         mRecycler.setAdapter(mTutorialAdapter);
         mRecycler.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
 
@@ -123,12 +126,14 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
 
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
-
+                // TODO 进入批阅列表页面
+                UIUtil.showToastSafe("进入批阅列表页面");
             }
 
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
-
+                // TODO 进入批阅列表页面
+                UIUtil.showToastSafe("进入批阅列表页面");
             }
         });
 
@@ -137,7 +142,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
                 super.onItemClick(holder, entity);
                 // TODO 进入批阅列表页面
-                // UIUtil.showToastSafe("进入批阅列表页面");
+                UIUtil.showToastSafe("进入批阅列表页面");
             }
         });
 
@@ -209,17 +214,17 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
         if(mMarkType == MarkingStateType.MARKING_STATE_NOT){
             // 未批阅页面
             if(mMarkingParams.isTutor()) {
-                mPresenter.requestWorkDataWithIdentityId("", mCurMemberId, "", "", startTimeBegin, endTimeBegin, "", "", mMarkType, 1, pageIndex);
+                mPresenter.requestWorkDataWithIdentityId("", mCurMemberId, "", "", startTimeBegin, endTimeBegin, "", "", mMarkType, OrderByType.MARKING_ASC_TIME_DESC, pageIndex);
             }else{
-                mPresenter.requestWorkDataWithIdentityId(mCurMemberId,"","", "", startTimeBegin, endTimeBegin, "", "", mMarkType, 1, pageIndex);
+                mPresenter.requestWorkDataWithIdentityId(mCurMemberId,"","", "", startTimeBegin, endTimeBegin, "", "", mMarkType, OrderByType.MARKING_ASC_TIME_DESC, pageIndex);
             }
 
         }else if(mMarkType == MarkingStateType.MARKING_STATE_HAVE){
             // 已批阅页面
             if(mMarkingParams.isTutor()){
-                mPresenter.requestWorkDataWithIdentityId("",mCurMemberId,"","","","",startTimeBegin,endTimeBegin,mMarkType,1,pageIndex);
+                mPresenter.requestWorkDataWithIdentityId("",mCurMemberId,"","","","",startTimeBegin,endTimeBegin,mMarkType,OrderByType.MARKING_ASC_TIME_DESC,pageIndex);
             }else{
-                mPresenter.requestWorkDataWithIdentityId(mCurMemberId,"","","","","",startTimeBegin,endTimeBegin,mMarkType,1,pageIndex);
+                mPresenter.requestWorkDataWithIdentityId(mCurMemberId,"","","","","",startTimeBegin,endTimeBegin,mMarkType,OrderByType.MARKING_ASC_TIME_DESC,pageIndex);
             }
         }
     }
