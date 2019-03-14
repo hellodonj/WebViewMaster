@@ -41,6 +41,15 @@ public class UserInfo extends Model implements Serializable {
     private boolean HaveFamily;//返回是否有家庭通讯录
     private String NoteName;
     private String UserId;
+    private boolean IsAssistant;
+
+    public boolean isAssistant() {
+        return IsAssistant;
+    }
+
+    public void setIsAssistant(boolean assistant) {
+        IsAssistant = assistant;
+    }
 
     public String getUserId() {
         return UserId;

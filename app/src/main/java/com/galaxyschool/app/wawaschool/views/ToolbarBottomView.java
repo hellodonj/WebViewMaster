@@ -147,6 +147,15 @@ public class ToolbarBottomView extends LinearLayout {
 		}
     }
 
+    public void updateBottomViewText(int position,String text){
+        if (itemViews != null && position < itemViews.length) {
+            TextView textView = (TextView) itemViews[position].findViewById(R.id.item_title);
+            if (textView != null) {
+                textView.setText(text);
+            }
+        }
+    }
+
     public void hideBadgeView(int index) {
     	tipsViews[index].setVisibility(View.GONE);
     }

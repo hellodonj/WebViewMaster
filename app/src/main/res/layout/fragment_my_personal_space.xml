@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/personal_space_layout"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -32,8 +33,8 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLines="2"
             android:maxWidth="240dp"
+            android:maxLines="2"
             android:text="UserName"
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
@@ -42,8 +43,8 @@
             android:id="@+id/btn_user_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/icon_plus_white"
             android:gravity="center"/>
 
@@ -51,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/im_user_icon"
-            android:layout_toRightOf="@+id/im_user_icon"
             android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/im_user_icon"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -128,6 +129,67 @@
                     android:scrollingCache="false"
                     android:verticalSpacing="0dp"
                     android:visibility="gone"/>
+
+                <!--开通帮辅-->
+                <LinearLayout
+                    android:id="@+id/ll_open_assistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/text_white"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/youjiantou"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:minHeight="30dp"
+                        android:singleLine="true"
+                        android:text="@string/str_open_assistance"/>
+                </LinearLayout>
+
+                <!--帮辅模式-->
+                <LinearLayout
+                    android:id="@+id/ll_assistance_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/text_white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/txt_wawa_normal_black"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:minHeight="30dp"
+                        android:singleLine="true"
+                        android:text="@string/str_assistance_mode"/>
+
+                    <com.galaxyschool.app.wawaschool.common.SwitchButton
+                        android:id="@+id/sb_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:sb_checked="false"
+                        app:sb_show_indicator="false"/>
+                </LinearLayout>
+
 
                 <com.galaxyschool.app.wawaschool.views.MyGridView
                     android:id="@+id/bottom_grid_view"

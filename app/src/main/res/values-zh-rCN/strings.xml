@@ -1684,4 +1684,7 @@
     <string name="str_tip_password">初始密码：%s</string>
     <string name="str_third_account_already_bind">此%1$s账号已关联其他两栖蛙蛙账号（%2$s），是否需要绑定到当前账号？</string>
     <string name="str_bind_current_account">绑定当前账号</string>
+    <string name="str_open_assistance">开通帮辅</string>
+    <string name="str_assistance_mode">帮辅模式</string>
+    <string name="str_assistance_space">帮辅空间</string>
 </resources>
