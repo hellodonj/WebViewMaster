@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.alibaba.fastjson.JSON;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
@@ -20,6 +21,7 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
+import com.lqwawa.intleducation.module.tutorial.marking.result.QuestionResultActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -121,6 +123,12 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
         });
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        requestTutorData(false);
+    }
+
     /**
      * 获取帮辅老师列表
      * @param moreData 是否更多数据
@@ -173,6 +181,12 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 if(item.isChecked()){
                     trigger = true;
                     // 发送作业
+                    final QuestionResourceModel model = mResourceModel;
+                    model.setStuMemberId(mCurMemberId);
+                    model.setAssMemberId(item.getMemberId());
+                    String object = JSON.toJSONString(model);
+                    showLoading();
+                    mPresenter.requestAddAssistTask(item,object);
                     break;
                 }
             }
@@ -181,6 +195,21 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 UIUtil.showToastSafe(R.string.label_choice_tutor_tip);
             }
         }
+    }
+
+    @Override
+    public void updateAddAssistTaskView(@NonNull TutorChoiceEntity entity) {
+        hideLoading();
+        // 进入下一个页面
+        QuestionResultActivity.show(this,mCurMemberId,entity.getTutorName());
+        finish();
+    }
+
+    @Override
+    public void showError(int str) {
+        super.showError(str);
+        mRefreshLayout.onHeaderRefreshComplete();
+        mRefreshLayout.onFooterRefreshComplete();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.tutorial.marking.choice;
 
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ public class TutorChoiceAdapter extends RecyclerAdapter<TutorChoiceEntity> {
 
     @Override
     protected ViewHolder<TutorChoiceEntity> onCreateViewHolder(View root, int viewType) {
-        return null;
+        return new TutorChoiceHolder(root);
     }
 
     private class TutorChoiceHolder extends RecyclerAdapter.ViewHolder<TutorChoiceEntity>{
@@ -51,6 +52,7 @@ public class TutorChoiceAdapter extends RecyclerAdapter<TutorChoiceEntity> {
             StringUtil.fillSafeTextView(mTvTutorName,entity.getTutorName());
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
+            mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             if(entity.isChecked()){
                 mIvChoice.setImageResource(R.drawable.select);
             }else{

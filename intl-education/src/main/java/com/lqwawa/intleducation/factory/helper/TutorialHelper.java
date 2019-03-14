@@ -851,4 +851,49 @@ public class TutorialHelper {
         });
     }
 
+    /**
+     * 提交问题
+     *
+     * @param object json参数
+     * @return 返回机构信息接口回调
+     */
+    public static void requestAddAssistTask(@NonNull String object,
+                                           @NonNull DataSource.Callback<Boolean> callback) {
+        // 准备数据
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddAssistTask);
+        params.setAsJsonContent(true);
+        params.setBodyContent(object);
+        params.setConnectTimeout(1000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<LQwawaBaseResponse> typeReference = new TypeReference<LQwawaBaseResponse>() {};
+                LQwawaBaseResponse response = JSON.parseObject(str, typeReference);
+                if (response.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                    }
+                } else {
+                    String ErrorMessage = (String) response.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
 }

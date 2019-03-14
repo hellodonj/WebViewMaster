@@ -19,11 +19,16 @@ public interface TutorChoiceContract {
                                     @Nullable String courseId,
                                     @Nullable String chapterId,
                                     int pageIndex);
+
+        // 提交提问
+        void requestAddAssistTask(@NonNull TutorChoiceEntity entity,
+                                  @NonNull String object);
     }
 
     interface View extends BaseContract.View<Presenter>{
         void updateChoiceTutorView(List<TutorChoiceEntity> entities);
         void updateMoreChoiceTutorView(List<TutorChoiceEntity> entities);
+        void updateAddAssistTaskView(@NonNull TutorChoiceEntity entity);
     }
 
 }

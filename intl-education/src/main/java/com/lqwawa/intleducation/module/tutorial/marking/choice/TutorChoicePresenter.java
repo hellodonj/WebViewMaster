@@ -8,6 +8,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 
 import java.util.List;
@@ -21,6 +22,27 @@ public class TutorChoicePresenter extends BasePresenter<TutorChoiceContract.View
 
     public TutorChoicePresenter(TutorChoiceContract.View view) {
         super(view);
+    }
+
+    @Override
+    public void requestAddAssistTask(@NonNull final TutorChoiceEntity entity,@NonNull String object) {
+        TutorialHelper.requestAddAssistTask(object, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final TutorChoiceContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final TutorChoiceContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateAddAssistTaskView(entity);
+                }
+            }
+        });
     }
 
     @Override
@@ -46,5 +68,7 @@ public class TutorChoicePresenter extends BasePresenter<TutorChoiceContract.View
                 }
             }
         });
+
+
     }
 }
