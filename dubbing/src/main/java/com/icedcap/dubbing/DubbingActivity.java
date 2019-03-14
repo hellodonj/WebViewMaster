@@ -465,7 +465,12 @@ public class DubbingActivity extends AppCompatActivity implements
             if (TextUtils.isEmpty(reviewComment)) {
                 reviewComment = getString(R.string.no_content);
             }
-            teacherReviewView.setText(reviewComment);
+            teacherReviewView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    teacherReviewView.setText(reviewComment);
+                }
+            },500);
             teacherReviewView.setNeedOnClickExpand(false);
             teacherReviewView.setExpandListener(new ExpandableTextView.OnExpandListener() {
                 @Override
