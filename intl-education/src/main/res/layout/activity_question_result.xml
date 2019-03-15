@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_submit_succeed"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/textPrimary"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_marginTop="20dp"
+                android:text="@string/label_commit_succeed"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/textSecond"
+                android:ellipsize="end"
+                android:layout_marginTop="20dp"
+                android:text="@string/label_commit_succeed_tip"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_again_submit"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_rectangle_accent_radius_4"
+                android:gravity="center"
+                android:text="@string/label_again_submit"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="10dp"
+                app:gTouchEffect="ripple"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"/>
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_watch_work"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_rectangle_accent_radius_4"
+                android:gravity="center"
+                android:text="@string/label_watch_work"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="10dp"
+                app:gTouchEffect="ripple"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"/>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

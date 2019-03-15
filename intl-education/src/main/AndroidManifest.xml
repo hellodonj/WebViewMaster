@@ -938,6 +938,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--申请批阅帮辅老师选择提交完成入口-->
+        <activity android:name=".module.tutorial.marking.result.QuestionResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

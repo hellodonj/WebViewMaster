@@ -23,4 +23,5 @@
     <string name="title_tutorial_audit">提交申请</string>
     <string name="title_add_tutorial">添加帮辅</string>
     <string name="title_choice_tutor">选择帮辅老师</string>
+    <string name="title_submit_succeed">提交成功</string>
 </resources>

@@ -52,8 +52,10 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -1334,6 +1336,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private void updateView() {
         if (courseVo != null && courseDetailsVo != null) {
 
+            boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+
             if (isMyCourse && /*mCourseDetailParams.isClassCourseEnter() && */courseDetailsVo.isIsExpire()) {
                 // 班级学程入口进入
                 // 课程权限已到期
@@ -1445,29 +1449,50 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             if (courseVo.getPrice() == 0 || isLqExcellent) {//免费
                 if (courseDetailsVo.isIsJoin()) {
-                    textViewPay.setText(getResources().getString(R.string.to_learn));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.to_learn));
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    textViewPay.setText(getResources().getString(R.string.to_join));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.to_join));
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.to_join));
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 }
             } else {
                 if (courseDetailsVo.isIsBuy() && !courseDetailsVo.isIsExpire()) {
                     if(courseDetailsVo.isIsJoin()){
-                        textViewPay.setText(getResources().getString(R.string.to_learn));
+                        if(!tutorialMode){
+                            textViewPay.setText(getResources().getString(R.string.to_learn));
+                        }else{
+                            textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        }
                         mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     }else{
-                        textViewPay.setText(getResources().getString(R.string.to_join));
+                        if(!tutorialMode){
+                            textViewPay.setText(getResources().getString(R.string.to_join));
+                        }else{
+                            textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        }
                         mBtnEnterPay.setText(UIUtil.getString(R.string.to_join));
                     }
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    textViewPay.setText(getResources().getString(R.string.buy_immediately));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.buy_immediately));
+                        textViewPay.setCompoundDrawables(null,
+                                getResources().getDrawable(R.drawable.ic_pay), null, null);
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        textViewPay.setCompoundDrawables(null, null, null, null);
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.buy_immediately));
-                    textViewPay.setCompoundDrawables(null,
-                            getResources().getDrawable(R.drawable.ic_pay), null, null);
                 }
             }
 
@@ -1478,10 +1503,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // 并且已经授权的
                     // 设置文本
                     // 并且设置Tag
-                    mBtnEnterPay.setTag(1);
-                    textViewPay.setTag(1);
-                    textViewPay.setText(getString(R.string.label_join_course));
-                    mBtnEnterPay.setText(getString(R.string.label_join_course));
+                    if(!tutorialMode) {
+                        mBtnEnterPay.setTag(1);
+                        textViewPay.setTag(1);
+                        textViewPay.setText(getString(R.string.label_join_course));
+                        mBtnEnterPay.setText(getString(R.string.label_join_course));
+                    }
                 }
             }
 
@@ -1554,6 +1581,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
+                boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+                if(tutorialMode){
+                    // TODO 申请成为课程的帮辅老师
+                    return;
+
+                }
+
                 if(id == R.id.btn_enter_pay || id == R.id.pay_tv){
                     if(EmptyUtil.isNotEmpty(view.getTag()) &&
                             view.getTag() instanceof Integer){

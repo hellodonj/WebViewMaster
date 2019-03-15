@@ -168,6 +168,11 @@ public class LQCourseFragment extends PresenterFragment<LQCourseContract.Present
                     ClassifyListActivity.show(getActivity(),entity);
                 }
                 // EmptyActivity.show(getActivity());
+                /*TutorChoiceParams params = new TutorChoiceParams();
+                params.setMemberId(UserHelper.getUserId());
+                params.setCourseId("819");
+                params.setChapterId("");
+                TutorChoiceActivity.show(getActivity(),params);*/
             }
         });
 

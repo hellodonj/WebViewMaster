@@ -65,4 +65,21 @@ public class CourseHelperInstrumentedTest {
         System.out.println("End");
     }
 
+    @Test
+    public void isTutorCourseByCourseId() throws Exception{
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        x.Ext.init((Application) appContext.getApplicationContext());
+        CountDownLatch downLatch = new CountDownLatch(1);
+        CourseHelper.isTutorCourseBycourseId("e479c488-305b-466c-b81a-d1ee35345486", "819", new DataSource.SucceedCallback<Boolean>() {
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                System.out.println();
+                downLatch.countDown();
+            }
+        });
+
+        downLatch.await();
+        System.out.println("End");
+    }
+
 }

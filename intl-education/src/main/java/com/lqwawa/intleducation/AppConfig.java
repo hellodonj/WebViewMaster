@@ -881,5 +881,13 @@ public final class AppConfig {
         public static final String PostTutorsByCourseId =
                 ServerBase + "api/tutor/getTutorsBycourseId";
 
+        // 帮辅功能学生提问给助教
+        public static final String PostAddAssistTask =
+                LQWAWA_BASE_SERVER + "Api/Mobile/ST/Assist/AddAssistTask";
+
+        // 查看该用户是否是某课程的帮辅老师
+        public static final String PostIsTutorCourseByCourseId =
+                ServerBase + "api/tutor/isTutorCourseBycourseId";
+
     }
 }

@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.tutorial.course;
 
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -69,6 +70,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             StringUtil.fillSafeTextView(mTvTutorName,entity.getCreateName());
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
+            mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
             mTvAddTutorial.setOnClickListener(v -> {
                 if(EmptyUtil.isNotEmpty(mCallback)){
