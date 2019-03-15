@@ -355,6 +355,7 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
                     }
                     HomeworkListInfo data = (HomeworkListInfo) holder.data;
                     data.setIsOnlineSchoolClass(isOnlineClass);
+                    data.setAirClassId(onlineRes.getId());
                     if (isHistoryClass) {
                         data.setIsHistoryClass(true);
                     } else {

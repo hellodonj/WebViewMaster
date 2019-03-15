@@ -7,15 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.fragment.AnswerParsingFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,8 @@ import java.util.List;
 public class AnswerParsingActivity extends BaseFragmentActivity implements View.OnClickListener {
     private static final String TAG = AnswerParsingActivity.class.getSimpleName();
     private ImageView lastQuestionTextV, nextQestionTextV;
+    private FrameLayout applyMarkLayout;
+    private TextView applyMarkTextV;
     private MyViewPager viewPager;
     private MyFragmentPagerAdapter pagerAdapter;
     private List<Fragment> fragments;
@@ -106,6 +114,17 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         if (nextQestionTextV != null) {
             nextQestionTextV.setOnClickListener(this);
         }
+        applyMarkLayout = (FrameLayout) findViewById(R.id.ll_apply_mark);
+        if (cardParam != null) {
+            if (TextUtils.equals(DemoApplication.getInstance().getMemberId(),
+                    cardParam.getStudentId())) {
+                applyMarkLayout.setVisibility(View.VISIBLE);
+            }
+        }
+        applyMarkTextV = (TextView) findViewById(R.id.tv_apply_mark);
+        applyMarkTextV.setOnClickListener(v -> {
+            ApplyMarkHelper.enterApplyMarkDetailActivity(this,new QuestionResourceModel());
+        });
         viewPager = (MyViewPager) findViewById(R.id.vp_answer_parsing);
     }
 

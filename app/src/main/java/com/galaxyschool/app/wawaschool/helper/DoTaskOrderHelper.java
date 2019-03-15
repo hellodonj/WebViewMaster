@@ -26,6 +26,7 @@ import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.course.PlaybackActivityPhone;
 import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
@@ -1029,7 +1030,12 @@ public class DoTaskOrderHelper {
                                                                 if (uploadResult.data != null && uploadResult.data.size() > 0) {
                                                                     final CourseData courseData = uploadResult.data.get(0);
                                                                     if (courseData != null) {
-                                                                        commitStudentCourse(userInfo, courseData);
+                                                                        if (cardParam != null && cardParam.getMarkModel() != null) {
+                                                                            ApplyMarkHelper.enterApplyTeacherMarkActivity(mContext,
+                                                                                    courseData, cardParam.getMarkModel());
+                                                                        } else {
+                                                                            commitStudentCourse(userInfo, courseData);
+                                                                        }
                                                                     }
                                                                 }
                                                             }

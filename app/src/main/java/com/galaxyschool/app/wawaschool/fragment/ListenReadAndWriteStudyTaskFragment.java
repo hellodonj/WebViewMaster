@@ -102,6 +102,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private boolean isHistoryClass;
     private boolean isOnlineClass;
     private int taskType;
+    private int airClassId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -826,6 +827,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         data.setStudyTaskType(StudyTaskType.LISTEN_READ_AND_WRITE);
         data.setIsSuperChildTask(isSuperChildTask);
         data.setIsHistoryClass(isHistoryClass);
+        data.setAirClassId(airClassId);
         CourseOpenUtils.openStudyTask(getActivity(), data, roleType, isHeadMaster,
                 getMemeberId(), sortStudentId, childId, userInfo, false);
         if (roleType == RoleType.ROLE_TYPE_STUDENT

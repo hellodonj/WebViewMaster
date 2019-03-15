@@ -23,7 +23,7 @@ public class QuestionResourceModel implements Serializable {
     private String T_ClassName;
     private String T_CourseId;
     private String T_CourseName;
-    private String T_ResCourseId;
+    private int T_ResCourseId;
 
     public String getAssMemberId() {
         return AssMemberId;
@@ -145,11 +145,11 @@ public class QuestionResourceModel implements Serializable {
         T_CourseName = t_CourseName;
     }
 
-    public String getT_ResCourseId() {
+    public int getT_ResCourseId() {
         return T_ResCourseId;
     }
 
-    public void setT_ResCourseId(String t_ResCourseId) {
+    public void setT_ResCourseId(int t_ResCourseId) {
         T_ResCourseId = t_ResCourseId;
     }
 }

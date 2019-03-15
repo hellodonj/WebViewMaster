@@ -240,6 +240,7 @@ public class MOOCHelper {
             studyTask.setResUrl(task.getResourceUrl());
             //把task的scoreRule拿出来赋值
             studyTask.setScoringRule(scoringRule);
+            studyTask.setType(task.getType());
             if (isCheckMark) {
                 //查看批阅
                 enterCheckMarkDetail(activity, data, studyTask, roleType, isAudition);

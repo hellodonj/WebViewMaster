@@ -1,5 +1,7 @@
 package com.galaxyschool.app.wawaschool.pojo;
 
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -55,6 +57,33 @@ public class ExerciseAnswerCardParam implements Serializable {
     private String classId;
     private String className;
     private String taskScoreRemark;//老师评语
+    private CommitTask commitTask;
+    private StudyTask studyTask;
+    private QuestionResourceModel markModel;//申请批阅的数据
+
+    public QuestionResourceModel getMarkModel() {
+        return markModel;
+    }
+
+    public void setMarkModel(QuestionResourceModel markModel) {
+        this.markModel = markModel;
+    }
+
+    public CommitTask getCommitTask() {
+        return commitTask;
+    }
+
+    public void setCommitTask(CommitTask commitTask) {
+        this.commitTask = commitTask;
+    }
+
+    public StudyTask getStudyTask() {
+        return studyTask;
+    }
+
+    public void setStudyTask(StudyTask studyTask) {
+        this.studyTask = studyTask;
+    }
 
     public String getTaskScoreRemark() {
         return taskScoreRemark;

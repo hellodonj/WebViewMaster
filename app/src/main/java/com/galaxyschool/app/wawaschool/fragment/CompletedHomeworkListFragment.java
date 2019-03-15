@@ -58,6 +58,7 @@ import com.galaxyschool.app.wawaschool.fragment.resource.HomeworkCommitResourceA
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
 import com.galaxyschool.app.wawaschool.helper.LqCourseHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
@@ -147,6 +148,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
     private int fullMarkScore;//试卷的总分
     private int propertiesType;
     private boolean hasSubjectProblem;
+    private int airClassId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -208,6 +210,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 //主编和小编身份互斥 只能同时存在一个
                 isOnlineReporter = homeworkListInfo.isOnlineReporter();
                 isOnlineHost = homeworkListInfo.isOnlineHost();
+                airClassId = homeworkListInfo.getAirClassId();
                 LogUtils.logd(TAG, "   isOnlineReporter = " + isOnlineReporter + "           isOnlineHost = " + isOnlineHost);
             }
             isHistoryClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
@@ -586,6 +589,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             public void onClick(View v) {
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
+                                data.setAirClassId(airClassId);
                                 if (data.isMarkCard()) {
                                     //任务单的答题卡
                                     enterStudentAnswerDetailActivity(data, true);
@@ -2184,7 +2188,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         isHistoryClass ? true : isVisitor,
                         isNeedMark,
                         isOnlineReporter,
-                        isOnlineHost, isHeadMaster);
+                        isOnlineHost,
+                        isHeadMaster);
         getParentFragment().getFragmentManager().beginTransaction()
                 .add(R.id.activity_body, checkMarkFragment, CheckMarkFragment.TAG)
                 .hide(getParentFragment())
@@ -2225,6 +2230,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 cardParam.setStudentId(data.getStudentId());
                 cardParam.setCommitTaskId(data.getCommitTaskId());
                 cardParam.setTaskScoreRemark(data.getTaskScoreRemark());
+                cardParam.setCommitTask(data);
+                cardParam.setStudyTask(task);
                 AnswerCardDetailActivity.start(getActivity(), cardParam);
             } else {
                 DoTaskOrderHelper.openExerciseDetail(

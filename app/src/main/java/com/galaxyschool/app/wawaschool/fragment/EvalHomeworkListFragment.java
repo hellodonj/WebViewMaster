@@ -582,7 +582,8 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                                                 isHistoryClass ? true : isVisitor,
                                                 isNeedMark,
                                                 isOnlineReporter,
-                                                isOnlineHost, isHeadMaster);
+                                                isOnlineHost,
+                                                isHeadMaster);
                                 getParentFragment().getFragmentManager().beginTransaction()
                                         .add(R.id.activity_body, checkMarkFragment, CheckMarkFragment.TAG)
                                         .hide(getParentFragment())

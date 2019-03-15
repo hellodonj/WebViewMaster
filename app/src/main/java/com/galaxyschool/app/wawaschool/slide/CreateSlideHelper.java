@@ -487,6 +487,15 @@ public class CreateSlideHelper {
 		it.putExtra(SlideWawaPageActivity.COURSE_SECTION_DATA_STRING, param.courseSectionDataString);
 		it.putExtra(SlideWawaPageActivity.MODEL_SOURCE_FROM,param.isFromMoocModel);
 		it.putExtra(ExerciseAnswerCardParam.class.getSimpleName(),param.cardParam);
+		if (param.cardParam != null && param.cardParam.getMarkModel() != null) {
+			it.putExtra(SlideWawaPageActivity.EXTRA_EDIT_EXERCISE,true);
+			if (!TextUtils.isEmpty(param.cardParam.getExerciseAnswerString())) {
+				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_STRING,param.cardParam.getExerciseAnswerString());
+			}
+			if (!TextUtils.isEmpty(param.cardParam.getStudentCommitAnswerString())) {
+				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_ANSWER_STRING,param.cardParam.getStudentCommitAnswerString());
+			}
+		}
     	return it;
     }
     

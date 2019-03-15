@@ -63,10 +63,14 @@ import com.galaxyschool.app.wawaschool.course.DownloadAttachTask.DownloadDtoBase
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.views.AnswerCardPopWindow;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
@@ -142,6 +146,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     private AnswerCardPopWindow answerCardPopWindow;
     protected boolean isAnswerCardQuestion;
     private List<ExerciseItem> exerciseItems;
+    protected boolean applyMark;//申请批阅
     protected Handler handler = new Handler();
 
     Runnable runnable = new Runnable() {
@@ -202,6 +207,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 setCourseNodeViewClickable(true);
             }
             if (mParam != null) {
+                applyMark = mParam.applyMark;
                 taskMarkParam = mParam.taskMarkParam;
                 enableTextPointerFeature(true);
                 setUserType(taskMarkParam != null ? taskMarkParam.roleType : 0);
@@ -218,6 +224,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                         //初始化答题卡的popWindow
                         new Handler().postDelayed(() -> initAnswerPopWindowData(), 100);
                     }
+                } else if (applyMark) {
+                    setUserType(RoleType.ROLE_TYPE_STUDENT);
                 }
             }
         }
@@ -230,7 +238,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             }
         }
         onSelfCreate();
-        if (isAnswerCardQuestion) {
+        if (isAnswerCardQuestion || applyMark) {
             edit();
         }
         //根据条件判断是否需要记录观看的时间
@@ -338,7 +346,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAnswerCardQuestion) {
+                if (isAnswerCardQuestion || applyMark) {
                     showCommitAnswerDialog(false);
                 } else if (!mInEditMode) {
                     edit();
@@ -363,7 +371,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
      */
 
     private void updateMarkView(TaskMarkParam param, TextView markView) {
-        if (isAnswerCardQuestion) {
+        if (isAnswerCardQuestion || applyMark) {
             updateCommitView(markView);
             return;
         }
@@ -415,7 +423,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 LayoutParams.MATCH_PARENT);
         lParams.gravity = Gravity.CENTER;
         lParams.weight = 1.0f;
-        if (!isAnswerCardQuestion) {
+        if (!isAnswerCardQuestion || applyMark) {
             //防止listener消费子类的事件
             layout.setOnClickListener(this);
         }
@@ -835,7 +843,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         if (isFinishing()) {
             return;
         }
-        if (isAnswerCardQuestion) {
+        if (isAnswerCardQuestion || applyMark) {
             showCommitAnswerDialog(true);
         } else {
             processBackPressed();
@@ -928,14 +936,16 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         String leftString = getString(R.string.discard);
         String rightString = getString(R.string.ok);
         boolean isFinishAllQuestion = false;
-        if (answerCardPopWindow != null) {
-            isFinishAllQuestion = answerCardPopWindow.isFinishAllQuestion();
-        }
-        if (!isBackPress) {
-            if (!isFinishAllQuestion) {
-                message = getString(R.string.str_unfinish_answer);
-                leftString = getString(R.string.str_continue_answer);
-                rightString = getString(R.string.commit);
+        if (!applyMark) {
+            if (answerCardPopWindow != null) {
+                isFinishAllQuestion = answerCardPopWindow.isFinishAllQuestion();
+            }
+            if (!isBackPress) {
+                if (!isFinishAllQuestion) {
+                    message = getString(R.string.str_unfinish_answer);
+                    leftString = getString(R.string.str_continue_answer);
+                    rightString = getString(R.string.commit);
+                }
             }
         }
         messageTextV.setText(message);
@@ -944,7 +954,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         //放弃
         boolean finalIsFinishAllQuestion = isFinishAllQuestion;
         leftBtn.setOnClickListener(v -> {
-            if (finalIsFinishAllQuestion || isBackPress) {
+            if (finalIsFinishAllQuestion || isBackPress || applyMark) {
                 finish();
             } else {
                 mCommitDialog.dismiss();
@@ -1146,6 +1156,14 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                 if (uploadResult.code == 0) {
                                                                                     CourseData courseData = uploadResult.data.get(0);
                                                                                     answerCardPopWindow.commitAnswerQuestion(courseData.getIdType(), courseData.resourceurl);
+                                                                                }
+                                                                            } else if (applyMark) {
+                                                                                //申请批阅
+                                                                                if (mParam != null && mParam.applyMarkdata != null) {
+                                                                                    if (uploadResult.code == 0) {
+                                                                                        ApplyMarkHelper.enterApplyTeacherMarkActivity(PlaybackActivityPhone.this,
+                                                                                                uploadResult.data.get(0),mParam.applyMarkdata);
+                                                                                    }
                                                                                 }
                                                                             } else if (doUploadResult(uploadResult, isMarkScore, score, data)) {
 

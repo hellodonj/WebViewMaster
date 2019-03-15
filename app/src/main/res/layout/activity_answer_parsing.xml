@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:gravity="center"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -40,6 +41,28 @@
                     android:background="@drawable/icon_green_circle_left"
                     android:gravity="center"/>
             </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/ll_apply_mark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_apply_mark"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/com_bg_circle_red_btn"
+                    android:gravity="center"
+                    android:text="@string/str_apply_mark_line_feed"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp"
+                    />
+            </FrameLayout>
+
 
             <FrameLayout
                 android:layout_width="0dp"
