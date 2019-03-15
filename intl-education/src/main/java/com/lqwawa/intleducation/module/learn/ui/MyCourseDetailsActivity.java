@@ -49,7 +49,9 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
@@ -1019,6 +1021,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
             @Override
             public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
+                boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
                 MyCourseDetailsActivity.this.courseDetailsVo = courseDetailsVo;
                 collected = courseDetailsVo.isIsCollect();
                 courseScore = courseDetailsVo.getCourseScore();
@@ -1027,8 +1030,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     courseVo = voList.get(0);
                     // 加载到课程信息
                     String teachersId = courseVo.getTeachersId();
-                    if(mCourseDetailParams.isClassTeacher()){
+                    if(mCourseDetailParams.isClassTeacher() || tutorialMode){
                         // 当前人为班级老师
+                        // 如果是帮辅模式，那么进入到这页面，肯定是帮辅老师
                         // 如果不为空
                         if(EmptyUtil.isEmpty(teachersId)){
                             teachersId = UserHelper.getUserId();

@@ -23,7 +23,9 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
@@ -1058,7 +1060,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         // 自己的真实角色 和 老师类型
         int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
-        if(courseParams.isClassTeacher()){
+
+        boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+        if(courseParams.isClassTeacher() || tutorialMode){
             // 班级学程的老师
             if(mTeacherVisitor){
                 realRole = UserHelper.MoocRoleType.TEACHER;
