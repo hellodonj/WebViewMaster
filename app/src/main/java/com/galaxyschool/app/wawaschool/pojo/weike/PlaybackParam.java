@@ -2,6 +2,7 @@ package com.galaxyschool.app.wawaschool.pojo.weike;
 
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.io.Serializable;
 
@@ -32,4 +33,10 @@ public class PlaybackParam implements Serializable {
 
     //打开指定页的pageIndex
     public int pageIndex = -1;
+
+    //申请批阅
+    public boolean applyMark;
+
+    //申请批阅的相关数据
+    public QuestionResourceModel applyMarkdata;
 }

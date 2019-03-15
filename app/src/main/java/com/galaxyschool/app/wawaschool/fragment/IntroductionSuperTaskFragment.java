@@ -113,6 +113,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private boolean isHistoryClass;
     private String taskFileName;
     private boolean isFromMoocIntroTask;
+    private int airClassId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_introduction_super_task, null);
@@ -168,6 +169,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 isReporter = homeworkListInfo.isOnlineReporter();
                 isHost = homeworkListInfo.isOnlineHost();
                 isOnlineSuperTaskDetail = true;
+                airClassId = homeworkListInfo.getAirClassId();
             }
             roleType = bundle.getInt("roleType");
             TaskId = bundle.getString("TaskId");
@@ -466,6 +468,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         HomeworkListInfo data = (HomeworkListInfo) holder.data;
                         data.setOnlineReporter(isReporter);
                         data.setOnlineHost(isHost);
+                        data.setAirClassId(airClassId);
                         data.setTaskId(String.valueOf(data.getId()));
                         if (data.getType() == StudyTaskType.RETELL_WAWA_COURSE
                                 || data.getType() == StudyTaskType.TASK_ORDER

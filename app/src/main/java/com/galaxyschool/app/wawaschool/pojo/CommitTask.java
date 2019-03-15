@@ -69,6 +69,7 @@ public class CommitTask implements Serializable, Parcelable {
     private int ResPropType;
     private String parentResourceUrl;
     private String level;
+    private int airClassId;
     /**
      * @return 是否是语音评测类型
      */
@@ -120,6 +121,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getAirClassId() {
+        return airClassId;
+    }
+
+    public void setAirClassId(int airClassId) {
+        this.airClassId = airClassId;
     }
 
     public int getScoreRule() {
@@ -537,6 +546,7 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeInt(this.ResPropType);
         dest.writeString(this.level);
         dest.writeString(this.parentResourceUrl);
+        dest.writeInt(this.airClassId);
     }
 
     public CommitTask() {
@@ -587,6 +597,7 @@ public class CommitTask implements Serializable, Parcelable {
         this.ResPropType = in.readInt();
         this.level = in.readString();
         this.parentResourceUrl = in.readString();
+        this.airClassId = in.readInt();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

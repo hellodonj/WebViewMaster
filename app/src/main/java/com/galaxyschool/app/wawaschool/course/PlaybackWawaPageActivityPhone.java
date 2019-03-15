@@ -26,7 +26,7 @@ public class PlaybackWawaPageActivityPhone extends PlaybackActivityPhone {
 	@Override
 	protected void onSelfCreate() {
 		// TODO Auto-generated method stub
-		if (taskMarkParam != null || isAnswerCardQuestion) {
+		if (taskMarkParam != null || isAnswerCardQuestion || applyMark) {
 			super.onSelfCreate();
 		} else {
 			setupPlaybackActivityHandler(this);
@@ -120,7 +120,7 @@ public class PlaybackWawaPageActivityPhone extends PlaybackActivityPhone {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		if (isAnswerCardQuestion){
+		if (isAnswerCardQuestion || applyMark){
             showCommitAnswerDialog(true);
 		} else if (taskMarkParam != null) {
 			super.onBackPressed();

@@ -31,11 +31,14 @@ import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
+import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
@@ -43,6 +46,7 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.ExerciseTeacherCommentDialog;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.client.pojo.LearnTaskCardType;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -71,6 +75,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
     private String studentCommitAnswerString;
     private boolean hasObjectiveProblem;
     private String taskScoreReMark;
+    private QuestionResourceModel markModel;
 
     private final int[] colorList = {
             Color.parseColor("#76c905"),
@@ -249,6 +254,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             initView();
             initObjectProblemDetail();
             initSubjectProblemDetail();
+            initMarkModelData();
         }
     }
 
@@ -267,6 +273,11 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             //未点评
             remarkTextV.setVisibility(View.VISIBLE);
             remarkTextV.setOnClickListener(v -> openTeacherReMarkDialog());
+        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId())) {
+            //显示老师批阅
+            ApplyMarkHelper.showApplyMarkView(getActivity(),remarkTextV);
+            remarkTextV.setOnClickListener(v -> ApplyMarkHelper.loadCourseImageList(getActivity()
+                    ,cardParam));
         } else {
             remarkTextV.setVisibility(View.GONE);
         }
@@ -668,5 +679,32 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         listener.setShowLoading(true);
         RequestHelper.sendPostRequest(mContext, ServerUrl.GET_ADDCOMMITTASKREVIEW,
                 params, listener);
+    }
+
+    private void initMarkModelData(){
+        if (cardParam != null) {
+            markModel = new QuestionResourceModel();
+            CommitTask commitTask = cardParam.getCommitTask();
+            if (commitTask != null) {
+                markModel.setTitle(commitTask.getStudentResTitle());
+                markModel.setT_TaskId(commitTask.getTaskId());
+                markModel.setT_AirClassId(commitTask.getAirClassId());
+            }
+            markModel.setStuMemberId(getMemeberId());
+            StudyTask task = cardParam.getStudyTask();
+            if (task != null) {
+                markModel.setT_TaskType(task.getType());
+                markModel.setT_ClassId(task.getClassId());
+                markModel.setT_CourseName(task.getClassName());
+                markModel.setT_ResCourseId(task.getResCourseId());
+            }
+            if (cardParam.isFromOnlineStudyTask()) {
+                markModel.setT_CommitTaskOnlineId(cardParam.getCommitTaskId());
+            } else {
+                markModel.setT_CommitTaskId(cardParam.getCommitTaskId());
+            }
+            cardParam.setStudentCommitAnswerString(studentCommitAnswerString);
+            cardParam.setMarkModel(markModel);
+        }
     }
 }
