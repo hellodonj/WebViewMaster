@@ -73,6 +73,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
 	public final static String EXTRA_PAGE_INDEX = "pageIndex";
 	public final static String EXTRA_EDIT_EXERCISE = "editExercise";
+	public final static String EXTRA_EXERCISE_INDEX = "exerciseIndex";
 
 	//扫码识任务需要以下两个字段
 	public final static String SCHOOL_ID = "school_id";
@@ -165,6 +166,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 		boolean editExercise = getIntent().getBooleanExtra(EXTRA_EDIT_EXERCISE, false);
 		if (editExercise) {
 			mSlideManager.setEditExercise(editExercise);
+			mSlideManager.setExerciseIndex(getIntent().getIntExtra(EXTRA_EXERCISE_INDEX, 0));
 			mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
 			mSlideManager.setExerciseNodeClickListener(this);
 			mSlideManager.getExerciseNodeManager().setExerciseString(

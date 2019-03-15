@@ -877,6 +877,10 @@ public final class AppConfig {
         public static final String GetTutorListByCourseId =
                 ServerBase + "api/tutor/getTutorListByCourseId?j=";
 
+        // 申请加入课程的帮辅
+        public static final String GetApplyForCourseTutor =
+                ServerBase + "api/tutor/applyCourseTutor?j=";
+
         // 课程的帮辅列表
         public static final String PostTutorsByCourseId =
                 ServerBase + "api/tutor/getTutorsBycourseId";
