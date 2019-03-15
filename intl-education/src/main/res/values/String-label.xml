@@ -405,6 +405,7 @@
     <string name="label_again_submit">继续提交</string>
     <string name="label_watch_work">查看作业</string>
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
+    <string name="label_course_tutor_apply_for">正在审核，请耐心等待</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
