@@ -14,24 +14,18 @@ import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
-import com.galaxyschool.app.wawaschool.course.PlaybackActivityPhone;
-import com.galaxyschool.app.wawaschool.fragment.SelectedReadingDetailFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
-import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CourseImageListResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
-import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
-import com.galaxyschool.app.wawaschool.slide.CreateSlideHelper;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,14 +52,6 @@ public class ApplyMarkHelper {
                     DensityUtils.dp2px(mContext, 2));
         }
     }
-
-    public static void enterApplyMarkDetailActivity(Context context,
-                                                    QuestionResourceModel markModel) {
-        if (markModel == null) {
-            return;
-        }
-    }
-
 
     public static void doApplyMarkTask(Context mContext,
                                        ExerciseAnswerCardParam cardParam,
@@ -94,7 +80,8 @@ public class ApplyMarkHelper {
     }
 
     public static void loadCourseImageList(Context mContext,
-                                           ExerciseAnswerCardParam cardParam) {
+                                           ExerciseAnswerCardParam cardParam,
+                                           List<Integer> pageIndex) {
         final HashMap<String, Object> params = new HashMap<>();
         StudyTask task = cardParam.getStudyTask();
         if (task == null) {
@@ -122,10 +109,20 @@ public class ApplyMarkHelper {
                         if (paths == null || paths.size() == 0) {
 
                         } else {
-                            checkCanReplaceIPAddress(mContext,
-                                    result.getData(),
-                                    courseData,
-                                    cardParam);
+                            List<String> pageList = new ArrayList<>();
+                            if (pageIndex != null && pageIndex.size() > 0){
+                                for (int i = 0; i < pageIndex.size(); i++){
+                                    if (pageIndex.get(i) < paths.size()){
+                                        pageList.add(paths.get(pageIndex.get(i)));
+                                    }
+                                }
+                            }
+                            if (pageList.size() > 0) {
+                                checkCanReplaceIPAddress(mContext,
+                                        pageList,
+                                        courseData,
+                                        cardParam);
+                            }
                         }
                     }
                 }
@@ -170,6 +167,7 @@ public class ApplyMarkHelper {
         choiceParams.setCourseId(markModel.getT_CourseId());
         choiceParams.setModel(markModel);
         TutorChoiceActivity.show(mContext, choiceParams);
+        ((Activity)mContext).finish();
     }
 
 }

@@ -24,6 +24,8 @@ import com.galaxyschool.app.wawaschool.views.MyViewPager;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AnswerParsingActivity extends BaseFragmentActivity implements View.OnClickListener {
@@ -123,9 +125,51 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         applyMarkTextV = (TextView) findViewById(R.id.tv_apply_mark);
         applyMarkTextV.setOnClickListener(v -> {
-            ApplyMarkHelper.enterApplyMarkDetailActivity(this,new QuestionResourceModel());
+            cardParam.setPageIndex(currentPosition);
+            ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this,cardParam,
+                    getPageAreaIndex());
         });
         viewPager = (MyViewPager) findViewById(R.id.vp_answer_parsing);
+    }
+
+    private List<Integer> getPageAreaIndex(){
+        List<Integer> pageAreaIndex = new ArrayList<>();
+        List<ExerciseItem> items = cardParam.getQuestionDetails();
+        if (items != null && items.size() > 0){
+            ExerciseItem item = items.get(currentPosition);
+            if (item != null) {
+                List<ExerciseItemArea> itemAreas = item.getAreaItemList();
+                if (itemAreas != null && itemAreas.size() > 0) {
+                    for (int i = 0; i < itemAreas.size(); i++) {
+                        ExerciseItemArea area = itemAreas.get(i);
+                        if (area != null) {
+                            String pageIndex = area.getPage_index();
+                            if (!TextUtils.isEmpty(pageIndex)) {
+                                int index = Integer.valueOf(pageIndex);
+                                if (pageAreaIndex.size() == 0){
+                                    pageAreaIndex.add(index);
+                                } else {
+                                    boolean flag = true;
+                                    for (int m = 0; m < pageAreaIndex.size(); m++){
+                                        if (pageAreaIndex.get(m) == index){
+                                            flag = false;
+                                            break;
+                                        }
+                                    }
+                                    if (flag){
+                                        pageAreaIndex.add(index);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (pageAreaIndex.size() > 1){
+            Collections.sort(pageAreaIndex, (o1,o2) ->  o1-o2);
+        }
+        return pageAreaIndex;
     }
 
     private void initData() {

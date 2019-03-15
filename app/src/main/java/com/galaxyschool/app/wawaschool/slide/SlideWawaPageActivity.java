@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import cn.robotpen.pen.IRemoteRobotService;
 import cn.robotpen.pen.model.RemoteState;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.AnswerParsingActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -29,6 +30,7 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionData;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionDataListResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
@@ -397,7 +399,12 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 
 	@Override
 	public void onExerciseNodeClick(int exerciseIndex) {
-
+		if (cardParam == null){
+			return;
+		}
+//		List<ExerciseItem> exerciseItems = cardParam.getQuestionDetails();
+//		cardParam.setQuestionDetails(exerciseItems);
+//		AnswerParsingActivity.start(SlideWawaPageActivity.class,cardParam,exerciseIndex,true);
 	}
 
 	protected void reviewExerciseDetails(int exerciseIndex) {
