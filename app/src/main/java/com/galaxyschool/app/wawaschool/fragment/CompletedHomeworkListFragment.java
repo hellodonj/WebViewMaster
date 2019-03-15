@@ -2232,6 +2232,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 cardParam.setTaskScoreRemark(data.getTaskScoreRemark());
                 cardParam.setCommitTask(data);
                 cardParam.setStudyTask(task);
+                cardParam.setMarkModel(getMarkModelData(data));
                 AnswerCardDetailActivity.start(getActivity(), cardParam);
             } else {
                 DoTaskOrderHelper.openExerciseDetail(
@@ -2248,10 +2249,26 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         data.getStudentName(),
                         data.getCommitTaskId(),
                         false,
-                        false);
+                        false,
+                        getMarkModelData(data));
             }
         }
 
+    }
+
+    private QuestionResourceModel getMarkModelData(CommitTask data){
+        QuestionResourceModel markModel = new QuestionResourceModel();
+        markModel.setT_AirClassId(airClassId);
+        markModel.setTitle(data.getStudentResTitle());
+        if (!TextUtils.isEmpty(taskId)) {
+            markModel.setT_TaskId(Integer.valueOf(taskId));
+        }
+        markModel.setT_TaskType(taskType);
+        markModel.setT_CommitTaskId(data.getCommitTaskId());
+        markModel.setT_ClassId(task.getClassId());
+        markModel.setT_ClassName(task.getClassName());
+        markModel.setT_ResCourseId(task.getResCourseId());
+        return markModel;
     }
 
     public void setExerciseAnswerData(boolean isAnswerTaskOrderQuestion,

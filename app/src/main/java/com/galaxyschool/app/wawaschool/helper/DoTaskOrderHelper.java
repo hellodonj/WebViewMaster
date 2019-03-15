@@ -1255,7 +1255,8 @@ public class DoTaskOrderHelper {
                                           String studentName,
                                           int commitTaskId,
                                           boolean fromOnlineStudy,
-                                          boolean isDoExercise) {
+                                          boolean isDoExercise,
+                                          QuestionResourceModel markModel) {
 
         String tempResId = courseId;
         int resType = 0;
@@ -1296,7 +1297,8 @@ public class DoTaskOrderHelper {
                                     studentName,
                                     commitTaskId,
                                     fromOnlineStudy,
-                                    isDoExercise);
+                                    isDoExercise,
+                                    markModel);
                         }
                     }
                 }
@@ -1323,7 +1325,8 @@ public class DoTaskOrderHelper {
                             studentName,
                             commitTaskId,
                             fromOnlineStudy,
-                            isDoExercise);
+                            isDoExercise,
+                            markModel);
                 }
             });
         }
@@ -1347,7 +1350,8 @@ public class DoTaskOrderHelper {
                                              String studentName,
                                              int commitTaskId,
                                              boolean fromOnlineStudy,
-                                             boolean isDoExercise) {
+                                             boolean isDoExercise,
+                                             QuestionResourceModel markModel) {
         if (courseData != null) {
             PlaybackParam mParam = new PlaybackParam();
             //隐藏收藏按钮
@@ -1371,6 +1375,7 @@ public class DoTaskOrderHelper {
             cardParam.setClassName(className);
             cardParam.setStudentName(studentName);
             cardParam.setCommitTaskId(commitTaskId);
+            cardParam.setMarkModel(markModel);
             if (isDoExercise) {
                 mParam.exerciseCardParam = cardParam;
                 ActivityUtils.openOnlineOnePage(activity, courseData.getNewResourceInfo(), true,

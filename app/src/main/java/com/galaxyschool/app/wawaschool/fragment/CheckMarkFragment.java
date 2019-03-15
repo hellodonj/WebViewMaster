@@ -211,17 +211,16 @@ public class CheckMarkFragment extends ContactsListFragment {
                 if (task != null) {
                     markModel.setT_TaskType(task.getType());
                     markModel.setT_ClassId(task.getClassId());
-                    markModel.setT_CourseName(task.getClassName());
+                    markModel.setT_ClassName(task.getClassName());
                     markModel.setT_ResCourseId(task.getResCourseId());
+                    markModel.setT_CourseId(task.getCourseId());
+                    markModel.setT_CourseName(task.getCourseName());
                 }
                 if (cardParam != null) {
                     if (cardParam.isFromOnlineStudyTask()) {
                         markModel.setT_CommitTaskOnlineId(cardParam.getCommitTaskId());
                     } else {
                         markModel.setT_CommitTaskId(cardParam.getCommitTaskId());
-                    }
-                    if (exerciseItem != null) {
-                        markModel.setT_EQId(exerciseItem.getIndex());
                     }
                 } else if (isFromMOOC) {
                     if (!TextUtils.isEmpty(CommitTaskId)) {

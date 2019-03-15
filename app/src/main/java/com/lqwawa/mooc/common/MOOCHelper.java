@@ -243,6 +243,8 @@ public class MOOCHelper {
             //把task的scoreRule拿出来赋值
             studyTask.setScoringRule(scoringRule);
             studyTask.setType(task.getType());
+//            studyTask.setCourseId("");
+//            studyTask.setClassName("");
             if (isCheckMark) {
                 //查看批阅
                 enterCheckMarkDetail(activity, data, studyTask, roleType, isAudition);
@@ -300,6 +302,7 @@ public class MOOCHelper {
             cardParam.setIsOnlineHost(isOnlineHost);
             cardParam.setFromOnlineStudyTask(true);
             cardParam.setTaskScoreRemark(taskScoreRemark);
+
             AnswerCardDetailActivity.start(activity, cardParam);
         }
 
@@ -338,7 +341,8 @@ public class MOOCHelper {
                     studentName,
                     commitTaskId,
                     true,
-                    isDoExercise);
+                    isDoExercise,
+                    null);
         }
 
 

@@ -50,6 +50,24 @@ public class StudyTask implements Serializable{
     private int ResCourseId;
     private int ResPropType;
     private int RepeatCourseCompletionMode;
+    private String CourseId;
+    private String CourseName;
+
+    public String getCourseId() {
+        return CourseId;
+    }
+
+    public void setCourseId(String courseId) {
+        CourseId = courseId;
+    }
+
+    public String getCourseName() {
+        return CourseName;
+    }
+
+    public void setCourseName(String courseName) {
+        CourseName = courseName;
+    }
 
     public int getRepeatCourseCompletionMode() {
         return RepeatCourseCompletionMode;

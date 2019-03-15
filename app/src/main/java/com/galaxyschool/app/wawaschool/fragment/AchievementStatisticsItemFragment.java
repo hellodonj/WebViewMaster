@@ -164,7 +164,8 @@ public class AchievementStatisticsItemFragment extends ContactsListFragment {
                                 data.getStudentName(),
                                 data.getCommitTaskId(),
                                 cardParam.isFromOnlineStudyTask(),
-                                false);
+                                false,
+                                null);
                     } else {
                         StudyTask myTask = new StudyTask();
                         myTask.setResId(data.getStudentResId());
