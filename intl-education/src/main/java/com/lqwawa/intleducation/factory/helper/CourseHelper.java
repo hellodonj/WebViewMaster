@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
@@ -666,6 +667,44 @@ public class CourseHelper {
                 if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
+            }
+        });
+    }
+
+    /**
+     * 查看该用户是否是某课程的帮辅老师
+     * @param courseId 课程Id
+     * @param memberId 用户Id
+     * @param callback 请求回调对象
+     */
+    public static void isTutorCourseBycourseId(@NonNull String memberId,
+                                               @Nullable String courseId,
+                                               @NonNull final DataSource.SucceedCallback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("memberId", memberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostIsTutorCourseByCourseId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.isTutorCourse());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                UIUtil.showToastSafe(R.string.net_error_tip);
             }
         });
     }
