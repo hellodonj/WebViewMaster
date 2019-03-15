@@ -708,4 +708,76 @@ public class CourseHelper {
             }
         });
     }
+
+    /**
+     * 申请课程帮辅老师
+     * @param memberId 帮辅Id
+     * @param courseId 课程Id
+     * @param type 1 课程 2 课堂
+     * @param isOrganTutorStatus 是否已经是该机构的帮辅老师  -1 未申请过，0 正在申请当中 1已经是机构的帮辅老师
+     * @param realName 真实姓名,
+     * @param markingPrice 批阅价格
+     * @param provinceId 省份Id
+     * @param provinceName 省份名称
+     * @param cityId 城市Id
+     * @param cityName 城市名称
+     * @param countyId 区Id
+     * @param countyName 区名称
+     * @param isLqOrganTutor 是否已经是机构帮辅
+     */
+    public static void requestApplyForCourseTutor(@NonNull String memberId,
+                                                  @NonNull int courseId,
+                                                  int type, int isOrganTutorStatus,
+                                                  @NonNull String realName, @NonNull String markingPrice,
+                                                  @NonNull String provinceId, @NonNull String provinceName,
+                                                  @NonNull String cityId, @NonNull String cityName,
+                                                  @NonNull String countyId, @NonNull String countyName,
+                                                  boolean isLqOrganTutor,
+                                                  @NonNull final DataSource.Callback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("type", type);
+        requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
+        requestVo.addParams("realName", realName);
+        requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        if(isOrganTutorStatus == 0 ||
+                isOrganTutorStatus == 1){
+            requestVo.addParams("markingPrice", markingPrice);
+            requestVo.addParams("provinceId", provinceId);
+            requestVo.addParams("provinceName", provinceName);
+            requestVo.addParams("cityId", cityId);
+            requestVo.addParams("cityName", cityName);
+            requestVo.addParams("countyId", countyId);
+            requestVo.addParams("countyName", countyName);
+        }
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetApplyForCourseTutor + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
 }

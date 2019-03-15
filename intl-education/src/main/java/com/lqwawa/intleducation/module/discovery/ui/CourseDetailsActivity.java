@@ -65,6 +65,7 @@ import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply.TutorialCourseApplyForFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.CourseRoute;
@@ -1584,8 +1585,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
                 if(tutorialMode){
                     // TODO 申请成为课程的帮辅老师
+                    TutorialCourseApplyForFragment.show(getSupportFragmentManager());
                     return;
-
                 }
 
                 if(id == R.id.btn_enter_pay || id == R.id.pay_tv){
