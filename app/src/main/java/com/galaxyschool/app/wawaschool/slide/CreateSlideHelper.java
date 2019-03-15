@@ -503,6 +503,7 @@ public class CreateSlideHelper {
 				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_ANSWER_STRING,param.cardParam.getStudentCommitAnswerString());
 			}
 			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_INDEX,param.cardParam.getPageIndex());
+			it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_INDEX, param.cardParam.getExerciseIndex());
 		}
     	return it;
     }

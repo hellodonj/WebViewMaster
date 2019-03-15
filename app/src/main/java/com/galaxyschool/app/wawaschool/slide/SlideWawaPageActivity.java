@@ -404,9 +404,9 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 		if (cardParam == null){
 			return;
 		}
-//		List<ExerciseItem> exerciseItems = cardParam.getQuestionDetails();
-//		cardParam.setQuestionDetails(exerciseItems);
-//		AnswerParsingActivity.start(SlideWawaPageActivity.class,cardParam,exerciseIndex,true);
+		List<ExerciseItem> exerciseItems = cardParam.getQuestionDetails();
+		cardParam.setQuestionDetails(exerciseItems);
+		AnswerParsingActivity.start(this,this.cardParam,exerciseIndex,true,true);
 	}
 
 	protected void reviewExerciseDetails(int exerciseIndex) {

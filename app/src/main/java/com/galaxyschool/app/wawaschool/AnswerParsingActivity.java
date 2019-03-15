@@ -40,17 +40,21 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private ExerciseAnswerCardParam cardParam;
     private boolean fromAnswerAnalysis;
     private List<ExerciseItem> exerciseItemList;
+    private boolean lookSingleDetail;
+
     public interface Constants {
         String SINGLE_QUESTION_ANSWER = "single_question_answer";
         String FROM_ANSWER_ANALYSIS = "from_answer_analysis";
         String STUDENT_ID = "student_id";
         String STUDENT_NAME = "student_name";
+        String LOOK_SINGLE_QUESTION_DETAIL = "look_single_question_detail";
     }
 
     public static void start(Activity activity,
                              ExerciseAnswerCardParam cardParam,
                              int questionPosition,
-                             boolean fromAnswerAnalysis) {
+                             boolean fromAnswerAnalysis,
+                             boolean lookSingleDetail) {
         if (activity == null) {
             return;
         }
@@ -61,6 +65,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         args.putBoolean(Constants.FROM_ANSWER_ANALYSIS, fromAnswerAnalysis);
         args.putInt("exerciseIndex", questionPosition);
+        args.putBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,lookSingleDetail);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
@@ -92,6 +97,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             }
             currentPosition = args.getInt("exerciseIndex");
             currentPosition = currentPosition - 1;
+            lookSingleDetail = args.getBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,false);
         }
     }
 
@@ -125,11 +131,21 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         applyMarkTextV = (TextView) findViewById(R.id.tv_apply_mark);
         applyMarkTextV.setOnClickListener(v -> {
-            cardParam.setPageIndex(currentPosition);
+            List<Integer> pageAreaIndex= getPageAreaIndex();
+            if (pageAreaIndex == null || pageAreaIndex.size() == 0){
+                return;
+            }
+            cardParam.setPageIndex(pageAreaIndex.get(0));
+            cardParam.setExerciseIndex(currentPosition + 1);
             ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this,cardParam,
-                    getPageAreaIndex());
+                    pageAreaIndex);
         });
         viewPager = (MyViewPager) findViewById(R.id.vp_answer_parsing);
+        if (lookSingleDetail) {
+            lastQuestionTextV.setVisibility(View.GONE);
+            nextQestionTextV.setVisibility(View.GONE);
+            applyMarkLayout.setVisibility(View.GONE);
+        }
     }
 
     private List<Integer> getPageAreaIndex(){
@@ -216,6 +232,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             }
         });
         viewPager.setCurrentItem(currentPosition);
+        if (lookSingleDetail){
+            viewPager.setCanScroll(false);
+        }
         changeBottomEnable(currentPosition);
     }
 

@@ -427,6 +427,6 @@ public class AnswerAnalysisFragment extends ContactsListFragment {
             return;
         }
         cardParam.setQuestionDetails(exerciseItems);
-        AnswerParsingActivity.start((Activity) mContext,cardParam,questionIndex,true);
+        AnswerParsingActivity.start((Activity) mContext,cardParam,questionIndex,true,false);
     }
 }

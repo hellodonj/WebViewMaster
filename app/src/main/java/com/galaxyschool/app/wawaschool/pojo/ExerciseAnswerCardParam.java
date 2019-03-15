@@ -60,14 +60,23 @@ public class ExerciseAnswerCardParam implements Serializable {
     private CommitTask commitTask;
     private StudyTask studyTask;
     private int pageIndex;
+    private int exerciseIndex;
     private QuestionResourceModel markModel;//申请批阅的数据
-
     public QuestionResourceModel getMarkModel() {
         return markModel;
     }
 
     public void setMarkModel(QuestionResourceModel markModel) {
         this.markModel = markModel;
+    }
+
+
+    public int getExerciseIndex() {
+        return exerciseIndex;
+    }
+
+    public void setExerciseIndex(int exerciseIndex) {
+        this.exerciseIndex = exerciseIndex;
     }
 
     public int getPageIndex() {
