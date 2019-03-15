@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import cn.robotpen.pen.IRemoteRobotService;
 import cn.robotpen.pen.model.RemoteState;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.AnswerParsingActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -29,6 +30,7 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionData;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionDataListResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
@@ -71,6 +73,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
 	public final static String EXTRA_PAGE_INDEX = "pageIndex";
 	public final static String EXTRA_EDIT_EXERCISE = "editExercise";
+	public final static String EXTRA_EXERCISE_INDEX = "exerciseIndex";
 
 	//扫码识任务需要以下两个字段
 	public final static String SCHOOL_ID = "school_id";
@@ -163,6 +166,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 		boolean editExercise = getIntent().getBooleanExtra(EXTRA_EDIT_EXERCISE, false);
 		if (editExercise) {
 			mSlideManager.setEditExercise(editExercise);
+			mSlideManager.setExerciseIndex(getIntent().getIntExtra(EXTRA_EXERCISE_INDEX, 0));
 			mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
 			mSlideManager.setExerciseNodeClickListener(this);
 			mSlideManager.getExerciseNodeManager().setExerciseString(
@@ -397,7 +401,12 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 
 	@Override
 	public void onExerciseNodeClick(int exerciseIndex) {
-
+		if (cardParam == null){
+			return;
+		}
+		List<ExerciseItem> exerciseItems = cardParam.getQuestionDetails();
+		cardParam.setQuestionDetails(exerciseItems);
+		AnswerParsingActivity.start(this,this.cardParam,exerciseIndex,true,true);
 	}
 
 	protected void reviewExerciseDetails(int exerciseIndex) {

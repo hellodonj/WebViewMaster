@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -24,6 +26,7 @@ import com.galaxyschool.app.wawaschool.course.SlideActivityNew;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.MaterialType;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
@@ -490,11 +493,17 @@ public class CreateSlideHelper {
 		if (param.cardParam != null && param.cardParam.getMarkModel() != null) {
 			it.putExtra(SlideWawaPageActivity.EXTRA_EDIT_EXERCISE,true);
 			if (!TextUtils.isEmpty(param.cardParam.getExerciseAnswerString())) {
-				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_STRING,param.cardParam.getExerciseAnswerString());
+				JSONArray jsonArray = JSONObject.parseArray(param.cardParam.getExerciseAnswerString());
+				if (jsonArray != null && jsonArray.size() > 0) {
+					JSONObject jsonObject = jsonArray.getJSONObject(0);
+					it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_STRING,jsonObject.toString());
+				}
 			}
 			if (!TextUtils.isEmpty(param.cardParam.getStudentCommitAnswerString())) {
 				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_ANSWER_STRING,param.cardParam.getStudentCommitAnswerString());
 			}
+			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_INDEX,param.cardParam.getPageIndex());
+			it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_INDEX, param.cardParam.getExerciseIndex());
 		}
     	return it;
     }

@@ -52,6 +52,7 @@ import com.galaxyschool.app.wawaschool.slide.UploadDialog;
 import com.galaxyschool.app.wawaschool.views.MarkScoreDialog;
 import com.lqwawa.client.pojo.LearnTaskCardType;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -852,14 +853,19 @@ public class DoTaskOrderHelper {
             return;
         }
         itemData = cardParam.getExerciseItem();
-        if (itemData == null) {
-            return;
-        }
-        if (itemData.getEqState() == 4 || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
-            //已打分
+        QuestionResourceModel model = cardParam.getMarkModel();
+        if (model != null) {
             showCommitDialog(isTeacherOrEditor());
         } else {
-            showMarkScoreDialog();
+            if (itemData == null) {
+                return;
+            }
+            if (itemData.getEqState() == 4 || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
+                //已打分
+                showCommitDialog(isTeacherOrEditor());
+            } else {
+                showMarkScoreDialog();
+            }
         }
     }
 
@@ -895,7 +901,7 @@ public class DoTaskOrderHelper {
             showMarkScoreDialog();
         });
 
-        if (isTeacher && itemData.getEqState() == 4 && !TextUtils.isEmpty(itemData.getStudent_score())) {
+        if (isTeacher && itemData != null && itemData.getEqState() == 4 && !TextUtils.isEmpty(itemData.getStudent_score())) {
             //老师身份 并且 分数不为空才显示重新打分
             rightBtn.setVisibility(View.VISIBLE);
         }

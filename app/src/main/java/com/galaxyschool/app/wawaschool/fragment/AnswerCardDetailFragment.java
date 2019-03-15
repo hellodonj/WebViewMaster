@@ -276,8 +276,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId())) {
             //显示老师批阅
             ApplyMarkHelper.showApplyMarkView(getActivity(),remarkTextV);
-            remarkTextV.setOnClickListener(v -> ApplyMarkHelper.loadCourseImageList(getActivity()
-                    ,cardParam));
+            remarkTextV.setOnClickListener(v -> lookAnswerParsingDetail());
         } else {
             remarkTextV.setVisibility(View.GONE);
         }
@@ -626,7 +625,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         cardParam.setShowExerciseNode(true);
         cardParam.setQuestionDetails(exerciseItems);
         //server返回的学生提交的信息
-        cardParam.setExerciseAnswerString(cardParam.getExerciseAnswerString());
+        cardParam.setExerciseAnswerString(this.cardParam.getExerciseAnswerString());
         cardParam.setStudentCommitAnswerString(studentCommitAnswerString);
         cardParam.setTaskId(cardParam.getTaskId());
         cardParam.setResId(courseData.id + "-" + courseData.type);
@@ -636,6 +635,10 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         cardParam.setCommitTaskTitle(this.cardParam.getCommitTaskTitle());
         cardParam.setClassId(this.cardParam.getClassId());
         cardParam.setSchoolId(this.cardParam.getSchoolId());
+        cardParam.setMarkModel(this.cardParam.getMarkModel());
+        cardParam.setStudyTask(this.cardParam.getStudyTask());
+        cardParam.setCommitTask(this.cardParam.getCommitTask());
+        cardParam.setRoleType(this.cardParam.getRoleType());
         mParam.exerciseCardParam = cardParam;
     }
 

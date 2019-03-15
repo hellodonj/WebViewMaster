@@ -24,6 +24,8 @@ import com.galaxyschool.app.wawaschool.views.MyViewPager;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AnswerParsingActivity extends BaseFragmentActivity implements View.OnClickListener {
@@ -38,17 +40,21 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private ExerciseAnswerCardParam cardParam;
     private boolean fromAnswerAnalysis;
     private List<ExerciseItem> exerciseItemList;
+    private boolean lookSingleDetail;
+
     public interface Constants {
         String SINGLE_QUESTION_ANSWER = "single_question_answer";
         String FROM_ANSWER_ANALYSIS = "from_answer_analysis";
         String STUDENT_ID = "student_id";
         String STUDENT_NAME = "student_name";
+        String LOOK_SINGLE_QUESTION_DETAIL = "look_single_question_detail";
     }
 
     public static void start(Activity activity,
                              ExerciseAnswerCardParam cardParam,
                              int questionPosition,
-                             boolean fromAnswerAnalysis) {
+                             boolean fromAnswerAnalysis,
+                             boolean lookSingleDetail) {
         if (activity == null) {
             return;
         }
@@ -59,6 +65,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         args.putBoolean(Constants.FROM_ANSWER_ANALYSIS, fromAnswerAnalysis);
         args.putInt("exerciseIndex", questionPosition);
+        args.putBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,lookSingleDetail);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
@@ -90,6 +97,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             }
             currentPosition = args.getInt("exerciseIndex");
             currentPosition = currentPosition - 1;
+            lookSingleDetail = args.getBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,false);
         }
     }
 
@@ -123,9 +131,61 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         applyMarkTextV = (TextView) findViewById(R.id.tv_apply_mark);
         applyMarkTextV.setOnClickListener(v -> {
-            ApplyMarkHelper.enterApplyMarkDetailActivity(this,new QuestionResourceModel());
+            List<Integer> pageAreaIndex= getPageAreaIndex();
+            if (pageAreaIndex == null || pageAreaIndex.size() == 0){
+                return;
+            }
+            cardParam.setPageIndex(pageAreaIndex.get(0));
+            cardParam.setExerciseIndex(currentPosition + 1);
+            ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this,cardParam,
+                    pageAreaIndex);
         });
         viewPager = (MyViewPager) findViewById(R.id.vp_answer_parsing);
+        if (lookSingleDetail) {
+            lastQuestionTextV.setVisibility(View.GONE);
+            nextQestionTextV.setVisibility(View.GONE);
+            applyMarkLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private List<Integer> getPageAreaIndex(){
+        List<Integer> pageAreaIndex = new ArrayList<>();
+        List<ExerciseItem> items = cardParam.getQuestionDetails();
+        if (items != null && items.size() > 0){
+            ExerciseItem item = items.get(currentPosition);
+            if (item != null) {
+                List<ExerciseItemArea> itemAreas = item.getAreaItemList();
+                if (itemAreas != null && itemAreas.size() > 0) {
+                    for (int i = 0; i < itemAreas.size(); i++) {
+                        ExerciseItemArea area = itemAreas.get(i);
+                        if (area != null) {
+                            String pageIndex = area.getPage_index();
+                            if (!TextUtils.isEmpty(pageIndex)) {
+                                int index = Integer.valueOf(pageIndex);
+                                if (pageAreaIndex.size() == 0){
+                                    pageAreaIndex.add(index);
+                                } else {
+                                    boolean flag = true;
+                                    for (int m = 0; m < pageAreaIndex.size(); m++){
+                                        if (pageAreaIndex.get(m) == index){
+                                            flag = false;
+                                            break;
+                                        }
+                                    }
+                                    if (flag){
+                                        pageAreaIndex.add(index);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (pageAreaIndex.size() > 1){
+            Collections.sort(pageAreaIndex, (o1,o2) ->  o1-o2);
+        }
+        return pageAreaIndex;
     }
 
     private void initData() {
@@ -172,6 +232,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             }
         });
         viewPager.setCurrentItem(currentPosition);
+        if (lookSingleDetail){
+            viewPager.setCanScroll(false);
+        }
         changeBottomEnable(currentPosition);
     }
 
