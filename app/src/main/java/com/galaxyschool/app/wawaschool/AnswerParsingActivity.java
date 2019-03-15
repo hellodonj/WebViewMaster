@@ -136,7 +136,11 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                 return;
             }
             cardParam.setPageIndex(pageAreaIndex.get(0));
-            cardParam.setExerciseIndex(currentPosition + 1);
+            int exerciseIndex = currentPosition + 1;
+            cardParam.setExerciseIndex(exerciseIndex);
+            if (cardParam.getMarkModel() != null) {
+                cardParam.getMarkModel().setT_EQId(String.valueOf(exerciseIndex));
+            }
             ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this,cardParam,
                     pageAreaIndex);
         });

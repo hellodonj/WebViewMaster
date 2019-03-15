@@ -83,11 +83,10 @@ public class ApplyMarkHelper {
                                            ExerciseAnswerCardParam cardParam,
                                            List<Integer> pageIndex) {
         final HashMap<String, Object> params = new HashMap<>();
-        StudyTask task = cardParam.getStudyTask();
-        if (task == null) {
+        if (TextUtils.isEmpty(cardParam.getResId())){
             return;
         }
-        String resId = task.getResId();
+        String resId = cardParam.getResId();
         if (!TextUtils.isEmpty(resId)) {
             params.put("courseId", resId);
         }

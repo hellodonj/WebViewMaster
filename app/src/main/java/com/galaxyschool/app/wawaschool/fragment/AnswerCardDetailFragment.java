@@ -254,7 +254,6 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             initView();
             initObjectProblemDetail();
             initSubjectProblemDetail();
-            initMarkModelData();
         }
     }
 
@@ -682,32 +681,5 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         listener.setShowLoading(true);
         RequestHelper.sendPostRequest(mContext, ServerUrl.GET_ADDCOMMITTASKREVIEW,
                 params, listener);
-    }
-
-    private void initMarkModelData(){
-        if (cardParam != null) {
-            markModel = new QuestionResourceModel();
-            CommitTask commitTask = cardParam.getCommitTask();
-            if (commitTask != null) {
-                markModel.setTitle(commitTask.getStudentResTitle());
-                markModel.setT_TaskId(commitTask.getTaskId());
-                markModel.setT_AirClassId(commitTask.getAirClassId());
-            }
-            markModel.setStuMemberId(getMemeberId());
-            StudyTask task = cardParam.getStudyTask();
-            if (task != null) {
-                markModel.setT_TaskType(task.getType());
-                markModel.setT_ClassId(task.getClassId());
-                markModel.setT_CourseName(task.getClassName());
-                markModel.setT_ResCourseId(task.getResCourseId());
-            }
-            if (cardParam.isFromOnlineStudyTask()) {
-                markModel.setT_CommitTaskOnlineId(cardParam.getCommitTaskId());
-            } else {
-                markModel.setT_CommitTaskId(cardParam.getCommitTaskId());
-            }
-            cardParam.setStudentCommitAnswerString(studentCommitAnswerString);
-            cardParam.setMarkModel(markModel);
-        }
     }
 }
