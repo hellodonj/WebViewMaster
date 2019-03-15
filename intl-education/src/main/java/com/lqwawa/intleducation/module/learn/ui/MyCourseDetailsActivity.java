@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragmentActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -1021,7 +1022,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
             @Override
             public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
-                boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+                boolean tutorialMode = MainApplication.isTutorialMode();
                 MyCourseDetailsActivity.this.courseDetailsVo = courseDetailsVo;
                 collected = courseDetailsVo.isIsCollect();
                 courseScore = courseDetailsVo.getCourseScore();

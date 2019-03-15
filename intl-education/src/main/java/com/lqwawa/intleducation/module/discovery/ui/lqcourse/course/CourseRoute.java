@@ -5,6 +5,7 @@ import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -87,7 +88,7 @@ public class CourseRoute {
                 }
 
                 // 再网络请求，是否是帮辅模式,并且是老师
-                boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+                boolean tutorialMode = MainApplication.isTutorialMode();
                 if(tutorialMode){
                     CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
                         @Override
@@ -469,7 +470,7 @@ public class CourseRoute {
 
         @Override
         public void route(boolean needToLearn, boolean isTutorialTeacher) {
-            boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+            boolean tutorialMode = MainApplication.isTutorialMode();
             if(tutorialMode) {
                 route(needToLearn && isTutorialTeacher);
             }else{

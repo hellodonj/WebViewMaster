@@ -8,7 +8,9 @@ import com.lqwawa.intleducation.base.MyApplication;
 import com.lqwawa.intleducation.common.db.DbHelper;
 //import com.lqwawa.intleducation.module.chat.EaseHelper;
 import com.lqwawa.intleducation.common.utils.LogUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.throwable.LQUncaughtExceptionHandler;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqresviewlib.LqResViewHelper;
@@ -104,5 +106,9 @@ public class MainApplication extends MyApplication {
     public static boolean appIsLQMOOC(){
         //return false;
         return getInstance().getPackageName().equals("com.lqwawa.intleducation");
+    }
+
+    public static boolean isTutorialMode(){
+        return SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
     }
 }

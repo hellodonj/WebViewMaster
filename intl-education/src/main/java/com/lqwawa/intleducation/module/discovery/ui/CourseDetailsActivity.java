@@ -1338,7 +1338,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private void updateView() {
         if (courseVo != null && courseDetailsVo != null) {
 
-            boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+            boolean tutorialMode = MainApplication.isTutorialMode();
 
             if (isMyCourse && /*mCourseDetailParams.isClassCourseEnter() && */courseDetailsVo.isIsExpire()) {
                 // 班级学程入口进入
@@ -1583,7 +1583,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
-                boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+                boolean tutorialMode = MainApplication.isTutorialMode();
                 if(tutorialMode){
                     // TODO 申请成为课程的帮辅老师
                     TutorialCourseApplyForFragment.show(
