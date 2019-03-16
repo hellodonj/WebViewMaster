@@ -72,6 +72,8 @@ public class SectionResListVo extends BaseVo {
     // V5.14新添加的课程信息
     private String courseId;
     private String courseName;
+    private String classId;
+    private String className;
 
 
     public String getTaskId() {
@@ -321,6 +323,22 @@ public class SectionResListVo extends BaseVo {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     /**

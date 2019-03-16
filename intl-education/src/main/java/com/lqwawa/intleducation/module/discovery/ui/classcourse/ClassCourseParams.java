@@ -13,13 +13,16 @@ public class ClassCourseParams extends BaseVo{
     private String schoolId;
     // 班级Id
     private String classId;
+    // 班级名称
+    private String className;
     // 角色信息
     private String roles;
 
-    public ClassCourseParams(boolean isHeadMaster,String schoolId, String classId) {
+    public ClassCourseParams(boolean isHeadMaster,String schoolId, String classId,String className) {
         this.isHeadMaster = isHeadMaster;
         this.schoolId = schoolId;
         this.classId = classId;
+        this.className = className;
     }
 
     /**
@@ -42,6 +45,10 @@ public class ClassCourseParams extends BaseVo{
 
     public String getClassId() {
         return classId;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public String getRoles() {
