@@ -1050,16 +1050,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         String memberId = activity.getIntent().getStringExtra("memberId");
         String schoolId = activity.getIntent().getStringExtra("schoolId");
         // 获取课程大纲所属课程的课程详情参数
-        CourseDetailParams courseParams = null;
-        if(activity.getIntent().hasExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT)){
-            courseParams = (CourseDetailParams) activity.getIntent().getSerializableExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT);
-        }else{
-            courseParams = new CourseDetailParams();
-        }
-        if (courseParams != null && courseVo != null) {
-            courseParams.setBindSchoolId(courseVo.getBindSchoolId());
-            courseParams.setBindClassId(courseVo.getBindClassId());
-        }
+        CourseDetailParams courseParams = getCourseDetailParams(courseVo,isFreeUser);
 
         int role = handleBusinessRole();
         // 自己的真实角色 和 老师类型
@@ -1121,8 +1112,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         if (courseParams != null && courseVo != null) {
             courseParams.setBindSchoolId(courseVo.getBindSchoolId());
             courseParams.setBindClassId(courseVo.getBindClassId());
-            courseParams.setCourseId(courseVo.getCourseId());
-            courseParams.setCourseName(courseVo.getCourseName());
+            courseParams.setCourseId(courseVo.getId());
+            courseParams.setCourseName(courseVo.getName());
         }
         return courseParams;
     }
