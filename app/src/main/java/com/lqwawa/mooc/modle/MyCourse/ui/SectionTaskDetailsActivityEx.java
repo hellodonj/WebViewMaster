@@ -494,7 +494,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 commitTaskId,
                                 taskScoreReMark,
                                 courseId,
-                                courseName);
+                                courseName,
+                                null,
+                                null);
 
                     } else {
 

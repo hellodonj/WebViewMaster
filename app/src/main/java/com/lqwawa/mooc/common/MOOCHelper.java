@@ -42,6 +42,7 @@ import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfoCode;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
@@ -57,6 +58,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
@@ -243,8 +245,10 @@ public class MOOCHelper {
             //把task的scoreRule拿出来赋值
             studyTask.setScoringRule(scoringRule);
             studyTask.setType(task.getType());
-//            studyTask.setCourseId("");
-//            studyTask.setClassName("");
+            studyTask.setCourseId(task.getCourseId());
+            studyTask.setCourseName(task.getCourseName());
+//            studyTask.setClassId();
+//            studyTask.setClassName();
             if (isCheckMark) {
                 //查看批阅
                 enterCheckMarkDetail(activity, data, studyTask, roleType, isAudition);
@@ -287,7 +291,22 @@ public class MOOCHelper {
                                                 int commitTaskId,
                                                 String taskScoreRemark,
                                                 @NonNull String courseId,
-                                                @NonNull String courseName) {
+                                                @NonNull String courseName,
+                                                String classId,
+                                                String className) {
+            QuestionResourceModel markModel = new QuestionResourceModel();
+            markModel.setTitle(commitTaskTitle);
+            if (!TextUtils.isEmpty(taskId)) {
+                markModel.setT_TaskId(Integer.valueOf(taskId));
+            }
+            markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
+            markModel.setT_CommitTaskOnlineId(commitTaskId);
+            markModel.setT_ClassId(classId);
+            markModel.setT_ClassName(className);
+            markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
+            markModel.setT_CourseName(courseName);
+            markModel.setT_CourseId(courseId);
+
             ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
             cardParam.setExerciseTotalScore(exerciseTotalScore);
             cardParam.setResId(resId);
@@ -332,6 +351,19 @@ public class MOOCHelper {
                                    boolean isDoExercise,
                                    @NonNull String CourseId,
                                    @NonNull String courseName) {
+            QuestionResourceModel markModel = new QuestionResourceModel();
+            markModel.setTitle(taskTitle);
+            if (!TextUtils.isEmpty(TaskId)) {
+                markModel.setT_TaskId(Integer.valueOf(TaskId));
+            }
+            markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
+            markModel.setT_CommitTaskOnlineId(commitTaskId);
+            markModel.setT_ClassId(classId);
+            markModel.setT_ClassName(className);
+            markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
+            markModel.setT_CourseName(courseName);
+            markModel.setT_CourseId(CourseId);
+
             DoTaskOrderHelper.openExerciseDetail(activity,
                     exerciseString,
                     TaskId,
@@ -346,7 +378,7 @@ public class MOOCHelper {
                     commitTaskId,
                     true,
                     isDoExercise,
-                    null);
+                    markModel);
         }
 
 

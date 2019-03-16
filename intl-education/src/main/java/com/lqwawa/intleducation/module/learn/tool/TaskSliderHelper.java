@@ -117,7 +117,9 @@ public class TaskSliderHelper {
                                          int commitTaskId,
                                          String taskScoreRemark,
                                          @NonNull String courseId,
-                                         @NonNull String courseName);
+                                         @NonNull String courseName,
+                                         String classId,
+                                         String className);
 
         /**
          * 做答题卡
@@ -183,7 +185,9 @@ public class TaskSliderHelper {
                                                    int commitTaskId,
                                                    String taskScoreRemark,
                                                    @NonNull String courseId,
-                                                   @NonNull String courseName) {
+                                                   @NonNull String courseName,
+                                                   String classId,
+                                                   String className) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.enterExerciseDetailActivity(activity,
@@ -202,7 +206,9 @@ public class TaskSliderHelper {
                         commitTaskId,
                         taskScoreRemark,
                         courseId,
-                        courseName);
+                        courseName,
+                        classId,
+                        className);
             }
         }
     }
