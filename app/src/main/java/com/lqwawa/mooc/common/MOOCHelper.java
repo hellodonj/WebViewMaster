@@ -285,7 +285,9 @@ public class MOOCHelper {
                                                 String studentName,
                                                 String studentId,
                                                 int commitTaskId,
-                                                String taskScoreRemark) {
+                                                String taskScoreRemark,
+                                                @NonNull String courseId,
+                                                @NonNull String courseName) {
             ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
             cardParam.setExerciseTotalScore(exerciseTotalScore);
             cardParam.setResId(resId);
@@ -327,7 +329,9 @@ public class MOOCHelper {
                                    String className,
                                    String studentName,
                                    int commitTaskId,
-                                   boolean isDoExercise) {
+                                   boolean isDoExercise,
+                                   @NonNull String CourseId,
+                                   @NonNull String courseName) {
             DoTaskOrderHelper.openExerciseDetail(activity,
                     exerciseString,
                     TaskId,

@@ -115,7 +115,9 @@ public class TaskSliderHelper {
                                          String studentName,
                                          String studentId,
                                          int commitTaskId,
-                                         String taskScoreRemark);
+                                         String taskScoreRemark,
+                                         @NonNull String courseId,
+                                         @NonNull String courseName);
 
         /**
          * 做答题卡
@@ -138,7 +140,9 @@ public class TaskSliderHelper {
                             String className,
                             String studentName,
                             int commitTaskId,
-                            boolean isDoExercise);
+                            boolean isDoExercise,
+                            @NonNull String CourseId,
+                            @NonNull String courseName);
     }
 
     public interface OnCommitTaskListener {
@@ -177,7 +181,9 @@ public class TaskSliderHelper {
                                                    String studentName,
                                                    String studentId,
                                                    int commitTaskId,
-                                                   String taskScoreRemark) {
+                                                   String taskScoreRemark,
+                                                   @NonNull String courseId,
+                                                   @NonNull String courseName) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.enterExerciseDetailActivity(activity,
@@ -194,7 +200,9 @@ public class TaskSliderHelper {
                         studentName,
                         studentId,
                         commitTaskId,
-                        taskScoreRemark);
+                        taskScoreRemark,
+                        courseId,
+                        courseName);
             }
         }
     }
@@ -220,7 +228,9 @@ public class TaskSliderHelper {
                                       String className,
                                       String studentName,
                                       int commitTaskId,
-                                      boolean isDoExercise) {
+                                      boolean isDoExercise,
+                                      @NonNull String CourseId,
+                                      @NonNull String courseName) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.doExerciseTask(
@@ -236,7 +246,9 @@ public class TaskSliderHelper {
                         className,
                         studentName,
                         commitTaskId,
-                        isDoExercise);
+                        isDoExercise,
+                        CourseId,
+                        courseName);
             }
         }
     }

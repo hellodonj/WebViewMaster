@@ -32,6 +32,10 @@ public class CourseDetailParams extends BaseVo{
     // 是否已经加入过班级
     private boolean isJoin;
 
+    // v5.14新添加的字段
+    private String courseId;
+    private String courseName;
+
     public CourseDetailParams() {
         // 默认的进入方式
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
@@ -105,6 +109,22 @@ public class CourseDetailParams extends BaseVo{
 
     public void setClassParent(boolean classParent) {
         isClassParent = classParent;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     /**

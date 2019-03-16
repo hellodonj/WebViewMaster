@@ -1121,6 +1121,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         if (courseParams != null && courseVo != null) {
             courseParams.setBindSchoolId(courseVo.getBindSchoolId());
             courseParams.setBindClassId(courseVo.getBindClassId());
+            courseParams.setCourseId(courseVo.getCourseId());
+            courseParams.setCourseName(courseVo.getCourseName());
         }
         return courseParams;
     }

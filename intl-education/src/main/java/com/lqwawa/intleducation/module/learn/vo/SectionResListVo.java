@@ -69,6 +69,10 @@ public class SectionResListVo extends BaseVo {
     // 是否作业库选中
     private boolean activated;
 
+    // V5.14新添加的课程信息
+    private String courseId;
+    private String courseName;
+
 
     public String getTaskId() {
         return taskId;
@@ -301,6 +305,22 @@ public class SectionResListVo extends BaseVo {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     /**

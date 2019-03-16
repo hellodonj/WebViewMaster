@@ -476,7 +476,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         int commitTaskId = studentCommit.getId();
 
                         String taskScoreReMark = studentCommit.getTaskScoreRemark();
-
+                        String courseId = mCourseParams.getCourseId();
+                        String courseName = mCourseParams.getCourseName();
                         TaskSliderHelper.enterExerciseDetailActivity(activity,
                                 sectionResListVo.getPoint(),
                                 resourceId,
@@ -491,7 +492,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 studentCommit.getStudentName(),
                                 studentCommit.getStudentId(),
                                 commitTaskId,
-                                taskScoreReMark);
+                                taskScoreReMark,
+                                courseId,
+                                courseName);
 
                     } else {
 
@@ -521,7 +524,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         }
 
                         int commitTaskId = studentCommit.getId();
-
+                        String courseId = mCourseParams.getCourseId();
+                        String courseName = mCourseParams.getCourseName();
                         TaskSliderHelper.doExerciseTask(
                                 activity,
                                 answerString,
@@ -534,7 +538,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 classId,
                                 null,
                                 studentCommit.getStudentName(),
-                                commitTaskId, false);
+                                commitTaskId, false,
+                                courseId,courseName);
 
                     }
 
@@ -554,6 +559,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
             int scoringRule = mLqTaskCommitListVo.getTaskInfo().getScoringRule();
             scoringRule = 2;
+
+            // 设置CourseId 和 CourseName信息
+            task.setCourseId(mCourseParams.getCourseId());
+            task.setCourseName(mCourseParams.getCourseName());
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }
@@ -730,6 +739,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
 
+                String courseId = mCourseParams.getCourseId();
+                String courseName = mCourseParams.getCourseName();
                 TaskSliderHelper.doExerciseTask(
                         activity,
                         answerString,
@@ -741,7 +752,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         null,
                         classId,
                         null,
-                        null, 0, true);
+                        null, 0, true,
+                        courseId,courseName);
             }
         });
     }
