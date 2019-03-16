@@ -2268,6 +2268,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         markModel.setT_ClassId(task.getClassId());
         markModel.setT_ClassName(task.getClassName());
         markModel.setT_ResCourseId(task.getResCourseId());
+        markModel.setStuMemberId(getMemeberId());
         return markModel;
     }
 
