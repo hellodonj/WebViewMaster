@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -78,6 +79,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     // 是否老师看孩子
     private boolean mTeacherVisitor;
 
+    private boolean tutorialMode;
+
     private OnSelectListener mOnSelectListener;//课程选择
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -113,6 +116,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
                 .build();
+
+        tutorialMode = MainApplication.isTutorialMode();
     }
 
     @Override
@@ -1061,7 +1066,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
 
-        boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+        boolean tutorialMode = MainApplication.isTutorialMode();
         if(courseParams.isClassTeacher() || tutorialMode){
             // 班级学程的老师
             if(mTeacherVisitor){

@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.box;
 import android.os.Bundle;
 import android.view.View;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.helper.NavHelper;
@@ -49,7 +50,7 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
         mNavHelper.add(KEY_TUTORIAL_MODE_ID, new NavHelper.Tab<>(TutorialSpaceFragment.class, R.string.label_tutorial_space))
                 .add(KEY_COURSE_MODE_ID, new NavHelper.Tab<>(MyCourseFragment.class, R.string.label_course_box));
         // 获取当前的模式
-        boolean tutorialMode = SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+        boolean tutorialMode = MainApplication.isTutorialMode();
         // 传送模式
         // EventBus.getDefault().post(new EventWrapper(KEY_TUTORIAL_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
         // EventBus.getDefault().post(new EventWrapper(KEY_COURSE_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
