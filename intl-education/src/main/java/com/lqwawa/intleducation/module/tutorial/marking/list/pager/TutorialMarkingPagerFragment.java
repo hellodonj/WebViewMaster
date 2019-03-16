@@ -29,9 +29,11 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -121,19 +123,21 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
         mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
             @Override
             public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
-
+                TaskRequirementActivity.show(getActivity(),entity);
             }
 
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
 
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
         });
 
@@ -141,8 +145,9 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
                 super.onItemClick(holder, entity);
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
         });
 

@@ -18,9 +18,11 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialTaskAdapter;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -82,26 +84,32 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
         mRecycler.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mLayoutManager);
-        mTutorialAdapter = new TutorialTaskAdapter(true);
+        mTutorialAdapter = new TutorialTaskAdapter(mTutorialMode);
         mRecycler.setAdapter(mTutorialAdapter);
         mRecycler.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
 
         mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
             @Override
             public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
-
+                if(mTutorialMode) {
+                    TaskRequirementActivity.show(getActivity(),entity);
+                }else{
+                    // 进入课件详情
+                }
             }
 
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
 
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
         });
 
@@ -109,8 +117,9 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
                 super.onItemClick(holder, entity);
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                }
             }
         });
 

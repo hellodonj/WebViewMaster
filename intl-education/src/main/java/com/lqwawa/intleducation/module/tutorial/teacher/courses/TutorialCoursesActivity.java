@@ -177,8 +177,6 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
      */
     private void requestCourseData(boolean moreData){
         mSearchKey = mSearchContent.getText().toString().trim();
-        // TODO 测试数据
-        mMemberId = "0018356f-ad4b-439f-88fa-e4cdbf4de32b";
         if(moreData){
             currentPage ++;
             mPresenter.requestTutorialCoursesData(mMemberId,mSearchKey,currentPage);

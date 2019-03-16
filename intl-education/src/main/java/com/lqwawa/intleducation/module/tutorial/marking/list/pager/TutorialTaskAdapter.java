@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
@@ -55,6 +56,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
     private class TaskHolder extends RecyclerAdapter.ViewHolder<TaskEntity>{
 
         private FrameLayout mRequireLayout;
+        private FrameLayout mAvatarLayout;
         private ImageView mStudentAvatar;
         private ImageView mRedPoint;
         private TextView mStudentName;
@@ -73,6 +75,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
         public TaskHolder(View itemView) {
             super(itemView);
             mRequireLayout = (FrameLayout) itemView.findViewById(R.id.require_layout);
+            mAvatarLayout = (FrameLayout) itemView.findViewById(R.id.avatar_layout);
             mStudentAvatar = (ImageView) itemView.findViewById(R.id.iv_student_avatar);
             mRedPoint = (ImageView) itemView.findViewById(R.id.red_point);
             mStudentName = (TextView) itemView.findViewById(R.id.tv_student_name);
@@ -99,11 +102,17 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             });
 
             if(tutorialMode){
-                mStudentAvatar.setVisibility(View.VISIBLE);
+                mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像
                 ImageUtil.fillCircleView(mStudentAvatar,taskEntity.getStuHeadPicUrl(),R.drawable.user_header_def);
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
+                layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
+                mStudentName.setLayoutParams(layoutParams);
             }else{
-                mStudentAvatar.setVisibility(View.GONE);
+                mAvatarLayout.setVisibility(View.GONE);
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
+                layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),0);
+                mStudentName.setLayoutParams(layoutParams);
             }
 
             if(tutorialMode){

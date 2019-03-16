@@ -943,6 +943,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--帮辅空间查看任务要求入口-->
+        <activity android:name=".module.tutorial.marking.require.TaskRequirementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

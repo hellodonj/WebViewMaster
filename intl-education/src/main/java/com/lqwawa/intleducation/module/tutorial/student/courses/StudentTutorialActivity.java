@@ -188,8 +188,6 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
      */
     private void requestTutorData(boolean moreData){
         mSearchKey = mSearchContent.getText().toString().trim();
-        // TODO 测试数据
-        mMemberId = "0018356f-ad4b-439f-88fa-e4cdbf4de32b";
         if(moreData){
             currentPage ++;
             mPresenter.requestStudentTutorialData(mMemberId,mSearchKey,currentPage);
