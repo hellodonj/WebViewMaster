@@ -142,6 +142,33 @@ public class CheckMarkInfo implements Serializable {
 
         private boolean showDeleted;
         private boolean IsOnlineSchool;
+        private String memberId;
+        private int SubmitRole;
+        private String SubmitTime;
+
+        public String getMemberId() {
+            return memberId;
+        }
+
+        public void setMemberId(String memberId) {
+            this.memberId = memberId;
+        }
+
+        public int getSubmitRole() {
+            return SubmitRole;
+        }
+
+        public void setSubmitRole(int submitRole) {
+            SubmitRole = submitRole;
+        }
+
+        public String getSubmitTime() {
+            return SubmitTime;
+        }
+
+        public void setSubmitTime(String submitTime) {
+            SubmitTime = submitTime;
+        }
 
         public int getReviewFlag() {
             return ReviewFlag;
@@ -440,6 +467,9 @@ public class CheckMarkInfo implements Serializable {
             dest.writeByte(this.showDeleted ? (byte) 1 : (byte) 0);
             dest.writeByte(this.IsOnlineSchool ? (byte) 1 : (byte) 0);
             dest.writeInt(this.ReviewFlag);
+            dest.writeString(this.memberId);
+            dest.writeInt(SubmitRole);
+            dest.writeString(SubmitTime);
         }
 
         protected ModelBean(Parcel in) {
@@ -474,6 +504,9 @@ public class CheckMarkInfo implements Serializable {
             this.showDeleted = in.readByte() != 0;
             this.IsOnlineSchool = in.readByte() != 0;
             this.ReviewFlag = in.readInt();
+            this.memberId = in.readString();
+            this.SubmitRole = in.readInt();
+            this.SubmitTime = in.readString();
         }
 
         public static final Creator<ModelBean> CREATOR = new Creator<ModelBean>() {

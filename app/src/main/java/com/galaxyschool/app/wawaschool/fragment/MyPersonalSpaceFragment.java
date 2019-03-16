@@ -71,6 +71,8 @@ import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.google.gson.Gson;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
@@ -349,17 +351,16 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             }
             if (check) {
                 //帮辅模式
-                if (activity != null) {
-                    activity.updateBottomViewText(2,getString(R.string.str_assistance_space));
-                }
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,true);
                 EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
             } else {
-                if (activity != null) {
-                    activity.updateBottomViewText(2,getString(R.string.my_course));
-                }
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
                 EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            }
+            if (activity != null) {
+                activity.updateBottomViewText();
             }
         });
     }
@@ -739,6 +740,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                     //刷新营养膳食信息
                     loadNutritionRecipeData();
                     loadTalentData();
+                    loadUserInfo();
 //                    if(isLogin()){
 //                        oldUserId=getUserInfo().getMemberId();
 //                        timeHistory=System.currentTimeMillis();
@@ -1188,6 +1190,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 assistanceModeLayout.setVisibility(View.GONE);
                 openAssistanceLayout.setVisibility(View.VISIBLE);
             }
+            switchButton.setChecked(SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE));
         }
     }
 
