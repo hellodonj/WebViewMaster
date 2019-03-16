@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
@@ -78,6 +79,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         mTvAccessDetail.setOnClickListener(this);
 
         mTvResName.setText(mTaskEntity.getTitle());
+        ImageUtil.fillDefaultView(mIvResIcon, mTaskEntity.getResThumbnailUrl());
 
         MissionRequireFragment instance = (MissionRequireFragment) MissionRequireFragment.getInstance(null);
         getSupportFragmentManager()
@@ -116,8 +118,23 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.tv_res_detail){
-
+        if(viewId == R.id.tv_access_details){
+            if (TaskSliderHelper.onTaskSliderListener != null) {
+                String id = mTaskEntity.getResId();
+                if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
+                    String[] strings = id.split("-");
+                    String resId = strings[0];
+                    String resType = strings[1];
+                    String title = mTaskEntity.getTitle();
+                    String resUrl = mTaskEntity.getResUrl();
+                    String resThumbnailUrl = mTaskEntity.getResThumbnailUrl();
+                    TaskSliderHelper.onTutorialMarkingListener.openCourseWareDetails(
+                            this,false,
+                            resId,Integer.parseInt(resType),
+                            title,1,
+                            resUrl,resThumbnailUrl);
+                }
+            }
         }else if(viewId == R.id.iv_res_icon){
             // 打开课件
             if (TaskSliderHelper.onTaskSliderListener != null) {

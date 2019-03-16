@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -50,6 +51,11 @@ public class TaskSliderHelper {
     public interface OnTutorialMarkingListener{
         void openAssistanceMark(@NonNull Activity activity,
                                 @NonNull TaskEntity entity);
+
+        void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
+                                          @NonNull String resId, int resType,
+                                          @NonNull String resTitle, int screenType,
+                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl);
     }
 
     public interface OnWorkCartListener{

@@ -99,7 +99,22 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
                 if(mTutorialMode) {
                     TaskRequirementActivity.show(getActivity(),entity);
                 }else{
-                    // 进入课件详情
+                    if (TaskSliderHelper.onTaskSliderListener != null) {
+                        String id = entity.getResId();
+                        if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
+                            String[] strings = id.split("-");
+                            String resId = strings[0];
+                            String resType = strings[1];
+                            String title = entity.getTitle();
+                            String resUrl = entity.getResUrl();
+                            String resThumbnailUrl = entity.getResThumbnailUrl();
+                            TaskSliderHelper.onTutorialMarkingListener.openCourseWareDetails(
+                                    getActivity(),false,
+                                    resId,Integer.parseInt(resType),
+                                    title,1,
+                                    resUrl,resThumbnailUrl);
+                        }
+                    }
                 }
             }
 
