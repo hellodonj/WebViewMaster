@@ -84,7 +84,7 @@
             android:id="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:background="@color/colorLight"
             android:gravity="center_vertical">
 
             <TextView
@@ -99,6 +99,11 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color"/>
 
         <FrameLayout
             android:id="@+id/lay_content"

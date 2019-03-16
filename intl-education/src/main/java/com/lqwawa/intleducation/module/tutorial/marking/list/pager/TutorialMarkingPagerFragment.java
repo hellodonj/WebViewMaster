@@ -114,7 +114,12 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
 
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mRecycler.setLayoutManager(mLayoutManager);
         mTutorialAdapter = new TutorialTaskAdapter(true);
         mRecycler.setAdapter(mTutorialAdapter);

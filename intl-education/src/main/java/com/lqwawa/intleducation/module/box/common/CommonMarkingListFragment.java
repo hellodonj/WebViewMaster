@@ -82,7 +82,12 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
 
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mRecycler.setLayoutManager(mLayoutManager);
         mTutorialAdapter = new TutorialTaskAdapter(mTutorialMode);
         mRecycler.setAdapter(mTutorialAdapter);
