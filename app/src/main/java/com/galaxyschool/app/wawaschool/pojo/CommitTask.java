@@ -70,6 +70,7 @@ public class CommitTask implements Serializable, Parcelable {
     private String parentResourceUrl;
     private String level;
     private int airClassId;
+    private boolean isAssistantMark;//帮辅批阅
     /**
      * @return 是否是语音评测类型
      */
@@ -121,6 +122,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public boolean isAssistantMark() {
+        return isAssistantMark;
+    }
+
+    public void setIsAssistantMark(boolean assistantMark) {
+        isAssistantMark = assistantMark;
     }
 
     public int getAirClassId() {
@@ -547,6 +556,7 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeString(this.level);
         dest.writeString(this.parentResourceUrl);
         dest.writeInt(this.airClassId);
+        dest.writeByte(this.isAssistantMark ? (byte) 1 : (byte) 0);
     }
 
     public CommitTask() {
@@ -598,6 +608,7 @@ public class CommitTask implements Serializable, Parcelable {
         this.level = in.readString();
         this.parentResourceUrl = in.readString();
         this.airClassId = in.readInt();
+        this.isAssistantMark = in.readByte() != 0;
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

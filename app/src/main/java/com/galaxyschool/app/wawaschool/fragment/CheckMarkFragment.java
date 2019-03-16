@@ -125,7 +125,6 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isOriginal = true;
     private boolean isAnswerTaskOrderQuestion;
     private QuestionResourceModel markModel;
-    private boolean assistanceModelMarkDetail;//申请批阅详情页
     private boolean isAssistanceModel;//是不是帮辅模式
 
 
@@ -180,6 +179,10 @@ public class CheckMarkFragment extends ContactsListFragment {
                     task = cardParam.getStudyTask();
                 }
             }
+            if (commitTask != null && commitTask.isAssistantMark()) {
+                //帮辅批阅
+                initAssistantMarkData();
+            }
         }
         //标题
         TextView textView = (TextView) findViewById(R.id.contacts_header_title);
@@ -205,7 +208,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         tvCourseName.setText(title);
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
-        if (commitTask != null) {
+        if (commitTask != null && !isAssistanceModel) {
             if (TextUtils.equals(getMemeberId(), commitTask.getStudentId())) {
                 markModel = new QuestionResourceModel();
                 markModel.setTitle(commitTask.getStudentResTitle());
@@ -346,7 +349,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     String createName = data.getCreateName();
                     String suffTitle = getString(R.string.str_mark_ask);
 
-                    if (data.isIsTeacher()) {
+                    if (data.isIsTeacher() || data.getSubmitRole() == 0) {
                         createName = createName + getString(R.string.teacher);
                         suffTitle = getString(R.string.str_mark_teacher);
                         imgLeft.setVisibility(View.INVISIBLE);
@@ -434,7 +437,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (isAnswerTaskOrderQuestion) {
+                            if (isAssistanceModel) {
+                                return true;
+                            } else if (isAnswerTaskOrderQuestion) {
                                 if (cardParam.isHeadMaster()
                                         || cardParam.isOnlineReporter()
                                         || cardParam.isOnlineHost()) {
@@ -476,6 +481,13 @@ public class CheckMarkFragment extends ContactsListFragment {
 
             setCurrAdapterViewHelper(listView, listViewHelper);
         }
+    }
+
+    private void initAssistantMarkData(){
+        isAssistanceModel = true;
+        resId = commitTask.getStudentResId();
+        thumbPic = commitTask.getStudentResThumbnailUrl();
+        title = commitTask.getStudentResTitle();
     }
 
     private void initExerciseData() {
@@ -647,17 +659,48 @@ public class CheckMarkFragment extends ContactsListFragment {
      * 模拟数据
      */
     private void loadCommonData() {
-        if (isAnswerTaskOrderQuestion) {
+        if (isAssistanceModel) {
+            loadAssistantMarkData();
+        } if (isAnswerTaskOrderQuestion) {
             loadAnswerCardData();
-            return;
+        } else {
+            loadMarkData();
         }
+    }
+
+    private void loadAssistantMarkData(){
+        Map<String, Object> params = new ArrayMap<>();
+        params.put("AssistTask_Id", commitTask.getId());
+        RequestHelper.sendPostRequest(getActivity(),
+                ServerUrl.GET_ASSIST_REVIEW_LIST_BASE_URL, params,
+                new DefaultPullToRefreshDataListener<CheckMarkResult>(
+                        CheckMarkResult.class) {
+
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        if (getActivity() == null) {
+                            return;
+                        }
+                        CheckMarkInfo result = JSONObject.parseObject(jsonString,
+                                CheckMarkInfo.class);
+                        if (result.getErrorCode() != 0 || result.getModel() == null) {
+                            return;
+                        }
+                        List<CheckMarkInfo.ModelBean> list = result.getModel();
+                        Collections.reverse(list);
+                        getCurrAdapterViewHelper().setData(list);
+
+                    }
+                });
+    }
+
+    private void loadMarkData(){
         Map<String, Object> params = new ArrayMap<>();
         if (isFromMOOC) {
             params.put("CommitTaskOnlineId", CommitTaskId);
         } else {
             params.put("CommitTaskId", CommitTaskId);
         }
-
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_LOADCOMMITTASKREVIEWLIST, params,
                 new DefaultPullToRefreshDataListener<CheckMarkResult>(

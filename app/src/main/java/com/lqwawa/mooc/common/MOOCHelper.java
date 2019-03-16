@@ -12,6 +12,7 @@ import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
+import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -387,8 +388,8 @@ public class MOOCHelper {
             }
             markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
             markModel.setT_CommitTaskOnlineId(commitTaskId);
-            markModel.setT_ClassId(classId);
-            markModel.setT_ClassName(className);
+//            markModel.setT_ClassId(classId);
+//            markModel.setT_ClassName(className);
             markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
             markModel.setT_CourseName(courseName);
             markModel.setT_CourseId(courseId);
@@ -444,8 +445,8 @@ public class MOOCHelper {
             }
             markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
             markModel.setT_CommitTaskOnlineId(commitTaskId);
-            markModel.setT_ClassId(classId);
-            markModel.setT_ClassName(className);
+//            markModel.setT_ClassId(classId);
+//            markModel.setT_ClassName(className);
             markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
             markModel.setT_CourseName(courseName);
             markModel.setT_CourseId(CourseId);
@@ -468,6 +469,28 @@ public class MOOCHelper {
         }
 
         /**
+<<<<<<< HEAD
+         * 进入申请批阅详情
+         * @param activity 上下文
+         * @param taskEntity 列表的对象
+         */
+        public void enterAssistanceMarkActivity(Activity activity,
+                                                TaskEntity taskEntity){
+            if (activity == null || taskEntity == null) {
+                return;
+            }
+            CommitTask commitTask = new CommitTask();
+            commitTask.setIsAssistantMark(true);
+            commitTask.setStudentResId(taskEntity.getResId());
+            commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
+            commitTask.setStudentResTitle(taskEntity.getTitle());
+            commitTask.setId(taskEntity.getId());
+            CheckMarkActivity.start(activity,commitTask);
+        }
+
+        /**
+=======
+>>>>>>> 235e8341211438492dacbf10c5291dd9a9960b7e
          * @param sourceCourseResId
          * @param taskUploadBackVo
          * @param resType           作业类型 -复述课件/做任务单

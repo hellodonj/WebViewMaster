@@ -289,6 +289,9 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             }
             setNewPageAsSubpage(collectParams.resourceType != ResType.RES_TYPE_ONEPAGE);
         }
+        if (isAnswerCardQuestion) {
+            setNewPageAsSubpage(false);
+        }
         userInfo = ((MyApplication) getApplication()).getUserInfo();
         boolean isMySelf = isMySelf();
         if (mParam == null) {

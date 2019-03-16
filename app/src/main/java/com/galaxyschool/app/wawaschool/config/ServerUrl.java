@@ -1106,4 +1106,14 @@ public class ServerUrl {
      * 一键解除当前UnionId绑定的账号并绑定新的账号
      */
     public static final String GET_BIND_NEWACCOUNT_FOR_UNIONID_BASE_URL = BASE_SERVER + "Api/Mobile/Setting/Login/Login/BindNewAccountForUnionId";
+
+    /**
+     * 拉取助教的批阅列表
+     */
+    public static final String GET_ASSIST_REVIEW_LIST_BASE_URL = BASE_SERVER + "Api/Mobile/ST/Assist/GetAssistReviewList";
+
+    /**
+     * 助教批阅或学生提问
+     */
+    public static final String GET_ADD_ASSIST_REVIEW_BASE_URL = BASE_SERVER + "Api/Mobile/ST/Assist/AddAssistReview";
 }

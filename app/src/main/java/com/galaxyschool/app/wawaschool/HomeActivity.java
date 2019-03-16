@@ -44,6 +44,8 @@ import com.lecloud.skin.init.InitResultListener;
 import com.lecloud.skin.init.LqInit;
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicFragment;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.TabCourseFragment;
@@ -279,6 +281,7 @@ public class HomeActivity extends BaseCompatActivity
             mShareManager
                     .setOpenPackage("com.oosic.apps.kuke_receiver/com.oosic.apps.iemaker_receiver.ShareBox");
         }
+        updateBottomViewText();
     }
 
     /**
@@ -603,6 +606,7 @@ public class HomeActivity extends BaseCompatActivity
 //					conversationHelper.clear();
 //				}
                 setCurrPage();
+                updateBottomViewText();
             } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 //接收系统网络切换的广播
 //                Log.d("TTT","打印是否走了当前的广播通道");
@@ -691,9 +695,13 @@ public class HomeActivity extends BaseCompatActivity
         }
     }
 
-    public void updateBottomViewText(int position,String text){
+    public void updateBottomViewText(){
         if (bottomBar != null){
-            bottomBar.updateBottomViewText(position,text);
+            if (SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE)) {
+                bottomBar.updateBottomViewText(2,getString(R.string.str_assistance_space));
+            } else {
+                bottomBar.updateBottomViewText(2,getString(R.string.my_course));
+            }
         }
     }
 }
