@@ -2,10 +2,12 @@ package com.lqwawa.intleducation.module.tutorial.course;
 
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
@@ -16,6 +18,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
@@ -61,7 +64,6 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvTaskCount = (TextView) itemView.findViewById(R.id.tv_task_count);
             mTvTutorialFree = (TextView) itemView.findViewById(R.id.tv_free);
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
-
         }
 
         @Override
@@ -79,7 +81,9 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
                 }
             });
 
-            if(entity.isAddedTutor()){
+            boolean tutorialMode = MainApplication.isTutorialMode();
+            if(entity.isAddedTutor() ||
+                    (tutorialMode && TextUtils.equals(entity.getCreateId(),UserHelper.getUserId()))){
                 mTvAddTutorial.setVisibility(View.GONE);
             }else{
                 mTvAddTutorial.setVisibility(View.VISIBLE);
