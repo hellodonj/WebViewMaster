@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.lqwawa.intleducation.AppConfig;
@@ -18,11 +19,17 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialTaskAdapter;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -159,6 +166,10 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
     @Override
     protected void initData() {
         super.initData();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         loadStudyTask();
     }
 
@@ -206,9 +217,25 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        String action = event.getUpdateAction();
+        if(TextUtils.equals(action,EventConstant.TRIGGER_UPDATE_LIST_DATA)){
+            loadStudyTask();
+        }
+    }
+
     @Override
     public void showError(int str) {
         super.showError(str);
         mRefreshLayout.onHeaderRefreshComplete();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

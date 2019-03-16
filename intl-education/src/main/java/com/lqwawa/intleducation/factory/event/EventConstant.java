@@ -6,6 +6,10 @@ package com.lqwawa.intleducation.factory.event;
  */
 public abstract class EventConstant {
 	/**
+	 * 刷新列表的EVENT
+	 */
+	public static final String TRIGGER_UPDATE_LIST_DATA = "TRIGGER_UPDATE_LIST_DATA";
+	/**
 	 * 学习任务选择学程馆,班级学程资源的Event
 	 */
 	public static final String COURSE_SELECT_RESOURCE_EVENT = "COURSE_SELECT_RESOURCE_EVENT";

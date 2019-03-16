@@ -714,12 +714,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         if(tutorialMode){
             // 如果是帮辅模式
             // 不显示章状态
+            if(EmptyUtil.isNotEmpty(holder.mTvChapterState))
             holder.mTvChapterState.setVisibility(View.GONE);
             // 不显示节状态
+            if(EmptyUtil.isNotEmpty(holder.mTvLessonState))
             holder.mTvLessonState.setVisibility(View.GONE);
             // 不显示价格
+            if(EmptyUtil.isNotEmpty(holder.tvPrice))
             holder.tvPrice.setVisibility(View.GONE);
             // 不显示试听
+            if(EmptyUtil.isNotEmpty(holder.auditionTv))
             holder.auditionTv.setVisibility(View.GONE);
         }
 
