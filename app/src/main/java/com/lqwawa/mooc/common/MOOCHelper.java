@@ -53,6 +53,7 @@ import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.utils.StringUtils;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -381,6 +382,15 @@ public class MOOCHelper {
                     markModel);
         }
 
+        /**
+         * 进入申请批阅详情
+         * @param activity 上下文
+         * @param taskEntity 列表的对象
+         */
+        public void enterAssistanceMarkActivity(Activity activity,
+                                                TaskEntity taskEntity){
+            CommitTask commitTask = new CommitTask();
+        }
 
         /**
          * @param sourceCourseResId

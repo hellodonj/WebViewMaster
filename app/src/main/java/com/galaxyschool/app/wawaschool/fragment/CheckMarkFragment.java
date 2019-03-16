@@ -125,6 +125,9 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isOriginal = true;
     private boolean isAnswerTaskOrderQuestion;
     private QuestionResourceModel markModel;
+    private boolean assistanceModelMarkDetail;//申请批阅详情页
+    private boolean isAssistanceModel;//是不是帮辅模式
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
