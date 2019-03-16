@@ -15,6 +15,7 @@ public class CourseDetailParams extends BaseVo{
     private int  courseEnterType;
     // 班级学程进入
     private String classId;
+    private String className;
     // 大厅有绑定班级
     private String bindClassId;
     // 学程馆进入
@@ -41,12 +42,13 @@ public class CourseDetailParams extends BaseVo{
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
     }
 
-    public CourseDetailParams(@NonNull String schoolId, String classId,boolean isAuthorized) {
+    public CourseDetailParams(@NonNull String schoolId, @NonNull String classId,@NonNull String className, boolean isAuthorized) {
         // 班级进入，设置大小写
         schoolId = schoolId.toLowerCase();
         classId = classId.toLowerCase();
         this.schoolId = schoolId;
         this.classId = classId;
+        this.className = className;
         this.isAuthorized = isAuthorized;
         courseEnterType = CourseDetailType.COURSE_DETAIL_CLASS_ENTER;
     }
@@ -69,6 +71,14 @@ public class CourseDetailParams extends BaseVo{
 
     public void setClassId(String classId) {
         this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getBindClassId() {

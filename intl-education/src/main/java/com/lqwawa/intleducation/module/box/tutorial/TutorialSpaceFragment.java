@@ -98,7 +98,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
         mAdapter.replace(entities);
 
         String memberId = UserHelper.getUserId();
-        CommonMarkingParams params = new CommonMarkingParams(false,memberId);
+        CommonMarkingParams params = new CommonMarkingParams(true,memberId);
         Fragment fragment = CommonMarkingListFragment.newInstance(params);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()

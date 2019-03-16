@@ -30,15 +30,6 @@ public class CommonMarkingListPresenter extends BasePresenter<CommonMarkingListC
                                               @Nullable String createTimeBegin, @Nullable String createTimeEnd,
                                               @Nullable String startTimeBegin, @Nullable String startTimeEnd,
                                               int state, @OrderByType.OrderByTypeRes int orderByType, int pageIndex, int pageSize) {
-        // TODO 测试数据
-        assistStudent_Id = "1";
-        memberId = "";
-        tutorMemberId = "";
-        createTimeBegin = "";
-        createTimeEnd = "";
-        startTimeBegin = "";
-        startTimeEnd = "";
-
         TutorialHelper.requestWorkDataWithIdentityId(memberId, tutorMemberId,
                 assistStudent_Id, title,
                 createTimeBegin,createTimeEnd,

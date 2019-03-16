@@ -141,9 +141,6 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
      * @param moreData 是否加载更多
      */
     private void requestCourseData(boolean moreData){
-        // TODO 测试数据
-        mTutorMemberId = "0018356f-ad4b-439f-88fa-e4cdbf4de32b";
-
         if(moreData){
             pageIndex ++;
             mPresenter.requestTutorialCourseData(mTutorMemberId,"",1,pageIndex);

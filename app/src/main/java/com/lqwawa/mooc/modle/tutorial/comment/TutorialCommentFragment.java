@@ -170,9 +170,6 @@ public class TutorialCommentFragment extends PresenterFragment<TutorialCommentCo
         }
 
         String memberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
-        // TODO 测试数据
-        memberId = "95eab099-0cf8-4b69-866b-83c85dfad8a0";
-        mTutorMemberId = "95eab099-0cf8-4b69-866b-83c85dfad8a0";
         mPresenter.requestTutorialCommentData(memberId,mTutorMemberId,pageIndex);
     }
 
@@ -215,9 +212,6 @@ public class TutorialCommentFragment extends PresenterFragment<TutorialCommentCo
 
     private void commitComment(@NonNull CommentDialog.CommentData data){
         String memberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
-        // TODO 测试数据
-        memberId = "95eab099-0cf8-4b69-866b-83c85dfad8a0";
-        mTutorMemberId = "95eab099-0cf8-4b69-866b-83c85dfad8a0";
         mPresenter.requestSendTutorialComment(memberId,mTutorMemberId,data.getContent());
     }
 

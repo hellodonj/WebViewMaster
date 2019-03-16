@@ -87,6 +87,7 @@ public class MOOCHelper {
     public static void init(UserInfo userInfo) {
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
         TaskSliderHelper.onWorkCartListener = onWorkCartListener;
+        TaskSliderHelper.onTutorialMarkingListener = onTutorialMarkingListener;
         UserInfoVo userInfoVo = new UserInfoVo();
         userInfoVo.setUserId(userInfo.getMemberId());
         userInfoVo.setAccount(userInfo.getNickName());
@@ -117,6 +118,24 @@ public class MOOCHelper {
         }
         return schoolIds;
     }
+
+    private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener
+            = new TaskSliderHelper.OnTutorialMarkingListener(){
+        @Override
+        public void openAssistanceMark(@NonNull Activity activity, @NonNull TaskEntity entity) {
+            enterAssistanceMarkActivity(activity,entity);
+        }
+
+        /**
+         * 进入申请批阅详情
+         * @param activity 上下文
+         * @param taskEntity 列表的对象
+         */
+        public void enterAssistanceMarkActivity(Activity activity,
+                                                TaskEntity taskEntity){
+            CommitTask commitTask = new CommitTask();
+        }
+    };
 
     private static TaskSliderHelper.OnWorkCartListener onWorkCartListener
             = new TaskSliderHelper.OnWorkCartListener() {
@@ -384,6 +403,7 @@ public class MOOCHelper {
         }
 
         /**
+<<<<<<< HEAD
          * 进入申请批阅详情
          * @param activity 上下文
          * @param taskEntity 列表的对象
@@ -403,6 +423,8 @@ public class MOOCHelper {
         }
 
         /**
+=======
+>>>>>>> 235e8341211438492dacbf10c5291dd9a9960b7e
          * @param sourceCourseResId
          * @param taskUploadBackVo
          * @param resType           作业类型 -复述课件/做任务单

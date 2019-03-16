@@ -198,8 +198,6 @@ public class TutorialSchoolsActivity extends PresenterActivity<TutorialSchoolsCo
      */
     private void requestSchoolData(boolean moreData){
         mSearchKey = mSearchContent.getText().toString().trim();
-        // TODO 测试数据
-        mMemberId = "bc4d2af9-33a9-4d75-a0c1-41499e69b7be";
         if(moreData){
             currentPage ++;
             mPresenter.requestTutorialSchoolsData(mMemberId,mSearchKey,currentPage);

@@ -138,6 +138,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private ClassResourceData mResourceData;
     private String mSchoolId;
     private String mClassId;
+    private String mClassName;
     private String mRoles;
     private boolean isTeacher;
 
@@ -201,9 +202,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         if(mResourceFlag && EmptyUtil.isEmpty(mResourceData)) return false;
         mSchoolId = mClassCourseParams.getSchoolId();
         mClassId = mClassCourseParams.getClassId();
+        mClassName = mClassCourseParams.getClassName();
         mRoles = mClassCourseParams.getRoles();
         if(EmptyUtil.isEmpty(mSchoolId) ||
                 EmptyUtil.isEmpty(mClassId) ||
+                EmptyUtil.isEmpty(mClassName) ||
                 EmptyUtil.isEmpty(mRoles)){
             return false;
         }
@@ -430,7 +433,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
 
-                    CourseDetailParams params = new CourseDetailParams(mSchoolId,mClassId,isAuthorized);
+                    CourseDetailParams params = new CourseDetailParams(mSchoolId,mClassId,mClassName,isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
                     params.setClassParent(!isResult && isParent);

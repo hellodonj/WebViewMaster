@@ -1233,7 +1233,8 @@ public class ActivityUtils {
         ClassCourseParams params = new ClassCourseParams(
                 classInfo.isHeadMaster(),
                 schoolInfo.getSchoolId(),
-                classInfo.getClassId());
+                classInfo.getClassId(),
+                classInfo.getClassName());
         params.setRoles(roles);
 
         /*ClassCourseParams params = new ClassCourseParams(schoolInfo.getSchoolId(),classInfo.getClassId());

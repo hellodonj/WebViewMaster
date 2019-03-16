@@ -478,6 +478,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         String taskScoreReMark = studentCommit.getTaskScoreRemark();
                         String courseId = mCourseParams.getCourseId();
                         String courseName = mCourseParams.getCourseName();
+
+                        String classId = mCourseParams.getClassId();
+                        String className = mCourseParams.getClassName();
                         TaskSliderHelper.enterExerciseDetailActivity(activity,
                                 sectionResListVo.getPoint(),
                                 resourceId,
@@ -495,8 +498,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 taskScoreReMark,
                                 courseId,
                                 courseName,
-                                null,
-                                null);
+                                classId,
+                                className);
 
                     } else {
 
@@ -565,6 +568,34 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             // 设置CourseId 和 CourseName信息
             task.setCourseId(mCourseParams.getCourseId());
             task.setCourseName(mCourseParams.getCourseName());
+
+            // 班级学程中必传
+            String schoolId = mCourseParams.getSchoolId();
+            String classId = mCourseParams.getClassId();
+
+            // 如果从大厅进来，提交的时候需要传绑定的机构班级
+            /*if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER) {
+                schoolId = mCourseParams.getBindSchoolId();
+                classId = mCourseParams.getBindClassId();
+            } else if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER) {
+                // 学程馆学习任务入口
+                // 课程发生了绑定
+                // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
+                // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
+                if (mCourseParams.isBindClass()) {
+                    if (TextUtils.equals(mCourseParams.getSchoolId(), mCourseParams.getBindSchoolId())) {
+                        // 学程馆Id和绑定的Id,相等
+                        schoolId = mCourseParams.getBindSchoolId();
+                        classId = mCourseParams.getBindClassId();
+                    }
+                } else {
+                    schoolId = mCourseParams.getSchoolId();
+                    classId = null;
+                }
+            }*/
+
+            task.setClassId(classId);
+            task.setClassName(mCourseParams.getClassName());
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }

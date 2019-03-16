@@ -16,6 +16,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
@@ -44,6 +45,12 @@ public class TaskSliderHelper {
     public static OnTaskSliderListener onTaskSliderListener = null;
     private static OnCommitTaskListener onCommitTaskListener = null;
     public static OnWorkCartListener onWorkCartListener = null;
+    public static OnTutorialMarkingListener onTutorialMarkingListener = null;
+
+    public interface OnTutorialMarkingListener{
+        void openAssistanceMark(@NonNull Activity activity,
+                                @NonNull TaskEntity entity);
+    }
 
     public interface OnWorkCartListener{
         // 添加到任务库
