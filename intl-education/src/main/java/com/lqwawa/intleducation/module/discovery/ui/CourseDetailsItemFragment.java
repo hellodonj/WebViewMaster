@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -414,9 +415,11 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         }
 
         CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
+        boolean tutorialMode = MainApplication.isTutorialMode();
         if(courseParams.isClassCourseEnter() &&
                 courseParams.isClassTeacher()
-                && !mTeacherVisitor){
+                && !mTeacherVisitor &&
+                !tutorialMode){
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
         }else{

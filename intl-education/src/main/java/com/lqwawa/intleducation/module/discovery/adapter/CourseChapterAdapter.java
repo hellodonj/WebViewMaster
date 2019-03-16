@@ -340,6 +340,17 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 return;
                             }
 
+                            if(tutorialMode && !isJoinCourse){
+                                if(!vo.getParentId().equals(list.get(0).getId())) {
+                                    UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
+
+                                }else{
+                                    // 直接拦截
+                                    toLessonDetailsActivity(vo,true);
+                                }
+                                return;
+                            }
+
 
                             if (!isTeacher && !vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
@@ -696,6 +707,20 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     notifyDataSetChanged();
                 }
             });
+        }
+
+
+
+        if(tutorialMode){
+            // 如果是帮辅模式
+            // 不显示章状态
+            holder.mTvChapterState.setVisibility(View.GONE);
+            // 不显示节状态
+            holder.mTvLessonState.setVisibility(View.GONE);
+            // 不显示价格
+            holder.tvPrice.setVisibility(View.GONE);
+            // 不显示试听
+            holder.auditionTv.setVisibility(View.GONE);
         }
 
         return convertView;
