@@ -20,12 +20,20 @@ import com.osastudio.apps.BaseActivity;
 public class WebActivity extends BaseActivity{
     private WebView webView;
     private String url;
+    private String bodyHtml;
     private ImageView lr_back_iv;
     private TextView title_tv;
 
     public static void start(Activity activity, String url, String title){
         activity.startActivity(new Intent(activity, WebActivity.class)
         .putExtra("url", url).putExtra("title", title));
+    }
+
+    public static void start(Activity activity, String bodyHtml, String title,boolean isBodyHtml){
+        activity.startActivity(new Intent(activity, WebActivity.class)
+                .putExtra("bodyHtml", bodyHtml)
+                .putExtra("title", title)
+                .putExtra("isBodyHtml",isBodyHtml));
     }
 
     @Override
@@ -43,8 +51,14 @@ public class WebActivity extends BaseActivity{
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
         url = getIntent().getStringExtra("url");
+        bodyHtml = getIntent().getStringExtra("bodyHtml");
         if(url != null && webView != null) {
             webView.loadUrl(url.trim());
+            webView.setWebViewClient(new NoAdWebViewClient(this, webView));
+        }
+
+        if(bodyHtml != null && webView != null) {
+            webView.loadData(bodyHtml,"text/html",null);
             webView.setWebViewClient(new NoAdWebViewClient(this, webView));
         }
         lr_back_iv = (ImageView)findViewById(R.id.lr_back_iv);

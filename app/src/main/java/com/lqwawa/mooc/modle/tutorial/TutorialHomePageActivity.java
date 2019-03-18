@@ -250,7 +250,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }else if(viewId == R.id.introduce_layout){
             // 个人介绍
             // UIUtil.showToastSafe("个人介绍");
-            WebActivity.start(this,mUserEntity.getPIntroduces(),getString(R.string.label_personal_introduce));
+            WebActivity.start(this,mUserEntity.getPIntroduces(),getString(R.string.label_personal_introduce),true);
         }
     }
 
