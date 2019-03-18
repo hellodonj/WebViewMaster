@@ -1,31 +1,55 @@
 package com.galaxyschool.app.wawaschool.helper;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
+import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.chat.DemoApplication;
+import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CheckReplaceIPAddressHelper;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.DialogHelper;
 import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
+import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
+import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
+import com.galaxyschool.app.wawaschool.fragment.SelectedReadingDetailFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.pojo.CourseImageListResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
-import com.galaxyschool.app.wawaschool.pojo.StudyTask;
+import com.galaxyschool.app.wawaschool.pojo.RoleType;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
+import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
+import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
+import com.galaxyschool.app.wawaschool.pojo.weike.LocalCourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
+import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.tools.FileZipHelper;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +107,7 @@ public class ApplyMarkHelper {
                                            ExerciseAnswerCardParam cardParam,
                                            List<Integer> pageIndex) {
         final HashMap<String, Object> params = new HashMap<>();
-        if (TextUtils.isEmpty(cardParam.getResId())){
+        if (TextUtils.isEmpty(cardParam.getResId())) {
             return;
         }
         String resId = cardParam.getResId();
@@ -109,9 +133,9 @@ public class ApplyMarkHelper {
 
                         } else {
                             List<String> pageList = new ArrayList<>();
-                            if (pageIndex != null && pageIndex.size() > 0){
-                                for (int i = 0; i < pageIndex.size(); i++){
-                                    if (pageIndex.get(i) < paths.size()){
+                            if (pageIndex != null && pageIndex.size() > 0) {
+                                for (int i = 0; i < pageIndex.size(); i++) {
+                                    if (pageIndex.get(i) < paths.size()) {
                                         pageList.add(paths.get(pageIndex.get(i)));
                                     }
                                 }
@@ -166,8 +190,162 @@ public class ApplyMarkHelper {
         choiceParams.setCourseId(markModel.getT_CourseId());
         choiceParams.setModel(markModel);
         TutorChoiceActivity.show(mContext, choiceParams);
-        ((Activity)mContext).finish();
+        ((Activity) mContext).finish();
     }
 
+    public static void commitAssistantMarkData(Activity activity,
+                                               CourseData courseData,
+                                               int assistTaskId,
+                                               boolean needFinish) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("MemberId", DemoApplication.getInstance().getMemberId());
+        params.put("SubmitRole", MainApplication.isTutorialMode() ? 0 : 1);
+        params.put("ResId", courseData.getIdType());
+        params.put("ResUrl", courseData.resourceurl);
+        params.put("AssistTask_Id", assistTaskId);
+        RequestHelper.RequestResourceResultListener listener = new RequestHelper
+                .RequestResourceResultListener(activity, ModelResult.class) {
+            @Override
+            public void onSuccess(String jsonString) {
+                if (TextUtils.isEmpty(jsonString)) {
+                    return;
+                }
+                JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                if (jsonObject != null) {
+                    int errorCode = jsonObject.getInteger("ErrorCode");
+                    if (errorCode == 0) {
+                        TipMsgHelper.ShowMsg(activity,R.string.upload_comment_success);
+                        //发送成功
+                        if (MainApplication.isTutorialMode()) {
+                            EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.UPDATE_LIST_DATA));
+                        }
+                        if (needFinish) {
+                            activity.finish();
+                        }
+                    }
+                }
+            }
+        };
+        listener.setShowLoading(true);
+        RequestHelper.sendPostRequest(activity, ServerUrl.GET_ADD_ASSIST_REVIEW_BASE_URL, params, listener);
+    }
+
+    public  void uploadCourse(Activity activity,
+                              String slidePath,
+                              String coursePath,
+                              int assistantTaskId,
+                              boolean needFinish){
+        if (!TextUtils.isEmpty(slidePath) && !TextUtils.isEmpty(coursePath)) {
+            LocalCourseInfo info = getLocalCourseInfo(activity,coursePath);
+            if (info != null) {
+                uploadCourse(activity,info,assistantTaskId,needFinish);
+            }
+        } else if (!TextUtils.isEmpty(slidePath)) {
+            //只打开素材没有录制微课，此时slidePath不空，coursePath空值，此时删除素材
+            LocalCourseInfo info = getLocalCourseInfo(activity,slidePath);
+            if (info != null) {
+                uploadCourse(activity,info,assistantTaskId,needFinish);
+            }
+        }
+    }
+
+    private void uploadCourse(Activity activity,
+                              final LocalCourseInfo localCourseInfo,
+                              int assistantTaskId,
+                              boolean needFinish) {
+        UserInfo userInfo = DemoApplication.getInstance().getUserInfo();
+        if (userInfo == null || TextUtils.isEmpty(userInfo.getMemberId())) {
+            ActivityUtils.enterLogin(activity);
+            return;
+        }
+        final UploadParameter uploadParameter = UploadUtils.getUploadParameter(userInfo,
+                localCourseInfo, null, 1);
+        if (uploadParameter != null) {
+            //增加参数控制上传的资源是否需要拆分
+            uploadParameter.setIsNeedSplit(false);
+            showLoadingDialog(activity);
+            FileZipHelper.ZipUnzipParam param = new FileZipHelper.ZipUnzipParam(
+                    localCourseInfo.mPath, Utils.TEMP_FOLDER + Utils.getFileNameFromPath
+                    (localCourseInfo.mPath) + Utils.COURSE_SUFFIX);
+            FileZipHelper.zip(param, new FileZipHelper.ZipUnzipFileListener() {
+                @Override
+                public void onFinish(FileZipHelper.ZipUnzipResult result) {
+                    // TODO Auto-generated method stub
+                    if (result != null && result.mIsOk) {
+                        uploadParameter.setZipFilePath(result.mParam.mOutputPath);
+                        UploadUtils.uploadResource(activity, uploadParameter, new CallbackListener() {
+                            @Override
+                            public void onBack(final Object result) {
+                                if (activity != null) {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dismissLoadingDialog();
+                                            if (result != null) {
+                                                CourseUploadResult uploadResult = (CourseUploadResult) result;
+                                                if (uploadResult.code != 0) {
+                                                    TipMsgHelper.ShowLMsg(activity,
+                                                            R.string.upload_file_failed);
+                                                    return;
+                                                }
+                                                if (uploadResult.data != null && uploadResult.data.size() > 0) {
+                                                    final CourseData courseData = uploadResult.data.get(0);
+                                                    if (courseData != null) {
+                                                        commitAssistantMarkData(activity,
+                                                                courseData,assistantTaskId,needFinish);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    private  LocalCourseInfo getLocalCourseInfo(Activity activity,String coursePath) {
+        LocalCourseInfo result = null;
+        LocalCourseDao localCourseDao = new LocalCourseDao(activity);
+        try {
+            LocalCourseDTO localCourseDTO = localCourseDao.getLocalCourseDTOByPath
+                    (DemoApplication.getInstance().getMemberId(), coursePath);
+            if (localCourseDTO != null) {
+                return localCourseDTO.toLocalCourseInfo();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private DialogHelper.LoadingDialog loadingDialog;
+    public Dialog showLoadingDialog(Activity activity) {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            return loadingDialog;
+        }
+        loadingDialog = DialogHelper.getIt(activity).GetLoadingDialog(0);
+        return loadingDialog;
+    }
+
+    public void dismissLoadingDialog() {
+        try {
+            if (this.loadingDialog != null && this.loadingDialog.isShowing()) {
+                this.loadingDialog.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (this.loadingDialog != null) {
+                this.loadingDialog = null;
+            }
+        }
+    }
 }
 

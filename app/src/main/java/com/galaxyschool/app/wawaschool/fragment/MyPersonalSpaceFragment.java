@@ -71,6 +71,7 @@ import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.google.gson.Gson;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -1190,7 +1191,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 assistanceModeLayout.setVisibility(View.GONE);
                 openAssistanceLayout.setVisibility(View.VISIBLE);
             }
-            switchButton.setChecked(SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE));
+            switchButton.setChecked(MainApplication.isTutorialMode());
         }
     }
 
