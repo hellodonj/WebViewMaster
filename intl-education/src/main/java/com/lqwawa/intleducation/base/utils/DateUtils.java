@@ -30,6 +30,11 @@ public class DateUtils {
         return simple.format(old);
     }
 
+    public static String getStringToString(String dateString, String patter) {
+        Date date = stringToDate(dateString, patter);
+        return dateToString(date, patter);
+    }
+
     public static String getFullTime() {
         return new SimpleDateFormat(YYYYMMDDHHMMSS, Locale.CHINA).format(new Date());
     }

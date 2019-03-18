@@ -251,7 +251,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
     private static Date getStartTime(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
         calendar.set(Calendar.MILLISECOND,0);
@@ -262,7 +262,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
     private  static Date getEndTime(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.set(Calendar.HOUR,23);
+        calendar.set(Calendar.HOUR_OF_DAY,23);
         calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND,59);
         calendar.set(Calendar.MILLISECOND,999);
@@ -457,7 +457,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
         if (signTimeData != null && signTimeData.size() > 0) {
             for (int i = 0, len = signTimeData.size(); i < len; i++) {
                 String signTime = signTimeData.get(i);
-                signTime = DateUtils.getFormatByStringDate(signTime, DateUtils.YYYYMMDD);
+                signTime = DateUtils.getStringToString(signTime, DateUtils.YYYYMMDD);
                 integerList.add(getDayOfString(signTime));
             }
         }
