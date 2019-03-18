@@ -113,7 +113,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             return;
         }
 
-        if(EmptyUtil.isEmpty(phoneNumber)){
+        /*if(EmptyUtil.isEmpty(phoneNumber)){
             view.showError(com.lqwawa.intleducation.R.string.label_phone_number_hint);
             return;
         }
@@ -121,7 +121,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
         if(EmptyUtil.isEmpty(verificationCode)){
             view.showError(com.lqwawa.intleducation.R.string.label_verification_code_hint);
             return;
-        }
+        }*/
 
         if(IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_IDENTITY_CARD ||
                 IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_PASSPORT){
@@ -142,39 +142,39 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
 
         if(EmptyUtil.isEmpty(provinceId) ||
                 EmptyUtil.isEmpty(provinceName)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_input_province_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(cityId) ||
                 EmptyUtil.isEmpty(cityName)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_input_city_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(countyId) ||
                 EmptyUtil.isEmpty(countyName)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_input_district_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(markingPrice)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_mark_price_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(workingLife)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_work_period_hint);
             return;
         }
 
         if(EmptyUtil.isEmpty(educationUrl)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_upload_academic_certificate_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(seniorityUrl)){
-            view.showError(com.lqwawa.intleducation.R.string.label_submit_apply);
+            view.showError(com.lqwawa.intleducation.R.string.label_upload_business_certificate_tip);
             return;
         }
 

@@ -363,6 +363,7 @@
     <string name="label_city">市</string>
     <string name="label_district">区</string>
     <string name="label_mark_price">批阅价格：</string>
+    <string name="label_mark_price_tip">请输入批阅价格</string>
     <string name="label_RMB">元</string>
     <string name="label_mark_price_hint">*建议价格，可修改</string>
     <string name="label_work_period">工作年限：</string>
@@ -371,6 +372,7 @@
     <string name="label_business_certificate">行业资历认证证书：</string>
     <string name="label_upload">上传</string>
     <string name="label_submit_apply">提交申请</string>
+    <string name="label_upload_completed">上传成功</string>
     <string name="label_telephone_hot_line">垂询热线：%s</string>
     <string name="label_apply_for_have_commit">申请已提交</string>
     <string name="label_applying_for">机构管理员正在审核，请耐心等待</string>
@@ -407,6 +409,11 @@
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
     <string name="label_please_apply_to_be_tutorial">请申请成为帮辅</string>
     <string name="label_course_tutor_apply_for">正在审核，请耐心等待</string>
+    <string name="label_input_province_tip">请选择省份</string>
+    <string name="label_input_city_tip">请选择城市</string>
+    <string name="label_input_district_tip">请选择区域</string>
+    <string name="label_upload_academic_certificate_tip">请上传个人学历证书</string>
+    <string name="label_upload_business_certificate_tip">请上传行业资历认证证书</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
