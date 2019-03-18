@@ -146,13 +146,18 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     @Override
     public void updateTutorialOrganView(@NonNull List<SchoolInfoEntity> entities) {
         mOrganSpinner.attachDataSource(entities);
-        fillSpinnerBottom(mOrganSpinner);
         mOrganSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCurrentOrganEntity = entities.get(position);
             }
         });
+        fillSpinnerBottom(mOrganSpinner);
+        if(EmptyUtil.isNotEmpty(entities)) {
+            mOrganSpinner.setSelectedIndex(0);
+            int position = mOrganSpinner.getSelectedIndex();
+            mCurrentOrganEntity = entities.get(position);
+        }
     }
 
     @Override
@@ -179,7 +184,16 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
             }
         });
+
         fillSpinnerBottom(mProvinceSpinner);
+        if(EmptyUtil.isNotEmpty(provinces)) {
+            mProvinceSpinner.setSelectedIndex(0);
+
+            int position = mProvinceSpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = provinces.get(position);
+            mCurrentProviceBean = bean;
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
+        }
     }
 
     @Override
@@ -194,6 +208,14 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             }
         });
         fillSpinnerBottom(mCitySpinner);
+        if(EmptyUtil.isNotEmpty(cities)) {
+            mCitySpinner.setSelectedIndex(0);
+
+            int position = mCitySpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = cities.get(position);
+            mCurrentCityBean = bean;
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT,bean.getValue());
+        }
     }
 
     @Override
@@ -207,6 +229,12 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             }
         });
         fillSpinnerBottom(mDistrictSpinner);
+        if(EmptyUtil.isNotEmpty(districts)) {
+            mDistrictSpinner.setSelectedIndex(0);
+            int position = mDistrictSpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = districts.get(position);
+            mCurrentDistrictBean = bean;
+        }
     }
 
     @Override
