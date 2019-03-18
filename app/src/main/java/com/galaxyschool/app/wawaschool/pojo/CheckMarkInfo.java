@@ -142,16 +142,16 @@ public class CheckMarkInfo implements Serializable {
 
         private boolean showDeleted;
         private boolean IsOnlineSchool;
-        private String memberId;
+        private String MemberId;
         private int SubmitRole;
         private String SubmitTime;
 
         public String getMemberId() {
-            return memberId;
+            return MemberId;
         }
 
         public void setMemberId(String memberId) {
-            this.memberId = memberId;
+            MemberId = memberId;
         }
 
         public int getSubmitRole() {
@@ -467,7 +467,7 @@ public class CheckMarkInfo implements Serializable {
             dest.writeByte(this.showDeleted ? (byte) 1 : (byte) 0);
             dest.writeByte(this.IsOnlineSchool ? (byte) 1 : (byte) 0);
             dest.writeInt(this.ReviewFlag);
-            dest.writeString(this.memberId);
+            dest.writeString(this.MemberId);
             dest.writeInt(SubmitRole);
             dest.writeString(SubmitTime);
         }
@@ -504,7 +504,7 @@ public class CheckMarkInfo implements Serializable {
             this.showDeleted = in.readByte() != 0;
             this.IsOnlineSchool = in.readByte() != 0;
             this.ReviewFlag = in.readInt();
-            this.memberId = in.readString();
+            this.MemberId = in.readString();
             this.SubmitRole = in.readInt();
             this.SubmitTime = in.readString();
         }

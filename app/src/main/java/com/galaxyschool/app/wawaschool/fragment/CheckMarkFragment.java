@@ -73,6 +73,8 @@ import com.galaxyschool.app.wawaschool.views.CircleImageView;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.osastudio.common.utils.LQImageLoader;
 
@@ -416,9 +418,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
+                                ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
+                            }
                         }
                     });
 
@@ -430,9 +432,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.getStudentId())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
+                                TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                            }
                         }
                     });
                     view.setOnClickListener(new View.OnClickListener() {

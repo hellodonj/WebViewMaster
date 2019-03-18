@@ -38,6 +38,7 @@ import com.galaxyschool.app.wawaschool.pojo.weike.LocalCourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
@@ -217,7 +218,7 @@ public class ApplyMarkHelper {
                         TipMsgHelper.ShowMsg(activity,R.string.upload_comment_success);
                         //发送成功
                         if (MainApplication.isTutorialMode()) {
-                            EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.UPDATE_LIST_DATA));
+                            EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_LIST_DATA));
                         }
                         if (needFinish) {
                             activity.finish();
