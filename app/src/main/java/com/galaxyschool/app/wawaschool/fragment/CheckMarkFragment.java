@@ -32,6 +32,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
@@ -51,6 +52,8 @@ import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.libs.gallery.ImageInfo;
+import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -69,7 +72,14 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.CircleImageView;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
+import com.oosic.apps.iemaker.base.SlideManager;
 import com.osastudio.common.utils.LQImageLoader;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -142,6 +152,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (isAnswerTaskOrderQuestion) {
             initAnswerParsingData();
         }
+        addEventBusReceiver();
     }
 
     @Override
@@ -245,7 +256,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     } else {
                         //读写单的主观题
                         cardParam.setMarkModel(markModel);
-                        ApplyMarkHelper.doApplyMarkTask(getActivity(),cardParam,exerciseItem,null);
+                        ApplyMarkHelper.doApplyMarkTask(getActivity(), cardParam, exerciseItem, null);
                     }
                 });
             }
@@ -407,9 +418,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
+                                ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
+                            }
                         }
                     });
 
@@ -421,9 +432,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.getStudentId())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
+                                TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                            }
                         }
                     });
                     view.setOnClickListener(new View.OnClickListener() {
@@ -483,7 +494,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
     }
 
-    private void initAssistantMarkData(){
+    private void initAssistantMarkData() {
         isAssistanceModel = true;
         resId = commitTask.getStudentResId();
         thumbPic = commitTask.getStudentResThumbnailUrl();
@@ -661,21 +672,20 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void loadCommonData() {
         if (isAssistanceModel) {
             loadAssistantMarkData();
-        } if (isAnswerTaskOrderQuestion) {
+        } else if (isAnswerTaskOrderQuestion) {
             loadAnswerCardData();
         } else {
             loadMarkData();
         }
     }
 
-    private void loadAssistantMarkData(){
+    private void loadAssistantMarkData() {
         Map<String, Object> params = new ArrayMap<>();
         params.put("AssistTask_Id", commitTask.getId());
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_ASSIST_REVIEW_LIST_BASE_URL, params,
                 new DefaultPullToRefreshDataListener<CheckMarkResult>(
                         CheckMarkResult.class) {
-
                     @Override
                     public void onSuccess(String jsonString) {
                         if (getActivity() == null) {
@@ -686,15 +696,26 @@ public class CheckMarkFragment extends ContactsListFragment {
                         if (result.getErrorCode() != 0 || result.getModel() == null) {
                             return;
                         }
-                        List<CheckMarkInfo.ModelBean> list = result.getModel();
-                        Collections.reverse(list);
-                        getCurrAdapterViewHelper().setData(list);
-
+                        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                        if (jsonObject != null) {
+                            JSONObject model = jsonObject.getJSONObject("Model");
+                            if (model != null) {
+                                JSONArray jsonArray = model.getJSONArray("Data");
+                                if (jsonArray != null && jsonArray.size() > 0) {
+                                    List<CheckMarkInfo.ModelBean> list =
+                                            JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
+                                    if (list != null && list.size() > 0) {
+                                        Collections.reverse(list);
+                                        getCurrAdapterViewHelper().setData(list);
+                                    }
+                                }
+                            }
+                        }
                     }
                 });
     }
 
-    private void loadMarkData(){
+    private void loadMarkData() {
         Map<String, Object> params = new ArrayMap<>();
         if (isFromMOOC) {
             params.put("CommitTaskOnlineId", CommitTaskId);
@@ -822,7 +843,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     }
 
     public void backPress() {
-        if (isFromMOOC || isAnswerTaskOrderQuestion) {
+        if (isFromMOOC || isAnswerTaskOrderQuestion || isAssistanceModel) {
             getActivity().finish();
         } else {
             popStack();
@@ -929,6 +950,18 @@ public class CheckMarkFragment extends ContactsListFragment {
                     //游客身份
                     playbackParam.mIsHideToolBar = true;
                 }
+            } else if (isAssistanceModel) {
+                mTaskMarkParam = new TaskMarkParam(
+                        false,
+                        true,
+                        MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_TEACHER : RoleType.ROLE_TYPE_STUDENT,
+                        String.valueOf(commitTask.getId()),
+                        false,
+                        false,
+                        "",
+                        true);
+                playbackParam.isAssistanceModel = true;
+                playbackParam.taskMarkParam = mTaskMarkParam;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
@@ -1125,7 +1158,20 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                 }, 200);
             }
+        }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(),
+                MessageEventConstantUtils.SEND_DO_COURSE_PATH_RESULT)) {
+            Bundle bundle = messageEvent.getBundle();
+            if (bundle != null) {
+                String coursePath = bundle.getString(SlideManager.EXTRA_COURSE_PATH);
+                String slidePath = bundle.getString(SlideManager.EXTRA_SLIDE_PATH);
+                ApplyMarkHelper helper = new ApplyMarkHelper();
+                helper.uploadCourse(getActivity(),slidePath,coursePath,commitTask.getId(),false);
+            }
         }
     }
 }

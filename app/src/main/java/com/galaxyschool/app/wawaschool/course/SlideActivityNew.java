@@ -66,6 +66,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     public final static String COURSETYPEFROM = "courseTypeFrom";
     public final static String ISNEEDDIRECTORY = "isNeedDirectory";
     public final static String MODEL_SOURCE_FROM = "model_source_from";
+    public final static String IS_FROM_TEACHER_MARK = "is_from_teacher_mark";
     public final static String COURSE_TYPE_FROM_LQ_BOARD = "course_type_from_lq_board";
 
     public final static String COURSE_ID = "SlideActivityNew_course_id";
@@ -98,6 +99,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     private Handler mHandler = new Handler();
     private String courseId;
     private boolean autoMark;
+    private boolean isTeacherMark;
 
     /**
      * 判断当前制作的来源
@@ -593,6 +595,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
         memberId = ((MyApplication) getApplication()).getMemberId();
         isFromMoocModel = getIntent().getBooleanExtra(MODEL_SOURCE_FROM, false);
         isFromLqBoard = getIntent().getBooleanExtra(COURSE_TYPE_FROM_LQ_BOARD, false);
+        isTeacherMark = getIntent().getBooleanExtra(IS_FROM_TEACHER_MARK,false);
 //        int mCurrentOrientation = getResources().getConfiguration().orientation;
 //        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && mCurrentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -626,6 +629,9 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
             setUserType(RoleType.ROLE_TYPE_STUDENT);
 //            if (!isFromMoocModel) {
 //            }
+            if (isTeacherMark) {
+                setUserType(RoleType.ROLE_TYPE_TEACHER);
+            }
         }
         mSlideManager.setPenUserServiceHelper(getPenUserServiceHelper());
         mSlideManager.setUserType(mUserType);

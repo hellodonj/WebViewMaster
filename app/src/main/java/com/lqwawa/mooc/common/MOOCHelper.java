@@ -199,7 +199,16 @@ public class MOOCHelper {
          */
         public void enterAssistanceMarkActivity(Activity activity,
                                                 TaskEntity taskEntity){
+            if (activity == null || taskEntity == null) {
+                return;
+            }
             CommitTask commitTask = new CommitTask();
+            commitTask.setIsAssistantMark(true);
+            commitTask.setStudentResId(taskEntity.getResId());
+            commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
+            commitTask.setStudentResTitle(taskEntity.getTitle());
+            commitTask.setId(taskEntity.getId());
+            CheckMarkActivity.start(activity,commitTask);
         }
     };
 
@@ -469,28 +478,6 @@ public class MOOCHelper {
         }
 
         /**
-<<<<<<< HEAD
-         * 进入申请批阅详情
-         * @param activity 上下文
-         * @param taskEntity 列表的对象
-         */
-        public void enterAssistanceMarkActivity(Activity activity,
-                                                TaskEntity taskEntity){
-            if (activity == null || taskEntity == null) {
-                return;
-            }
-            CommitTask commitTask = new CommitTask();
-            commitTask.setIsAssistantMark(true);
-            commitTask.setStudentResId(taskEntity.getResId());
-            commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
-            commitTask.setStudentResTitle(taskEntity.getTitle());
-            commitTask.setId(taskEntity.getId());
-            CheckMarkActivity.start(activity,commitTask);
-        }
-
-        /**
-=======
->>>>>>> 235e8341211438492dacbf10c5291dd9a9960b7e
          * @param sourceCourseResId
          * @param taskUploadBackVo
          * @param resType           作业类型 -复述课件/做任务单

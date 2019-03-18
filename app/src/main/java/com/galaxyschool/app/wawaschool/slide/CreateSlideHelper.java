@@ -441,6 +441,9 @@ public class CreateSlideHelper {
 		if (param.cardParam != null && (param.cardParam.isOnlineHost() || param.cardParam.isOnlineReporter())) {
 			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
 			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+		} else if (param.isTeacherMark) {
+			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
+			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
 		}
 		if (param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_COURSE
 				&& param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_OTHER_COURSE
@@ -455,7 +458,7 @@ public class CreateSlideHelper {
 			}
 		}
     	slideInputParam.mRayMenusV = rayMenuV;
-		if (param.cardParam != null){
+		if (param.cardParam != null || param.isTeacherMark){
 		    //任务单答题卡批阅加T
             int[] rayMenuH = {
                     BaseSlideManager.MENU_ID_TEXT_POINTER,
@@ -490,6 +493,7 @@ public class CreateSlideHelper {
 		it.putExtra(SlideWawaPageActivity.COURSE_SECTION_DATA_STRING, param.courseSectionDataString);
 		it.putExtra(SlideWawaPageActivity.MODEL_SOURCE_FROM,param.isFromMoocModel);
 		it.putExtra(ExerciseAnswerCardParam.class.getSimpleName(),param.cardParam);
+		it.putExtra(SlideWawaPageActivity.IS_FROM_TEACHER_MARK,param.isTeacherMark);
 		if (param.cardParam != null && param.cardParam.getMarkModel() != null) {
 			it.putExtra(SlideWawaPageActivity.EXTRA_EDIT_EXERCISE,true);
 			if (!TextUtils.isEmpty(param.cardParam.getExerciseAnswerString())) {
@@ -703,6 +707,7 @@ public class CreateSlideHelper {
 		public boolean isFromMoocModel;
 		public boolean isFromLqBoard;
 		public ExerciseAnswerCardParam cardParam;
+		public boolean isTeacherMark;
 
 		public CreateSlideParam() {
 

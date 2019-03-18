@@ -43,6 +43,7 @@ import com.galaxyschool.app.wawaschool.views.ToolbarBottomView;
 import com.lecloud.skin.init.InitResultListener;
 import com.lecloud.skin.init.LqInit;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
@@ -697,7 +698,7 @@ public class HomeActivity extends BaseCompatActivity
 
     public void updateBottomViewText(){
         if (bottomBar != null){
-            if (SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE)) {
+            if (MainApplication.isTutorialMode()) {
                 bottomBar.updateBottomViewText(2,getString(R.string.str_assistance_space));
             } else {
                 bottomBar.updateBottomViewText(2,getString(R.string.my_course));

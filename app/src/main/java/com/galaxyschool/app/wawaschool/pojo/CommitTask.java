@@ -557,6 +557,7 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeString(this.parentResourceUrl);
         dest.writeInt(this.airClassId);
         dest.writeByte(this.isAssistantMark ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.Id);
     }
 
     public CommitTask() {
@@ -609,6 +610,7 @@ public class CommitTask implements Serializable, Parcelable {
         this.parentResourceUrl = in.readString();
         this.airClassId = in.readInt();
         this.isAssistantMark = in.readByte() != 0;
+        this.Id = in.readInt();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

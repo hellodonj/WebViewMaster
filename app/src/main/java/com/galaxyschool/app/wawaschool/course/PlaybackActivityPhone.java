@@ -47,6 +47,7 @@ import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.DialogHelper;
+import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
 import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
@@ -63,11 +64,14 @@ import com.galaxyschool.app.wawaschool.course.DownloadAttachTask.DownloadDtoBase
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
+import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.views.AnswerCardPopWindow;
+import com.galaxyschool.app.wawaschool.views.AssistantCheckMarkWayDialog;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
@@ -104,6 +108,7 @@ import com.oosic.apps.aidl.CollectParams;
 import com.oosic.apps.iemaker.base.BaseSlideManager;
 import com.oosic.apps.iemaker.base.BaseUtils;
 import com.oosic.apps.iemaker.base.PlaybackActivity;
+import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.iemaker.base.data.CourseShareData;
 import com.oosic.apps.iemaker.base.playback.Playback;
 import com.oosic.apps.share.ShareInfo;
@@ -120,6 +125,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment.REQUEST_CODE_DO_SLIDE_TOAST;
 
 /**
  * Created by pp on 16/1/21.
@@ -352,7 +359,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 if (isAnswerCardQuestion || applyMark) {
                     showCommitAnswerDialog(false);
                 } else if (!mInEditMode) {
-                    edit();
+                    if (mParam != null && mParam.isAssistanceModel && isTeacherOrEditor()) {
+                        //老师弹框选择
+                        showAssistantCheckMarkWayDialog();
+                    } else {
+                        edit();
+                    }
                 } else {
                     onBackPressed();
                 }
@@ -363,6 +375,51 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         }
         if (mSaveBtn != null) {
             mSaveBtn.setOnClickListener(listener);
+        }
+    }
+
+    private void showAssistantCheckMarkWayDialog() {
+        AssistantCheckMarkWayDialog markWayDialog =
+                new AssistantCheckMarkWayDialog(PlaybackActivityPhone.this, result -> {
+                    if (result != null) {
+                        int markWay = (int) result;
+                        if (collectParams != null) {
+                            int resourceType = collectParams.resourceType;
+                            if (markWay == 0) {
+                                //点读
+                                if (resourceType == ResType.RES_TYPE_ONEPAGE) {
+                                    edit();
+                                } else {
+                                    switchMarkModel(true);
+                                }
+                            } else {
+                                //录音
+                                if (resourceType == ResType.RES_TYPE_COURSE_SPEAKER) {
+                                    edit();
+                                } else {
+                                    switchMarkModel(false);
+                                }
+                            }
+                        }
+                    }
+                });
+        markWayDialog.show();
+    }
+
+    private void switchMarkModel(boolean isReading) {
+        DoCourseHelper doCourseHelper = new DoCourseHelper(PlaybackActivityPhone.this);
+        NewResourceInfo newResourceInfo = new NewResourceInfo();
+        newResourceInfo.setScreenType(mOrientation);
+        newResourceInfo.setResourceId(collectParams.getMicroId() + "-" + collectParams.getResourceType());
+        newResourceInfo.setTitle(collectParams.getTitle());
+        if (isReading) {
+            //微课 -> 点读
+            doCourseHelper.doRemoteLqCourse(newResourceInfo,
+                    DoCourseHelper.FromType.DO_SLIDE_COURSE_TASK, false, true);
+        } else {
+            //点读 -> 微课
+            doCourseHelper.doRemoteLqCourse(newResourceInfo,
+                    DoCourseHelper.FromType.Do_Retell_Course, false, true);
         }
     }
 
@@ -1165,7 +1222,16 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                 if (mParam != null && mParam.applyMarkdata != null) {
                                                                                     if (uploadResult.code == 0) {
                                                                                         ApplyMarkHelper.enterApplyTeacherMarkActivity(PlaybackActivityPhone.this,
-                                                                                                uploadResult.data.get(0),mParam.applyMarkdata);
+                                                                                                uploadResult.data.get(0), mParam.applyMarkdata);
+                                                                                    }
+                                                                                }
+                                                                            } else if (mParam != null && mParam.isAssistanceModel) {
+                                                                                if (uploadResult.code == 0) {
+                                                                                    CourseData courseData = uploadResult.data.get(0);
+                                                                                    if (courseData != null) {
+                                                                                        if (!TextUtils.isEmpty(mParam.taskMarkParam.commitTaskId)) {
+                                                                                            ApplyMarkHelper.commitAssistantMarkData(PlaybackActivityPhone.this, courseData, Integer.valueOf(mParam.taskMarkParam.commitTaskId),true);
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             } else if (doUploadResult(uploadResult, isMarkScore, score, data)) {
@@ -1830,12 +1896,13 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
 
     /**
      * 单题的点击事件
+     *
      * @param exerciseIndex
      */
     @Override
     public void onExerciseNodeClick(int exerciseIndex) {
-        if (isAnswerCardQuestion){
-            showAnswerPopWindow(false,exerciseIndex-1);
+        if (isAnswerCardQuestion) {
+            showAnswerPopWindow(false, exerciseIndex - 1);
         } else {
             //浏览模式
             reviewExerciseDetails(exerciseIndex);
@@ -1848,6 +1915,23 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         if (answerCardPopWindow != null) {
             //答题时拍照和从相册选取资源
             answerCardPopWindow.setRequestCodeData(requestCode, resultData);
+        }
+
+        if (mParam != null
+                && mParam.isAssistanceModel
+                && (requestCode == ResourceBaseFragment.REQUEST_CODE_RETELLCOURSE || requestCode == 105 || requestCode == REQUEST_CODE_DO_SLIDE_TOAST)) {
+            //接口返回的路径
+            String slidePath = resultData.getStringExtra(SlideManager.EXTRA_SLIDE_PATH);
+            String coursePath = resultData.getStringExtra(SlideManager.EXTRA_COURSE_PATH);
+            String title = resultData.getStringExtra(SlideManager.LOAD_FILE_TITLE);
+            Bundle args = new Bundle();
+            args.putString(SlideManager.EXTRA_SLIDE_PATH, slidePath);
+            args.putString(SlideManager.EXTRA_COURSE_PATH, coursePath);
+            MessageEvent messageEvent = new MessageEvent(args, MessageEventConstantUtils.SEND_DO_COURSE_PATH_RESULT);
+            EventBus.getDefault().post(messageEvent);
+            if (!TextUtils.isEmpty(slidePath) || !TextUtils.isEmpty(coursePath)) {
+                this.finish();
+            }
         }
     }
 }

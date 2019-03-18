@@ -68,7 +68,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	public final static String COURSE_SECTION_DATA_STRING="course_section_data_string";
 	public final static String COURSE_FROM_TYPE="course_from_type";
 	public final static String MODEL_SOURCE_FROM = "model_source_from";
-
+	public final static String IS_FROM_TEACHER_MARK = "is_from_teacher_mark";
 	public final static String EXTRA_EXERCISE_STRING = "exerciseString";
 	public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
 	public final static String EXTRA_PAGE_INDEX = "pageIndex";
@@ -88,6 +88,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	private int mUserType;
 	private boolean isFromMoocModel;
 	private ExerciseAnswerCardParam cardParam;
+	private boolean isTeacherMark;
 	private Handler mHandler = new Handler();
 
 	protected void setUserType(int roleType) {
@@ -109,7 +110,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 		fromType = getIntent().getIntExtra(SlideWawaPageActivity.COURSE_FROM_TYPE,0);
 		isFromMoocModel = getIntent().getBooleanExtra(MODEL_SOURCE_FROM,false);
 		cardParam = (ExerciseAnswerCardParam) getIntent().getSerializableExtra(ExerciseAnswerCardParam.class.getSimpleName());
-
+		isTeacherMark = getIntent().getBooleanExtra(IS_FROM_TEACHER_MARK,false);
 		int mCurrentOrientation = getResources().getConfiguration().orientation;
 		if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 				&& mCurrentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -154,6 +155,8 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 				} else if (cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT){
 					setUserType(RoleType.ROLE_TYPE_STUDENT);
 				}
+			} else if (isTeacherMark) {
+				setUserType(RoleType.ROLE_TYPE_TEACHER);
 			} else {
 				setUserType(RoleType.ROLE_TYPE_STUDENT);
 			}
