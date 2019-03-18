@@ -419,6 +419,7 @@ public class MOOCHelper {
             cardParam.setIsOnlineHost(isOnlineHost);
             cardParam.setFromOnlineStudyTask(true);
             cardParam.setTaskScoreRemark(taskScoreRemark);
+            cardParam.setMarkModel(markModel);
 
             AnswerCardDetailActivity.start(activity, cardParam);
         }

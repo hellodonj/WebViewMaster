@@ -855,7 +855,7 @@ public class DoTaskOrderHelper {
         itemData = cardParam.getExerciseItem();
         QuestionResourceModel model = cardParam.getMarkModel();
         if (model != null) {
-            showCommitDialog(isTeacherOrEditor());
+            showCommitDialog(false);
         } else {
             if (itemData == null) {
                 return;
