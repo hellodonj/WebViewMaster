@@ -122,7 +122,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
 
     private void skipStudentWork(){
         boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
-        TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_TUTOR);
+        TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
         TutorialMarkingListActivity.show(getActivity(),params);
     }
 
