@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
@@ -46,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CourseSelectItemOuterFragment extends MyBaseFragment implements ResourceSelectListener{
+public class CourseSelectItemOuterFragment extends MyBaseFragment implements ResourceSelectListener {
 
     private static final String KEY_EXTRA_CHAPTER_OBJECT = "KEY_EXTRA_CHAPTER_OBJECT";
     private static final String KEY_EXTRA_TASK_TYPE = "KEY_EXTRA_TASK_TYPE";
@@ -61,7 +64,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
     private ViewPager mViewPager;
 
 
-    private ChapterVo mChapterVo ;
+    private ChapterVo mChapterVo;
     private int mTaskType;
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
@@ -70,7 +73,10 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
 
     private List<Fragment> mFragments;
     private static String[] mTabs = UIUtil.getStringArray(R.array.label_lesson_source_tabs);
-    private List<String> mTabLists = new ArrayList<>(Arrays.asList(mTabs));
+    private List<String> mTabLists = new ArrayList<>();
+
+    // 资源类型映射
+    private SparseIntArray typeTable = new SparseIntArray();
 
     @Nullable
     @Override
@@ -94,14 +100,14 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                                        int taskType,
                                        int multiChoiceCount,
                                        ArrayList<Integer> filterArray,
-                                       boolean isOnlineRelevance){
+                                       boolean isOnlineRelevance) {
         CourseSelectItemOuterFragment fragment = new CourseSelectItemOuterFragment();
         Bundle arguments = new Bundle();
-        arguments.putSerializable(KEY_EXTRA_CHAPTER_OBJECT,vo);
-        arguments.putInt(KEY_EXTRA_TASK_TYPE,taskType);
-        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multiChoiceCount);
-        arguments.putSerializable(KEY_EXTRA_FILTER_COLLECTION,filterArray);
-        arguments.putBoolean(KEY_EXTRA_ONLINE_RELEVANCE,isOnlineRelevance);
+        arguments.putSerializable(KEY_EXTRA_CHAPTER_OBJECT, vo);
+        arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
+        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multiChoiceCount);
+        arguments.putSerializable(KEY_EXTRA_FILTER_COLLECTION, filterArray);
+        arguments.putBoolean(KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -111,11 +117,18 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         super.onActivityCreated(savedInstanceState);
         activity = getActivity();
         Bundle arguments = getArguments();
-        mChapterVo  = (ChapterVo) arguments.getSerializable(KEY_EXTRA_CHAPTER_OBJECT);
+        mChapterVo = (ChapterVo) arguments.getSerializable(KEY_EXTRA_CHAPTER_OBJECT);
         mTaskType = arguments.getInt(KEY_EXTRA_TASK_TYPE);
         mMultipleChoiceCount = arguments.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         isOnlineRelevance = arguments.getBoolean(KEY_EXTRA_ONLINE_RELEVANCE);
         mFilterArray = arguments.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
+
+        typeTable.append(1, CourseSelectItemFragment.KEY_WATCH_COURSE);
+        typeTable.append(2, CourseSelectItemFragment.KEY_RELL_COURSE);
+        typeTable.append(3, CourseSelectItemFragment.KEY_TASK_ORDER);
+        typeTable.append(4, CourseSelectItemFragment.KEY_TEXT_BOOK);
+        // 讲解课类型
+        typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
 
         initView();
     }
@@ -124,7 +137,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
     /**
      * 初始化View
      */
-    private void initView(){
+    private void initView() {
         mTopBar.setBack(true);
         mTopBar.setTitle(mChapterVo.getName());
         mTopBar.findViewById(R.id.left_function1_image).setOnClickListener(new View.OnClickListener() {
@@ -141,9 +154,9 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                 ArrayList<SectionResListVo> resultData = (ArrayList<SectionResListVo>) getAllResourceData();
 
                 if (resultData.size() <= 0) {
-                    ToastUtil.showToast(activity,getString(R.string.str_select_tips));
+                    ToastUtil.showToast(activity, getString(R.string.str_select_tips));
                 } else {
-                    for (SectionResListVo vo:resultData) {
+                    for (SectionResListVo vo : resultData) {
                         vo.setChapterId(vo.getId());
                     }
 
@@ -166,7 +179,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes,token, null, courseId, sectionId, 1,new DataSource.Callback<SectionDetailsVo>() {
+        LessonHelper.requestChapterStudyTask(languageRes, token, null, courseId, sectionId, 1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -174,7 +187,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
 
             @Override
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
-                if(EmptyUtil.isEmpty(sectionDetailsVo)) return;
+                if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
                 initTabLayout(sectionDetailsVo);
             }
         });
@@ -184,135 +197,45 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
     /**
      * 初始化Tab+Fragment
      */
-    private void initTabLayout(@NonNull SectionDetailsVo vo){
+    private void initTabLayout(@NonNull SectionDetailsVo vo) {
         List<Fragment> fragments = new ArrayList<>();
-        CourseSelectItemFragment fragment = new CourseSelectItemFragment();
-        fragment.setOnResourceSelectListener(this);
-        Bundle arguments = getArguments();
-        arguments.putSerializable("ChapterVo",mChapterVo);
-        // 写死看课件类型
-        // V5.14 视频课类型
-        arguments.putInt("tasktype",CourseSelectItemFragment.KEY_WATCH_COURSE);
-        arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT,mMultipleChoiceCount);
-        arguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION,mFilterArray);
-        arguments.putBoolean(CourseSelectItemFragment.KEY_EXTRA_ONLINE_RELEVANCE,isOnlineRelevance);
-        arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_REAL_TASK_TYPE,mTaskType);
-        fragment.setArguments(arguments);
-        fragments.add(fragment);
-
         List<SectionTaskListVo> taskList = vo.getTaskList();
-        boolean showReadWare = false;
-        boolean showListenRead = false;
-        boolean showReadWrite = false;
-        boolean showTextBook = false;
-        if(EmptyUtil.isNotEmpty(taskList)){
-            for (SectionTaskListVo taskListVo:taskList) {
-                if(taskListVo.getTaskType() == 1 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    mTabLists.set(0,taskListVo.getTaskName());
-                    showReadWare = true;
+        if (EmptyUtil.isNotEmpty(taskList)) {
+
+            for (int index = 0; index < taskList.size(); index++) {
+                SectionTaskListVo listVo = taskList.get(index);
+                if (EmptyUtil.isNotEmpty(listVo.getData()) && isShowType(mTaskType, listVo)) {
+                    int taskType = listVo.getTaskType();
+                    String taskName = listVo.getTaskName();
+                    mTabLists.add(taskName);
+
+                    CourseSelectItemFragment fragment = new CourseSelectItemFragment();
+                    fragment.setOnResourceSelectListener(this);
+                    Bundle arguments = getArguments();
+                    arguments.putSerializable("ChapterVo", mChapterVo);
+                    arguments.putInt("tasktype", typeTable.get(taskType));
+                    arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT, mMultipleChoiceCount);
+                    arguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION, mFilterArray);
+                    arguments.putBoolean(CourseSelectItemFragment.KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
+                    arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_REAL_TASK_TYPE, mTaskType);
+                    fragment.setArguments(arguments);
+                    fragments.add(fragment);
                 }
-
-                if(taskListVo.getTaskType() == 2 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    mTabLists.set(1,taskListVo.getTaskName());
-                    showListenRead = true;
-                }
-
-                if(taskListVo.getTaskType() == 3 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    mTabLists.set(2,taskListVo.getTaskName());
-                    showReadWrite = true;
-                }
-
-                if(taskListVo.getTaskType() == 4 && EmptyUtil.isNotEmpty(taskListVo.getData())){
-                    mTabLists.set(3,taskListVo.getTaskName());
-                    showTextBook = true;
-                }
-            }
-        }
-
-        if(mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE){
-            // 复述课件 移除读写单
-            mTabLists.remove(2);
-            CourseSelectItemFragment retellFragment = new CourseSelectItemFragment();
-            retellFragment.setOnResourceSelectListener(this);
-            Bundle cloneArguments = (Bundle) arguments.clone();
-            cloneArguments.putInt("tasktype",CourseSelectItemFragment.KEY_RELL_COURSE);
-            retellFragment.setArguments(cloneArguments);
-            fragments.add(retellFragment);
-        }else if(mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER){
-            // 读写单 移除听说课
-            mTabLists.remove(1);
-            CourseSelectItemFragment taskFragment = new CourseSelectItemFragment();
-            taskFragment.setOnResourceSelectListener(this);
-            Bundle cloneArguments = (Bundle) arguments.clone();
-            cloneArguments.putInt("tasktype",CourseSelectItemFragment.KEY_TASK_ORDER);
-            taskFragment.setArguments(cloneArguments);
-            fragments.add(taskFragment);
-        }else{
-            mTabLists.remove(1);
-            mTabLists.remove(1);
-        }
-
-        // 写死看课本类型
-        // V5.14 看课件类型
-        CourseSelectItemFragment textBookFragment = new CourseSelectItemFragment();
-        textBookFragment.setOnResourceSelectListener(this);
-        Bundle textBookArguments = (Bundle) arguments.clone();
-        textBookArguments.putInt("tasktype",CourseSelectItemFragment.KEY_TEXT_BOOK);
-        textBookFragment.setArguments(textBookArguments);
-        fragments.add(textBookFragment);
-
-        if((!showListenRead && mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE) ||
-                (!showReadWrite && mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
-            // 没有听说课 读写单
-            fragments.remove(1);
-            mTabLists.remove(1);
-        }
-
-        if(!showReadWare ||
-                (mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
-            // 没有视频课
-            fragments.remove(0);
-            mTabLists.remove(0);
-        }
-
-        if(!showTextBook || mTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
-            // V5.14版本更改
-            // 当前查看的是视频课类型
-            // 没有看课本
-            showTextBook = false;
-            fragments.remove(mTabLists.size() - 1);
-            mTabLists.remove(mTabLists.size() - 1);
-        }
-
-        if(showTextBook){
-            // 存在看课本类型
-            Fragment showTextBookFragment = fragments.remove(fragments.size() - 1);
-            String removeTab = mTabLists.remove(mTabLists.size() - 1);
-
-            if(!showReadWare ||
-                    (mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER)){
-                // 没有视频课
-                fragments.add(0,showTextBookFragment);
-                mTabLists.add(0,removeTab);
-            }else{
-                // 有视频课
-                fragments.add(1,showTextBookFragment);
-                mTabLists.add(1,removeTab);
             }
         }
 
         this.mFragments = fragments;
-        if(fragments.size() > 0){
+        if (fragments.size() > 0) {
             mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.VISIBLE);
             mContentLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setEnabled(false);
             mEmptyLayout.setVisibility(View.GONE);
-            mViewPager.setAdapter(new PagerAdapter(getChildFragmentManager(),fragments));
+            mViewPager.setAdapter(new PagerAdapter(getChildFragmentManager(), fragments));
             mTabLayout.setupWithViewPager(mViewPager);
             // 设置Indicator长度
-            if(fragments.size() > 1)
-                TabLayoutUtil.setIndicatorMargin(UIUtil.getContext(),mTabLayout,20,20);
-        }else{
+            if (fragments.size() > 1)
+                TabLayoutUtil.setIndicatorMargin(UIUtil.getContext(), mTabLayout, 20, 20);
+        } else {
             mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.GONE);
             mContentLayout.setVisibility(View.GONE);
             mEmptyLayout.setEnabled(true);
@@ -320,19 +243,59 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         }
     }
 
+    /**
+     * 判断是否需要显示
+     *
+     * @param realTaskType 当前选取类型
+     * @param vo           资源数据集合
+     * @return boolean true 需要显示
+     */
+    private boolean isShowType(int realTaskType, SectionTaskListVo vo) {
+        int taskType = vo.getTaskType();
+        if (realTaskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
+            // 选择复述课件
+            if (taskType == 2
+                    || taskType == 4
+                    || taskType == 5) {
+                // 听说作业 看课件 讲解课
+                return true;
+            }
+        } else if (realTaskType == CourseSelectItemFragment.KEY_TASK_ORDER) {
+            if (taskType == 3
+                    || taskType == 4) {
+                // 读写作业 看课件
+                return true;
+            }
+        }else if(realTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
+            // 视频课类型
+            if(taskType == 1){
+                return true;
+            }
+        }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
+            // 看课本类型
+            if (taskType == 1
+                    || taskType == 4) {
+                // 看课件 视频课
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public boolean onSelect(@NonNull SectionResListVo vo) {
         // 判断当前选择的有没有超过个数，如果超过个数，提示不能选择
-        if(mMultipleChoiceCount == 1){
+        if (mMultipleChoiceCount == 1) {
             // 单选模式
             // 再清除所有Fragment的数据
-            for (Fragment fragment:mFragments) {
+            for (Fragment fragment : mFragments) {
                 CourseSelectItemFragment _fragment = (CourseSelectItemFragment) fragment;
                 CourseResListAdapter adapter = _fragment.getResourceAdapter();
-                if (EmptyUtil.isNotEmpty(adapter)){
+                if (EmptyUtil.isNotEmpty(adapter)) {
                     List<SectionResListVo> dataArray = adapter.getData();
-                    for (SectionResListVo _vo:dataArray) {
-                        if(_vo.isChecked() && !TextUtils.equals(vo.getId(),_vo.getId())){
+                    for (SectionResListVo _vo : dataArray) {
+                        if (_vo.isChecked() && !TextUtils.equals(vo.getId(), _vo.getId())) {
                             _vo.setChecked(false);
                             RefreshUtil.getInstance().removeId(_vo.getId());
                         }
@@ -340,13 +303,13 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                     adapter.notifyDataSetChanged();
                 }
             }
-        }else{
+        } else {
             // 多选模式
             List<SectionResListVo> allResourceData = getAllResourceData();
-            if(allResourceData.size() < mMultipleChoiceCount || RefreshUtil.getInstance().contains(vo.getId())){
+            if (allResourceData.size() < mMultipleChoiceCount || RefreshUtil.getInstance().contains(vo.getId())) {
                 // 已经不能选了
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
@@ -355,21 +318,22 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
 
     /**
      * 获取所有已经选择的资源
+     *
      * @return 集合数据
      */
-    private List<SectionResListVo> getAllResourceData(){
+    private List<SectionResListVo> getAllResourceData() {
         // 获取所有已经选择的资源
         ArrayList<SectionResListVo> resultData = new ArrayList<>();
-        if (mFragments == null || mFragments.size() == 0){
+        if (mFragments == null || mFragments.size() == 0) {
             return resultData;
         }
-        for (Fragment fragment:mFragments) {
-            if(fragment instanceof CourseSelectItemFragment){
+        for (Fragment fragment : mFragments) {
+            if (fragment instanceof CourseSelectItemFragment) {
                 CourseSelectItemFragment itemFragment = (CourseSelectItemFragment) fragment;
                 CourseResListAdapter resourceAdapter = itemFragment.getResourceAdapter();
-                if(EmptyUtil.isEmpty(resourceAdapter)) continue;
+                if (EmptyUtil.isEmpty(resourceAdapter)) continue;
                 List<SectionResListVo> selectData = resourceAdapter.getSelectData();
-                if(selectData == null) continue;
+                if (selectData == null) continue;
                 resultData.addAll(selectData);
             }
         }

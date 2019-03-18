@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
@@ -408,6 +409,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         @Override
         public void run() {
             if(!isFinishing()) {
+                UIUtil.showToastSafe(R.string.label_upload_completed);
                 if (mBtnBusinessUpload.isActivated()) {
                     int viewId = mBtnBusinessUpload.getId();
                     mUrlArray.put(viewId, url);

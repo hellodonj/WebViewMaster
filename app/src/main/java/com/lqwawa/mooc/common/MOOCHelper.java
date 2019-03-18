@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.duowan.mobile.netroid.Listener;
@@ -19,6 +20,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -124,6 +126,70 @@ public class MOOCHelper {
         @Override
         public void openAssistanceMark(@NonNull Activity activity, @NonNull TaskEntity entity) {
             enterAssistanceMarkActivity(activity,entity);
+        }
+
+        @Override
+        public void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
+                                          @NonNull String resId, int resType,
+                                          @NonNull String resTitle, int screenType,
+                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl){
+            if (resType == 23) {
+                NewResourceInfo newResourceInfo = new NewResourceInfo();
+            /*newResourceInfo.setTitle(sectionResListVo.getName());
+            newResourceInfo.setResourceId(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
+            newResourceInfo.setMicroId(sectionResListVo.getResId());
+            newResourceInfo.setScreenType(sectionResListVo.getScreenType());
+            newResourceInfo.setResourceUrl(sectionResListVo.getResourceUrl());*/
+
+                newResourceInfo.setTitle(resTitle);
+                if (resType == -1) {
+                    newResourceInfo.setResourceId(resId);
+                } else {
+                    newResourceInfo.setResourceId(resId + "-" + resType);
+                }
+                newResourceInfo.setMicroId(resId);
+                newResourceInfo.setScreenType(screenType);
+                newResourceInfo.setResourceUrl(resourceUrl);
+
+                newResourceInfo.setIsFromAirClass(true);
+                newResourceInfo.setIsFromSchoolResource(true);
+                newResourceInfo.setCollectionOrigin(activity.getIntent().getStringExtra("schoolId"));
+                PassParamhelper mParam = new PassParamhelper();
+                mParam.isFromLQMOOC = true;
+                mParam.isAudition = isAudition;
+                ActivityUtils.enterTaskOrderDetailActivity(activity, newResourceInfo, mParam);
+            } else {
+                UserInfo userInfo =
+                        ((MyApplication) (MainApplication.getInstance())).getUserInfo();
+                StudyTask task = new StudyTask();
+            /*task.setResId(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
+            task.setResUrl(*//*data.getResourcePath()*//* "");
+            task.setResThumbnailUrl(sectionTaskDetailsVo.getOrigin().getThumbnail());
+            task.setTaskTitle(sectionResListVo.getOriginName());*/
+
+                task.setTaskTitle(resTitle);
+                if (resType == -1) {
+                    task.setResId(resId);
+                } else {
+                    task.setResId(resId + "-" + resType);
+                }
+                task.setResThumbnailUrl(resourceThumbnailUrl);
+                task.setResUrl(resourceUrl);
+
+                task.setCollectSchoolId(activity.getIntent().getStringExtra("schoolId"));
+                PassParamhelper mParam = new PassParamhelper();
+                mParam.isFromLQMOOC = true;
+                mParam.isAudition = isAudition;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(PassParamhelper.class.getSimpleName(), mParam);
+                CourseOpenUtils.openCourseDetailsDirectly(activity, task,
+                        TextUtils.equals(UserHelper.getUserId(),
+                                activity.getIntent().getStringExtra("memberId"))
+                                ? RoleType.ROLE_TYPE_STUDENT : RoleType.ROLE_TYPE_PARENT,
+                        userInfo.getMemberId(),
+                        activity.getIntent().getStringExtra("memberId"),
+                        userInfo, true, bundle);
+            }
         }
 
         /**

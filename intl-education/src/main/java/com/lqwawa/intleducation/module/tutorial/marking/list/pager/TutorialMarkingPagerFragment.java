@@ -28,6 +28,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
@@ -36,7 +37,11 @@ import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingPara
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.db.Selector;
 
 import java.text.SimpleDateFormat;
@@ -178,6 +183,10 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
     @Override
     protected void initData() {
         super.initData();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         date = DateUtils.getCurDate();
         String dateStr = getDateStr(date);
         mTvDate.setText(dateStr);
@@ -482,10 +491,26 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
         return 1;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        String action = event.getUpdateAction();
+        if(TextUtils.equals(action,EventConstant.TRIGGER_UPDATE_LIST_DATA)){
+            loadStudyTask();
+        }
+    }
+
     @Override
     public void showError(int str) {
         super.showError(str);
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.onFooterRefreshComplete();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 }
