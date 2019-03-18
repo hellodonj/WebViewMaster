@@ -419,6 +419,7 @@ public class MOOCHelper {
             cardParam.setIsOnlineHost(isOnlineHost);
             cardParam.setFromOnlineStudyTask(true);
             cardParam.setTaskScoreRemark(taskScoreRemark);
+            cardParam.setMarkModel(markModel);
 
             AnswerCardDetailActivity.start(activity, cardParam);
         }
@@ -768,6 +769,9 @@ public class MOOCHelper {
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEREPORTER, roleType == RoleType.ROLE_TYPE_TEACHER);
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEHOST, roleType == RoleType
                 .ROLE_TYPE_EDITOR);
+        if (data != null) {
+            bundle.putSerializable(CheckMarkFragment.Constants.COMMIT_TASK, data);
+        }
         if (!(roleType == RoleType.ROLE_TYPE_VISITOR)) {
             bundle.putSerializable(CheckMarkFragment.Constants.ACTION_TASKMARKPARAM,
                     new TaskMarkParam(

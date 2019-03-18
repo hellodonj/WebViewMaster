@@ -360,7 +360,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     String createName = data.getCreateName();
                     String suffTitle = getString(R.string.str_mark_ask);
 
-                    if (data.isIsTeacher() || data.getSubmitRole() == 0) {
+                    if (data.isIsTeacher() || (data.getSubmitRole() == 0 && isAssistanceModel)) {
                         createName = createName + getString(R.string.teacher);
                         suffTitle = getString(R.string.str_mark_teacher);
                         imgLeft.setVisibility(View.INVISIBLE);

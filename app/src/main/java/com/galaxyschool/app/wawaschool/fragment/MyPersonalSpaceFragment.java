@@ -71,6 +71,7 @@ import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.google.gson.Gson;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -1743,19 +1744,17 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         startActivity(intent);
     }
 
-    private void enterTutorialSpace(){
-        String memberId = userInfo.getMemberId();
-        TutorialParams params = new TutorialParams(memberId);
-        TutorialHomePageActivity.show(getActivity(),params);
-
-        TutorialRegisterActivity.show(getActivity());
-    }
-
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.im_user_icon) {
-            enterPersonalSpace();
-            // enterTutorialSpace();
+            if (TextUtils.isEmpty(getMemeberId())) {
+                return;
+            }
+            if (MainApplication.isTutorialMode()) {
+                TutorialHomePageActivity.show(getActivity(), new TutorialParams(getMemeberId()));
+            } else {
+                enterPersonalSpace();
+            }
         } else {
             super.onClick(v);
         }
