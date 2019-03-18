@@ -702,13 +702,14 @@ public class TutorialHelper {
                                             @NonNull String seniorityUrl,
                                             @NonNull DataSource.Callback<Boolean> callback){
         RequestVo requestVo = new RequestVo();
-        requestVo.addParams("Name",name);
         requestVo.addParams("PhoneNumber",phoneNumber);
         requestVo.addParams("VerificationCode",verificationCode);
         requestVo.addParams("IDType",IDType);
         requestVo.addParams("IDNumber",IDNumber);
         requestVo.addParams("memberId",memberId);
         requestVo.addParams("tutorName",tutorName);
+        // 用户输入覆盖TutorName
+        requestVo.addParams("tutorName",name);
         requestVo.addParams("tutorOrganId",tutorOrganId);
         requestVo.addParams("tutorOrganName",tutorOrganName);
         requestVo.addParams("markingPrice",markingPrice);

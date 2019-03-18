@@ -32,6 +32,7 @@ import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -39,6 +40,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.lqbaselib.net.Netroid;
+import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.modle.tutorial.comment.TutorialCommentFragment;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListContract;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListFragment;
@@ -247,7 +249,8 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             saveQrCodeImage(mQRCodeImageUrl);
         }else if(viewId == R.id.introduce_layout){
             // 个人介绍
-            UIUtil.showToastSafe("个人介绍");
+            // UIUtil.showToastSafe("个人介绍");
+            WebActivity.start(this,mUserEntity.getPIntroduces(),getString(R.string.label_personal_introduce));
         }
     }
 
@@ -261,7 +264,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             shareInfo.setTitle(mUserEntity.getRealName());
         }
         shareInfo.setContent(" ");
-        String serverUrl = ServerUrl.SHARE_PERSONAL_SPACE_URL;
+        String serverUrl = AppConfig.ServerUrl.TutorialShare.replace("{memberId}",mTutorMemberId);
         String url = serverUrl + String.format(
                 ServerUrl.SHARE_PERSONAL_SPACE_PARAMS, mUserEntity.getMemberId());
         shareInfo.setTargetUrl(url);

@@ -893,5 +893,9 @@ public final class AppConfig {
         public static final String PostIsTutorCourseByCourseId =
                 ServerBase + "api/tutor/isTutorCourseBycourseId";
 
+        // 帮辅老师分享
+        public static final String TutorialShare =
+                ServerBase + "tutorShare?memberId={memberId}";
+
     }
 }
