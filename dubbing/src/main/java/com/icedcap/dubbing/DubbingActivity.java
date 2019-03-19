@@ -320,7 +320,8 @@ public class DubbingActivity extends AppCompatActivity implements
 
             @Override
             protected void onPreExecute() {
-                showLoadingDialog();
+                Dialog dialog = showLoadingDialog();
+                dialog.setCancelable(false);
             }
 
             @Override
@@ -656,7 +657,8 @@ public class DubbingActivity extends AppCompatActivity implements
                         backgroundFilePath, videoFilePath, new ProcessUtils.OnProcessListener() {
                             @Override
                             public void onProcessBegin() {
-                                showLoadingDialog();
+                                Dialog dialog = showLoadingDialog();
+                                dialog.setCancelable(false);
                             }
 
                             @Override
