@@ -412,6 +412,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 changDubbingTypeBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        stopPlayRecordingAudio();
                         if (isChecked) {
                             //按句显示
                             checkDubbingBySentence = true;
@@ -813,6 +814,10 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onClick(View v) {
                             if (curPosition == position && dubbingEntityList.get(position).isSelect()) {
+                                if (isRecording) {
+                                    TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
+                                    return;
+                                }
                                 onAudioPlay();
                             }
                         }
@@ -822,6 +827,10 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onClick(View v) {
                             if (curPosition == position && dubbingEntityList.get(position).isSelect()) {
+                                if (isRecording) {
+                                    TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
+                                    return;
+                                }
                                 onAudioRecord();
                             }
                         }
@@ -920,6 +929,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             if (isRecording) {
                 TipMsgHelper.ShowMsg(this,R.string.str_dubbing_recording);
             } else {
+                if (audioRecordHelper != null) {
+                    audioRecordHelper.stopMediaPlayer();
+                }
                 startRecord();
             }
         }
