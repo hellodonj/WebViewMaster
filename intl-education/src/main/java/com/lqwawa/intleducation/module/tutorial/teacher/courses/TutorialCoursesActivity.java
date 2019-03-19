@@ -197,11 +197,11 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
 
         if(EmptyUtil.isEmpty(courseVos)){
             // 数据为空
-            mRefreshLayout.setVisibility(View.GONE);
+            mListView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }else{
             // 数据不为空
-            mRefreshLayout.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         }
     }

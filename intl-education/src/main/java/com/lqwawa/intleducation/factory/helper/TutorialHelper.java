@@ -32,6 +32,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
@@ -621,7 +622,9 @@ public class TutorialHelper {
         requestVo.addParams("StartTimeBegin", StartTimeBegin);
         requestVo.addParams("StartTimeEnd", StartTimeEnd);
         requestVo.addParams("OrderByType", OrderByType);
-        requestVo.addParams("State", State);
+        if(State != MarkingStateType.MARKING_STATE_NORMAL) {
+            requestVo.addParams("State", State);
+        }
         requestVo.addParams("Pager", new PagerArgs(pageIndex, pageSize), true);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestWorkTaskList);

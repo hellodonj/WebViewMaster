@@ -1,4 +1,4 @@
-package com.lqwawa.intleducation.module.tutorial.teacher.students;
+package com.lqwawa.intleducation.module.tutorial.target;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -25,23 +26,28 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
+import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
+import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
-import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialActivity;
+import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialTaskAdapter;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialAdapter;
-import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskActivity;
-import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
+import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialContract;
+import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
+import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialPresenter;
 
 import java.util.Date;
 import java.util.List;
 
 /**
  * @authr mrmedici
- * @desc 帮辅的学生列表的View
+ * @desc 我的帮辅学生，我的帮辅老师页面
  */
-public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsContract.Presenter>
-    implements TutorialStudentsContract.View,View.OnClickListener{
+public class TutorialTargetTaskActivity extends PresenterActivity<TutorialTargetTaskContract.Presenter>
+    implements TutorialTargetTaskContract.View,View.OnClickListener{
 
     private TopBar mTopBar;
     // 搜索
@@ -53,39 +59,48 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
     private RecyclerView mRecycler;
     private CourseEmptyView mEmptyView;
     // Adapter
-    private TutorialStudentAdapter mStudentAdapter;
+    private TutorialTaskAdapter mTutorialAdapter;
 
 
     // 分页数
     private int currentPage;
 
-    private TutorialStudentParams mTutorialStudentParams;
+    private TutorialTargetTaskParams mTargetTaskParams;
     private String mMemberId;
+    private String mTutorMemberId;
     private String mConfigValue;
+    private String mRole;
+    private boolean isTutorial;
+    private boolean isParent;
 
     private String mSearchKey;
 
     @Override
-    protected TutorialStudentsContract.Presenter initPresenter() {
-        return new TutorialStudentPresenter(this);
+    protected TutorialTargetTaskContract.Presenter initPresenter() {
+        return new TutorialTargetTaskPresenter(this);
     }
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.activity_tutorial_student;
+        return R.layout.activity_tutorial_target_task;
     }
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
         if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
-            mTutorialStudentParams = (TutorialStudentParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-            if(EmptyUtil.isNotEmpty(mTutorialStudentParams)){
-                mMemberId = mTutorialStudentParams.getMemberId();
-                mConfigValue = mTutorialStudentParams.getConfigValue();
+            mTargetTaskParams = (TutorialTargetTaskParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
+            if(EmptyUtil.isNotEmpty(mTargetTaskParams)){
+                mMemberId = mTargetTaskParams.getMemberId();
+                mTutorMemberId = mTargetTaskParams.getTutorMemberId();
+                mConfigValue = mTargetTaskParams.getConfigValue();
+                mRole = mTargetTaskParams.getRole();
+                isTutorial = TextUtils.equals(mRole,TutorialRoleType.TUTORIAL_TYPE_TUTOR);
+                isParent = mTargetTaskParams.isParent();
             }
         }
 
         if(EmptyUtil.isEmpty(mMemberId) ||
+                EmptyUtil.isEmpty(mTutorMemberId) ||
                 EmptyUtil.isEmpty(mConfigValue)){
             return false;
         }
@@ -134,8 +149,8 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     // 搜索，收起软件盘
-                    KeyboardUtil.hideSoftInput(TutorialStudentActivity.this);
-                    requestTutorData(false);
+                    KeyboardUtil.hideSoftInput(TutorialTargetTaskActivity.this);
+                    loadStudyTask();
                 }
                 return true;
             }
@@ -148,18 +163,57 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
         mRecycler.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(mLayoutManager);
-        mStudentAdapter = new TutorialStudentAdapter();
-        mRecycler.setAdapter(mStudentAdapter);
+        mTutorialAdapter = new TutorialTaskAdapter(isTutorial);
+        mRecycler.setAdapter(mTutorialAdapter);
         mRecycler.addItemDecoration(new RecyclerItemDecoration(this,RecyclerItemDecoration.VERTICAL_LIST));
 
-        mStudentAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<AssistStudentEntity>() {
+        mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
             @Override
-            public void onItemClick(RecyclerAdapter.ViewHolder holder, AssistStudentEntity assistStudentEntity) {
-                super.onItemClick(holder, assistStudentEntity);
-                TutorialTargetTaskParams params = new TutorialTargetTaskParams(assistStudentEntity.getStuMemberId(),mMemberId,getString(R.string.label_user_works,assistStudentEntity.getStuRealName()));
-                params.setParent(false);
-                params.setRole(TutorialRoleType.TUTORIAL_TYPE_TUTOR);
-                TutorialTargetTaskActivity.show(TutorialStudentActivity.this,params);
+            public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
+                if(isTutorial) {
+                    TaskRequirementActivity.show(TutorialTargetTaskActivity.this,entity);
+                }else{
+                    if (TaskSliderHelper.onTaskSliderListener != null) {
+                        String id = entity.getResId();
+                        if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
+                            String[] strings = id.split("-");
+                            String resId = strings[0];
+                            String resType = strings[1];
+                            String title = entity.getTitle();
+                            String resUrl = entity.getResUrl();
+                            String resThumbnailUrl = entity.getResThumbnailUrl();
+                            TaskSliderHelper.onTutorialMarkingListener.openCourseWareDetails(
+                                    TutorialTargetTaskActivity.this,false,
+                                    resId,Integer.parseInt(resType),
+                                    title,1,
+                                    resUrl,resThumbnailUrl);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                }
+            }
+
+            @Override
+            public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                }
+            }
+        });
+
+        mTutorialAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TaskEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
+                super.onItemClick(holder, entity);
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                }
             }
         });
 
@@ -169,7 +223,7 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
         mRefreshLayout.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
             @Override
             public void onHeaderRefresh(PullToRefreshView view) {
-                requestTutorData(false);
+                loadStudyTask();
             }
         });
 
@@ -177,7 +231,7 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
         mRefreshLayout.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
             @Override
             public void onFooterRefresh(PullToRefreshView view) {
-                requestTutorData(true);
+                loadStudyTask(true);
             }
         });
     }
@@ -185,30 +239,41 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
     @Override
     protected void initData() {
         super.initData();
-        requestTutorData(false);
+        loadStudyTask();
     }
 
     /**
-     * 请求课程
-     * @param moreData 是否更多数据
+     * 加载作业数据
      */
-    private void requestTutorData(boolean moreData){
-        mSearchKey = mSearchContent.getText().toString().trim();
+    private void loadStudyTask(){
+        loadStudyTask(false);
+    }
+
+    /**
+     * 加载作业数据
+     * @param moreData 是否加载更多
+     */
+    private void loadStudyTask(boolean moreData){
         if(moreData){
             currentPage ++;
-            mPresenter.requestTutorialStudentData(mMemberId,mSearchKey,currentPage);
         }else{
             currentPage = 0;
-            mPresenter.requestTutorialStudentData(mMemberId,mSearchKey,currentPage);
         }
+
+        String title = mSearchContent.getText().toString().trim();
+        mPresenter.requestWorkDataWithIdentityId(mMemberId, mTutorMemberId,
+                "", title,
+                "", "",
+                "", "",
+                MarkingStateType.MARKING_STATE_NORMAL, OrderByType.MARKING_ASC_TIME_DESC,
+                currentPage);
     }
 
     @Override
-    public void updateTutorialStudentView(List<AssistStudentEntity> entities) {
+    public void updateWorkDataWithIdentityIdView(List<TaskEntity> entities) {
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
-        mStudentAdapter.replace(entities);
+        mTutorialAdapter.replace(entities);
 
         if(EmptyUtil.isEmpty(entities)){
             // 数据为空
@@ -222,14 +287,14 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
     }
 
     @Override
-    public void updateMoreTutorialStudentView(List<AssistStudentEntity> entities) {
+    public void updateMoreWorkDataWithIdentityIdView(List<TaskEntity> entities) {
         // 关闭加载更多
         mRefreshLayout.onFooterRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
         // 设置数据
-        mStudentAdapter.add(entities);
-        mStudentAdapter.notifyDataSetChanged();
+        mTutorialAdapter.add(entities);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -237,11 +302,11 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
         if(viewId == R.id.tv_filter){
             // 搜索 兼容其它平板问题，收起软件盘
             KeyboardUtil.hideSoftInput(this);
-            requestTutorData(false);
+            loadStudyTask();
         }else if(viewId == R.id.iv_search_clear){
             // 删除关键字
             mSearchContent.getText().clear();
-            requestTutorData(false);
+            loadStudyTask();
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }
@@ -258,8 +323,8 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
      * 学生帮辅列表的入口
      * @param context
      */
-    public static void show(@NonNull final Context context, @NonNull TutorialStudentParams params){
-        Intent intent = new Intent(context,TutorialStudentActivity.class);
+    public static void show(@NonNull final Context context, @NonNull TutorialTargetTaskParams params){
+        Intent intent = new Intent(context,TutorialTargetTaskActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         intent.putExtras(bundle);

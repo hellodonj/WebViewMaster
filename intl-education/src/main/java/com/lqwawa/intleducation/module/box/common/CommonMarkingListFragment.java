@@ -208,11 +208,11 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
 
         if(EmptyUtil.isEmpty(entities)){
             // 数据为空
-            mRefreshLayout.setVisibility(View.GONE);
+            mRecycler.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }else{
             // 数据不为空
-            mRefreshLayout.setVisibility(View.VISIBLE);
+            mRecycler.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         }
     }
