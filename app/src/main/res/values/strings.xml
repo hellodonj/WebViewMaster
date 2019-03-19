@@ -1783,4 +1783,8 @@
     <string name="str_apply_mark">申请批阅</string>
     <string name="str_apply_mark_line_feed">申请\n批阅</string>
     <string name="str_assistance">帮辅</string>
+    <string name="str_check_mark_way">选择批阅方式</string>
+    <string name="str_point_reading_tips">可添加喇叭、画笔等</string>
+    <string name="str_record_course_tips">可录制解答过程和解答说明、添加喇叭、画笔等</string>
+    <string name="str_lecture_course">讲解课</string>
 </resources>

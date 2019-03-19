@@ -80,7 +80,17 @@ public class UploadParameter implements Serializable{
     private int ResCourseId;
     private int ResPropType;
     private int SubmitType;
+    //校本资源库的类型
+    public int schoolMaterialType;
 
+
+    public int getSchoolMaterialType() {
+        return schoolMaterialType;
+    }
+
+    public void setSchoolMaterialType(int schoolMaterialType) {
+        this.schoolMaterialType = schoolMaterialType;
+    }
     public int getSubmitType() {
         return SubmitType;
     }

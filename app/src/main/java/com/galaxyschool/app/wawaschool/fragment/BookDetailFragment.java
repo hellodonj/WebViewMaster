@@ -169,7 +169,7 @@ public class BookDetailFragment extends BookStoreDetailBaseFragment implements V
         params.put(Constants.BOOK_ID, bookId);
         params.put(Constants.SCHOOL_ID, schoolId);
         params.put("MemberId", getMemeberId());
-        String schoolMaterialType = "1,2,3,4,5,6,7,8,9,10,11";
+        String schoolMaterialType = "1,2,3,4,5,6,7,8,9,10,11,12";
         if (isPickSchoolResource) {
             if (getArguments() != null && getArguments().containsKey(MediaListFragment
                     .EXTRA_SHOW_MEDIA_TYPES)) {
@@ -197,7 +197,7 @@ public class BookDetailFragment extends BookStoreDetailBaseFragment implements V
         Map<String, Object> params = new HashMap();
         params.put(Constants.BOOK_ID, bookId);
         params.put(Constants.SCHOOL_ID, schoolId);
-        params.put("SchoolMaterialType", "1,2,3,4,5,6,7,8,9,10,11");
+        params.put("SchoolMaterialType", "1,2,3,4,5,6,7,8,9,10,11,12");
         String url = ServerUrl.GET_MY_COLLECTION_BOOK_CATALOG_URL;
         loadCalalog(params, url);
     }

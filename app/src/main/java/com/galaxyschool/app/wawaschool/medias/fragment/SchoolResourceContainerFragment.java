@@ -509,6 +509,7 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
 
         private final String[] TITLES = {
                 getString(R.string.lesson_book),
+                getString(R.string.str_lecture_course),
                 getString(R.string.microcourse),
                 getString(R.string.task_order),
                 getString(R.string.str_teaching_material),
@@ -546,8 +547,8 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
     }
 
     private void initFrg(List<Fragment> mFragmentList) {
-
         mFragmentList.add(new MyRemoteBookListFragment());
+        mFragmentList.add(new MyRemoteLQCourseListFragment());
         mFragmentList.add(new MyRemoteLQCourseListFragment());
         mFragmentList.add(new MyTaskOrderFragment());
         mFragmentList.add(new MyTaskOrderFragment());
@@ -560,12 +561,19 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
         mFragmentList.add(new MyRemoteDOCListFragment());
 
         boolean isTeachingMaterial = false;
+        boolean isLectureCourse = true;
         for (Fragment fragment : mFragmentList) {
             if (fragment instanceof MyTaskOrderFragment) {
                 if (isTeachingMaterial) {
                     ((MyTaskOrderFragment) fragment).setIsTeachingMarterialType(true);
                 }
                 isTeachingMaterial = true;
+            }
+            if (fragment instanceof MyRemoteLQCourseListFragment) {
+                if (isLectureCourse) {
+                    ((MyRemoteLQCourseListFragment)fragment).setLectureCourse(true);
+                }
+                isLectureCourse = false;
             }
             fragment.setArguments(getArguments());
         }
@@ -987,42 +995,31 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
         mSchoolResourceTabs.notifyDataSetChanged();
     }
 
-    /**
-     * tab 下标的标识
-     * 0 听说课
-     * 1 读写单
-     * 2 智能教材
-     * 3、教案
-     * 4、视频
-     * 5、pdf
-     * 6、ppt
-     * 7、图片
-     * 8、音频
-     * 9、Doc
-     */
     private int transferTabIndex(int position) {
         if (position == MediaType.SCHOOL_PPT) {
-            return 7;
-        } else if (position == MediaType.SCHOOL_PDF) {
-            return 6;
-        } else if (position == MediaType.SCHOOL_PICTURE) {
             return 8;
-        } else if (position == MediaType.SCHOOL_VIDEO) {
-            return 5;
-        } else if (position == MediaType.SCHOOL_AUDIO) {
+        } else if (position == MediaType.SCHOOL_PDF) {
+            return 7;
+        } else if (position == MediaType.SCHOOL_PICTURE) {
             return 9;
-        } else if (position == MediaType.SCHOOL_COURSEWARE) {
-            return 1;
-        } else if (position == MediaType.SCHOOL_TASKORDER) {
-            return 2;
-        } else if (position == MediaType.SCHOOL_TEACHINGMATERIAL) {
-            return 3;
-        } else if (position == MediaType.SCHOOL_LESSON) {
-            return 4;
-        } else if (position == MediaType.SCHOOL_DOC) {
+        } else if (position == MediaType.SCHOOL_VIDEO) {
+            return 6;
+        } else if (position == MediaType.SCHOOL_AUDIO) {
             return 10;
+        } else if (position == MediaType.SCHOOL_COURSEWARE) {
+            return 2;
+        } else if (position == MediaType.SCHOOL_TASKORDER) {
+            return 3;
+        } else if (position == MediaType.SCHOOL_TEACHINGMATERIAL) {
+            return 4;
+        } else if (position == MediaType.SCHOOL_LESSON) {
+            return 5;
+        } else if (position == MediaType.SCHOOL_DOC) {
+            return 11;
         } else if (position == MediaType.SCHOOL_LESSON_BOOK) {
             return 0;
+        } else if (position == MediaType.SCHOOL_LECTURE_COURSE) {
+            return 1;
         } else {
             return -1;
         }
