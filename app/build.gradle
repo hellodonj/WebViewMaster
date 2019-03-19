@@ -50,8 +50,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 560
-        versionName "5.13.15"
+        versionCode 561
+        versionName "5.13.17"
 
         multiDexEnabled true
         ndk {
