@@ -803,7 +803,7 @@ public class DubbingActivity extends AppCompatActivity implements
                     if (isOnlineOpen) {
                         //播放原视频
                         dubbingItemView.getRecordBtn().setImageResource(item.isRecording() ?
-                                R.drawable.icon_record_playing : R.drawable.icon_record);
+                                R.drawable.icon_record_playing : R.drawable.icon_q_play);
                     } else {
                         //录制
                         dubbingItemView.getRecordBtn().setImageResource(item.isRecording() ?
