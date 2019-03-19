@@ -503,6 +503,8 @@ public class UserHelper {
         }else if(taskType == 5){
             return 5;
         }
+
+        return 0;
     }
 
    
