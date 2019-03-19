@@ -32,6 +32,8 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
@@ -621,7 +623,9 @@ public class TutorialHelper {
         requestVo.addParams("StartTimeBegin", StartTimeBegin);
         requestVo.addParams("StartTimeEnd", StartTimeEnd);
         requestVo.addParams("OrderByType", OrderByType);
-        requestVo.addParams("State", State);
+        if(State != MarkingStateType.MARKING_STATE_NORMAL) {
+            requestVo.addParams("State", State);
+        }
         requestVo.addParams("Pager", new PagerArgs(pageIndex, pageSize), true);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestWorkTaskList);
@@ -861,9 +865,91 @@ public class TutorialHelper {
     public static void requestAddAssistTask(@NonNull String object,
                                            @NonNull DataSource.Callback<Boolean> callback) {
         // 准备数据
+        QuestionResourceModel model = JSON.parseObject(object, QuestionResourceModel.class);
+        RequestVo requestVo = new RequestVo();
+        String AssMemberId = model.getAssMemberId();
+        if(EmptyUtil.isNotEmpty(AssMemberId)){
+            requestVo.addParams("AssMemberId",AssMemberId);
+        }
+
+        String StuMemberId = model.getStuMemberId();
+        if(EmptyUtil.isNotEmpty(StuMemberId)){
+            requestVo.addParams("StuMemberId",StuMemberId);
+        }
+
+        String Title = model.getTitle();
+        if(EmptyUtil.isNotEmpty(Title)){
+            requestVo.addParams("Title",Title);
+        }
+
+        String ResId = model.getResId();
+        if(EmptyUtil.isNotEmpty(ResId)){
+            requestVo.addParams("ResId",ResId);
+        }
+
+        String ResUrl = model.getResUrl();
+        if(EmptyUtil.isNotEmpty(ResUrl)){
+            requestVo.addParams("ResUrl",ResUrl);
+        }
+
+        int T_TaskId = model.getT_TaskId();
+        if(T_TaskId > 0){
+            requestVo.addParams("T_TaskId",T_TaskId);
+        }
+
+        int T_TaskType = model.getT_TaskType();
+        if(T_TaskType > 0){
+            requestVo.addParams("T_TaskType",T_TaskType);
+        }
+
+        int T_CommitTaskId = model.getT_CommitTaskId();
+        if(T_CommitTaskId > 0){
+            requestVo.addParams("T_CommitTaskId",T_CommitTaskId);
+        }
+
+        int T_CommitTaskOnlineId = model.getT_CommitTaskOnlineId();
+        if(T_CommitTaskOnlineId > 0){
+            requestVo.addParams("T_CommitTaskOnlineId",T_CommitTaskOnlineId);
+        }
+
+        String T_EQId = model.getT_EQId();
+        if(EmptyUtil.isNotEmpty(T_EQId)){
+            requestVo.addParams("T_EQId",T_EQId);
+        }
+
+        int T_AirClassId = model.getT_AirClassId();
+        if(T_AirClassId > 0){
+            requestVo.addParams("T_AirClassId",T_AirClassId);
+        }
+
+        String T_ClassId = model.getT_ClassId();
+        if(EmptyUtil.isNotEmpty(T_ClassId)){
+            requestVo.addParams("T_ClassId",T_ClassId);
+        }
+
+        String T_ClassName = model.getT_ClassName();
+        if(EmptyUtil.isNotEmpty(T_ClassName)){
+            requestVo.addParams("T_ClassName",T_ClassName);
+        }
+
+        String T_CourseId = model.getT_CourseId();
+        if(EmptyUtil.isNotEmpty(T_CourseId)){
+            requestVo.addParams("T_CourseId",T_CourseId);
+        }
+
+        String T_CourseName = model.getT_CourseName();
+        if(EmptyUtil.isNotEmpty(T_CourseName)){
+            requestVo.addParams("T_CourseName",T_CourseName);
+        }
+
+        int T_ResCourseId = model.getT_ResCourseId();
+        if(T_ResCourseId > 0){
+            requestVo.addParams("T_ResCourseId",T_ResCourseId);
+        }
+
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddAssistTask);
         params.setAsJsonContent(true);
-        params.setBodyContent(object);
+        params.setBodyContent(requestVo.getParams());
         params.setConnectTimeout(1000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {

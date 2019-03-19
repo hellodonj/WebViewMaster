@@ -26,6 +26,9 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
+import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskActivity;
+import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
 
 import java.util.Date;
 import java.util.List;
@@ -152,8 +155,10 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorEntity tutorEntity) {
                 super.onItemClick(holder, tutorEntity);
-                // TODO 进入批阅列表页面
-                UIUtil.showToastSafe("进入批阅列表页面");
+                TutorialTargetTaskParams params = new TutorialTargetTaskParams(mMemberId,tutorEntity.getTutorMemberId(),getString(R.string.label_committed_works,tutorEntity.getTutorName()));
+                params.setParent(isParent);
+                params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                TutorialTargetTaskActivity.show(StudentTutorialActivity.this,params);
             }
         });
 
@@ -206,11 +211,11 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
 
         if(EmptyUtil.isEmpty(entities)){
             // 数据为空
-            mRefreshLayout.setVisibility(View.GONE);
+            mRecycler.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }else{
             // 数据不为空
-            mRefreshLayout.setVisibility(View.VISIBLE);
+            mRecycler.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         }
     }
