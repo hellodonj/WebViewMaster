@@ -358,7 +358,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                     public void onDataLoaded(LqTaskCommitListVo lqTaskCommitListVo) {
                         pullToRefreshView.onHeaderRefreshComplete();
                         mLqTaskCommitListVo = lqTaskCommitListVo;
-                        filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
+                        // filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
                         committedTasksAdapter.setData(getCommitTaskList(mLqTaskCommitListVo.getListCommitTaskOnline()));
                         committedTasksAdapter.setDoWorkListener(doWorkListener);
                         committedTasksAdapter.setAnswerData(mAnswerData);

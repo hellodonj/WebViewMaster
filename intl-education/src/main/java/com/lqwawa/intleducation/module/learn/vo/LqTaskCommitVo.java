@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.module.learn.adapter.CommittedTasksAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,8 @@ public class LqTaskCommitVo extends BaseVo {
     private String TaskScoreRemark;
     // 自动评测单页的分数
     private String AutoEvalContent;
+    // V5.14新添加的字段
+    private String ResourceId;
 
     // 标志删除位
     private boolean isDeleteTag;
@@ -373,5 +376,12 @@ public class LqTaskCommitVo extends BaseVo {
         }
 
         return false;
+    }
+
+    /**
+     * 是否是任务单的自动批阅Cell
+     */
+    public boolean isAutoMark(){
+        return CommitType == 6 || EmptyUtil.isEmpty(StudentResId);
     }
 }

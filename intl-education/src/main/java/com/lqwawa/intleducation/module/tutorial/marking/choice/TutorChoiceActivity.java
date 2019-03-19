@@ -67,6 +67,14 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                     (EmptyUtil.isEmpty(mCourseId) && EmptyUtil.isEmpty(mChapterId))){
                 return false;
             }
+
+            if(Integer.parseInt(mCourseId) <= 0){
+                mCourseId = "";
+            }
+
+            if(Integer.parseInt(mChapterId) <= 0){
+                mChapterId = "";
+            }
         }
         return super.initArgs(bundle);
     }

@@ -434,8 +434,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType);
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo) || EmptyUtil.isEmpty(sectionResListVo)) return;
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
-
-        if (sectionResListVo.isAutoMark()) {
+        // V5.14列表兼容两种数据
+        // if (sectionResListVo.isAutoMark()) {
+        if (studentCommit.isAutoMark()) {
             // 做任务单 自动批阅的类型
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
 
@@ -701,6 +702,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
             } else if (sectionResListVo.getTaskType() == 3) {
+                // V5.14列表兼容两种数据
+                // if (sectionResListVo.isAutoMark()) {
                 if (sectionResListVo.isAutoMark()) {
                     // ShowWarning
                     // boolean ignore = SPUtil.getInstance().getBoolean(SharedConstant.KEY_AUTO_MARK_WARNING);
@@ -971,11 +974,11 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         if (EmptyUtil.isNotEmpty(data)) {
             // 循环遍历提交列表，复述课件提交和语音评测
             for (LqTaskCommitVo vo : data) {
-                if(sectionResListVo.isAutoMark() &&
+                /*if(sectionResListVo.isAutoMark() &&
                         EmptyUtil.isNotEmpty(vo.getStudentResId())){
                     // 过滤人工批阅的
                     continue;
-                }
+                }*/
 
                 CommitTask commitTask = CommitTask.buildVo(vo);
                 commitTask.setCommitTaskId(commitTask.getId());
@@ -1003,7 +1006,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     CommitTask maxCommit = retellFilterMap.get(studentId);
                     if (EmptyUtil.isEmpty(maxCommit)) {
                         // 第一次提交，put
-                        if (sectionResListVo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                        if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
                             // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
                             retellFilterMap.put(studentId, commitTask);
                         }
@@ -1016,7 +1019,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         if ((Double.parseDouble(commitTask.getTaskScore()) >
                                 Double.parseDouble(maxCommit.getTaskScore()))) {
                             // 如果遍历到的提交记录分数大于之前保存的，覆盖保存
-                            if (sectionResListVo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                            if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
                                 // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
                                 retellFilterMap.put(studentId, commitTask);
                             }
@@ -1071,7 +1074,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         /*enterScoreStatisticsActivity(this,retellArrays,evalArrays,classAllMemberCount,
                 resultRoleType,scoringRule,resultMark,null);*/
 
-        if (sectionResListVo.getTaskType() == 3 && sectionResListVo.isAutoMark()) {
+        if (hasAutoMark) {
             // 做任务单
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
             LearningTaskHelper.requestResourceDetailById(resourceId, true, new DataSource.Callback<LQResourceDetailVo>() {

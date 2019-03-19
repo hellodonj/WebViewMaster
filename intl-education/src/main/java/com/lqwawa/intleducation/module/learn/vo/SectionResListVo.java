@@ -269,7 +269,7 @@ public class SectionResListVo extends BaseVo {
 
     public String getPoint() {
         // 如果不是自动批阅类型，point = null
-        if(!isAutoMark()) point = "";
+        // if(!isAutoMark()) point = "";
         return point;
     }
 
@@ -345,7 +345,8 @@ public class SectionResListVo extends BaseVo {
      * 是否是任务单的自动批阅
      */
     public boolean isAutoMark(){
-        // return taskType == 3 && EmptyUtil.isNotEmpty(point);
-        return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
+        return taskType == 3 && EmptyUtil.isNotEmpty(point);
+        // CommitType == 6 || (CommitType != 6 && EmptyUtil.isEmpty(studentResId))
+        // return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
     }
 }
