@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.alibaba.fastjson.JSONArray;
 import com.icedcap.dubbing.audio.AudioRecordHelper;
-import com.icedcap.dubbing.listener.OnAudioEventListener;
 import com.icedcap.dubbing.entity.DubbingEntity;
 import com.icedcap.dubbing.entity.SrtEntity;
 import com.icedcap.dubbing.listener.OnVideoEventListener;
@@ -59,8 +57,7 @@ import java.util.List;
 import static com.icedcap.dubbing.view.DubbingVideoView.MODE_DUBBING;
 import static com.icedcap.dubbing.view.DubbingVideoView.MODE_IDLE;
 
-public class DubbingActivity extends AppCompatActivity implements
-        View.OnClickListener, OnAudioEventListener {
+public class DubbingActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int PERMISSION_REQUEST_CODE = 0x520;
     private static final int UPDATE_PROGRESS = 0x1024;
     private static final int MATERIAL = 1;
@@ -788,7 +785,7 @@ public class DubbingActivity extends AppCompatActivity implements
 
         commonAdapter = new CommonAdapter<DubbingEntity>(this, R.layout.item_dubbing_srt, dubbingEntityList) {
             @Override
-            protected void convert(ViewHolder viewHolder, DubbingEntity item, int position) {
+            protected void convert(ViewHolder viewHolder, DubbingEntity item, final int position) {
                 DubbingItemView dubbingItemView = viewHolder.getView(R.id.dubbing_srt_view);
                 if (dubbingItemView != null && item != null) {
                     dubbingItemView.setBackgroundHighLight(item.isSelect());
@@ -812,7 +809,23 @@ public class DubbingActivity extends AppCompatActivity implements
                                 R.drawable.icon_record_pause : R.drawable.icon_record);
                     }
                     dubbingItemView.setScore(item.getScore(), item.isRecord());
-                    dubbingItemView.setOnAudioEventListener(DubbingActivity.this);
+                    dubbingItemView.getPlayBtn().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (curPosition == position && dubbingEntityList.get(position).isSelect()) {
+                                onAudioPlay();
+                            }
+                        }
+                    });
+
+                    dubbingItemView.getRecordBtn().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (curPosition == position && dubbingEntityList.get(position).isSelect()) {
+                                onAudioRecord();
+                            }
+                        }
+                    });
                 }
             }
         };
@@ -897,7 +910,6 @@ public class DubbingActivity extends AppCompatActivity implements
     }
 
 
-    @Override
     public void onAudioRecord() {
         stopPlayRecordingAudio();
         if (isOnlineOpen) {
@@ -913,7 +925,6 @@ public class DubbingActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
     public void onAudioPlay() {
         stopPlayRecordingAudio();
         startPlayRecordAudio(true);

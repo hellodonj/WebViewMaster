@@ -3,14 +3,12 @@ package com.icedcap.dubbing.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.icedcap.dubbing.R;
-import com.icedcap.dubbing.listener.OnAudioEventListener;
 
 import java.text.DecimalFormat;
 
@@ -30,11 +28,6 @@ public class DubbingItemView extends LinearLayout {
 
     private int max;
     private DecimalFormat decimalFormat;
-    private OnAudioEventListener listener;
-
-    public void setOnAudioEventListener(OnAudioEventListener listener) {
-        this.listener = listener;
-    }
 
     public DubbingItemView(final Context context) {
         this(context, null);
@@ -50,23 +43,6 @@ public class DubbingItemView extends LinearLayout {
         recordBtn = (ImageView) findViewById(R.id.iv_record);
         timeTextView = (TextView) findViewById(R.id.tv_time);
         scoreTextView = (TextView) findViewById(R.id.tv_score);
-
-        playBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onAudioPlay();
-                }
-            }
-        });
-        recordBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onAudioRecord();
-                }
-            }
-        });
         // 格式化小数
         decimalFormat = new DecimalFormat("0.0");
     }
