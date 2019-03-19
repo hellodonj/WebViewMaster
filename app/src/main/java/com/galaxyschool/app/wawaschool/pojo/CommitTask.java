@@ -71,6 +71,9 @@ public class CommitTask implements Serializable, Parcelable {
     private String level;
     private int airClassId;
     private boolean isAssistantMark;//帮辅批阅
+    private int EQId;//任务的题号
+    private int commitTaskOnlineId;
+
     /**
      * @return 是否是语音评测类型
      */
@@ -122,6 +125,22 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getEQId() {
+        return EQId;
+    }
+
+    public void setEQId(int EQId) {
+        this.EQId = EQId;
+    }
+
+    public int getCommitTaskOnlineId() {
+        return commitTaskOnlineId;
+    }
+
+    public void setCommitTaskOnlineId(int commitTaskOnlineId) {
+        this.commitTaskOnlineId = commitTaskOnlineId;
     }
 
     public boolean isAssistantMark() {
@@ -558,6 +577,8 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeInt(this.airClassId);
         dest.writeByte(this.isAssistantMark ? (byte) 1 : (byte) 0);
         dest.writeInt(this.Id);
+        dest.writeInt(this.EQId);
+        dest.writeInt(this.commitTaskOnlineId);
     }
 
     public CommitTask() {
@@ -611,6 +632,8 @@ public class CommitTask implements Serializable, Parcelable {
         this.airClassId = in.readInt();
         this.isAssistantMark = in.readByte() != 0;
         this.Id = in.readInt();
+        this.EQId = in.readInt();
+        this.commitTaskOnlineId = in.readInt();
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

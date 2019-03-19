@@ -1921,7 +1921,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             answerCardPopWindow.setRequestCodeData(requestCode, resultData);
         }
 
-        if (mParam != null
+        if (resultData != null
+                && mParam != null
                 && mParam.isAssistanceModel
                 && (requestCode == ResourceBaseFragment.REQUEST_CODE_RETELLCOURSE || requestCode == 105 || requestCode == REQUEST_CODE_DO_SLIDE_TOAST)) {
             //接口返回的路径

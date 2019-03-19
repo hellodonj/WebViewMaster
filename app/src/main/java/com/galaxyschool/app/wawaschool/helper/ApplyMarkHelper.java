@@ -174,6 +174,9 @@ public class ApplyMarkHelper {
                         if (flag) {
                             imageUrl = helper.getChangeIPUrlArray(paths);
                         }
+                        if (cardParam != null) {
+                            cardParam.setScreenType(courseData.screentype);
+                        }
                         doApplyMarkTask(mContext, cardParam, null, imageUrl);
                     }
                 })

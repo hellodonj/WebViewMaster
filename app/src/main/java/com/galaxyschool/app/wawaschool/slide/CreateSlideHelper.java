@@ -605,6 +605,7 @@ public class CreateSlideHelper {
 			//任务单答题卡
 			ExerciseAnswerCardParam cardParam = param.playbackParam.exerciseCardParam;
 			if (cardParam != null) {
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_BUTTON, cardParam.isShowExerciseButton());
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,cardParam.isShowExerciseNode());
 				extras.putString(PlaybackActivity.EXTRA_EXERCISE_ANSWER_STRING, cardParam.getStudentCommitAnswerString());

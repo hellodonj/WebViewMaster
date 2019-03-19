@@ -1215,19 +1215,9 @@ public class DoCourseHelper {
         }
 
         param.mRayMenusV = rayMenuV;
-        int[] rayMenuH = null;
-        if (isTeacherMark) {
-            rayMenuH = new int[]{
-                    BaseSlideManager.MENU_ID_TEXT_POINTER,
-                    BaseSlideManager.MENU_ID_CURVE,
-                    BaseSlideManager.MENU_ID_LASER,
-                    BaseSlideManager.MENU_ID_ERASER};
-        } else {
-            rayMenuH = new int[]{
-                    BaseSlideManager.MENU_ID_CURVE,
-                    BaseSlideManager.MENU_ID_LASER,
-                    BaseSlideManager.MENU_ID_ERASER};
-        }
+        int[] rayMenuH = {BaseSlideManager.MENU_ID_CURVE,
+                BaseSlideManager.MENU_ID_LASER,
+                BaseSlideManager.MENU_ID_ERASER};
         param.mRayMenusH = rayMenuH;
         return param;
     }

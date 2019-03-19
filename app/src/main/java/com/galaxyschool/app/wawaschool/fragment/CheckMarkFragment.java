@@ -54,6 +54,7 @@ import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -219,7 +220,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         tvCourseName.setText(title);
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
-        if (commitTask != null && !isAssistanceModel) {
+        if (commitTask != null) {
             if (TextUtils.equals(getMemeberId(), commitTask.getStudentId())) {
                 markModel = new QuestionResourceModel();
                 markModel.setTitle(commitTask.getStudentResTitle());
@@ -243,10 +244,19 @@ public class CheckMarkFragment extends ContactsListFragment {
                     if (!TextUtils.isEmpty(CommitTaskId)) {
                         markModel.setT_CommitTaskOnlineId(Integer.valueOf(CommitTaskId));
                     }
+                } else if (isAssistanceModel) {
+                    if (commitTask.getCommitTaskId() > 0) {
+                        markModel.setT_CommitTaskId(commitTask.getCommitTaskId());
+                    } else if (commitTask.getCommitTaskOnlineId() > 0){
+                        markModel.setT_CommitTaskOnlineId(commitTask.getCommitTaskOnlineId());
+                    }
                 } else {
                     if (!TextUtils.isEmpty(CommitTaskId)) {
                         markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
                     }
+                }
+                if (commitTask.getEQId() > 0){
+                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
                 }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
@@ -1184,6 +1194,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                 ApplyMarkHelper helper = new ApplyMarkHelper();
                 helper.uploadCourse(getActivity(),slidePath,coursePath,commitTask.getId(),false);
             }
+        } else if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.TRIGGER_UPDATE_LIST_DATA)) {
+            loadCommonData();
         }
     }
 }
