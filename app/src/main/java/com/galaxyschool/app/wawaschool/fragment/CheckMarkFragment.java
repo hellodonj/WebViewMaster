@@ -303,7 +303,7 @@ public class CheckMarkFragment extends ContactsListFragment {
 
                     //帮辅
                     TextView assistanceTextV = (TextView) view.findViewById(R.id.tv_assistance);
-                    if (data.getReviewFlag() == 1) {
+                    if (showReviewFlagPermiss(data)) {
                         assistanceTextV.setVisibility(View.VISIBLE);
                     } else {
                         assistanceTextV.setVisibility(View.INVISIBLE);
@@ -492,6 +492,18 @@ public class CheckMarkFragment extends ContactsListFragment {
 
             setCurrAdapterViewHelper(listView, listViewHelper);
         }
+    }
+
+    private boolean showReviewFlagPermiss(CheckMarkInfo.ModelBean data){
+        boolean hasPermission = false;
+        if (commitTask == null) {
+            return hasPermission;
+        }
+        if (TextUtils.equals(getMemeberId(),commitTask.getStudentId())
+                && data.getReviewFlag() == 1) {
+            hasPermission = true;
+        }
+        return hasPermission;
     }
 
     private void initAssistantMarkData() {
