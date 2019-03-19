@@ -68,11 +68,13 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 return false;
             }
 
-            if(Integer.parseInt(mCourseId) <= 0){
+            if(EmptyUtil.isNotEmpty(mCourseId)
+                    && Integer.parseInt(mCourseId) <= 0){
                 mCourseId = "";
             }
 
-            if(Integer.parseInt(mChapterId) <= 0){
+            if(EmptyUtil.isNotEmpty(mCourseId) &&
+                    Integer.parseInt(mChapterId) <= 0){
                 mChapterId = "";
             }
         }

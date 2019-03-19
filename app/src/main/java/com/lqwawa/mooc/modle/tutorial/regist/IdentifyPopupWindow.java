@@ -47,7 +47,7 @@ public class IdentifyPopupWindow extends PopupWindow {
         List<IdentifyEntity> entities = new ArrayList<>();
         entities.add(new IdentifyEntity(IDType.ID_TYPE_IDENTITY_CARD,UIUtil.getString(R.string.label_identify_card)));
         entities.add(new IdentifyEntity(IDType.ID_TYPE_PASSPORT,UIUtil.getString(R.string.label_identify_passport)));
-        ArrayAdapter adapter = new ArrayAdapter(UIUtil.getContext(),android.R.layout.simple_list_item_1,entities);
+        ArrayAdapter adapter = new ArrayAdapter(UIUtil.getContext(),R.layout.item_text_layout,R.id.tv_content,entities);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

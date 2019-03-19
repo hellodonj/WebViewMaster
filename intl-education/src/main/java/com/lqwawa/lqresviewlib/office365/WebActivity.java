@@ -58,7 +58,7 @@ public class WebActivity extends BaseActivity{
         }
 
         if(bodyHtml != null && webView != null) {
-            webView.loadData(bodyHtml,"text/html",null);
+            webView.loadData(bodyHtml,"text/html;charset=UTF-8",null);
             webView.setWebViewClient(new NoAdWebViewClient(this, webView));
         }
         lr_back_iv = (ImageView)findViewById(R.id.lr_back_iv);

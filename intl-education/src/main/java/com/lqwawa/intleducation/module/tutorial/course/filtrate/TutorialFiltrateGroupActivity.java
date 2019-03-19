@@ -109,7 +109,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
-        mTopBar.setTitle(R.string.title_add_tutorial);
+        mTopBar.setTitle(R.string.title_tutorial_group);
 
         mHeaderLayout = (LinearLayout) findViewById(R.id.header_layout);
         mTabVector1 = (LinearLayout) findViewById(R.id.tab_vector_1);

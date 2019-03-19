@@ -22,6 +22,7 @@
     <string name="title_fill_information">填写资料</string>
     <string name="title_tutorial_audit">提交申请</string>
     <string name="title_add_tutorial">添加帮辅</string>
+    <string name="title_tutorial_group">帮辅群</string>
     <string name="title_choice_tutor">选择帮辅老师</string>
     <string name="title_submit_succeed">提交成功</string>
     <string name="title_watch_task_requirement">查看任务要求</string>

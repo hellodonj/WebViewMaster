@@ -171,7 +171,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         // 多少人浏览
         StringUtil.fillSafeTextView(mTvViewerCount,getString(R.string.label_viewer_count,entity.getBrowseNum()));
         // 多少人关注
-        StringUtil.fillSafeTextView(mTvAttentionCount,getString(R.string.label_viewer_count,entity.getAttentionNumber()));
+        StringUtil.fillSafeTextView(mTvAttentionCount,getString(R.string.label_attention_count,entity.getAttentionNumber()));
 
         // 加载头像
         thumbnailManager.displayUserIcon(AppSettings.getFileUrl(

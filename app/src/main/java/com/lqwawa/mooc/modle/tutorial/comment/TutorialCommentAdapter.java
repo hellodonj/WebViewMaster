@@ -76,10 +76,10 @@ public class TutorialCommentAdapter extends RecyclerAdapter<TutorCommentEntity> 
             if(isTutor) {
                 mTvStatus.setVisibility(View.VISIBLE);
                 if (entity.isShowing()) {
-                    mTvStatus.setText(R.string.label_showing);
+                    mTvStatus.setText(R.string.label_hide);
                     mTvStatus.setActivated(true);
                 } else {
-                    mTvStatus.setText(R.string.label_hide);
+                    mTvStatus.setText(R.string.label_showing);
                     mTvStatus.setActivated(false);
                 }
             }else{
