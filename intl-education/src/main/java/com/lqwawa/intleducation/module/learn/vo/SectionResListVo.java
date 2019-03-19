@@ -74,6 +74,7 @@ public class SectionResListVo extends BaseVo {
     private String courseName;
     private String classId;
     private String className;
+    private int lqwawaType;
 
 
     public String getTaskId() {
@@ -339,6 +340,14 @@ public class SectionResListVo extends BaseVo {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public int getLqwawaType() {
+        return lqwawaType;
+    }
+
+    public void setLqwawaType(int lqwawaType) {
+        this.lqwawaType = lqwawaType;
     }
 
     /**

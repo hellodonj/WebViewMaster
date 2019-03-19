@@ -597,6 +597,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
             task.setClassId(classId);
             task.setClassName(mCourseParams.getClassName());
+            task.setLqwawaType(UserHelper.transferResourceTypeWithMooc(task.getTaskType()));
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }

@@ -481,5 +481,29 @@ public class UserHelper {
         return false;
     }
 
+    /**
+     * KEY_WATCH_COURSE = 9; 看课件
+     * KEY_RELL_COURSE = 5;复述课件
+     * KEY_TASK_ORDER = 8;任务单
+     * KEY_TEXT_BOOK = 14;看课本 // V5.14兼容Q配音的类型
+     *
+     *
+     * @param taskType mooc学习任务类型
+     * @return
+     */
+    public static int transferResourceTypeWithMooc(int taskType){
+        if(taskType == 1){
+            return 14;
+        }else if(taskType == 2){
+            return 5;
+        }else if(taskType == 3){
+            return 8;
+        }else if(taskType == 4){
+            return 9;
+        }else if(taskType == 5){
+            return 5;
+        }
+    }
+
    
 }
