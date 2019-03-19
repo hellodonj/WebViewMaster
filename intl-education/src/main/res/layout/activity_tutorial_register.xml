@@ -235,14 +235,18 @@
                         android:text="@string/label_identify_type"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
+                        android:layout_gravity="center_vertical"
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/identify_content_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3">
+                        android:layout_weight="3"
+                        android:layout_gravity="center_vertical">
 
                         <TextView
+                            android:id="@+id/tv_type_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -251,7 +255,8 @@
                             android:text="@string/label_identify_card"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                             android:textColor="@color/textPrimary"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:layout_gravity="center_vertical"/>
 
                         <FrameLayout
                             android:layout_width="wrap_content"
