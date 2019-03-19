@@ -1549,8 +1549,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     }
 
     private void edit() {
-        Dialog dialog = showLoadingDialog();
-        dialog.setCancelable(false);
+        if (isAnswerCardQuestion || applyMark) {
+
+        } else {
+            Dialog dialog = showLoadingDialog();
+            dialog.setCancelable(false);
+        }
         final DATParam datParam = new DATParam();
         datParam.mFileSuffix = Utils.COURSE_SUFFIX;
         datParam.mUrl = (mUrl.endsWith("/") ? mUrl.substring(0,

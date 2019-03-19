@@ -516,6 +516,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         if (imageView != null) {
                             imageView.setOnClickListener(v -> {
                                 //缩略图的点击事件
+                                updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 onViewClick(data,true);
                             });
                         }
