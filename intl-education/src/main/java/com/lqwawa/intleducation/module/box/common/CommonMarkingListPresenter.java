@@ -34,7 +34,7 @@ public class CommonMarkingListPresenter extends BasePresenter<CommonMarkingListC
                 assistStudent_Id, title,
                 createTimeBegin,createTimeEnd,
                 startTimeBegin, startTimeEnd,
-                state, orderByType, pageIndex, AppConfig.PAGE_SIZE, new DataSource.Callback<List<TaskEntity>>() {
+                state, orderByType, pageIndex, pageSize, new DataSource.Callback<List<TaskEntity>>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
                         final CommonMarkingListContract.View view = getView();

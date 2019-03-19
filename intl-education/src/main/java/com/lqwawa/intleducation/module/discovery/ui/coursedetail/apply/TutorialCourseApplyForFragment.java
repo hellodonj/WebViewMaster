@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +135,16 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                 mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
             }
         });
+
         fillSpinnerBottom(mProvinceSpinner);
+        if(EmptyUtil.isNotEmpty(provinces)) {
+            mProvinceSpinner.setSelectedIndex(0);
+
+            int position = mProvinceSpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = provinces.get(position);
+            mCurrentProvinceBean = bean;
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
+        }
     }
 
     @Override
@@ -149,6 +159,14 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             }
         });
         fillSpinnerBottom(mCitySpinner);
+        if(EmptyUtil.isNotEmpty(cities)) {
+            mCitySpinner.setSelectedIndex(0);
+
+            int position = mCitySpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = cities.get(position);
+            mCurrentCityBean = bean;
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT,bean.getValue());
+        }
     }
 
     @Override
@@ -162,6 +180,12 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             }
         });
         fillSpinnerBottom(mDistrictSpinner);
+        if(EmptyUtil.isNotEmpty(districts)) {
+            mDistrictSpinner.setSelectedIndex(0);
+            int position = mDistrictSpinner.getSelectedIndex();
+            LocationEntity.LocationBean bean = districts.get(position);
+            mCurrentDistrictBean = bean;
+        }
     }
 
     /**
@@ -173,7 +197,9 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         spinner.getLocationOnScreen(locationOnScreen);
         int parentVerticalOffset = locationOnScreen[NiceSpinner.VERTICAL_OFFSET];
         // 应该设置的最大高度
-        int maxSpinnerHeight = getDialog().getWindow().getWindowManager().getDefaultDisplay().getHeight() - parentVerticalOffset - spinner.getMeasuredHeight();
+        Display display = getDialog().getWindow().getWindowManager().getDefaultDisplay();
+        int height = display.getHeight();
+        int maxSpinnerHeight = height - parentVerticalOffset - spinner.getMeasuredHeight();
         // 实际设置的高度
         int spinnerHeight = Math.max(maxSpinnerHeight,parentVerticalOffset);
         // 补偿策略
