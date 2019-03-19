@@ -33,6 +33,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.ExpandDataAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.ExpandListViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
+import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.BookCatalog;
@@ -92,6 +93,7 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
     private Map<String, Boolean> catalogSelectedMap = new HashMap<String, Boolean>();
     private DefaultUploadListener<String> defaultListener = new DefaultUploadListener<String>();
     private boolean isUploadStudyCard;
+    private boolean isUploadCourse;
     private UploadParameter mUploadParameter;
 
     @Override
@@ -131,7 +133,13 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
                 int resType = courseData.type % ResType.RES_TYPE_BASE;
                 if (resType == ResType.RES_TYPE_STUDY_CARD){
                     isUploadStudyCard = true;
+                } else if (resType == ResType.RES_TYPE_ONEPAGE
+                        || resType == ResType.RES_TYPE_COURSE_SPEAKER) {
+                    isUploadCourse = true;
                 }
+            } else if (mUploadParameter.getResType() == ResType.RES_TYPE_ONEPAGE
+                    || mUploadParameter.getResType() == ResType.RES_TYPE_COURSE_SPEAKER) {
+                isUploadCourse = true;
             }
         }
 
@@ -194,7 +202,7 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
                 }
                 textView.setText(text);
 //                textView.setBackgroundResource(R.drawable.sel_nav_button_bg);
-                if (isUploadStudyCard){
+                if (isUploadStudyCard || isUploadCourse){
                     textView.setVisibility(View.GONE);
                 }else {
                     textView.setVisibility(View.VISIBLE);
@@ -317,11 +325,8 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
                             enterLessonListByCatalog(data);
                         }
                     } else if (mode == Constants.UPLOAD_MODE){
-                        if (isUploadStudyCard){
-                            CourseData courseData = mUploadParameter.getCourseData();
-                            if (courseData != null){
-                                popSelectSendTypeDialog(data,courseData);
-                            }
+                        if (isUploadStudyCard || isUploadCourse){
+                            popSelectSendTypeDialog(data,mUploadParameter.getCourseData());
                         }
                     }
                     return true;
@@ -347,11 +352,8 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
                             enterLessonListByCatalog(data);
                         }
                     } else if (mode == Constants.UPLOAD_MODE){
-                        if (isUploadStudyCard){
-                            CourseData courseData = mUploadParameter.getCourseData();
-                            if (courseData != null){
-                                popSelectSendTypeDialog(data,courseData);
-                            }
+                        if (isUploadStudyCard || isUploadCourse){
+                            popSelectSendTypeDialog(data,mUploadParameter.getCourseData());
                         }
                     }
                     return false;
@@ -565,7 +567,21 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if (teachingMaterialTypeRadioButton.isChecked()){
-                            courseData.guidanceCardSendFlag = 1;
+                            if (isUploadStudyCard) {
+                                if (courseData != null) {
+                                    courseData.guidanceCardSendFlag = 1;
+                                }
+                                mUploadParameter.setSchoolMaterialType(MediaType.SCHOOL_TEACHINGMATERIAL);
+                            } else if (isUploadCourse) {
+                                //checked 讲解课
+                                mUploadParameter.setSchoolMaterialType(MediaType.SCHOOL_LECTURE_COURSE);
+                            }
+                        } else {
+                            if (isUploadStudyCard) {
+                                mUploadParameter.setSchoolMaterialType(MediaType.SCHOOL_TASKORDER);
+                            } else if (isUploadCourse){
+                                mUploadParameter.setSchoolMaterialType(MediaType.SCHOOL_COURSEWARE);
+                            }
                         }
                         sendSelectResourceToSomeWhere(catalog);
                     }
@@ -573,9 +589,17 @@ public class BookCatalogListFragment extends ContactsExpandListFragment {
         TextView contentTextV = (TextView) messageDialog.getContentView().findViewById(R.id.contacts_dialog_content_title);
         contentTextV.setText(getString(R.string.str_upload_to_public_resource));
         studyCardTypeRadioButton = (RadioButton) messageDialog.getContentView().findViewById(R.id.rb_current_class);
-        studyCardTypeRadioButton.setText(getString(R.string.make_task));
+        if (isUploadStudyCard) {
+            studyCardTypeRadioButton.setText(getString(R.string.make_task));
+        } else if (isUploadCourse) {
+            studyCardTypeRadioButton.setText(getString(R.string.retell_course));
+        }
         teachingMaterialTypeRadioButton = (RadioButton) messageDialog.getContentView().findViewById(R.id.rb_all_Class);
-        teachingMaterialTypeRadioButton.setText(getString(R.string.str_teaching_material));
+        if (isUploadStudyCard) {
+            teachingMaterialTypeRadioButton.setText(getString(R.string.str_teaching_material));
+        } else if (isUploadCourse) {
+            teachingMaterialTypeRadioButton.setText(getString(R.string.str_lecture_course));
+        }
         teachingMaterialTypeRadioButton.setTextColor(getResources().getColor(R.color.black));
         studyCardTypeRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

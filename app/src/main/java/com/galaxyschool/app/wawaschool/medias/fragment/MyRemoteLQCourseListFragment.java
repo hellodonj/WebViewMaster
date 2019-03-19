@@ -70,6 +70,11 @@ public class MyRemoteLQCourseListFragment extends ContactsListFragment
     private int maxCount = 1;
     private boolean watchWawaCourseSupportMultiType;//看课件
     private boolean isFromStudyTask;
+    private boolean isLectureCourse;
+
+    public void setLectureCourse(boolean isLectureCourse){
+        this.isLectureCourse = isLectureCourse;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -306,7 +311,11 @@ public class MyRemoteLQCourseListFragment extends ContactsListFragment
             return;
         }
         params.put("MemberId", getUserInfo().getMemberId());
-        params.put("MType", "6");
+        if (isLectureCourse) {
+            params.put("MType", "12");
+        } else {
+            params.put("MType", "6");
+        }
         params.put("SectionId", bookCatalogId);
         params.put("KeyWord", keyword);
         params.put("Pager", getPageHelper().getFetchingPagerArgs());

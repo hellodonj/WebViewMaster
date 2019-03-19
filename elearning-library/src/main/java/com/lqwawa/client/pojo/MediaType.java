@@ -44,5 +44,6 @@ public interface MediaType {
     int SCHOOL_LESSON = 9;
     int SCHOOL_DOC = 10;
     int SCHOOL_LESSON_BOOK = 11;
+    int SCHOOL_LECTURE_COURSE = 12;
 
 }

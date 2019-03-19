@@ -836,7 +836,7 @@ public class BookStoreListFragment extends ContactsListFragment {
 //            }
 //        }
         params.put("Pager", getPageHelper().getFetchingPagerArgs());
-        String schoolMaterialType = "1,2,3,4,5,6,7,8,9,10,11";
+        String schoolMaterialType = "1,2,3,4,5,6,7,8,9,10,11,12";
         if (isPickSchoolResource) {
             if (getArguments() != null && getArguments().containsKey(MediaListFragment
                     .EXTRA_SHOW_MEDIA_TYPES)) {
