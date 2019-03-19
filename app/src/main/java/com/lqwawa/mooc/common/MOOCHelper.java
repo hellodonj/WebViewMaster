@@ -343,7 +343,7 @@ public class MOOCHelper {
             studyTask.setResUrl(task.getResourceUrl());
             //把task的scoreRule拿出来赋值
             studyTask.setScoringRule(scoringRule);
-            studyTask.setType(task.getType());
+            studyTask.setType(task.getLqwawaType());
             studyTask.setCourseId(task.getCourseId());
             studyTask.setCourseName(task.getCourseName());
 //            studyTask.setClassId();
