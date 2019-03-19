@@ -8,10 +8,12 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -66,6 +68,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     private EditText mEtVerificationCode;
     // 证件类型容器
     private FrameLayout mIdentifyLayout;
+    private LinearLayout mIdentifyContentLayout;
+    private TextView mTvTypeName;
     // 证件号码
     private EditText mEtIdentifyNumber;
     // 批阅价格
@@ -119,6 +123,9 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mEtPhoneNumber = (EditText) findViewById(R.id.et_phone_number);
         mEtVerificationCode = (EditText) findViewById(R.id.et_verification_code);
         mIdentifyLayout = (FrameLayout) findViewById(R.id.identify_layout);
+        mIdentifyContentLayout = (LinearLayout) findViewById(R.id.identify_content_layout);
+        mTvTypeName = (TextView) findViewById(R.id.tv_type_name);
+        mIdentifyLayout.setOnClickListener(this);
         // 默认身份证
         mIdentifyLayout.setTag(IDType.ID_TYPE_IDENTITY_CARD);
         mEtIdentifyNumber = (EditText) findViewById(R.id.et_identify_number);
@@ -265,6 +272,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         }
     }
 
+    private IdentifyPopupWindow mPopupWindow;
+
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
@@ -281,6 +290,28 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         }else if(viewId == R.id.btn_submit){
             // 提交申请
             commitApplyFor();
+        }else if(viewId == R.id.identify_layout){
+            if(EmptyUtil.isNotEmpty(mPopupWindow)){
+                if(!mPopupWindow.isShowing()) {
+                    mPopupWindow.showAsDropDown(mTvTypeName);
+                }
+            }else {
+                // 弹出证件类型选择
+                int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                if(mTvTypeName.getMeasuredWidth() > 0){
+                    width = mTvTypeName.getMeasuredWidth();
+                }
+                final IdentifyPopupWindow popupWindow = new IdentifyPopupWindow(width,height,new IdentifyPopupWindow.OnChoiceListener() {
+                    @Override
+                    public void onChoiceMenu(@NonNull IdentifyPopupWindow.IdentifyEntity entity) {
+                        mIdentifyLayout.setTag(entity);
+                        mTvTypeName.setText(entity.getIdentifyName());
+                    }
+                });
+                popupWindow.showAsDropDown(mTvTypeName);
+                mPopupWindow = popupWindow;
+            }
         }
     }
 
