@@ -93,24 +93,24 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
 
         if(EmptyUtil.isEmpty(provinceId) ||
                 EmptyUtil.isEmpty(provinceName)){
-            view.showError(R.string.label_submit_apply);
+            view.showError(R.string.label_input_province_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(cityId) ||
                 EmptyUtil.isEmpty(cityName)){
-            view.showError(R.string.label_submit_apply);
+            view.showError(R.string.label_input_city_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(countyId) ||
                 EmptyUtil.isEmpty(countyName)){
-            view.showError(R.string.label_submit_apply);
+            view.showError(R.string.label_input_district_tip);
             return;
         }
 
         if(EmptyUtil.isEmpty(markingPrice)){
-            view.showError(R.string.label_submit_apply);
+            view.showError(R.string.label_mark_price_tip);
             return;
         }
 

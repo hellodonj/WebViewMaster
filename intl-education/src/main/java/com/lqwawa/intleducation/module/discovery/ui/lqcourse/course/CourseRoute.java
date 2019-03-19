@@ -472,7 +472,7 @@ public class CourseRoute {
         public void route(boolean needToLearn, boolean isTutorialTeacher) {
             boolean tutorialMode = MainApplication.isTutorialMode();
             if(tutorialMode) {
-                route(needToLearn && isTutorialTeacher);
+                route(isTutorialTeacher);
             }else{
                 route(needToLearn);
             }
