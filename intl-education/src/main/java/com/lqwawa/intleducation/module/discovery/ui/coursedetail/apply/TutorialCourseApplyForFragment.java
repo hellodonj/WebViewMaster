@@ -23,6 +23,8 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
+import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
@@ -293,13 +295,25 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                             @NonNull String courseId,
                             int isOrganTutorStatus,
                             @NonNull CourseApplyForNavigator navigator) {
-        TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
-        bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
-        bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS,isOrganTutorStatus);
-        fragment.setArguments(bundle);
-        fragment.setNavigator(navigator);
-        fragment.show(manager,TutorialCourseApplyForFragment.class.getName());
+        // 获取当前是否已经进入帮辅的状态
+        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                if(aBoolean){
+                    if(EmptyUtil.isNotEmpty(navigator)){
+                        navigator.onCourseTutorEnter(true);
+                    }
+                }else{
+                    TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
+                    bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
+                    bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS,isOrganTutorStatus);
+                    fragment.setArguments(bundle);
+                    fragment.setNavigator(navigator);
+                    fragment.show(manager,TutorialCourseApplyForFragment.class.getName());
+                }
+            }
+        });
     }
 }
