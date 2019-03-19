@@ -332,6 +332,9 @@ public class MOOCHelper {
             data.setHasCommitTaskReview(studentCommit.isHasCommitTaskReview());
             data.setStudentResUrl(studentCommit.getStudentResUrl());
             data.setTaskScore(studentCommit.getTaskScore());
+            if (!TextUtils.isEmpty(task.getTaskId())) {
+                data.setTaskId(Integer.valueOf(task.getTaskId()));
+            }
             StudyTask studyTask = new StudyTask();
             studyTask.setTaskTitle(task.getTaskName());
             studyTask.setResId(task.getResId());
