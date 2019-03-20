@@ -332,7 +332,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             }
 
             if(mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
-                    && mTaskType == 5){
+                    && mTaskType == KEY_LECTURE_COURSE){
                 // 选择复述课件，讲解课的显示
                 sectionResListVo.setResProperties("");
             }

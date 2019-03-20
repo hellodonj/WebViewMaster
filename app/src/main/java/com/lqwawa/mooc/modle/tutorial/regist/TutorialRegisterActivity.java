@@ -31,6 +31,7 @@ import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
@@ -131,6 +132,16 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mEtIdentifyNumber = (EditText) findViewById(R.id.et_identify_number);
         mEtMarkPrice = (EditText) findViewById(R.id.et_mark_price);
         mEtWorkLimit = (EditText) findViewById(R.id.et_work_limit);
+        mEtWorkLimit.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                super.onTextChanged(s, start, before, count);
+                if(EmptyUtil.isEmpty(s) || s.toString().startsWith("0")){
+                    // 0开头
+                    mEtWorkLimit.getText().clear();
+                }
+            }
+        });
         mOrganSpinner = (NiceSpinner) findViewById(R.id.organ_spinner);
         mProvinceSpinner = (NiceSpinner) findViewById(R.id.province_spinner);
         mCitySpinner = (NiceSpinner) findViewById(R.id.city_spinner);
@@ -352,8 +363,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String markPrice = mEtMarkPrice.getText().toString().trim();
         String workLife = mEtWorkLimit.getText().toString().trim();
 
-        String certificateUrl = mUrlArray.get(mBtnCertificateUpload.getId());
-        String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId());
+        String certificateUrl = mUrlArray.get(mBtnCertificateUpload.getId(),"");
+        String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId(),"");
 
         showLoading();
         mPresenter.requestApplyForTutor(name,phoneNumber,verificationCode,

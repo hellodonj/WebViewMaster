@@ -23,8 +23,10 @@ import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialTaskAdapter;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -128,14 +130,20 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                    String roleType = mTutorialMode ? TutorialRoleType.TUTORIAL_TYPE_TUTOR :
+                            (TextUtils.equals(mCurMemberId,UserHelper.getUserId()) ?
+                                    TutorialRoleType.TUTORIAL_TYPE_STUDENT : TutorialRoleType.TUTORIAL_TYPE_PARENT);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity,roleType);
                 }
             }
 
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                    String roleType = mTutorialMode ? TutorialRoleType.TUTORIAL_TYPE_TUTOR :
+                            (TextUtils.equals(mCurMemberId,UserHelper.getUserId()) ?
+                                    TutorialRoleType.TUTORIAL_TYPE_STUDENT : TutorialRoleType.TUTORIAL_TYPE_PARENT);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity,roleType);
                 }
             }
         });
@@ -145,7 +153,10 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
                 super.onItemClick(holder, entity);
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity);
+                    String roleType = mTutorialMode ? TutorialRoleType.TUTORIAL_TYPE_TUTOR :
+                            (TextUtils.equals(mCurMemberId,UserHelper.getUserId()) ?
+                                    TutorialRoleType.TUTORIAL_TYPE_STUDENT : TutorialRoleType.TUTORIAL_TYPE_PARENT);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity,roleType);
                 }
             }
         });

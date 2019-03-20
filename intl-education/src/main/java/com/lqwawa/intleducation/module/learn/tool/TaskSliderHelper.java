@@ -23,6 +23,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -59,7 +60,8 @@ public class TaskSliderHelper {
                                            @NonNull String tutorName);
 
         void openAssistanceMark(@NonNull Activity activity,
-                                @NonNull TaskEntity entity);
+                                @NonNull TaskEntity entity,
+                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType);
 
         void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
                                           @NonNull String resId, int resType,

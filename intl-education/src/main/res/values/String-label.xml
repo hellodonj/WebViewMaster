@@ -367,7 +367,7 @@
     <string name="label_RMB">元</string>
     <string name="label_mark_price_hint">*建议价格，可修改</string>
     <string name="label_work_period">工作年限：</string>
-    <string name="label_work_period_hint">请选择工作年限</string>
+    <string name="label_work_period_hint">请输入工作年限</string>
     <string name="label_person_academic_certificate">个人学历证书：</string>
     <string name="label_business_certificate">行业资历认证证书：</string>
     <string name="label_upload">上传</string>

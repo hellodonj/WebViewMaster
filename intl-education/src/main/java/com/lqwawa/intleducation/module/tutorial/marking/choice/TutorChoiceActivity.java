@@ -106,10 +106,12 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 super.onItemClick(holder, tutorChoiceEntity);
                 List<TutorChoiceEntity> items = mAdapter.getItems();
                 for (TutorChoiceEntity item : items) {
-                    item.setChecked(false);
+                    if(tutorChoiceEntity.equals(item)){
+                        tutorChoiceEntity.setChecked(!tutorChoiceEntity.isChecked());
+                    }else{
+                        item.setChecked(false);
+                    }
                 }
-
-                tutorChoiceEntity.setChecked(true);
                 mAdapter.notifyDataSetChanged();
             }
         });

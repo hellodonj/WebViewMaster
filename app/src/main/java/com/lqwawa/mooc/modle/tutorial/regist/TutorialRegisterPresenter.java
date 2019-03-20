@@ -163,7 +163,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             return;
         }
 
-        if(EmptyUtil.isEmpty(workingLife)){
+        /*if(EmptyUtil.isEmpty(workingLife)){
             view.showError(com.lqwawa.intleducation.R.string.label_work_period_hint);
             return;
         }
@@ -176,7 +176,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
         if(EmptyUtil.isEmpty(seniorityUrl)){
             view.showError(com.lqwawa.intleducation.R.string.label_upload_business_certificate_tip);
             return;
-        }
+        }*/
 
         TutorialHelper.requestApplyForTutor(
                 name,

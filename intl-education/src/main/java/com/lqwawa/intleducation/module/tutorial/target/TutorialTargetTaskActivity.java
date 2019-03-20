@@ -195,14 +195,14 @@ public class TutorialTargetTaskActivity extends PresenterActivity<TutorialTarget
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity,mRole);
                 }
             }
 
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity,mRole);
                 }
             }
         });
@@ -212,7 +212,7 @@ public class TutorialTargetTaskActivity extends PresenterActivity<TutorialTarget
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TaskEntity entity) {
                 super.onItemClick(holder, entity);
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity);
+                    TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(TutorialTargetTaskActivity.this,entity,mRole);
                 }
             }
         });

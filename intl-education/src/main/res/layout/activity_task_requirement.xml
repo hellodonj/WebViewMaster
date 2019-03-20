@@ -74,6 +74,11 @@
             />
     </FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontalDividerHeight"
+        android:background="@color/divider_color"/>
+
     <LinearLayout
         android:id="@+id/body_layout"
         android:layout_width="match_parent"

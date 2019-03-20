@@ -66,6 +66,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
@@ -148,8 +149,10 @@ public class MOOCHelper {
         }
 
         @Override
-        public void openAssistanceMark(@NonNull Activity activity, @NonNull TaskEntity entity) {
-            enterAssistanceMarkActivity(activity,entity);
+        public void openAssistanceMark(@NonNull Activity activity,
+                                       @NonNull TaskEntity entity,
+                                       @NonNull @TutorialRoleType.TutorialRoleRes String roleType) {
+            enterAssistanceMarkActivity(activity,entity,roleType);
         }
 
         @Override
@@ -222,7 +225,8 @@ public class MOOCHelper {
          * @param taskEntity 列表的对象
          */
         public void enterAssistanceMarkActivity(Activity activity,
-                                                TaskEntity taskEntity){
+                                                TaskEntity taskEntity,
+                                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType){
             if (activity == null || taskEntity == null) {
                 return;
             }
