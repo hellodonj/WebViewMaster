@@ -772,7 +772,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void removeAssistanceData(List<CheckMarkInfo.ModelBean> list) {
         if (list != null && list.size() > 0) {
             Iterator<CheckMarkInfo.ModelBean> iterable = list.iterator();
-            if (iterable.hasNext()) {
+            while (iterable.hasNext()) {
                 CheckMarkInfo.ModelBean modelBean = iterable.next();
                 if (modelBean != null && modelBean.getReviewFlag() == 1) {
                     if (commitTask != null && TextUtils.equals(getMemeberId(),
@@ -936,6 +936,10 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void processOpenImageData(CourseData courseData,
                                       boolean isOpenAnswerQuestion,
                                       boolean applyMark) {
+        if (cardParam != null) {
+            //重置model的状态
+            cardParam.setMarkModel(null);
+        }
         if (courseData != null) {
             NewResourceInfo newResourceInfo = courseData.getNewResourceInfo();
             PlaybackParam playbackParam = new PlaybackParam();
@@ -1048,6 +1052,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     newResourceInfo.setResourceUrl(mediaDataList.get(i).resourceurl);
                     resourceInfoList.add(newResourceInfo);
                 }
+                cardParam.setMarkModel(null);
                 GalleryActivity.newInstance(getActivity(), resourceInfoList, cardParam);
             }
         }
