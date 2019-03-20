@@ -117,6 +117,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                 exerciseItemList = cardParam.getQuestionDetails();
             }
 
+            if (lookSingleDetail) {
+                fromAnswerAnalysis = false;
+            }
         }
     }
 
