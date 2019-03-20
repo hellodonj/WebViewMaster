@@ -33,6 +33,8 @@ import com.lqwawa.intleducation.factory.helper.OrderHelper;
 import com.lqwawa.intleducation.lqpay.PayStatus;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
@@ -535,8 +537,9 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 }
                             }else if(vo.getType() == 0){
                                 // 0是课程
+                                CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
-                                        true, UserHelper.getUserId());
+                                        false,true, UserHelper.getUserId(),params);
                             }else if(vo.getType() == 3){
                                 // 3是空中课堂
                                 // 发送请求获取schoolId

@@ -161,11 +161,11 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
 
         if(EmptyUtil.isEmpty(courseVos)){
             // 数据为空
-            mRefreshLayout.setVisibility(View.GONE);
+            mListView.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }else{
             // 数据不为空
-            mRefreshLayout.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
         }
     }

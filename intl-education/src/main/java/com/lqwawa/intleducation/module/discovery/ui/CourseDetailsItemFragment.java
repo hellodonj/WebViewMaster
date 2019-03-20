@@ -415,11 +415,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         }
 
         CourseDetailParams courseParams = mDetailItemParams.getCourseParams();
-        boolean tutorialMode = MainApplication.isTutorialMode();
         if(courseParams.isClassCourseEnter() &&
                 courseParams.isClassTeacher()
-                && !mTeacherVisitor &&
-                !tutorialMode){
+                && !mTeacherVisitor){
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(),courseId,new Callback());
         }else{

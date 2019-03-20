@@ -65,6 +65,7 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.intro.CourseIntroductionActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
@@ -1023,6 +1024,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             @Override
             public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
                 boolean tutorialMode = MainApplication.isTutorialMode();
+                tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+
                 MyCourseDetailsActivity.this.courseDetailsVo = courseDetailsVo;
                 collected = courseDetailsVo.isIsCollect();
                 courseScore = courseDetailsVo.getCourseScore();

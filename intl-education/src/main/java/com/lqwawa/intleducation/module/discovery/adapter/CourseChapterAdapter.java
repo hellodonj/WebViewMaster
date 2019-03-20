@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
@@ -118,6 +119,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 .build();
 
         tutorialMode = MainApplication.isTutorialMode();
+        CourseDetailParams params = getCourseDetailParams();
+        // 只有Mooc来的帮辅才作帮辅模式处理
+        tutorialMode = tutorialMode && params.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
     }
 
     @Override
@@ -343,7 +347,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             if(tutorialMode && !isJoinCourse){
                                 if(!vo.getParentId().equals(list.get(0).getId())) {
                                     UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
-
                                 }else{
                                     // 直接拦截
                                     toLessonDetailsActivity(vo,true);
@@ -1086,7 +1089,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
 
-        boolean tutorialMode = MainApplication.isTutorialMode();
         if(courseParams.isClassTeacher() || tutorialMode){
             // 班级学程的老师
             if(mTeacherVisitor){
@@ -1124,6 +1126,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     status, memberId,vo.isContainAssistantWork(),
                                     schoolId,isFromMyCourse, courseVo,
                                     isOnlineTeacher,isFreeUser,params);
+    }
+
+    /**
+     * 获取课程章节的参数
+     * @return
+     */
+    private CourseDetailParams getCourseDetailParams(){
+        return getCourseDetailParams(courseVo,false);
     }
 
     /**

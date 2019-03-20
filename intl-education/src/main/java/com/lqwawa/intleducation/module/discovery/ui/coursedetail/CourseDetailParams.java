@@ -42,6 +42,14 @@ public class CourseDetailParams extends BaseVo{
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
     }
 
+    /**
+     * 开放入口类型
+     * @param courseEnterType 传入类型
+     */
+    public CourseDetailParams(@CourseDetailType.CourseDetailRes int courseEnterType){
+        this.courseEnterType = courseEnterType;
+    }
+
     public CourseDetailParams(@NonNull String schoolId, @NonNull String classId,@NonNull String className, boolean isAuthorized) {
         // 班级进入，设置大小写
         schoolId = schoolId.toLowerCase();
@@ -62,7 +70,20 @@ public class CourseDetailParams extends BaseVo{
     }
 
     public int getCourseEnterType() {
-        return courseEnterType;
+        return getCourseEnterType(true);
+    }
+
+    public int getCourseEnterType(boolean ignore){
+        return ignore ? getCourseEnterTypeIgnoreOther() : courseEnterType;
+    }
+
+    public int getCourseEnterTypeIgnoreOther(){
+        if(courseEnterType != CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER &&
+                courseEnterType != CourseDetailType.COURSE_DETAIL_CLASS_ENTER){
+            return CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+        }else{
+            return courseEnterType;
+        }
     }
 
     public String getClassId() {

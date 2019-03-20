@@ -65,6 +65,7 @@ import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply.CourseApplyForNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply.TutorialCourseApplyForFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
@@ -1339,6 +1340,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         if (courseVo != null && courseDetailsVo != null) {
 
             boolean tutorialMode = MainApplication.isTutorialMode();
+            tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
 
             if (isMyCourse && /*mCourseDetailParams.isClassCourseEnter() && */courseDetailsVo.isIsExpire()) {
                 // 班级学程入口进入
@@ -1584,6 +1586,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 LoginHelper.enterLogin(activity);
             } else {
                 boolean tutorialMode = MainApplication.isTutorialMode();
+                tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+
                 if(tutorialMode){
                     // TODO 申请成为课程的帮辅老师
                     TutorialCourseApplyForFragment.show(
