@@ -169,6 +169,10 @@ public class QDubbingActivity extends DubbingActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        if (isRecording) {
+                            isDubbing = false;
+                            dubbing(false);
+                        }
                         finish();
                     }
                 },

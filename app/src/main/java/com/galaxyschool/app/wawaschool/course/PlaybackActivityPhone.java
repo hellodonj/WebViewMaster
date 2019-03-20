@@ -465,6 +465,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
 //        }
         if (mSaveBtn != null) {
             mSaveBtn.setVisibility(mInEditMode ? View.VISIBLE : View.GONE);
+            mSaveBtn.setOnClickListener(v -> showCommitAnswerDialog(false));
         }
     }
 

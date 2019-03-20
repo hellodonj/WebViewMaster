@@ -363,7 +363,6 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             if (activity != null) {
                 activity.updateBottomViewText();
             }
-            loadTopGridViewEntityData();
         });
     }
 
@@ -877,14 +876,12 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 
         // 有在线机构老师身份才显示我的授课
         if (!TextUtils.isEmpty(getMemeberId()) && isOnlineTeacher()) {
-            if (!MainApplication.isTutorialMode()) {
-                item = new TabEntityPOJO();
-                item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_MY_COURSE;
-                item.title = getString(R.string.str_my_Lecture);
-                item.resId = R.drawable.icon_my_course;
-                itemList.add(item);
-                entryMap.put(item.type, item);
-            }
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_MY_COURSE;
+            item.title = getString(R.string.str_my_Lecture);
+            item.resId = R.drawable.icon_my_course;
+            itemList.add(item);
+            entryMap.put(item.type, item);
         }
 
         //我的直播
@@ -951,7 +948,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             entryMap.put(item.type, item);
         }
 
-        if (isEntityStudentOrParent() && !MainApplication.isTutorialMode()) {
+        if (isEntityStudentOrParent()) {
             //学生和家长身份显示
             //我的表演
             item = new TabEntityPOJO();

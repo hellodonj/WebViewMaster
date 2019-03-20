@@ -105,8 +105,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 
     private long duration;
     private boolean isReviewing = false;
-    private boolean isDubbing;
-    private boolean isRecording;
+    protected boolean isDubbing;
+    protected boolean isRecording;
 
     private long lastSeek;
     private long playTime;
@@ -293,8 +293,6 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     private void backPress() {
         if (isOnlineOpen) {
             finish();
-        } else if (isRecording) {
-            TipMsgHelper.ShowMsg(this, getString(R.string.str_dubbing_recording));
         } else {
             backDubbing();
         }
