@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.fragment.AnswerParsingFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
@@ -41,6 +43,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private boolean fromAnswerAnalysis;
     private List<ExerciseItem> exerciseItemList;
     private boolean lookSingleDetail;
+    private String exerciseString;
 
     public interface Constants {
         String SINGLE_QUESTION_ANSWER = "single_question_answer";
@@ -84,6 +87,10 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         Bundle args = getIntent().getExtras();
         if (args != null) {
             fromAnswerAnalysis = args.getBoolean(Constants.FROM_ANSWER_ANALYSIS, false);
+            currentPosition = args.getInt("exerciseIndex");
+            exerciseString = args.getString("exerciseListString");
+            currentPosition = currentPosition - 1;
+            lookSingleDetail = args.getBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,false);
             if (fromAnswerAnalysis) {
                 cardParam = (ExerciseAnswerCardParam) args.getSerializable(ExerciseAnswerCardParam.class.getSimpleName());
             } else {
@@ -92,12 +99,24 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                     cardParam = mParam.exerciseCardParam;
                 }
             }
-            if (cardParam != null) {
+            if (cardParam == null) {
+                if (!TextUtils.isEmpty(exerciseString)) {
+                    JSONArray jsonArray = JSONObject.parseArray(exerciseString);
+                    if (jsonArray != null && jsonArray.size() > 0) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        ExerciseItem exerciseItem = JSONObject.parseObject(jsonObject.toString(), ExerciseItem.class);
+                        if (exerciseItem != null) {
+                            exerciseItemList = new ArrayList<>();
+                            exerciseItemList.add(exerciseItem);
+                            currentPosition = 0;
+                            lookSingleDetail = true;
+                        }
+                    }
+                }
+            } else {
                 exerciseItemList = cardParam.getQuestionDetails();
             }
-            currentPosition = args.getInt("exerciseIndex");
-            currentPosition = currentPosition - 1;
-            lookSingleDetail = args.getBoolean(Constants.LOOK_SINGLE_QUESTION_DETAIL,false);
+
         }
     }
 
@@ -209,6 +228,14 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                     fragments.add(fragment);
                 }
             }
+        } else if (exerciseItemList != null && exerciseItemList.size() > 0){
+            AnswerParsingFragment fragment = new AnswerParsingFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(Constants.SINGLE_QUESTION_ANSWER, exerciseItemList.get(0));
+            //是不是来自答题解析
+            args.putBoolean(Constants.FROM_ANSWER_ANALYSIS, fromAnswerAnalysis);
+            fragment.setArguments(args);
+            fragments.add(fragment);
         }
     }
 
