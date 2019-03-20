@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.tutorial.teacher.schools;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -10,6 +11,7 @@ import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesContract;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @authr mrmedici
@@ -37,6 +39,16 @@ public class TutorialSchoolsPresenter extends BasePresenter<TutorialSchoolsContr
             public void onDataLoaded(List<MemberSchoolEntity> entities) {
                 final TutorialSchoolsContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
+                    if(EmptyUtil.isNotEmpty(entities)) {
+                        ListIterator<MemberSchoolEntity> iterator = entities.listIterator();
+                        while (iterator.hasNext()){
+                            MemberSchoolEntity next = iterator.next();
+                            if(TextUtils.equals(next.getSchoolId(),"00000000-0000-0000-0000-000000000000")){
+                                // 过滤脏数据
+                                iterator.remove();
+                            }
+                        }
+                    }
                     view.updateTutorialSchoolsView(entities);
                 }
             }
