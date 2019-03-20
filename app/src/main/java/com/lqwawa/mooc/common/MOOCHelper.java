@@ -467,7 +467,19 @@ public class MOOCHelper {
             cardParam.setFromOnlineStudyTask(true);
             cardParam.setTaskScoreRemark(taskScoreRemark);
             cardParam.setMarkModel(markModel);
-
+            CommitTask data = new CommitTask();
+            data.setStudentResTitle(commitTaskTitle);
+            if (!TextUtils.isEmpty(taskId)) {
+                data.setTaskId(Integer.valueOf(taskId));
+            }
+            data.setCommitTaskOnlineId(commitTaskId);
+            data.setStudentId(studentId);
+            cardParam.setCommitTask(data);
+            StudyTask studyTask = new StudyTask();
+            studyTask.setCourseId(courseId);
+            studyTask.setCourseName(courseName);
+            studyTask.setType(StudyTaskType.TASK_ORDER);
+            cardParam.setStudyTask(studyTask);
             AnswerCardDetailActivity.start(activity, cardParam);
         }
 
