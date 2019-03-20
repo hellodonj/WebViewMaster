@@ -232,7 +232,23 @@ public class MOOCHelper {
             commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
             commitTask.setStudentResTitle(taskEntity.getTitle());
             commitTask.setId(taskEntity.getId());
-            CheckMarkActivity.start(activity,commitTask);
+            commitTask.setStudentId(taskEntity.getStuMemberId());
+            commitTask.setStudentResTitle(taskEntity.getTitle());
+            commitTask.setAirClassId(taskEntity.getT_AirClassId());
+            commitTask.setTaskId(taskEntity.getT_TaskId());
+            if (!TextUtils.isEmpty(taskEntity.getT_EQId())) {
+                commitTask.setEQId(Integer.valueOf(taskEntity.getT_EQId()));
+            }
+            commitTask.setCommitTaskId(taskEntity.getT_CommitTaskId());
+            commitTask.setCommitTaskOnlineId(taskEntity.getT_CommitTaskOnlineId());
+            StudyTask studyTask = new StudyTask();
+            studyTask.setType(taskEntity.getT_TaskType());
+            studyTask.setClassId(taskEntity.getT_ClassId());
+            studyTask.setClassName(taskEntity.getT_ClassName());
+            studyTask.setCourseId(String.valueOf(taskEntity.getT_CourseId()));
+            studyTask.setCourseName(taskEntity.getT_CourseName());
+            studyTask.setResCourseId(taskEntity.getT_ResCourseId());
+            CheckMarkActivity.start(activity,commitTask,studyTask);
         }
     };
 

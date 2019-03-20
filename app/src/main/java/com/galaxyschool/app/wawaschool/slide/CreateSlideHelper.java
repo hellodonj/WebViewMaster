@@ -605,6 +605,7 @@ public class CreateSlideHelper {
 			//任务单答题卡
 			ExerciseAnswerCardParam cardParam = param.playbackParam.exerciseCardParam;
 			if (cardParam != null) {
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_BUTTON, cardParam.isShowExerciseButton());
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,cardParam.isShowExerciseNode());
 				extras.putString(PlaybackActivity.EXTRA_EXERCISE_ANSWER_STRING, cardParam.getStudentCommitAnswerString());
@@ -612,6 +613,11 @@ public class CreateSlideHelper {
 			//指定的pageIndex
 			if (param.playbackParam.pageIndex >= 0){
 				extras.putInt(PlaybackActivity.EXTRA_PAGE_INDEX,param.playbackParam.pageIndex);
+			}
+
+			if (param.playbackParam.isAssistanceModel && param.playbackParam.EQId > 0){
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
+				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,true);
 			}
 		}
         intent.putExtras(extras);

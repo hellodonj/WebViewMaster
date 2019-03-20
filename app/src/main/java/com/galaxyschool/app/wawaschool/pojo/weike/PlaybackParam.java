@@ -41,4 +41,5 @@ public class PlaybackParam implements Serializable {
     public QuestionResourceModel applyMarkdata;
 
     public boolean isAssistanceModel;//帮辅模式批阅
+    public int EQId;//自动批阅读写单标识
 }

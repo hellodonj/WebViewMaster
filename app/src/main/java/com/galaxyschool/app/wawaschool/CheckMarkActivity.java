@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import com.galaxyschool.app.wawaschool.fragment.CheckMarkFragment;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 
 public class CheckMarkActivity extends BaseFragmentActivity{
     private CheckMarkFragment fragment = null;
@@ -21,11 +22,16 @@ public class CheckMarkActivity extends BaseFragmentActivity{
         activity.startActivity(intent);
     }
 
-    public static void start(Activity activity, CommitTask commitTask){
+    public static void start(Activity activity,
+                             CommitTask commitTask,
+                             StudyTask studyTask){
         Intent intent = new Intent(activity,CheckMarkActivity.class);
         Bundle args = new Bundle();
         if (commitTask != null) {
             args.putSerializable(CheckMarkFragment.Constants.COMMIT_TASK,commitTask);
+        }
+        if (studyTask != null) {
+            args.putSerializable(CheckMarkFragment.Constants.STUDYTASK,studyTask);
         }
         intent.putExtras(args);
         activity.startActivity(intent);

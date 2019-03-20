@@ -333,7 +333,12 @@ public class ThirdPartyLoginHelper {
                                     String bindId = bindInfo.getString("MemberId");
                                     String bindName = bindInfo.getString("RealName");
                                     String bindAccount = bindInfo.getString("NickName");
-                                    String bindUserName = bindName + " " + bindAccount;
+                                    String bindUserName = null;
+                                    if (TextUtils.isEmpty(bindName)){
+                                        bindUserName = bindAccount;
+                                    } else {
+                                        bindUserName = bindName + " " + bindAccount;
+                                    }
                                     String shareTypeString  = mContext.getString(R.string.str_qq);
                                     if (mediaType == SHARE_MEDIA.WEIXIN) {
                                         shareTypeString = mContext.getString(R.string.str_weixin);
