@@ -82,7 +82,7 @@ public class LocationEntity implements Serializable {
         this.LocationList = LocationList;
     }
 
-    public static class LocationBean {
+    public static class LocationBean implements Serializable{
 
         private String Text;
         private String Value;

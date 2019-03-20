@@ -23,6 +23,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
 import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrateGroupActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -112,6 +113,16 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
                 // 添加帮辅
                 String memberId = mCurMemberId;
                 mPresenter.requestAddTutorByStudentId(memberId,entity.getCreateId(),entity.getCreateName());
+            }
+        });
+
+        mGroupAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TutorialGroupEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorialGroupEntity entity) {
+                super.onItemClick(holder, entity);
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.enterTutorialHomePager(getActivity(),entity.getCreateId(),entity.getCreateName());
+                }
             }
         });
     }

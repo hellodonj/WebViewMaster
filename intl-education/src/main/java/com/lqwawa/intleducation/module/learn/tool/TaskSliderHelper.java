@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.learn.tool;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
@@ -49,6 +50,14 @@ public class TaskSliderHelper {
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
 
     public interface OnTutorialMarkingListener{
+
+        void enterOnlineSchoolSpaceActivity(@NonNull Context context,
+                                            @NonNull String schoolId);
+
+        void enterTutorialHomePager(@NonNull Context context,
+                                           @NonNull String tutorMemberId,
+                                           @NonNull String tutorName);
+
         void openAssistanceMark(@NonNull Activity activity,
                                 @NonNull TaskEntity entity);
 

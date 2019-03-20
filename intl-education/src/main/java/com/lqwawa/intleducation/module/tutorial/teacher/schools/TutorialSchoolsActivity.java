@@ -21,13 +21,16 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.utils.ActivityUtils;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.MemberSchoolEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.study.OrganAdapter;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListActivity;
+import com.lqwawa.intleducation.module.onclass.school.SchoolInfoFragment;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesContract;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesPresenter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -146,7 +149,12 @@ public class TutorialSchoolsActivity extends PresenterActivity<TutorialSchoolsCo
 
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollVertically() {
+                return super.canScrollVertically();
+            }
+        };
         mRecycler.setLayoutManager(mLayoutManager);
         mOrganAdapter = new OrganAdapter(true);
         mRecycler.setAdapter(mOrganAdapter);
@@ -163,7 +171,10 @@ public class TutorialSchoolsActivity extends PresenterActivity<TutorialSchoolsCo
                 }
                 // mPresenter.requestSchoolInfo(entity.getId(),entity);
                 // 点击机构，进入机构开课班
-                OnlineClassListActivity.show(TutorialSchoolsActivity.this,entity.getId(),entity.getName());
+                // OnlineClassListActivity.show(TutorialSchoolsActivity.this,entity.getId(),entity.getName());
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.enterOnlineSchoolSpaceActivity(TutorialSchoolsActivity.this,entity.getId());
+                }
             }
         });
 

@@ -34,6 +34,7 @@ import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -126,7 +127,7 @@ public class TutorialMarkingPagerFragment extends PresenterFragment<TutorialMark
             }
         };
         mRecycler.setLayoutManager(mLayoutManager);
-        mTutorialAdapter = new TutorialTaskAdapter(true);
+        mTutorialAdapter = new TutorialTaskAdapter(TextUtils.equals(mTutorialRole,TutorialRoleType.TUTORIAL_TYPE_TUTOR));
         mRecycler.setAdapter(mTutorialAdapter);
         mRecycler.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
 

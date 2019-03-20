@@ -15,6 +15,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -68,7 +69,7 @@ public class IdentifyPopupWindow extends PopupWindow {
         void onChoiceMenu(@NonNull IdentifyEntity entity);
     }
 
-    public class IdentifyEntity{
+    public class IdentifyEntity implements Serializable {
 
         private int identifyId;
         private String identifyName;

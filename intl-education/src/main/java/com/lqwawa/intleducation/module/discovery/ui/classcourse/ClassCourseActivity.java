@@ -206,7 +206,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mRoles = mClassCourseParams.getRoles();
         if(EmptyUtil.isEmpty(mSchoolId) ||
                 EmptyUtil.isEmpty(mClassId) ||
-                EmptyUtil.isEmpty(mClassName) ||
                 EmptyUtil.isEmpty(mRoles)){
             return false;
         }

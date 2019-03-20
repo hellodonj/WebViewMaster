@@ -103,7 +103,7 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
         mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
             @Override
             public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
-                if(mTutorialMode) {
+                if(mTutorialMode || true) {
                     TaskRequirementActivity.show(getActivity(),entity);
                 }else{
                     if (TaskSliderHelper.onTaskSliderListener != null) {
