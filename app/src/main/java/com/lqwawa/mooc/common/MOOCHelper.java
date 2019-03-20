@@ -245,6 +245,7 @@ public class MOOCHelper {
             }
             commitTask.setCommitTaskId(taskEntity.getT_CommitTaskId());
             commitTask.setCommitTaskOnlineId(taskEntity.getT_CommitTaskOnlineId());
+            commitTask.setAssistantRoleType(roleType);
             StudyTask studyTask = new StudyTask();
             studyTask.setType(taskEntity.getT_TaskType());
             studyTask.setClassId(taskEntity.getT_ClassId());

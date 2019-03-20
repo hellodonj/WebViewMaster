@@ -976,7 +976,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     //游客身份
                     playbackParam.mIsHideToolBar = true;
                 }
-            } else if (isAssistanceModel) {
+            } else if (isAssistanceModel && !TextUtils.equals(commitTask.getAssistantRoleType(), "2")) {
                 mTaskMarkParam = new TaskMarkParam(
                         false,
                         true,
