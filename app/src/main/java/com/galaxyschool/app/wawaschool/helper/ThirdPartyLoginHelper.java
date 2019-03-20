@@ -300,7 +300,9 @@ public class ThirdPartyLoginHelper {
         PushUtils.resumePush(mContext);
         if (isBackHome) {
             Intent intent = new Intent(mContext, HomeActivity.class);
-            mContext.sendBroadcast(new Intent(HomeActivity.EXTRA_THIRD_LOGIN_TIP_MESSAGE));
+            if (userInfo.isNewCreateUser()) {
+                mContext.sendBroadcast(new Intent(HomeActivity.EXTRA_THIRD_LOGIN_TIP_MESSAGE));
+            }
             mContext.startActivity(intent);
         }
         if (mContext != null) {

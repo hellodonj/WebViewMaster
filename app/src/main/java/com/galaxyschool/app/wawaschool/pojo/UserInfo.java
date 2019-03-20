@@ -42,6 +42,15 @@ public class UserInfo extends Model implements Serializable {
     private String NoteName;
     private String UserId;
     private boolean IsAssistant;
+    private boolean IsNewCreateUser;//是否新创建的用户
+
+    public boolean isNewCreateUser() {
+        return IsNewCreateUser;
+    }
+
+    public void setIsNewCreateUser(boolean newCreateUser) {
+        IsNewCreateUser = newCreateUser;
+    }
 
     public boolean isAssistant() {
         return IsAssistant;

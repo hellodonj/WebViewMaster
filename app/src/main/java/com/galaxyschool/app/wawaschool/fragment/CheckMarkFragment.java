@@ -428,7 +428,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
+                            if (!TextUtils.isEmpty(data.getMemberId())) {
                                 ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
                             }
                         }
@@ -442,8 +442,12 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-                            if (!TextUtils.isEmpty(data.getMemberId()) && isAssistanceModel) {
-                                TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                            if (!TextUtils.isEmpty(data.getMemberId())) {
+                                if (isAssistanceModel) {
+                                    TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                                } else {
+                                    ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
+                                }
                             }
                         }
                     });
