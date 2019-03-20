@@ -614,6 +614,11 @@ public class CreateSlideHelper {
 			if (param.playbackParam.pageIndex >= 0){
 				extras.putInt(PlaybackActivity.EXTRA_PAGE_INDEX,param.playbackParam.pageIndex);
 			}
+
+			if (param.playbackParam.isAssistanceModel && param.playbackParam.EQId > 0){
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
+				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,true);
+			}
 		}
         intent.putExtras(extras);
         if (param.listener != null) {

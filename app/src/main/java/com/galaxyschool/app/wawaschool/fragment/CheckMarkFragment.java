@@ -983,6 +983,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         "",
                         true);
                 playbackParam.isAssistanceModel = true;
+                playbackParam.EQId = commitTask.getEQId();
                 playbackParam.taskMarkParam = mTaskMarkParam;
             } else {
                 if (mTaskMarkParam == null) {
