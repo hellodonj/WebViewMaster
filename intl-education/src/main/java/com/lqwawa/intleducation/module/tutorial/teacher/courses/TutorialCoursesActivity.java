@@ -143,7 +143,7 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mAdapter.getItem(position);
-                CourseDetailsActivity.start(TutorialCoursesActivity.this, vo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(TutorialCoursesActivity.this, vo.getCourseId(), true, UserHelper.getUserId());
             }
         });
 

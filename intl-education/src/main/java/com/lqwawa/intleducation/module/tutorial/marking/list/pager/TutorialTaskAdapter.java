@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
+import com.lqwawa.intleducation.common.utils.LqServerHelper;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
@@ -104,7 +106,8 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             if(tutorialMode){
                 mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像
-                ImageUtil.fillCircleView(mStudentAvatar,taskEntity.getStuHeadPicUrl(),R.drawable.user_header_def);
+                String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getStuHeadPicUrl() + "").trim();
+                ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
                 mStudentName.setLayoutParams(layoutParams);
@@ -128,7 +131,8 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 // 查看任务要求
                 mTvRequire.setText(R.string.label_watch_task_requirement);
             }else{
-                mTvRequire.setText(R.string.label_courseware_detail);
+                mTvRequire.setText(R.string.label_watch_task_requirement);
+                // mTvRequire.setText(R.string.label_courseware_detail);
             }
 
             // 任务头像

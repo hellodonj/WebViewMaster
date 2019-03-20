@@ -14,6 +14,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -21,6 +22,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.oosic.apps.iemaker.base.exercisenode.ExerciseNode;
@@ -115,6 +117,16 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
                 // 添加帮辅
                 String memberId = mCurMemberId;
                 mPresenter.requestAddTutorByStudentId(memberId,entity.getCreateId(),entity.getCreateName());
+            }
+        });
+
+        mGroupAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TutorialGroupEntity>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorialGroupEntity entity) {
+                super.onItemClick(holder, entity);
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.enterTutorialHomePager(getActivity(),entity.getCreateId(),entity.getCreateName());
+                }
             }
         });
 

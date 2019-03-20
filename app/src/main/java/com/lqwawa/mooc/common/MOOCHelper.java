@@ -2,6 +2,7 @@ package com.lqwawa.mooc.common;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,9 +13,11 @@ import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
+import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
@@ -67,6 +70,8 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 import com.osastudio.common.utils.TimerUtils;
 
 import org.json.JSONException;
@@ -123,6 +128,25 @@ public class MOOCHelper {
 
     private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener
             = new TaskSliderHelper.OnTutorialMarkingListener(){
+
+        @Override
+        public void enterOnlineSchoolSpaceActivity(@NonNull Context context,@NonNull String schoolId){
+            Bundle args = new Bundle();
+            args.putString(SchoolSpaceActivity.EXTRA_SCHOOL_ID, schoolId);
+            Intent intent = new Intent(context, SchoolSpaceActivity.class);
+            intent.putExtras(args);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public void enterTutorialHomePager(@NonNull Context context,
+                                           @NonNull String tutorMemberId,
+                                           @NonNull String tutorName){
+            // 进入帮辅主页
+            TutorialParams params = new TutorialParams(tutorMemberId);
+            TutorialHomePageActivity.show(context,params);
+        }
+
         @Override
         public void openAssistanceMark(@NonNull Activity activity, @NonNull TaskEntity entity) {
             enterAssistanceMarkActivity(activity,entity);

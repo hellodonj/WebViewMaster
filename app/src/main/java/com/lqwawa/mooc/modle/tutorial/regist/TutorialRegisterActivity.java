@@ -383,8 +383,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                     return;
                 }
 
-                String urlFolder = Utils.IMAGE_FOLDER;
-                String url = urlFolder + Utils.TEMP_IMAGE_NAME;
+                String urlFolder = com.galaxyschool.app.wawaschool.common.Utils.IMAGE_FOLDER;
+                String url = urlFolder + com.galaxyschool.app.wawaschool.common.Utils.TEMP_IMAGE_NAME;
 
                 File fileFolder = new File(urlFolder);
                 if (!fileFolder.exists()) {
@@ -470,9 +470,11 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             if(!isFinishing()) {
                 UIUtil.showToastSafe(R.string.label_upload_completed);
                 if (mBtnBusinessUpload.isActivated()) {
+                    mBtnBusinessUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnBusinessUpload.getId();
                     mUrlArray.put(viewId, url);
                 } else if (mBtnCertificateUpload.isActivated()) {
+                    mBtnCertificateUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnCertificateUpload.getId();
                     mUrlArray.put(viewId, url);
                 }

@@ -23,6 +23,7 @@ public class TutorialGroupEntity implements Serializable {
         this.addedTutor = hasAttention;
         this.HeadPicUrl = headPic;
         this.markingPrice = markingPriceStr;
+        this.createId = memberId;
         this.createName = tutorName;
         this.taskNum = markingNum;
     }

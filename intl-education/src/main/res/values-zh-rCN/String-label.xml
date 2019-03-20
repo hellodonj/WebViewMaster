@@ -422,6 +422,7 @@
     <string name="label_upload_business_certificate_tip">请上传行业资历认证证书</string>
     <string name="label_user_works">%s的作业</string>
     <string name="label_committed_works">提交给%s的作业</string>
+    <string name="label_upload_again">重新上传</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
