@@ -16,6 +16,33 @@ public class PushMessageInfo implements Serializable {
     private boolean IsOnlineSchool;
     private boolean IsEmcee;
     private boolean IsStudent;
+    private String StudentId;
+    private String TeacherId;
+    private int AssistTask_Id;
+
+    public String getStudentId() {
+        return StudentId;
+    }
+
+    public void setStudentId(String studentId) {
+        StudentId = studentId;
+    }
+
+    public String getTeacherId() {
+        return TeacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        TeacherId = teacherId;
+    }
+
+    public int getAssistTask_Id() {
+        return AssistTask_Id;
+    }
+
+    public void setAssistTask_Id(int assistTask_Id) {
+        AssistTask_Id = assistTask_Id;
+    }
 
     public String getSchoolId() {
         return SchoolId;

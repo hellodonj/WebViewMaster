@@ -76,6 +76,7 @@ public class HomeActivity extends BaseCompatActivity
     public static final String ACTION_ACCOUNT_LOGOUT = "com.galaxyschool.app.wawaschool.ACTION_LOGOUT";
     public static final String ACTION_CHANGE_LQCOURSE_TAB = "action_change_lqCourse_tab";
     public static final String EXTRA_THIRD_LOGIN_TIP_MESSAGE = "third_login_tip_message";
+    public static final String EXTRA_PUSH_ASSISTANT_ENTER = "entra_push_assistant_enter";
     private static final int TAB_LQ_COURSE = 0;//lq学程、学程馆
     private static final int TAB_ONLINE_STUDY = 1;//在线学习
     private static final int TAB_MY_COURSE = 2;//我的课程
@@ -217,6 +218,17 @@ public class HomeActivity extends BaseCompatActivity
                     app.setCdeInitSuccess(result);
                 }
             });
+        }
+        loadIntentData();
+    }
+
+    private void loadIntentData(){
+        Bundle args = getIntent().getExtras();
+        if (args != null) {
+            boolean isAssistantEnter = args.getBoolean(EXTRA_PUSH_ASSISTANT_ENTER,false);
+            if (isAssistantEnter) {
+                setCurrPage(TAB_MY_COURSE);
+            }
         }
     }
 
@@ -587,6 +599,7 @@ public class HomeActivity extends BaseCompatActivity
         //接收系统网络切换的广播
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction(EXTRA_THIRD_LOGIN_TIP_MESSAGE);
+        filter.addAction(EXTRA_PUSH_ASSISTANT_ENTER);
         registerReceiver(homeReceiver, filter);
     }
 
@@ -640,6 +653,10 @@ public class HomeActivity extends BaseCompatActivity
                 setCurrPage(TAB_LQ_COURSE);
             } else if (TextUtils.equals(intent.getAction(),EXTRA_THIRD_LOGIN_TIP_MESSAGE)) {
                 showThirdLoginTipMessage();
+            } else if (TextUtils.equals(intent.getAction(),EXTRA_PUSH_ASSISTANT_ENTER)) {
+                //切换到帮辅空间
+                updateBottomViewText();
+                setCurrPage(TAB_MY_COURSE);
             }
         }
     }
