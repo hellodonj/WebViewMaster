@@ -198,10 +198,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(AppConfig.ServerUrl.Login)) {
-                // 获取到登录的广播
-                mPresenter.requestParentChildData();
-            }else if(action.equals(LOGIN_ACTION)){
+            if(action.equals(LOGIN_ACTION)){
                 // 获取到登录的广播
                 mPresenter.requestParentChildData();
             }
