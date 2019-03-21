@@ -25,6 +25,8 @@ import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingPara
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
+import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
+import com.lqwawa.intleducation.module.tutorial.target.container.TutorialStudentTargetTaskActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -121,9 +123,15 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
     }
 
     private void skipStudentWork(){
-        boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
+        /*boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
         TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-        TutorialMarkingListActivity.show(getActivity(),params);
+        TutorialMarkingListActivity.show(getActivity(),params);*/
+
+        boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
+        TutorialTargetTaskParams params = new TutorialTargetTaskParams(UserHelper.getUserId(),null,getString(R.string.label_committed_works));
+        params.setParent(isParent);
+        params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+        TutorialStudentTargetTaskActivity.show(getActivity(),params);
     }
 
     private void skipStudentTutorial(){
