@@ -984,7 +984,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 mTaskMarkParam = new TaskMarkParam(
                         false,
                         true,
-                        MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_TEACHER : RoleType.ROLE_TYPE_STUDENT,
+                        MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
                         String.valueOf(commitTask.getId()),
                         false,
                         false,
