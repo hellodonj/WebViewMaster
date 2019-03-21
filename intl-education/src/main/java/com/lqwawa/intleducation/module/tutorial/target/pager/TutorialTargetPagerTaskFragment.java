@@ -100,7 +100,7 @@ public class TutorialTargetPagerTaskFragment extends PresenterFragment<TutorialT
         }
 
         if(EmptyUtil.isEmpty(mMemberId) ||
-                EmptyUtil.isEmpty(mTutorMemberId) ||
+                // EmptyUtil.isEmpty(mTutorMemberId) ||
                 EmptyUtil.isEmpty(mConfigValue)){
             return false;
         }
@@ -172,7 +172,7 @@ public class TutorialTargetPagerTaskFragment extends PresenterFragment<TutorialT
         mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
             @Override
             public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
-                if(isTutorial) {
+                if(isTutorial || true) {
                     TaskRequirementActivity.show(getActivity(),entity);
                 }else{
                     if (TaskSliderHelper.onTaskSliderListener != null) {
