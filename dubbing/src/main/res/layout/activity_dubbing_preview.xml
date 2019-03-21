@@ -60,43 +60,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="200.0dp"/>
 
-            <ProgressBar
-                android:id="@+id/progress"
-                style="?android:attr/progressBarStyleHorizontal"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:max="100"
-                android:maxHeight="2.0dp"
-                android:minHeight="2.0dp"
-                android:progressDrawable="@drawable/dubbing_progressbar3"/>
+                android:background="#3000"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-            <SeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
-                android:maxHeight="2dp"
-                android:minHeight="2dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:progressDrawable="@drawable/uvv_star_play_progress_seek"
-                android:thumb="@drawable/uvv_seek_dot"
-                android:thumbOffset="10dip"
-                android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_current_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
 
-            <TextView
-                android:id="@+id/rb_video_time"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="bottom|end"
-                android:text="00:00/00:00"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:progressDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:thumb="@drawable/uvv_seek_dot"
+                    android:thumbOffset="10dip"/>
+
+                <TextView
+                    android:id="@+id/tv_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
         </FrameLayout>
 
         <!--显示通篇配音-->

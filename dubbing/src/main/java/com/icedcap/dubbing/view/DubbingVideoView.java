@@ -367,13 +367,15 @@ public class DubbingVideoView extends FrameLayout implements
             boolean isPausing = false;
             if (mode == MODE_FINALLY_REVIEW) {
                 if (supportPause && mIjkVideoView.isPausing() && mIjkVideoView.getCurrentPosition() > 0){
-                    mIjkVideoView.seekTo(mIjkVideoView.getCurrentPosition());
                     isPausing = true;
                 } else {
                     mIjkVideoView.seekTo(0);
                 }
             }
             mIjkVideoView.start();
+            if (audioMedia != null){
+                audioMedia.start();
+            }
             if (onEventListener != null) {
                 onEventListener.onPlayback(mIjkVideoView.getCurrentPosition());
                 if (mode == MODE_FINALLY_REVIEW
