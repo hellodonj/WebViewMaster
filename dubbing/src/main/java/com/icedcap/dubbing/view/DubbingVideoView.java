@@ -322,13 +322,9 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
     public void play() {
-        mode = MODE_PREVIEW;
-        if (onEventListener != null) {
-            final int code = onEventListener.fixThePlayMode();
-            mode = (code > 0 && code < 6) ? code : mode;
-        }
         play(mode);
     }
+
 
     private void play(int mode) {
         mPlayButton.setVisibility(GONE);

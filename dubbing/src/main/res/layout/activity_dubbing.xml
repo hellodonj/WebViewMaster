@@ -67,17 +67,18 @@
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <SeekBar
+                    android:id="@+id/seekbar"
                     android:layout_width="0dp"
-                    android:layout_height="2.0dp"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:max="100"
-                    android:maxHeight="2.0dp"
-                    android:minHeight="2.0dp"
-                    android:progressDrawable="@drawable/dubbing_progressbar3"/>
+                    android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:progressDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:thumb="@drawable/uvv_seek_dot"
+                    android:thumbOffset="10dip"/>
 
                 <TextView
                     android:id="@+id/tv_total_time"
