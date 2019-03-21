@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrate
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskActivity;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
+import com.lqwawa.intleducation.module.tutorial.target.container.TutorialStudentTargetTaskActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -162,7 +163,8 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
                 TutorialTargetTaskParams params = new TutorialTargetTaskParams(mMemberId,tutorEntity.getTutorMemberId(),getString(R.string.label_committed_works,tutorEntity.getTutorName()));
                 params.setParent(isParent);
                 params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-                TutorialTargetTaskActivity.show(StudentTutorialActivity.this,params);
+                // TutorialTargetTaskActivity.show(StudentTutorialActivity.this,params);
+                TutorialStudentTargetTaskActivity.show(StudentTutorialActivity.this,params);
             }
         });
 
