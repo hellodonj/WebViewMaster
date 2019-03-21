@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -42,8 +43,8 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private AudioPlayHelper mAudioHelper;
     private DubbingVideoView mDubbingVideoView;
     private TextView mTime;
-    private TextView mRbTime;
-    private ProgressBar mProgressBar;
+    private TextView currentTimeTextView;
+    private TextView totalTimeTextView;
     private LrcView lrcView;
     private SeekBar seekBar;
     private View mArtProcess;
@@ -90,13 +91,12 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
         mDubbingVideoView = (DubbingVideoView) findViewById(R.id.videoView);
         mTime = (TextView) findViewById(R.id.video_time);
-        mRbTime = (TextView) findViewById(R.id.rb_video_time);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress);
+        currentTimeTextView = (TextView) findViewById(R.id.tv_current_time);
+        totalTimeTextView = (TextView) findViewById(R.id.tv_total_time);
         //通篇配音
         lrcView = (LrcView) findViewById(R.id.lrc_view);
         seekBar = (SeekBar) findViewById(R.id.seekbar);
-        mProgressBar.setVisibility(View.VISIBLE);
-        seekBar.setVisibility(View.GONE);
+        seekBar.setVisibility(View.VISIBLE);
     }
 
     private void initData() {
@@ -164,9 +164,11 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             @Override
             public void onVideoPrepared(long duration) {
                 seekBar.setProgress(0);
+                seekBar.setMax((int) duration);
                 mDuration = duration;
                 mTime.setText(MediaUtil.generateTime(0, duration));
-                mRbTime.setText(MediaUtil.generateTime(0, duration));
+                currentTimeTextView.setText(MediaUtil.generateTime(0));
+                totalTimeTextView.setText(MediaUtil.generateTime(duration));
             }
 
             @Override
@@ -209,7 +211,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
             @Override
             public void reset(boolean keepStatus) {
-                mProgressBar.setProgress(0);
+                seekBar.setProgress(0);
             }
 
             @Override
@@ -233,11 +235,21 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                if (mDubbingVideoView.isPlaying()) {
+                    mDubbingVideoView.onPause();
+                }
+                if (mAudioHelper.isMediaPlaying()) {
+                    mAudioHelper.onPause();
+                }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 lrcView.updateTime(seekBar.getProgress());
+                mAudioHelper.seekTo(seekBar.getProgress());
+                mDubbingVideoView.dubbingSeekTo(seekBar.getProgress());
+                mDubbingVideoView.play();
+
             }
         });
     }
@@ -246,19 +258,18 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         this.playTime = playTime;
         String str = MediaUtil.generateTime(playTime, totalTime);
         mTime.setText(str);
-        mRbTime.setText(str);
-        int i = (int) (100L * playTime / totalTime);
-        mProgressBar.setProgress(i);
-//        mSubtitleView.processTime((int) playTime);
+        currentTimeTextView.setText(MediaUtil.generateTime(playTime));
+        totalTimeTextView.setText(MediaUtil.generateTime(totalTime));
+        seekBar.setProgress((int) playTime);
         lrcView.updateTime(playTime);
         seekBar.setProgress((int) playTime);
     }
 
     private void resetTime() {
         mTime.setText(MediaUtil.generateTime(0, mDuration));
-        mRbTime.setText(MediaUtil.generateTime(0, mDuration));
-        mProgressBar.setProgress(0);
-//        mSubtitleView.reset();
+        currentTimeTextView.setText(MediaUtil.generateTime(0));
+        totalTimeTextView.setText(MediaUtil.generateTime(mDuration));
+        seekBar.setProgress(0);
         lrcView.updateTime(0);
         seekBar.setProgress(0);
     }

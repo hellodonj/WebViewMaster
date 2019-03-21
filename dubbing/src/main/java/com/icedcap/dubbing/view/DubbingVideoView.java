@@ -322,13 +322,9 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
     public void play() {
-        mode = MODE_PREVIEW;
-        if (onEventListener != null) {
-            final int code = onEventListener.fixThePlayMode();
-            mode = (code > 0 && code < 6) ? code : mode;
-        }
         play(mode);
     }
+
 
     private void play(int mode) {
         mPlayButton.setVisibility(GONE);
@@ -367,13 +363,15 @@ public class DubbingVideoView extends FrameLayout implements
             boolean isPausing = false;
             if (mode == MODE_FINALLY_REVIEW) {
                 if (supportPause && mIjkVideoView.isPausing() && mIjkVideoView.getCurrentPosition() > 0){
-                    mIjkVideoView.seekTo(mIjkVideoView.getCurrentPosition());
                     isPausing = true;
                 } else {
                     mIjkVideoView.seekTo(0);
                 }
             }
             mIjkVideoView.start();
+            if (audioMedia != null){
+                audioMedia.start();
+            }
             if (onEventListener != null) {
                 onEventListener.onPlayback(mIjkVideoView.getCurrentPosition());
                 if (mode == MODE_FINALLY_REVIEW
