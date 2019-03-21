@@ -316,7 +316,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 final IdentifyPopupWindow popupWindow = new IdentifyPopupWindow(width,height,new IdentifyPopupWindow.OnChoiceListener() {
                     @Override
                     public void onChoiceMenu(@NonNull IdentifyPopupWindow.IdentifyEntity entity) {
-                        mIdentifyLayout.setTag(entity);
+                        mIdentifyLayout.setTag(entity.getIdentifyId());
                         mTvTypeName.setText(entity.getIdentifyName());
                     }
                 });

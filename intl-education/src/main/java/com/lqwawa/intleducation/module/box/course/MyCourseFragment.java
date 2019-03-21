@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -166,6 +167,11 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
             CourseTitle mCourseTitle = mPageArray.get(position);
             String language = Locale.getDefault().getLanguage();
             return mCourseTitle.getRealName();
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
         }
     }
 

@@ -1,8 +1,13 @@
 package com.lqwawa.intleducation.module.box;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
@@ -24,6 +29,8 @@ import org.greenrobot.eventbus.ThreadMode;
  */
 public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBoxContract.Presenter>
         implements TutorialSpaceBoxContract.View,NavHelper.OnTabChangedListener<Integer>{
+
+    private static final String LOGIN_ACTION = "MySchoolSpaceFragment_action_load_data";
 
     public static final int KEY_TUTORIAL_MODE_ID = 0x01;
     public static final int KEY_COURSE_MODE_ID = 0x02;
@@ -49,6 +56,13 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
                 getChildFragmentManager(), this);
         mNavHelper.add(KEY_TUTORIAL_MODE_ID, new NavHelper.Tab<>(TutorialSpaceFragment.class, R.string.label_tutorial_space))
                 .add(KEY_COURSE_MODE_ID, new NavHelper.Tab<>(MyCourseFragment.class, R.string.label_course_box));
+        showFragment();
+    }
+
+    /**
+     * @desc 获取到登录的广播,要刷新UI
+     */
+    private void showFragment(){
         // 获取当前的模式
         boolean tutorialMode = MainApplication.isTutorialMode();
         // 传送模式
@@ -66,6 +80,8 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
     @Override
     protected void initData() {
         super.initData();
+        // 注册刷新数据的广播
+        registerBroadcastReceiver();
         if(!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
         }
@@ -90,9 +106,36 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
         }
     }
 
+    /**
+     * 注册广播事件
+     */
+    protected void registerBroadcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        //登录广播
+        myIntentFilter.addAction(LOGIN_ACTION);
+        //注册广播
+        getContext().registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    /**
+     * @author medici
+     * @desc BroadcastReceiver
+     */
+    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(LOGIN_ACTION)) {
+                // 获取到登录的广播
+                showFragment();
+            }
+        }
+    };
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getContext().unregisterReceiver(mBroadcastReceiver);
         if(EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().unregister(this);
         }

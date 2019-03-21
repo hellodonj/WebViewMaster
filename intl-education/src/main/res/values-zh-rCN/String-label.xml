@@ -346,6 +346,7 @@
 
     <!--V5.15字符串信息-->
     <string name="label_add_tutorial">+帮辅</string>
+    <string name="label_add_tutorial_lines">添加\n帮辅</string>
     <string name="label_un_mark">未批阅</string>
     <string name="label_have_mark">已批阅</string>
     <string name="label_watch_task_requirement">查看任务要求</string>
@@ -362,6 +363,8 @@
     <string name="label_identify_passport">护照</string>
     <string name="label_identify_number">证件号码：</string>
     <string name="label_identify_number_hint">请填写证件号码</string>
+    <string name="label_please_input_valid_card_hint">请输入有效的身份证号码</string>
+    <string name="label_please_input_valid_passport_hint">请输入有效的护照号码</string>
     <string name="label_identify_digits">0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM</string>
     <string name="label_choice_organ">选择机构：</string>
     <string name="label_choice_organ_hint">平台助教机构(机构)</string>
@@ -413,7 +416,7 @@
     <string name="label_again_submit">继续提交</string>
     <string name="label_watch_work">查看作业</string>
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
-    <string name="label_please_apply_to_be_tutorial">请申请成为帮辅</string>
+    <string name="label_please_apply_to_be_tutorial">请先申请成为帮辅</string>
     <string name="label_course_tutor_apply_for">正在审核，请耐心等待</string>
     <string name="label_input_province_tip">请选择省份</string>
     <string name="label_input_city_tip">请选择城市</string>

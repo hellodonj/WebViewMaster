@@ -61,6 +61,21 @@
 
                 </com.lqwawa.intleducation.base.CourseEmptyView>
 
+                <TextView
+                    android:id="@+id/tv_add_tutorial"
+                    android:textColor="@color/textLight"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="bottom|right"
+                    android:background="@drawable/com_bg_circle_green_btn"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="@string/label_add_tutorial_lines"/>
+
 
             </FrameLayout>
 

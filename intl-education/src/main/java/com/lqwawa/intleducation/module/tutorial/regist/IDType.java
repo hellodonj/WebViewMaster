@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 public interface IDType {
     int ID_TYPE_IDENTITY_CARD = 0;
-    int ID_TYPE_PASSPORT = 0;
+    int ID_TYPE_PASSPORT = 1;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)

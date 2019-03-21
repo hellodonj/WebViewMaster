@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrateGroupActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskActivity;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
@@ -49,6 +50,7 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private CourseEmptyView mEmptyView;
+    private TextView mTvAddTutorial;
     // Adapter
     private StudentTutorialAdapter mTutorialAdapter;
 
@@ -142,6 +144,8 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
 
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mEmptyView = (CourseEmptyView) findViewById(R.id.empty_layout);
+        mTvAddTutorial = (TextView) findViewById(R.id.tv_add_tutorial);
+        mTvAddTutorial.setOnClickListener(this);
 
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
@@ -184,6 +188,12 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
     @Override
     protected void initData() {
         super.initData();
+        requestTutorData(false);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         requestTutorData(false);
     }
 
@@ -244,6 +254,9 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
             requestTutorData(false);
         }else if(viewId == R.id.et_search){
             // 点击搜索框
+        }else if(viewId == R.id.tv_add_tutorial){
+            // 添加帮辅
+            TutorialFiltrateGroupActivity.show(this,mMemberId);
         }
     }
 

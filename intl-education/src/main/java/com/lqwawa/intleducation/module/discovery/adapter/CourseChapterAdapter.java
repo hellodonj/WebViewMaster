@@ -1089,7 +1089,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
 
-        if(courseParams.isClassTeacher() || tutorialMode){
+        if(courseParams.isClassTeacher() || (tutorialMode && isJoinCourse)){
             // 班级学程的老师
             if(mTeacherVisitor){
                 realRole = UserHelper.MoocRoleType.TEACHER;
