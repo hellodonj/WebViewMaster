@@ -244,7 +244,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStop() {
         super.onStop();
-        artProcessView.setVisibility(View.GONE);
+        if (artProcessView != null) {
+            artProcessView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -275,7 +277,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             case PERMISSION_REQUEST_CODE: {
                 for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "您拒绝了相应的权限，无法完成配音", Toast.LENGTH_LONG).show();
+                        TipMsgHelper.ShowMsg(this,"您拒绝了录音的权限，无法完成配音，请打开应用的录音权限");
                         finish();
                         return;
                     }
