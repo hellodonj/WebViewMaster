@@ -391,8 +391,8 @@ public class MOOCHelper {
             studyTask.setType(task.getLqwawaType());
             studyTask.setCourseId(task.getCourseId());
             studyTask.setCourseName(task.getCourseName());
-//            studyTask.setClassId();
-//            studyTask.setClassName();
+            studyTask.setClassId(task.getClassId());
+            studyTask.setClassName(task.getClassName());
             if (isCheckMark) {
                 //查看批阅
                 enterCheckMarkDetail(activity, data, studyTask, roleType, isAudition);
