@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
+import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
@@ -45,6 +46,9 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
     private LinearLayout mBodyLayout;
 
     private TaskEntity mTaskEntity;
+    private LqTaskInfoVo mTaskInfoVo;
+
+    private MissionRequireFragment mInstance;
 
     @Override
     protected TaskRequirementContract.Presenter initPresenter() {
@@ -78,8 +82,8 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         mIvResIcon.setOnClickListener(this);
         mTvAccessDetail.setOnClickListener(this);
 
-        mTvResName.setText(mTaskEntity.getTitle());
-        ImageUtil.fillDefaultView(mIvResIcon, mTaskEntity.getResThumbnailUrl());
+        // mTvResName.setText(mTaskEntity.getTitle());
+        // ImageUtil.fillNotificationView(mIvResIcon, mTaskEntity.getResThumbnailUrl());
 
         MissionRequireFragment instance = (MissionRequireFragment) MissionRequireFragment.getInstance(null);
         getSupportFragmentManager()
@@ -87,8 +91,10 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                 .replace(R.id.lay_content,instance)
                 .commit();
 
+        this.mInstance = instance;
+
         // 使用新接口,拉数据
-        String userId = UserHelper.getUserId();
+        /*String userId = UserHelper.getUserId();
         LessonHelper.getNewCommittedTaskByTaskId(Integer.toString(mTaskEntity.getT_TaskId()),
                 userId,
                 null,
@@ -112,13 +118,68 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                             }
                         }
                     }
-                });
+                });*/
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.requestTaskInfoByTaskId(Integer.toString(mTaskEntity.getT_TaskId()));
+    }
+
+    @Override
+    public void updateTaskInfoByTaskIdView(@NonNull LqTaskInfoVo taskInfoVo) {
+        this.mTaskInfoVo = taskInfoVo;
+        mTvResName.setText(taskInfoVo.getTaskTitle());
+        LQwawaImageUtil.loadCommonIcon(mTvResName.getContext(),mIvResIcon,taskInfoVo.getResThumbnailUrl(),R.drawable.img_def);
+        // ImageUtil.fillNotificationView(mIvResIcon, taskInfoVo.getResThumbnailUrl());
+        if(EmptyUtil.isNotEmpty(mInstance)){
+            if(!EmptyUtil.isEmpty(taskInfoVo.getDiscussContent())){
+                // 有任务要求文本
+                mBodyLayout.setVisibility(View.VISIBLE);
+                mInstance.updateViews(taskInfoVo);
+            }else{
+                // 没有任务要求文本
+                mBodyLayout.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
+        if(EmptyUtil.isEmpty(mTaskInfoVo)) return;
         if(viewId == R.id.tv_access_details){
+            if (TaskSliderHelper.onTaskSliderListener != null) {
+                String id = mTaskInfoVo.getResId();
+                if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
+                    String[] strings = id.split("-");
+                    String resId = strings[0];
+                    String resType = strings[1];
+                    String title = mTaskInfoVo.getTaskTitle();
+                    String resUrl = mTaskInfoVo.getResUrl();
+                    String resThumbnailUrl = mTaskInfoVo.getResThumbnailUrl();
+                    TaskSliderHelper.onTutorialMarkingListener.openCourseWareDetails(
+                            this,false,
+                            resId,Integer.parseInt(resType),
+                            title,1,
+                            resUrl,resThumbnailUrl);
+                }
+            }
+        }else if(viewId == R.id.iv_res_icon){
+            // 打开课件
+            if (TaskSliderHelper.onTaskSliderListener != null) {
+                String id = mTaskInfoVo.getResId();
+                if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
+                    String[] strings = id.split("-");
+                    String resId = strings[0];
+                    String resType = strings[1];
+
+                    TaskSliderHelper.onTaskSliderListener.viewCourse(this,resId,Integer.parseInt(resType),"",SourceFromType.STUDY_TASK);
+                }
+            }
+        }
+        /*if(viewId == R.id.tv_access_details){
             if (TaskSliderHelper.onTaskSliderListener != null) {
                 String id = mTaskEntity.getResId();
                 if(EmptyUtil.isNotEmpty(id) && id.contains("-")){
@@ -147,7 +208,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                     TaskSliderHelper.onTaskSliderListener.viewCourse(this,resId,Integer.parseInt(resType),"",SourceFromType.STUDY_TASK);
                 }
             }
-        }
+        }*/
     }
 
     /**
