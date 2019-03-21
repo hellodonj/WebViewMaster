@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.RegexUtil;
+import com.lqwawa.intleducation.common.utils.constant.RegexConstants;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
@@ -131,6 +133,18 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
         if(EmptyUtil.isEmpty(IDNumber)){
             view.showError(com.lqwawa.intleducation.R.string.label_identify_number_hint);
             return;
+        }
+
+        if(IDType == com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_IDENTITY_CARD){
+            if(!RegexUtil.isIDCard15(IDNumber) && !RegexUtil.isIDCard18(IDNumber)){
+                view.showError(com.lqwawa.intleducation.R.string.label_please_input_valid_card_hint);
+                return;
+            }
+        }else if(IDType == com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_PASSPORT){
+            if(!RegexUtil.isMatch(RegexConstants.REGEX_ID_PASSPORT,IDNumber)){
+                view.showError(com.lqwawa.intleducation.R.string.label_please_input_valid_passport_hint);
+                return;
+            }
         }
 
         if(EmptyUtil.isEmpty(tutorName) ||

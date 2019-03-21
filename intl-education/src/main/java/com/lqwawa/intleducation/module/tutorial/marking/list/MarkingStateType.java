@@ -15,7 +15,7 @@ public interface MarkingStateType {
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({MARKING_STATE_NORMAL,MARKING_STATE_NOT,MARKING_STATE_HAVE})
-    public @interface TutorialRoleRes{
+    public @interface TutorialStateRes {
 
     }
 

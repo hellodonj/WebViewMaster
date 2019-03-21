@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.tutorial.target;
 
+import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
  * @author mrmedici
  * @desc 进入我的帮辅，我帮辅的学生传参
  */
-public class TutorialTargetTaskParams implements Serializable {
+public class TutorialTargetTaskParams implements Serializable, Cloneable {
 
 
     private String memberId;
@@ -17,8 +18,9 @@ public class TutorialTargetTaskParams implements Serializable {
     private String configValue;
     private String role;
     private boolean isParent;
+    private int state;
 
-    public TutorialTargetTaskParams(String memberId,String tutorMemberId,String configValue) {
+    public TutorialTargetTaskParams(String memberId, String tutorMemberId, String configValue) {
         this.memberId = memberId;
         this.tutorMemberId = tutorMemberId;
         this.configValue = configValue;
@@ -50,5 +52,24 @@ public class TutorialTargetTaskParams implements Serializable {
 
     public String getConfigValue() {
         return configValue;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(@MarkingStateType.TutorialStateRes int state) {
+        this.state = state;
+    }
+
+    @Override
+    public TutorialTargetTaskParams clone() {
+        try {
+            TutorialTargetTaskParams params = (TutorialTargetTaskParams) super.clone();
+            return params;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

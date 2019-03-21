@@ -953,6 +953,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
+        <activity android:name=".module.tutorial.target.container.TutorialStudentTargetTaskActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

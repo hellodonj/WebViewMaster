@@ -82,7 +82,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             });
 
             boolean tutorialMode = MainApplication.isTutorialMode();
-            if(!tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId())){
+            if(tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId())){
                 mTvAddTutorial.setVisibility(View.GONE);
             }else{
                 mTvAddTutorial.setVisibility(View.VISIBLE);

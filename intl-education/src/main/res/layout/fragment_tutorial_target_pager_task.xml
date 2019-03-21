@@ -1,34 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/title_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorLight"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:paddingBottom="15dp"
-            android:paddingTop="15dp"
-            android:src="@drawable/title" />
-
-        <TextView
-            android:id="@+id/title_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/label_new_work"
-            android:textColor="@color/textPrimary"
-            android:textSize="14sp" />
-    </LinearLayout>
+    <include layout="@layout/holder_top_search_layout"></include>
 
     <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
         android:id="@+id/refresh_layout"
@@ -55,7 +32,9 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp">
 
                     </android.support.v7.widget.RecyclerView>
 
