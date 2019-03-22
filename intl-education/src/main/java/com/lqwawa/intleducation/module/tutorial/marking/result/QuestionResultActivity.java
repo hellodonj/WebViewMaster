@@ -13,10 +13,14 @@ import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.oosic.apps.iemaker.base.PageInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author mrmedici
@@ -64,6 +68,9 @@ public class QuestionResultActivity extends ToolbarActivity implements View.OnCl
 
         mBtnAgainSubmit.setOnClickListener(this);
         mBtnWatchWork.setOnClickListener(this);
+
+
+        EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_LIST_DATA));
     }
 
     @Override

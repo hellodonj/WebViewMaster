@@ -39,6 +39,8 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
+import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.Netroid;
 import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.modle.tutorial.comment.TutorialCommentFragment;
@@ -303,6 +305,18 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             TipsHelper.showToast(this,getString(R.string.image_saved_to, filePath));
         } else {
             TipsHelper.showToast(this, getString(R.string.save_failed));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LoginHelper.RS_LOGIN) {
+            if(UserHelper.isLogin()) {
+                // 重新进入该页面
+                TutorialHomePageActivity.show(this,mTutorialParams);
+                finish();
+            }
         }
     }
 

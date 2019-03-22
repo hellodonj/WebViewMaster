@@ -148,6 +148,10 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
         mTvAddTutorial = (TextView) findViewById(R.id.tv_add_tutorial);
         mTvAddTutorial.setOnClickListener(this);
 
+        if(isParent){
+            mTvAddTutorial.setVisibility(View.GONE);
+        }
+
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
