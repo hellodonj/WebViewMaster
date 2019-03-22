@@ -49,6 +49,8 @@ public class MainApplication extends MyApplication {
      */
     private static Looper mMainLooper = null;
 
+    private static boolean IsAssistant;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -110,5 +112,15 @@ public class MainApplication extends MyApplication {
 
     public static boolean isTutorialMode(){
         return SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
+    }
+
+
+
+    public static boolean isIsAssistant() {
+        return IsAssistant;
+    }
+
+    public static void setIsAssistant(boolean isAssistant) {
+        IsAssistant = isAssistant;
     }
 }

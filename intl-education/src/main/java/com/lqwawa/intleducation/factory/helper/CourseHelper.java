@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -741,7 +742,10 @@ public class CourseHelper {
         requestVo.addParams("type", type);
         requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
         requestVo.addParams("realName", realName);
-        requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        // requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        if(MainApplication.getInstance() != null){
+            requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
+        }
         if(isOrganTutorStatus == 0 ||
                 isOrganTutorStatus == 1){
             requestVo.addParams("markingPrice", markingPrice);

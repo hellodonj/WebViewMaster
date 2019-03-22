@@ -401,7 +401,7 @@
     <string name="label_attention_count">%d人关注</string>
     <string name="label_personal_introduce">个人介绍</string>
     <string name="label_showing">显示</string>
-    <string name="label_hide">隐藏</string>
+    <string name="label_hide">屏蔽</string>
     <string name="label_tutorial_group">帮辅群</string>
     <string name="label_watch_more_tutorial_group">查看更多帮辅</string>
     <string name="label_tutorial_free">限时免费</string>
@@ -409,7 +409,7 @@
     <string name="label_added_tutorial_succeed">+帮辅成功</string>
     <string name="label_added_tutorial_failed">+帮辅失败</string>
     <string name="label_new_work">最新作业</string>
-    <string name="label_commit_placeholder_teacher">提交给%s</string>
+    <string name="label_commit_placeholder_teacher">提交给%s老师</string>
     <string name="label_choice_tutor_tip">请选择帮辅老师</string>
     <string name="label_commit_succeed">提交成功</string>
     <string name="label_commit_succeed_tip">提交的作业已发送给%s老师，老师将在2个工作日内完成批阅，请耐心等待。</string>

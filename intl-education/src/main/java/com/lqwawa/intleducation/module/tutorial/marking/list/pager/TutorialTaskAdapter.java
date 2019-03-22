@@ -102,7 +102,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     mCallback.onRequireClick(v,position,entity);
                 }
             });
-            
+
             if(tutorialMode){
                 mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像

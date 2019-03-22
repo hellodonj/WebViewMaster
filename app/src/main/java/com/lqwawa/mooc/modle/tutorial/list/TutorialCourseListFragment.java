@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
@@ -117,7 +118,7 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mAdapter.getItem(position);
-                CourseDetailsActivity.start(getActivity(), vo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
             }
         });
     }
@@ -127,7 +128,8 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         super.initData();
         requestCourseData(false);
         // 如果当前帮辅老师与自己是同一个人，隐藏按钮
-        if(UserHelper.getUserId().equals(mTutorMemberId)){
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(UserHelper.getUserId().equals(mTutorMemberId) || tutorialMode){
             mBottomLayout.setVisibility(View.GONE);
         }else{
             // 不相等，不是查看自己个人主页
