@@ -54,8 +54,10 @@ import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -137,7 +139,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isAnswerTaskOrderQuestion;
     private QuestionResourceModel markModel;
     private boolean isAssistanceModel;//是不是帮辅模式
-
+    private TaskEntity taskEntity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,6 +184,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             isAudition = getArguments().getBoolean(Constants.EXTRA_IS_AUDITION);
             cardParam = (ExerciseAnswerCardParam) getArguments().getSerializable(ExerciseAnswerCardParam.class
                     .getSimpleName());
+            taskEntity = (TaskEntity) getArguments().getSerializable(TaskEntity.class.getSimpleName());
             if (cardParam != null) {
                 initExerciseData();
                 if (commitTask == null) {
@@ -207,12 +210,19 @@ public class CheckMarkFragment extends ContactsListFragment {
             courseDetailTextV.setOnClickListener(this);
             if (isAnswerTaskOrderQuestion) {
                 courseDetailTextV.setText(getString(R.string.str_look_origin_question));
+            } else if (isAssistanceModel){
+                courseDetailTextV.setText(getString(R.string.str_look_task_require));
+                TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
+                if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
+                    typeNameTextV.setText(taskEntity.getT_CourseName());
+                    typeNameTextV.setVisibility(View.VISIBLE);
+                }
             }
         }
 
         findViewById(R.id.ll_course).setOnClickListener(this);
         TextView tvCourseName = (TextView) findViewById(R.id.tv_course_name);//课件名
-        if (isAnswerTaskOrderQuestion) {
+        if (isAnswerTaskOrderQuestion || isAssistanceModel) {
             //单行显示...
             tvCourseName.setSingleLine(true);
             tvCourseName.setEllipsize(TextUtils.TruncateAt.END);
@@ -839,6 +849,10 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (isAnswerTaskOrderQuestion) {
                 //查看原题
                 enterLookOriginQuestion();
+            } else if (isAssistanceModel) {
+                if (taskEntity != null) {
+                    TaskRequirementActivity.show(getActivity(), taskEntity);
+                }
             } else {
                 //打开微课详情页面
                 StudyTask myTask = new StudyTask();

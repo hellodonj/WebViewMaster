@@ -265,6 +265,7 @@ public class GroupPickerFragment extends ContactsPickerFragment
                 updateViews(result);
             }
         };
+        listener.setTimeOutMs(120000);
         postRequest(ServerUrl.CONTACTS_CLASS_LIST_URL, params, listener);
     }
 

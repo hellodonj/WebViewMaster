@@ -171,6 +171,10 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         isRecording = false;
                         isDubbing = false;
                         commonAdapter.notifyDataSetChanged();
+                        if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                            isSupportPause = true;
+                            dubbingVideoView.setIsSupportPause(true);
+                        }
                     }
                 }
             });
