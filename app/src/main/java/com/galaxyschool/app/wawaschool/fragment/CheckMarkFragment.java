@@ -311,14 +311,6 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                     holder.data = data;
 
-                    //帮辅
-                    TextView assistanceTextV = (TextView) view.findViewById(R.id.tv_assistance);
-                    if (showReviewFlagPermiss(data)) {
-                        assistanceTextV.setVisibility(View.VISIBLE);
-                    } else {
-                        assistanceTextV.setVisibility(View.INVISIBLE);
-                    }
-
                     //标题
                     TextView title = (TextView) view.findViewById(R.id.tv_title);
                     TextView date = (TextView) view.findViewById(R.id.tv_date);//时间
@@ -370,7 +362,14 @@ public class CheckMarkFragment extends ContactsListFragment {
                     String createName = data.getCreateName();
                     String suffTitle = getString(R.string.str_mark_ask);
 
+                    //帮辅
+                    TextView assistanceTextV = (TextView) view.findViewById(R.id.tv_assistance);
                     if (data.isIsTeacher() || (data.getSubmitRole() == 0 && isAssistanceModel)) {
+                        if (showReviewFlagPermiss(data)) {
+                            assistanceTextV.setVisibility(View.VISIBLE);
+                        } else {
+                            assistanceTextV.setVisibility(View.INVISIBLE);
+                        }
                         createName = createName + getString(R.string.teacher);
                         suffTitle = getString(R.string.str_mark_teacher);
                         imgLeft.setVisibility(View.INVISIBLE);
@@ -386,6 +385,7 @@ public class CheckMarkFragment extends ContactsListFragment {
 
                         middleView.setBackgroundResource(R.drawable.check_mark_right);
                     } else {
+                        assistanceTextV.setVisibility(View.INVISIBLE);
                         imgLeft.setVisibility(View.VISIBLE);
                         imgRight.setVisibility(View.INVISIBLE);
                         imgLeft.setClickable(true);

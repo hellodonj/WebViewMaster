@@ -21,8 +21,10 @@ import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
+import com.lqwawa.client.pojo.LearnTaskCardType;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
@@ -107,6 +109,28 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
                         ExerciseItem exerciseItem = JSONObject.parseObject(jsonObject.toString(), ExerciseItem.class);
                         if (exerciseItem != null) {
+                            String type = exerciseItem.getType();
+                            if (!TextUtils.isEmpty(type)){
+                                if (Integer.valueOf(type) == LearnTaskCardType.SUBJECTIVE_PROBLEM){
+                                    List<MediaData> mediaDataList = new ArrayList<>();
+                                    String studentCommitResUrl = exerciseItem.getStudent_answer_res_url();
+                                    if (!TextUtils.isEmpty(studentCommitResUrl)){
+                                        if (studentCommitResUrl.contains(",")){
+                                            String [] splitArray = studentCommitResUrl.split(",");
+                                            for (int i = 0; i < splitArray.length;i++){
+                                                MediaData data = new MediaData();
+                                                data.resourceurl = splitArray[i];
+                                                mediaDataList.add(data);
+                                            }
+                                        } else {
+                                            MediaData mediaData = new MediaData();
+                                            mediaData.resourceurl = studentCommitResUrl;
+                                            mediaDataList.add(mediaData);
+                                        }
+                                    }
+                                    exerciseItem.setDatas(mediaDataList);
+                                }
+                            }
                             exerciseItemList = new ArrayList<>();
                             exerciseItemList.add(exerciseItem);
                             currentPosition = 0;
