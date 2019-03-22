@@ -416,7 +416,7 @@
     <string name="label_watch_work">查看作业</string>
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
     <string name="label_please_apply_to_be_tutorial">请先申请成为帮辅</string>
-    <string name="label_course_tutor_apply_for">正在审核，请耐心等待</string>
+    <string name="label_course_tutor_apply_for">申请成功，请等待机构管理员审核！</string>
     <string name="label_input_province_tip">请选择省份</string>
     <string name="label_input_city_tip">请选择城市</string>
     <string name="label_input_district_tip">请选择区域</string>
@@ -427,6 +427,7 @@
     <string name="label_upload_again">重新上传</string>
     <string name="label_lecture_course">讲解课</string>
     <string name="label_trial_lecture">试讲</string>
+    <string name="label_placeholder_book">《%s》</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

@@ -765,6 +765,9 @@ public class CourseHelper {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
                 ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
+                    UIUtil.showToastSafe(responseVo.getMessage());
+                }
                 if(responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(true);

@@ -125,7 +125,7 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
                     public void onDataNotAvailable(int strRes) {
                         final TutorialCourseApplyForContract.View view = getView();
                         if(EmptyUtil.isNotEmpty(view)){
-                            view.showError(strRes);
+                            // view.showError(strRes);
                         }
                     }
 
