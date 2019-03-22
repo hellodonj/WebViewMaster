@@ -128,7 +128,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
         TutorialMarkingListActivity.show(getActivity(),params);*/
 
         boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
-        TutorialTargetTaskParams params = new TutorialTargetTaskParams(UserHelper.getUserId(),null,getString(R.string.label_committed_works));
+        TutorialTargetTaskParams params = new TutorialTargetTaskParams(mCurMemberId,null,getString(R.string.label_committed_works));
         params.setParent(isParent);
         params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
         TutorialStudentTargetTaskActivity.show(getActivity(),params);

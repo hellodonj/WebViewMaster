@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
+import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -197,6 +198,11 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
     public void onClick(View view){
         int viewId = view.getId();
         if(viewId == R.id.btn_add_tutorial){
+            // 先判断是否登录
+            if(!UserHelper.isLogin()){
+                LoginHelper.enterLogin(getActivity());
+                return;
+            }
             // 加帮辅
             mPresenter.requestAddTutorByStudentId(UserHelper.getUserId(),mTutorMemberId,mTutorName);
         }

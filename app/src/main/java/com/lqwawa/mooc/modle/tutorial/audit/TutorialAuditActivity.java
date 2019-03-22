@@ -11,7 +11,11 @@ import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.modle.tutorial.regist.TutorialRegisterActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author mrmedici

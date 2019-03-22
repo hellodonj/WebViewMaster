@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
                     android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:weightSum="9">
 
                     <org.angmarch.views.NiceSpinner
                         android:id="@+id/province_spinner"
@@ -159,7 +159,8 @@
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+                        android:layout_weight="0.5"
+                        android:visibility="gone"/>
 
                     <org.angmarch.views.NiceSpinner
                         android:id="@+id/city_spinner"
@@ -176,7 +177,8 @@
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"/>
+                        android:layout_weight="0.5"
+                        android:visibility="gone"/>
 
                     <org.angmarch.views.NiceSpinner
                         android:id="@+id/district_spinner"
