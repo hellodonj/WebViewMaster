@@ -55,7 +55,8 @@
                 style="@style/AppTheme.TabLayout.TextAppearance"
                 android:background="@color/colorLight"
                 app:tabTextColor="@color/textPrimary"
-                app:tabSelectedTextColor="@color/textAccent">
+                app:tabSelectedTextColor="@color/textAccent"
+                app:tabMode="fixed">
 
             </android.support.design.widget.TabLayout>
 
