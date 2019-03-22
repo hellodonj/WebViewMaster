@@ -255,42 +255,60 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateCityWithProvince(@NonNull List<LocationEntity.LocationBean> cities) {
-        mCitySpinner.attachDataSource(cities);
-        mCitySpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(EmptyUtil.isNotEmpty(cities)){
+            mCitySpinner.setEnabled(true);
+            mDistrictSpinner.setEnabled(true);
+            mCitySpinner.attachDataSource(cities);
+            mCitySpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    LocationEntity.LocationBean bean = cities.get(position);
+                    mCurrentCityBean = bean;
+                    mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
+                }
+            });
+            fillSpinnerBottom(mCitySpinner);
+            if (EmptyUtil.isNotEmpty(cities)) {
+                mCitySpinner.setSelectedIndex(0);
+
+                int position = mCitySpinner.getSelectedIndex();
                 LocationEntity.LocationBean bean = cities.get(position);
                 mCurrentCityBean = bean;
                 mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
             }
-        });
-        fillSpinnerBottom(mCitySpinner);
-        if (EmptyUtil.isNotEmpty(cities)) {
-            mCitySpinner.setSelectedIndex(0);
-
-            int position = mCitySpinner.getSelectedIndex();
-            LocationEntity.LocationBean bean = cities.get(position);
-            mCurrentCityBean = bean;
-            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
+        }else{
+            mCitySpinner.setEnabled(false);
+            mCitySpinner.setText("");
+            mCurrentCityBean = null;
+            mDistrictSpinner.setEnabled(false);
+            mDistrictSpinner.setText("");
+            mCurrentDistrictBean = null;
         }
     }
 
     @Override
     public void updateDistrictWithCity(@NonNull List<LocationEntity.LocationBean> districts) {
-        mDistrictSpinner.attachDataSource(districts);
-        mDistrictSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(EmptyUtil.isNotEmpty(districts)){
+            mDistrictSpinner.setEnabled(true);
+            mDistrictSpinner.attachDataSource(districts);
+            mDistrictSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    LocationEntity.LocationBean bean = districts.get(position);
+                    mCurrentDistrictBean = bean;
+                }
+            });
+            fillSpinnerBottom(mDistrictSpinner);
+            if (EmptyUtil.isNotEmpty(districts)) {
+                mDistrictSpinner.setSelectedIndex(0);
+                int position = mDistrictSpinner.getSelectedIndex();
                 LocationEntity.LocationBean bean = districts.get(position);
                 mCurrentDistrictBean = bean;
             }
-        });
-        fillSpinnerBottom(mDistrictSpinner);
-        if (EmptyUtil.isNotEmpty(districts)) {
-            mDistrictSpinner.setSelectedIndex(0);
-            int position = mDistrictSpinner.getSelectedIndex();
-            LocationEntity.LocationBean bean = districts.get(position);
-            mCurrentDistrictBean = bean;
+        }else{
+            mDistrictSpinner.setEnabled(false);
+            mDistrictSpinner.setText("");
+            mCurrentDistrictBean = null;
         }
     }
 

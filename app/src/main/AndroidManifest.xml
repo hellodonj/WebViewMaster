@@ -1379,6 +1379,7 @@
         <!--申请成为帮辅，注册信息的入口-->
         <activity android:name="com.lqwawa.mooc.modle.tutorial.regist.TutorialRegisterActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:theme="@style/AppTheme.Common"/>
