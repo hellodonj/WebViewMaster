@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/com_item_space"
-    android:paddingLeft="4dp"
-    android:paddingRight="@dimen/com_item_space"
-    android:paddingTop="4dp"
+    android:background="@drawable/com_item_selector"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/com_item_selector">
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingTop="4dp"
+    android:paddingRight="@dimen/com_item_space"
+    android:paddingBottom="@dimen/com_item_space">
 
     <FrameLayout
         android:id="@+id/cover_lay"
@@ -27,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
-            android:layout_marginRight="2dp"
             android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp" />
 
@@ -81,10 +81,11 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/body_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -104,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:text="@string/price_with_colon"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/course_price"
@@ -118,29 +119,39 @@
                 android:id="@+id/original_price_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_original_desc"
                     style="@style/text_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/price_with_colon"
                     android:layout_marginRight="4dp"
-                    android:visibility="gone"/>
+                    android:text="@string/price_with_colon"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_original_price"
-                    android:textColor="@color/textSecond"
-                    android:textSize="12sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textSecond"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/course_date_tv"
+            style="@style/text_light_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -149,10 +160,10 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_toggle_selector"
         android:button="@null"
         android:clickable="false"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        android:background="@drawable/bg_toggle_selector"/>
+        android:visibility="gone" />
 
 </LinearLayout>

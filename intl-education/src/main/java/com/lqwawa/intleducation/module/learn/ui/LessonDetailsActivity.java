@@ -800,6 +800,12 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
 
+            if(mTabLayout.getTabCount() > 4){
+                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            }else{
+                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+            }
+
             // 设置Indicator长度
             /*if(fragments.size() > 1)
             TabLayoutUtil.setIndicatorMargin(UIUtil.getContext(),mTabLayout,20,20);*/
@@ -1088,6 +1094,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             } else if (moocTaskType == 4) {
                 // 多出来的看课本类型
                 lqwawaTaskType = 9;
+            } else if(moocTaskType == 5){
+                // 讲解课类型
+                lqwawaTaskType = 5;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray, lqwawaTaskType);
             // 刷新数目

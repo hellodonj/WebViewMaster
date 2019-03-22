@@ -191,7 +191,7 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(courseVos.size() >= AppConfig.PAGE_SIZE);
-        mAdapter = new CourseListAdapter(this);
+        mAdapter = new CourseListAdapter(true,this);
         mAdapter.setData(courseVos);
         mListView.setAdapter(mAdapter);
 

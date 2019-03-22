@@ -37,6 +37,7 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
 
 
     private NavHelper<Integer> mNavHelper;
+    private boolean isVisible;
 
     @Override
     protected TutorialSpaceBoxContract.Presenter initPresenter() {
@@ -56,7 +57,14 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
                 getChildFragmentManager(), this);
         mNavHelper.add(KEY_TUTORIAL_MODE_ID, new NavHelper.Tab<>(TutorialSpaceFragment.class, R.string.label_tutorial_space))
                 .add(KEY_COURSE_MODE_ID, new NavHelper.Tab<>(MyCourseFragment.class, R.string.label_course_box));
-        showFragment();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()){
+            showFragment();
+        }
     }
 
     /**
@@ -65,9 +73,6 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
     private void showFragment(){
         // 获取当前的模式
         boolean tutorialMode = MainApplication.isTutorialMode();
-        // 传送模式
-        // EventBus.getDefault().post(new EventWrapper(KEY_TUTORIAL_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
-        // EventBus.getDefault().post(new EventWrapper(KEY_COURSE_MODE_ID,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
         if(tutorialMode){
             // 帮辅模式
             mNavHelper.performClickMenu(KEY_TUTORIAL_MODE_ID);
@@ -94,7 +99,7 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event){
-        if(EventWrapper.isMatch(event,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE)){
+        if(EventWrapper.isMatch(event,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE) && getUserVisibleHint()){
             int mode = (int) event.getData();
             if(mode == KEY_TUTORIAL_MODE_ID){
                 // 帮辅模式
@@ -127,7 +132,7 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
             String action = intent.getAction();
             if (action.equals(LOGIN_ACTION)) {
                 // 获取到登录的广播
-                showFragment();
+                // showFragment();
             }
         }
     };

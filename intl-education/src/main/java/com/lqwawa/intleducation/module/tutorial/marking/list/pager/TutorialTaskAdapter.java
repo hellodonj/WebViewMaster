@@ -102,7 +102,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     mCallback.onRequireClick(v,position,entity);
                 }
             });
-
+            
             if(tutorialMode){
                 mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像
@@ -150,6 +150,9 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             }else{
                 mTaskClass.setVisibility(View.INVISIBLE);
             }
+
+            // 需求更改，不显示班级名
+            mTaskClass.setVisibility(View.GONE);
 
             // 显示提交时间，保留到分
             // 优先使用更新时间

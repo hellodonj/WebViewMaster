@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
+import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -36,6 +37,7 @@ public class CourseListAdapter extends MyBaseAdapter {
 
     // 是否是班级学程入口，用来选择课程的
     private boolean isClassCourseEnter;
+    private boolean tutorialMode;
 
     private static final int[] courseStatusResId = new int[]{
             R.string.course_status_0,
@@ -58,6 +60,11 @@ public class CourseListAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
                 .build();
+    }
+
+    public CourseListAdapter(boolean tutorialMode,Activity activity){
+        this(activity);
+        this.tutorialMode = tutorialMode;
     }
 
     public CourseListAdapter(Activity activity,boolean isClassCourseEnter) {
@@ -154,6 +161,16 @@ public class CourseListAdapter extends MyBaseAdapter {
                 vo.getThumbnailUrl().trim(),
                 imageOptions);
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
+
+        if(tutorialMode){
+            holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
+                    DateUtils.YYYYMMDDCH));
+            holder.mBodyLayout.setVisibility(View.GONE);
+            holder.course_date_tv.setVisibility(View.VISIBLE);
+        }else{
+            holder.mBodyLayout.setVisibility(View.VISIBLE);
+            holder.course_date_tv.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
@@ -170,6 +187,8 @@ public class CourseListAdapter extends MyBaseAdapter {
         LinearLayout mPriceLayout;
         TextView priceTitleTv;
         TextView coursePrice;
+        LinearLayout mBodyLayout;
+        TextView course_date_tv;
 
         CheckBox cbSelect;
         
@@ -187,6 +206,8 @@ public class CourseListAdapter extends MyBaseAdapter {
             mPriceLayout = (LinearLayout) parent.findViewById(R.id.price_layout);
             priceTitleTv = (TextView) parent.findViewById(R.id.price_title_tv);
             coursePrice = (TextView) parent.findViewById(R.id.course_price);
+            mBodyLayout = (LinearLayout) parent.findViewById(R.id.body_layout);
+            course_date_tv = (TextView) parent.findViewById(R.id.course_date_tv);
             cbSelect = (CheckBox) parent.findViewById(R.id.cb_select);
         }
 
