@@ -384,21 +384,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                     if (result != null) {
                         int markWay = (int) result;
                         if (collectParams != null) {
-                            int resourceType = collectParams.resourceType;
                             if (markWay == 0) {
                                 //点读
-                                if (resourceType == ResType.RES_TYPE_ONEPAGE) {
-                                    edit();
-                                } else {
-                                    switchMarkModel(true);
-                                }
+                                edit();
                             } else {
                                 //录音
-                                if (resourceType == ResType.RES_TYPE_COURSE_SPEAKER) {
-                                    edit();
-                                } else {
-                                    switchMarkModel(false);
-                                }
+                                switchMarkModel();
                             }
                         }
                     }
@@ -406,21 +397,14 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         markWayDialog.show();
     }
 
-    private void switchMarkModel(boolean isReading) {
+    private void switchMarkModel() {
         DoCourseHelper doCourseHelper = new DoCourseHelper(PlaybackActivityPhone.this);
         NewResourceInfo newResourceInfo = new NewResourceInfo();
         newResourceInfo.setScreenType(mOrientation);
         newResourceInfo.setResourceId(collectParams.getMicroId() + "-" + collectParams.getResourceType());
         newResourceInfo.setTitle(collectParams.getTitle());
-        if (isReading) {
-            //微课 -> 点读
-            doCourseHelper.doRemoteLqCourse(newResourceInfo,
-                    DoCourseHelper.FromType.DO_SLIDE_COURSE_TASK, false, true);
-        } else {
-            //点读 -> 微课
-            doCourseHelper.doRemoteLqCourse(newResourceInfo,
-                    DoCourseHelper.FromType.Do_Retell_Course, false, true);
-        }
+        doCourseHelper.doRemoteLqCourse(newResourceInfo,
+                DoCourseHelper.FromType.Do_Retell_Course, false, true);
     }
 
     /**
@@ -1231,7 +1215,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                     CourseData courseData = uploadResult.data.get(0);
                                                                                     if (courseData != null) {
                                                                                         if (!TextUtils.isEmpty(mParam.taskMarkParam.commitTaskId)) {
-                                                                                            ApplyMarkHelper.commitAssistantMarkData(PlaybackActivityPhone.this, courseData, Integer.valueOf(mParam.taskMarkParam.commitTaskId),true);
+                                                                                            ApplyMarkHelper.commitAssistantMarkData(PlaybackActivityPhone.this, courseData, Integer.valueOf(mParam.taskMarkParam.commitTaskId), true);
                                                                                         }
                                                                                     }
                                                                                 }
