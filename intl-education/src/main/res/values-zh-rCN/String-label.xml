@@ -65,6 +65,12 @@
         <item>&#8195;讨论&#8195;</item>
     </string-array>
 
+    <string-array name="label_lecture_lesson_task_tab_array">
+        <item>任务要求</item>
+        <item>试讲列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+
     <string name="label_course_learning_progress_percent">%d%%</string>
 
     <!--占位图-->
@@ -426,6 +432,8 @@
     <string name="label_user_works">%s的作业</string>
     <string name="label_committed_works">提交给%s的作业</string>
     <string name="label_upload_again">重新上传</string>
+    <string name="label_lecture_course">讲解课</string>
+    <string name="label_trial_lecture">试讲</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

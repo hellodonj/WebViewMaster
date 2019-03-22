@@ -139,14 +139,18 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             mBtnDone.setText(getResources().getString(R.string.retell_task));
         } else if (sectionResListVo.getTaskType() == 3) {
             mBtnDone.setText(getResources().getString(R.string.do_task));
+        } else if(sectionResListVo.getTaskType() == 5){
+            mBtnDone.setText(getResources().getString(R.string.label_trial_lecture));
         }
 
         // 班级学程入口，才有成绩统计
         CourseDetailParams courseParams = mCommitParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
                 !mCommitParams.isTeacherVisitor() &&
-                (sectionResListVo.getTaskType() == 2 || sectionResListVo.getTaskType() == 3)){
-            // 听读课 和 读写单都有成绩统计
+                (sectionResListVo.getTaskType() == 2 ||
+                        sectionResListVo.getTaskType() == 5 ||
+                        sectionResListVo.getTaskType() == 3)){
+            // 听读课 讲解课 和 读写单都有成绩统计
             mBtnStatisticalScores.setVisibility(View.VISIBLE);
         }else{
             mBtnStatisticalScores.setVisibility(View.GONE);

@@ -667,7 +667,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             if (resType > 10000) {
                 resType -= 10000;
             }
-            if (sectionResListVo.getTaskType() == 2) {//复述微课
+            if (sectionResListVo.getTaskType() == 2 ||
+                    sectionResListVo.getTaskType() == 5) {//复述微课
                 if (resType == ResType.RES_TYPE_OLD_COURSE || resType == ResType.RES_TYPE_COURSE
                         || resType == ResType.RES_TYPE_COURSE_SPEAKER) {//有声相册
                     DoCourseHelper doCourseHelper = new DoCourseHelper(activity, downloadService);
