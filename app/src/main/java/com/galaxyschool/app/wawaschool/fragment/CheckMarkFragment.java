@@ -221,7 +221,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
         if (commitTask != null) {
-            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId())) {
+            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && !MainApplication.isTutorialMode()) {
                 markModel = new QuestionResourceModel();
                 markModel.setTitle(commitTask.getStudentResTitle());
                 markModel.setT_TaskId(commitTask.getTaskId());

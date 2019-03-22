@@ -46,6 +46,7 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.ExerciseTeacherCommentDialog;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.client.pojo.LearnTaskCardType;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
@@ -272,7 +273,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             //未点评
             remarkTextV.setVisibility(View.VISIBLE);
             remarkTextV.setOnClickListener(v -> openTeacherReMarkDialog());
-        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId())) {
+        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId()) && !MainApplication.isTutorialMode()) {
             //显示老师批阅
             ApplyMarkHelper.showApplyMarkView(getActivity(),remarkTextV);
             remarkTextV.setOnClickListener(v -> lookAnswerParsingDetail());

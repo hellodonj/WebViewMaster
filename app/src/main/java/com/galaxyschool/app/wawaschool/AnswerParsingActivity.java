@@ -23,6 +23,7 @@ import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.util.ArrayList;
@@ -147,7 +148,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         applyMarkLayout = (FrameLayout) findViewById(R.id.ll_apply_mark);
         if (cardParam != null) {
             if (TextUtils.equals(DemoApplication.getInstance().getMemberId(),
-                    cardParam.getStudentId())) {
+                    cardParam.getStudentId()) && !MainApplication.isTutorialMode()) {
                 applyMarkLayout.setVisibility(View.VISIBLE);
             }
         }
