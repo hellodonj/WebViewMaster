@@ -1694,4 +1694,5 @@
     <string name="str_point_reading_tips">可添加喇叭、画笔等</string>
     <string name="str_record_course_tips">可录制解答过程和解答说明、添加画笔等</string>
     <string name="str_lecture_course">讲解课</string>
+    <string name="str_look_task_require">查看任务要求</string>
 </resources>

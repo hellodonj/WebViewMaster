@@ -254,7 +254,7 @@ public class MOOCHelper {
             studyTask.setCourseId(String.valueOf(taskEntity.getT_CourseId()));
             studyTask.setCourseName(taskEntity.getT_CourseName());
             studyTask.setResCourseId(taskEntity.getT_ResCourseId());
-            CheckMarkActivity.start(activity,commitTask,studyTask);
+            CheckMarkActivity.start(activity,commitTask,studyTask,taskEntity);
         }
     };
 

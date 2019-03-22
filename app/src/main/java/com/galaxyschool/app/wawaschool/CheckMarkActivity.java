@@ -8,6 +8,7 @@ import com.galaxyschool.app.wawaschool.fragment.CheckMarkFragment;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 
 public class CheckMarkActivity extends BaseFragmentActivity{
     private CheckMarkFragment fragment = null;
@@ -24,7 +25,8 @@ public class CheckMarkActivity extends BaseFragmentActivity{
 
     public static void start(Activity activity,
                              CommitTask commitTask,
-                             StudyTask studyTask){
+                             StudyTask studyTask,
+                             TaskEntity taskEntity){
         Intent intent = new Intent(activity,CheckMarkActivity.class);
         Bundle args = new Bundle();
         if (commitTask != null) {
@@ -32,6 +34,9 @@ public class CheckMarkActivity extends BaseFragmentActivity{
         }
         if (studyTask != null) {
             args.putSerializable(CheckMarkFragment.Constants.STUDYTASK,studyTask);
+        }
+        if (taskEntity != null){
+            args.putSerializable(TaskEntity.class.getSimpleName(),taskEntity);
         }
         intent.putExtras(args);
         activity.startActivity(intent);
