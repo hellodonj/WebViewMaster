@@ -345,8 +345,11 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                     tabData.setChildList(entities);
                 }
 
+                Tab parentTab = (Tab) tabAt.getTag();
                 if(tabData.getId() == ENGLISH_INTERNATIONAL_CHILDREN_IGCSE_ID ||
-                        tabData.getId() == ENGLISH_INTERNATIONAL_CHILDREN_A_LEVEL_ID) {
+                        tabData.getId() == ENGLISH_INTERNATIONAL_CHILDREN_A_LEVEL_ID ||
+                        (parentTab.getId() == ENGLISH_INTERNATIONAL_COURSE_ID &&
+                        tabData.isAll())) {
                     // 设置第三个显示
                     mTabVector3.setVisibility(View.VISIBLE);
                     // 重新配置3数据的联动效果
