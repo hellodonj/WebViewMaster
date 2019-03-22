@@ -104,6 +104,7 @@ public class MOOCHelper {
         userInfoVo.setThumbnail(userInfo.getHeaderPic());
         userInfoVo.setRoles(userInfo.getRoles());
         userInfoVo.setSchoolIds(getSchoolsFromUserInfo(userInfo));
+        MainApplication.setIsAssistant(userInfo.isAssistant());
         UserHelper.setUserInfo(userInfoVo);
     }
 

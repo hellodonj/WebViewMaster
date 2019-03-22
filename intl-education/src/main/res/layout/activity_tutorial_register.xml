@@ -38,9 +38,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_user_name"
@@ -52,7 +53,7 @@
                         android:id="@+id/et_nick_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:background="@null"
                         android:ellipsize="end"
                         android:hint="@string/label_user_name_hint"
@@ -227,9 +228,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_identifier"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_identify_type"
@@ -242,7 +244,7 @@
                         android:id="@+id/identify_content_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:layout_gravity="center_vertical">
 
                         <TextView
@@ -300,9 +302,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_identifier_number"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_height="26dp"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_identify_number"
@@ -314,7 +317,7 @@
                         android:id="@+id/et_identify_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:background="@null"
                         android:digits="@string/label_identify_digits"
                         android:ellipsize="end"
@@ -351,9 +354,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_choice_organ"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_choice_organ"
@@ -365,7 +369,7 @@
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3">
+                        android:layout_weight="5">
 
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/organ_spinner"
@@ -411,21 +415,22 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_your_address"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_gravity="center_vertical"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:orientation="horizontal"
                         android:weightSum="10">
 
@@ -502,9 +507,10 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_label_marking_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_mark_price"
@@ -517,7 +523,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical">
 
@@ -597,7 +603,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_work_period"
@@ -609,7 +615,7 @@
                         android:id="@+id/et_work_limit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="5"
                         android:background="@null"
                         android:ellipsize="end"
                         android:hint="@string/label_work_period_hint"

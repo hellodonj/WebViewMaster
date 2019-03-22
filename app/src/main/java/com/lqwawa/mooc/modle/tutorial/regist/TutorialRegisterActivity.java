@@ -3,8 +3,12 @@ package com.lqwawa.mooc.modle.tutorial.regist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
@@ -55,12 +59,19 @@ import java.util.List;
  * @desc 申请成为帮辅，注册信息页面的页面
  */
 public class TutorialRegisterActivity extends PresenterActivity<TutorialRegisterContract.Presenter>
-    implements TutorialRegisterContract.View,View.OnClickListener{
+        implements TutorialRegisterContract.View, View.OnClickListener {
 
     private static final String CHINA_TEXT = "中国"; //变量
     private int mediaType = MediaType.PICTURE; //图片类型
 
     private TopBar mTopBar;
+    private TextView mTvLabelName;
+    private TextView mTvLabelIdenitifier;
+    private TextView mTvLabelIdenitifierNumber;
+    private TextView mTvLabelAddress;
+    private TextView mTvLabelChoiceOrgan;
+    private TextView mTvLabelMarkingPrice;
+
     // 姓名
     private EditText mEtName;
     // 手机号码
@@ -120,6 +131,19 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_fill_information);
 
+        mTvLabelName = (TextView) findViewById(R.id.tv_label_name);
+        mTvLabelIdenitifier = (TextView) findViewById(R.id.tv_label_identifier);
+        mTvLabelIdenitifierNumber = (TextView) findViewById(R.id.tv_label_identifier_number);
+        mTvLabelAddress = (TextView) findViewById(R.id.tv_label_address);
+        mTvLabelChoiceOrgan = (TextView) findViewById(R.id.tv_label_choice_organ);
+        mTvLabelMarkingPrice = (TextView) findViewById(R.id.tv_label_marking_price);
+        fillLabelWarning(mTvLabelName,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelIdenitifier,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelIdenitifierNumber,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelAddress,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelChoiceOrgan,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelMarkingPrice,"*",UIUtil.getColor(R.color.colorDarkRed));
+
         mEtName = (EditText) findViewById(R.id.et_nick_name);
         mEtPhoneNumber = (EditText) findViewById(R.id.et_phone_number);
         mEtVerificationCode = (EditText) findViewById(R.id.et_verification_code);
@@ -136,7 +160,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 super.onTextChanged(s, start, before, count);
-                if(EmptyUtil.isEmpty(s) || s.toString().startsWith("0")){
+                if (EmptyUtil.isEmpty(s) || s.toString().startsWith("0")) {
                     // 0开头
                     mEtWorkLimit.getText().clear();
                 }
@@ -154,11 +178,26 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mBtnSubmit.setOnClickListener(this);
     }
 
+    /**
+     * 设置必填项
+     * @param view 标签
+     * @param charSequence *
+     * @param color 颜色值
+     */
+    private void fillLabelWarning(@NonNull TextView view, CharSequence charSequence,@ColorInt int color){
+        String text = view.getText().toString();
+        SpannableString spannableString = new SpannableString(text);
+        ForegroundColorSpan span = new ForegroundColorSpan(color);
+        spannableString.setSpan(span,text.indexOf(charSequence.toString()),text.length() - 1,Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        view.setText(spannableString);
+    }
+
+
     @Override
     protected void initData() {
         super.initData();
-        mPresenter.requestTutorialOrgan(true,0);
-        mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_COUNTRY,"");
+        mPresenter.requestTutorialOrgan(true, 0);
+        mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_COUNTRY, "");
     }
 
     @Override
@@ -171,7 +210,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             }
         });
         fillSpinnerBottom(mOrganSpinner);
-        if(EmptyUtil.isNotEmpty(entities)) {
+        if (EmptyUtil.isNotEmpty(entities)) {
             mOrganSpinner.setSelectedIndex(0);
             int position = mOrganSpinner.getSelectedIndex();
             mCurrentOrganEntity = entities.get(position);
@@ -180,11 +219,11 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateCountries(@NonNull List<LocationEntity.LocationBean> countries) {
-        if(EmptyUtil.isNotEmpty(countries)){
+        if (EmptyUtil.isNotEmpty(countries)) {
             for (LocationEntity.LocationBean country : countries) {
-                if(CHINA_TEXT.equals(country.getText())){
+                if (CHINA_TEXT.equals(country.getText())) {
                     String chinaValue = country.getValue();
-                    mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_PROVINCE,chinaValue);
+                    mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_PROVINCE, chinaValue);
                     break;
                 }
             }
@@ -199,18 +238,18 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LocationEntity.LocationBean bean = provinces.get(position);
                 mCurrentProviceBean = bean;
-                mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
+                mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY, bean.getValue());
             }
         });
 
         fillSpinnerBottom(mProvinceSpinner);
-        if(EmptyUtil.isNotEmpty(provinces)) {
+        if (EmptyUtil.isNotEmpty(provinces)) {
             mProvinceSpinner.setSelectedIndex(0);
 
             int position = mProvinceSpinner.getSelectedIndex();
             LocationEntity.LocationBean bean = provinces.get(position);
             mCurrentProviceBean = bean;
-            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY, bean.getValue());
         }
     }
 
@@ -222,17 +261,17 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LocationEntity.LocationBean bean = cities.get(position);
                 mCurrentCityBean = bean;
-                mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT,bean.getValue());
+                mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
             }
         });
         fillSpinnerBottom(mCitySpinner);
-        if(EmptyUtil.isNotEmpty(cities)) {
+        if (EmptyUtil.isNotEmpty(cities)) {
             mCitySpinner.setSelectedIndex(0);
 
             int position = mCitySpinner.getSelectedIndex();
             LocationEntity.LocationBean bean = cities.get(position);
             mCurrentCityBean = bean;
-            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT,bean.getValue());
+            mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
         }
     }
 
@@ -247,7 +286,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             }
         });
         fillSpinnerBottom(mDistrictSpinner);
-        if(EmptyUtil.isNotEmpty(districts)) {
+        if (EmptyUtil.isNotEmpty(districts)) {
             mDistrictSpinner.setSelectedIndex(0);
             int position = mDistrictSpinner.getSelectedIndex();
             LocationEntity.LocationBean bean = districts.get(position);
@@ -257,9 +296,9 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateApplyForResult(boolean result) {
-        if(result){
+        if (result) {
             hideLoading();
-            TutorialAuditActivity.show(this,result);
+            TutorialAuditActivity.show(this, result);
             finish();
         }
     }
@@ -267,18 +306,19 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     /**
      * 对NiceSpinner高度计算错误的补偿
+     *
      * @param spinner Spinner容器
      */
-    private void fillSpinnerBottom(@NonNull NiceSpinner spinner){
+    private void fillSpinnerBottom(@NonNull NiceSpinner spinner) {
         int[] locationOnScreen = new int[2];
         spinner.getLocationOnScreen(locationOnScreen);
         int parentVerticalOffset = locationOnScreen[NiceSpinner.VERTICAL_OFFSET];
         // 应该设置的最大高度
         int maxSpinnerHeight = DisplayUtil.getMobileHeight(this) - parentVerticalOffset - spinner.getMeasuredHeight();
         // 实际设置的高度
-        int spinnerHeight = Math.max(maxSpinnerHeight,parentVerticalOffset);
+        int spinnerHeight = Math.max(maxSpinnerHeight, parentVerticalOffset);
         // 补偿策略
-        if(spinnerHeight > maxSpinnerHeight){
+        if (spinnerHeight > maxSpinnerHeight) {
             spinner.setDropDownListPaddingBottom(spinnerHeight - maxSpinnerHeight);
         }
     }
@@ -288,32 +328,32 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.btn_certificate_upload){
+        if (viewId == R.id.btn_certificate_upload) {
             // 个人学历证书选择上传
             mBtnBusinessUpload.setActivated(false);
             mBtnCertificateUpload.setActivated(true);
             showImagePopupView();
-        }else if(viewId == R.id.tv_business_upload){
+        } else if (viewId == R.id.tv_business_upload) {
             // 行业资历认证证书上传
             mBtnBusinessUpload.setActivated(true);
             mBtnCertificateUpload.setActivated(false);
             showImagePopupView();
-        }else if(viewId == R.id.btn_submit){
+        } else if (viewId == R.id.btn_submit) {
             // 提交申请
             commitApplyFor();
-        }else if(viewId == R.id.identify_layout){
-            if(EmptyUtil.isNotEmpty(mPopupWindow)){
-                if(!mPopupWindow.isShowing()) {
+        } else if (viewId == R.id.identify_layout) {
+            if (EmptyUtil.isNotEmpty(mPopupWindow)) {
+                if (!mPopupWindow.isShowing()) {
                     mPopupWindow.showAsDropDown(mTvTypeName);
                 }
-            }else {
+            } else {
                 // 弹出证件类型选择
                 int width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                if(mTvTypeName.getMeasuredWidth() > 0){
+                if (mTvTypeName.getMeasuredWidth() > 0) {
                     width = mTvTypeName.getMeasuredWidth();
                 }
-                final IdentifyPopupWindow popupWindow = new IdentifyPopupWindow(width,height,new IdentifyPopupWindow.OnChoiceListener() {
+                final IdentifyPopupWindow popupWindow = new IdentifyPopupWindow(width, height, new IdentifyPopupWindow.OnChoiceListener() {
                     @Override
                     public void onChoiceMenu(@NonNull IdentifyPopupWindow.IdentifyEntity entity) {
                         mIdentifyLayout.setTag(entity.getIdentifyId());
@@ -326,7 +366,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         }
     }
 
-    private void commitApplyFor(){
+    private void commitApplyFor() {
         String name = mEtName.getText().toString().trim();
         String phoneNumber = mEtPhoneNumber.getText().toString().trim();
         String verificationCode = mEtVerificationCode.getText().toString().trim();
@@ -334,28 +374,28 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String identifyNumber = mEtIdentifyNumber.getText().toString().trim();
         String organId = "";
         String organName = "";
-        if(EmptyUtil.isNotEmpty(mCurrentOrganEntity)){
+        if (EmptyUtil.isNotEmpty(mCurrentOrganEntity)) {
             organId = mCurrentOrganEntity.getId();
             organName = mCurrentOrganEntity.getSName();
         }
 
         String provinceId = "";
         String provinceName = "";
-        if(EmptyUtil.isNotEmpty(mCurrentProviceBean)){
+        if (EmptyUtil.isNotEmpty(mCurrentProviceBean)) {
             provinceId = mCurrentProviceBean.getValue();
             provinceName = mCurrentProviceBean.getText();
         }
 
         String cityId = "";
         String cityName = "";
-        if(EmptyUtil.isNotEmpty(mCurrentCityBean)){
+        if (EmptyUtil.isNotEmpty(mCurrentCityBean)) {
             cityId = mCurrentCityBean.getValue();
             cityName = mCurrentCityBean.getText();
         }
 
         String districtId = "";
         String districtName = "";
-        if(EmptyUtil.isNotEmpty(mCurrentDistrictBean)){
+        if (EmptyUtil.isNotEmpty(mCurrentDistrictBean)) {
             districtId = mCurrentDistrictBean.getValue();
             districtName = mCurrentDistrictBean.getText();
         }
@@ -363,18 +403,18 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String markPrice = mEtMarkPrice.getText().toString().trim();
         String workLife = mEtWorkLimit.getText().toString().trim();
 
-        String certificateUrl = mUrlArray.get(mBtnCertificateUpload.getId(),"");
-        String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId(),"");
+        String certificateUrl = mUrlArray.get(mBtnCertificateUpload.getId(), "");
+        String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId(), "");
 
         showLoading();
-        mPresenter.requestApplyForTutor(name,phoneNumber,verificationCode,
-                idType,identifyNumber,
-                UserHelper.getUserId(),UserHelper.getUserName(),
-                organId,organName,markPrice,
-                provinceId,provinceName,
-                cityId,cityName,
-                districtId,districtName,
-                workLife,certificateUrl,businessUrl);
+        mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
+                idType, identifyNumber,
+                UserHelper.getUserId(), UserHelper.getUserName(),
+                organId, organName, markPrice,
+                provinceId, provinceName,
+                cityId, cityName,
+                districtId, districtName,
+                workLife, certificateUrl, businessUrl);
     }
 
     private void showImagePopupView() {
@@ -402,7 +442,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                     fileFolder.mkdirs();
                 }
 
-                uploadAvatar(userId,url);
+                uploadAvatar(userId, url);
                 break;
             case ActivityUtils.REQUEST_CODE_FETCH_PHOTO:
                 if (data != null) {
@@ -412,7 +452,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                         return;
                     }
 
-                    uploadAvatar(userId,photoPath);
+                    uploadAvatar(userId, photoPath);
                 }
                 break;
             default:
@@ -423,6 +463,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     /**
      * 上传文件
+     *
      * @param memberId 当前的用户Id
      * @param filePath 文件路径
      */
@@ -434,7 +475,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         // 上传
         UserInfo userInfo = getUserInfo();
 
-        if(userInfo == null){
+        if (userInfo == null) {
             return;
         }
 
@@ -444,7 +485,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         StringBuilder names = new StringBuilder();
         paths.add(filePath);
         uploadParameter.setPaths(paths);
-        if(filePath.contains("/")){
+        if (filePath.contains("/")) {
             names.append(filePath.substring(filePath.lastIndexOf("/") + 1) + ";");
             uploadParameter.setFileName(names.toString());
         }
@@ -454,11 +495,12 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             @Override
             public void onBack(Object result) {
                 hideLoading();
-                TypeReference<ResponseVo<List<MediaEntity>>> typeReference = new TypeReference<ResponseVo<List<MediaEntity>>>(){};
+                TypeReference<ResponseVo<List<MediaEntity>>> typeReference = new TypeReference<ResponseVo<List<MediaEntity>>>() {
+                };
                 ResponseVo<List<MediaEntity>> responseVo = JSON.parseObject(JSON.toJSONString(result), typeReference);
-                if(responseVo.isSucceed()){
+                if (responseVo.isSucceed()) {
                     List<MediaEntity> data = responseVo.getData();
-                    if(EmptyUtil.isNotEmpty(data)){
+                    if (EmptyUtil.isNotEmpty(data)) {
                         MediaEntity entity = data.get(0);
                         String resourceUrl = entity.getResourceurl();
                         runOnUiThread(new UploadImageCallback(resourceUrl));
@@ -468,7 +510,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         });
     }
 
-    private class UploadImageCallback implements Runnable{
+    private class UploadImageCallback implements Runnable {
 
         private String url;
 
@@ -478,7 +520,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
         @Override
         public void run() {
-            if(!isFinishing()) {
+            if (!isFinishing()) {
                 UIUtil.showToastSafe(R.string.label_upload_completed);
                 if (mBtnBusinessUpload.isActivated()) {
                     mBtnBusinessUpload.setText(R.string.label_upload_again);
@@ -502,9 +544,10 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     /**
      * 申请成为帮辅，注册信息的入口
+     *
      * @param context
      */
-    public static void show(@NonNull final Context context){
+    public static void show(@NonNull final Context context) {
         Intent intent = new Intent(context, TutorialRegisterActivity.class);
         Bundle bundle = new Bundle();
         intent.putExtras(bundle);

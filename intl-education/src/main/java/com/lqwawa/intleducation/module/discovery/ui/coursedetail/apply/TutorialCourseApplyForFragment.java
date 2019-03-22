@@ -2,10 +2,14 @@ package com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterDialogFragment;
@@ -49,6 +54,8 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     private static final String KEY_EXTRA_ORGAN_TUTOR_STATUS = "KEY_EXTRA_ORGAN_TUTOR_STATUS";
 
     private View mRootView;
+    private TextView mTvLabelMarkingPrice;
+    private TextView mTvLabelAddress;
     // 批阅价格
     private EditText mEtMarkPrice;
     // 省
@@ -85,6 +92,10 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = mRootView = inflater.inflate(R.layout.dialog_tutorial_course_apply_for,null);
+        mTvLabelMarkingPrice = (TextView) mRootView.findViewById(R.id.tv_label_marking_price);
+        mTvLabelAddress = (TextView) mRootView.findViewById(R.id.tv_label_address);
+        fillLabelWarning(mTvLabelAddress,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelMarkingPrice,"*",UIUtil.getColor(R.color.colorDarkRed));
         mEtMarkPrice = (EditText) view.findViewById(R.id.et_mark_price);
         mProvinceSpinner = (NiceSpinner) view.findViewById(R.id.province_spinner);
         mCitySpinner = (NiceSpinner) view.findViewById(R.id.city_spinner);
@@ -92,6 +103,20 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         mBtnConfirm = (Button) view.findViewById(R.id.btn_confirm);
         mBtnCancel = (Button) view.findViewById(R.id.btn_cancel);
         return view;
+    }
+
+    /**
+     * 设置必填项
+     * @param view 标签
+     * @param charSequence *
+     * @param color 颜色值
+     */
+    private void fillLabelWarning(@NonNull TextView view, CharSequence charSequence,@ColorInt int color){
+        String text = view.getText().toString();
+        SpannableString spannableString = new SpannableString(text);
+        ForegroundColorSpan span = new ForegroundColorSpan(color);
+        spannableString.setSpan(span,text.indexOf(charSequence.toString()),text.length() - 1,Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        view.setText(spannableString);
     }
 
     @Override
