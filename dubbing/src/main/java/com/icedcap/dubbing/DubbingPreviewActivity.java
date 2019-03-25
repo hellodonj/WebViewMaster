@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -120,11 +121,24 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         LrcEntry lrcEntry = null;
         for (int i = 0; i < mSRTEntities.size(); i++) {
             SrtEntity dubbingEntity = mSRTEntities.get(i);
+            String content = dubbingEntity.getContent();
+            if (!TextUtils.isEmpty(content)) {
+                content = getSubStringContent(content);
+            }
+            dubbingEntity.setContent(content);
             lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), dubbingEntity.getContent());
             lrcEntries.add(lrcEntry);
         }
         videoTime = mSRTEntities.get(mSRTEntities.size()-1).getEndTime();
         lrcView.onLrcLoaded(lrcEntries);
+    }
+
+    private String getSubStringContent(String content) {
+        if (content.endsWith("\n")) {
+            content = content.substring(0, content.lastIndexOf("\n"));
+            content = getSubStringContent(content);
+        }
+        return content;
     }
 
     @Override

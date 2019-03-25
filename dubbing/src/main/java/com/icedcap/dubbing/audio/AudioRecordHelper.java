@@ -77,7 +77,7 @@ public class AudioRecordHelper {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                playWavFile(mp3FileList.get(position), 1, seek,listener);
+                playWavFile(mp3FileList.get(position), 1, seek, listener);
             }
         }).start();
 
@@ -113,7 +113,8 @@ public class AudioRecordHelper {
                 public void onRawRecordingEnd(String encodedFilePath, String rawFilePath) {
                     if (needEvalAudio) {
                         if (!TextUtils.isEmpty(encodedFilePath) && !TextUtils.isEmpty(rawFilePath)) {
-                            showLoadingDialog();
+                            Dialog dialog = showLoadingDialog();
+                            dialog.setCancelable(false);
                             evaluateRecordData(position, encodedFilePath, rawFilePath);
                         }
                     } else {
@@ -201,7 +202,7 @@ public class AudioRecordHelper {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (listener != null){
+                    if (listener != null) {
                         listener.onBack(true);
                     }
                     mp.release();
@@ -222,7 +223,7 @@ public class AudioRecordHelper {
         }
     }
 
-    public void  setNeedEvalAudio(boolean needEvalAudio){
+    public void setNeedEvalAudio(boolean needEvalAudio) {
         this.needEvalAudio = needEvalAudio;
     }
 
