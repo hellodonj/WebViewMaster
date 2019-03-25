@@ -275,6 +275,7 @@ public class TutorialTargetPagerTaskFragment extends PresenterFragment<TutorialT
     public void updateWorkDataWithIdentityIdView(List<TaskEntity> entities) {
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
         mTutorialAdapter.replace(entities);
 
         if(EmptyUtil.isEmpty(entities)){
@@ -292,7 +293,7 @@ public class TutorialTargetPagerTaskFragment extends PresenterFragment<TutorialT
     public void updateMoreWorkDataWithIdentityIdView(List<TaskEntity> entities) {
         // 关闭加载更多
         mRefreshLayout.onFooterRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
         // 设置数据
         mTutorialAdapter.add(entities);
     }

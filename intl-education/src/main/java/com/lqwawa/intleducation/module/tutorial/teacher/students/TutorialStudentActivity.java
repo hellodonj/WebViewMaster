@@ -207,7 +207,7 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
     public void updateTutorialStudentView(List<AssistStudentEntity> entities) {
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
         mStudentAdapter.replace(entities);
 
         if(EmptyUtil.isEmpty(entities)){
@@ -225,7 +225,7 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
     public void updateMoreTutorialStudentView(List<AssistStudentEntity> entities) {
         // 关闭加载更多
         mRefreshLayout.onFooterRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
         // 设置数据
         mStudentAdapter.add(entities);
         mStudentAdapter.notifyDataSetChanged();
