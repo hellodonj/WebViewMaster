@@ -125,7 +125,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             return;
         }*/
 
-        if(IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_IDENTITY_CARD ||
+        if(IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_IDENTITY_CARD &&
                 IDType != com.lqwawa.intleducation.module.tutorial.regist.IDType.ID_TYPE_PASSPORT){
             return;
         }
