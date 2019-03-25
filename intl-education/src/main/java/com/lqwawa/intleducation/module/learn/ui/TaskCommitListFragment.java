@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.utils.LogUtil;
@@ -156,16 +157,22 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             mBtnStatisticalScores.setVisibility(View.GONE);
         }
 
-        // 只有学生才显示读写单和复述课件
-        if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
-            // 试听身份可以查看到按钮
-            mBtnDone.setVisibility(View.VISIBLE);
-            // 只有学生，支持语音评测的听读课才显示语音评测
-            if(sectionResListVo.getTaskType() == 2 &&
-                    SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())){
-                // 支持语音评测的听读课
-                mBtnSpeechEvaluation.setVisibility(View.VISIBLE);
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(!(tutorialMode && isAudition)){
+            // 只有学生才显示读写单和复述课件
+            if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
+                // 试听身份可以查看到按钮
+                mBtnDone.setVisibility(View.VISIBLE);
+                // 只有学生，支持语音评测的听读课才显示语音评测
+                if(sectionResListVo.getTaskType() == 2 &&
+                        SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())){
+                    // 支持语音评测的听读课
+                    mBtnSpeechEvaluation.setVisibility(View.VISIBLE);
+                }else{
+                    mBtnSpeechEvaluation.setVisibility(View.GONE);
+                }
             }else{
+                mBtnDone.setVisibility(View.GONE);
                 mBtnSpeechEvaluation.setVisibility(View.GONE);
             }
         }else{
