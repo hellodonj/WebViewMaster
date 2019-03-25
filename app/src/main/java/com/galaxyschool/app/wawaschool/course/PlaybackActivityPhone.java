@@ -37,6 +37,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.Request;
+import com.galaxyschool.app.wawaschool.AnswerParsingActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -1894,6 +1895,10 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             showAnswerPopWindow(false, exerciseIndex - 1);
         } else {
             //浏览模式
+            Intent intent = getIntent();
+            if (intent != null){
+                intent.putExtra(AnswerParsingActivity.Constants.DO_COURSE_SLIDE_ONLINE_MODE, !mInEditMode);
+            }
             reviewExerciseDetails(exerciseIndex);
         }
     }

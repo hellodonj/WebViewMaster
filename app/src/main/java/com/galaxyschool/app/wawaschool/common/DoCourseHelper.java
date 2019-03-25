@@ -163,6 +163,10 @@ public class DoCourseHelper {
         }
     }
 
+    public void setTeacherMark(boolean isTeacherMark){
+        this.isTeacherMark = isTeacherMark;
+    }
+
     /**
      * 我要做任务单
      *

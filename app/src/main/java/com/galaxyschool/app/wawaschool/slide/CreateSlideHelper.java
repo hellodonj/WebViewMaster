@@ -596,6 +596,7 @@ public class CreateSlideHelper {
         extras.putInt(PlaybackActivity.PLAYBACK_TYPE, BaseUtils.RES_TYPE_ONEPAGE);
         extras.putParcelable(SlideInPlaybackParam.class.getSimpleName(), getSlideInPlaybackParam
 				(param.activity, param.isShareScreen, param.orientation));
+        extras.putString(PlaybackActivity.FILE_NAME,param.courseInfo.getNickname());
 		if(param.courseInfo != null) {
 			extras.putParcelable(PlaybackActivity.COURSE_SHARE_DATA, param.courseInfo.toCourseShareData());
 			extras.putParcelable(PlaybackActivity.COURSE_COLLECT_PARAMS, param.courseInfo.getCollectParams());
