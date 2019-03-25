@@ -48,6 +48,7 @@ import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.tools.DensityUtils;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
+import com.osastudio.common.utils.LogUtils;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -1032,6 +1033,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public boolean onPlayTimeChanged(long playTime, long totalTime, int videoMode) {
+            LogUtils.log("TTT","playTime=" + playTime + " totalTime=" + totalTime);
             duration = totalTime;
             refreshTime(playTime, totalTime, videoMode);
             return true;

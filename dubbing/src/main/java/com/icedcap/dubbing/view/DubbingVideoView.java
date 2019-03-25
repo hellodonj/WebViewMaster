@@ -18,6 +18,8 @@ import com.icedcap.dubbing.R;
 import com.icedcap.dubbing.utils.AudioMedia;
 import com.icedcap.dubbing.utils.DimenUtil;
 import com.icedcap.dubbing.utils.MediaUtil;
+import com.osastudio.common.utils.LogUtils;
+
 import tv.danmaku.ijk.media.IjkVideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.ITrackInfo;
@@ -494,6 +496,7 @@ public class DubbingVideoView extends FrameLayout implements
      * start play
      */
     public void startPlay(long seek, long endTime) {
+        LogUtils.log("TTT","seekTime=" + seek + " endtime=" + endTime);
         this.endTime = (int) endTime;
         seekPlay = seek;
         mode = MODE_ALLPLAY;
@@ -518,6 +521,7 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
     public void startPlayTaskVideo(long seek, long endTime,String videoPath){
+        LogUtils.log("TTT","seekTime=" + seek + " endtime=" + endTime);
         this.endTime = (int) endTime;
         seekPlay = seek;
         mode = MODE_ALLPLAY;
