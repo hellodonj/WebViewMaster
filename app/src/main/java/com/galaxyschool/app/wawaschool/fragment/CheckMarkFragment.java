@@ -994,13 +994,13 @@ public class CheckMarkFragment extends ContactsListFragment {
                     //游客身份
                     playbackParam.mIsHideToolBar = true;
                 }
-            } else if (isAssistanceModel && !TextUtils.equals(commitTask.getAssistantRoleType(), "2")) {
+            } else if (isAssistanceModel) {
                 mTaskMarkParam = new TaskMarkParam(
                         false,
                         true,
                         MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
                         String.valueOf(commitTask.getId()),
-                        false,
+                        TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
                         false,
                         "",
                         true);
