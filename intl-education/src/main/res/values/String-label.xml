@@ -428,6 +428,7 @@
     <string name="label_lecture_course">讲解课</string>
     <string name="label_trial_lecture">试讲</string>
     <string name="label_placeholder_book">《%s》</string>
+    <string name="label_personal_qrcode">个人二维码</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

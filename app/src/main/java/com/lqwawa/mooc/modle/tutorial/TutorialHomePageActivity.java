@@ -35,6 +35,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.common.ui.QRCodeDialogFragment;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -46,6 +47,7 @@ import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.modle.tutorial.comment.TutorialCommentFragment;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListContract;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListFragment;
+import com.oosic.apps.share.BaseShareUtils;
 import com.oosic.apps.share.ShareInfo;
 import com.oosic.apps.share.SharedResource;
 import com.umeng.socialize.media.UMImage;
@@ -248,7 +250,15 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             sharePersonal();
         }else if(viewId == R.id.iv_QR_code){
             if(EmptyUtil.isEmpty(mUserEntity)) return;
-            saveQrCodeImage(mQRCodeImageUrl);
+            String dialogDesc = mTvName.getText().toString();
+            QRCodeDialogFragment.show(getSupportFragmentManager(),
+                    getString(R.string.label_personal_qrcode),
+                    dialogDesc, mQRCodeImageUrl, new QRCodeDialogFragment.OnSaveListener() {
+                        @Override
+                        public void onSave() {
+                            saveQrCodeImage(mQRCodeImageUrl);
+                        }
+                    });
         }else if(viewId == R.id.introduce_layout){
             // 个人介绍
             // UIUtil.showToastSafe("个人介绍");
@@ -265,34 +275,21 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         if (!TextUtils.isEmpty(mUserEntity.getRealName())) {
             shareInfo.setTitle(mUserEntity.getRealName());
         }
+
         shareInfo.setContent(" ");
-        String serverUrl = AppConfig.ServerUrl.TutorialShare.replace("{memberId}",mTutorMemberId);
-        String url = serverUrl + String.format(
-                ServerUrl.SHARE_PERSONAL_SPACE_PARAMS, mUserEntity.getMemberId());
-        shareInfo.setTargetUrl(url);
+        String shareUrl = AppConfig.ServerUrl.TutorialShare.replace("{memberId}",mTutorMemberId);
+        shareInfo.setTargetUrl(shareUrl);
+
         UMImage umImage = null;
         if (!TextUtils.isEmpty(mUserEntity.getHeaderPic())) {
             umImage = new UMImage(this, AppSettings.getFileUrl(mUserEntity.getHeaderPic()));
         } else {
             umImage = new UMImage(this, R.drawable.ic_launcher);
         }
+
         shareInfo.setuMediaObject(umImage);
-        SharedResource resource = new SharedResource();
-        resource.setId(mUserEntity.getMemberId());
-        resource.setTitle(mUserEntity.getNickName());
-        if (!TextUtils.isEmpty(mUserEntity.getRealName())) {
-            resource.setTitle(mUserEntity.getRealName());
-        }
-        resource.setDescription("");
-        resource.setShareUrl(serverUrl);
-        if (!TextUtils.isEmpty(mUserEntity.getHeaderPic())) {
-            resource.setThumbnailUrl(AppSettings.getFileUrl(mUserEntity.getHeaderPic()));
-        }
-        resource.setType(SharedResource.RESOURCE_TYPE_HTML);
-        resource.setFieldPatches(SharedResource.FIELD_PATCHES_PERSON_SHARE_URL);
-        shareInfo.setSharedResource(resource);
-        ShareUtils shareUtils = new ShareUtils(this);
-        shareUtils.share(getWindow().getDecorView().getRootView(), shareInfo);
+        BaseShareUtils utils = new BaseShareUtils(this);
+        utils.share(this.getWindow().getDecorView(),shareInfo);
     }
 
     private void saveQrCodeImage(String QRCodeImageUrl) {
