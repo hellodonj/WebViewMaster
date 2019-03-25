@@ -127,6 +127,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         if(mPagerFragments.size() > 1){
             // 如果当前Fragment数目大于1 说明有我孩子的学程
             mTabLayout.setVisibility(View.VISIBLE);
+            mViewPager.setOffscreenPageLimit(mPagerFragments.size());
             mTabLayout.setupWithViewPager(mViewPager);
             // 添加滑动事件
             mTabLayout.addOnTabSelectedListener(new TabSelectedAdapter(){

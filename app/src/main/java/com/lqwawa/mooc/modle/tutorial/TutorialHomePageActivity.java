@@ -247,6 +247,11 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }else if(viewId == R.id.tv_share){
             // 分享
             if(EmptyUtil.isEmpty(mUserEntity)) return;
+            if(!UserHelper.isLogin()){
+                LoginHelper.enterLogin(this);
+                return;
+            }
+
             sharePersonal();
         }else if(viewId == R.id.iv_QR_code){
             if(EmptyUtil.isEmpty(mUserEntity)) return;

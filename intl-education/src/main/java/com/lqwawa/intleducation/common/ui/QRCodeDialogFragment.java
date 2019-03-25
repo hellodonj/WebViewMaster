@@ -40,8 +40,8 @@ public class QRCodeDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getContext(),R.style.AppTheme_Dialog);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
         return dialog;
     }
 
