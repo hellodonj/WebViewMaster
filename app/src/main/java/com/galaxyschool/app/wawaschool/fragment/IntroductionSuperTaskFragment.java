@@ -397,9 +397,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             textView = (TextView) view.findViewById(R.id.tv_task_count);
                             if (textView != null) {
                                 int num = data.getThirdTaskCount();
-                                if (num == 0
-                                        || data.getType() == StudyTaskType.WATCH_WAWA_COURSE
-                                        || data.getType() == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                if (num == 0) {
                                     textView.setVisibility(View.GONE);
                                 } else {
                                     textView.setVisibility(View.VISIBLE);
@@ -571,9 +569,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             if (textView != null) {
                                 List<LookResDto> resDtos = data.getLookResDtoList();
                                 if (resDtos == null
-                                        || resDtos.size() == 0
-                                        || data.getTaskType() == StudyTaskType.WATCH_WAWA_COURSE
-                                        || data.getTaskType() == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                        || resDtos.size() == 0) {
                                     textView.setVisibility(View.GONE);
                                 } else {
                                     textView.setVisibility(View.VISIBLE);
