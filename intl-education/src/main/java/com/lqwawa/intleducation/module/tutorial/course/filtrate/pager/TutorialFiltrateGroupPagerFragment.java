@@ -81,8 +81,7 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     protected boolean initArgs(Bundle bundle) {
         mCurMemberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
         mSort = bundle.getString(KEY_EXTRA_SORT);
-        if(EmptyUtil.isEmpty(mCurMemberId) ||
-                EmptyUtil.isEmpty(mSort)) return false;
+        if(EmptyUtil.isEmpty(mSort)) return false;
         return super.initArgs(bundle);
     }
 

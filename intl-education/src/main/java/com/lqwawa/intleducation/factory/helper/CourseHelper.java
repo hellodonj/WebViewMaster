@@ -583,7 +583,9 @@ public class CourseHelper {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
-        requestVo.addParams("memberId", memberId);
+        if(EmptyUtil.isNotEmpty(memberId)) {
+            requestVo.addParams("memberId", memberId);
+        }
         requestVo.addParams("type", type);
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize", pageSize);

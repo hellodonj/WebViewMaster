@@ -118,8 +118,10 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CourseVo vo = (CourseVo) mAdapter.getItem(position);
-                CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
+                if(UserHelper.isLogin()) {
+                    CourseVo vo = (CourseVo) mAdapter.getItem(position);
+                    CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
+                }
             }
         });
     }
