@@ -706,8 +706,8 @@ public class TutorialHelper {
                                             @NonNull String seniorityUrl,
                                             @NonNull DataSource.Callback<Boolean> callback){
         RequestVo requestVo = new RequestVo();
-        requestVo.addParams("PhoneNumber",phoneNumber);
-        requestVo.addParams("VerificationCode",verificationCode);
+        // requestVo.addParams("PhoneNumber",phoneNumber);
+        // requestVo.addParams("VerificationCode",verificationCode);
         requestVo.addParams("IDType",IDType);
         requestVo.addParams("IDNumber",IDNumber);
         requestVo.addParams("memberId",memberId);
@@ -719,13 +719,27 @@ public class TutorialHelper {
         requestVo.addParams("markingPrice",markingPrice);
         requestVo.addParams("provinceId",provinceId);
         requestVo.addParams("provinceName",provinceName);
-        requestVo.addParams("cityId",cityId);
-        requestVo.addParams("cityName",cityName);
-        requestVo.addParams("countyId",countyId);
-        requestVo.addParams("countyName",countyName);
-        requestVo.addParams("workingLife",workingLife);
-        requestVo.addParams("educationUrl",educationUrl);
-        requestVo.addParams("seniorityUrl",seniorityUrl);
+        if(EmptyUtil.isNotEmpty(cityId) && EmptyUtil.isNotEmpty(cityName)){
+            requestVo.addParams("cityId",cityId);
+            requestVo.addParams("cityName",cityName);
+        }
+
+        if(EmptyUtil.isNotEmpty(countyId) && EmptyUtil.isNotEmpty(countyName)){
+            requestVo.addParams("countyId",countyId);
+            requestVo.addParams("countyName",countyName);
+        }
+
+        if(EmptyUtil.isNotEmpty(workingLife)){
+            requestVo.addParams("workingLife",workingLife);
+        }
+
+        if(EmptyUtil.isNotEmpty(educationUrl)){
+            requestVo.addParams("educationUrl",educationUrl);
+        }
+
+        if(EmptyUtil.isNotEmpty(educationUrl)){
+            requestVo.addParams("seniorityUrl",seniorityUrl);
+        }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestApplyForTutor + requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class,"send request ==== " +params.getUri());

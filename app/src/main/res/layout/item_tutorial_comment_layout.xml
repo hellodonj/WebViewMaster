@@ -52,7 +52,6 @@
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="3"
             android:ellipsize="end"
             android:textSize="14sp"
             android:textColor="@color/textPrimary"

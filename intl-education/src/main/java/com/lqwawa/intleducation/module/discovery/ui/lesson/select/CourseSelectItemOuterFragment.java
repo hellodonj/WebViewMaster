@@ -212,13 +212,14 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                     CourseSelectItemFragment fragment = new CourseSelectItemFragment();
                     fragment.setOnResourceSelectListener(this);
                     Bundle arguments = getArguments();
-                    arguments.putSerializable("ChapterVo", mChapterVo);
-                    arguments.putInt("tasktype", typeTable.get(taskType));
-                    arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT, mMultipleChoiceCount);
-                    arguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION, mFilterArray);
-                    arguments.putBoolean(CourseSelectItemFragment.KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
-                    arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_REAL_TASK_TYPE, mTaskType);
-                    fragment.setArguments(arguments);
+                    Bundle cloneArguments = (Bundle) arguments.clone();
+                    cloneArguments.putSerializable("ChapterVo", mChapterVo);
+                    cloneArguments.putInt("tasktype", typeTable.get(taskType));
+                    cloneArguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT, mMultipleChoiceCount);
+                    cloneArguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION, mFilterArray);
+                    cloneArguments.putBoolean(CourseSelectItemFragment.KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
+                    cloneArguments.putInt(CourseSelectItemFragment.KEY_EXTRA_REAL_TASK_TYPE, mTaskType);
+                    fragment.setArguments(cloneArguments);
                     fragments.add(fragment);
                 }
             }

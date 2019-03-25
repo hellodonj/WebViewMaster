@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,8 +38,10 @@ import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
@@ -100,6 +103,10 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     private TextView mBtnCertificateUpload;
     // 行业资历认证证书
     private TextView mBtnBusinessUpload;
+
+    private ImageView mIvThumbnailImage1;
+    private ImageView mIvThumbnailImage2;
+
     // 提交
     private Button mBtnSubmit;
 
@@ -173,6 +180,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mBtnCertificateUpload = (TextView) findViewById(R.id.btn_certificate_upload);
         mBtnBusinessUpload = (TextView) findViewById(R.id.tv_business_upload);
         mBtnSubmit = (Button) findViewById(R.id.btn_submit);
+        mIvThumbnailImage1 = (ImageView) findViewById(R.id.iv_thumbnail_image1);
+        mIvThumbnailImage2 = (ImageView) findViewById(R.id.iv_thumbnail_image2);
         mBtnCertificateUpload.setOnClickListener(this);
         mBtnBusinessUpload.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
@@ -523,6 +532,13 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                         String resourceUrl = entity.getResourceurl();
                         runOnUiThread(new UploadImageCallback(resourceUrl));
                     }
+                }else{
+                    // 上传失败
+                    if(mBtnBusinessUpload.isActivated()){
+                        mIvThumbnailImage2.setVisibility(View.GONE);
+                    }else if (mBtnCertificateUpload.isActivated()) {
+                        mIvThumbnailImage1.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -543,10 +559,14 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 if (mBtnBusinessUpload.isActivated()) {
                     mBtnBusinessUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnBusinessUpload.getId();
+                    mIvThumbnailImage2.setVisibility(View.VISIBLE);
+                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this,mIvThumbnailImage2,url);
                     mUrlArray.put(viewId, url);
                 } else if (mBtnCertificateUpload.isActivated()) {
                     mBtnCertificateUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnCertificateUpload.getId();
+                    mIvThumbnailImage1.setVisibility(View.VISIBLE);
+                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this,mIvThumbnailImage1,url);
                     mUrlArray.put(viewId, url);
                 }
             }
