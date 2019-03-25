@@ -648,7 +648,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -664,8 +664,19 @@
                         android:text="@string/label_person_academic_certificate"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_gravity="left|center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
                         android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_thumbnail_image1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerInside"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/btn_certificate_upload"/>
 
                     <TextView
                         android:id="@+id/btn_certificate_upload"
@@ -680,11 +691,12 @@
                         android:singleLine="true"
                         android:text="@string/label_upload"
                         android:textColor="@color/textGray"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
                         android:textSize="14sp" />
 
 
-                </FrameLayout>
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -699,7 +711,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -715,8 +727,19 @@
                         android:text="@string/label_business_certificate"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_gravity="left|center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
                         android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_thumbnail_image2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerInside"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/tv_business_upload"/>
 
                     <TextView
                         android:id="@+id/tv_business_upload"
@@ -731,11 +754,12 @@
                         android:singleLine="true"
                         android:text="@string/label_upload"
                         android:textColor="@color/textGray"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
                         android:textSize="14sp" />
 
 
-                </FrameLayout>
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
