@@ -111,6 +111,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             cardParam = (ExerciseAnswerCardParam) args.getSerializable(ExerciseAnswerCardParam
                     .class.getSimpleName());
             if (cardParam != null) {
+                markModel = cardParam.getMarkModel();
                 //评语
                 taskScoreReMark = cardParam.getTaskScoreRemark();
                 JSONArray jsonArray = JSONObject.parseArray(cardParam.getExerciseAnswerString());
@@ -505,6 +506,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
                 String savePath = Utils.PIC_TEMP_FOLDER + new MD5FileNameGenerator()
                         .generate(dataList.get(0).resourceurl);
                 cardParam.setExerciseItem(itemData);
+                cardParam.setMarkModel(null);
                 DoCourseHelper doCourseHelper = new DoCourseHelper(mContext);
                 doCourseHelper.doAnswerQuestionCheckMarkData(
                         cardParam,
@@ -635,7 +637,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         cardParam.setCommitTaskTitle(this.cardParam.getCommitTaskTitle());
         cardParam.setClassId(this.cardParam.getClassId());
         cardParam.setSchoolId(this.cardParam.getSchoolId());
-        cardParam.setMarkModel(this.cardParam.getMarkModel());
+        cardParam.setMarkModel(this.markModel);
         cardParam.setStudyTask(this.cardParam.getStudyTask());
         cardParam.setCommitTask(this.cardParam.getCommitTask());
         cardParam.setRoleType(this.cardParam.getRoleType());
