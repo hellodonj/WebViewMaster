@@ -152,7 +152,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             }
 
             // 需求更改，不显示班级名
-            mTaskClass.setVisibility(View.GONE);
+            mTaskClass.setVisibility(View.INVISIBLE);
 
             // 显示提交时间，保留到分
             // 优先使用更新时间
@@ -170,7 +170,12 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 mTaskTime.setText(createTime);
             }
 
-            StringUtil.fillSafeTextView(mTaskChapter,taskEntity.getT_CourseName());
+            if(EmptyUtil.isNotEmpty(taskEntity.getT_CourseName())){
+                mTaskChapter.setVisibility(View.VISIBLE);
+                StringUtil.fillSafeTextView(mTaskChapter,String.format(UIUtil.getString(R.string.label_placeholder_book),taskEntity.getT_CourseName()));
+            }else{
+                mTaskChapter.setVisibility(View.INVISIBLE);
+            }
 
             // 设置批阅状态
             if(taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE){
