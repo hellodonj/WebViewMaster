@@ -141,17 +141,18 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
         String CURRENTINDEX = "currentindex";
 
 
-        int LQ_COURSE = 1;
-        int TASK_ORDER = 2;
-        int TEACHING_MATERIAL = 3;
-        int LESSON = 4;
-        int VIDEO = 5;
-        int PDF = 6;
-        int PPT = 7;
-        int PICTURE = 8;
-        int AUDIO = 9;
-        int DOC = 10;
         int LESSON_BOOK = 0;
+        int LECTURE_COURSE = 1;
+        int LQ_COURSE = 2;
+        int TASK_ORDER = 3;
+        int TEACHING_MATERIAL = 4;
+        int LESSON = 5;
+        int VIDEO = 6;
+        int PDF = 7;
+        int PPT = 8;
+        int PICTURE = 9;
+        int AUDIO = 10;
+        int DOC = 11;
 
     }
 
@@ -309,10 +310,13 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
 
     private void initTitle(int currentindex) {
         switch (currentindex) {
-            case 0:
+            case Constants.LESSON_BOOK:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.lesson_book) : bookCatalogName);
                 break;
-            case 1:
+            case Constants.LECTURE_COURSE:
+                mContactsHeaderTitle.setText(getString(R.string.str_lecture_course));
+                break;
+            case Constants.LQ_COURSE:
                 String courseTitle = bookCatalogName;
                 if (isPick) {
                     if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
@@ -323,7 +327,7 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
                 }
                 mContactsHeaderTitle.setText(courseTitle);
                 break;
-            case 2:
+            case Constants.TASK_ORDER:
                 String taskOrderTitle = bookCatalogName;
                 if (isPick) {
                     if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
@@ -334,31 +338,31 @@ public class SchoolResourceContainerFragment extends ContactsListFragment {
                 }
                 mContactsHeaderTitle.setText(taskOrderTitle);
                 break;
-            case 3:
+            case Constants.TEACHING_MATERIAL:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.str_teaching_material) : bookCatalogName);
                 break;
 
-            case 4:
+            case Constants.LESSON:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.lesson_plan) : bookCatalogName);
                 break;
 
-            case 5:
+            case Constants.VIDEO:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.videos) : bookCatalogName);
                 break;
 
-            case 6:
+            case Constants.PDF:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.txt_pdf) : bookCatalogName);
                 break;
-            case 7:
+            case Constants.PPT:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.txt_ppt) : bookCatalogName);
                 break;
-            case 8:
+            case Constants.PICTURE:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.pictures) : bookCatalogName);
                 break;
-            case 9:
+            case Constants.AUDIO:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.audios) : bookCatalogName);
                 break;
-            case 10:
+            case Constants.DOC:
                 mContactsHeaderTitle.setText(isPick ? getString(R.string.DOC) : bookCatalogName);
                 break;
             default:
