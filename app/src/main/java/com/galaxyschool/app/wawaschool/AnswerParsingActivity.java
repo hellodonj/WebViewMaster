@@ -140,6 +140,12 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                         ExerciseItem exerciseItem = JSONObject.parseObject(jsonObject.toString(), ExerciseItem.class);
                         if (exerciseItem != null) {
                             String type = exerciseItem.getType();
+                            String studentState = exerciseItem.getStudent_state();
+                            if (!TextUtils.isEmpty(studentState)){
+                                if (!studentState.contains(",")){
+                                    exerciseItem.setEqState(Integer.valueOf(studentState));
+                                }
+                            }
                             if (!TextUtils.isEmpty(type)) {
                                 if (Integer.valueOf(type) == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                                     List<MediaData> mediaDataList = new ArrayList<>();
