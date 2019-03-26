@@ -508,7 +508,7 @@ public class CreateSlideHelper {
 			}
 			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_INDEX,param.cardParam.getPageIndex());
 			it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_INDEX, param.cardParam.getExerciseIndex());
-			it.putExtra("pageListString",param.cardParam.getExerciseListString());
+			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_LIST_STRING, param.cardParam.getPageListString());
 		}
     	return it;
     }
