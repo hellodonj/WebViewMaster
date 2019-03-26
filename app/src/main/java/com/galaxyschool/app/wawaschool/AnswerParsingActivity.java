@@ -238,6 +238,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             if (cardParam.getMarkModel() != null) {
                 cardParam.getMarkModel().setT_EQId(String.valueOf(exerciseIndex));
             }
+            cardParam.setExerciseListString(exerciseString);
             ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this, cardParam,
                     pageAreaIndex);
         });

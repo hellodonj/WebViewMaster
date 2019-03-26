@@ -62,6 +62,15 @@ public class ExerciseAnswerCardParam implements Serializable {
     private int pageIndex;
     private int exerciseIndex;
     private QuestionResourceModel markModel;//申请批阅的数据
+    private String exerciseListString;
+
+    public String getExerciseListString() {
+        return exerciseListString;
+    }
+
+    public void setExerciseListString(String exerciseListString) {
+        this.exerciseListString = exerciseListString;
+    }
 
     public QuestionResourceModel getMarkModel() {
         return markModel;
