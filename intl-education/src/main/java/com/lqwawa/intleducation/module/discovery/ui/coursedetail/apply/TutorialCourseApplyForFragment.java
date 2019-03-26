@@ -82,7 +82,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getContext(),R.style.AppTheme_Dialog);
+        Dialog dialog = new Dialog(getContext(),R.style.AppTheme_Dialog_InputMode);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         return dialog;
