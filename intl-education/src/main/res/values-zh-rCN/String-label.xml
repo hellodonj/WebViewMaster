@@ -352,6 +352,7 @@
 
     <!--V5.15字符串信息-->
     <string name="label_add_tutorial">+帮辅</string>
+    <string name="label_add_tutorial_line">添加帮辅</string>
     <string name="label_add_tutorial_lines">添加\n帮辅</string>
     <string name="label_un_mark">未批阅</string>
     <string name="label_have_mark">已批阅</string>

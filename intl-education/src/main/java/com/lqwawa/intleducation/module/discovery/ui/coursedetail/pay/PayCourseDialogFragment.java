@@ -240,7 +240,7 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
         if(EmptyUtil.isNotEmpty(entities)){
             // 获取到用户信息
             UserEntity entity = entities.get(0);
-            if(entity.isExist()){
+            if(entity.isIsExist()){
                 // 获取到对应实体的信息，就set进去
                 mChildContainer.setTag(entity);
                 StringUtil.fillSafeTextView(mQueryName,entity.getRealName());
@@ -362,7 +362,7 @@ public class PayCourseDialogFragment extends PresenterDialogFragment<PayCourseCo
                                                     if(EmptyUtil.isNotEmpty(entities)){
                                                         // 获取到用户信息
                                                         UserEntity entity = entities.get(0);
-                                                        if(entity.isExist()){
+                                                        if(entity.isIsExist()){
                                                             if(EmptyUtil.isNotEmpty(mNavigator)){
                                                                 String memberId = entity.getMemberId();
                                                                 mPresenter.requestCheckCourseBuy(mCourseId,memberId,mType);

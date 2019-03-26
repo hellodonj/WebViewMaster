@@ -262,7 +262,7 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
             // 点击搜索框
         }else if(viewId == R.id.tv_add_tutorial){
             // 添加帮辅
-            TutorialFiltrateGroupActivity.show(this,mMemberId);
+            TutorialFiltrateGroupActivity.show(this,mMemberId,getString(R.string.label_add_tutorial_line));
         }
     }
 
