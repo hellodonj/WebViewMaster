@@ -75,6 +75,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     public final static String EXTRA_EXERCISE_STRING = "exerciseString";
     public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
     public final static String EXTRA_PAGE_INDEX = "pageIndex";
+    public final static String EXTRA_PAGE_LIST_STRING = "pageListString";
     public final static String EXTRA_EDIT_EXERCISE = "editExercise";
     public final static String EXTRA_EXERCISE_INDEX = "exerciseIndex";
 
@@ -654,6 +655,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
             mSlideManager.setEditExercise(editExercise);
             mSlideManager.setExerciseIndex(getIntent().getIntExtra(EXTRA_EXERCISE_INDEX, 0));
             mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
+            mSlideManager.setPageListString(getIntent().getStringExtra(EXTRA_PAGE_LIST_STRING));
             mSlideManager.setExerciseNodeClickListener(this);
             mSlideManager.getExerciseNodeManager().setExerciseString(
                     getIntent().getStringExtra(EXTRA_EXERCISE_STRING));
