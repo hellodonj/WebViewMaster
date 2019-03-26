@@ -110,8 +110,8 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
                     return;
                 }
 
-                // 添加帮辅
-                String memberId = mCurMemberId;
+                // 添加帮辅,只添加自己的
+                String memberId = UserHelper.getUserId();
                 mPresenter.requestAddTutorByStudentId(memberId,entity.getCreateId(),entity.getCreateName());
             }
         });
@@ -141,13 +141,17 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
     // 供Activity调用下拉刷新
     public void onHeaderRefresh(){
         pageIndex = 0;
-        mPresenter.requestTutorDataByCourseId(mCourseId,mCurMemberId,pageIndex);
+        // 帮辅群只显示自己的，不显示孩子的
+        String memberId = UserHelper.getUserId();
+        mPresenter.requestTutorDataByCourseId(mCourseId,memberId,pageIndex);
     }
 
 
     // 加载更多
     public void getMore(){
-        mPresenter.requestTutorDataByCourseId(mCourseId,mCurMemberId,++pageIndex);
+        // 帮辅群只显示自己的，不显示孩子的
+        String memberId = UserHelper.getUserId();
+        mPresenter.requestTutorDataByCourseId(mCourseId,memberId,++pageIndex);
     }
 
     @Override

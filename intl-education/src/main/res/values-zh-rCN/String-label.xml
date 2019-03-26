@@ -436,6 +436,7 @@
     <string name="label_trial_lecture">试讲</string>
     <string name="label_placeholder_book">《%s》</string>
     <string name="label_personal_qrcode">个人二维码</string>
+    <string name="label_please_update_marking_price_range">请输入有效的批阅价格</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

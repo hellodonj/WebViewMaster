@@ -11,6 +11,7 @@ import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
+import com.umeng.socialize.utils.UmengText;
 
 import java.util.List;
 
@@ -111,6 +112,16 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
 
         if(EmptyUtil.isEmpty(markingPrice)){
             view.showError(R.string.label_mark_price_tip);
+            return;
+        }
+
+        try {
+            if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+                view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
+                return;
+            }
+        }catch (Exception ignore){
+            view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
             return;
         }
 
