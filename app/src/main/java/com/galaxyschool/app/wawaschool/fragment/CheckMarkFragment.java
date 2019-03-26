@@ -1122,13 +1122,15 @@ public class CheckMarkFragment extends ContactsListFragment {
                     score = markScore;
                 }
                 if (mTaskMarkParam != null) {
-
                     mTaskMarkParam.isMarked = true;
                 }
                 if (!TextUtils.isEmpty(score)) {
                     updateScore();
                     if (exerciseItem != null) {
                         exerciseItem.setStudent_score(score);
+                    }
+                    if (mTaskMarkParam != null){
+                        mTaskMarkParam.score = score;
                     }
                 }
             }
