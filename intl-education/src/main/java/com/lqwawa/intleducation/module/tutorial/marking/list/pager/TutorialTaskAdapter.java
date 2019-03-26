@@ -120,7 +120,11 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
             if(tutorialMode){
                 // 显示用户姓名
-                StringUtil.fillSafeTextView(mStudentName,taskEntity.getStuRealName());
+                if(EmptyUtil.isNotEmpty(taskEntity.getStuRealName())) {
+                    StringUtil.fillSafeTextView(mStudentName, taskEntity.getStuRealName());
+                }else{
+                    StringUtil.fillSafeTextView(mStudentName, taskEntity.getStuNickName());
+                }
             }else{
                 // 显示提交给某个老师
                 String name = EmptyUtil.isEmpty(taskEntity.getAssRealName()) ? taskEntity.getAssNickName() : taskEntity.getAssRealName();

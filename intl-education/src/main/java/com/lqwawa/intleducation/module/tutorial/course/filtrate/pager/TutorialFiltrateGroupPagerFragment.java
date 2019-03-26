@@ -113,8 +113,8 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
                     return;
                 }
 
-                // 添加帮辅
-                String memberId = mCurMemberId;
+                // 添加帮辅,只添加自己的
+                String memberId = UserHelper.getUserId();
                 mPresenter.requestAddTutorByStudentId(memberId,entity.getCreateId(),entity.getCreateName());
             }
         });

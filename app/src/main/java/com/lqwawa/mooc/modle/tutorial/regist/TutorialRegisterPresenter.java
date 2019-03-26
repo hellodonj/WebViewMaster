@@ -177,6 +177,16 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             return;
         }
 
+        try {
+            if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+                view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
+                return;
+            }
+        }catch (Exception ignore){
+            view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
+            return;
+        }
+
         /*if(EmptyUtil.isEmpty(workingLife)){
             view.showError(com.lqwawa.intleducation.R.string.label_work_period_hint);
             return;
