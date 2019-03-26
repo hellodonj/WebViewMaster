@@ -992,6 +992,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             param.put("IsDistribute",true);
         }
         if (isPick) {
+            param.put("IsDistribute",true);
             param.put("StudentId", getMemeberId());
         } else if (lookStudentTaskFinish) {
             param.put("StudentId", sortStudentId);
