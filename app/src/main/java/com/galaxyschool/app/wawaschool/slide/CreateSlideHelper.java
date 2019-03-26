@@ -616,8 +616,9 @@ public class CreateSlideHelper {
 			if (param.playbackParam.pageIndex >= 0){
 				extras.putInt(PlaybackActivity.EXTRA_PAGE_INDEX,param.playbackParam.pageIndex);
 			}
-
-			if (param.playbackParam.isAssistanceModel && param.playbackParam.EQId > 0){
+			PlaybackParam playbackParam = param.playbackParam;
+			if ((playbackParam.isAssistanceModel && playbackParam.EQId > 0)
+					|| (playbackParam.applyMark && playbackParam.applyMarkdata != null && !TextUtils.isEmpty(playbackParam.applyMarkdata.getT_EQId()) && Integer.valueOf(playbackParam.applyMarkdata.getT_EQId()) > 0)){
 				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,true);
 			}
