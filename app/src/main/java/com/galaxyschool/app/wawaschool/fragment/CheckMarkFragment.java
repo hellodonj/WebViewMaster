@@ -267,6 +267,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                 }
                 if (commitTask.getEQId() > 0){
                     markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
+                } else if (exerciseItem != null){
+                    markModel.setT_EQId(exerciseItem.getIndex());
                 }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);

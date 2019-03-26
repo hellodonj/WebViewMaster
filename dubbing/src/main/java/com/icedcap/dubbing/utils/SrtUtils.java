@@ -83,7 +83,7 @@ public class SrtUtils {
         String role = "";
         if (index > 0) {
             role = srtBody.substring(0, index);
-            srtBody = srtBody.substring(index + 1, srtBody.length() - 1);
+//            srtBody = srtBody.substring(index + 1, srtBody.length() - 1);
         }
         srt.setStartTime(beginTime);
         srt.setEndTime(endTime);

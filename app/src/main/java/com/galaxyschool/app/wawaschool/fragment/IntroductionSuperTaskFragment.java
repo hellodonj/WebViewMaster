@@ -411,7 +411,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                             //删除
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
-                            if (lookStudentTaskFinish){
+                            if (lookStudentTaskFinish || isPick){
                                 if (deleteView != null) {
                                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
                                             .getLayoutParams();

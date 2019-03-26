@@ -65,6 +65,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private boolean fromAnswerAnalysis;
     private List<ExerciseItem> exerciseItemList;
     private boolean lookSingleDetail;
+    private String pageListString;
     private String exerciseString;
     private PlaybackParam playbackParam;
     private String title;
@@ -114,6 +115,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         Bundle args = getIntent().getExtras();
         if (args != null) {
             fromAnswerAnalysis = args.getBoolean(Constants.FROM_ANSWER_ANALYSIS, false);
+            pageListString = args.getString("pageListString");
             currentPosition = args.getInt("exerciseIndex");
             exerciseString = args.getString("exerciseListString");
             currentPosition = currentPosition - 1;
@@ -238,6 +240,8 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             if (cardParam.getMarkModel() != null) {
                 cardParam.getMarkModel().setT_EQId(String.valueOf(exerciseIndex));
             }
+            cardParam.setExerciseListString(exerciseString);
+            cardParam.setPageListString(pageListString);
             ApplyMarkHelper.loadCourseImageList(AnswerParsingActivity.this, cardParam,
                     pageAreaIndex);
         });
