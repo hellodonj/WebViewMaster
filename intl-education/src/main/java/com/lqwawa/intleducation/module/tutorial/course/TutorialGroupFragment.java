@@ -202,7 +202,7 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
     public void onClick(View v) {
         int viewId = v.getId();
         if(viewId == R.id.btn_more_group){
-            TutorialFiltrateGroupActivity.show(getActivity(),mCurMemberId);
+            TutorialFiltrateGroupActivity.show(getActivity(),mCurMemberId,getString(R.string.title_tutorial_group));
         }
     }
 
