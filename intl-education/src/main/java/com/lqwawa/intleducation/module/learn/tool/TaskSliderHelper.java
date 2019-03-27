@@ -83,7 +83,7 @@ public class TaskSliderHelper {
     }
 
     public interface OnTaskSliderListener {
-        void doExamTask(Activity activity, String resId, int sourceType);
+        void doExamTask(Activity activity, String resId, int sourceType,String name);
 
         void viewCourse(Activity activity, String resId, int resType,
                         String schoolId, int sourceType);
@@ -143,7 +143,8 @@ public class TaskSliderHelper {
                                          @NonNull String courseId,
                                          @NonNull String courseName,
                                          String classId,
-                                         String className);
+                                         String className,
+                                         boolean isTutorialPermission);
 
         /**
          * 做答题卡
@@ -168,7 +169,8 @@ public class TaskSliderHelper {
                             int commitTaskId,
                             boolean isDoExercise,
                             @NonNull String CourseId,
-                            @NonNull String courseName);
+                            @NonNull String courseName,
+                            boolean isTutorialPermission);
     }
 
     public interface OnCommitTaskListener {
@@ -211,7 +213,8 @@ public class TaskSliderHelper {
                                                    @NonNull String courseId,
                                                    @NonNull String courseName,
                                                    String classId,
-                                                   String className) {
+                                                   String className,
+                                                   boolean isTutorialPermission) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.enterExerciseDetailActivity(activity,
@@ -232,7 +235,8 @@ public class TaskSliderHelper {
                         courseId,
                         courseName,
                         classId,
-                        className);
+                        className,
+                        isTutorialPermission);
             }
         }
     }
@@ -260,7 +264,8 @@ public class TaskSliderHelper {
                                       int commitTaskId,
                                       boolean isDoExercise,
                                       @NonNull String CourseId,
-                                      @NonNull String courseName) {
+                                      @NonNull String courseName,
+                                      boolean isTutorialPermission) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.doExerciseTask(
@@ -278,15 +283,16 @@ public class TaskSliderHelper {
                         commitTaskId,
                         isDoExercise,
                         CourseId,
-                        courseName);
+                        courseName,
+                        isTutorialPermission);
             }
         }
     }
 
-    public static void doTask(Activity activity, String resId, int sourceType) {
+    public static void doTask(Activity activity, String resId, int sourceType,String name) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
-                onTaskSliderListener.doExamTask(activity, resId, sourceType);
+                onTaskSliderListener.doExamTask(activity, resId, sourceType,name);
             }
         }
     }
