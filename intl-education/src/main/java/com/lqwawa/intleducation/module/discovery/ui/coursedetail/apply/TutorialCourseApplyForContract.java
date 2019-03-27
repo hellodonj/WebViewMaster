@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
@@ -50,8 +51,8 @@ public interface TutorialCourseApplyForContract {
         // 回调指定城市的区
         void updateDistrictWithCity(@NonNull List<LocationEntity.LocationBean> districts);
 
-        void updateIsCourseTutorByCourseIdView(boolean isCourseTutor);
-        
+        void updateIsCourseTutorByCourseIdView(@NonNull CourseTutorResponseVo.CourseTutorEntity entity);
+
         void updateApplyForCourseTutor(boolean result);
     }
 

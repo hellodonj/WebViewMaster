@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
@@ -69,12 +70,12 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
 
     @Override
     public void requestIsTutorCourseByCourseId(@NonNull String memberId, @NonNull String courseId) {
-        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
+        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
             @Override
-            public void onDataLoaded(Boolean aBoolean) {
+            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
                 final TutorialCourseApplyForContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
-                    view.updateIsCourseTutorByCourseIdView(aBoolean);
+                    view.updateIsCourseTutorByCourseIdView(entity);
                 }
             }
         });
@@ -92,37 +93,39 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
 
         final TutorialCourseApplyForContract.View view = getView();
 
-        if(EmptyUtil.isEmpty(provinceId) ||
-                EmptyUtil.isEmpty(provinceName)){
-            view.showError(R.string.label_input_province_tip);
-            return;
-        }
+        if(isOrganTutorStatus == -1) {
+            if (EmptyUtil.isEmpty(provinceId) ||
+                    EmptyUtil.isEmpty(provinceName)) {
+                view.showError(R.string.label_input_province_tip);
+                return;
+            }
 
-        if(EmptyUtil.isEmpty(cityId) ||
-                EmptyUtil.isEmpty(cityName)){
-            view.showError(R.string.label_input_city_tip);
-            return;
-        }
+            if (EmptyUtil.isEmpty(cityId) ||
+                    EmptyUtil.isEmpty(cityName)) {
+                view.showError(R.string.label_input_city_tip);
+                return;
+            }
 
-        if(EmptyUtil.isEmpty(countyId) ||
-                EmptyUtil.isEmpty(countyName)){
-            view.showError(R.string.label_input_district_tip);
-            return;
-        }
+            if (EmptyUtil.isEmpty(countyId) ||
+                    EmptyUtil.isEmpty(countyName)) {
+                view.showError(R.string.label_input_district_tip);
+                return;
+            }
 
-        if(EmptyUtil.isEmpty(markingPrice)){
-            view.showError(R.string.label_mark_price_tip);
-            return;
-        }
+            if (EmptyUtil.isEmpty(markingPrice)) {
+                view.showError(R.string.label_mark_price_tip);
+                return;
+            }
 
-        try {
-            if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+            try {
+                if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+                    view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
+                    return;
+                }
+            } catch (Exception ignore) {
                 view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
                 return;
             }
-        }catch (Exception ignore){
-            view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
-            return;
         }
 
         CourseHelper.requestApplyForCourseTutor(memberId, courseId,

@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
@@ -415,7 +416,9 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     }
 
     @Override
-    public void updateIsCourseTutorByCourseIdView(boolean isCourseTutor) {
+    public void updateIsCourseTutorByCourseIdView(@NonNull CourseTutorResponseVo.CourseTutorEntity entity) {
+        boolean isCourseTutor = entity.isTutorCourse();
+        int isOrganTutorStatus = entity.getIsOrganTutorStatus();
         if(isCourseTutor){
             // 申请帮辅成功,再次进入已加入帮辅
             if(EmptyUtil.isNotEmpty(mNavigator)){
@@ -424,11 +427,11 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             }
         }else{
             // 申请
-            applyForTutor(isCourseTutor);
+            applyForTutor(isOrganTutorStatus,isCourseTutor);
         }
     }
 
-    private void applyForTutor(boolean isCourseTutor){
+    private void applyForTutor(int isOrganTutorStatus,boolean isCourseTutor){
         String provinceId = "";
         String provinceName = "";
         if(EmptyUtil.isNotEmpty(mCurrentProvinceBean)){
@@ -455,7 +458,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         String userName = UserHelper.getUserInfo().getUserName();
         mPresenter.requestApplyForCourseTutor(
                 mMemberId,Integer.parseInt(mCourseId),
-                1,mOrganTutorStatus,
+                1,isOrganTutorStatus,
                 userName,markPrice,
                 provinceId,provinceName,
                 cityId,cityName,
@@ -466,6 +469,11 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     @Override
     public void updateApplyForCourseTutor(boolean result) {
         // UIUtil.showToastSafe(R.string.label_course_tutor_apply_for);
+        if(result) {
+            if (EmptyUtil.isNotEmpty(mNavigator)) {
+                mNavigator.onCourseTutorEnter(true);
+            }
+        }
         dismiss();
     }
 
@@ -498,22 +506,52 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                             int isOrganTutorStatus,
                             @NonNull CourseApplyForNavigator navigator) {
         // 获取当前是否已经进入帮辅的状态
-        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
+        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
             @Override
-            public void onDataLoaded(Boolean aBoolean) {
-                if(aBoolean){
+            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                int interfaceStatus = entity.getIsOrganTutorStatus();
+                boolean isTutorCourse = entity.isTutorCourse();
+                if(isTutorCourse){
                     if(EmptyUtil.isNotEmpty(navigator)){
                         navigator.onCourseTutorEnter(true);
                     }
                 }else{
-                    TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
-                    bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
-                    bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS,isOrganTutorStatus);
-                    fragment.setArguments(bundle);
-                    fragment.setNavigator(navigator);
-                    fragment.show(manager,TutorialCourseApplyForFragment.class.getName());
+                    if(interfaceStatus == -1) {
+                        // 别的机构的课程
+                        TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(KEY_EXTRA_MEMBER_ID, memberId);
+                        bundle.putString(KEY_EXTRA_COURSE_ID, courseId);
+                        bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS, isOrganTutorStatus);
+                        fragment.setArguments(bundle);
+                        fragment.setNavigator(navigator);
+                        fragment.show(manager, TutorialCourseApplyForFragment.class.getName());
+                    }else{
+                        String userName = UserHelper.getUserInfo().getUserName();
+                        CourseHelper.requestApplyForCourseTutor(
+                                memberId, Integer.parseInt(courseId),
+                                1, isOrganTutorStatus,
+                                userName, "",
+                                "", "",
+                                "", "",
+                                "", "",
+                                isTutorCourse, new DataSource.Callback<Boolean>() {
+                                    @Override
+                                    public void onDataNotAvailable(int strRes) {
+
+                                    }
+
+                                    @Override
+                                    public void onDataLoaded(Boolean aBoolean) {
+                                        if(aBoolean){
+                                            // 申请成功
+                                            if(EmptyUtil.isNotEmpty(navigator)){
+                                                navigator.onCourseTutorEnter(true);
+                                            }
+                                        }
+                                    }
+                                });
+                    }
                 }
             }
         });
