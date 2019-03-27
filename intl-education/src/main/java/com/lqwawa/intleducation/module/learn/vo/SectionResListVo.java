@@ -372,11 +372,12 @@ public class SectionResListVo extends BaseVo {
     }
 
     /**
-     * 目前支持返回是否申请批阅和评论
-     * @return true 显示申请批阅和评论
+     * 目前支持返回是否申请批阅
+     * @return true 显示申请批阅
      */
     public boolean isTutorialPermission(){
-        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER){
+        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER ||
+                enterType == CourseDetailType.COURSE_DETAIL_ORDER_ENTER){
             return true;
         }
         return false;
