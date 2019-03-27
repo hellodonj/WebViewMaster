@@ -252,7 +252,7 @@ public class DoCourseHelper {
             this.isTeacherMark = isTeacherMark;
             this.fromType = fromType;
             this.screenType = newResourceInfo.getScreenType();
-            if (isTeacherMark) {
+            if (isTeacherMark || fromType == FromType.Do_Retell_Course) {
                 this.studyTaskTitle = newResourceInfo.getTitle();
             }
             if (!islogin()) {

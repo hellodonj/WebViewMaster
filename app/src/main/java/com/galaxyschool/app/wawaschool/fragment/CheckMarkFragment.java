@@ -233,7 +233,11 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (commitTask != null) {
             if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && !MainApplication.isTutorialMode()) {
                 markModel = new QuestionResourceModel();
-                markModel.setTitle(commitTask.getStudentResTitle());
+                if (exerciseItem != null) {
+                    markModel.setTitle(exerciseItem.getName());
+                } else {
+                    markModel.setTitle(commitTask.getStudentResTitle());
+                }
                 markModel.setT_TaskId(commitTask.getTaskId());
                 markModel.setStuMemberId(getMemeberId());
                 if (task != null) {
@@ -265,11 +269,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                         markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
                     }
                 }
-                if (commitTask.getEQId() > 0){
-                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
-                } else if (exerciseItem != null){
-                    markModel.setT_EQId(exerciseItem.getIndex());
-                }
+//                if (commitTask.getEQId() > 0){
+//                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
+//                } else if (exerciseItem != null){
+//                    markModel.setT_EQId(exerciseItem.getIndex());
+//                }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
                 mTvSore.setOnClickListener(v -> {
