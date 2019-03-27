@@ -20,6 +20,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -163,8 +164,10 @@ public class CourseListAdapter extends MyBaseAdapter {
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
 
         if(tutorialMode){
-            holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
-                    DateUtils.YYYYMMDDCH));
+            Date date = DateUtils.stringToDate(vo.getStartTime(),DateUtils.YYYYMMDD);
+            holder.course_date_tv.setText(DateUtils.dateToString(date,DateUtils.YYYYMMDDCH));
+            /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
+                    DateUtils.YYYYMMDDCH));*/
             holder.mBodyLayout.setVisibility(View.GONE);
             holder.course_date_tv.setVisibility(View.VISIBLE);
         }else{
