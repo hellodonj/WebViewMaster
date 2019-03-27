@@ -984,6 +984,9 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         boolean isFinishAllQuestion = false;
         if (!applyMark) {
             if (answerCardPopWindow != null) {
+                if (answerCardPopWindow.isShowSingleState()){
+                    answerCardPopWindow.initAllData();
+                }
                 isFinishAllQuestion = answerCardPopWindow.isFinishAllQuestion();
             }
             if (!isBackPress) {
