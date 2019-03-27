@@ -130,7 +130,7 @@ public class TutorialCommentFragment extends PresenterFragment<TutorialCommentCo
         if(markedEnter && !isTutor){
             mCommentLayout.setVisibility(View.VISIBLE);
         }else{
-            mCommentContent.setVisibility(View.GONE);
+            mCommentLayout.setVisibility(View.GONE);
         }
 
         mCommentContent = (EditText) mRootView.findViewById(R.id.et_comment_content);
