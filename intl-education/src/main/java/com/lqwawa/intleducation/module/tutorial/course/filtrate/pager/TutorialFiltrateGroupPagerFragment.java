@@ -188,6 +188,7 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
         mRefreshLayout.onFooterRefreshComplete();
         handleEntities(entities);
         mGroupAdapter.replace(entities);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
         if(EmptyUtil.isEmpty(entities)){
             mEmptyView.setVisibility(View.VISIBLE);
             mRecycler.setVisibility(View.GONE);
