@@ -24,6 +24,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
@@ -232,8 +233,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         applyMarkLayout = (FrameLayout) findViewById(R.id.ll_apply_mark);
         if (cardParam != null) {
+            CommitTask commitTask = cardParam.getCommitTask();
             if (TextUtils.equals(DemoApplication.getInstance().getMemberId(),
-                    cardParam.getStudentId()) && !MainApplication.isTutorialMode()) {
+                    cardParam.getStudentId()) && commitTask != null && commitTask.isHasTutorialPermission()) {
                 applyMarkLayout.setVisibility(View.VISIBLE);
             }
         }

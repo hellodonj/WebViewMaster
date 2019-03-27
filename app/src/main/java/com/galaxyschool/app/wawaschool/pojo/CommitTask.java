@@ -74,6 +74,7 @@ public class CommitTask implements Serializable, Parcelable {
     private int EQId;//任务的题号
     private int commitTaskOnlineId;
     private String assistantRoleType;
+    private boolean hasTutorialPermission;
     /**
      * @return 是否是语音评测类型
      */
@@ -125,6 +126,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public boolean isHasTutorialPermission() {
+        return hasTutorialPermission;
+    }
+
+    public void setHasTutorialPermission(boolean hasTutorialPermission) {
+        this.hasTutorialPermission = hasTutorialPermission;
     }
 
     public String getAssistantRoleType() {
@@ -588,6 +597,7 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeInt(this.EQId);
         dest.writeInt(this.commitTaskOnlineId);
         dest.writeString(this.assistantRoleType);
+        dest.writeByte(this.hasTutorialPermission ? (byte) 1 : (byte) 0);
     }
 
     public CommitTask() {
@@ -644,6 +654,7 @@ public class CommitTask implements Serializable, Parcelable {
         this.EQId = in.readInt();
         this.commitTaskOnlineId = in.readInt();
         this.assistantRoleType = in.readString();
+        this.hasTutorialPermission = in.readByte() != 0;
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

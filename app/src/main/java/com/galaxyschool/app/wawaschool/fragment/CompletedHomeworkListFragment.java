@@ -591,6 +591,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 data.setAirClassId(airClassId);
+                                data.setHasTutorialPermission(true);
                                 if (data.isMarkCard()) {
                                     //任务单的答题卡
                                     enterStudentAnswerDetailActivity(data, true);
@@ -796,6 +797,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
     public void onViewClick(CommitTask data,
                             boolean thumbnailClick){
+        data.setAirClassId(airClassId);
+        data.setHasTutorialPermission(true);
         if (thumbnailClick && data.isMarkCard() && data.isCourseType()) {
             openImage(data);
         } else {

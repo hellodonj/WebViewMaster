@@ -231,7 +231,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
         if (commitTask != null) {
-            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && !MainApplication.isTutorialMode()) {
+            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && commitTask.isHasTutorialPermission()) {
                 markModel = new QuestionResourceModel();
                 if (exerciseItem != null) {
                     markModel.setTitle(exerciseItem.getName());
@@ -460,7 +460,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                             //游客之类的memberId为空的不给点击。
                             if (!TextUtils.isEmpty(data.getMemberId())) {
                                 if (isAssistanceModel) {
-                                    TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                                    TutorialParams tutorialParams = new TutorialParams(data.getMemberId());
+                                    tutorialParams.setTutorialMarkedEnter(true);
+                                    TutorialHomePageActivity.show(getActivity(), tutorialParams);
                                 } else {
                                     ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
                                 }

@@ -232,6 +232,7 @@ public class MOOCHelper {
                 return;
             }
             CommitTask commitTask = new CommitTask();
+            commitTask.setHasTutorialPermission(true);
             commitTask.setIsAssistantMark(true);
             commitTask.setStudentResId(taskEntity.getResId());
             commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
@@ -353,6 +354,7 @@ public class MOOCHelper {
             UIUtils.currentSourceFromType = sourceType;
             //备注 这里涉及两者对象数据的转化
             CommitTask data = new CommitTask();
+            data.setHasTutorialPermission(task.isTutorialPermission());
             data.setCommitTaskId(studentCommit.getCommitTaskId());
             // 新版本用Id
             data.setCommitTaskId(studentCommit.getId());
@@ -477,6 +479,7 @@ public class MOOCHelper {
             }
             data.setCommitTaskOnlineId(commitTaskId);
             data.setStudentId(studentId);
+            data.setHasTutorialPermission(isTutorialPermission);
             cardParam.setCommitTask(data);
             StudyTask studyTask = new StudyTask();
             studyTask.setCourseId(courseId);

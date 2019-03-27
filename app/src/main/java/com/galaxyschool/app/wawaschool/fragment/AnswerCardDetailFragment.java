@@ -77,7 +77,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
     private boolean hasObjectiveProblem;
     private String taskScoreReMark;
     private QuestionResourceModel markModel;
-
+    private CommitTask commitTask;
     private final int[] colorList = {
             Color.parseColor("#76c905"),
             Color.parseColor("#38c2e0"),
@@ -112,6 +112,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
                     .class.getSimpleName());
             if (cardParam != null) {
                 markModel = cardParam.getMarkModel();
+                commitTask = cardParam.getCommitTask();
                 //评语
                 taskScoreReMark = cardParam.getTaskScoreRemark();
                 JSONArray jsonArray = JSONObject.parseArray(cardParam.getExerciseAnswerString());
@@ -278,7 +279,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             //未点评
             remarkTextV.setVisibility(View.VISIBLE);
             remarkTextV.setOnClickListener(v -> openTeacherReMarkDialog());
-        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId()) && !MainApplication.isTutorialMode()) {
+        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId()) && commitTask != null && commitTask.isHasTutorialPermission()) {
             //显示老师批阅
             ApplyMarkHelper.showApplyMarkView(getActivity(),remarkTextV);
             remarkTextV.setOnClickListener(v -> lookAnswerParsingDetail());
