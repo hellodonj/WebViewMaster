@@ -284,7 +284,7 @@ public class MOOCHelper {
     private static TaskSliderHelper.OnTaskSliderListener onTaskSliderListener
             = new TaskSliderHelper.OnTaskSliderListener() {
         @Override
-        public void doExamTask(Activity activity, String resId, int sourceType) {
+        public void doExamTask(Activity activity, String resId, int sourceType, String name) {
             UIUtils.currentSourceFromType = sourceType;
             doTask(activity, resId);
         }
@@ -438,7 +438,8 @@ public class MOOCHelper {
                                                 @NonNull String courseId,
                                                 @NonNull String courseName,
                                                 String classId,
-                                                String className) {
+                                                String className,
+                                                boolean isTutorialPermission) {
             QuestionResourceModel markModel = new QuestionResourceModel();
             markModel.setTitle(commitTaskTitle);
             if (!TextUtils.isEmpty(taskId)) {
@@ -508,7 +509,8 @@ public class MOOCHelper {
                                    int commitTaskId,
                                    boolean isDoExercise,
                                    @NonNull String CourseId,
-                                   @NonNull String courseName) {
+                                   @NonNull String courseName,
+                                   boolean isTutorialPermission) {
             QuestionResourceModel markModel = new QuestionResourceModel();
             markModel.setTitle(taskTitle);
             if (!TextUtils.isEmpty(TaskId)) {

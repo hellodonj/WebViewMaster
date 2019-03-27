@@ -455,6 +455,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     if (EmptyUtil.isEmpty(vo.getExercise())) return;
                     String answerString = JSON.toJSONString(vo.getExercise());
 
+                    sectionResListVo.setEnterType(mCourseParams.getCourseEnterType(false));
+                    boolean isTutorialPermission = sectionResListVo.isTutorialPermission();
+
                     if (isCheckMark) {
 
                         // 处理过的角色
@@ -482,6 +485,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
                         String classId = mCourseParams.getClassId();
                         String className = mCourseParams.getClassName();
+
                         TaskSliderHelper.enterExerciseDetailActivity(activity,
                                 sectionResListVo.getPoint(),
                                 resourceId,
@@ -500,7 +504,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 courseId,
                                 courseName,
                                 classId,
-                                className);
+                                className,
+                                isTutorialPermission);
 
                     } else {
 
@@ -545,7 +550,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 null,
                                 studentCommit.getStudentName(),
                                 commitTaskId, false,
-                                courseId,courseName);
+                                courseId,courseName,
+                                isTutorialPermission);
 
                     }
 
@@ -598,6 +604,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             task.setClassId(classId);
             task.setClassName(mCourseParams.getClassName());
             task.setLqwawaType(UserHelper.transferResourceTypeWithMooc(task.getTaskType()));
+            task.setEnterType(mCourseParams.getCourseEnterType(false));
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }
@@ -683,7 +690,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     //retellOnePageCourse(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
 
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType());
+                    String name = sectionResListVo.getName();
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
                 } else if (resType == ResType.RES_TYPE_PDF
                         || resType == ResType.RES_TYPE_PPT
                         || resType == ResType.RES_TYPE_IMG
@@ -730,7 +738,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     // TODO 做任务单
                     // retellOnePageCourse(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType());
+                    String name = sectionResListVo.getName();
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
                 }
             }
         }
@@ -779,6 +788,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
                 String courseId = mCourseParams.getCourseId();
                 String courseName = mCourseParams.getCourseName();
+
+                sectionResListVo.setEnterType(mCourseParams.getCourseEnterType(false));
+                boolean isTutorialPermission = sectionResListVo.isTutorialPermission();
+
                 TaskSliderHelper.doExerciseTask(
                         activity,
                         answerString,
@@ -791,7 +804,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         classId,
                         null,
                         null, 0, true,
-                        courseId,courseName);
+                        courseId,courseName,
+                        isTutorialPermission);
             }
         });
     }
