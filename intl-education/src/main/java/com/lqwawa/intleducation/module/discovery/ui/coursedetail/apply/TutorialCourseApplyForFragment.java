@@ -92,9 +92,6 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getContext(),R.style.AppTheme_Dialog_InputMode);
-        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
-        attributes.width = (int)(DisplayUtil.getMobileWidth(getContext()) * 0.8);
-        dialog.getWindow().setAttributes(attributes);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         return dialog;
@@ -187,6 +184,29 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                 mDistrictSpinner2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
+        /*View provinceView = mProvinceSpinner2.getChildAt(0);
+        if(provinceView instanceof TextView){
+            ((TextView)provinceView).setHint(R.string.label_province);
+        }
+
+        View cityView = mCitySpinner2.getChildAt(0);
+        if(cityView instanceof TextView){
+            ((TextView)cityView).setHint(R.string.label_city);
+        }
+
+        View districtView = mDistrictSpinner2.getChildAt(0);
+        if(districtView instanceof TextView){
+            ((TextView)districtView).setHint(R.string.label_district);
+        }*/
+
+        // 设置自定义宽度必须在Dialog show之后
+        Dialog dialog = getDialog();
+        WindowManager windowManager = dialog.getWindow().getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = (int)(display.getWidth() * 0.9);
+        dialog.getWindow().setAttributes(attributes);
     }
 
     @Override
@@ -298,10 +318,21 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                 }
             });
         }else{
-            ArrayAdapter<LocationEntity.LocationBean> cityAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, new ArrayList<>());
+            List<LocationEntity.LocationBean> empties = new ArrayList<>();
+            LocationEntity.LocationBean tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_city));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> cityAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
             mCitySpinner2.setAdapter(cityAdapter);
-            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, new ArrayList<>());
+            mCitySpinner2.setOnItemSelectedListener(null);
+
+            empties = new ArrayList<>();
+            tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_district));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
             mDistrictSpinner2.setAdapter(districtAdapter);
+            mDistrictSpinner2.setOnItemSelectedListener(null);
 
             mCitySpinner2.setEnabled(false);
             mDistrictSpinner2.setEnabled(false);
@@ -352,7 +383,11 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                 }
             });
         }else{
-            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, new ArrayList<>());
+            List<LocationEntity.LocationBean> empties = new ArrayList<>();
+            LocationEntity.LocationBean tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_district));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
             mDistrictSpinner2.setAdapter(districtAdapter);
             mDistrictSpinner2.setEnabled(false);
             mCurrentDistrictBean = null;
