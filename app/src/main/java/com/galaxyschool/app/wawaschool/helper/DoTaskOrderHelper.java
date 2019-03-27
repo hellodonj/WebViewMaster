@@ -653,8 +653,8 @@ public class DoTaskOrderHelper {
             } else if (type == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                 //主观题
                 if (isUpdateAnswerDetail){
-                    List<MediaInfo> mediaInfos = getSubjectProblemImage();
-                    if (mediaInfos != null && mediaInfos.size() > 0){
+                    List<learnTaskCardData> cardData = item.getCardData();
+                    if (cardData != null && cardData.size() > 0){
                         jsonObject.put("EQState", 6);
                     } else {
                         jsonObject.put("EQState", 5);
