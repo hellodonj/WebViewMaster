@@ -214,7 +214,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 courseDetailTextV.setText(getString(R.string.str_look_task_require));
                 TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
                 if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
-                    typeNameTextV.setText("《《"+taskEntity.getT_CourseName() + "》》");
+                    typeNameTextV.setText("《"+taskEntity.getT_CourseName() + "》");
                     typeNameTextV.setVisibility(View.VISIBLE);
                 }
             }
@@ -1009,6 +1009,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 playbackParam.isAssistanceModel = true;
                 playbackParam.EQId = commitTask.getEQId();
                 playbackParam.taskMarkParam = mTaskMarkParam;
+                playbackParam.taskEntity = taskEntity;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
