@@ -465,10 +465,8 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
     @Override
     public void updateApplyForCourseTutor(boolean result) {
-        if(result){
-            // UIUtil.showToastSafe(R.string.label_course_tutor_apply_for);
-            dismiss();
-        }
+        // UIUtil.showToastSafe(R.string.label_course_tutor_apply_for);
+        dismiss();
     }
 
     @Override
