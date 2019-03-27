@@ -261,10 +261,14 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
 
     private void initTitleView() {
         TextView headTitleTextV = (TextView) findViewById(R.id.contacts_header_title);
-        headTitleTextV.setText(cardParam.getCommitTaskTitle());
+        if (headTitleTextV != null) {
+            headTitleTextV.setText(cardParam.getCommitTaskTitle());
+        }
         TextView lookAnswerParsingTextV = (TextView) findViewById(R.id.tv_look_answer_parsing);
         //查看答案解析
-        lookAnswerParsingTextV.setOnClickListener(v -> lookAnswerParsingDetail());
+        if (lookAnswerParsingTextV != null) {
+            lookAnswerParsingTextV.setOnClickListener(v -> lookAnswerParsingDetail());
+        }
     }
 
     private void initReMarkViewData() {
