@@ -69,7 +69,12 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
         @Override
         protected void onBind(TutorialGroupEntity entity) {
             LQwawaImageUtil.loadCommonIcon(mIvGroupAvatar.getContext(),mIvGroupAvatar,entity.getHeadPicUrl());
-            StringUtil.fillSafeTextView(mTvTutorName,entity.getCreateName());
+            if(EmptyUtil.isNotEmpty(entity.getCreateName())){
+                String tutorName = String.format(UIUtil.getString(R.string.label_placeholder_tutorial_group_teacher),entity.getCreateName());
+                StringUtil.fillSafeTextView(mTvTutorName,tutorName);
+            }else{
+                StringUtil.fillSafeTextView(mTvTutorName,entity.getCreateName());
+            }
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
             mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
