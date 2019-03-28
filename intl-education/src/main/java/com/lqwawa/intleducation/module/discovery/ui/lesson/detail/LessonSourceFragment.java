@@ -420,6 +420,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                 vo.setTaskName(getTaskName(index));
                                 vo.setChapterId(vo.getId());
                                 vo.setTaskType(listVo.getTaskType());
+                                if(mTaskType == 5){
+                                    // 讲解课的显示Fragment
+                                    vo.setResProperties("");
+                                }
                             }
                         }
 
