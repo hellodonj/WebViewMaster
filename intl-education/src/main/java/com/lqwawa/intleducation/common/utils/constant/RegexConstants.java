@@ -38,7 +38,7 @@ public final class RegexConstants {
     /**
      * Regex of id passport number
      */
-    public static final String REGEX_ID_PASSPORT = "^1[45][0-9]{7}|([P|p|S|s]\\d{7})|([S|s|G|g]\\d{8})|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\\d{8})|([H|h|M|m]\\d{8，10})$";
+    public static final String REGEX_ID_PASSPORT = "^([a-zA-z]|[0-9]){5,17}$";
     /**
      * Regex of email.
      */
