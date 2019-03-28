@@ -67,6 +67,8 @@ public class TaskSliderHelper {
                                           @NonNull String resId, int resType,
                                           @NonNull String resTitle, int screenType,
                                           @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl);
+
+        void skipMyCourseQuestionWork(@NonNull Activity activity);
     }
 
     public interface OnWorkCartListener{

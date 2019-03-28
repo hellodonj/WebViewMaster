@@ -381,8 +381,8 @@ public class SectionResListVo extends BaseVo {
         // 帮辅模式 只有大厅的入口不可以申请批阅
         boolean tutorialMode = MainApplication.isTutorialMode();
         if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER && tutorialMode){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }

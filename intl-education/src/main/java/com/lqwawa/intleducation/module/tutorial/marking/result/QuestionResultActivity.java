@@ -4,21 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
+import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
+import com.lqwawa.intleducation.module.tutorial.target.container.TutorialStudentTargetTaskActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
-import com.oosic.apps.iemaker.base.PageInfo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -79,9 +81,28 @@ public class QuestionResultActivity extends ToolbarActivity implements View.OnCl
         if(viewId == R.id.btn_again_submit){
             finish();
         }else if(viewId == R.id.btn_watch_work){
-            TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-            TutorialMarkingListActivity.show(this,params);
-            finish();
+            boolean tutorialMode = MainApplication.isTutorialMode();
+            if(tutorialMode){
+                // 帮辅模式的学生提交，说明有申请批阅权限
+                // 去主页面的第三个Tab
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
+                    TaskSliderHelper.onTutorialMarkingListener.skipMyCourseQuestionWork(this);
+                    finish();
+                }
+            }else{
+                // 后来更换了学生端的作业列表入口
+                // 家长不能替孩子提交作业
+                // android:launchMode="singleTask"
+                boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
+                TutorialTargetTaskParams params = new TutorialTargetTaskParams(mCurMemberId,null,getString(R.string.label_committed_works));
+                params.setParent(isParent);
+                params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                TutorialStudentTargetTaskActivity.show(this,params);
+                finish();
+                /*TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                TutorialMarkingListActivity.show(this,params);
+                finish();*/
+            }
         }
     }
 
