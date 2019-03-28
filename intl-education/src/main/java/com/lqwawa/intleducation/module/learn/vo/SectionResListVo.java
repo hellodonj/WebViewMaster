@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.learn.vo;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -376,8 +377,10 @@ public class SectionResListVo extends BaseVo {
      * @return true 显示申请批阅
      */
     public boolean isTutorialPermission(){
-        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER ||
-                enterType == CourseDetailType.COURSE_DETAIL_ORDER_ENTER){
+        // 课程模式 所有入口都可以申请批阅
+        // 帮辅模式 只有大厅的入口不可以申请批阅
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER && tutorialMode){
             return true;
         }
         return false;
