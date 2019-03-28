@@ -1592,7 +1592,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // TODO 申请成为课程的帮辅老师
                     TutorialCourseApplyForFragment.show(
                             getSupportFragmentManager(),
-                            mCurMemberId, courseId,
+                            mCurMemberId, courseId,courseVo.getOrganId(),
                             courseDetailsVo.getIsOrganTutorStatus(),new CourseApplyForNavigator() {
                         @Override
                         public void onCourseTutorEnter(boolean isCourseTutor) {

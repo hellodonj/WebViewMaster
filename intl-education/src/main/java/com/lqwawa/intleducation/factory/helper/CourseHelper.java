@@ -748,9 +748,9 @@ public class CourseHelper {
         requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
         requestVo.addParams("realName", realName);
         // requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
-        if(MainApplication.getInstance() != null){
+        /*if(MainApplication.getInstance() != null){
             requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
-        }
+        }*/
         requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
         if(isOrganTutorStatus == -1){
             requestVo.addParams("markingPrice", markingPrice);

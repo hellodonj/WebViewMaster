@@ -56,7 +56,7 @@ public class UserInfo extends Model implements Serializable {
         return IsAssistant;
     }
 
-    public void setIsAssistant(boolean assistant) {
+    public void setAssistant(boolean assistant) {
         IsAssistant = assistant;
     }
 

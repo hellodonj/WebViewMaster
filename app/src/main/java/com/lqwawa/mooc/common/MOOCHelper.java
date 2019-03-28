@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
@@ -61,6 +62,9 @@ import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.utils.StringUtils;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
@@ -107,6 +111,12 @@ public class MOOCHelper {
         userInfoVo.setRoles(userInfo.getRoles());
         userInfoVo.setSchoolIds(getSchoolsFromUserInfo(userInfo));
         MainApplication.setIsAssistant(userInfo.isAssistant());
+
+
+        if(EmptyUtil.isNotEmpty(userInfo.getSchoolList())){
+            SPUtil.getInstance().put(SharedConstant.KEY_USER_SCHOOL_DATA,JSON.toJSONString(userInfo.getSchoolList()));
+        }
+
         UserHelper.setUserInfo(userInfoVo);
     }
 

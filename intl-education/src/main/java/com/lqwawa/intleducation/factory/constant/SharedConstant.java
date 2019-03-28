@@ -18,5 +18,7 @@ public interface SharedConstant {
     String KEY_AUTO_MARK_WARNING = "KEY_AUTO_MARK_WARNING";
     // 是否打开帮辅模式
     String KEY_APPLICATION_MODE = "KEY_APPLICATION_MODE";
+    // 角色相关的机构列表
+    String KEY_USER_SCHOOL_DATA = "KEY_USER_SCHOOL_DATA";
 
 }

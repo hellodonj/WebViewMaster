@@ -3,20 +3,28 @@ package com.lqwawa.intleducation;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.base.MyApplication;
 import com.lqwawa.intleducation.common.db.DbHelper;
 //import com.lqwawa.intleducation.module.chat.EaseHelper;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.throwable.LQUncaughtExceptionHandler;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqresviewlib.LqResViewHelper;
 import com.osastudio.apps.Config;
 
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * Created by XChen on 2016/11/2.
@@ -114,7 +122,21 @@ public class MainApplication extends MyApplication {
         return SPUtil.getInstance().getBoolean(SharedConstant.KEY_APPLICATION_MODE);
     }
 
-
+    public static boolean isAssistant(@NonNull String schoolId){
+        String json = SPUtil.getInstance().getString(SharedConstant.KEY_USER_SCHOOL_DATA);
+        if(EmptyUtil.isNotEmpty(json)){
+            TypeReference<List<SchoolInfoEntity>> typeReference = new TypeReference<List<SchoolInfoEntity>>(){};
+            List<SchoolInfoEntity> infoEntities = JSON.parseObject(json, typeReference);
+            if(EmptyUtil.isNotEmpty(infoEntities)){
+                for (SchoolInfoEntity infoEntity : infoEntities) {
+                    if(infoEntity.getSchoolId().equalsIgnoreCase(schoolId)){
+                        return infoEntity.isIsAssistant();
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public static boolean isIsAssistant() {
         return IsAssistant;

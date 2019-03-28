@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterDialogFragment;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -56,6 +57,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
+    private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
     private static final String KEY_EXTRA_ORGAN_TUTOR_STATUS = "KEY_EXTRA_ORGAN_TUTOR_STATUS";
 
     private View mRootView;
@@ -87,6 +89,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
     private String mCourseId;
     private String mMemberId;
+    private String mSchoolId;
     private int mOrganTutorStatus;
 
     @NonNull
@@ -140,6 +143,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         Bundle arguments = getArguments();
         mCourseId = arguments.getString(KEY_EXTRA_COURSE_ID);
         mMemberId = arguments.getString(KEY_EXTRA_MEMBER_ID);
+        mSchoolId = arguments.getString(KEY_EXTRA_SCHOOL_ID);
         mOrganTutorStatus = arguments.getInt(KEY_EXTRA_ORGAN_TUTOR_STATUS);
         mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_COUNTRY,"");
 
@@ -463,7 +467,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                 provinceId,provinceName,
                 cityId,cityName,
                 districtId,districtName,
-                isCourseTutor);
+                MainApplication.isAssistant(mSchoolId));
     }
 
     @Override
@@ -503,6 +507,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     public static void show(@NonNull FragmentManager manager,
                             @NonNull String memberId,
                             @NonNull String courseId,
+                            @NonNull String schoolId,
                             int isOrganTutorStatus,
                             @NonNull CourseApplyForNavigator navigator) {
         // 获取当前是否已经进入帮辅的状态
@@ -522,6 +527,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                         Bundle bundle = new Bundle();
                         bundle.putString(KEY_EXTRA_MEMBER_ID, memberId);
                         bundle.putString(KEY_EXTRA_COURSE_ID, courseId);
+                        bundle.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
                         bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS, isOrganTutorStatus);
                         fragment.setArguments(bundle);
                         fragment.setNavigator(navigator);
@@ -535,7 +541,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                                 "", "",
                                 "", "",
                                 "", "",
-                                isTutorCourse, new DataSource.Callback<Boolean>() {
+                                MainApplication.isAssistant(schoolId), new DataSource.Callback<Boolean>() {
                                     @Override
                                     public void onDataNotAvailable(int strRes) {
 

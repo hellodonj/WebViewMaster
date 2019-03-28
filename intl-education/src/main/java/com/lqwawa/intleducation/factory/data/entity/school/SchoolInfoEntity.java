@@ -39,6 +39,7 @@ public class SchoolInfoEntity extends BaseVo{
     private boolean IsLiveShowMgr;//是否是直播管理员
     private boolean IsOnlineSchool;//是不是空中课堂的机构
     private String SchoolIntranetIP;//校园内网的ip
+    private boolean IsAssistant;
 
     private String PName;//省
     private String CName;//市
@@ -50,6 +51,14 @@ public class SchoolInfoEntity extends BaseVo{
     private int Type;
     private String SchoolType;
     private String SchoolLevel;
+
+    public boolean isIsAssistant() {
+        return IsAssistant;
+    }
+
+    public void setIsAssistant(boolean IsAssistant) {
+        this.IsAssistant = IsAssistant;
+    }
 
     public String getSchoolId() {
         return SchoolId;

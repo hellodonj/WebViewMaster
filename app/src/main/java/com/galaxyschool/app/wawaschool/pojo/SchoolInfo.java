@@ -31,10 +31,19 @@ public class SchoolInfo extends Model implements Serializable {
     private boolean IsLiveShowMgr;//是否是直播管理员
     private boolean IsOnlineSchool;//是不是在线课堂的机构
     private String SchoolIntranetIP;//校园内网的ip
+    private boolean IsAssistant;
 
     private String PName;//省
     private String CName;//市
     private String DName;//区
+
+    public boolean isIsAssistant() {
+        return IsAssistant;
+    }
+
+    public void setIsAssistant(boolean IsAssistant) {
+        this.IsAssistant = IsAssistant;
+    }
 
     public String getSchoolIntranetIP() {
         return SchoolIntranetIP;
