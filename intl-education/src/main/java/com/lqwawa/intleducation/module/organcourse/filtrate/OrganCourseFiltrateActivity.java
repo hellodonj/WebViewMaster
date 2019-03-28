@@ -645,6 +645,11 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+        }else{
+            // 数据为空
+            mHeaderLayout.setVisibility(View.GONE);
+            mRefreshLayout.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
         }
 
 

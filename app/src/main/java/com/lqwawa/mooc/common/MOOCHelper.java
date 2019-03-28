@@ -259,6 +259,19 @@ public class MOOCHelper {
             studyTask.setResCourseId(taskEntity.getT_ResCourseId());
             CheckMarkActivity.start(activity, commitTask, studyTask, taskEntity);
         }
+
+
+        @Override
+        public void skipMyCourseQuestionWork(Activity activity){
+            backMainActivity(activity);
+        }
+
+        public void backMainActivity(Activity activity) {
+            PushMessageInfo pushMessageInfo = new PushMessageInfo();
+            pushMessageInfo.setPushModuleType(9);
+            PushOpenResourceHelper.getInstance().setContext(activity)
+                    .setPushMessageInfo(pushMessageInfo).open();
+        }
     };
 
     private static TaskSliderHelper.OnWorkCartListener onWorkCartListener
@@ -544,13 +557,6 @@ public class MOOCHelper {
                     true,
                     isDoExercise,
                     markModel);
-        }
-
-        public void backMainActivity(Activity activity) {
-            PushMessageInfo pushMessageInfo = new PushMessageInfo();
-            pushMessageInfo.setPushModuleType(9);
-            PushOpenResourceHelper.getInstance().setContext(activity)
-                    .setPushMessageInfo(pushMessageInfo).open();
         }
 
         /**
