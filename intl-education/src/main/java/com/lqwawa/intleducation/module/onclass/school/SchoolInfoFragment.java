@@ -141,7 +141,8 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
                 super.onClickCourseTitleLayout();
                 // 进入课程列表 标题是课堂
                 // LQCourseListActivity.show(getActivity(), HideSortType.TYPE_SORT_ONLINE_COURSE,getString(R.string.label_course_shop),mSchoolId,true,false);
-                CourseShopListActivity.show(getActivity(),HideSortType.TYPE_SORT_ONLINE_COURSE,getString(R.string.label_study_course), mSchoolId, true, false);
+                // CourseShopListActivity.show(getActivity(),HideSortType.TYPE_SORT_ONLINE_COURSE,getString(R.string.label_study_course), mSchoolId, true, false);
+                CourseShopListActivity.show(getActivity(),HideSortType.TYPE_SORT_ONLINE_COURSE,mSchoolName, mSchoolId, true, false);
             }
 
             @Override

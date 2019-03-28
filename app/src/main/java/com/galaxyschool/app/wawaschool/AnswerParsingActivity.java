@@ -24,6 +24,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerAdapter;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
@@ -37,6 +38,7 @@ import com.galaxyschool.app.wawaschool.views.MyViewPager;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.client.pojo.LearnTaskCardType;
 import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.oosic.apps.aidl.CollectParams;
@@ -71,6 +73,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     private String title;
     private int screenType;
     private boolean isOnlineMode;
+    private TaskEntity taskEntity;
 
     public interface Constants {
         String SINGLE_QUESTION_ANSWER = "single_question_answer";
@@ -124,6 +127,7 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             title = args.getString(PlaybackActivity.FILE_NAME);
             screenType = args.getInt(PlaybackActivity.ORIENTATION);
             isOnlineMode = args.getBoolean(Constants.DO_COURSE_SLIDE_ONLINE_MODE,false);
+            taskEntity = (TaskEntity) args.getSerializable(TaskEntity.class.getSimpleName());
             if (fromAnswerAnalysis) {
                 cardParam = (ExerciseAnswerCardParam) args.getSerializable(ExerciseAnswerCardParam.class.getSimpleName());
             } else {
@@ -140,6 +144,12 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                         ExerciseItem exerciseItem = JSONObject.parseObject(jsonObject.toString(), ExerciseItem.class);
                         if (exerciseItem != null) {
                             String type = exerciseItem.getType();
+                            String studentState = exerciseItem.getStudent_state();
+                            if (!TextUtils.isEmpty(studentState)){
+                                if (!studentState.contains(",")){
+                                    exerciseItem.setEqState(Integer.valueOf(studentState));
+                                }
+                            }
                             if (!TextUtils.isEmpty(type)) {
                                 if (Integer.valueOf(type) == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                                     List<MediaData> mediaDataList = new ArrayList<>();
@@ -223,8 +233,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
         }
         applyMarkLayout = (FrameLayout) findViewById(R.id.ll_apply_mark);
         if (cardParam != null) {
+            CommitTask commitTask = cardParam.getCommitTask();
             if (TextUtils.equals(DemoApplication.getInstance().getMemberId(),
-                    cardParam.getStudentId()) && !MainApplication.isTutorialMode()) {
+                    cardParam.getStudentId()) && commitTask != null && commitTask.isHasTutorialPermission()) {
                 applyMarkLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -316,6 +327,14 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             args.putSerializable(Constants.SINGLE_QUESTION_ANSWER, exerciseItemList.get(0));
             //是不是来自答题解析
             args.putBoolean(Constants.FROM_ANSWER_ANALYSIS, fromAnswerAnalysis);
+            if (taskEntity != null){
+                args.putString(Constants.STUDENT_ID, taskEntity.getStuMemberId());
+                if (TextUtils.isEmpty(taskEntity.getStuRealName())) {
+                    args.putString(Constants.STUDENT_NAME, taskEntity.getStuNickName());
+                } else {
+                    args.putString(Constants.STUDENT_NAME, taskEntity.getStuRealName());
+                }
+            }
             fragment.setArguments(args);
             fragments.add(fragment);
         }

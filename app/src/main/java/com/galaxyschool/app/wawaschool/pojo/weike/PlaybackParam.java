@@ -2,6 +2,7 @@ package com.galaxyschool.app.wawaschool.pojo.weike;
 
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 
 import java.io.Serializable;
@@ -41,5 +42,8 @@ public class PlaybackParam implements Serializable {
     public QuestionResourceModel applyMarkdata;
 
     public boolean isAssistanceModel;//帮辅模式批阅
+
     public int EQId;//自动批阅读写单标识
+
+    public TaskEntity taskEntity;
 }

@@ -323,8 +323,9 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateApplyForResult(boolean result) {
+        // 不管成功与否都隐藏对话框
+        hideLoading();
         if (result) {
-            hideLoading();
             TutorialAuditActivity.show(this, result);
             finish();
         }

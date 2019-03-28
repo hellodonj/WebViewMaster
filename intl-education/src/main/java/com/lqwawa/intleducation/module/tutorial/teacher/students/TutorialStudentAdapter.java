@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
@@ -42,7 +43,12 @@ public class TutorialStudentAdapter extends RecyclerAdapter<AssistStudentEntity>
 
         @Override
         protected void onBind(AssistStudentEntity entity) {
-            StringUtil.fillSafeTextView(mTvContent,entity.getStuRealName());
+            if(EmptyUtil.isNotEmpty(entity.getStuRealName())) {
+                StringUtil.fillSafeTextView(mTvContent, entity.getStuRealName());
+            }else{
+                StringUtil.fillSafeTextView(mTvContent, entity.getStuNickName());
+            }
+
             int taskCount = entity.getTotalTaskNum() - entity.getReviewedTaskNum();
             if(taskCount == 0){
                 mTvNotMark.setVisibility(View.GONE);

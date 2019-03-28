@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class TutorialParams implements Serializable {
     private String tutorMemberId;
     private String tutorName;
+    private boolean isTutorialMarkedEnter;
 
     public TutorialParams(String tutorMemberId) {
         this(tutorMemberId,null);
@@ -25,5 +26,13 @@ public class TutorialParams implements Serializable {
 
     public String getTutorName() {
         return tutorName;
+    }
+
+    public boolean isTutorialMarkedEnter() {
+        return isTutorialMarkedEnter;
+    }
+
+    public void setTutorialMarkedEnter(boolean tutorialMarkedEnter) {
+        isTutorialMarkedEnter = tutorialMarkedEnter;
     }
 }

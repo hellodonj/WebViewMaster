@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 
@@ -70,9 +71,9 @@ public class CourseHelperInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
         x.Ext.init((Application) appContext.getApplicationContext());
         CountDownLatch downLatch = new CountDownLatch(1);
-        CourseHelper.isTutorCourseBycourseId("e479c488-305b-466c-b81a-d1ee35345486", "819", new DataSource.SucceedCallback<Boolean>() {
+        CourseHelper.isTutorCourseBycourseId("e479c488-305b-466c-b81a-d1ee35345486", "819", new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
             @Override
-            public void onDataLoaded(Boolean aBoolean) {
+            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity courseTutorEntity) {
                 System.out.println();
                 downLatch.countDown();
             }

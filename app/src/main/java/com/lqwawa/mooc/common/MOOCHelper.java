@@ -36,6 +36,7 @@ import com.galaxyschool.app.wawaschool.fragment.CheckMarkFragment;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
+import com.galaxyschool.app.wawaschool.helper.PushOpenResourceHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkResult;
@@ -45,6 +46,7 @@ import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfoCode;
+import com.galaxyschool.app.wawaschool.pojo.PushMessageInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
@@ -129,10 +131,10 @@ public class MOOCHelper {
     }
 
     private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener
-            = new TaskSliderHelper.OnTutorialMarkingListener(){
+            = new TaskSliderHelper.OnTutorialMarkingListener() {
 
         @Override
-        public void enterOnlineSchoolSpaceActivity(@NonNull Context context,@NonNull String schoolId){
+        public void enterOnlineSchoolSpaceActivity(@NonNull Context context, @NonNull String schoolId) {
             Bundle args = new Bundle();
             args.putString(SchoolSpaceActivity.EXTRA_SCHOOL_ID, schoolId);
             Intent intent = new Intent(context, SchoolSpaceActivity.class);
@@ -143,24 +145,24 @@ public class MOOCHelper {
         @Override
         public void enterTutorialHomePager(@NonNull Context context,
                                            @NonNull String tutorMemberId,
-                                           @NonNull String tutorName){
+                                           @NonNull String tutorName) {
             // 进入帮辅主页
             TutorialParams params = new TutorialParams(tutorMemberId);
-            TutorialHomePageActivity.show(context,params);
+            TutorialHomePageActivity.show(context, params);
         }
 
         @Override
         public void openAssistanceMark(@NonNull Activity activity,
                                        @NonNull TaskEntity entity,
                                        @NonNull @TutorialRoleType.TutorialRoleRes String roleType) {
-            enterAssistanceMarkActivity(activity,entity,roleType);
+            enterAssistanceMarkActivity(activity, entity, roleType);
         }
 
         @Override
-        public void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
+        public void openCourseWareDetails(@NonNull Activity activity, boolean isAudition,
                                           @NonNull String resId, int resType,
                                           @NonNull String resTitle, int screenType,
-                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl){
+                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl) {
             if (resType == 23) {
                 NewResourceInfo newResourceInfo = new NewResourceInfo();
             /*newResourceInfo.setTitle(sectionResListVo.getName());
@@ -227,11 +229,12 @@ public class MOOCHelper {
          */
         public void enterAssistanceMarkActivity(Activity activity,
                                                 TaskEntity taskEntity,
-                                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType){
+                                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType) {
             if (activity == null || taskEntity == null) {
                 return;
             }
             CommitTask commitTask = new CommitTask();
+            commitTask.setHasTutorialPermission(true);
             commitTask.setIsAssistantMark(true);
             commitTask.setStudentResId(taskEntity.getResId());
             commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
@@ -254,7 +257,7 @@ public class MOOCHelper {
             studyTask.setCourseId(String.valueOf(taskEntity.getT_CourseId()));
             studyTask.setCourseName(taskEntity.getT_CourseName());
             studyTask.setResCourseId(taskEntity.getT_ResCourseId());
-            CheckMarkActivity.start(activity,commitTask,studyTask,taskEntity);
+            CheckMarkActivity.start(activity, commitTask, studyTask, taskEntity);
         }
     };
 
@@ -262,7 +265,7 @@ public class MOOCHelper {
             = new TaskSliderHelper.OnWorkCartListener() {
         @Override
         public void putResourceToCart(@NonNull ArrayList<SectionResListVo> choiceArray, int taskType) {
-            LqIntroTaskHelper.getInstance().addTask(choiceArray,taskType);
+            LqIntroTaskHelper.getInstance().addTask(choiceArray, taskType);
         }
 
         @Override
@@ -277,14 +280,14 @@ public class MOOCHelper {
 
         @Override
         public void enterIntroTaskDetailActivity(@NonNull Activity activity, @NonNull String schoolId, @NonNull String classId) {
-            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity,schoolId,classId);
+            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity, schoolId, classId);
         }
     };
 
     private static TaskSliderHelper.OnTaskSliderListener onTaskSliderListener
             = new TaskSliderHelper.OnTaskSliderListener() {
         @Override
-        public void doExamTask(Activity activity, String resId, int sourceType) {
+        public void doExamTask(Activity activity, String resId, int sourceType, String name) {
             UIUtils.currentSourceFromType = sourceType;
             doTask(activity, resId);
         }
@@ -353,6 +356,7 @@ public class MOOCHelper {
             UIUtils.currentSourceFromType = sourceType;
             //备注 这里涉及两者对象数据的转化
             CommitTask data = new CommitTask();
+            data.setHasTutorialPermission(task.isTutorialPermission());
             data.setCommitTaskId(studentCommit.getCommitTaskId());
             // 新版本用Id
             data.setCommitTaskId(studentCommit.getId());
@@ -438,7 +442,8 @@ public class MOOCHelper {
                                                 @NonNull String courseId,
                                                 @NonNull String courseName,
                                                 String classId,
-                                                String className) {
+                                                String className,
+                                                boolean isTutorialPermission) {
             QuestionResourceModel markModel = new QuestionResourceModel();
             markModel.setTitle(commitTaskTitle);
             if (!TextUtils.isEmpty(taskId)) {
@@ -476,6 +481,7 @@ public class MOOCHelper {
             }
             data.setCommitTaskOnlineId(commitTaskId);
             data.setStudentId(studentId);
+            data.setHasTutorialPermission(isTutorialPermission);
             cardParam.setCommitTask(data);
             StudyTask studyTask = new StudyTask();
             studyTask.setCourseId(courseId);
@@ -508,7 +514,8 @@ public class MOOCHelper {
                                    int commitTaskId,
                                    boolean isDoExercise,
                                    @NonNull String CourseId,
-                                   @NonNull String courseName) {
+                                   @NonNull String courseName,
+                                   boolean isTutorialPermission) {
             QuestionResourceModel markModel = new QuestionResourceModel();
             markModel.setTitle(taskTitle);
             if (!TextUtils.isEmpty(TaskId)) {
@@ -537,6 +544,13 @@ public class MOOCHelper {
                     true,
                     isDoExercise,
                     markModel);
+        }
+
+        public void backMainActivity(Activity activity) {
+            PushMessageInfo pushMessageInfo = new PushMessageInfo();
+            pushMessageInfo.setPushModuleType(9);
+            PushOpenResourceHelper.getInstance().setContext(activity)
+                    .setPushMessageInfo(pushMessageInfo).open();
         }
 
         /**

@@ -35,6 +35,7 @@ import com.libs.yilib.pickimages.PickMediasActivity;
 import com.libs.yilib.pickimages.PickMediasFragment;
 import com.libs.yilib.pickimages.PickMediasParam;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.tools.ResourceUtils;
 import com.oosic.apps.iemaker.base.BaseSlideManager;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -616,10 +617,14 @@ public class CreateSlideHelper {
 			if (param.playbackParam.pageIndex >= 0){
 				extras.putInt(PlaybackActivity.EXTRA_PAGE_INDEX,param.playbackParam.pageIndex);
 			}
-
-			if (param.playbackParam.isAssistanceModel && param.playbackParam.EQId > 0){
+			PlaybackParam playbackParam = param.playbackParam;
+			if ((playbackParam.isAssistanceModel && playbackParam.EQId > 0)
+					|| (playbackParam.applyMark && playbackParam.applyMarkdata != null && !TextUtils.isEmpty(playbackParam.applyMarkdata.getT_EQId()) && Integer.valueOf(playbackParam.applyMarkdata.getT_EQId()) > 0)){
 				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,true);
+			}
+			if (playbackParam.taskEntity != null){
+				extras.putSerializable(TaskEntity.class.getSimpleName(),playbackParam.taskEntity);
 			}
 		}
         intent.putExtras(extras);

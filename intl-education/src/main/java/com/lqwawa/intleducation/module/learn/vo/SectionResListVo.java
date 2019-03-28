@@ -1,7 +1,9 @@
 package com.lqwawa.intleducation.module.learn.vo;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 
 /**
  * Created by XChen on 2017/3/27.
@@ -75,6 +77,9 @@ public class SectionResListVo extends BaseVo {
     private String classId;
     private String className;
     private int lqwawaType;
+
+    // 入口类型
+    private int enterType;
 
 
     public String getTaskId() {
@@ -350,6 +355,14 @@ public class SectionResListVo extends BaseVo {
         this.lqwawaType = lqwawaType;
     }
 
+    public int getEnterType() {
+        return enterType;
+    }
+
+    public void setEnterType(int enterType) {
+        this.enterType = enterType;
+    }
+
     /**
      * 是否是任务单的自动批阅
      */
@@ -357,5 +370,19 @@ public class SectionResListVo extends BaseVo {
         return taskType == 3 && EmptyUtil.isNotEmpty(point);
         // CommitType == 6 || (CommitType != 6 && EmptyUtil.isEmpty(studentResId))
         // return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
+    }
+
+    /**
+     * 目前支持返回是否申请批阅
+     * @return true 显示申请批阅
+     */
+    public boolean isTutorialPermission(){
+        // 课程模式 所有入口都可以申请批阅
+        // 帮辅模式 只有大厅的入口不可以申请批阅
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER && tutorialMode){
+            return true;
+        }
+        return false;
     }
 }

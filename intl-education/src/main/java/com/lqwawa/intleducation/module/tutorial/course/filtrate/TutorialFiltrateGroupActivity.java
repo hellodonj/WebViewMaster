@@ -43,6 +43,7 @@ import java.util.List;
 public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFiltrateGroupContract.Presenter>
     implements TutorialFiltrateGroupContract.View,ActivityNavigator {
 
+    private static final String KEY_EXTRA_CONFIG_VALUE = "KEY_EXTRA_CONFIG_VALUE";
     private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
 
     // 小语种课程
@@ -87,6 +88,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
     private List<PagerNavigator> mNavigatorList;
 
     private String mCurMemberId;
+    private String mConfigValue;
 
     @Override
     protected TutorialFiltrateGroupContract.Presenter initPresenter() {
@@ -101,6 +103,8 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
         mCurMemberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
+        mConfigValue = bundle.getString(KEY_EXTRA_CONFIG_VALUE);
+        if(EmptyUtil.isEmpty(mConfigValue)) return false;
         return super.initArgs(bundle);
     }
 
@@ -109,7 +113,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
-        mTopBar.setTitle(R.string.title_tutorial_group);
+        mTopBar.setTitle(mConfigValue);
 
         mHeaderLayout = (LinearLayout) findViewById(R.id.header_layout);
         mTabVector1 = (LinearLayout) findViewById(R.id.tab_vector_1);
@@ -597,7 +601,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                 // 重新进入该页面
                 // 没有登录只能看自己的
                 String userId = UserHelper.getUserId();
-                TutorialFiltrateGroupActivity.show(this,userId);
+                TutorialFiltrateGroupActivity.show(this,userId,mConfigValue);
                 finish();
             }
         }
@@ -632,10 +636,11 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
      * 帮辅群筛选页面的入口
      * @param context 上下文对象
      */
-    public static void show(@NonNull Context context,@Nullable String memberId){
+    public static void show(@NonNull Context context,@Nullable String memberId,@NonNull String configValue){
         Intent intent = new Intent(context,TutorialFiltrateGroupActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
+        bundle.putString(KEY_EXTRA_CONFIG_VALUE,configValue);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

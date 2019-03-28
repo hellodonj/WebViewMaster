@@ -188,7 +188,8 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
     @Override
     public void updateQueryAddedTutorStateView(boolean added) {
         // 广播出去,判断是否显示评论框
-        EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
+        // 需求更改,只有批阅过后的入口显示评论框
+        // EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
         if(added){
            mBottomLayout.setVisibility(View.GONE);
         }else{
@@ -216,7 +217,7 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
             // 加帮辅成功
             mBottomLayout.setVisibility(View.GONE);
             // 广播出去,判断是否显示评论框
-            EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
+            // EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
 
             UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
         }else{

@@ -34,6 +34,7 @@ import com.lqwawa.intleducation.factory.data.entity.OnlineSchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.ParamResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.study.OnlineStudyType;
 import com.lqwawa.intleducation.module.onclass.OnlineSortType;
@@ -551,7 +552,7 @@ public class OnlineCourseHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostOnlineClassNotificationData);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(OnlineCourseHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -559,8 +560,25 @@ public class OnlineCourseHelper {
             public void onSuccess(String str) {
                 // str = "{\"Model\":{\"Data\":[{\"Type\":0,\"GroupId\":null,\"IsRead\":1,\"ReadCount\":0,\"NoReadCount\":0,\"time\":\"0001-01-01T00:00:00\",\"Id\":\"eae4560c-f4d2-4d65-89f1-a6cc00f9422d\",\"Title\":\"lloop\",\"Thumbnail\":\"http://resop.lqwawa.com/course/fzkt/2016/11/28/379e85ff-e11e-4c1f-9224-9776ce6025ff/head.jpg\",\"ResourceUrl\":\"http://resop.lqwawa.com/course/fzkt/2016/11/28/379e85ff-e11e-4c1f-9224-9776ce6025ff.zip\",\"ShareAddress\":\"http://resop.lqwawa.com/weike/play?vId=26231&pType=17\",\"ResourceType\":\"17\",\"ScreenType\":0,\"ReadNumber\":\"16\",\"CommentNumber\":\"1\",\"PointNumber\":\"1\",\"CreatedTime\":\"2016-11-28 15:07:32\",\"UpdatedTime\":\"2016-11-28 15:07:31\",\"MicroId\":\"26231\",\"AuthorId\":\"4b0727b7-26b6-4aed-bd33-06dcee904ae1\",\"AuthorName\":\"陸老师\",\"CollectionNum\":0,\"Description\":\"\",\"FileSize\":\"29336\",\"LeValue\":null,\"LeStatus\":0,\"HeadPicUrl\":\"http://filetestop.lqwawa.com/UploadFiles/20170731110803/4b0727b7-26b6-4aed-bd33-06dcee904ae1/2460852e-ec74-4fab-b9fc-be384b8d97fc.png\",\"ResProperties\":null},{\"Type\":0,\"GroupId\":null,\"IsRead\":1,\"ReadCount\":0,\"NoReadCount\":0,\"time\":\"0001-01-01T00:00:00\",\"Id\":\"811a3bdf-4f49-4661-b0bb-a6ca00ff0408\",\"Title\":\"在叙 v b 吗，。浪费多少啊啊啊情人\",\"Thumbnail\":\"http://resop.lqwawa.com/course/fzkt/2016/11/26/0ab58fb6-75e5-4bbe-8dab-0c09aec66652/head.jpg?1480145308801s\",\"ResourceUrl\":\"http://resop.lqwawa.com/course/fzkt/2016/11/26/0ab58fb6-75e5-4bbe-8dab-0c09aec66652.zip\",\"ShareAddress\":\"http://resop.lqwawa.com/weike/play?vId=26078&pType=17\",\"ResourceType\":\"17\",\"ScreenType\":0,\"ReadNumber\":\"12\",\"CommentNumber\":\"0\",\"PointNumber\":\"0\",\"CreatedTime\":\"2016-11-26 15:28:29\",\"UpdatedTime\":\"2016-11-26 15:28:29\",\"MicroId\":\"26078\",\"AuthorId\":\"a7431ae3-3e36-417d-8794-64e6745c0f23\",\"AuthorName\":\"1\",\"CollectionNum\":1,\"Description\":\"\",\"FileSize\":\"374295\",\"LeValue\":null,\"LeStatus\":0,\"HeadPicUrl\":\"http://filetestop.lqwawa.com/UploadFiles/2018/02/28/a7431ae3-3e36-417d-8794-64e6745c0f23/d93084f9-5041-4c5f-b2db-9130651752f6.jpg\",\"ResProperties\":null},{\"Type\":0,\"GroupId\":null,\"IsRead\":1,\"ReadCount\":0,\"NoReadCount\":0,\"time\":\"0001-01-01T00:00:00\",\"Id\":\"06abced4-4848-4ab8-bee3-a6a301112990\",\"Title\":\"他可讲\",\"Thumbnail\":\"http://resop.lqwawa.com/course/fzkt/2016/10/18/f493df4a-1723-43ae-9e1c-045eb2189e10/head.jpg\",\"ResourceUrl\":\"http://resop.lqwawa.com/course/fzkt/2016/10/18/f493df4a-1723-43ae-9e1c-045eb2189e10.zip\",\"ShareAddress\":\"http://resop.lqwawa.com/weike/play?vId=23371&pType=17\",\"ResourceType\":\"17\",\"ScreenType\":1,\"ReadNumber\":\"31\",\"CommentNumber\":\"2\",\"PointNumber\":\"0\",\"CreatedTime\":\"2016-10-18 16:34:33\",\"UpdatedTime\":\"2016-10-18 16:34:33\",\"MicroId\":\"23371\",\"AuthorId\":\"4b0727b7-26b6-4aed-bd33-06dcee904ae1\",\"AuthorName\":\"陸老师\",\"CollectionNum\":1,\"Description\":\"\",\"FileSize\":\"29352\",\"LeValue\":null,\"LeStatus\":0,\"HeadPicUrl\":\"http://filetestop.lqwawa.com/UploadFiles/20170731110803/4b0727b7-26b6-4aed-bd33-06dcee904ae1/2460852e-ec74-4fab-b9fc-be384b8d97fc.png\",\"ResProperties\":null}],\"Pager\":{\"PageIndex\":0,\"PageSize\":30,\"RowsCount\":3,\"FirstRowIndex\":0}},\"ErrorCode\":0,\"HasError\":false,\"ErrorMessage\":null}";
                 LogUtil.i(OnlineCourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<Map<String, Object>> mapTypeReference = new TypeReference<Map<String, Object>>() {
-                };
+                TypeReference<LQModelMultipleParamIncludePagerResponse<ClassNotificationEntity>> typeReference = new TypeReference<LQModelMultipleParamIncludePagerResponse<ClassNotificationEntity>>() {};
+                LQModelMultipleParamIncludePagerResponse<ClassNotificationEntity> response = JSON.parseObject(str,typeReference);
+                if(!response.isHasError()){
+                    if(EmptyUtil.isNotEmpty(response.getModel())){
+                        List<ClassNotificationEntity> entities = response.getModel().getData();
+                        if (EmptyUtil.isNotEmpty(callback)) {
+                            callback.onDataLoaded(entities);
+                        }
+                    }
+                }else{
+                    String ErrorMessage = (String) response.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
+                }
+
+                /*TypeReference<Map<String, Object>> mapTypeReference = new TypeReference<Map<String, Object>>() {};
                 Map<String, Object> result = JSON.parseObject(str, mapTypeReference);
                 if ((int) result.get("ErrorCode") == 0) {
                     Map<String, Object> model = (Map<String, Object>) result.get("Model");
@@ -578,7 +596,7 @@ public class OnlineCourseHelper {
                             && errorHashMap.containsKey(ErrorMessage)) {
                         UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
                     }
-                }
+                }*/
             }
 
             @Override

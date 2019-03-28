@@ -108,19 +108,26 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 // 显示用户头像
                 String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getStuHeadPicUrl() + "").trim();
                 ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
+                /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
-                mStudentName.setLayoutParams(layoutParams);
+                mStudentName.setLayoutParams(layoutParams);*/
             }else{
-                mAvatarLayout.setVisibility(View.GONE);
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
+                mAvatarLayout.setVisibility(View.VISIBLE);
+                // 显示用户头像
+                String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getAssHeadPicUrl() + "").trim();
+                ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
+                /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),0);
-                mStudentName.setLayoutParams(layoutParams);
+                mStudentName.setLayoutParams(layoutParams);*/
             }
 
             if(tutorialMode){
                 // 显示用户姓名
-                StringUtil.fillSafeTextView(mStudentName,taskEntity.getStuRealName());
+                if(EmptyUtil.isNotEmpty(taskEntity.getStuRealName())) {
+                    StringUtil.fillSafeTextView(mStudentName, taskEntity.getStuRealName());
+                }else{
+                    StringUtil.fillSafeTextView(mStudentName, taskEntity.getStuNickName());
+                }
             }else{
                 // 显示提交给某个老师
                 String name = EmptyUtil.isEmpty(taskEntity.getAssRealName()) ? taskEntity.getAssNickName() : taskEntity.getAssRealName();

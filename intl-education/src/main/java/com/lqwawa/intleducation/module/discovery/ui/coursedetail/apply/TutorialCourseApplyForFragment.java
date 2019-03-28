@@ -14,9 +14,13 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
@@ -25,6 +29,7 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.data.model.user.UserModel;
@@ -65,6 +70,11 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     // 区
     private NiceSpinner mDistrictSpinner;
 
+    private TextView mTvLabelAddress2;
+    private Spinner mProvinceSpinner2;
+    private Spinner mCitySpinner2;
+    private Spinner mDistrictSpinner2;
+
     // 确定
     private Button mBtnConfirm,mBtnCancel;
     // 当前省份
@@ -94,12 +104,17 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         final View view = mRootView = inflater.inflate(R.layout.dialog_tutorial_course_apply_for,null);
         mTvLabelMarkingPrice = (TextView) mRootView.findViewById(R.id.tv_label_marking_price);
         mTvLabelAddress = (TextView) mRootView.findViewById(R.id.tv_label_address);
+        mTvLabelAddress2 = (TextView) mRootView.findViewById(R.id.tv_label_address_2);
         fillLabelWarning(mTvLabelAddress,"*",UIUtil.getColor(R.color.colorDarkRed));
         fillLabelWarning(mTvLabelMarkingPrice,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelAddress2,"*",UIUtil.getColor(R.color.colorDarkRed));
         mEtMarkPrice = (EditText) view.findViewById(R.id.et_mark_price);
         mProvinceSpinner = (NiceSpinner) view.findViewById(R.id.province_spinner);
         mCitySpinner = (NiceSpinner) view.findViewById(R.id.city_spinner);
         mDistrictSpinner = (NiceSpinner) view.findViewById(R.id.district_spinner);
+        mProvinceSpinner2 = (Spinner) view.findViewById(R.id.province_spinner_2);
+        mCitySpinner2 = (Spinner) view.findViewById(R.id.city_spinner_2);
+        mDistrictSpinner2 = (Spinner) view.findViewById(R.id.district_spinner_2);
         mBtnConfirm = (Button) view.findViewById(R.id.btn_confirm);
         mBtnCancel = (Button) view.findViewById(R.id.btn_cancel);
         return view;
@@ -130,7 +145,69 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
         mBtnConfirm.setOnClickListener(this);
         mBtnCancel.setOnClickListener(this);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProvinceSpinner2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = mProvinceSpinner2.getMeasuredWidth();
+                int height = mProvinceSpinner2.getMeasuredHeight();
+                mProvinceSpinner2.setDropDownWidth(width);
+                // mProvinceSpinner2.setDropDownVerticalOffset(height);
+
+                mProvinceSpinner2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        mCitySpinner2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = mCitySpinner2.getMeasuredWidth();
+                int height = mCitySpinner2.getMeasuredHeight();
+                mCitySpinner2.setDropDownWidth(width);
+                // mCitySpinner2.setDropDownVerticalOffset(height);
+
+                mCitySpinner2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        mDistrictSpinner2.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = mDistrictSpinner2.getMeasuredWidth();
+                int height = mDistrictSpinner2.getMeasuredHeight();
+                mDistrictSpinner2.setDropDownWidth(width);
+                // mDistrictSpinner2.setDropDownVerticalOffset(height);
+
+                mDistrictSpinner2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        /*View provinceView = mProvinceSpinner2.getChildAt(0);
+        if(provinceView instanceof TextView){
+            ((TextView)provinceView).setHint(R.string.label_province);
+        }
+
+        View cityView = mCitySpinner2.getChildAt(0);
+        if(cityView instanceof TextView){
+            ((TextView)cityView).setHint(R.string.label_city);
+        }
+
+        View districtView = mDistrictSpinner2.getChildAt(0);
+        if(districtView instanceof TextView){
+            ((TextView)districtView).setHint(R.string.label_district);
+        }*/
+
+        // 设置自定义宽度必须在Dialog show之后
+        Dialog dialog = getDialog();
+        WindowManager windowManager = dialog.getWindow().getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams attributes = dialog.getWindow().getAttributes();
+        attributes.width = (int)(display.getWidth() * 0.9);
+        dialog.getWindow().setAttributes(attributes);
     }
 
     @Override
@@ -153,7 +230,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
     @Override
     public void updateProvincesWithChina(@NonNull List<LocationEntity.LocationBean> provinces) {
-        mProvinceSpinner.attachDataSource(provinces);
+        /*mProvinceSpinner.attachDataSource(provinces);
         mProvinceSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,12 +248,29 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             LocationEntity.LocationBean bean = provinces.get(position);
             mCurrentProvinceBean = bean;
             mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
-        }
+        }*/
+
+
+        ArrayAdapter<LocationEntity.LocationBean> adapter = new ArrayAdapter<>(getContext(),R.layout.spinner_select_layout,provinces);
+        mProvinceSpinner2.setAdapter(adapter);
+        mProvinceSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LocationEntity.LocationBean bean = adapter.getItem(position);
+                mCurrentProvinceBean = bean;
+                mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_CITY,bean.getValue());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
     public void updateCityWithProvince(@NonNull List<LocationEntity.LocationBean> cities) {
-        if(EmptyUtil.isNotEmpty(cities)){
+        /*if(EmptyUtil.isNotEmpty(cities)){
             mCitySpinner.setEnabled(true);
             mDistrictSpinner.setEnabled(true);
             mCitySpinner.attachDataSource(cities);
@@ -204,12 +298,53 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             mDistrictSpinner.setEnabled(false);
             mDistrictSpinner.setText("");
             mCurrentDistrictBean = null;
+        }*/
+
+        if(EmptyUtil.isNotEmpty(cities)) {
+            mCitySpinner2.setEnabled(true);
+            mDistrictSpinner2.setEnabled(true);
+            ArrayAdapter<LocationEntity.LocationBean> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, cities);
+            mCitySpinner2.setAdapter(adapter);
+            mCitySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    LocationEntity.LocationBean bean = adapter.getItem(position);
+                    mCurrentCityBean = bean;
+                    mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }else{
+            List<LocationEntity.LocationBean> empties = new ArrayList<>();
+            LocationEntity.LocationBean tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_city));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> cityAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
+            mCitySpinner2.setAdapter(cityAdapter);
+            mCitySpinner2.setOnItemSelectedListener(null);
+
+            empties = new ArrayList<>();
+            tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_district));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
+            mDistrictSpinner2.setAdapter(districtAdapter);
+            mDistrictSpinner2.setOnItemSelectedListener(null);
+
+            mCitySpinner2.setEnabled(false);
+            mDistrictSpinner2.setEnabled(false);
+            mCurrentCityBean = null;
+            mCurrentDistrictBean = null;
         }
     }
 
     @Override
     public void updateDistrictWithCity(@NonNull List<LocationEntity.LocationBean> districts) {
-        if(EmptyUtil.isNotEmpty(districts)) {
+        /*if(EmptyUtil.isNotEmpty(districts)) {
             mDistrictSpinner.setEnabled(true);
             mDistrictSpinner.attachDataSource(districts);
             mDistrictSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -229,6 +364,33 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         }else{
             mDistrictSpinner.setEnabled(false);
             mDistrictSpinner.setText("");
+            mCurrentDistrictBean = null;
+        }*/
+
+        if(EmptyUtil.isNotEmpty(districts)) {
+            mDistrictSpinner2.setEnabled(true);
+            ArrayAdapter<LocationEntity.LocationBean> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, districts);
+            mDistrictSpinner2.setAdapter(adapter);
+            mDistrictSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    LocationEntity.LocationBean bean = adapter.getItem(position);
+                    mCurrentDistrictBean = bean;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }else{
+            List<LocationEntity.LocationBean> empties = new ArrayList<>();
+            LocationEntity.LocationBean tip = new LocationEntity.LocationBean();
+            tip.setText(getString(R.string.label_district));
+            empties.add(tip);
+            ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
+            mDistrictSpinner2.setAdapter(districtAdapter);
+            mDistrictSpinner2.setEnabled(false);
             mCurrentDistrictBean = null;
         }
     }
@@ -254,7 +416,9 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
     }
 
     @Override
-    public void updateIsCourseTutorByCourseIdView(boolean isCourseTutor) {
+    public void updateIsCourseTutorByCourseIdView(@NonNull CourseTutorResponseVo.CourseTutorEntity entity) {
+        boolean isCourseTutor = entity.isTutorCourse();
+        int isOrganTutorStatus = entity.getIsOrganTutorStatus();
         if(isCourseTutor){
             // 申请帮辅成功,再次进入已加入帮辅
             if(EmptyUtil.isNotEmpty(mNavigator)){
@@ -263,11 +427,11 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             }
         }else{
             // 申请
-            applyForTutor(isCourseTutor);
+            applyForTutor(isOrganTutorStatus,isCourseTutor);
         }
     }
 
-    private void applyForTutor(boolean isCourseTutor){
+    private void applyForTutor(int isOrganTutorStatus,boolean isCourseTutor){
         String provinceId = "";
         String provinceName = "";
         if(EmptyUtil.isNotEmpty(mCurrentProvinceBean)){
@@ -294,7 +458,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
         String userName = UserHelper.getUserInfo().getUserName();
         mPresenter.requestApplyForCourseTutor(
                 mMemberId,Integer.parseInt(mCourseId),
-                1,mOrganTutorStatus,
+                1,isOrganTutorStatus,
                 userName,markPrice,
                 provinceId,provinceName,
                 cityId,cityName,
@@ -304,10 +468,13 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
 
     @Override
     public void updateApplyForCourseTutor(boolean result) {
-        if(result){
-            // UIUtil.showToastSafe(R.string.label_course_tutor_apply_for);
-            dismiss();
+        // UIUtil.showToastSafe(R.string.label_course_tutor_apply_for);
+        if(result) {
+            if (EmptyUtil.isNotEmpty(mNavigator)) {
+                mNavigator.onCourseTutorEnter(true);
+            }
         }
+        dismiss();
     }
 
     @Override
@@ -339,22 +506,52 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                             int isOrganTutorStatus,
                             @NonNull CourseApplyForNavigator navigator) {
         // 获取当前是否已经进入帮辅的状态
-        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
+        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
             @Override
-            public void onDataLoaded(Boolean aBoolean) {
-                if(aBoolean){
+            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                int interfaceStatus = entity.getIsOrganTutorStatus();
+                boolean isTutorCourse = entity.isTutorCourse();
+                if(isTutorCourse){
                     if(EmptyUtil.isNotEmpty(navigator)){
                         navigator.onCourseTutorEnter(true);
                     }
                 }else{
-                    TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
-                    bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
-                    bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS,isOrganTutorStatus);
-                    fragment.setArguments(bundle);
-                    fragment.setNavigator(navigator);
-                    fragment.show(manager,TutorialCourseApplyForFragment.class.getName());
+                    if(interfaceStatus == -1) {
+                        // 别的机构的课程
+                        TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(KEY_EXTRA_MEMBER_ID, memberId);
+                        bundle.putString(KEY_EXTRA_COURSE_ID, courseId);
+                        bundle.putInt(KEY_EXTRA_ORGAN_TUTOR_STATUS, isOrganTutorStatus);
+                        fragment.setArguments(bundle);
+                        fragment.setNavigator(navigator);
+                        fragment.show(manager, TutorialCourseApplyForFragment.class.getName());
+                    }else{
+                        String userName = UserHelper.getUserInfo().getUserName();
+                        CourseHelper.requestApplyForCourseTutor(
+                                memberId, Integer.parseInt(courseId),
+                                1, isOrganTutorStatus,
+                                userName, "",
+                                "", "",
+                                "", "",
+                                "", "",
+                                isTutorCourse, new DataSource.Callback<Boolean>() {
+                                    @Override
+                                    public void onDataNotAvailable(int strRes) {
+
+                                    }
+
+                                    @Override
+                                    public void onDataLoaded(Boolean aBoolean) {
+                                        if(aBoolean){
+                                            // 申请成功
+                                            if(EmptyUtil.isNotEmpty(navigator)){
+                                                navigator.onCourseTutorEnter(true);
+                                            }
+                                        }
+                                    }
+                                });
+                    }
                 }
             }
         });

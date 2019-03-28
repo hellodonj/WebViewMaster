@@ -238,11 +238,11 @@ public class UserEntity extends BaseVo {
         UserId = userId;
     }
 
-    public boolean isExist() {
+    public boolean isIsExist() {
         return IsExist;
     }
 
-    public void setExist(boolean exist) {
-        IsExist = exist;
+    public void setIsExist(boolean IsExist) {
+        this.IsExist = IsExist;
     }
 }

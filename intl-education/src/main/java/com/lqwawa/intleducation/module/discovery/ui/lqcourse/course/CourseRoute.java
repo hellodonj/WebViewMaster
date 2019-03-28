@@ -12,6 +12,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
@@ -94,10 +95,11 @@ public class CourseRoute {
                                 courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER);
 
                 if (tutorialMode) {
-                    CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<Boolean>() {
+                    CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
                         @Override
-                        public void onDataLoaded(Boolean aBoolean) {
-                            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, aBoolean);
+                        public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                            boolean isTutorCourse = entity.isTutorCourse();
+                            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, isTutorCourse);
                         }
                     });
                 } else {

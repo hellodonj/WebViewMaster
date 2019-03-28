@@ -214,7 +214,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 courseDetailTextV.setText(getString(R.string.str_look_task_require));
                 TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
                 if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
-                    typeNameTextV.setText(taskEntity.getT_CourseName());
+                    typeNameTextV.setText("《"+taskEntity.getT_CourseName() + "》");
                     typeNameTextV.setVisibility(View.VISIBLE);
                 }
             }
@@ -231,9 +231,13 @@ public class CheckMarkFragment extends ContactsListFragment {
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
         if (commitTask != null) {
-            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && !MainApplication.isTutorialMode()) {
+            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && commitTask.isHasTutorialPermission()) {
                 markModel = new QuestionResourceModel();
-                markModel.setTitle(commitTask.getStudentResTitle());
+                if (exerciseItem != null) {
+                    markModel.setTitle(exerciseItem.getName());
+                } else {
+                    markModel.setTitle(commitTask.getStudentResTitle());
+                }
                 markModel.setT_TaskId(commitTask.getTaskId());
                 markModel.setStuMemberId(getMemeberId());
                 if (task != null) {
@@ -265,11 +269,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                         markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
                     }
                 }
-                if (commitTask.getEQId() > 0){
-                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
-                } else if (exerciseItem != null){
-                    markModel.setT_EQId(exerciseItem.getIndex());
-                }
+//                if (commitTask.getEQId() > 0){
+//                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
+//                } else if (exerciseItem != null){
+//                    markModel.setT_EQId(exerciseItem.getIndex());
+//                }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
                 mTvSore.setOnClickListener(v -> {
@@ -440,8 +444,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-                            if (!TextUtils.isEmpty(data.getMemberId())) {
-                                ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
+                            if (!TextUtils.isEmpty(data.getCreateId())) {
+                                ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
                             }
                         }
                     });
@@ -454,11 +458,14 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-                            if (!TextUtils.isEmpty(data.getMemberId())) {
+
+                            if (!TextUtils.isEmpty(data.getCreateId())) {
                                 if (isAssistanceModel) {
-                                    TutorialHomePageActivity.show(getActivity(), new TutorialParams(data.getMemberId()));
+                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId());
+                                    tutorialParams.setTutorialMarkedEnter(true);
+                                    TutorialHomePageActivity.show(getActivity(), tutorialParams);
                                 } else {
-                                    ActivityUtils.enterPersonalSpace(getActivity(), data.getMemberId());
+                                    ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
                                 }
                             }
                         }
@@ -743,7 +750,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     List<CheckMarkInfo.ModelBean> list =
                                             JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
-//                                        Collections.reverse(list);
+                                        Collections.reverse(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
@@ -1009,6 +1016,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 playbackParam.isAssistanceModel = true;
                 playbackParam.EQId = commitTask.getEQId();
                 playbackParam.taskMarkParam = mTaskMarkParam;
+                playbackParam.taskEntity = taskEntity;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
@@ -1122,13 +1130,15 @@ public class CheckMarkFragment extends ContactsListFragment {
                     score = markScore;
                 }
                 if (mTaskMarkParam != null) {
-
                     mTaskMarkParam.isMarked = true;
                 }
                 if (!TextUtils.isEmpty(score)) {
                     updateScore();
                     if (exerciseItem != null) {
                         exerciseItem.setStudent_score(score);
+                    }
+                    if (mTaskMarkParam != null){
+                        mTaskMarkParam.score = score;
                     }
                 }
             }

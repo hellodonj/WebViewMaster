@@ -1,8 +1,6 @@
 package com.lqwawa.mooc.modle.tutorial.comment;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,22 +19,13 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
-import com.lqwawa.intleducation.factory.helper.UserHelper;
-import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
-import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
-import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
-import com.lqwawa.intleducation.module.tutorial.teacher.students.TutorialStudentAdapter;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 
 import org.greenrobot.eventbus.EventBus;
@@ -137,6 +126,13 @@ public class TutorialCommentFragment extends PresenterFragment<TutorialCommentCo
         });
 
         mCommentLayout = (LinearLayout) mRootView.findViewById(R.id.comment_layout);
+        boolean markedEnter = mTutorialParams.isTutorialMarkedEnter();
+        if(markedEnter && !isTutor){
+            mCommentLayout.setVisibility(View.VISIBLE);
+        }else{
+            mCommentLayout.setVisibility(View.GONE);
+        }
+
         mCommentContent = (EditText) mRootView.findViewById(R.id.et_comment_content);
         mBtnSend = (TextView) mRootView.findViewById(R.id.btn_send);
         mBtnSend.setOnClickListener(this);

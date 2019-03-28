@@ -706,6 +706,7 @@ public class TutorialHelper {
                                             @NonNull String seniorityUrl,
                                             @NonNull DataSource.Callback<Boolean> callback){
         RequestVo requestVo = new RequestVo();
+        requestVo.addParams("source",0);
         // requestVo.addParams("PhoneNumber",phoneNumber);
         // requestVo.addParams("VerificationCode",verificationCode);
         requestVo.addParams("IDType",IDType);
@@ -749,12 +750,14 @@ public class TutorialHelper {
             public void onSuccess(String str) {
                 LogUtil.i(TutorialHelper.class,"request "+params.getUri()+" result :"+str);
                 ResponseVo result = JSON.parseObject(str,new TypeReference<ResponseVo>() {});
-                if (result.isSucceed()) {
-                    if(EmptyUtil.isNotEmpty(callback)){
-                        callback.onDataLoaded(true);
+                if(EmptyUtil.isNotEmpty(callback)){
+                    callback.onDataLoaded(result.isSucceed());
+                }
+                if (!result.isSucceed()) {
+                    String message = result.getMessage();
+                    if(EmptyUtil.isNotEmpty(message)) {
+                        UIUtil.showToastSafe(message);
                     }
-                }else{
-                    Factory.decodeRspCode(result.getCode(),callback);
                 }
             }
 

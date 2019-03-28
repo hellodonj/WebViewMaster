@@ -682,7 +682,7 @@ public class CourseHelper {
      */
     public static void isTutorCourseBycourseId(@NonNull String memberId,
                                                @Nullable String courseId,
-                                               @NonNull final DataSource.SucceedCallback<Boolean> callback) {
+                                               @NonNull final DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
@@ -700,7 +700,10 @@ public class CourseHelper {
                 CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
                 if(responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(responseVo.isTutorCourse());
+                        CourseTutorResponseVo.CourseTutorEntity entity = new CourseTutorResponseVo.CourseTutorEntity();
+                        entity.setTutorCourse(responseVo.isTutorCourse());
+                        entity.setIsOrganTutorStatus(responseVo.getIsOrganTutorStatus());
+                        callback.onDataLoaded(entity);
                     }
                 }
             }
@@ -748,8 +751,8 @@ public class CourseHelper {
         if(MainApplication.getInstance() != null){
             requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
         }
-        if(isOrganTutorStatus == 0 ||
-                isOrganTutorStatus == 1){
+        requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        if(isOrganTutorStatus == -1){
             requestVo.addParams("markingPrice", markingPrice);
             requestVo.addParams("provinceId", provinceId);
             requestVo.addParams("provinceName", provinceName);
@@ -767,16 +770,13 @@ public class CourseHelper {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
                 ResponseVo responseVo = JSON.parseObject(str, typeReference);
-                if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
-                    UIUtil.showToastSafe(responseVo.getMessage());
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    // 不管成功还是失败，都dismiss窗体
+                    callback.onDataLoaded(responseVo.isSucceed());
                 }
-                if(responseVo.isSucceed()) {
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(true);
-                    }
-                }else{
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                if(!responseVo.isSucceed()) {
+                    if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
+                        UIUtil.showToastSafe(responseVo.getMessage());
                     }
                 }
             }
