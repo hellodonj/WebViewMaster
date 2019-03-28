@@ -64,7 +64,7 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/normal_count"
                 android:textColor="#676666"
                 android:textSize="16sp"/>
@@ -89,7 +89,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="@string/pay_type"
                 android:textColor="#676666"
                 android:textSize="16sp"/>
@@ -163,10 +163,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -183,6 +183,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:textColor="#ff7200"
+                    android:text="0"
                     android:textSize="24sp"/>
 
                 <TextView
