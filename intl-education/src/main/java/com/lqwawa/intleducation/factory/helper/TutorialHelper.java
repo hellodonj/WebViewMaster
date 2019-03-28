@@ -42,6 +42,7 @@ import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -495,7 +496,14 @@ public class TutorialHelper {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("memberId", memberId);
         requestVo.addParams("tutorMemberId", tutorMemberId);
-        requestVo.addParams("content", content);
+        // requestVo.addParams("content", content);
+        try {
+            String encodeContent = URLEncoder.encode(content, "utf-8");
+            encodeContent = encodeContent.replaceAll("%0A", "\n");
+            requestVo.addParams("content", encodeContent);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
