@@ -492,7 +492,9 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
      */
     private void deleteCurrentItem(final @NonNull LiveEntity data,boolean deleteAll){
         // 删除直播
-        mPresenter.requestDeleteLive(data.getId(), data.getClassId(),deleteAll);
+        // clsssId是创建班的Id,传发布班级的Id
+        String classId = mClassDetailEntity.getData().get(0).getClassId();
+        mPresenter.requestDeleteLive(data.getId(), classId,deleteAll);
     }
 
     /**
