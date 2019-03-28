@@ -840,7 +840,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     List<CheckMarkInfo.ModelBean> list = JSONObject.parseArray
                                             (jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
-//                                        Collections.reverse(list);
+                                        Collections.reverse(list);
                                         removeAssistanceData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
