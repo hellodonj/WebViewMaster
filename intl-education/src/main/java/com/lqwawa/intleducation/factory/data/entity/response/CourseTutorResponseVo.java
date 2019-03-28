@@ -15,6 +15,7 @@ public class CourseTutorResponseVo implements Serializable {
     private int code;
     private String message;
     private boolean isTutorCourse;
+    private boolean isTutor;
     private int isOrganTutorStatus;
 
     public int getCode() {
@@ -39,6 +40,14 @@ public class CourseTutorResponseVo implements Serializable {
 
     public void setTutorCourse(boolean tutorCourse) {
         isTutorCourse = tutorCourse;
+    }
+
+    public boolean isTutor() {
+        return isTutor;
+    }
+
+    public void setTutor(boolean tutor) {
+        isTutor = tutor;
     }
 
     public int getIsOrganTutorStatus() {

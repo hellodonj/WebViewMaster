@@ -32,6 +32,8 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -746,7 +748,12 @@ public class CourseHelper {
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("type", type);
         requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
-        requestVo.addParams("realName", realName);
+        try {
+            String encodeRealName = URLEncoder.encode(realName, "utf-8");
+            requestVo.addParams("realName", encodeRealName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         // requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
         /*if(MainApplication.getInstance() != null){
             requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
@@ -768,13 +775,15 @@ public class CourseHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
-                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
+
                 if (EmptyUtil.isNotEmpty(callback)) {
                     // 不管成功还是失败，都dismiss窗体
-                    callback.onDataLoaded(responseVo.isSucceed());
+                    callback.onDataLoaded(responseVo.isTutor());
                 }
-                if(!responseVo.isSucceed()) {
+
+                if(!responseVo.isSucceed() || !responseVo.isTutor()){
                     if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
                         UIUtil.showToastSafe(responseVo.getMessage());
                     }
