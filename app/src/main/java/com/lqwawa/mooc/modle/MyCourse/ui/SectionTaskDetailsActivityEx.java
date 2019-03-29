@@ -541,7 +541,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 activity,
                                 answerString,
                                 sectionResListVo.getTaskId(),
-                                mTaskParams.getMemberId(),
+                                studentCommit.getStudentId(),
                                 resourceId,
                                 sectionResListVo.getName(),
                                 schoolId,

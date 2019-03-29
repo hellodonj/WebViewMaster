@@ -992,6 +992,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         }else if(mTutorialGroupFragment.isVisible()){
             // 下拉刷新
             mOnlineClassFragment.onHeaderRefresh();
+        }else if(mTutorialGroupFragment.isVisible()){
+            // 帮辅群显示
+            mTutorialGroupFragment.onHeaderRefresh();
         }
         // @date   :2018/6/8 0008 上午 1:04
         // @func   :V5.7将直播换成了在线课堂
