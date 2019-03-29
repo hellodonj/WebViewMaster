@@ -32,6 +32,7 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
 import com.galaxyschool.app.wawaschool.fragment.HomeworkCommitFragment;
 import com.galaxyschool.app.wawaschool.pojo.AnswerAnalysisInfo;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
@@ -1256,7 +1257,8 @@ public class DoTaskOrderHelper {
                                           int commitTaskId,
                                           boolean fromOnlineStudy,
                                           boolean isDoExercise,
-                                          QuestionResourceModel markModel) {
+                                          QuestionResourceModel markModel,
+                                          boolean hasAssistantPermission) {
 
         String tempResId = courseId;
         int resType = 0;
@@ -1298,7 +1300,8 @@ public class DoTaskOrderHelper {
                                     commitTaskId,
                                     fromOnlineStudy,
                                     isDoExercise,
-                                    markModel);
+                                    markModel,
+                                    hasAssistantPermission);
                         }
                     }
                 }
@@ -1326,7 +1329,8 @@ public class DoTaskOrderHelper {
                             commitTaskId,
                             fromOnlineStudy,
                             isDoExercise,
-                            markModel);
+                            markModel,
+                            hasAssistantPermission);
                 }
             });
         }
@@ -1351,7 +1355,8 @@ public class DoTaskOrderHelper {
                                              int commitTaskId,
                                              boolean fromOnlineStudy,
                                              boolean isDoExercise,
-                                             QuestionResourceModel markModel) {
+                                             QuestionResourceModel markModel,
+                                             boolean hasAssistantPermission) {
         if (courseData != null) {
             PlaybackParam mParam = new PlaybackParam();
             //隐藏收藏按钮
@@ -1376,6 +1381,9 @@ public class DoTaskOrderHelper {
             cardParam.setStudentName(studentName);
             cardParam.setCommitTaskId(commitTaskId);
             cardParam.setMarkModel(markModel);
+            CommitTask commitTask = new CommitTask();
+            commitTask.setHasTutorialPermission(hasAssistantPermission);
+            cardParam.setCommitTask(commitTask);
             if (isDoExercise) {
                 mParam.exerciseCardParam = cardParam;
                 ActivityUtils.openOnlineOnePage(activity, courseData.getNewResourceInfo(), true,

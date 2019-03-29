@@ -566,7 +566,8 @@ public class MOOCHelper {
                     commitTaskId,
                     true,
                     isDoExercise,
-                    markModel);
+                    markModel,
+                    isTutorialPermission);
         }
 
         /**

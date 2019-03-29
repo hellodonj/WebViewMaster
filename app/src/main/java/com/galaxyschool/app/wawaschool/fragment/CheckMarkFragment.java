@@ -269,11 +269,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                         markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
                     }
                 }
-//                if (commitTask.getEQId() > 0){
-//                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
-//                } else if (exerciseItem != null){
-//                    markModel.setT_EQId(exerciseItem.getIndex());
-//                }
+                if (commitTask.getEQId() > 0){
+                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
+                } else if (exerciseItem != null){
+                    markModel.setT_EQId(exerciseItem.getIndex());
+                }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
                 mTvSore.setOnClickListener(v -> {
@@ -282,6 +282,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     } else {
                         //读写单的主观题
                         cardParam.setMarkModel(markModel);
+                        cardParam.setIsSubjectAssistant(true);
                         ApplyMarkHelper.doApplyMarkTask(getActivity(), cardParam, exerciseItem, null);
                     }
                 });

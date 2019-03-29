@@ -495,7 +495,7 @@ public class CreateSlideHelper {
 		it.putExtra(SlideWawaPageActivity.MODEL_SOURCE_FROM,param.isFromMoocModel);
 		it.putExtra(ExerciseAnswerCardParam.class.getSimpleName(),param.cardParam);
 		it.putExtra(SlideWawaPageActivity.IS_FROM_TEACHER_MARK,param.isTeacherMark);
-		if (param.cardParam != null && param.cardParam.getMarkModel() != null) {
+		if (param.cardParam != null && param.cardParam.getMarkModel() != null && !param.cardParam.isSubjectAssistant()) {
 			it.putExtra(SlideWawaPageActivity.EXTRA_EDIT_EXERCISE,true);
 			if (!TextUtils.isEmpty(param.cardParam.getExerciseAnswerString())) {
 				JSONArray jsonArray = JSONObject.parseArray(param.cardParam.getExerciseAnswerString());

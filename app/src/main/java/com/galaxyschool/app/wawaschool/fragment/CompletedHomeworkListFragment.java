@@ -2254,7 +2254,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         data.getCommitTaskId(),
                         false,
                         false,
-                        getMarkModelData(data));
+                        getMarkModelData(data),
+                        true);
             }
         }
 
