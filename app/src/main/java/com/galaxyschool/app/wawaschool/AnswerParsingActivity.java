@@ -492,7 +492,8 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (playbackParam != null
+        if (data != null
+                && playbackParam != null
                 && playbackParam.isAssistanceModel
                 && (requestCode == ResourceBaseFragment.REQUEST_CODE_RETELLCOURSE || requestCode == 105 || requestCode == REQUEST_CODE_DO_SLIDE_TOAST)) {
             //接口返回的路径
