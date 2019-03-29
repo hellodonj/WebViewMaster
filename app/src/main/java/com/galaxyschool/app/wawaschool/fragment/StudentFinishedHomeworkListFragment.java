@@ -796,7 +796,8 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                     data.getCommitTaskId(),
                     false,
                     false,
-                    null);
+                    null,
+                    false);
         }
     }
 
