@@ -87,7 +87,6 @@ public class QuestionResultActivity extends ToolbarActivity implements View.OnCl
                 // 去主页面的第三个Tab
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
                     TaskSliderHelper.onTutorialMarkingListener.skipMyCourseQuestionWork(this);
-                    finish();
                 }
             }else{
                 // 后来更换了学生端的作业列表入口
