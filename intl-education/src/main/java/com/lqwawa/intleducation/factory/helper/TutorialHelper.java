@@ -904,6 +904,9 @@ public class TutorialHelper {
 
         String Title = model.getTitle();
         if(EmptyUtil.isNotEmpty(Title)){
+            if(Title.length() > 40){
+                Title = Title.substring(0,40);
+            }
             requestVo.addParams("Title",Title);
         }
 
@@ -984,11 +987,11 @@ public class TutorialHelper {
                 LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
                 TypeReference<LQwawaBaseResponse> typeReference = new TypeReference<LQwawaBaseResponse>() {};
                 LQwawaBaseResponse response = JSON.parseObject(str, typeReference);
-                if (response.isSucceed()) {
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(true);
-                    }
-                } else {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(response.isSucceed());
+                }
+
+                if(!response.isSucceed()){
                     String ErrorMessage = (String) response.getErrorMessage();
                     Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
                     if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)

@@ -353,7 +353,8 @@ public class CourseResListAdapter extends MyBaseAdapter {
             // 是课件选取,添加自动批阅
             // v5.10 LQ学程浏览的时候也要添加语音评测,还有一个直播课前课后的调用
             // v5.10 LQ学程浏览的时候不需要添加语音评测
-            if((mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || vo.getTaskType() == 2) &&
+            if(((mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || vo.getTaskType() == 2) ||
+                    (mTaskType == CourseSelectItemFragment.KEY_LECTURE_COURSE || vo.getTaskType() == 5)) &&
                     SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(vo.getResProperties())){
                 // 只有听说课,才显示语音评测
                 holder.mTvAutoMask.setVisibility(View.VISIBLE);
