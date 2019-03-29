@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,9 +23,11 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.module.tutorial.marking.result.QuestionResultActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
 
 public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.Presenter>
     implements TutorChoiceContract.View,View.OnClickListener{
@@ -159,7 +162,8 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     public void updateChoiceTutorView(List<TutorChoiceEntity> entities) {
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
+        filterEntities(entities);
         mAdapter.replace(entities);
 
         if(EmptyUtil.isEmpty(entities)){
@@ -177,10 +181,27 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     public void updateMoreChoiceTutorView(List<TutorChoiceEntity> entities) {
         // 关闭加载更多
         mRefreshLayout.onFooterRefreshComplete();
-        mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
+        mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
+        filterEntities(entities);
         // 设置数据
         mAdapter.add(entities);
         mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 过滤数据
+     * @param entities 帮辅老师数据
+     */
+    private void filterEntities(@NonNull List<TutorChoiceEntity> entities){
+        if(EmptyUtil.isNotEmpty(entities)){
+            ListIterator<TutorChoiceEntity> iterator = entities.listIterator();
+            while (iterator.hasNext()){
+                TutorChoiceEntity next = iterator.next();
+                if(TextUtils.equals(next.getMemberId(),UserHelper.getUserId())){
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     @Override
