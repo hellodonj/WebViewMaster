@@ -123,7 +123,7 @@ public class NavHelper<T> {
             }
         }
         // 提交事务
-        ft.commit();
+        ft.commitAllowingStateLoss();
         // 通知回调
         notifyTabSelect(newTab, oldTab);
     }
