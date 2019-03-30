@@ -394,6 +394,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
             empties.add(tip);
             ArrayAdapter<LocationEntity.LocationBean> districtAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_select_layout, empties);
             mDistrictSpinner2.setAdapter(districtAdapter);
+            mDistrictSpinner2.setOnItemSelectedListener(null);
             mDistrictSpinner2.setEnabled(false);
             mCurrentDistrictBean = null;
         }
