@@ -31,6 +31,7 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
 import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
@@ -751,7 +752,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     List<CheckMarkInfo.ModelBean> list =
                                             JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
-                                        Collections.reverse(list);
+                                        sortData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
@@ -785,8 +786,8 @@ public class CheckMarkFragment extends ContactsListFragment {
 //
                         }
                         List<CheckMarkInfo.ModelBean> list = result.getModel();
-//                        Collections.reverse(list);
                         removeAssistanceData(list);
+                        sortData(list);
                         getCurrAdapterViewHelper().setData(list);
 
                     }
@@ -807,6 +808,13 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                 }
             }
+        }
+    }
+
+    private void sortData(List<CheckMarkInfo.ModelBean> list){
+        if (list != null && list.size() > 0){
+            Collections.sort(list,((o1, o2) -> DateUtils.compareDate(o1.getCreateTime(),
+                    o2.getCreateTime(),DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS)));
         }
     }
 
@@ -841,8 +849,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     List<CheckMarkInfo.ModelBean> list = JSONObject.parseArray
                                             (jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
-                                        Collections.reverse(list);
                                         removeAssistanceData(list);
+                                        sortData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
