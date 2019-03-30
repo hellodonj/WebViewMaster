@@ -100,7 +100,7 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
                 return;
             }
 
-            if (EmptyUtil.isEmpty(cityId) ||
+            /*if (EmptyUtil.isEmpty(cityId) ||
                     EmptyUtil.isEmpty(cityName)) {
                 view.showError(R.string.label_input_city_tip);
                 return;
@@ -110,7 +110,7 @@ public class TutorialCourseApplyForPresenter extends BasePresenter<TutorialCours
                     EmptyUtil.isEmpty(countyName)) {
                 view.showError(R.string.label_input_district_tip);
                 return;
-            }
+            }*/
 
             if (EmptyUtil.isEmpty(markingPrice)) {
                 view.showError(R.string.label_mark_price_tip);
