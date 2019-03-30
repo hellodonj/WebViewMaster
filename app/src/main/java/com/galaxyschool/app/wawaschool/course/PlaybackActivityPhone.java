@@ -269,8 +269,8 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             if (taskMarkParam != null && (taskMarkParam.roleType == RoleType.ROLE_TYPE_EDITOR ||
                     taskMarkParam.roleType == RoleType.ROLE_TYPE_TEACHER)) {
                 //老师显示校本资源库
-                mSlideInPlaybackParam.mRayMenusV = Arrays.copyOf(mSlideInPlaybackParam.mRayMenusV, mSlideInPlaybackParam.mRayMenusV.length + 1);
-                mSlideInPlaybackParam.mRayMenusV[mSlideInPlaybackParam.mRayMenusV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+//                mSlideInPlaybackParam.mRayMenusV = Arrays.copyOf(mSlideInPlaybackParam.mRayMenusV, mSlideInPlaybackParam.mRayMenusV.length + 1);
+//                mSlideInPlaybackParam.mRayMenusV[mSlideInPlaybackParam.mRayMenusV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
             }
 
             if (mParam != null && !isAnswerCardQuestion) {

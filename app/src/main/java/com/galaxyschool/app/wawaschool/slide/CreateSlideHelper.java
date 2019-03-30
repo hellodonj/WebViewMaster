@@ -439,13 +439,13 @@ public class CreateSlideHelper {
 				BaseSlideManager.MENU_ID_PAGE_HORN_AUDIO,
 				BaseSlideManager.MENU_ID_PERSONAL_MATERIAL
 		};
-		if (param.cardParam != null && (param.cardParam.isOnlineHost() || param.cardParam.isOnlineReporter())) {
-			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
-			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
-		} else if (param.isTeacherMark) {
-			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
-			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
-		}
+//		if (param.cardParam != null && (param.cardParam.isOnlineHost() || param.cardParam.isOnlineReporter())) {
+//			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
+//			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+//		} else if (param.isTeacherMark) {
+//			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
+//			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+//		}
 		if (param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_COURSE
 				&& param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_OTHER_COURSE
 				&& !param.mIsIntroducationTask) {

@@ -1207,7 +1207,7 @@ public class DoCourseHelper {
                 BaseSlideManager.MENU_ID_PERSONAL_MATERIAL
         };
 
-        if (fromType != FromType.Do_Retell_Course || isTeacherMark) {
+        if (fromType != FromType.Do_Retell_Course) {
             MyApplication application = (MyApplication) mContext.getApplicationContext();
             if (application != null) {
                 UserInfo userInfo = application.getUserInfo();
