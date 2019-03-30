@@ -155,6 +155,9 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 					setUserType(RoleType.ROLE_TYPE_TEACHER);
 				} else if (cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT){
 					setUserType(RoleType.ROLE_TYPE_STUDENT);
+				} else if (cardParam.getMarkModel() != null){
+					//学生申请批阅
+					setUserType(RoleType.ROLE_TYPE_STUDENT);
 				}
 			} else if (isTeacherMark) {
 				setUserType(RoleType.ROLE_TYPE_TEACHER);
