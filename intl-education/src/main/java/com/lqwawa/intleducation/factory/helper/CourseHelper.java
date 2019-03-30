@@ -763,10 +763,15 @@ public class CourseHelper {
             requestVo.addParams("markingPrice", markingPrice);
             requestVo.addParams("provinceId", provinceId);
             requestVo.addParams("provinceName", provinceName);
-            requestVo.addParams("cityId", cityId);
-            requestVo.addParams("cityName", cityName);
-            requestVo.addParams("countyId", countyId);
-            requestVo.addParams("countyName", countyName);
+            if(EmptyUtil.isNotEmpty(cityId) && EmptyUtil.isNotEmpty(cityName)){
+                requestVo.addParams("cityId",cityId);
+                requestVo.addParams("cityName",cityName);
+            }
+
+            if(EmptyUtil.isNotEmpty(countyId) && EmptyUtil.isNotEmpty(countyName)){
+                requestVo.addParams("countyId",countyId);
+                requestVo.addParams("countyName",countyName);
+            }
         }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetApplyForCourseTutor + requestVo.getParams());
         params.setConnectTimeout(10000);
