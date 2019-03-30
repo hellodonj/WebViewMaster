@@ -421,7 +421,7 @@ public class LrcView extends View {
                 mScroller.forceFinished(true);
                 removeCallbacks(hideTimelineRunnable);
                 isTouching = true;
-                isShowTimeline = true;
+//                isShowTimeline = true;
                 invalidate();
                 return true;
             }

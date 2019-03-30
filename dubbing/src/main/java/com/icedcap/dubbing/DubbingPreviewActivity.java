@@ -96,6 +96,12 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         totalTimeTextView = (TextView) findViewById(R.id.tv_total_time);
         //通篇配音
         lrcView = (LrcView) findViewById(R.id.lrc_view);
+        lrcView.setOnPlayClickListener(new LrcView.OnPlayClickListener() {
+            @Override
+            public boolean onPlayClick(long time) {
+                return true;
+            }
+        });
         seekBar = (SeekBar) findViewById(R.id.seekbar);
         seekBar.setVisibility(View.VISIBLE);
     }

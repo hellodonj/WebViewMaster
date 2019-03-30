@@ -384,12 +384,12 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         gridView = (GridView) findViewById(R.id.grid_view);
         //通篇配音
         lrcView = (LrcView) findViewById(R.id.lrc_view);
-//        lrcView.setOnPlayClickListener(new LrcView.OnPlayClickListener() {
-//            @Override
-//            public boolean onPlayClick(long time) {
-//                return true;
-//            }
-//        });
+        lrcView.setOnPlayClickListener(new LrcView.OnPlayClickListener() {
+            @Override
+            public boolean onPlayClick(long time) {
+                return true;
+            }
+        });
         wholeRecordImageV = (ImageView) findViewById(R.id.iv_dubbing_record);
         previewFl = (FrameLayout) findViewById(R.id.fl_preview);
         commitFl = (FrameLayout) findViewById(R.id.fl_commit);
