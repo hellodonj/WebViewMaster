@@ -28,6 +28,7 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.HomeworkCommitFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaTypeListFragment;
+import com.galaxyschool.app.wawaschool.helper.UserInfoHelper;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
@@ -101,7 +102,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     private String courseId;
     private boolean autoMark;
     private boolean isTeacherMark;
-
+    private boolean isEntityTeacher;//实体机构的老师
     /**
      * 判断当前制作的来源
      */
@@ -517,7 +518,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
                     commitCourseHelper = new CommitCourseHelper(SlideActivityNew.this);
                 }
                 if (userInfo != null && userInfo.isTeacher()) {
-                    commitCourseHelper.setIsTeacher(true);
+                    commitCourseHelper.setIsTeacher(isEntityTeacher);
                 }
                 if (userInfo != null && userInfo.isStudent()) {
                     commitCourseHelper.setIsStudent(true);
@@ -672,6 +673,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
         }
 
         showMakingTipsDialog();
+        loadUserInfoData();
     }
 
     @Override
@@ -812,4 +814,14 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
         }
     }
 
+    private void loadUserInfoData() {
+        UserInfoHelper userInfoHelper = new UserInfoHelper(this);
+        userInfoHelper.setCallBackListener((obj) -> {
+            if (obj != null && obj instanceof UserInfo) {
+                UserInfo info = (UserInfo) obj;
+                isEntityTeacher = Utils.isRealTeacher(info.getSchoolList());
+            }
+        });
+        userInfoHelper.check();
+    }
 }
