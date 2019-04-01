@@ -763,8 +763,10 @@ public class TutorialHelper {
         requestVo.addParams("tutorName",tutorName);
         // 用户输入覆盖TutorName
         requestVo.addParams("tutorName",name);
-        requestVo.addParams("tutorOrganId",tutorOrganId);
-        requestVo.addParams("tutorOrganName",tutorOrganName);
+        if(EmptyUtil.isNotEmpty(tutorOrganId) && EmptyUtil.isNotEmpty(tutorOrganName)) {
+            requestVo.addParams("tutorOrganId", tutorOrganId);
+            requestVo.addParams("tutorOrganName", tutorOrganName);
+        }
         requestVo.addParams("markingPrice",markingPrice);
         requestVo.addParams("provinceId",provinceId);
         requestVo.addParams("provinceName",provinceName);

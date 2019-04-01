@@ -147,12 +147,12 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             }
         }
 
-        if(EmptyUtil.isEmpty(tutorName) ||
+        /*if(EmptyUtil.isEmpty(tutorName) ||
                 EmptyUtil.isEmpty(tutorOrganId) ||
                 EmptyUtil.isEmpty(tutorOrganName)){
             view.showError(com.lqwawa.intleducation.R.string.label_choice_organ_hint);
             return;
-        }
+        }*/
 
         if(EmptyUtil.isEmpty(provinceId) ||
                 EmptyUtil.isEmpty(provinceName)){
