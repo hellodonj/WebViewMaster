@@ -42,8 +42,10 @@ import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -587,9 +589,25 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
      * @param context
      */
     public static void show(@NonNull final Context context) {
-        Intent intent = new Intent(context, TutorialRegisterActivity.class);
-        Bundle bundle = new Bundle();
-        intent.putExtras(bundle);
-        context.startActivity(intent);
+        final String memberId = UserHelper.getUserId();
+        TutorialHelper.requestHaveAppliedByStudent(memberId, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+
+            }
+
+            @Override
+            public void onDataLoaded(Boolean applied) {
+                if(applied){
+                    // 已经申请过
+                    TutorialAuditActivity.show(context,applied);
+                }else{
+                    Intent intent = new Intent(context, TutorialRegisterActivity.class);
+                    Bundle bundle = new Bundle();
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 }

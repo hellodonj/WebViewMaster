@@ -817,6 +817,10 @@ public final class AppConfig {
         public static final String PostRequestLocationDataUrl =
                 LQWAWA_BASE_SERVER + "Api/Platform/User/Apply/SchoolSettledApply/BindLocation";
 
+        // 学生查询是否申请帮辅
+        public static final String GetHaveAppliedByStudentId =
+                ServerBase + "api/tutor/haveAppliedByStu?j=";
+
         // 学生申请机构助教
         public static final String GetRequestApplyForTutor =
                 ServerBase + "api/tutor/applyOrganTutor?j=";

@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.AppliedResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
@@ -661,6 +662,45 @@ public class TutorialHelper {
                             && errorHashMap.containsKey(ErrorMessage)) {
                         UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
                     }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 学生是否已经申请助教（在审批中的情况）
+     * @param memberId 申请人的Id
+     */
+    public static void requestHaveAppliedByStudent(@NonNull String memberId,
+                                            @NonNull DataSource.Callback<Boolean> callback){
+        // 准备数据
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetHaveAppliedByStudentId + requestVo.getParams());
+        params.setConnectTimeout(1000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<AppliedResponseVo> typeReference = new TypeReference<AppliedResponseVo>() {};
+                AppliedResponseVo response = JSON.parseObject(str, typeReference);
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(response.isHaveApplied());
+                }
+
+                if (!response.isSucceed()) {
+                    UIUtil.showToastSafe(response.getMessage());
                 }
             }
 
