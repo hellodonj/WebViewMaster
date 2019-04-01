@@ -1947,4 +1947,33 @@ public class Utils {
         }
         return false;
     }
+
+    /**
+     * 在线机构老师身份过滤走次方法
+     * @param roles
+     * @return
+     */
+    public static String removeOnlineRole(String roles){
+        if (!TextUtils.isEmpty(roles)){
+            if (roles.contains(",")){
+                String [] splitArray = roles.split(",");
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < splitArray.length; i++){
+                    if (TextUtils.equals(splitArray[i],"0")){
+
+                    } else {
+                        if (builder.length() == 0){
+                            builder.append(splitArray[i]);
+                        } else {
+                            builder.append(",").append(splitArray[i]);
+                        }
+                    }
+                }
+                roles = builder.toString();
+            } else {
+                roles = "3";
+            }
+        }
+        return roles;
+    }
 }

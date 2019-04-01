@@ -224,7 +224,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             dubbingVideoView.onResume();
         }
         if (!MediaUtil.isHasEnoughSdcardSpace(MediaUtil.getAvailableExternalMemorySize())) {
-            Toast.makeText(this, "存储空间不足！！\n5秒后退出程序", Toast.LENGTH_SHORT).show();
+            TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_save_space_small);
             dubbingVideoView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -282,7 +282,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             case PERMISSION_REQUEST_CODE: {
                 for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
-                        TipMsgHelper.ShowMsg(this,"您拒绝了录音的权限，无法完成配音，请打开应用的录音权限");
+                        TipMsgHelper.ShowMsg(this,R.string.str_refuse_permission);
                         finish();
                         return;
                     }
