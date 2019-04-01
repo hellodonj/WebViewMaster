@@ -1761,15 +1761,15 @@
     <string name="str_do_not_a_question">Task not completed</string>
     <string name="str_do_not_retell_course">Retelling not completed</string>
     <string name="str_do_not_eval_course">Oral test not completed</string>
+    <string name="str_manual_marking">Manual Mark</string>
+    <string name="str_mark_method">Marking method：</string>
+    <string name="str_complete_method">Complete method：</string>
     <!--5.14-->
     <string name="str_q_dubbing">Q配音</string>
     <string name="str_dubbing_type">配音类型:</string>
     <string name="str_dubbing_by_sentence">按句配音</string>
     <string name="str_dubbing_by_whole">通篇配音</string>
     <string name="str_start_dubbing">开始配音</string>
-    <string name="str_manual_marking">Manual Mark</string>
-    <string name="str_mark_method">Marking method：</string>
-    <string name="str_complete_method">Complete method：</string>
     <string name="str_look_review">查看点评</string>
     <string name="str_third_login_tip0">微信/QQ授权成功，已同步生成新的两栖蛙蛙账号</string>
     <string name="str_thrid_login_tip1">登录后，请尽快到个人空间，点击头像，进入个人详情中修改密码</string>
