@@ -328,7 +328,6 @@
     <string name="label_add_course_lines">添加\n学程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
     <string name="label_confirm_authorization">确定</string>
-    <string name="label_choice_tutor_tip">请选择帮辅老师</string>
 
 
     <!--V5.13字符串-->
@@ -418,6 +417,7 @@
     <string name="label_added_tutorial_failed">+帮辅失败</string>
     <string name="label_new_work">最新作业</string>
     <string name="label_commit_placeholder_teacher">提交给%s老师</string>
+    <string name="label_choice_tutor_tip">请选择帮辅老师</string>
     <string name="label_commit_succeed">提交成功</string>
     <string name="label_commit_succeed_tip">提交的作业已发送给%s老师，老师将在2个工作日内完成批阅，请耐心等待。</string>
     <string name="label_again_submit">继续提交</string>
