@@ -235,7 +235,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 updateItemDeleteState(false);
                 LqTaskCommitVo item = (LqTaskCommitVo) committedTasksAdapter.getItem(i);
                 if(!EmptyUtil.isEmpty(doWorkListener)){
-                    doWorkListener.onItemClick(item,false,getSourceType());
+                    doWorkListener.onItemClick(item,false,getSourceType(),false);
                 }
             }
         });
@@ -595,8 +595,9 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
          * @param vo 批阅任务实体
          * @param isCheckMark 是否是查看批阅
          * @param sourceType 数据类型
+         * @param taskCourseWare 是否是读写单的课件打开
          */
-        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType);
+        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare);
         void onClickCommitListItem(SectionTaskCommitListVo vo);
         void openCourseWareDetails(String resId,
                                    int resType,

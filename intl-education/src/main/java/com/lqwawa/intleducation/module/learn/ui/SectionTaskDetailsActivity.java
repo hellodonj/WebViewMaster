@@ -327,7 +327,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType) {
+        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare) {
             if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(vo)) {
                 return;
             }
@@ -338,7 +338,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             } else {
                 checkMarkTaskDetail(SectionTaskDetailsActivity.this,
                         mHandleRole, sectionResListVo, vo,
-                        isCheckMark, sourceType);
+                        isCheckMark, sourceType,taskCourseWare);
             }
         }
 
@@ -1117,13 +1117,15 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
      * @param studentCommit 学生提交的任务
      * @param isCheckMark   是不是查看批阅 （查看批阅[true] 查看item进入提问和批阅的详情[false]）
      * @param sourceType    资源type
+     * @param taskCourseWare 是否是读写单课件
      */
     protected void checkMarkTaskDetail(Activity activity,
                                        int roleType,
                                        SectionResListVo task,
                                        LqTaskCommitVo studentCommit,
                                        boolean isCheckMark,
-                                       int sourceType) {
+                                       int sourceType,
+                                       boolean taskCourseWare) {
 
     }
 

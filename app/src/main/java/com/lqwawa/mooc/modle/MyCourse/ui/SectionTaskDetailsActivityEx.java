@@ -430,16 +430,21 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
 
     @Override
-    protected void checkMarkTaskDetail(Activity activity, int roleType, SectionResListVo task, LqTaskCommitVo studentCommit, boolean isCheckMark, int sourceType) {
-        super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType);
+    protected void checkMarkTaskDetail(Activity activity,
+                                       int roleType,
+                                       SectionResListVo task,
+                                       LqTaskCommitVo studentCommit,
+                                       boolean isCheckMark,
+                                       int sourceType,
+                                       boolean taskCourseWare) {
+        super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType, taskCourseWare);
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo) || EmptyUtil.isEmpty(sectionResListVo)) return;
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
         // V5.14列表兼容两种数据
         // if (sectionResListVo.isAutoMark()) {
-        if (studentCommit.isAutoMark()) {
+        if (studentCommit.isAutoMark() && !taskCourseWare) {
             // 做任务单 自动批阅的类型
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
-
 
             LearningTaskHelper.requestResourceDetailById(resourceId, true, new DataSource.Callback<LQResourceDetailVo>() {
                 @Override

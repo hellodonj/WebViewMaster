@@ -7,7 +7,8 @@
     android:gravity="center"
     android:background="@color/colorLight"
     android:foreground="@drawable/ic_touch_fg_gray"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="blocksDescendants">
 
     <FrameLayout
         android:id="@+id/courseware_details_layout"
