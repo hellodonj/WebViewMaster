@@ -346,7 +346,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                     if(EmptyUtil.isNotEmpty(mNavigator)){
                         mNavigator.onRefreshState(false);
                     }
-                    mDoWorkListener.onItemClick(vo, true, getSourceType());
+                    mDoWorkListener.onItemClick(vo, true, getSourceType(),false);
                 }
             }
         });
@@ -372,8 +372,28 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
         if(vo.isAutoMark()){
             holder.mTvResDetail.setVisibility(View.GONE);
             holder.mCourseWareDetailsLayout.setOnClickListener(null);
+            if(EmptyUtil.isNotEmpty(vo.getStudentResId())) {
+                holder.mCourseIconLayout.setEnabled(true);
+                holder.mCourseIconLayout.setClickable(true);
+                holder.mCourseIconLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!EmptyUtil.isEmpty(mDoWorkListener)) {
+                            mDoWorkListener.onItemClick(vo, false, getSourceType(), true);
+                        }
+                    }
+                });
+            }else{
+
+                holder.mCourseIconLayout.setEnabled(false);
+                holder.mCourseIconLayout.setClickable(false);
+                holder.mCourseIconLayout.setOnClickListener(null);
+            }
         }else{
             holder.mTvResDetail.setVisibility(View.VISIBLE);
+            holder.mCourseIconLayout.setOnClickListener(null);
+            holder.mCourseIconLayout.setEnabled(false);
+            holder.mCourseIconLayout.setClickable(false);
             // 点击课件详情的跳转拦截
             holder.mCourseWareDetailsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

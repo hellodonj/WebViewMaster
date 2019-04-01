@@ -15,16 +15,16 @@
     <string name="title_subject_setting">Subject Setting</string>
     <string name="title_donation_coin">Deliver WaWacoins</string>
     <string name="title_learning_statistics">Progress</string>
-    <string name="title_personal_page">个人主页</string>
-    <string name="title_tutorial_courses">我帮辅的课程</string>
-    <string name="title_tutorial_schools">我的帮辅机构</string>
-    <string name="title_student_tutorial">我的帮辅</string>
-    <string name="title_fill_information">填写资料</string>
-    <string name="title_tutorial_audit">提交申请</string>
-    <string name="title_add_tutorial">添加帮辅</string>
-    <string name="title_tutorial_group">帮辅群</string>
-    <string name="title_choice_tutor">选择帮辅老师</string>
-    <string name="title_submit_succeed">提交成功</string>
-    <string name="title_watch_task_requirement">查看任务要求</string>
+    <string name="title_personal_page">Personal Page</string>
+    <string name="title_tutorial_courses">Tutorial Course</string>
+    <string name="title_tutorial_schools">Tutorial Institution</string>
+    <string name="title_student_tutorial">My Tutor</string>
+    <string name="title_fill_information">Fill in Information</string>
+    <string name="title_tutorial_audit">Apply</string>
+    <string name="title_add_tutorial">Add Tutor</string>
+    <string name="title_tutorial_group">Tutors</string>
+    <string name="title_choice_tutor">Select Tutor</string>
+    <string name="title_submit_succeed">Submitted successfully</string>
+    <string name="title_watch_task_requirement">View Task Requirement</string>
 
 </resources>

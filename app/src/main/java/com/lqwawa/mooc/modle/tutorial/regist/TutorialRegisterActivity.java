@@ -42,8 +42,10 @@ import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -72,7 +74,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     private TextView mTvLabelIdenitifier;
     private TextView mTvLabelIdenitifierNumber;
     private TextView mTvLabelAddress;
-    private TextView mTvLabelChoiceOrgan;
+    // private TextView mTvLabelChoiceOrgan;
     private TextView mTvLabelMarkingPrice;
 
     // 姓名
@@ -92,7 +94,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     // 工作年限
     private EditText mEtWorkLimit;
     // 机构
-    private NiceSpinner mOrganSpinner;
+    // private NiceSpinner mOrganSpinner;
     // 省
     private NiceSpinner mProvinceSpinner;
     // 市
@@ -111,7 +113,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     private Button mBtnSubmit;
 
     // 当前选择的机构
-    private SchoolInfoEntity mCurrentOrganEntity;
+    // private SchoolInfoEntity mCurrentOrganEntity;
     // 当前省份
     private LocationEntity.LocationBean mCurrentProviceBean;
     // 当前市区
@@ -142,13 +144,13 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mTvLabelIdenitifier = (TextView) findViewById(R.id.tv_label_identifier);
         mTvLabelIdenitifierNumber = (TextView) findViewById(R.id.tv_label_identifier_number);
         mTvLabelAddress = (TextView) findViewById(R.id.tv_label_address);
-        mTvLabelChoiceOrgan = (TextView) findViewById(R.id.tv_label_choice_organ);
+        // mTvLabelChoiceOrgan = (TextView) findViewById(R.id.tv_label_choice_organ);
         mTvLabelMarkingPrice = (TextView) findViewById(R.id.tv_label_marking_price);
         fillLabelWarning(mTvLabelName,"*",UIUtil.getColor(R.color.colorDarkRed));
         fillLabelWarning(mTvLabelIdenitifier,"*",UIUtil.getColor(R.color.colorDarkRed));
         fillLabelWarning(mTvLabelIdenitifierNumber,"*",UIUtil.getColor(R.color.colorDarkRed));
         fillLabelWarning(mTvLabelAddress,"*",UIUtil.getColor(R.color.colorDarkRed));
-        fillLabelWarning(mTvLabelChoiceOrgan,"*",UIUtil.getColor(R.color.colorDarkRed));
+        // fillLabelWarning(mTvLabelChoiceOrgan,"*",UIUtil.getColor(R.color.colorDarkRed));
         fillLabelWarning(mTvLabelMarkingPrice,"*",UIUtil.getColor(R.color.colorDarkRed));
 
         mEtName = (EditText) findViewById(R.id.et_nick_name);
@@ -173,7 +175,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 }
             }
         });
-        mOrganSpinner = (NiceSpinner) findViewById(R.id.organ_spinner);
+        // mOrganSpinner = (NiceSpinner) findViewById(R.id.organ_spinner);
         mProvinceSpinner = (NiceSpinner) findViewById(R.id.province_spinner);
         mCitySpinner = (NiceSpinner) findViewById(R.id.city_spinner);
         mDistrictSpinner = (NiceSpinner) findViewById(R.id.district_spinner);
@@ -205,13 +207,13 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
     @Override
     protected void initData() {
         super.initData();
-        mPresenter.requestTutorialOrgan(true, 0);
+        // mPresenter.requestTutorialOrgan(true, 0);
         mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_COUNTRY, "");
     }
 
     @Override
     public void updateTutorialOrganView(@NonNull List<SchoolInfoEntity> entities) {
-        mOrganSpinner.attachDataSource(entities);
+        /*mOrganSpinner.attachDataSource(entities);
         mOrganSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -223,7 +225,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
             mOrganSpinner.setSelectedIndex(0);
             int position = mOrganSpinner.getSelectedIndex();
             mCurrentOrganEntity = entities.get(position);
-        }
+        }*/
     }
 
     @Override
@@ -402,10 +404,10 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String identifyNumber = mEtIdentifyNumber.getText().toString().trim();
         String organId = "";
         String organName = "";
-        if (EmptyUtil.isNotEmpty(mCurrentOrganEntity)) {
+        /*if (EmptyUtil.isNotEmpty(mCurrentOrganEntity)) {
             organId = mCurrentOrganEntity.getId();
             organName = mCurrentOrganEntity.getSName();
-        }
+        }*/
 
         String provinceId = "";
         String provinceName = "";
@@ -587,9 +589,25 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
      * @param context
      */
     public static void show(@NonNull final Context context) {
-        Intent intent = new Intent(context, TutorialRegisterActivity.class);
-        Bundle bundle = new Bundle();
-        intent.putExtras(bundle);
-        context.startActivity(intent);
+        final String memberId = UserHelper.getUserId();
+        TutorialHelper.requestHaveAppliedByStudent(memberId, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+
+            }
+
+            @Override
+            public void onDataLoaded(Boolean applied) {
+                if(applied){
+                    // 已经申请过
+                    TutorialAuditActivity.show(context,applied);
+                }else{
+                    Intent intent = new Intent(context, TutorialRegisterActivity.class);
+                    Bundle bundle = new Bundle();
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 }
