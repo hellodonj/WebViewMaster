@@ -79,4 +79,6 @@
     <string name="str_record_err">录制异常，请重新录制</string>
     <string name="str_evaluate_fail">评测失败，请重新提交评测</string>
     <string name="str_teacher_review">老师点评</string>
+    <string name="str_save_space_small">存储空间不足！！ 5秒后退出程序</string>
+    <string name="str_refuse_permission">您拒绝了录音的权限，无法完成配音，请打开应用的录音权限</string>
 </resources>
