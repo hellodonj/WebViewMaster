@@ -566,6 +566,26 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             return;
         }
 
+        if(taskCourseWare && EmptyUtil.isNotEmpty(studentCommit.getStudentResId())){
+            if (TaskSliderHelper.onTaskSliderListener != null) {
+                try{
+                    String resId = studentCommit.getStudentResId();
+                    if (resId != null && resId.contains("-")) {
+                        String id = resId.split("-")[0];
+                        int type = Integer.parseInt(resId.split("-")[1]);
+                        TaskSliderHelper.onTaskSliderListener.viewCourse(
+                                activity, id,type,
+                                activity.getIntent().getStringExtra("schoolId"),
+                                getSourceType());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+            return;
+        }
+
         if (!EmptyUtil.isEmpty(TaskSliderHelper.onTaskSliderListener)) {
             itemStudentTask = studentCommit;
             int resultRoleType = transferRoleType(roleType);
