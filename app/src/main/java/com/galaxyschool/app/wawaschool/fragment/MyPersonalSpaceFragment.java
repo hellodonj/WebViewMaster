@@ -1769,7 +1769,11 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 return;
             }
             if (MainApplication.isTutorialMode()) {
-                TutorialHomePageActivity.show(getActivity(), new TutorialParams(getMemeberId()));
+                String passUserName = userInfo.getRealName();
+                if (TextUtils.isEmpty(passUserName)){
+                    passUserName= userInfo.getNickName();
+                }
+                TutorialHomePageActivity.show(getActivity(), new TutorialParams(getMemeberId(), passUserName));
             } else {
                 enterPersonalSpace();
             }
