@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -267,7 +268,13 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }else if(viewId == R.id.introduce_layout){
             // 个人介绍
             // UIUtil.showToastSafe("个人介绍");
-            WebActivity.start(this,mUserEntity.getPIntroduces(),getString(R.string.label_personal_introduce),true);
+            String introduces = mUserEntity.getPIntroduces();
+            if(EmptyUtil.isEmpty(introduces)){
+                introduces = getString(R.string.label_null_tutorial_introduces);
+                WebActivity.start(true,this,introduces,getString(R.string.label_personal_introduce));
+            }else{
+                WebActivity.start(this,introduces,getString(R.string.label_personal_introduce),true);
+            }
         }
     }
 
