@@ -460,10 +460,13 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-
                             if (!TextUtils.isEmpty(data.getCreateId())) {
                                 if (isAssistanceModel) {
-                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId());
+                                    String userName = data.getRealName();
+                                    if (TextUtils.isEmpty(data.getRealName())){
+                                        userName = data.getNickName();
+                                    }
+                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId(),userName);
                                     tutorialParams.setTutorialMarkedEnter(true);
                                     TutorialHomePageActivity.show(getActivity(), tutorialParams);
                                 } else {
