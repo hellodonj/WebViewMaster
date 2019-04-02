@@ -62,6 +62,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
+        mTitle = bundle.getString(KEY_EXTRA_TITLE);
         mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
         mCourseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         mType = bundle.getInt(KEY_EXTRA_TYPE);
