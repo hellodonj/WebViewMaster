@@ -41,6 +41,8 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
 import com.lqwawa.intleducation.module.discovery.vo.CourseSortType;
 import com.lqwawa.intleducation.module.learn.adapter.MyCourseListAdapter;
@@ -234,9 +236,10 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                 if(vo != null) {
                     if(isTeacher) {
                         // 如果是老师,直接进入已加入详情
+                        CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER);
                         MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, curSchoolId);
+                                , curMemberId, curSchoolId,params);
                     }else{
                         // 学生或家长，需要更新状态
                         CourseDetailsActivity.start(true,activity, vo.getCourseId(),
