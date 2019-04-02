@@ -72,6 +72,8 @@ public class PrefsManager {
         String MAKING_COURSE_TIPS = "making_course_tips";
         //做任务的tips
         String DO_TASK_ORDER_TIPS = "do_task_order_tips";
+        //切换帮辅模式的
+        String CHANGE_ASSISTANT_MODEL_TIPS = "change_assistant_model_tips";
 
     }
 
@@ -607,5 +609,13 @@ public class PrefsManager {
 
     public boolean isDoTaskOrderTipsEnabled(){
         return getBooleanValue(getAppSettingsPrefs(), PrefsItems.DO_TASK_ORDER_TIPS, false);
+    }
+
+    public boolean enableChangeAssistantModelTip(boolean enabled){
+        return setBooleanValue(getAppSettingsPrefs(), PrefsItems.CHANGE_ASSISTANT_MODEL_TIPS, enabled);
+    }
+
+    public boolean isAssistantModelTipEnable(){
+        return getBooleanValue(getAppSettingsPrefs(), PrefsItems.CHANGE_ASSISTANT_MODEL_TIPS, false);
     }
 }
