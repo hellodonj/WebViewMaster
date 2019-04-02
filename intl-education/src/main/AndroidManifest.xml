@@ -958,6 +958,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--帮辅审核记录页面-->
+        <activity android:name=".module.tutorial.teacher.courses.record.AuditRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
     </application>
 
 </manifest>
