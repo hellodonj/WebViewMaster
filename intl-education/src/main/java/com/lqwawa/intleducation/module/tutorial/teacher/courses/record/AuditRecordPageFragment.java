@@ -1,9 +1,8 @@
-package com.lqwawa.intleducation.module.tutorial.teacher.courses;
+package com.lqwawa.intleducation.module.tutorial.teacher.courses.record;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,17 +15,15 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
-import com.lqwawa.intleducation.base.PresenterActivity;
+import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
-import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditRecordActivity;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.TutorialCoursesActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.Date;
@@ -34,12 +31,14 @@ import java.util.List;
 
 /**
  * @author mrmedici
- * @desc 我帮辅的课程列表页面
+ * @desc 我的审核记录页面 审核中,已拒绝
  */
-public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesContract.Presenter>
-    implements TutorialCoursesContract.View,View.OnClickListener{
+public class AuditRecordPageFragment extends PresenterFragment<AuditRecordPageContract.Presenter>
+    implements AuditRecordPageContract.View,View.OnClickListener{
 
-    private TopBar mTopBar;
+    private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
+    private static final String KEY_EXTRA_AUDIT_TYPE = "KEY_EXTRA_AUDIT_TYPE";
+
     // 搜索
     private EditText mSearchContent;
     private ImageView mSearchClear;
@@ -51,38 +50,43 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
     // Adapter
     private CourseListAdapter mAdapter;
 
+    private String mMemberId;
+    private int mAuditType;
+
 
     // 分页数
     private int currentPage;
 
-    private TutorialCoursesParams mTutorialParams;
-    private String mMemberId;
-    private String mConfigValue;
-
-    private String mSearchKey;
+    /**
+     * @param memberId 当前用户
+     * @return 审核状态的分页
+     */
+    public static Fragment newInstance(@NonNull String memberId,
+                                       @NonNull @AuditType.AuditTypeRes int auditType){
+        Fragment fragment = new AuditRecordPageFragment();
+        Bundle arguments = new Bundle();
+        arguments.putString(KEY_EXTRA_MEMBER_ID,memberId);
+        arguments.putInt(KEY_EXTRA_AUDIT_TYPE,auditType);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Override
-    protected TutorialCoursesContract.Presenter initPresenter() {
-        return new TutorialCoursesPresenter(this);
+    protected AuditRecordPageContract.Presenter initPresenter() {
+        return new AuditRecordPagePresenter(this);
     }
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.activity_tutorial_courses;
+        return R.layout.fragment_audit_record_page;
     }
 
     @Override
-    protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
-            mTutorialParams = (TutorialCoursesParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-            if(EmptyUtil.isNotEmpty(mTutorialParams)){
-                mMemberId = mTutorialParams.getMemberId();
-                mConfigValue = mTutorialParams.getConfigValue();
-            }
-        }
-
+    protected boolean initArgs(Bundle bundle) {
+        mMemberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
+        mAuditType = bundle.getInt(KEY_EXTRA_AUDIT_TYPE);
         if(EmptyUtil.isEmpty(mMemberId) ||
-                EmptyUtil.isEmpty(mConfigValue)){
+                (mAuditType != AuditType.AUDITED_PASS && mAuditType != AuditType.AUDITED_REJECT)){
             return false;
         }
         return super.initArgs(bundle);
@@ -90,15 +94,9 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
 
     @Override
     protected void initWidget() {
-        super.initWidget();
-        mTopBar = (TopBar) findViewById(R.id.top_bar);
-        mTopBar.setBack(true);
-        mTopBar.setTitle(mConfigValue);
-        mTopBar.setRightFunctionText1TextColor(UIUtil.getColor(R.color.colorAccent));
-        mTopBar.setRightFunctionText1(R.string.label_audit,view-> AuditRecordActivity.show(this,mMemberId));
-        mSearchContent = (EditText) findViewById(R.id.et_search);
-        mSearchClear = (ImageView) findViewById(R.id.iv_search_clear);
-        mSearchFilter = (TextView) findViewById(R.id.tv_filter);
+        super.initWidget();mSearchContent = (EditText) mRootView.findViewById(R.id.et_search);
+        mSearchClear = (ImageView) mRootView.findViewById(R.id.iv_search_clear);
+        mSearchFilter = (TextView) mRootView.findViewById(R.id.tv_filter);
 
         mSearchContent.setHint(R.string.search_hit);
 
@@ -132,22 +130,22 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     // 搜索，收起软件盘
-                    KeyboardUtil.hideSoftInput(TutorialCoursesActivity.this);
+                    KeyboardUtil.hideSoftInput(getActivity());
                     requestCourseData(false);
                 }
                 return true;
             }
         });
 
-        mEmptyView = (CourseEmptyView) findViewById(R.id.empty_layout);
-        mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
-        mListView = (ListView) findViewById(R.id.list_view);
+        mEmptyView = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
+        mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
+        mListView = (ListView) mRootView.findViewById(R.id.list_view);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mAdapter.getItem(position);
-                CourseDetailsActivity.start(TutorialCoursesActivity.this, vo.getCourseId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
             }
         });
 
@@ -180,22 +178,23 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
      * @param moreData 是否更多数据
      */
     private void requestCourseData(boolean moreData){
-        mSearchKey = mSearchContent.getText().toString().trim();
+        String mSearchKey = mSearchContent.getText().toString().trim();
         if(moreData){
             currentPage ++;
-            mPresenter.requestTutorialCoursesData(mMemberId,mSearchKey,currentPage);
+            mPresenter.requestTutorialCoursesData(mMemberId,mSearchKey,mAuditType,currentPage);
         }else{
             currentPage = 0;
-            mPresenter.requestTutorialCoursesData(mMemberId,mSearchKey,currentPage);
+            mPresenter.requestTutorialCoursesData(mMemberId,mSearchKey,mAuditType,currentPage);
         }
     }
+
 
     @Override
     public void updateTutorialCoursesView(List<CourseVo> courseVos) {
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(courseVos.size() >= AppConfig.PAGE_SIZE);
-        mAdapter = new CourseListAdapter(true,this);
+        mAdapter = new CourseListAdapter(true,getActivity());
         mAdapter.setData(courseVos);
         mListView.setAdapter(mAdapter);
 
@@ -221,11 +220,18 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
     }
 
     @Override
+    public void showError(int str) {
+        super.showError(str);
+        mRefreshLayout.onHeaderRefreshComplete();
+        mRefreshLayout.onFooterRefreshComplete();
+    }
+
+    @Override
     public void onClick(View v) {
         int viewId = v.getId();
         if(viewId == R.id.tv_filter){
             // 搜索 兼容其它平板问题，收起软件盘
-            KeyboardUtil.hideSoftInput(this);
+            KeyboardUtil.hideSoftInput(getActivity());
             requestCourseData(false);
         }else if(viewId == R.id.iv_search_clear){
             // 删除关键字
@@ -234,24 +240,5 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }
-    }
-
-    @Override
-    public void showError(int str) {
-        super.showError(str);
-        mRefreshLayout.onHeaderRefreshComplete();
-        mRefreshLayout.onFooterRefreshComplete();
-    }
-
-    /**
-     * 申请成为帮辅，注册信息的入口
-     * @param context
-     */
-    public static void show(@NonNull final Context context, @NonNull TutorialCoursesParams params){
-        Intent intent = new Intent(context,TutorialCoursesActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
     }
 }

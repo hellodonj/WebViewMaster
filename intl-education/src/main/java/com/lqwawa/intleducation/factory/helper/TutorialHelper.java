@@ -38,6 +38,7 @@ import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
 import org.xutils.http.RequestParams;
@@ -167,16 +168,19 @@ public class TutorialHelper {
      * @param memberId 会员Id
      * @param name 课程名称过滤条件
      * @param type 1 课程 2 课堂
+     * @param auditType 审核状态
      * @param pageIndex 当前页数
      * @param pageSize 每页加载条数
      */
     public static void requestTutorialCourses(@NonNull String memberId,
                                               @Nullable String name,
+                                              @NonNull @AuditType.AuditTypeRes int auditType,
                                               int type, int pageIndex, int pageSize,
                                               @NonNull DataSource.Callback<List<CourseVo>> callback){
         // 准备数据
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("memberId", memberId);
+        requestVo.addParams("verifyStatus", auditType);
         requestVo.addParams("type", type);
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize",pageSize);
