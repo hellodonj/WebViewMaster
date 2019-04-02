@@ -522,7 +522,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                         navigator.onCourseTutorEnter(true);
                     }
                 }else{
-                    if(interfaceStatus == -1) {
+                    if(interfaceStatus == -1 && false) {
                         // 别的机构的课程
                         TutorialCourseApplyForFragment fragment = new TutorialCourseApplyForFragment();
                         Bundle bundle = new Bundle();
@@ -534,6 +534,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                         fragment.setNavigator(navigator);
                         fragment.show(manager, TutorialCourseApplyForFragment.class.getName());
                     }else{
+                        // V5.14最后版本更改
                         String userName = UserHelper.getUserInfo().getUserName();
                         CourseHelper.requestApplyForCourseTutor(
                                 memberId, Integer.parseInt(courseId),
