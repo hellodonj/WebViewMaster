@@ -148,8 +148,11 @@ public class AudioRecordHelper {
                 dismissLoadingDialog();
                 deleteFile(rawFilePath);
                 if (result == null || !result.isSuccess()) {
-                    deleteFile(mp3FilePath);
-                    TipMsgHelper.ShowMsg(context, context.getString(R.string.str_evaluate_fail));
+//                    deleteFile(mp3FilePath);
+//                    TipMsgHelper.ShowMsg(context, context.getString(R.string.str_evaluate_fail));
+                    if (listener != null){
+                        listener.onBack(0);
+                    }
                     return;
                 }
                 int evalScore = Math.round(result.getScore());
