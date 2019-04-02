@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.app.Activity;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class CourseListAdapter extends MyBaseAdapter {
     // 是否是班级学程入口，用来选择课程的
     private boolean isClassCourseEnter;
     private boolean tutorialMode;
+    private int type;
 
     private static final int[] courseStatusResId = new int[]{
             R.string.course_status_0,
@@ -63,9 +67,10 @@ public class CourseListAdapter extends MyBaseAdapter {
                 .build();
     }
 
-    public CourseListAdapter(boolean tutorialMode,Activity activity){
+    public CourseListAdapter(boolean tutorialMode,@NonNull @AuditType.AuditTypeRes int type, Activity activity){
         this(activity);
         this.tutorialMode = tutorialMode;
+        this.type = type;
     }
 
     public CourseListAdapter(Activity activity,boolean isClassCourseEnter) {
@@ -169,10 +174,25 @@ public class CourseListAdapter extends MyBaseAdapter {
             /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
                     DateUtils.YYYYMMDDCH));*/
             holder.mBodyLayout.setVisibility(View.GONE);
+            holder.mBottomLayout.setVisibility(View.VISIBLE);
             holder.course_date_tv.setVisibility(View.VISIBLE);
+            if(type == AuditType.AUDITING || type == AuditType.AUDITED_REJECT){
+                holder.tvType.setVisibility(View.VISIBLE);
+                if(type == AuditType.AUDITING){
+                    holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_green));
+                    holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_accent_radius_19);
+                    holder.tvType.setText(R.string.label_auditing);
+                }else if(type == AuditType.AUDITED_REJECT){
+                    holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_light_gray));
+                    holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_gary_radius_19);
+                    holder.tvType.setText(R.string.label_audit_reject);
+                }
+            }else{
+                holder.tvType.setVisibility(View.GONE);
+            }
         }else{
             holder.mBodyLayout.setVisibility(View.VISIBLE);
-            holder.course_date_tv.setVisibility(View.GONE);
+            holder.mBottomLayout.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -191,7 +211,10 @@ public class CourseListAdapter extends MyBaseAdapter {
         TextView priceTitleTv;
         TextView coursePrice;
         LinearLayout mBodyLayout;
+        FrameLayout mBottomLayout;
         TextView course_date_tv;
+        TextView tvType;
+
 
         CheckBox cbSelect;
         
@@ -210,7 +233,9 @@ public class CourseListAdapter extends MyBaseAdapter {
             priceTitleTv = (TextView) parent.findViewById(R.id.price_title_tv);
             coursePrice = (TextView) parent.findViewById(R.id.course_price);
             mBodyLayout = (LinearLayout) parent.findViewById(R.id.body_layout);
+            mBottomLayout = (FrameLayout) parent.findViewById(R.id.bottom_layout);
             course_date_tv = (TextView) parent.findViewById(R.id.course_date_tv);
+            tvType = (TextView) parent.findViewById(R.id.tv_type);
             cbSelect = (CheckBox) parent.findViewById(R.id.cb_select);
         }
 
