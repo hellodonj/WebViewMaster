@@ -367,6 +367,9 @@ public class PushOpenResourceHelper {
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
             }
             context.sendBroadcast(new Intent().setAction(HomeActivity.EXTRA_PUSH_ASSISTANT_ENTER));
+            Intent intent = new Intent(context, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
         }
     }
 }
