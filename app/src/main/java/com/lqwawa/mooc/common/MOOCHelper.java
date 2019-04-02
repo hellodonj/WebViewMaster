@@ -157,7 +157,7 @@ public class MOOCHelper {
                                            @NonNull String tutorMemberId,
                                            @NonNull String tutorName) {
             // 进入帮辅主页
-            TutorialParams params = new TutorialParams(tutorMemberId);
+            TutorialParams params = new TutorialParams(tutorMemberId,tutorName);
             TutorialHomePageActivity.show(context, params);
         }
 
