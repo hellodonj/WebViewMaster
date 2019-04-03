@@ -178,7 +178,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
         }
 
         try {
-            if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+            if (Double.parseDouble(markingPrice) <= 0 || Double.parseDouble(markingPrice) > 100000) {
                 view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
                 return;
             }
