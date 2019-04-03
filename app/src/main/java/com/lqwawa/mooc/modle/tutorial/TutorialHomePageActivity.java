@@ -270,7 +270,11 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             // UIUtil.showToastSafe("个人介绍");
             String introduces = mUserEntity.getPIntroduces();
             if(EmptyUtil.isEmpty(introduces)){
-                introduces = getString(R.string.label_null_tutorial_introduces);
+                if(TextUtils.equals(mTutorMemberId,UserHelper.getUserId())){
+                    introduces = getString(R.string.label_null_tutorial_introduces);
+                }else{
+                    introduces = getString(R.string.label_empty_content);
+                }
                 WebActivity.start(true,this,introduces,getString(R.string.label_personal_introduce));
             }else{
                 WebActivity.start(this,introduces,getString(R.string.label_personal_introduce),true);

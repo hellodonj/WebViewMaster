@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
+import com.lqwawa.intleducation.base.widgets.filter.MoneyValueFilter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -164,6 +166,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mIdentifyLayout.setTag(IDType.ID_TYPE_IDENTITY_CARD);
         mEtIdentifyNumber = (EditText) findViewById(R.id.et_identify_number);
         mEtMarkPrice = (EditText) findViewById(R.id.et_mark_price);
+        mEtMarkPrice.setFilters(new InputFilter[]{new MoneyValueFilter()});
         mEtWorkLimit = (EditText) findViewById(R.id.et_work_limit);
         mEtWorkLimit.addTextChangedListener(new TextWatcherAdapter() {
             @Override

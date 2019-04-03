@@ -141,13 +141,13 @@ public class AuditRecordPageFragment extends PresenterFragment<AuditRecordPageCo
         mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mListView = (ListView) mRootView.findViewById(R.id.list_view);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mAdapter.getItem(position);
                 CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
             }
-        });
+        });*/
 
         // 下拉刷新
         mRefreshLayout.setLastUpdated(new Date().toLocaleString());

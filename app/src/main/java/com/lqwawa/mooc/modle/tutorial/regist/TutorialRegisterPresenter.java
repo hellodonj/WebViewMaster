@@ -160,17 +160,17 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
             return;
         }
 
-        if(EmptyUtil.isEmpty(cityId) ||
+        /*if(EmptyUtil.isEmpty(cityId) ||
                 EmptyUtil.isEmpty(cityName)){
             view.showError(com.lqwawa.intleducation.R.string.label_input_city_tip);
             return;
-        }
+        }*/
 
-        if(EmptyUtil.isEmpty(countyId) ||
+        /*if(EmptyUtil.isEmpty(countyId) ||
                 EmptyUtil.isEmpty(countyName)){
             view.showError(com.lqwawa.intleducation.R.string.label_input_district_tip);
             return;
-        }
+        }*/
 
         if(EmptyUtil.isEmpty(markingPrice)){
             view.showError(com.lqwawa.intleducation.R.string.label_mark_price_tip);
@@ -178,7 +178,7 @@ public class TutorialRegisterPresenter extends BasePresenter<TutorialRegisterCon
         }
 
         try {
-            if (Integer.parseInt(markingPrice) <= 0 || Integer.parseInt(markingPrice) > 100000) {
+            if (Double.parseDouble(markingPrice) <= 0 || Double.parseDouble(markingPrice) > 100000) {
                 view.showError(com.lqwawa.intleducation.R.string.label_please_update_marking_price_range);
                 return;
             }
