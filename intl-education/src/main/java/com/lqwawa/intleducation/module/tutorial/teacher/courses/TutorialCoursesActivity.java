@@ -22,9 +22,12 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditRecordActivity;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.Date;
@@ -92,6 +95,8 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         mTopBar.setTitle(mConfigValue);
+        mTopBar.setRightFunctionText1TextColor(UIUtil.getColor(R.color.textAccent));
+        mTopBar.setRightFunctionText1(R.string.label_audit,view-> AuditRecordActivity.show(this,mMemberId));
         mSearchContent = (EditText) findViewById(R.id.et_search);
         mSearchClear = (ImageView) findViewById(R.id.iv_search_clear);
         mSearchFilter = (TextView) findViewById(R.id.tv_filter);
@@ -191,7 +196,7 @@ public class TutorialCoursesActivity extends PresenterActivity<TutorialCoursesCo
         // 判断有无更多数据,打开或者关闭加载更多
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(courseVos.size() >= AppConfig.PAGE_SIZE);
-        mAdapter = new CourseListAdapter(true,this);
+        mAdapter = new CourseListAdapter(true,AuditType.AUDITED_PASS,this);
         mAdapter.setData(courseVos);
         mListView.setAdapter(mAdapter);
 

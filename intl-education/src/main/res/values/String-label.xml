@@ -432,6 +432,12 @@
     <string name="label_personal_qrcode">Personal QR Code</string>
     <string name="label_please_update_marking_price_range">Please enter a valid marking price</string>
     <string name="label_placeholder_tutorial_group_teacher">Teacher %s</string>
+    <!--<string name="label_null_tutorial_introduces">&#060;p style=\"font-size:24;\"&#062;&#060;center&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;center&#062;&#060;&#047;p&#062;</string>-->
+    <!--<string name="label_null_tutorial_introduces">&#060;div style=\"font:48px; text-align:center;\"&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;div&#062;</string>-->
+    <string name="label_null_tutorial_introduces">请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”</string>
+    <string name="label_auditing">审核中</string>
+    <string name="label_audit_reject">被拒绝</string>
+    <string name="label_audit">审核</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>

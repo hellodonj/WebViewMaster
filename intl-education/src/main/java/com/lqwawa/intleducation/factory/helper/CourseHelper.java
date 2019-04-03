@@ -747,7 +747,9 @@ public class CourseHelper {
         requestVo.addParams("memberId", memberId);
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("type", type);
-        requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
+        requestVo.addParams("source", 0);
+
+        // requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
         try {
             String encodeRealName = URLEncoder.encode(realName, "utf-8");
             requestVo.addParams("realName", encodeRealName);
@@ -758,7 +760,7 @@ public class CourseHelper {
         /*if(MainApplication.getInstance() != null){
             requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
         }*/
-        requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        /*requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
         if(isOrganTutorStatus == -1){
             requestVo.addParams("markingPrice", markingPrice);
             requestVo.addParams("provinceId", provinceId);
@@ -772,7 +774,7 @@ public class CourseHelper {
                 requestVo.addParams("countyId",countyId);
                 requestVo.addParams("countyName",countyName);
             }
-        }
+        }*/
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetApplyForCourseTutor + requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());

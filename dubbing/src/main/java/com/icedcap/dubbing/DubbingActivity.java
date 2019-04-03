@@ -1111,6 +1111,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 
         // play the recorded audio from indicator pos
         lastSeek = playTime;
+        audioRecordHelper.stopMediaPlayer();
         audioRecordHelper.play(0, curPosition, new CallbackListener() {
             @Override
             public void onBack(Object result) {

@@ -9,6 +9,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class TutorialCoursesPresenter extends BasePresenter<TutorialCoursesContr
 
     @Override
     public void requestTutorialCoursesData(@NonNull String memberId, @Nullable String name, int pageIndex) {
-        TutorialHelper.requestTutorialCourses(memberId, name, 1, pageIndex, AppConfig.PAGE_SIZE, new DataSource.Callback<List<CourseVo>>() {
+        TutorialHelper.requestTutorialCourses(memberId, name, AuditType.AUDITED_PASS,1, pageIndex, AppConfig.PAGE_SIZE, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialCoursesContract.View view = getView();

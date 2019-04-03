@@ -65,6 +65,7 @@ import com.galaxyschool.app.wawaschool.pojo.StudentMemberInfo;
 import com.galaxyschool.app.wawaschool.pojo.TabEntityPOJO;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
+import com.galaxyschool.app.wawaschool.views.AssistantModelTipsDialog;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PopupMenu;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
@@ -351,11 +352,21 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 activity = (HomeActivity) getActivity();
             }
             if (check) {
+                boolean hasEnabled = DemoApplication.getInstance().getPrefsManager()
+                        .isAssistantModelTipEnable();
+                if (hasEnabled) {
+                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_open_assistant_model);
+                } else {
+                    AssistantModelTipsDialog dialog = new AssistantModelTipsDialog(getActivity());
+                    dialog.setCancelable(true);
+                    dialog.show();
+                }
                 //帮辅模式
                 SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,true);
                 EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
             } else {
+                TipMsgHelper.ShowMsg(getActivity(), R.string.str_exit_assistant_model);
                 SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
                 EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
@@ -1751,7 +1762,11 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 return;
             }
             if (MainApplication.isTutorialMode()) {
-                TutorialHomePageActivity.show(getActivity(), new TutorialParams(getMemeberId()));
+                String passUserName = userInfo.getRealName();
+                if (TextUtils.isEmpty(passUserName)){
+                    passUserName= userInfo.getNickName();
+                }
+                TutorialHomePageActivity.show(getActivity(), new TutorialParams(getMemeberId(), passUserName));
             } else {
                 enterPersonalSpace();
             }

@@ -16,6 +16,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,7 +99,7 @@ public class TutorialHelperInstrumentedTest{
         Context appContext = InstrumentationRegistry.getTargetContext();
         x.Ext.init((Application) appContext.getApplicationContext());
         CountDownLatch downLatch = new CountDownLatch(1);
-        TutorialHelper.requestTutorialCourses("0018356f-ad4b-439f-88fa-e4cdbf4de32b", "", 1,0,10, new DataSource.Callback<List<CourseVo>>() {
+        TutorialHelper.requestTutorialCourses("0018356f-ad4b-439f-88fa-e4cdbf4de32b", "",AuditType.AUDITED_PASS, 1,0,10, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 System.out.println(strRes);

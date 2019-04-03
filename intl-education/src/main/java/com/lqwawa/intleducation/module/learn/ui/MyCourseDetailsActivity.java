@@ -243,10 +243,12 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId));
     }
 
-    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId) {
+    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId,CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
                 .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                .putExtra("SchoolId", schoolId).putExtra(KEY_IS_FROM_MY_COURSE, true));
+                .putExtra("SchoolId", schoolId)
+                .putExtra(KEY_IS_FROM_MY_COURSE, true)
+                .putExtra(ACTIVITY_BUNDLE_OBJECT,params));
     }
 
     public static void start(Activity activity, String id, int tabIndex,

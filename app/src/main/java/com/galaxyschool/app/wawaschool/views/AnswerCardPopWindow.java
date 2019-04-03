@@ -89,6 +89,8 @@ public class AnswerCardPopWindow extends PopupWindow {
                 ExerciseItem item = exerciseItems.get(i);
                 if (item != null && !TextUtils.isEmpty(item.getType())) {
                     int type = Integer.valueOf(item.getType());
+                    //重置score
+                    item.setStudent_score("");
                     cardHelper.getStudentCommitData(type, item, i);
                 }
             }
