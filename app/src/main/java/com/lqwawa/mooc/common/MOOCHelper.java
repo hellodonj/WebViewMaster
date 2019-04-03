@@ -24,6 +24,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -85,6 +86,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -905,8 +907,9 @@ public class MOOCHelper {
                             isNeedMark = false;
                         }
                         if (result.getModel().size() > 0) {
-                            openCourse(activity, data, task, isNeedMark, result.getModel().get(0)
-                                    .getResId(), roleType);
+                            List<CheckMarkInfo.ModelBean> list = result.getModel();
+                            Collections.sort(list, (o1, o2) -> DateUtils.compareDate(o2.getCreateTime(), o1.getCreateTime(), DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS));
+                            openCourse(activity, data, task, isNeedMark, list.get(0).getResId(), roleType);
                         } else {
                             openCourse(activity, data, task, isNeedMark, null, roleType);
                         }
