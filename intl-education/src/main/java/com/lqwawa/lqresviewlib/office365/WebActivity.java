@@ -77,10 +77,10 @@ public class WebActivity extends BaseActivity{
         if(url == null && bodyHtml == null){
             webView.setVisibility(View.GONE);
             mTvContent.setVisibility(View.VISIBLE);
+            mTvContent.setText(text);
         }else{
             webView.setVisibility(View.VISIBLE);
             mTvContent.setVisibility(View.GONE);
-            mTvContent.setText(text);
         }
 
         lr_back_iv = (ImageView)findViewById(R.id.lr_back_iv);
