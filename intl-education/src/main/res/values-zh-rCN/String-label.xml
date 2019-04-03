@@ -444,7 +444,7 @@
     <string name="label_null_tutorial_introduces">请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”</string>
     <string name="label_auditing">审核中</string>
     <string name="label_audit_reject">被拒绝</string>
-    <string name="label_audit">审核</string>
+    <string name="label_audit">申请记录</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
