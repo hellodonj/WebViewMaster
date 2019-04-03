@@ -587,6 +587,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                     splitCourseInfos = result.getData();
                     shareData = getShareData();
                     if (shareData != null) {
+                        configShareDataTypeTitle();
                         shareCourse(shareData);
                     } else {
                         TipsHelper.showToast(PlaybackActivityPhone.this,
@@ -861,6 +862,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                     } else {
                         shareData = getShareData();
                         if (shareData != null) {
+                            configShareDataTypeTitle();
                             shareCourse(shareData);
                         } else {
                             TipsHelper.showToast(PlaybackActivityPhone.this,
@@ -882,6 +884,13 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
         window.setAttributes(p);
     }
 
+    private void configShareDataTypeTitle(){
+        String shareTitle = shareData.getTitle();
+        if (!TextUtils.isEmpty(shareTitle)){
+            shareTitle = getString(R.string.str_resources_tag, getString(R.string.retell_course), shareTitle);
+            shareData.setTitle(shareTitle);
+        }
+    }
 
     @Override
     public void onBackPressed() {
