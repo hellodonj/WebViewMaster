@@ -43,7 +43,15 @@ public class UserInfo extends Model implements Serializable {
     private String UserId;
     private boolean IsAssistant;
     private boolean IsNewCreateUser;//是否新创建的用户
+    private String allRoles;
 
+    public String getAllRoles() {
+        return allRoles;
+    }
+
+    public void setAllRoles(String allRoles) {
+        this.allRoles = allRoles;
+    }
     public boolean isNewCreateUser() {
         return IsNewCreateUser;
     }
