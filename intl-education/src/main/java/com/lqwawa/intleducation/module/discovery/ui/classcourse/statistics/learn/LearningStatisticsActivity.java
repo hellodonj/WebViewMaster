@@ -30,6 +30,7 @@ import java.util.List;
 public class LearningStatisticsActivity extends PresenterActivity<LearningStatisticsContract.Presenter>
     implements LearningStatisticsContract.View{
 
+    private static final String KEY_EXTRA_TITLE = "KEY_EXTRA_TITLE";
     private static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_TYPE = "KEY_EXTRA_TYPE";
@@ -42,6 +43,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
     private LearningStatisticsAdapter mAdapter;
     private RecyclerItemDecoration mItemDecoration;
 
+    private String mTitle;
     private String mClassId;
     private String mCourseId;
     private int mType;
@@ -60,6 +62,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
+        mTitle = bundle.getString(KEY_EXTRA_TITLE);
         mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
         mCourseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         mType = bundle.getInt(KEY_EXTRA_TYPE);
@@ -77,7 +80,7 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
-        mTopBar.setTitle(R.string.title_learning_statistics);
+        mTopBar.setTitle(mTitle);
 
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
@@ -145,12 +148,14 @@ public class LearningStatisticsActivity extends PresenterActivity<LearningStatis
      * @param context 上下文对象
      */
     public static void show(@NonNull Context context,
+                            @NonNull String title,
                             @NonNull String classId,
                             @NonNull String courseId,
                             int type,
                             @NonNull CourseDetailParams params){
         Intent intent = new Intent(context,LearningStatisticsActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putString(KEY_EXTRA_TITLE,title);
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putInt(KEY_EXTRA_TYPE,type);

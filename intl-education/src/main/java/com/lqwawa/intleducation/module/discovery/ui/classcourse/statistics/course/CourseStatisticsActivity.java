@@ -116,7 +116,7 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, CourseStatisticsEntity entity) {
                 super.onItemClick(holder, entity);
-                LearningStatisticsActivity.show(CourseStatisticsActivity.this,mClassId,mCourseId,entity.getType(),mCourseParams);
+                LearningStatisticsActivity.show(CourseStatisticsActivity.this,entity.getName(),mClassId,mCourseId,entity.getType(),mCourseParams);
             }
         });
     }
