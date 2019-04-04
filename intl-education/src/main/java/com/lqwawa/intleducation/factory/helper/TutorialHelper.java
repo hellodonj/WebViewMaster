@@ -774,15 +774,19 @@ public class TutorialHelper {
         requestVo.addParams("markingPrice",markingPrice);
         requestVo.addParams("provinceId",provinceId);
         requestVo.addParams("provinceName",provinceName);
-        if(EmptyUtil.isNotEmpty(cityId) && EmptyUtil.isNotEmpty(cityName)){
+        requestVo.addParams("cityId",cityId);
+        requestVo.addParams("cityName",cityName);
+        requestVo.addParams("countyId",countyId);
+        requestVo.addParams("countyName",countyName);
+        /*if(EmptyUtil.isNotEmpty(cityId) && EmptyUtil.isNotEmpty(cityName)){
             requestVo.addParams("cityId",cityId);
             requestVo.addParams("cityName",cityName);
-        }
+        }*/
 
-        if(EmptyUtil.isNotEmpty(countyId) && EmptyUtil.isNotEmpty(countyName)){
+        /*if(EmptyUtil.isNotEmpty(countyId) && EmptyUtil.isNotEmpty(countyName)){
             requestVo.addParams("countyId",countyId);
             requestVo.addParams("countyName",countyName);
-        }
+        }*/
 
         if(EmptyUtil.isNotEmpty(workingLife)){
             requestVo.addParams("workingLife",workingLife);

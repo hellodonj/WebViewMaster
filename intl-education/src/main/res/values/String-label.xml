@@ -434,7 +434,7 @@
     <string name="label_placeholder_tutorial_group_teacher">Teacher %s</string>
     <!--<string name="label_null_tutorial_introduces">&#060;p style=\"font-size:24;\"&#062;&#060;center&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;center&#062;&#060;&#047;p&#062;</string>-->
     <!--<string name="label_null_tutorial_introduces">&#060;div style=\"font:48px; text-align:center;\"&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;div&#062;</string>-->
-    <string name="label_null_tutorial_introduces">请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”</string>
+    <string name="label_null_tutorial_introduces">Login on www.lqwawa.com, enter Personal Space &#062; My Information to edit introduction</string>
     <string name="label_auditing">Pending</string>
     <string name="label_audit_reject">Rejected</string>
     <string name="label_audit">Applications</string>

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -66,6 +65,8 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
     public static final int BASIC_COURSE_ID = 2003;
     // 特色英语的ID
     public static final int CHARACTERISTICS_ENGLISH_ID = 2005;
+    // ITEP的ID
+    public static final int ITEP_ID = 2244;
     // tab总数
     private static final int TAB_COUNT = 3;
 
@@ -418,6 +419,12 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
     private void buildAll(boolean triggerFiltrate){
         Tab allTab = Tab.buildAll(all);
         allTab.setSelected(true);
+
+        if(mClassifyEntity.getId() == ITEP_ID){
+            mSecondTabs.clear();
+            mThirdTabs.clear();
+        }
+
         if((mFirstTabs.size() > 1 || triggerFiltrate) && !mFirstTabs.contains(allTab)){
             // 添加全部
             mFirstTabs.add(0,allTab);
@@ -436,10 +443,7 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
             mLaySort2.setVisibility(View.VISIBLE);
             mCbSort2.setVisibility(View.VISIBLE);
             mVerticalLine1.setVisibility(View.VISIBLE);
-            // iTEP展示样式改为TabLayout
-            if (!TextUtils.equals(mClassifyEntity.getConfigValue(), "iTEP")) {
-                showTabLayout = false;
-            }
+            showTabLayout = false;
         }
 
         // 必须保证所有的筛选条件 allTab都不是同一个对象
