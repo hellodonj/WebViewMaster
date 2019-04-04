@@ -1610,7 +1610,18 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 takeTask(true);
             }
         } else if (taskType == StudyTaskType.Q_DUBBING){
-            startDubbingVideo(null,false);
+            if (studyTask != null){
+                checkLqCourseShopPermission(studyTask.getResCourseId(), (object) -> {
+                    boolean isNeedBuyLqCourseShopRes = (boolean) object;
+                    if (isNeedBuyLqCourseShopRes) {
+                        popBuyLqCourseShopResource();
+                    } else {
+                        startDubbingVideo(null, false);
+                    }
+                });
+            } else {
+                startDubbingVideo(null, false);
+            }
         }
     }
 

@@ -133,6 +133,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     private int listenType; //0 表示播放的配音  1 表示原音
     private boolean isCheckGridViewItem;
     private boolean isSupportPause = true;
+    private boolean loadVideoComplete;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -382,7 +383,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     isSupportPause = false;
                     dubbingVideoView.setIsSupportPause(false);
-                    onAudioRecord();
+                    if (loadVideoComplete) {
+                        onAudioRecord();
+                    }
                 }
             }
         });
@@ -1029,6 +1032,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onVideoPrepared(long duration) {
+            loadVideoComplete = true;
             DubbingActivity.this.duration = duration;
             if (currentTimeTextView != null) {
                 currentTimeTextView.setText(MediaUtil.generateTime(0));
