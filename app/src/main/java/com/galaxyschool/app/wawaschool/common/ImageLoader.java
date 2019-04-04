@@ -287,7 +287,7 @@ public class ImageLoader {
 //            response = client.execute(httpGet);
 //            int stateCode = response.getStatusLine().getStatusCode();
 //            if (stateCode != HttpStatus.SC_OK) {
-//                Log.d(TAG, "func [loadImage] stateCode=" + stateCode);
+//                Log.d(TAG, "func [setContent] stateCode=" + stateCode);
 //                return null;
 //            }
 //            HttpEntity entity = response.getEntity();

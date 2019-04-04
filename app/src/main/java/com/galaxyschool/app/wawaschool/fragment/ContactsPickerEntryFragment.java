@@ -1030,9 +1030,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             thirdObject.put("Author", authorId == null ? "" : authorId);
                             //学程馆资源的id
                             thirdObject.put("ResCourseId",lookDto.getResCourseId());
-                            if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
-                                thirdObject.put("ResPropType", lookDto.getResPropType());
-                            }
+                            thirdObject.put("ResPropType", lookDto.getResPropType());
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
                             }
@@ -1432,7 +1430,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 }
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
+                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING){
                     taskParams.put("ResCourseId",uploadParameter.getResCourseId());
                 }
                 if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
@@ -1471,7 +1470,9 @@ public class ContactsPickerEntryFragment extends BaseFragment
 
                 //判断是不是任务单和听说课的多选
                 int taskType = uploadParameter.getTaskType();
-                if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE){
+                if (taskType == StudyTaskType.TASK_ORDER
+                        || taskType == StudyTaskType.RETELL_WAWA_COURSE
+                        || taskType == StudyTaskType.Q_DUBBING){
                     List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
                     if (lookResDtos != null){
                         if (lookResDtos.size() == 1){
@@ -1482,10 +1483,14 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 //完成方式
                                 taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
                             }
                         } else if (lookResDtos.size() > 1){
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_Q_DUBBING);
                             } else {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
                             }

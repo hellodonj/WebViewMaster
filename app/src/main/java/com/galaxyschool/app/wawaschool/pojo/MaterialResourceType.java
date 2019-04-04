@@ -17,5 +17,6 @@ public interface MaterialResourceType {
     int PPT = 20; //PPT
     int TASK_ORDER = 23; //任务单
     int DOC = 24; //DOC
+    int Q_DUBBING_VIDEO = 30;//配音的视频
     int BASE_TYPE_NUM = 10000; //取模基数
 }

@@ -2,9 +2,11 @@ package com.lqwawa.intleducation.module.learn.tool;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -16,10 +18,12 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -44,6 +48,28 @@ public class TaskSliderHelper {
     public static OnTaskSliderListener onTaskSliderListener = null;
     private static OnCommitTaskListener onCommitTaskListener = null;
     public static OnWorkCartListener onWorkCartListener = null;
+    public static OnTutorialMarkingListener onTutorialMarkingListener = null;
+
+    public interface OnTutorialMarkingListener{
+
+        void enterOnlineSchoolSpaceActivity(@NonNull Context context,
+                                            @NonNull String schoolId);
+
+        void enterTutorialHomePager(@NonNull Context context,
+                                           @NonNull String tutorMemberId,
+                                           @NonNull String tutorName);
+
+        void openAssistanceMark(@NonNull Activity activity,
+                                @NonNull TaskEntity entity,
+                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType);
+
+        void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
+                                          @NonNull String resId, int resType,
+                                          @NonNull String resTitle, int screenType,
+                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl);
+
+        void skipMyCourseQuestionWork(@NonNull Activity activity);
+    }
 
     public interface OnWorkCartListener{
         // 添加到任务库
@@ -59,7 +85,7 @@ public class TaskSliderHelper {
     }
 
     public interface OnTaskSliderListener {
-        void doExamTask(Activity activity, String resId, int sourceType);
+        void doExamTask(Activity activity, String resId, int sourceType,String name);
 
         void viewCourse(Activity activity, String resId, int resType,
                         String schoolId, int sourceType);
@@ -115,7 +141,12 @@ public class TaskSliderHelper {
                                          String studentName,
                                          String studentId,
                                          int commitTaskId,
-                                         String taskScoreRemark);
+                                         String taskScoreRemark,
+                                         @NonNull String courseId,
+                                         @NonNull String courseName,
+                                         String classId,
+                                         String className,
+                                         boolean isTutorialPermission);
 
         /**
          * 做答题卡
@@ -138,7 +169,10 @@ public class TaskSliderHelper {
                             String className,
                             String studentName,
                             int commitTaskId,
-                            boolean isDoExercise);
+                            boolean isDoExercise,
+                            @NonNull String CourseId,
+                            @NonNull String courseName,
+                            boolean isTutorialPermission);
     }
 
     public interface OnCommitTaskListener {
@@ -177,7 +211,12 @@ public class TaskSliderHelper {
                                                    String studentName,
                                                    String studentId,
                                                    int commitTaskId,
-                                                   String taskScoreRemark) {
+                                                   String taskScoreRemark,
+                                                   @NonNull String courseId,
+                                                   @NonNull String courseName,
+                                                   String classId,
+                                                   String className,
+                                                   boolean isTutorialPermission) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.enterExerciseDetailActivity(activity,
@@ -194,7 +233,12 @@ public class TaskSliderHelper {
                         studentName,
                         studentId,
                         commitTaskId,
-                        taskScoreRemark);
+                        taskScoreRemark,
+                        courseId,
+                        courseName,
+                        classId,
+                        className,
+                        isTutorialPermission);
             }
         }
     }
@@ -220,7 +264,10 @@ public class TaskSliderHelper {
                                       String className,
                                       String studentName,
                                       int commitTaskId,
-                                      boolean isDoExercise) {
+                                      boolean isDoExercise,
+                                      @NonNull String CourseId,
+                                      @NonNull String courseName,
+                                      boolean isTutorialPermission) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
                 onTaskSliderListener.doExerciseTask(
@@ -236,15 +283,18 @@ public class TaskSliderHelper {
                         className,
                         studentName,
                         commitTaskId,
-                        isDoExercise);
+                        isDoExercise,
+                        CourseId,
+                        courseName,
+                        isTutorialPermission);
             }
         }
     }
 
-    public static void doTask(Activity activity, String resId, int sourceType) {
+    public static void doTask(Activity activity, String resId, int sourceType,String name) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
-                onTaskSliderListener.doExamTask(activity, resId, sourceType);
+                onTaskSliderListener.doExamTask(activity, resId, sourceType,name);
             }
         }
     }

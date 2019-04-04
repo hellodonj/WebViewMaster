@@ -152,6 +152,8 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                     GroupFiltrateState state = new GroupFiltrateState(entity);
                     entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
                     entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
+                    // 用Server返回的名字
+                    entity.setConfigValue(param.getRelationName());
                     // 如果基础课程可能会，标题错误
                     CourseFiltrateActivity.show(getActivity(),entity,state);
 

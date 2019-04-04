@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragmentActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -49,7 +50,9 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
@@ -62,6 +65,7 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.intro.CourseIntroductionActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
@@ -72,6 +76,7 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.ui.course.notice.CourseNoticeListActivity;
 import com.oosic.apps.share.BaseShareUtils;
@@ -174,7 +179,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private int img_height;
     private ImageOptions imageOptions;
     // 课程评价可以下拉刷新
-    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false};
+    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false,false};
     // 是否加载更多的状态
     private boolean mCanLoadMore;
     private boolean isComeFromDetail = false;//是否是从首页的课程详情跳转过来的
@@ -194,6 +199,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     // @func   :V5.7 直播修改为在线课堂
     // private ClassroomFragment mClassroomFragment;
     private OnlineClassListFragment mOnlineClassFragment;
+    // 帮辅群
+    private TutorialGroupFragment mTutorialGroupFragment;
 
     // 学习进度容器
     private LinearLayout mProgressLayout;
@@ -236,10 +243,12 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId));
     }
 
-    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId) {
+    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId,CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
                 .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                .putExtra("SchoolId", schoolId).putExtra(KEY_IS_FROM_MY_COURSE, true));
+                .putExtra("SchoolId", schoolId)
+                .putExtra(KEY_IS_FROM_MY_COURSE, true)
+                .putExtra(ACTIVITY_BUNDLE_OBJECT,params));
     }
 
     public static void start(Activity activity, String id, int tabIndex,
@@ -502,6 +511,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     examListFragment.getMore();
                 }else if(mOnlineClassFragment.isVisible()){
                     mOnlineClassFragment.getMore();
+                }else if(mTutorialGroupFragment.isVisible()){
+                    mTutorialGroupFragment.getMore();
                 }
             }
         });
@@ -671,6 +682,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 pullToRefreshView.onFooterRefreshComplete();
                 if (courseCommentFragment.isVisible()) {
                     pullToRefreshView.setLoadMoreEnable(canLoadMore);
+                }else if(mTutorialGroupFragment.isVisible()){
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore);
                 }
 
                 MyCourseDetailsActivity.this.mCanLoadMore = canLoadMore;
@@ -702,6 +715,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mClassroomFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);*/
         mOnlineClassFragment = OnlineClassListFragment.newInstance(id);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+
+        // 帮辅群
+        mTutorialGroupFragment = TutorialGroupFragment.newInstance(id,mCurMemberId);
+        mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+
         Bundle bundle1 = new Bundle();
 
         CourseDetailItemParams params1 = new CourseDetailItemParams(true,mCurMemberId,!mCanEdit,mCourseId);
@@ -763,6 +781,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @func   :V5.7 直播修改为在线课堂
         // fragmentTransaction.add(R.id.fragment_container, mClassroomFragment);
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        // 添加帮辅群
+        fragmentTransaction.add(R.id.fragment_container,mTutorialGroupFragment);
 
         // @func   :V5.9默认先显示课程大纲
         fragmentTransaction.hide(courseCommentFragment);
@@ -773,6 +793,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @func   :V5.7 直播修改为在线课堂
         // fragmentTransaction.hide(mClassroomFragment);
         fragmentTransaction.hide(mOnlineClassFragment);
+        fragmentTransaction.hide(mTutorialGroupFragment);
         // fragmentTransaction.hide(introductionFragment);
         fragmentTransaction.commit();
         rg_tab.setOnCheckedChangeListener(tabChangeListener);
@@ -794,6 +815,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 // @func   :V5.7将直播换成了在线课堂
                 // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
+                fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
                 /*if (checkedId == R.id.rb_course_introduction) {
@@ -824,6 +846,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab_f.check(R.id.rb_live_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
+                }else if(checkedId == R.id.rb_tutorial_group){
+                    fragmentTransaction.show(mTutorialGroupFragment);
+                    rg_tab_f.check(R.id.rb_tutorial_group_f);
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
+                    pullToRefreshView.setLoadMoreEnable(mCanLoadMore);
                 }
 
                 fragmentTransaction.commitAllowingStateLoss();
@@ -839,6 +866,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 // @func   :V5.7将直播换成了在线课堂
                 // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
+                fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
                 /*if (checkedId == R.id.rb_course_introduction_f) {
@@ -869,6 +897,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab.check(R.id.rb_live);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
+                } else if(checkedId == R.id.rb_tutorial_group_f){
+                    fragmentTransaction.show(mTutorialGroupFragment);
+                    rg_tab.check(R.id.rb_tutorial_group);
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
             }
@@ -888,7 +920,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             return 4;
         } else if (id == R.id.rb_live || id == R.id.rb_live_f) {
             return 5;
-        } else {
+        } else if (id == R.id.rb_tutorial_group || id == R.id.rb_tutorial_group_f){
+            return 6;
+        }else {
             return 0;
         }
     }
@@ -957,6 +991,12 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         } else if(mOnlineClassFragment.isVisible()){
             // 下拉刷新
             mOnlineClassFragment.onHeaderRefresh();
+        }else if(mTutorialGroupFragment.isVisible()){
+            // 下拉刷新
+            mOnlineClassFragment.onHeaderRefresh();
+        }else if(mTutorialGroupFragment.isVisible()){
+            // 帮辅群显示
+            mTutorialGroupFragment.onHeaderRefresh();
         }
         // @date   :2018/6/8 0008 上午 1:04
         // @func   :V5.7将直播换成了在线课堂
@@ -988,6 +1028,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
             @Override
             public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
+                boolean tutorialMode = MainApplication.isTutorialMode();
+                tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+
                 MyCourseDetailsActivity.this.courseDetailsVo = courseDetailsVo;
                 collected = courseDetailsVo.isIsCollect();
                 courseScore = courseDetailsVo.getCourseScore();
@@ -996,8 +1039,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     courseVo = voList.get(0);
                     // 加载到课程信息
                     String teachersId = courseVo.getTeachersId();
-                    if(mCourseDetailParams.isClassTeacher()){
+                    if(mCourseDetailParams.isClassTeacher() || tutorialMode){
                         // 当前人为班级老师
+                        // 如果是帮辅模式，那么进入到这页面，肯定是帮辅老师
                         // 如果不为空
                         if(EmptyUtil.isEmpty(teachersId)){
                             teachersId = UserHelper.getUserId();

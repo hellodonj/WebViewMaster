@@ -23,4 +23,9 @@ public abstract class StringCallback<Data> implements Callback.CommonCallback<Da
     public void onFinished() {
 
     }
+
+    @Override
+    public void onError(Throwable throwable, boolean b) {
+        System.out.println();
+    }
 }

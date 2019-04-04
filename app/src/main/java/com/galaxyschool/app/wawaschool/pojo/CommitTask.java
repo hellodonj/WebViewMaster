@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class CommitTask implements Serializable, Parcelable {
     private String StudentResId;//ѧ���ύ��ҵ����ԴID
     private String StudentResTitle;//ѧ���ύ����Դ��ҵ����
     private String StudentResUrl;//ѧ���ύ��ҵ����ԴURL
+    private String StudentResThumbnailUrl;
     private boolean IsRead;//��ʦ�Ƿ��Ѳ鿴��ҵ
     private String ReadTime;//��ʦ�鿴��ҵʱ��
     private String CreateId;
@@ -64,7 +66,15 @@ public class CommitTask implements Serializable, Parcelable {
     private String TaskScoreRemark;
     private int screenType;
     private int scoreRule;
-
+    private int ResPropType;
+    private String parentResourceUrl;
+    private String level;
+    private int airClassId;
+    private boolean isAssistantMark;//帮辅批阅
+    private int EQId;//任务的题号
+    private int commitTaskOnlineId;
+    private String assistantRoleType;
+    private boolean hasTutorialPermission;
     /**
      * @return 是否是语音评测类型
      */
@@ -76,6 +86,94 @@ public class CommitTask implements Serializable, Parcelable {
             }
         }
         return false;
+    }
+
+    /**
+     * @return 提交类型是不是视频类型
+     */
+    public boolean isVideoType(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_VIDEO;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCourseType(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_COURSE_SPEAKER || type == ResType.RES_TYPE_ONEPAGE;
+            }
+        }
+        return false;
+    }
+
+    public boolean isStudyCard(){
+        if (!TextUtils.isEmpty(StudentResId)){
+            if (StudentResId.contains("-")){
+                int type = Integer.valueOf(StudentResId.split("-")[1]);
+                return type == ResType.RES_TYPE_STUDY_CARD;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return 任务单自动批阅的数据
+     */
+    public boolean isMarkCard(){
+        return CommitType == 6;
+    }
+
+    public boolean isHasTutorialPermission() {
+        return hasTutorialPermission;
+    }
+
+    public void setHasTutorialPermission(boolean hasTutorialPermission) {
+        this.hasTutorialPermission = hasTutorialPermission;
+    }
+
+    public String getAssistantRoleType() {
+        return assistantRoleType;
+    }
+
+    public void setAssistantRoleType(String assistantRoleType) {
+        this.assistantRoleType = assistantRoleType;
+    }
+
+    public int getEQId() {
+        return EQId;
+    }
+
+    public void setEQId(int EQId) {
+        this.EQId = EQId;
+    }
+
+    public int getCommitTaskOnlineId() {
+        return commitTaskOnlineId;
+    }
+
+    public void setCommitTaskOnlineId(int commitTaskOnlineId) {
+        this.commitTaskOnlineId = commitTaskOnlineId;
+    }
+
+    public boolean isAssistantMark() {
+        return isAssistantMark;
+    }
+
+    public void setIsAssistantMark(boolean assistantMark) {
+        isAssistantMark = assistantMark;
+    }
+
+    public int getAirClassId() {
+        return airClassId;
+    }
+
+    public void setAirClassId(int airClassId) {
+        this.airClassId = airClassId;
     }
 
     public int getScoreRule() {
@@ -410,6 +508,38 @@ public class CommitTask implements Serializable, Parcelable {
         Deleted = deleted;
     }
 
+    public String getStudentResThumbnailUrl() {
+        return StudentResThumbnailUrl;
+    }
+
+    public void setStudentResThumbnailUrl(String studentResThumbnailUrl) {
+        StudentResThumbnailUrl = studentResThumbnailUrl;
+    }
+
+    public int getResPropType() {
+        return ResPropType;
+    }
+
+    public void setResPropType(int resPropType) {
+        ResPropType = resPropType;
+    }
+
+    public String getParentResourceUrl() {
+        return parentResourceUrl;
+    }
+
+    public void setParentResourceUrl(String parentResourceUrl) {
+        this.parentResourceUrl = parentResourceUrl;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -455,6 +585,19 @@ public class CommitTask implements Serializable, Parcelable {
         dest.writeString(this.TaskScoreRemark);
         dest.writeInt(this.screenType);
         dest.writeInt(this.scoreRule);
+        dest.writeInt(this.AutoEvalCompanyType);
+        dest.writeString(this.AutoEvalContent);
+        dest.writeString(this.StudentResThumbnailUrl);
+        dest.writeInt(this.ResPropType);
+        dest.writeString(this.level);
+        dest.writeString(this.parentResourceUrl);
+        dest.writeInt(this.airClassId);
+        dest.writeByte(this.isAssistantMark ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.Id);
+        dest.writeInt(this.EQId);
+        dest.writeInt(this.commitTaskOnlineId);
+        dest.writeString(this.assistantRoleType);
+        dest.writeByte(this.hasTutorialPermission ? (byte) 1 : (byte) 0);
     }
 
     public CommitTask() {
@@ -499,6 +642,19 @@ public class CommitTask implements Serializable, Parcelable {
         this.TaskScoreRemark = in.readString();
         this.screenType = in.readInt();
         this.scoreRule = in.readInt();
+        this.AutoEvalCompanyType = in.readInt();
+        this.AutoEvalContent = in.readString();
+        this.StudentResThumbnailUrl = in.readString();
+        this.ResPropType = in.readInt();
+        this.level = in.readString();
+        this.parentResourceUrl = in.readString();
+        this.airClassId = in.readInt();
+        this.isAssistantMark = in.readByte() != 0;
+        this.Id = in.readInt();
+        this.EQId = in.readInt();
+        this.commitTaskOnlineId = in.readInt();
+        this.assistantRoleType = in.readString();
+        this.hasTutorialPermission = in.readByte() != 0;
     }
 
     public static final Creator<CommitTask> CREATOR = new Creator<CommitTask>() {

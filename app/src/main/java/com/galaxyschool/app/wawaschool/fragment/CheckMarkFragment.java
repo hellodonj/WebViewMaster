@@ -31,7 +31,9 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
@@ -42,6 +44,7 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
@@ -50,6 +53,12 @@ import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.libs.gallery.ImageInfo;
+import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -67,10 +76,18 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.CircleImageView;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
+import com.oosic.apps.iemaker.base.SlideManager;
 import com.osastudio.common.utils.LQImageLoader;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -121,6 +138,9 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isAudition;
     private boolean isOriginal = true;
     private boolean isAnswerTaskOrderQuestion;
+    private QuestionResourceModel markModel;
+    private boolean isAssistanceModel;//是不是帮辅模式
+    private TaskEntity taskEntity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,6 +156,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (isAnswerTaskOrderQuestion) {
             initAnswerParsingData();
         }
+        addEventBusReceiver();
     }
 
     @Override
@@ -164,8 +185,19 @@ public class CheckMarkFragment extends ContactsListFragment {
             isAudition = getArguments().getBoolean(Constants.EXTRA_IS_AUDITION);
             cardParam = (ExerciseAnswerCardParam) getArguments().getSerializable(ExerciseAnswerCardParam.class
                     .getSimpleName());
+            taskEntity = (TaskEntity) getArguments().getSerializable(TaskEntity.class.getSimpleName());
             if (cardParam != null) {
                 initExerciseData();
+                if (commitTask == null) {
+                    commitTask = cardParam.getCommitTask();
+                }
+                if (task == null) {
+                    task = cardParam.getStudyTask();
+                }
+            }
+            if (commitTask != null && commitTask.isAssistantMark()) {
+                //帮辅批阅
+                initAssistantMarkData();
             }
         }
         //标题
@@ -179,12 +211,19 @@ public class CheckMarkFragment extends ContactsListFragment {
             courseDetailTextV.setOnClickListener(this);
             if (isAnswerTaskOrderQuestion) {
                 courseDetailTextV.setText(getString(R.string.str_look_origin_question));
+            } else if (isAssistanceModel){
+                courseDetailTextV.setText(getString(R.string.str_look_task_require));
+                TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
+                if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
+                    typeNameTextV.setText("《"+taskEntity.getT_CourseName() + "》");
+                    typeNameTextV.setVisibility(View.VISIBLE);
+                }
             }
         }
 
         findViewById(R.id.ll_course).setOnClickListener(this);
         TextView tvCourseName = (TextView) findViewById(R.id.tv_course_name);//课件名
-        if (isAnswerTaskOrderQuestion){
+        if (isAnswerTaskOrderQuestion || isAssistanceModel) {
             //单行显示...
             tvCourseName.setSingleLine(true);
             tvCourseName.setEllipsize(TextUtils.TruncateAt.END);
@@ -192,7 +231,65 @@ public class CheckMarkFragment extends ContactsListFragment {
         tvCourseName.setText(title);
         //得分
         mTvSore = (TextView) findViewById(R.id.tv_score);
-        tvExerciseScoreTextV = (TextView)findViewById(R.id.tv_check_score);
+        if (commitTask != null) {
+            if (TextUtils.equals(getMemeberId(), commitTask.getStudentId()) && commitTask.isHasTutorialPermission()) {
+                markModel = new QuestionResourceModel();
+                if (exerciseItem != null) {
+                    markModel.setTitle(exerciseItem.getName());
+                } else {
+                    markModel.setTitle(commitTask.getStudentResTitle());
+                }
+                markModel.setT_TaskId(commitTask.getTaskId());
+                markModel.setStuMemberId(getMemeberId());
+                if (task != null) {
+                    markModel.setT_TaskType(task.getType());
+                    markModel.setT_ClassId(task.getClassId());
+                    markModel.setT_ClassName(task.getClassName());
+                    markModel.setT_ResCourseId(task.getResCourseId());
+                    markModel.setT_CourseId(task.getCourseId());
+                    markModel.setT_CourseName(task.getCourseName());
+                }
+                if (cardParam != null) {
+                    if (cardParam.isFromOnlineStudyTask()) {
+                        markModel.setT_CommitTaskOnlineId(cardParam.getCommitTaskId());
+                    } else {
+                        markModel.setT_CommitTaskId(cardParam.getCommitTaskId());
+                    }
+                } else if (isFromMOOC) {
+                    if (!TextUtils.isEmpty(CommitTaskId)) {
+                        markModel.setT_CommitTaskOnlineId(Integer.valueOf(CommitTaskId));
+                    }
+                } else if (isAssistanceModel) {
+                    if (commitTask.getCommitTaskId() > 0) {
+                        markModel.setT_CommitTaskId(commitTask.getCommitTaskId());
+                    } else if (commitTask.getCommitTaskOnlineId() > 0){
+                        markModel.setT_CommitTaskOnlineId(commitTask.getCommitTaskOnlineId());
+                    }
+                } else {
+                    if (!TextUtils.isEmpty(CommitTaskId)) {
+                        markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
+                    }
+                }
+                if (commitTask.getEQId() > 0){
+                    markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
+                } else if (exerciseItem != null){
+                    markModel.setT_EQId(exerciseItem.getIndex());
+                }
+                markModel.setT_AirClassId(commitTask.getAirClassId());
+                ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
+                mTvSore.setOnClickListener(v -> {
+                    if (cardParam == null) {
+                        openCourse(commitTask.getStudentResId(), false, true);
+                    } else {
+                        //读写单的主观题
+                        cardParam.setMarkModel(markModel);
+                        cardParam.setIsSubjectAssistant(true);
+                        ApplyMarkHelper.doApplyMarkTask(getActivity(), cardParam, exerciseItem, null);
+                    }
+                });
+            }
+        }
+        tvExerciseScoreTextV = (TextView) findViewById(R.id.tv_check_score);
         ImageView ivImg = (ImageView) findViewById(R.id.iv_img);//缩略图
 
         updateScore();
@@ -283,7 +380,14 @@ public class CheckMarkFragment extends ContactsListFragment {
                     String createName = data.getCreateName();
                     String suffTitle = getString(R.string.str_mark_ask);
 
-                    if (data.isIsTeacher()) {
+                    //帮辅
+                    TextView assistanceTextV = (TextView) view.findViewById(R.id.tv_assistance);
+                    if (data.isIsTeacher() || (data.getSubmitRole() == 0 && isAssistanceModel)) {
+                        if (showReviewFlagPermiss(data)) {
+                            assistanceTextV.setVisibility(View.VISIBLE);
+                        } else {
+                            assistanceTextV.setVisibility(View.INVISIBLE);
+                        }
                         createName = createName + getString(R.string.teacher);
                         suffTitle = getString(R.string.str_mark_teacher);
                         imgLeft.setVisibility(View.INVISIBLE);
@@ -299,6 +403,7 @@ public class CheckMarkFragment extends ContactsListFragment {
 
                         middleView.setBackgroundResource(R.drawable.check_mark_right);
                     } else {
+                        assistanceTextV.setVisibility(View.INVISIBLE);
                         imgLeft.setVisibility(View.VISIBLE);
                         imgRight.setVisibility(View.INVISIBLE);
                         imgLeft.setClickable(true);
@@ -341,9 +446,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getCreateId())) {
+                                ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
+                            }
                         }
                     });
 
@@ -355,23 +460,35 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             //游客之类的memberId为空的不给点击。
-//                            if (!TextUtils.isEmpty(data.getStudentId())) {
-//                                ActivityUtils.enterPersonalSpace(getActivity(), data.getStudentId());
-//                            }
+                            if (!TextUtils.isEmpty(data.getCreateId())) {
+                                if (isAssistanceModel) {
+                                    String userName = data.getRealName();
+                                    if (TextUtils.isEmpty(data.getRealName())){
+                                        userName = data.getNickName();
+                                    }
+                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId(),userName);
+                                    tutorialParams.setTutorialMarkedEnter(true);
+                                    TutorialHomePageActivity.show(getActivity(), tutorialParams);
+                                } else {
+                                    ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
+                                }
+                            }
                         }
                     });
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             isOriginal = false;
-                            openCourse(data.getResId(),false);
+                            openCourse(data.getResId(), false, false);
                         }
                     });
 
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (isAnswerTaskOrderQuestion){
+                            if (isAssistanceModel) {
+                                return true;
+                            } else if (isAnswerTaskOrderQuestion) {
                                 if (cardParam.isHeadMaster()
                                         || cardParam.isOnlineReporter()
                                         || cardParam.isOnlineHost()) {
@@ -406,13 +523,32 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                     CheckMarkInfo.ModelBean data = (CheckMarkInfo.ModelBean) holder.data;
                     if (data != null) {
-                        openCourse(data.getResId(),false);
+                        openCourse(data.getResId(), false, false);
                     }
                 }
             };
 
             setCurrAdapterViewHelper(listView, listViewHelper);
         }
+    }
+
+    private boolean showReviewFlagPermiss(CheckMarkInfo.ModelBean data){
+        boolean hasPermission = false;
+        if (commitTask == null) {
+            return hasPermission;
+        }
+        if (TextUtils.equals(getMemeberId(),commitTask.getStudentId())
+                && data.getReviewFlag() == 1) {
+            hasPermission = true;
+        }
+        return hasPermission;
+    }
+
+    private void initAssistantMarkData() {
+        isAssistanceModel = true;
+        resId = commitTask.getStudentResId();
+        thumbPic = commitTask.getStudentResThumbnailUrl();
+        title = commitTask.getStudentResTitle();
     }
 
     private void initExerciseData() {
@@ -424,7 +560,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     getString(R.string.str_eval_score, exerciseItem.getScore()) + " )";
             //显示类型名
             TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
-            if (typeNameTextV != null){
+            if (typeNameTextV != null) {
                 typeNameTextV.setVisibility(View.VISIBLE);
                 typeNameTextV.setText(typeName);
             }
@@ -448,7 +584,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_answer_check_mark, null);
             TextView itemTitleTextV = (TextView) itemView.findViewById(R.id.tv_title_name);
             TextView contentTextV = (TextView) itemView.findViewById(R.id.tv_answer_content);
-            TextView picImageView = (TextView)itemView.findViewById(R.id.tv_pic_image);
+            TextView picImageView = (TextView) itemView.findViewById(R.id.tv_pic_image);
             ImageView arrowImageV = (ImageView) itemView.findViewById(R.id.iv_arrow_icon);
             LinearLayout itemLayout = (LinearLayout) itemView.findViewById(R.id.ll_item_title);
             LinearLayout flContent = (LinearLayout) itemView.findViewById(R.id.fl_content);
@@ -468,9 +604,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                 String rightAnswer = exerciseItem.getRight_answer();
                 String resUrl = exerciseItem.getRight_answer_res_url();
                 contentTextV.setText(rightAnswer);
-                if (!TextUtils.isEmpty(resUrl)){
+                if (!TextUtils.isEmpty(resUrl)) {
                     picImageView.setVisibility(View.VISIBLE);
-                    if (TextUtils.isEmpty(rightAnswer)){
+                    if (TextUtils.isEmpty(rightAnswer)) {
                         contentTextV.setVisibility(View.GONE);
                     }
                     StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
@@ -487,10 +623,10 @@ public class CheckMarkFragment extends ContactsListFragment {
                     content = getString(R.string.str_no_analyse_tip);
                 }
                 contentTextV.setText(content);
-                if (!TextUtils.isEmpty(exerciseItem.getAnalysis_res_url())){
+                if (!TextUtils.isEmpty(exerciseItem.getAnalysis_res_url())) {
                     //答案解析的resUrl
                     picImageView.setVisibility(View.VISIBLE);
-                    if (TextUtils.isEmpty(exerciseItem.getAnalysis())){
+                    if (TextUtils.isEmpty(exerciseItem.getAnalysis())) {
                         contentTextV.setVisibility(View.GONE);
                     }
                     StudyTaskUtils.showAnswerCardViewDetail(getActivity(),
@@ -557,29 +693,26 @@ public class CheckMarkFragment extends ContactsListFragment {
      * 更新分数
      */
     private void updateScore() {
-        if (mTvSore == null) {
-            return;
+//        if (isAnswerTaskOrderQuestion) {
+        //答题的打分
+        if (!TextUtils.isEmpty(score)) {
+            tvExerciseScoreTextV.setVisibility(View.VISIBLE);
+            tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));
         }
-        if (isAnswerTaskOrderQuestion) {
-            //答题的打分
-            if (!TextUtils.isEmpty(score)){
-                tvExerciseScoreTextV.setVisibility(View.VISIBLE);
-                tvExerciseScoreTextV.setText(getString(R.string.str_eval_score,score));
-            }
-        } else {
-            String str = getString(R.string.str_score);
-            if (TextUtils.isEmpty(score)) {
-                mTvSore.setVisibility(View.GONE);
-            } else {
-                mTvSore.setVisibility(View.VISIBLE);
-                SpannableString spannableString = new SpannableString(new StringBuilder(str).append(score));
-                ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.com_text_red));
-                spannableString.setSpan(colorSpan, str.length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.2f);
-                spannableString.setSpan(sizeSpan, str.length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                mTvSore.setText(spannableString);
-            }
-        }
+//        } else {
+//            String str = getString(R.string.str_score);
+//            if (TextUtils.isEmpty(score)) {
+//                mTvSore.setVisibility(View.GONE);
+//            } else {
+//                mTvSore.setVisibility(View.VISIBLE);
+//                SpannableString spannableString = new SpannableString(new StringBuilder(str).append(score));
+//                ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.com_text_red));
+//                spannableString.setSpan(colorSpan, str.length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//                RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.2f);
+//                spannableString.setSpan(sizeSpan, str.length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//                mTvSore.setText(spannableString);
+//            }
+//        }
     }
 
 
@@ -587,17 +720,58 @@ public class CheckMarkFragment extends ContactsListFragment {
      * 模拟数据
      */
     private void loadCommonData() {
-        if (isAnswerTaskOrderQuestion) {
+        if (isAssistanceModel) {
+            loadAssistantMarkData();
+        } else if (isAnswerTaskOrderQuestion) {
             loadAnswerCardData();
-            return;
+        } else {
+            loadMarkData();
         }
+    }
+
+    private void loadAssistantMarkData() {
+        Map<String, Object> params = new ArrayMap<>();
+        params.put("AssistTask_Id", commitTask.getId());
+        RequestHelper.sendPostRequest(getActivity(),
+                ServerUrl.GET_ASSIST_REVIEW_LIST_BASE_URL, params,
+                new DefaultPullToRefreshDataListener<CheckMarkResult>(
+                        CheckMarkResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        if (getActivity() == null) {
+                            return;
+                        }
+                        CheckMarkInfo result = JSONObject.parseObject(jsonString,
+                                CheckMarkInfo.class);
+                        if (result.getErrorCode() != 0 || result.getModel() == null) {
+                            return;
+                        }
+                        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                        if (jsonObject != null) {
+                            JSONObject model = jsonObject.getJSONObject("Model");
+                            if (model != null) {
+                                JSONArray jsonArray = model.getJSONArray("Data");
+                                if (jsonArray != null && jsonArray.size() > 0) {
+                                    List<CheckMarkInfo.ModelBean> list =
+                                            JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
+                                    if (list != null && list.size() > 0) {
+                                        sortData(list);
+                                        getCurrAdapterViewHelper().setData(list);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void loadMarkData() {
         Map<String, Object> params = new ArrayMap<>();
         if (isFromMOOC) {
             params.put("CommitTaskOnlineId", CommitTaskId);
         } else {
             params.put("CommitTaskId", CommitTaskId);
         }
-
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_LOADCOMMITTASKREVIEWLIST, params,
                 new DefaultPullToRefreshDataListener<CheckMarkResult>(
@@ -615,20 +789,44 @@ public class CheckMarkFragment extends ContactsListFragment {
 //
                         }
                         List<CheckMarkInfo.ModelBean> list = result.getModel();
-                        Collections.reverse(list);
+                        removeAssistanceData(list);
+                        sortData(list);
                         getCurrAdapterViewHelper().setData(list);
 
                     }
                 });
     }
 
+    private void removeAssistanceData(List<CheckMarkInfo.ModelBean> list) {
+        if (list != null && list.size() > 0) {
+            Iterator<CheckMarkInfo.ModelBean> iterable = list.iterator();
+            while (iterable.hasNext()) {
+                CheckMarkInfo.ModelBean modelBean = iterable.next();
+                if (modelBean != null && modelBean.getReviewFlag() == 1) {
+                    if (commitTask != null && TextUtils.equals(getMemeberId(),
+                            commitTask.getStudentId())) {
+
+                    } else {
+                        iterable.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    private void sortData(List<CheckMarkInfo.ModelBean> list){
+        if (list != null && list.size() > 0){
+            Collections.sort(list,((o1, o2) -> DateUtils.compareDate(o1.getCreateTime(),
+                    o2.getCreateTime(),DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS)));
+        }
+    }
 
     /**
      * 模拟数据
      */
     private void loadAnswerCardData() {
         Map<String, Object> params = new ArrayMap<>();
-        if (cardParam.isFromOnlineStudyTask()){
+        if (cardParam.isFromOnlineStudyTask()) {
             params.put("CommitTaskOnlineId", cardParam.getCommitTaskId());
         } else {
             params.put("CommitTaskId", cardParam.getCommitTaskId());
@@ -654,7 +852,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     List<CheckMarkInfo.ModelBean> list = JSONObject.parseArray
                                             (jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
-                                        Collections.reverse(list);
+                                        removeAssistanceData(list);
+                                        sortData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
@@ -671,6 +870,10 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (isAnswerTaskOrderQuestion) {
                 //查看原题
                 enterLookOriginQuestion();
+            } else if (isAssistanceModel) {
+                if (taskEntity != null) {
+                    TaskRequirementActivity.show(getActivity(), taskEntity);
+                }
             } else {
                 //打开微课详情页面
                 StudyTask myTask = new StudyTask();
@@ -695,13 +898,13 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (isAnswerTaskOrderQuestion) {
                 openQuestion();
             } else {
-                openCourse(resId,false);
+                openCourse(resId, false, false);
             }
         }
     }
 
-    public void backPress(){
-        if (isFromMOOC || isAnswerTaskOrderQuestion) {
+    public void backPress() {
+        if (isFromMOOC || isAnswerTaskOrderQuestion || isAssistanceModel) {
             getActivity().finish();
         } else {
             popStack();
@@ -713,7 +916,9 @@ public class CheckMarkFragment extends ContactsListFragment {
      *
      * @param
      */
-    public void openCourse(String resId,boolean isOpenAnswerQuestion) {
+    public void openCourse(String resId,
+                           boolean isOpenAnswerQuestion,
+                           boolean applyMark) {
         String tempResId = resId;
         int resType = 0;
         if (resId.contains("-")) {
@@ -739,7 +944,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                     if (info != null) {
                         CourseData courseData = info.getCourseData();
                         if (courseData != null) {
-                            processOpenImageData(courseData,isOpenAnswerQuestion);
+                            processOpenImageData(courseData,
+                                    isOpenAnswerQuestion,
+                                    applyMark);
                         }
                     }
                 }
@@ -752,7 +959,9 @@ public class CheckMarkFragment extends ContactsListFragment {
                     OnCourseDetailFinishListener() {
                 @Override
                 public void onCourseDetailFinish(CourseData courseData) {
-                    processOpenImageData(courseData,isOpenAnswerQuestion);
+                    processOpenImageData(courseData,
+                            isOpenAnswerQuestion,
+                            applyMark);
                 }
             });
         }
@@ -763,23 +972,32 @@ public class CheckMarkFragment extends ContactsListFragment {
      *
      * @param courseData
      */
-    private void processOpenImageData(CourseData courseData,boolean isOpenAnswerQuestion) {
+    private void processOpenImageData(CourseData courseData,
+                                      boolean isOpenAnswerQuestion,
+                                      boolean applyMark) {
+        if (cardParam != null) {
+            //重置model的状态
+            cardParam.setMarkModel(null);
+        }
         if (courseData != null) {
             NewResourceInfo newResourceInfo = courseData.getNewResourceInfo();
             PlaybackParam playbackParam = new PlaybackParam();
-            if (isAnswerTaskOrderQuestion){
-                if (isOpenAnswerQuestion){
+            if (applyMark) {
+                playbackParam.applyMark = true;
+                playbackParam.applyMarkdata = markModel;
+            } else if (isAnswerTaskOrderQuestion) {
+                if (isOpenAnswerQuestion) {
                     //查看原题 跳转到指定的pageIndex
                     playbackParam.mIsHideToolBar = true;
                     ExerciseItem item = cardParam.getExerciseItem();
-                    if (item != null){
-                       playbackParam.pageIndex = getQuestionIndex(item);
+                    if (item != null) {
+                        playbackParam.pageIndex = getQuestionIndex(item);
                     }
                 } else if (cardParam.isOnlineReporter()
                         || cardParam.isOnlineHost()
-                        || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT){
+                        || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
                     boolean isMarked = false;
-                    if (!TextUtils.isEmpty(score)){
+                    if (!TextUtils.isEmpty(score)) {
                         isMarked = true;
                     }
                     mTaskMarkParam = new TaskMarkParam(
@@ -797,6 +1015,20 @@ public class CheckMarkFragment extends ContactsListFragment {
                     //游客身份
                     playbackParam.mIsHideToolBar = true;
                 }
+            } else if (isAssistanceModel) {
+                mTaskMarkParam = new TaskMarkParam(
+                        false,
+                        true,
+                        MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
+                        String.valueOf(commitTask.getId()),
+                        TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
+                        false,
+                        "",
+                        true);
+                playbackParam.isAssistanceModel = true;
+                playbackParam.EQId = commitTask.getEQId();
+                playbackParam.taskMarkParam = mTaskMarkParam;
+                playbackParam.taskEntity = taskEntity;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
@@ -820,12 +1052,12 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
     }
 
-    private int getQuestionIndex(ExerciseItem item){
+    private int getQuestionIndex(ExerciseItem item) {
         int pageIndex = 0;
         List<ExerciseItemArea> itemAreas = item.getAreaItemList();
-        if (itemAreas != null && itemAreas.size() > 0){
-            for (ExerciseItemArea area : itemAreas){
-                if (!TextUtils.isEmpty(area.getPage_index())){
+        if (itemAreas != null && itemAreas.size() > 0) {
+            for (ExerciseItemArea area : itemAreas) {
+                if (!TextUtils.isEmpty(area.getPage_index())) {
                     pageIndex = Integer.valueOf(area.getPage_index());
                 }
                 break;
@@ -860,6 +1092,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     newResourceInfo.setResourceUrl(mediaDataList.get(i).resourceurl);
                     resourceInfoList.add(newResourceInfo);
                 }
+                cardParam.setMarkModel(null);
                 GalleryActivity.newInstance(getActivity(), resourceInfoList, cardParam);
             }
         }
@@ -871,7 +1104,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void enterLookOriginQuestion() {
         if (cardParam != null) {
             //记得传当前pageIndex
-            openCourse(cardParam.getResId(),true);
+            openCourse(cardParam.getResId(), true, false);
         }
     }
 
@@ -905,17 +1138,19 @@ public class CheckMarkFragment extends ContactsListFragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
                 String markScore = intent.getStringExtra(ACTION_MARK_SCORE);
-                if (!TextUtils.isEmpty(markScore)){
+                if (!TextUtils.isEmpty(markScore)) {
                     score = markScore;
                 }
                 if (mTaskMarkParam != null) {
-
                     mTaskMarkParam.isMarked = true;
                 }
                 if (!TextUtils.isEmpty(score)) {
                     updateScore();
-                    if (exerciseItem != null){
+                    if (exerciseItem != null) {
                         exerciseItem.setStudent_score(score);
+                    }
+                    if (mTaskMarkParam != null){
+                        mTaskMarkParam.score = score;
                     }
                 }
             }
@@ -993,7 +1228,22 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                 }, 200);
             }
+        }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(),
+                MessageEventConstantUtils.SEND_DO_COURSE_PATH_RESULT)) {
+            Bundle bundle = messageEvent.getBundle();
+            if (bundle != null) {
+                String coursePath = bundle.getString(SlideManager.EXTRA_COURSE_PATH);
+                String slidePath = bundle.getString(SlideManager.EXTRA_SLIDE_PATH);
+                ApplyMarkHelper helper = new ApplyMarkHelper();
+                helper.uploadCourse(getActivity(),slidePath,coursePath,commitTask.getId(),false);
+            }
+        } else if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.TRIGGER_UPDATE_LIST_DATA)) {
+            loadCommonData();
         }
     }
 }

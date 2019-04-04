@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.common.PrefsManager;
-import com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton;
 import com.galaxyschool.app.wawaschool.R;
+import com.lqwawa.apps.views.switchbutton.SwitchButton;
 
 /**
  * Created by E450 on 2016/12/8.

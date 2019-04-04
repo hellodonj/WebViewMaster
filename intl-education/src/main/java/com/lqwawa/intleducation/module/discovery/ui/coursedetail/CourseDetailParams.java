@@ -15,6 +15,7 @@ public class CourseDetailParams extends BaseVo{
     private int  courseEnterType;
     // 班级学程进入
     private String classId;
+    private String className;
     // 大厅有绑定班级
     private String bindClassId;
     // 学程馆进入
@@ -32,17 +33,30 @@ public class CourseDetailParams extends BaseVo{
     // 是否已经加入过班级
     private boolean isJoin;
 
+    // v5.14新添加的字段
+    private String courseId;
+    private String courseName;
+
     public CourseDetailParams() {
         // 默认的进入方式
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
     }
 
-    public CourseDetailParams(@NonNull String schoolId, String classId,boolean isAuthorized) {
+    /**
+     * 开放入口类型
+     * @param courseEnterType 传入类型
+     */
+    public CourseDetailParams(@CourseDetailType.CourseDetailRes int courseEnterType){
+        this.courseEnterType = courseEnterType;
+    }
+
+    public CourseDetailParams(@NonNull String schoolId, @NonNull String classId,@NonNull String className, boolean isAuthorized) {
         // 班级进入，设置大小写
         schoolId = schoolId.toLowerCase();
         classId = classId.toLowerCase();
         this.schoolId = schoolId;
         this.classId = classId;
+        this.className = className;
         this.isAuthorized = isAuthorized;
         courseEnterType = CourseDetailType.COURSE_DETAIL_CLASS_ENTER;
     }
@@ -56,7 +70,20 @@ public class CourseDetailParams extends BaseVo{
     }
 
     public int getCourseEnterType() {
-        return courseEnterType;
+        return getCourseEnterType(true);
+    }
+
+    public int getCourseEnterType(boolean ignore){
+        return ignore ? getCourseEnterTypeIgnoreOther() : courseEnterType;
+    }
+
+    public int getCourseEnterTypeIgnoreOther(){
+        if(courseEnterType != CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER &&
+                courseEnterType != CourseDetailType.COURSE_DETAIL_CLASS_ENTER){
+            return CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+        }else{
+            return courseEnterType;
+        }
     }
 
     public String getClassId() {
@@ -65,6 +92,14 @@ public class CourseDetailParams extends BaseVo{
 
     public void setClassId(String classId) {
         this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getBindClassId() {
@@ -105,6 +140,22 @@ public class CourseDetailParams extends BaseVo{
 
     public void setClassParent(boolean classParent) {
         isClassParent = classParent;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     /**

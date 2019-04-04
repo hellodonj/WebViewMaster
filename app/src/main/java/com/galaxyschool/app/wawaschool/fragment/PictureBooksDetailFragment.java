@@ -2222,8 +2222,12 @@ public class PictureBooksDetailFragment extends ResourceBaseFragment
         if (fromType == Constants.FROM_MY_WORK){
             UserInfo userInfo = getUserInfo();
             if (userInfo != null) {
-                newResourceInfo.setAuthorName(userInfo.getRealName());
-                authorTextView.setText(userInfo.getRealName());
+                String studentName = userInfo.getRealName();
+                if (TextUtils.isEmpty(studentName)) {
+                    studentName = userInfo.getNickName();
+                }
+                newResourceInfo.setAuthorName(studentName);
+                authorTextView.setText(studentName);
                 MyApplication.getThumbnailManager(getActivity()).displayUserIcon
                         (AppSettings.getFileUrl(userInfo.getHeaderPic()),
                                 authorIconImageView);

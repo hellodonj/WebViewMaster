@@ -1,5 +1,7 @@
 package com.galaxyschool.app.wawaschool.pojo;
 
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -55,6 +57,79 @@ public class ExerciseAnswerCardParam implements Serializable {
     private String classId;
     private String className;
     private String taskScoreRemark;//老师评语
+    private CommitTask commitTask;
+    private StudyTask studyTask;
+    private int pageIndex;
+    private int exerciseIndex;
+    private QuestionResourceModel markModel;//申请批阅的数据
+    private String exerciseListString;
+    private String pageListString;
+    private boolean subjectAssistant;//自动批阅主观题申请批阅
+
+    public boolean isSubjectAssistant() {
+        return subjectAssistant;
+    }
+
+    public void setIsSubjectAssistant(boolean subjectAssistant) {
+        this.subjectAssistant = subjectAssistant;
+    }
+
+    public String getExerciseListString() {
+        return exerciseListString;
+    }
+
+    public void setExerciseListString(String exerciseListString) {
+        this.exerciseListString = exerciseListString;
+    }
+
+    public String getPageListString() {
+        return pageListString;
+    }
+
+    public void setPageListString(String pageListString) {
+        this.pageListString = pageListString;
+    }
+
+    public QuestionResourceModel getMarkModel() {
+        return markModel;
+    }
+
+    public void setMarkModel(QuestionResourceModel markModel) {
+        this.markModel = markModel;
+    }
+
+
+    public int getExerciseIndex() {
+        return exerciseIndex;
+    }
+
+    public void setExerciseIndex(int exerciseIndex) {
+        this.exerciseIndex = exerciseIndex;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public CommitTask getCommitTask() {
+        return commitTask;
+    }
+
+    public void setCommitTask(CommitTask commitTask) {
+        this.commitTask = commitTask;
+    }
+
+    public StudyTask getStudyTask() {
+        return studyTask;
+    }
+
+    public void setStudyTask(StudyTask studyTask) {
+        this.studyTask = studyTask;
+    }
 
     public String getTaskScoreRemark() {
         return taskScoreRemark;

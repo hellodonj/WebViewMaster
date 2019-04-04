@@ -28,6 +28,7 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.HomeworkCommitFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.MediaTypeListFragment;
+import com.galaxyschool.app.wawaschool.helper.UserInfoHelper;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
@@ -66,6 +67,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     public final static String COURSETYPEFROM = "courseTypeFrom";
     public final static String ISNEEDDIRECTORY = "isNeedDirectory";
     public final static String MODEL_SOURCE_FROM = "model_source_from";
+    public final static String IS_FROM_TEACHER_MARK = "is_from_teacher_mark";
     public final static String COURSE_TYPE_FROM_LQ_BOARD = "course_type_from_lq_board";
 
     public final static String COURSE_ID = "SlideActivityNew_course_id";
@@ -74,6 +76,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     public final static String EXTRA_EXERCISE_STRING = "exerciseString";
     public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
     public final static String EXTRA_PAGE_INDEX = "pageIndex";
+    public final static String EXTRA_PAGE_LIST_STRING = "pageListString";
     public final static String EXTRA_EDIT_EXERCISE = "editExercise";
     public final static String EXTRA_EXERCISE_INDEX = "exerciseIndex";
 
@@ -98,7 +101,8 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
     private Handler mHandler = new Handler();
     private String courseId;
     private boolean autoMark;
-
+    private boolean isTeacherMark;
+    private boolean isEntityTeacher;//实体机构的老师
     /**
      * 判断当前制作的来源
      */
@@ -514,7 +518,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
                     commitCourseHelper = new CommitCourseHelper(SlideActivityNew.this);
                 }
                 if (userInfo != null && userInfo.isTeacher()) {
-                    commitCourseHelper.setIsTeacher(true);
+                    commitCourseHelper.setIsTeacher(isEntityTeacher);
                 }
                 if (userInfo != null && userInfo.isStudent()) {
                     commitCourseHelper.setIsStudent(true);
@@ -593,6 +597,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
         memberId = ((MyApplication) getApplication()).getMemberId();
         isFromMoocModel = getIntent().getBooleanExtra(MODEL_SOURCE_FROM, false);
         isFromLqBoard = getIntent().getBooleanExtra(COURSE_TYPE_FROM_LQ_BOARD, false);
+        isTeacherMark = getIntent().getBooleanExtra(IS_FROM_TEACHER_MARK,false);
 //        int mCurrentOrientation = getResources().getConfiguration().orientation;
 //        if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && mCurrentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -626,6 +631,9 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
             setUserType(RoleType.ROLE_TYPE_STUDENT);
 //            if (!isFromMoocModel) {
 //            }
+            if (isTeacherMark) {
+                setUserType(RoleType.ROLE_TYPE_TEACHER);
+            }
         }
         mSlideManager.setPenUserServiceHelper(getPenUserServiceHelper());
         mSlideManager.setUserType(mUserType);
@@ -648,6 +656,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
             mSlideManager.setEditExercise(editExercise);
             mSlideManager.setExerciseIndex(getIntent().getIntExtra(EXTRA_EXERCISE_INDEX, 0));
             mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
+            mSlideManager.setPageListString(getIntent().getStringExtra(EXTRA_PAGE_LIST_STRING));
             mSlideManager.setExerciseNodeClickListener(this);
             mSlideManager.getExerciseNodeManager().setExerciseString(
                     getIntent().getStringExtra(EXTRA_EXERCISE_STRING));
@@ -664,6 +673,7 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
         }
 
         showMakingTipsDialog();
+        loadUserInfoData();
     }
 
     @Override
@@ -803,5 +813,14 @@ public class SlideActivityNew extends PenServiceActivity implements CommitHelper
             mSlideManager.reviewExerciseDetails(exerciseIndex);
         }
     }
-
+    private void loadUserInfoData() {
+        UserInfoHelper userInfoHelper = new UserInfoHelper(this);
+        userInfoHelper.setCallBackListener((obj) -> {
+            if (obj != null && obj instanceof UserInfo) {
+                UserInfo info = (UserInfo) obj;
+                isEntityTeacher = Utils.isRealTeacher(info.getSchoolList());
+            }
+        });
+        userInfoHelper.check();
+    }
 }

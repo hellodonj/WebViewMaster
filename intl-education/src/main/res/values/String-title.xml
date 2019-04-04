@@ -15,5 +15,16 @@
     <string name="title_subject_setting">Subject Setting</string>
     <string name="title_donation_coin">Deliver WaWacoins</string>
     <string name="title_learning_statistics">Progress</string>
+    <string name="title_personal_page">Personal Page</string>
+    <string name="title_tutorial_courses">Tutorial Course</string>
+    <string name="title_tutorial_schools">Tutorial Institution</string>
+    <string name="title_student_tutorial">My Tutor</string>
+    <string name="title_fill_information">Fill in Information</string>
+    <string name="title_tutorial_audit">Apply</string>
+    <string name="title_add_tutorial">Add Tutor</string>
+    <string name="title_tutorial_group">Tutors</string>
+    <string name="title_choice_tutor">Select Tutor</string>
+    <string name="title_submit_succeed">Submitted successfully</string>
+    <string name="title_watch_task_requirement">View Task Requirement</string>
 
 </resources>

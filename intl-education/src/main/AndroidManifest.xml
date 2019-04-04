@@ -897,6 +897,73 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--我的帮辅课程列表-->
+        <activity android:name=".module.tutorial.teacher.courses.TutorialCoursesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--我的帮辅学生列表-->
+        <activity android:name=".module.tutorial.teacher.students.TutorialStudentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--我的帮辅机构列表-->
+        <activity android:name=".module.tutorial.teacher.schools.TutorialSchoolsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--学生帮辅列表页面-->
+        <activity android:name=".module.tutorial.student.courses.StudentTutorialActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--帮辅批阅列表页面-->
+        <activity android:name=".module.tutorial.marking.list.TutorialMarkingListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--Fragment公共容器的入口-->
+        <activity android:name=".base.widgets.ui.CommonContainerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--帮辅群筛选页面入口-->
+        <activity android:name=".module.tutorial.course.filtrate.TutorialFiltrateGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--申请批阅帮辅老师选择页面入口-->
+        <activity android:name=".module.tutorial.marking.choice.TutorChoiceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--申请批阅帮辅老师选择提交完成入口-->
+        <activity android:name=".module.tutorial.marking.result.QuestionResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--帮辅空间查看任务要求入口-->
+        <activity android:name=".module.tutorial.marking.require.TaskRequirementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
+        <activity android:name=".module.tutorial.target.TutorialTargetTaskActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
+        <activity android:name=".module.tutorial.target.container.TutorialStudentTargetTaskActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--帮辅审核记录页面-->
+        <activity android:name=".module.tutorial.teacher.courses.record.AuditRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
     </application>
 
 </manifest>

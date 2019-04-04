@@ -45,6 +45,7 @@ public class PrefsManager {
         String STATE = "state";
         String QRCODE = "qrcode";
         String ROLES = "roles";
+        String ALL_ROLES = "all_roles";
         String YEID = "yeid";
         String INTRO = "intro";
         String LOCATION = "location";
@@ -72,6 +73,8 @@ public class PrefsManager {
         String MAKING_COURSE_TIPS = "making_course_tips";
         //做任务的tips
         String DO_TASK_ORDER_TIPS = "do_task_order_tips";
+        //切换帮辅模式的
+        String CHANGE_ASSISTANT_MODEL_TIPS = "change_assistant_model_tips";
 
     }
 
@@ -203,6 +206,7 @@ public class PrefsManager {
         int state = getIntegerValue(prefs, PrefsItems.STATE, 0);
         String qrcode = getStringValue(prefs, PrefsItems.QRCODE, "");
         String roles = getStringValue(prefs, PrefsItems.ROLES, "");
+        String allRoles = getStringValue(prefs,PrefsItems.ALL_ROLES,"");
         String yeid = getStringValue(prefs, PrefsItems.YEID, "");
         String intro = getStringValue(prefs, PrefsItems.INTRO, "");
         String location = getStringValue(prefs, PrefsItems.LOCATION, "");
@@ -224,6 +228,7 @@ public class PrefsManager {
         result.setState(state);
         result.setQRCode(qrcode);
         result.setRoles(roles);
+        result.setAllRoles(allRoles);
         result.setYeid(yeid);
         result.setPIntroduces(intro);
         result.setLocation(location);
@@ -310,6 +315,10 @@ public class PrefsManager {
                 & setStringValue(
                 prefs, PrefsItems.ROLES,
                 userInfo.getRoles() != null ? userInfo.getRoles() : "");
+            result = result & setStringValue(
+                    prefs,PrefsItems.ALL_ROLES,
+                    !TextUtils.isEmpty(userInfo.getAllRoles()) ? userInfo.getAllRoles() : ""
+            );
             result = result
                 & setStringValue(
                 prefs, PrefsItems.YEID,
@@ -607,5 +616,13 @@ public class PrefsManager {
 
     public boolean isDoTaskOrderTipsEnabled(){
         return getBooleanValue(getAppSettingsPrefs(), PrefsItems.DO_TASK_ORDER_TIPS, false);
+    }
+
+    public boolean enableChangeAssistantModelTip(boolean enabled){
+        return setBooleanValue(getAppSettingsPrefs(), PrefsItems.CHANGE_ASSISTANT_MODEL_TIPS, enabled);
+    }
+
+    public boolean isAssistantModelTipEnable(){
+        return getBooleanValue(getAppSettingsPrefs(), PrefsItems.CHANGE_ASSISTANT_MODEL_TIPS, false);
     }
 }

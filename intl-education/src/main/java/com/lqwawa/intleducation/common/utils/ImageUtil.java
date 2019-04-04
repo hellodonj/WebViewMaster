@@ -158,6 +158,24 @@ public class ImageUtil {
      * 填充默认设置图片,没有placeholder，errorholder
      * @param view 显示的View
      * @param url 图片资源地址
+     */
+    public static void fillUserAvatar(@NonNull ImageView view,String url,@DrawableRes int defaultDrawableId) {
+        if(verificationUrl(url)){
+            ImageOptions options = new ImageOptions.Builder()
+                    .setImageScaleType(ImageView.ScaleType.FIT_XY)
+                    .setCrop(true)
+                    .setCircular(true)
+                    .setFailureDrawableId(defaultDrawableId)
+                    .setConfig(Bitmap.Config.ARGB_8888)
+                    .build();
+            x.image().bind(view,url,options);
+        }
+    }
+
+    /**
+     * 填充默认设置图片,没有placeholder，errorholder
+     * @param view 显示的View
+     * @param url 图片资源地址
      * @param defaultDrawableId 默认显示的图片Id
      */
     public static void fillCircleView(@NonNull ImageView view, String url, @DrawableRes int defaultDrawableId) {

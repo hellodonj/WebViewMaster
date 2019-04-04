@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/black"
+             android:clipChildren="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.icedcap.dubbing.view.DubbingVideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="center"
+                android:src="@drawable/live_back"/>
+
+            <TextView
+                android:id="@+id/tv_listen_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape_corner_text_dark_20_dp"
+                android:gravity="center"
+                android:minWidth="80dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/str_listen_voice"
+                android:textColor="#ffffff"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#3000"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_current_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:progressDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:thumb="@drawable/uvv_seek_dot"
+                    android:thumbOffset="10dip"/>
+
+                <TextView
+                    android:id="@+id/tv_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bottom_bg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!--评测内容以及点评-->
+                <LinearLayout
+                    android:id="@+id/ll_q_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <!--系统评测-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_system_eval"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_system_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/str_score_tip"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <LinearLayout
+                            android:id="@+id/ll_show_dubbing_by_sentence"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:text="@string/str_see_by_sentence"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"/>
+
+                            <com.lqwawa.apps.views.switchbutton.SwitchButton
+                                android:id="@+id/sb_switch_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                app:kswTintColor="@color/text_green"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_teacher_operation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/str_teacher_eval"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_teacher_review_score"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/str_score_tip"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center|left"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/str_teacher_comment"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"/>
+
+                            <com.lqwawa.apps.views.ExpandableTextView
+                                android:id="@+id/tv_teacher_comment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_gray"
+                                android:textSize="16sp"
+                                android:layout_marginLeft="5dp"
+                                app:etv_ArrowType="true"
+                                app:etv_MaxLinesOnShrink="1"/>
+
+                            <!--<TextView-->
+                                <!--android:id="@+id/tv_teacher_comment"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:layout_marginLeft="5dp"-->
+                                <!--android:text=""-->
+                                <!--/>-->
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--显示单句配音-->
+                <GridView
+                    android:id="@+id/grid_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:numColumns="1"
+                    android:verticalSpacing="10dp"
+                    android:visibility="gone"/>
+
+                <!--显示通篇配音-->
+                <com.lqwawa.apps.views.lrcview.LrcView
+                    android:id="@+id/lrc_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shape_white_rectrangle"
+                    android:padding="10dp"
+                    app:lrcAnimationDuration="200"
+                    app:lrcCurrentTextColor="#00FF00"
+                    app:lrcDividerHeight="25dp"
+                    app:lrcLabel=""
+                    app:lrcNormalTextColor="#000000"
+                    app:lrcPadding="5dp"
+                    app:lrcTextGravity="center"
+                    app:lrcTextSize="18sp"
+                    app:lrcTimeTextColor="#BDBDBD"
+                    app:lrcTimelineColor="#80BDBDBD"
+                    app:lrcTimelineTextColor="#9FA8DA"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fl_preview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_preview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_bg"
+                        android:gravity="center"
+                        android:minWidth="100dp"
+                        android:padding="10dp"
+                        android:text="@string/str_dubbing_preview"
+                        android:textColor="@color/white"/>
+                </FrameLayout>
+
+
+                <ImageView
+                    android:id="@+id/iv_dubbing_record"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_dubbing_recording"
+                    android:visibility="gone"/>
+
+                <FrameLayout
+                    android:id="@+id/fl_commit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_confirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_bg"
+                        android:gravity="center"
+                        android:minWidth="100dp"
+                        android:padding="10dp"
+                        android:text="@string/str_dubbing_commit"
+                        android:textColor="@color/white"/>
+                </FrameLayout>
+
+                <!--老师点评-->
+                <FrameLayout
+                    android:id="@+id/fl_teacher_review"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_teacher_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_bg"
+                        android:gravity="center"
+                        android:minWidth="100dp"
+                        android:padding="10dp"
+                        android:text="@string/str_teacher_review"
+                        android:textColor="@color/white"/>
+                </FrameLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/art_process_view"
+        layout="@layout/process_view"
+        android:visibility="gone"/>
+</FrameLayout>

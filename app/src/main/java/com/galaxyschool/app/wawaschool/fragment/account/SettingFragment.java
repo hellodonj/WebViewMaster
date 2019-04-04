@@ -33,7 +33,7 @@ import com.galaxyschool.app.wawaschool.fragment.NoticeAvoidDisturbFragment;
 import com.galaxyschool.app.wawaschool.fragment.WawatvHelpListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
-import com.galaxyschool.app.wawaschool.views.switchbutton.SwitchButton;
+import com.lqwawa.apps.views.switchbutton.SwitchButton;
 import com.lqwawa.intleducation.lqpay.util.ThreadManager;
 import com.lqwawa.libs.appupdater.AppInfo;
 import com.lqwawa.libs.appupdater.UpdateService;

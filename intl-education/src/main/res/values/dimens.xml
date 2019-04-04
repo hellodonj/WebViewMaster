@@ -38,4 +38,6 @@
     <dimen name="com_btn_height_xxxl">44dp</dimen>
 
     <dimen name="top_bar_valid_height">48dp</dimen>
+    <dimen name="three_grid_unit">0dp</dimen>
+    <dimen name="one_and_a_half_grid_unit">0dp</dimen>
 </resources>

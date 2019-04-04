@@ -71,6 +71,11 @@ import com.galaxyschool.app.wawaschool.slide.CreateSlideHelper;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
@@ -84,6 +89,8 @@ import com.oosic.apps.iemaker.base.PlaybackActivity;
 import com.oosic.apps.iemaker.base.data.CourseShareData;
 import com.oosic.apps.iemaker.base.interactionlayer.data.SlideInPlaybackParam;
 import com.oosic.apps.iemaker.base.interactionlayer.data.User;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.Serializable;
@@ -261,6 +268,7 @@ public class ActivityUtils {
         param.destActivity = PlaybackWawaPageActivityPhone.class; // 跳转Activity
         param.isShareScreen = isShareScreen;  // 是否投屏
         param.playbackParam = playbackParam;  // 播放其他参数
+        param.url = info.getResourceUrl();
         CreateSlideHelper.loadAndOpenSlideByCHWUrl(param);
     }
 
@@ -933,6 +941,9 @@ public class ActivityUtils {
         ((MyApplication) activity.getApplication()).clearLoginUserInfo();
         ((MyApplication) activity.getApplication()).stopDownloadService();
         PushUtils.stopPush(activity);
+        SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
+        EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
+                EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
 //        ConversationHelper.logout();
         if (activity != null) {
             UserHelper.logout();
@@ -1222,7 +1233,8 @@ public class ActivityUtils {
         ClassCourseParams params = new ClassCourseParams(
                 classInfo.isHeadMaster(),
                 schoolInfo.getSchoolId(),
-                classInfo.getClassId());
+                classInfo.getClassId(),
+                classInfo.getClassName());
         params.setRoles(roles);
 
         /*ClassCourseParams params = new ClassCourseParams(schoolInfo.getSchoolId(),classInfo.getClassId());

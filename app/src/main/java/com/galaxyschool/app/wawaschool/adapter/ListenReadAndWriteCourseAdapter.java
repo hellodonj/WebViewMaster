@@ -27,6 +27,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
     private List<ResourceInfoTag> list;
     private HashMap<Integer, View> viewMap = new HashMap<>();
     private int taskType;
+    private boolean showCheckType = false;
 
     public ListenReadAndWriteCourseAdapter(Context context,
                                            List<ResourceInfoTag> list,
@@ -38,6 +39,10 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         this.openListener = openListener;
         this.taskType = taskType;
         this.list = list;
+    }
+
+    public void setShowCheckType(boolean showCheckType) {
+        this.showCheckType = showCheckType;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
                 //完成方式
                 holder.completionTitle.setText(R.string.str_complete_method);
-            } else if (taskType == StudyTaskType.TASK_ORDER) {
+            } else if (taskType == StudyTaskType.TASK_ORDER && showCheckType) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
                 //自动批阅
                 holder.rellTypeBtnRB.setText(context.getString(R.string.str_auto_mark));
@@ -82,6 +87,14 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.multiTypeBtnRB.setText(context.getString(R.string.str_manual_marking));
                 //批阅方式
                 holder.completionTitle.setText(R.string.str_mark_method);
+            } else if(taskType == StudyTaskType.Q_DUBBING) {
+                holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+                //按句配音
+                holder.rellTypeBtnRB.setText(context.getString(R.string.str_dubbing_by_sentence));
+                //通篇配音
+                holder.multiTypeBtnRB.setText(context.getString(R.string.str_dubbing_by_whole));
+                //配音类型
+                holder.completionTitle.setText(context.getString(R.string.str_dubbing_type));
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
                 //复述课件
@@ -111,7 +124,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.courseImageView.setImageResource(R.drawable.add_course_icon);
             holder.evalTextView.setVisibility(View.GONE);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE
-                    || taskType == StudyTaskType.TASK_ORDER) {
+                    || (taskType == StudyTaskType.TASK_ORDER && showCheckType)
+                    || taskType == StudyTaskType.Q_DUBBING) {
                 holder.rightLayout.setVisibility(View.GONE);
                 holder.completeType.setVisibility(View.GONE);
             }
@@ -125,9 +139,13 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.evalTextView.setVisibility(View.VISIBLE);
                 holder.rellTypeBtnRB.setVisibility(View.VISIBLE);
                 holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
+            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                holder.evalTextView.setVisibility(View.GONE);
+                holder.rellTypeBtnRB.setVisibility(View.VISIBLE);
+                holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
             } else {
                 holder.evalTextView.setVisibility(View.GONE);
-                if (taskType == StudyTaskType.TASK_ORDER){
+                if ((taskType == StudyTaskType.TASK_ORDER && showCheckType)){
                     holder.rellTypeBtnRB.setVisibility(View.GONE);
                     holder.multiTypeBtnRB.setVisibility(View.VISIBLE);
                 } else {
@@ -137,7 +155,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             }
 
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE
-                    || taskType == StudyTaskType.TASK_ORDER) {
+                    || (taskType == StudyTaskType.TASK_ORDER && showCheckType)
+                    || taskType == StudyTaskType.Q_DUBBING) {
                 holder.title.setText(info.getTitle());
                 holder.rightLayout.setVisibility(View.VISIBLE);
                 holder.completeType.setVisibility(View.VISIBLE);
@@ -145,12 +164,16 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                     if (checkedId == R.id.rb_retell_course){
                         if (taskType == StudyTaskType.TASK_ORDER){
                             info.setResPropertyMode(1);
+                        } else if (taskType == StudyTaskType.Q_DUBBING) {
+                            info.setResPropType(2);
                         } else {
                             info.setCompletionMode(1);
                         }
                     } else if (checkedId == R.id.rb_multi_type){
                         if (taskType == StudyTaskType.TASK_ORDER){
                             info.setResPropertyMode(2);
+                        } else if (taskType == StudyTaskType.Q_DUBBING) {
+                            info.setResPropType(3);
                         } else {
                             info.setCompletionMode(2);
                         }
@@ -159,6 +182,9 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 });
                 if (taskType == StudyTaskType.TASK_ORDER){
                     holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
+                            R.id.rb_multi_type);
+                } else if (taskType == StudyTaskType.Q_DUBBING) {
+                    holder.radioGroup.check(info.getResPropType() == 2 ? R.id.rb_retell_course :
                             R.id.rb_multi_type);
                 } else {
                     holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :

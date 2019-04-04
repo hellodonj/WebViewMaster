@@ -68,7 +68,6 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
     public boolean isWXpay = true;
     public int coinNum;
     private PayWay mPayWay = PayWay.WechatPay;
-    private String maxCount;
     private LinearLayout llWx;
     private LinearLayout llAli;
 
@@ -169,35 +168,38 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
             @Override
             public void afterTextChanged(Editable s) {
 
-                if (TextUtils.isEmpty(s.toString())) {
-                    coinNum = 0;
+                String text = s.toString();
+
+                if (TextUtils.isEmpty(text)) {
                     tvCost.setText("0");
                     return;
                 }
 
-
-                if (s.toString().length() > 6) {
-                    ToastUtil.showToast(ChargeCenterActivity.this, R.string.wrong_input_count);
-                    etCount.setText(maxCount);
-                    etCount.setSelection(maxCount.length());
-                    coinNum = Integer.valueOf(maxCount);
-                    tvCost.setText(maxCount);
+                //输入多于1个0不允许输入
+                if (text.startsWith("0") && text.length() > 1) {
+                    text = text.substring(0, 1);
+                    etCount.setText(text);
+                    etCount.setSelection(text.length());
                     return;
                 }
 
-                tvCost.setText(s.toString());
-
-                coinNum = Integer.valueOf(s.toString());
-
-                maxCount = s.toString();
-
-
-                for (int i = 0; i < chargeList.size(); i++) {
-                    NormalChargeInfo info = chargeList.get(i);
-
-                    info.isSelected = false;
+                //输入超过6位数截断
+                if (text.length() > 6) {
+                    text = text.substring(0, 6);
+                    ToastUtil.showToast(ChargeCenterActivity.this, R.string.wrong_input_count);
+                    etCount.setText(text);
+                    etCount.setSelection(text.length());
+                    tvCost.setText(text);
+                    return;
                 }
 
+                tvCost.setText(text);
+
+                coinNum = 0;
+                for (int i = 0; i < chargeList.size(); i++) {
+                    NormalChargeInfo info = chargeList.get(i);
+                    info.isSelected = false;
+                }
                 adapter.notifyDataSetChanged();
             }
         });
@@ -277,7 +279,9 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
 
     private void payConfirm() {
 
-        if (coinNum == 0) {
+        int coinCount = coinNum != 0 ? coinNum : getCoinCount();
+
+        if (coinCount == 0) {
             ToastUtil.showToast(this, "充值数量不能为空");
             return;
         }
@@ -293,7 +297,7 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("buyerId", UserHelper.getUserId());
         requestVo.addParams("memberId", mUser.getMemberId());
-        requestVo.addParams("coinNum", coinNum);
+        requestVo.addParams("coinNum", coinCount);
         // requestVo.addParams("realName", UserHelper.getUserName());
         // requestVo.addParams("userName", UserHelper.getAccount());
         requestVo.addParams("payType", isWXpay ? 2 : 1);
@@ -340,6 +344,15 @@ public class ChargeCenterActivity extends MyBaseActivity implements View.OnClick
             }
         });
 
+    }
+
+    private int getCoinCount() {
+        int coinCount = 0;
+        String coinCountStr = etCount.getText().toString().trim();
+        if (!TextUtils.isEmpty(coinCountStr) && TextUtils.isDigitsOnly(coinCountStr)) {
+            coinCount = Integer.valueOf(coinCountStr);
+        }
+        return coinCount;
     }
 
     private void doPay(int recordId) {

@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import cn.robotpen.pen.IRemoteRobotService;
 import cn.robotpen.pen.model.RemoteState;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.AnswerParsingActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -29,6 +30,7 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionData;
 import com.galaxyschool.app.wawaschool.pojo.CourseSectionDataListResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
@@ -66,10 +68,11 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	public final static String COURSE_SECTION_DATA_STRING="course_section_data_string";
 	public final static String COURSE_FROM_TYPE="course_from_type";
 	public final static String MODEL_SOURCE_FROM = "model_source_from";
-
+	public final static String IS_FROM_TEACHER_MARK = "is_from_teacher_mark";
 	public final static String EXTRA_EXERCISE_STRING = "exerciseString";
 	public final static String EXTRA_EXERCISE_ANSWER_STRING = "exerciseAnswerString";
 	public final static String EXTRA_PAGE_INDEX = "pageIndex";
+	public final static String EXTRA_PAGE_LIST_STRING = "pageListString";
 	public final static String EXTRA_EDIT_EXERCISE = "editExercise";
 	public final static String EXTRA_EXERCISE_INDEX = "exerciseIndex";
 
@@ -86,6 +89,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 	private int mUserType;
 	private boolean isFromMoocModel;
 	private ExerciseAnswerCardParam cardParam;
+	private boolean isTeacherMark;
 	private Handler mHandler = new Handler();
 
 	protected void setUserType(int roleType) {
@@ -107,7 +111,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 		fromType = getIntent().getIntExtra(SlideWawaPageActivity.COURSE_FROM_TYPE,0);
 		isFromMoocModel = getIntent().getBooleanExtra(MODEL_SOURCE_FROM,false);
 		cardParam = (ExerciseAnswerCardParam) getIntent().getSerializableExtra(ExerciseAnswerCardParam.class.getSimpleName());
-
+		isTeacherMark = getIntent().getBooleanExtra(IS_FROM_TEACHER_MARK,false);
 		int mCurrentOrientation = getResources().getConfiguration().orientation;
 		if (mOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 				&& mCurrentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -151,7 +155,12 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 					setUserType(RoleType.ROLE_TYPE_TEACHER);
 				} else if (cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT){
 					setUserType(RoleType.ROLE_TYPE_STUDENT);
+				} else if (cardParam.getMarkModel() != null){
+					//学生申请批阅
+					setUserType(RoleType.ROLE_TYPE_STUDENT);
 				}
+			} else if (isTeacherMark) {
+				setUserType(RoleType.ROLE_TYPE_TEACHER);
 			} else {
 				setUserType(RoleType.ROLE_TYPE_STUDENT);
 			}
@@ -166,6 +175,7 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 			mSlideManager.setEditExercise(editExercise);
 			mSlideManager.setExerciseIndex(getIntent().getIntExtra(EXTRA_EXERCISE_INDEX, 0));
 			mSlideManager.setPageIndex(getIntent().getIntExtra(EXTRA_PAGE_INDEX, 0));
+			mSlideManager.setPageListString(getIntent().getStringExtra(EXTRA_PAGE_LIST_STRING));
 			mSlideManager.setExerciseNodeClickListener(this);
 			mSlideManager.getExerciseNodeManager().setExerciseString(
 					getIntent().getStringExtra(EXTRA_EXERCISE_STRING));
@@ -399,7 +409,12 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 
 	@Override
 	public void onExerciseNodeClick(int exerciseIndex) {
-
+		if (cardParam == null){
+			return;
+		}
+		List<ExerciseItem> exerciseItems = cardParam.getQuestionDetails();
+		cardParam.setQuestionDetails(exerciseItems);
+		AnswerParsingActivity.start(this,this.cardParam,exerciseIndex,true,true);
 	}
 
 	protected void reviewExerciseDetails(int exerciseIndex) {

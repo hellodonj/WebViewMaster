@@ -6,6 +6,10 @@ package com.lqwawa.intleducation.factory.event;
  */
 public abstract class EventConstant {
 	/**
+	 * 刷新列表的EVENT
+	 */
+	public static final String TRIGGER_UPDATE_LIST_DATA = "TRIGGER_UPDATE_LIST_DATA";
+	/**
 	 * 学习任务选择学程馆,班级学程资源的Event
 	 */
 	public static final String COURSE_SELECT_RESOURCE_EVENT = "COURSE_SELECT_RESOURCE_EVENT";
@@ -43,5 +47,18 @@ public abstract class EventConstant {
 	 * 退出课程
 	 */
 	public static final String TRIGGER_EXIT_COURSE = "TRIGGER_EXIT_COURSE";
+
+	/**
+	 * 触发切换模式
+	 */
+	public static final String TRIGGER_SWITCH_APPLICATION_MODE = "TRIGGER_SWITCH_APPLICATION_MODE";
+
+
+	/**
+	 * 帮辅关注状态的更新
+	 */
+	public static final String TRIGGER_ATTENTION_TUTORIAL_UPDATE = "TRIGGER_ATTENTION_TUTORIAL_UPDATE";
+
+
 
 }

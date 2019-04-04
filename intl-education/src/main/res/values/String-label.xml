@@ -65,6 +65,12 @@
         <item>Discussion</item>
     </string-array>
 
+    <string-array name="label_lecture_lesson_task_tab_array">
+        <item>Task Requirement</item>
+        <item>Rehearsing List</item>
+        <item>Discussion</item>
+    </string-array>
+
 
     <string name="label_course_learning_progress_percent">%d%%</string>
     <!--占位图-->
@@ -335,6 +341,113 @@
     <string name="label_assigned">[Assigned]</string>
     <string name="label_unset_choose_subject">Subject not set, please select subject</string>
     <string name="label_choose_subject">Select Subject</string>
+
+    <!--V5.15字符串信息-->
+    <string name="label_add_tutorial">+Tutor</string>
+    <string name="label_add_tutorial_line">Add Tutor</string>
+    <string name="label_add_tutorial_lines">Add\nTutor</string>
+    <string name="label_un_mark">Unmarked</string>
+    <string name="label_have_mark">Marked</string>
+    <string name="label_watch_task_requirement">View Task Requirement</string>
+    <string name="label_task_type_template">"[%s]"</string>
+    <string name="label_user_name">Name*:</string>
+    <string name="label_user_name_hint">Please enter name</string>
+    <string name="label_phone_number">Mobile number:</string>
+    <string name="label_phone_number_hint">Please enter mobile number</string>
+    <string name="label_verification_code">Verification code:</string>
+    <string name="label_verification_code_hint">Please enter verification code</string>
+    <string name="label_get_verification_code">Obtain Verification Code</string>
+    <string name="label_identify_type">Type of identity*:</string>
+    <string name="label_identify_card">Identity Card</string>
+    <string name="label_identify_passport">Passport</string>
+    <string name="label_identify_number">ID number*:</string>
+    <string name="label_identify_number_hint">Please enter ID number</string>
+    <string name="label_please_input_valid_card_hint">Please enter a valid ID number</string>
+    <string name="label_please_input_valid_passport_hint">Please enter a valid passport number</string>
+    <string name="label_identify_digits">0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM</string>
+    <string name="label_choice_organ">Select institution*:</string>
+    <string name="label_choice_organ_hint">Tutorial Institution on Platform(Institution)</string>
+    <string name="label_your_address">Your address*:</string>
+    <string name="label_province">Province</string>
+    <string name="label_city">City</string>
+    <string name="label_district">District</string>
+    <string name="label_mark_price">Marking price*:</string>
+    <string name="label_mark_price_tip">Please enter marking price</string>
+    <string name="label_RMB">Yuan</string>
+    <string name="label_mark_price_hint">*Suggested price, modifiable</string>
+    <string name="label_work_period">Years of working:</string>
+    <string name="label_work_period_hint">Please enter years of working</string>
+    <string name="label_person_academic_certificate">Academic certificate:</string>
+    <string name="label_business_certificate">Professional certificate:</string>
+    <string name="label_upload">Upload</string>
+    <string name="label_submit_apply">Apply</string>
+    <string name="label_upload_completed">Uploaded successfully</string>
+    <string name="label_telephone_hot_line">Hot-line: %s</string>
+    <string name="label_apply_for_have_commit">Application submitted</string>
+    <string name="label_applying_for">Waiting approval</string>
+    <string name="label_tutorial_space">Tutor Space</string>
+    <string name="label_course_box">My Course</string>
+    <string name="label_tutorial_work">Homework</string>
+    <string name="label_tutorial_student">Student</string>
+    <string name="label_tutorial_course">Course</string>
+    <string name="label_tutorial_organ">Institution</string>
+    <string name="label_student_work">My Homework</string>
+    <string name="label_student_tutorial">My Tutor</string>
+    <string name="label_student_course">My Tutorial</string>
+    <string name="label_student_live">My Class</string>
+    <string name="label_my">My</string>
+    <string name="label_tutorial_student_review_count">%d unmarked</string>
+    <string name="label_viewer_count">%d viewers</string>
+    <string name="label_attention_count">%d followers</string>
+    <string name="label_personal_introduce">Introduction</string>
+    <string name="label_showing">Show</string>
+    <string name="label_hide">Shield</string>
+    <string name="label_tutorial_group">Tutors</string>
+    <string name="label_watch_more_tutorial_group">More Tutors</string>
+    <string name="label_tutorial_free">Limited time free</string>
+    <string name="label_placeholder_task_have_mark">%d tasks marked</string>
+    <string name="label_added_tutorial_succeed">Tutor added</string>
+    <string name="label_added_tutorial_failed">Adding failed</string>
+    <string name="label_new_work">Latest Homework</string>
+    <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
+    <string name="label_choice_tutor_tip">Please select tutor</string>
+    <string name="label_commit_succeed">Submitted successfully</string>
+    <string name="label_commit_succeed_tip">Homework submitted to teacher %s, marking will be completed within 2 working days, please wait.</string>
+    <string name="label_again_submit">Continue to submit</string>
+    <string name="label_watch_work">View Homework</string>
+    <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
+    <string name="label_please_apply_to_be_tutorial">Please apply to be tutor first</string>
+    <string name="label_course_tutor_apply_for">Apply successfully, waiting approval!</string>
+    <string name="label_input_province_tip">Please select province</string>
+    <string name="label_input_city_tip">Please select city</string>
+    <string name="label_input_district_tip">Please select district</string>
+    <string name="label_upload_academic_certificate_tip">Please upload academic certificate</string>
+    <string name="label_upload_business_certificate_tip">Please upload professional certificate</string>
+    <string name="label_user_works">%s\'s homework</string>
+    <string name="label_committed_works">Homework submitted to %s</string>
+    <string name="label_upload_again">Re-upload</string>
+    <string name="label_lecture_course">Expository Course</string>
+    <string name="label_trial_lecture">Rehearse</string>
+    <string name="label_placeholder_book">%s</string>
+    <string name="label_personal_qrcode">Personal QR Code</string>
+    <string name="label_please_update_marking_price_range">Please enter a valid marking price</string>
+    <string name="label_placeholder_tutorial_group_teacher">Teacher %s</string>
+    <!--<string name="label_null_tutorial_introduces">&#060;p style=\"font-size:24;\"&#062;&#060;center&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;center&#062;&#060;&#047;p&#062;</string>-->
+    <!--<string name="label_null_tutorial_introduces">&#060;div style=\"font:48px; text-align:center;\"&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;div&#062;</string>-->
+    <string name="label_null_tutorial_introduces">Login on www.lqwawa.com, enter Personal Space &#062; My Information to edit introduction</string>
+    <string name="label_auditing">Pending</string>
+    <string name="label_audit_reject">Rejected</string>
+    <string name="label_audit">Applications</string>
+
+    <string-array name="label_tutorial_group_tabs">
+        <item>Latest</item>
+        <item>Hot</item>
+    </string-array>
+
+    <string-array name="label_tutorial_page_tabs">
+        <item>Tutorial Course</item>
+        <item>Student Comment</item>
+    </string-array>
 
     <string-array name="label_online_class_details_tabs">
         <item>Introduction</item>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#282828</color>
+    <color name="colorPrimaryDark">#282828</color>
+
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="subtitle_edit_text_cursor">#ff902a2e</color>
+    <color name="bottom_bg">#e6e6e6</color>
+    <color name="blue_bg">#0ea2f8</color>
+    <color name="progress_bg">#d8d8d8</color>
+    <color name="progress_complete_bg">#0d9541</color>
+</resources>

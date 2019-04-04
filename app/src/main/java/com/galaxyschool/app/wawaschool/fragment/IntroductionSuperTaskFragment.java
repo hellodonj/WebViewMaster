@@ -113,6 +113,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private boolean isHistoryClass;
     private String taskFileName;
     private boolean isFromMoocIntroTask;
+    private int airClassId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_introduction_super_task, null);
@@ -168,6 +169,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 isReporter = homeworkListInfo.isOnlineReporter();
                 isHost = homeworkListInfo.isOnlineHost();
                 isOnlineSuperTaskDetail = true;
+                airClassId = homeworkListInfo.getAirClassId();
             }
             roleType = bundle.getInt("roleType");
             TaskId = bundle.getString("TaskId");
@@ -395,9 +397,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             textView = (TextView) view.findViewById(R.id.tv_task_count);
                             if (textView != null) {
                                 int num = data.getThirdTaskCount();
-                                if (num == 0
-                                        || data.getType() == StudyTaskType.WATCH_WAWA_COURSE
-                                        || data.getType() == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                if (num == 0) {
                                     textView.setVisibility(View.GONE);
                                 } else {
                                     textView.setVisibility(View.VISIBLE);
@@ -411,7 +411,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                             //删除
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
-                            if (lookStudentTaskFinish){
+                            if (lookStudentTaskFinish || isPick){
                                 if (deleteView != null) {
                                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
                                             .getLayoutParams();
@@ -466,11 +466,13 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         HomeworkListInfo data = (HomeworkListInfo) holder.data;
                         data.setOnlineReporter(isReporter);
                         data.setOnlineHost(isHost);
+                        data.setAirClassId(airClassId);
                         data.setTaskId(String.valueOf(data.getId()));
                         if (data.getType() == StudyTaskType.RETELL_WAWA_COURSE
                                 || data.getType() == StudyTaskType.TASK_ORDER
                                 || data.getType() == StudyTaskType.WATCH_HOMEWORK
-                                || data.getType() == StudyTaskType.SUBMIT_HOMEWORK) {
+                                || data.getType() == StudyTaskType.SUBMIT_HOMEWORK
+                                || data.getType() == StudyTaskType.Q_DUBBING) {
                             data.setIsSuperChildTask(true);
                             data.setTaskType(StudyTaskType.LISTEN_READ_AND_WRITE + "");
                             if (lookStudentTaskFinish) {
@@ -567,9 +569,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             if (textView != null) {
                                 List<LookResDto> resDtos = data.getLookResDtoList();
                                 if (resDtos == null
-                                        || resDtos.size() == 0
-                                        || data.getTaskType() == StudyTaskType.WATCH_WAWA_COURSE
-                                        || data.getTaskType() == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                        || resDtos.size() == 0) {
                                     textView.setVisibility(View.GONE);
                                 } else {
                                     textView.setVisibility(View.VISIBLE);
@@ -717,6 +717,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE || taskType == StudyTaskType
                 .WATCH_WAWA_COURSE) {
             return getString(R.string.look_through_courseware);
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            return getString(R.string.str_q_dubbing);
         }
         return "";
     }
@@ -990,6 +992,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             param.put("IsDistribute",true);
         }
         if (isPick) {
+            param.put("IsDistribute",true);
             param.put("StudentId", getMemeberId());
         } else if (lookStudentTaskFinish) {
             param.put("StudentId", sortStudentId);

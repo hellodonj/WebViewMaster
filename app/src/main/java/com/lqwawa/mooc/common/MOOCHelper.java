@@ -2,21 +2,30 @@ package com.lqwawa.mooc.common;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
+import com.galaxyschool.app.wawaschool.CaptureActivity;
+import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
+import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
+import com.galaxyschool.app.wawaschool.common.DateUtils;
+import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -29,6 +38,7 @@ import com.galaxyschool.app.wawaschool.fragment.CheckMarkFragment;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
+import com.galaxyschool.app.wawaschool.helper.PushOpenResourceHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkResult;
@@ -38,9 +48,11 @@ import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfoCode;
+import com.galaxyschool.app.wawaschool.pojo.PushMessageInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
@@ -49,22 +61,32 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.slide.CreateSlideHelper;
 import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
 import com.libs.gallery.ImageInfo;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.utils.StringUtils;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
+import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 import com.osastudio.common.utils.TimerUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,14 +103,26 @@ public class MOOCHelper {
     public static void init(UserInfo userInfo) {
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
         TaskSliderHelper.onWorkCartListener = onWorkCartListener;
+        TaskSliderHelper.onTutorialMarkingListener = onTutorialMarkingListener;
         UserInfoVo userInfoVo = new UserInfoVo();
         userInfoVo.setUserId(userInfo.getMemberId());
         userInfoVo.setAccount(userInfo.getNickName());
         userInfoVo.setUserName(StringUtils.isValidString(userInfo.getRealName())
                 ? userInfo.getRealName() : userInfo.getNickName());
         userInfoVo.setThumbnail(userInfo.getHeaderPic());
-        userInfoVo.setRoles(userInfo.getRoles());
+        if (TextUtils.isEmpty(userInfo.getAllRoles())){
+            userInfoVo.setRoles(userInfo.getRoles());
+        } else {
+            userInfoVo.setRoles(userInfo.getAllRoles());
+        }
         userInfoVo.setSchoolIds(getSchoolsFromUserInfo(userInfo));
+        MainApplication.setIsAssistant(userInfo.isAssistant());
+
+
+        if(EmptyUtil.isNotEmpty(userInfo.getSchoolList())){
+            SPUtil.getInstance().put(SharedConstant.KEY_USER_SCHOOL_DATA,JSON.toJSONString(userInfo.getSchoolList()));
+        }
+
         UserHelper.setUserInfo(userInfoVo);
     }
 
@@ -112,11 +146,155 @@ public class MOOCHelper {
         return schoolIds;
     }
 
+    private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener
+            = new TaskSliderHelper.OnTutorialMarkingListener() {
+
+        @Override
+        public void enterOnlineSchoolSpaceActivity(@NonNull Context context, @NonNull String schoolId) {
+            Bundle args = new Bundle();
+            args.putString(SchoolSpaceActivity.EXTRA_SCHOOL_ID, schoolId);
+            Intent intent = new Intent(context, SchoolSpaceActivity.class);
+            intent.putExtras(args);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public void enterTutorialHomePager(@NonNull Context context,
+                                           @NonNull String tutorMemberId,
+                                           @NonNull String tutorName) {
+            // 进入帮辅主页
+            TutorialParams params = new TutorialParams(tutorMemberId,tutorName);
+            TutorialHomePageActivity.show(context, params);
+        }
+
+        @Override
+        public void openAssistanceMark(@NonNull Activity activity,
+                                       @NonNull TaskEntity entity,
+                                       @NonNull @TutorialRoleType.TutorialRoleRes String roleType) {
+            enterAssistanceMarkActivity(activity, entity, roleType);
+        }
+
+        @Override
+        public void openCourseWareDetails(@NonNull Activity activity, boolean isAudition,
+                                          @NonNull String resId, int resType,
+                                          @NonNull String resTitle, int screenType,
+                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl) {
+            if (resType == 23) {
+                NewResourceInfo newResourceInfo = new NewResourceInfo();
+            /*newResourceInfo.setTitle(sectionResListVo.getName());
+            newResourceInfo.setResourceId(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
+            newResourceInfo.setMicroId(sectionResListVo.getResId());
+            newResourceInfo.setScreenType(sectionResListVo.getScreenType());
+            newResourceInfo.setResourceUrl(sectionResListVo.getResourceUrl());*/
+
+                newResourceInfo.setTitle(resTitle);
+                if (resType == -1) {
+                    newResourceInfo.setResourceId(resId);
+                } else {
+                    newResourceInfo.setResourceId(resId + "-" + resType);
+                }
+                newResourceInfo.setMicroId(resId);
+                newResourceInfo.setScreenType(screenType);
+                newResourceInfo.setResourceUrl(resourceUrl);
+
+                newResourceInfo.setIsFromAirClass(true);
+                newResourceInfo.setIsFromSchoolResource(true);
+                newResourceInfo.setCollectionOrigin(activity.getIntent().getStringExtra("schoolId"));
+                PassParamhelper mParam = new PassParamhelper();
+                mParam.isFromLQMOOC = true;
+                mParam.isAudition = isAudition;
+                ActivityUtils.enterTaskOrderDetailActivity(activity, newResourceInfo, mParam);
+            } else {
+                UserInfo userInfo =
+                        ((MyApplication) (MainApplication.getInstance())).getUserInfo();
+                StudyTask task = new StudyTask();
+            /*task.setResId(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
+            task.setResUrl(*//*data.getResourcePath()*//* "");
+            task.setResThumbnailUrl(sectionTaskDetailsVo.getOrigin().getThumbnail());
+            task.setTaskTitle(sectionResListVo.getOriginName());*/
+
+                task.setTaskTitle(resTitle);
+                if (resType == -1) {
+                    task.setResId(resId);
+                } else {
+                    task.setResId(resId + "-" + resType);
+                }
+                task.setResThumbnailUrl(resourceThumbnailUrl);
+                task.setResUrl(resourceUrl);
+
+                task.setCollectSchoolId(activity.getIntent().getStringExtra("schoolId"));
+                PassParamhelper mParam = new PassParamhelper();
+                mParam.isFromLQMOOC = true;
+                mParam.isAudition = isAudition;
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(PassParamhelper.class.getSimpleName(), mParam);
+                CourseOpenUtils.openCourseDetailsDirectly(activity, task,
+                        TextUtils.equals(UserHelper.getUserId(),
+                                activity.getIntent().getStringExtra("memberId"))
+                                ? RoleType.ROLE_TYPE_STUDENT : RoleType.ROLE_TYPE_PARENT,
+                        userInfo.getMemberId(),
+                        activity.getIntent().getStringExtra("memberId"),
+                        userInfo, true, bundle);
+            }
+        }
+
+        /**
+         * 进入申请批阅详情
+         * @param activity 上下文
+         * @param taskEntity 列表的对象
+         */
+        public void enterAssistanceMarkActivity(Activity activity,
+                                                TaskEntity taskEntity,
+                                                @NonNull @TutorialRoleType.TutorialRoleRes String roleType) {
+            if (activity == null || taskEntity == null) {
+                return;
+            }
+            CommitTask commitTask = new CommitTask();
+            commitTask.setHasTutorialPermission(true);
+            commitTask.setIsAssistantMark(true);
+            commitTask.setStudentResId(taskEntity.getResId());
+            commitTask.setStudentResThumbnailUrl(taskEntity.getResThumbnailUrl());
+            commitTask.setStudentResTitle(taskEntity.getTitle());
+            commitTask.setId(taskEntity.getId());
+            commitTask.setStudentId(taskEntity.getStuMemberId());
+            commitTask.setStudentResTitle(taskEntity.getTitle());
+            commitTask.setAirClassId(taskEntity.getT_AirClassId());
+            commitTask.setTaskId(taskEntity.getT_TaskId());
+            if (!TextUtils.isEmpty(taskEntity.getT_EQId())) {
+                commitTask.setEQId(Integer.valueOf(taskEntity.getT_EQId()));
+            }
+            commitTask.setCommitTaskId(taskEntity.getT_CommitTaskId());
+            commitTask.setCommitTaskOnlineId(taskEntity.getT_CommitTaskOnlineId());
+            commitTask.setAssistantRoleType(roleType);
+            StudyTask studyTask = new StudyTask();
+            studyTask.setType(taskEntity.getT_TaskType());
+            studyTask.setClassId(taskEntity.getT_ClassId());
+            studyTask.setClassName(taskEntity.getT_ClassName());
+            studyTask.setCourseId(String.valueOf(taskEntity.getT_CourseId()));
+            studyTask.setCourseName(taskEntity.getT_CourseName());
+            studyTask.setResCourseId(taskEntity.getT_ResCourseId());
+            CheckMarkActivity.start(activity, commitTask, studyTask, taskEntity);
+        }
+
+
+        @Override
+        public void skipMyCourseQuestionWork(Activity activity){
+            backMainActivity(activity);
+        }
+
+        public void backMainActivity(Activity activity) {
+            PushMessageInfo pushMessageInfo = new PushMessageInfo();
+            pushMessageInfo.setPushModuleType(9);
+            PushOpenResourceHelper.getInstance().setContext(activity)
+                    .setPushMessageInfo(pushMessageInfo).open();
+        }
+    };
+
     private static TaskSliderHelper.OnWorkCartListener onWorkCartListener
             = new TaskSliderHelper.OnWorkCartListener() {
         @Override
         public void putResourceToCart(@NonNull ArrayList<SectionResListVo> choiceArray, int taskType) {
-            LqIntroTaskHelper.getInstance().addTask(choiceArray,taskType);
+            LqIntroTaskHelper.getInstance().addTask(choiceArray, taskType);
         }
 
         @Override
@@ -131,14 +309,14 @@ public class MOOCHelper {
 
         @Override
         public void enterIntroTaskDetailActivity(@NonNull Activity activity, @NonNull String schoolId, @NonNull String classId) {
-            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity,schoolId,classId);
+            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity, schoolId, classId);
         }
     };
 
     private static TaskSliderHelper.OnTaskSliderListener onTaskSliderListener
             = new TaskSliderHelper.OnTaskSliderListener() {
         @Override
-        public void doExamTask(Activity activity, String resId, int sourceType) {
+        public void doExamTask(Activity activity, String resId, int sourceType, String name) {
             UIUtils.currentSourceFromType = sourceType;
             doTask(activity, resId);
         }
@@ -207,6 +385,7 @@ public class MOOCHelper {
             UIUtils.currentSourceFromType = sourceType;
             //备注 这里涉及两者对象数据的转化
             CommitTask data = new CommitTask();
+            data.setHasTutorialPermission(task.isTutorialPermission());
             data.setCommitTaskId(studentCommit.getCommitTaskId());
             // 新版本用Id
             data.setCommitTaskId(studentCommit.getId());
@@ -232,6 +411,9 @@ public class MOOCHelper {
             data.setHasCommitTaskReview(studentCommit.isHasCommitTaskReview());
             data.setStudentResUrl(studentCommit.getStudentResUrl());
             data.setTaskScore(studentCommit.getTaskScore());
+            if (!TextUtils.isEmpty(task.getTaskId())) {
+                data.setTaskId(Integer.valueOf(task.getTaskId()));
+            }
             StudyTask studyTask = new StudyTask();
             studyTask.setTaskTitle(task.getTaskName());
             studyTask.setResId(task.getResId());
@@ -240,6 +422,11 @@ public class MOOCHelper {
             studyTask.setResUrl(task.getResourceUrl());
             //把task的scoreRule拿出来赋值
             studyTask.setScoringRule(scoringRule);
+            studyTask.setType(task.getLqwawaType());
+            studyTask.setCourseId(task.getCourseId());
+            studyTask.setCourseName(task.getCourseName());
+            studyTask.setClassId(task.getClassId());
+            studyTask.setClassName(task.getClassName());
             if (isCheckMark) {
                 //查看批阅
                 enterCheckMarkDetail(activity, data, studyTask, roleType, isAudition);
@@ -280,7 +467,25 @@ public class MOOCHelper {
                                                 String studentName,
                                                 String studentId,
                                                 int commitTaskId,
-                                                String taskScoreRemark) {
+                                                String taskScoreRemark,
+                                                @NonNull String courseId,
+                                                @NonNull String courseName,
+                                                String classId,
+                                                String className,
+                                                boolean isTutorialPermission) {
+            QuestionResourceModel markModel = new QuestionResourceModel();
+            markModel.setTitle(commitTaskTitle);
+            if (!TextUtils.isEmpty(taskId)) {
+                markModel.setT_TaskId(Integer.valueOf(taskId));
+            }
+            markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
+            markModel.setT_CommitTaskOnlineId(commitTaskId);
+//            markModel.setT_ClassId(classId);
+//            markModel.setT_ClassName(className);
+            markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
+            markModel.setT_CourseName(courseName);
+            markModel.setT_CourseId(courseId);
+
             ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
             cardParam.setExerciseTotalScore(exerciseTotalScore);
             cardParam.setResId(resId);
@@ -297,6 +502,21 @@ public class MOOCHelper {
             cardParam.setIsOnlineHost(isOnlineHost);
             cardParam.setFromOnlineStudyTask(true);
             cardParam.setTaskScoreRemark(taskScoreRemark);
+            cardParam.setMarkModel(markModel);
+            CommitTask data = new CommitTask();
+            data.setStudentResTitle(commitTaskTitle);
+            if (!TextUtils.isEmpty(taskId)) {
+                data.setTaskId(Integer.valueOf(taskId));
+            }
+            data.setCommitTaskOnlineId(commitTaskId);
+            data.setStudentId(studentId);
+            data.setHasTutorialPermission(isTutorialPermission);
+            cardParam.setCommitTask(data);
+            StudyTask studyTask = new StudyTask();
+            studyTask.setCourseId(courseId);
+            studyTask.setCourseName(courseName);
+            studyTask.setType(StudyTaskType.TASK_ORDER);
+            cardParam.setStudyTask(studyTask);
             AnswerCardDetailActivity.start(activity, cardParam);
         }
 
@@ -321,7 +541,23 @@ public class MOOCHelper {
                                    String className,
                                    String studentName,
                                    int commitTaskId,
-                                   boolean isDoExercise) {
+                                   boolean isDoExercise,
+                                   @NonNull String CourseId,
+                                   @NonNull String courseName,
+                                   boolean isTutorialPermission) {
+            QuestionResourceModel markModel = new QuestionResourceModel();
+            markModel.setTitle(taskTitle);
+            if (!TextUtils.isEmpty(TaskId)) {
+                markModel.setT_TaskId(Integer.valueOf(TaskId));
+            }
+            markModel.setT_TaskType(StudyTaskType.TASK_ORDER);
+            markModel.setT_CommitTaskOnlineId(commitTaskId);
+//            markModel.setT_ClassId(classId);
+//            markModel.setT_ClassName(className);
+            markModel.setStuMemberId(DemoApplication.getInstance().getMemberId());
+            markModel.setT_CourseName(courseName);
+            markModel.setT_CourseId(CourseId);
+
             DoTaskOrderHelper.openExerciseDetail(activity,
                     exerciseString,
                     TaskId,
@@ -335,9 +571,10 @@ public class MOOCHelper {
                     studentName,
                     commitTaskId,
                     true,
-                    isDoExercise);
+                    isDoExercise,
+                    markModel,
+                    isTutorialPermission);
         }
-
 
         /**
          * @param sourceCourseResId
@@ -630,6 +867,9 @@ public class MOOCHelper {
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEREPORTER, roleType == RoleType.ROLE_TYPE_TEACHER);
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEHOST, roleType == RoleType
                 .ROLE_TYPE_EDITOR);
+        if (data != null) {
+            bundle.putSerializable(CheckMarkFragment.Constants.COMMIT_TASK, data);
+        }
         if (!(roleType == RoleType.ROLE_TYPE_VISITOR)) {
             bundle.putSerializable(CheckMarkFragment.Constants.ACTION_TASKMARKPARAM,
                     new TaskMarkParam(
@@ -671,8 +911,9 @@ public class MOOCHelper {
                             isNeedMark = false;
                         }
                         if (result.getModel().size() > 0) {
-                            openCourse(activity, data, task, isNeedMark, result.getModel().get(0)
-                                    .getResId(), roleType);
+                            List<CheckMarkInfo.ModelBean> list = result.getModel();
+                            Collections.sort(list, (o1, o2) -> DateUtils.compareDate(o2.getCreateTime(), o1.getCreateTime(), DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS));
+                            openCourse(activity, data, task, isNeedMark, list.get(0).getResId(), roleType);
                         } else {
                             openCourse(activity, data, task, isNeedMark, null, roleType);
                         }

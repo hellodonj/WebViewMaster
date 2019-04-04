@@ -323,6 +323,12 @@
                                 android:text="@string/label_teach_class"/>
 
                             <RadioButton
+                                android:id="@+id/rb_tutorial_group"
+                                style="@style/CourseRadioButton"
+                                android:drawableTop="@drawable/rb_icon_exam"
+                                android:text="@string/label_tutorial_group" />
+
+                            <RadioButton
                                 android:id="@+id/rb_course_comment"
                                 style="@style/CourseRadioButton"
                                 android:drawableTop="@drawable/rb_icon_scoring_criteria"
@@ -478,6 +484,12 @@
                     style="@style/CourseRadioButton"
                     android:drawableTop="@drawable/bg_course_detail_online_selector"
                     android:text="@string/label_teach_class"/>
+
+                <RadioButton
+                    android:id="@+id/rb_tutorial_group_f"
+                    style="@style/CourseRadioButton"
+                    android:drawableTop="@drawable/rb_icon_exam"
+                    android:text="@string/label_tutorial_group" />
 
                 <RadioButton
                     android:id="@+id/rb_course_comment_f"

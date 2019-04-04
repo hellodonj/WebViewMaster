@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -24,6 +26,7 @@ import com.galaxyschool.app.wawaschool.course.SlideActivityNew;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.MaterialType;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
@@ -32,6 +35,7 @@ import com.libs.yilib.pickimages.PickMediasActivity;
 import com.libs.yilib.pickimages.PickMediasFragment;
 import com.libs.yilib.pickimages.PickMediasParam;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.tools.ResourceUtils;
 import com.oosic.apps.iemaker.base.BaseSlideManager;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -435,10 +439,13 @@ public class CreateSlideHelper {
 				BaseSlideManager.MENU_ID_PAGE_HORN_AUDIO,
 				BaseSlideManager.MENU_ID_PERSONAL_MATERIAL
 		};
-		if (param.cardParam != null && (param.cardParam.isOnlineHost() || param.cardParam.isOnlineReporter())) {
-			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
-			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
-		}
+//		if (param.cardParam != null && (param.cardParam.isOnlineHost() || param.cardParam.isOnlineReporter())) {
+//			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
+//			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+//		} else if (param.isTeacherMark) {
+//			rayMenuV = Arrays.copyOf(rayMenuV, rayMenuV.length + 1);
+//			rayMenuV[rayMenuV.length - 1] = BaseSlideManager.MENU_ID_SCHOOL_MATERIAL;
+//		}
 		if (param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_COURSE
 				&& param.fromType != SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_OTHER_COURSE
 				&& !param.mIsIntroducationTask) {
@@ -452,7 +459,7 @@ public class CreateSlideHelper {
 			}
 		}
     	slideInputParam.mRayMenusV = rayMenuV;
-		if (param.cardParam != null){
+		if (param.cardParam != null || param.isTeacherMark){
 		    //任务单答题卡批阅加T
             int[] rayMenuH = {
                     BaseSlideManager.MENU_ID_TEXT_POINTER,
@@ -487,6 +494,23 @@ public class CreateSlideHelper {
 		it.putExtra(SlideWawaPageActivity.COURSE_SECTION_DATA_STRING, param.courseSectionDataString);
 		it.putExtra(SlideWawaPageActivity.MODEL_SOURCE_FROM,param.isFromMoocModel);
 		it.putExtra(ExerciseAnswerCardParam.class.getSimpleName(),param.cardParam);
+		it.putExtra(SlideWawaPageActivity.IS_FROM_TEACHER_MARK,param.isTeacherMark);
+		if (param.cardParam != null && param.cardParam.getMarkModel() != null && !param.cardParam.isSubjectAssistant()) {
+			it.putExtra(SlideWawaPageActivity.EXTRA_EDIT_EXERCISE,true);
+			if (!TextUtils.isEmpty(param.cardParam.getExerciseAnswerString())) {
+				JSONArray jsonArray = JSONObject.parseArray(param.cardParam.getExerciseAnswerString());
+				if (jsonArray != null && jsonArray.size() > 0) {
+					JSONObject jsonObject = jsonArray.getJSONObject(0);
+					it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_STRING,jsonObject.toString());
+				}
+			}
+			if (!TextUtils.isEmpty(param.cardParam.getStudentCommitAnswerString())) {
+				it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_ANSWER_STRING,param.cardParam.getStudentCommitAnswerString());
+			}
+			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_INDEX,param.cardParam.getPageIndex());
+			it.putExtra(SlideWawaPageActivity.EXTRA_EXERCISE_INDEX, param.cardParam.getExerciseIndex());
+			it.putExtra(SlideWawaPageActivity.EXTRA_PAGE_LIST_STRING, param.cardParam.getPageListString());
+		}
     	return it;
     }
     
@@ -574,6 +598,7 @@ public class CreateSlideHelper {
         extras.putInt(PlaybackActivity.PLAYBACK_TYPE, BaseUtils.RES_TYPE_ONEPAGE);
         extras.putParcelable(SlideInPlaybackParam.class.getSimpleName(), getSlideInPlaybackParam
 				(param.activity, param.isShareScreen, param.orientation));
+        extras.putString(PlaybackActivity.FILE_NAME,param.courseInfo.getNickname());
 		if(param.courseInfo != null) {
 			extras.putParcelable(PlaybackActivity.COURSE_SHARE_DATA, param.courseInfo.toCourseShareData());
 			extras.putParcelable(PlaybackActivity.COURSE_COLLECT_PARAMS, param.courseInfo.getCollectParams());
@@ -583,6 +608,7 @@ public class CreateSlideHelper {
 			//任务单答题卡
 			ExerciseAnswerCardParam cardParam = param.playbackParam.exerciseCardParam;
 			if (cardParam != null) {
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_BUTTON, cardParam.isShowExerciseButton());
 				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,cardParam.isShowExerciseNode());
 				extras.putString(PlaybackActivity.EXTRA_EXERCISE_ANSWER_STRING, cardParam.getStudentCommitAnswerString());
@@ -590,6 +616,15 @@ public class CreateSlideHelper {
 			//指定的pageIndex
 			if (param.playbackParam.pageIndex >= 0){
 				extras.putInt(PlaybackActivity.EXTRA_PAGE_INDEX,param.playbackParam.pageIndex);
+			}
+			PlaybackParam playbackParam = param.playbackParam;
+			if ((playbackParam.isAssistanceModel && playbackParam.EQId > 0)
+					|| (playbackParam.applyMark && playbackParam.applyMarkdata != null && !TextUtils.isEmpty(playbackParam.applyMarkdata.getT_EQId()) && Integer.valueOf(playbackParam.applyMarkdata.getT_EQId()) > 0)){
+				extras.putBoolean(PlaybackActivity.EXTRA_EDIT_EXERCISE,true);
+				extras.putBoolean(PlaybackActivity.EXTRA_SHOW_EXERCISE_NODE,true);
+			}
+			if (playbackParam.taskEntity != null){
+				extras.putSerializable(TaskEntity.class.getSimpleName(),playbackParam.taskEntity);
 			}
 		}
         intent.putExtras(extras);
@@ -685,6 +720,7 @@ public class CreateSlideHelper {
 		public boolean isFromMoocModel;
 		public boolean isFromLqBoard;
 		public ExerciseAnswerCardParam cardParam;
+		public boolean isTeacherMark;
 
 		public CreateSlideParam() {
 

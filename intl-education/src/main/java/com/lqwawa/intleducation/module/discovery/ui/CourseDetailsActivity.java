@@ -52,8 +52,10 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
@@ -63,6 +65,9 @@ import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply.CourseApplyForNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.apply.TutorialCourseApplyForFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.CourseRoute;
@@ -75,6 +80,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.oosic.apps.share.BaseShareUtils;
@@ -192,6 +198,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     OnLoadStatusChangeListener onLoadStatusChangeListener;
     // private ClassroomFragment mClassroomFragment;
     private OnlineClassListFragment mOnlineClassFragment;
+    private TutorialGroupFragment mTutorialGroupFragment;
 
     // 是否是机构主页进来的
     private boolean isSchoolEnter;
@@ -840,6 +847,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // @func   :V5.7修改直播为在线课堂列表
                     mOnlineClassFragment.getMore();
                 }
+
+                if(mTutorialGroupFragment.isVisible()){
+                    mTutorialGroupFragment.getMore();
+                }
+
                 if (courseCommentFragment.isVisible()) {
                     courseCommentFragment.getMore();
                 }
@@ -996,6 +1008,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 pullToRefreshView.onFooterRefreshComplete();
                 if (courseCommentFragment.isVisible()) {
                     pullToRefreshView.setLoadMoreEnable(canLoadMore);
+                }else if(mTutorialGroupFragment.isVisible()){
+                    pullToRefreshView.setLoadMoreEnable(canLoadMore);
                 }
 
                 CourseDetailsActivity.this.canLoadMore = canLoadMore;
@@ -1014,11 +1028,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // @date   :2018/6/8 0008 上午 12:14
         // @func   :V5.7 将直播修改为在线课堂列表
         mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
+        mTutorialGroupFragment = TutorialGroupFragment.newInstance(courseId,mCurMemberId);
         // introductionFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         studyPlanFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         courseCommentFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         // mClassroomFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+        mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
 
         String id = courseId;
         if (courseVo != null) {
@@ -1071,11 +1087,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
         // @func   :V5.9默认先显示课程大纲
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        fragmentTransaction.add(R.id.fragment_container,mTutorialGroupFragment);
         fragmentTransaction.add(R.id.fragment_container, courseCommentFragment);
         fragmentTransaction.hide(courseCommentFragment);
         fragmentTransaction.show(studyPlanFragment);
         // fragmentTransaction.hide(mClassroomFragment);
         fragmentTransaction.hide(mOnlineClassFragment);
+        fragmentTransaction.hide(mTutorialGroupFragment);
         // fragmentTransaction.hide(introductionFragment);
         fragmentTransaction.commit();
 
@@ -1091,6 +1109,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // @date   :2018/6/8 0008 上午 12:23
                     // @func   :将直播换成在线课堂
                     fragmentTransaction.hide(mOnlineClassFragment);
+                    fragmentTransaction.hide(mTutorialGroupFragment);
                     // fragmentTransaction.hide(mClassroomFragment);
                     pullToRefreshView.setLoadMoreEnable(false);
                     /*if (checkedId == R.id.rb_course_introduction) {
@@ -1109,6 +1128,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         fragmentTransaction.show(courseCommentFragment);
                         rg_tab_f.check(R.id.rb_course_comment_f);
                         pullToRefreshView.setLoadMoreEnable(canLoadMore);
+                    }else if(checkedId == R.id.rb_tutorial_group){
+                        fragmentTransaction.show(mTutorialGroupFragment);
+                        rg_tab_f.check(R.id.rb_tutorial_group_f);
+                        pullToRefreshView.setLoadMoreEnable(canLoadMore);
                     }
                     fragmentTransaction.commitAllowingStateLoss();
                 } else if (rg_tab_f.getVisibility() == View.VISIBLE && group.getId() == R.id.rg_tab_f) {
@@ -1121,6 +1144,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // @func   :V5.7将直播换成在线课堂
                     // fragmentTransaction.hide(mClassroomFragment);
                     fragmentTransaction.hide(mOnlineClassFragment);
+                    fragmentTransaction.hide(mTutorialGroupFragment);
                     pullToRefreshView.setLoadMoreEnable(false);
                     /*if (checkedId == R.id.rb_course_introduction_f) {
                         fragmentTransaction.show(introductionFragment);
@@ -1137,6 +1161,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     }else if (checkedId == R.id.rb_course_comment_f) {
                         fragmentTransaction.show(courseCommentFragment);
                         rg_tab.check(R.id.rb_course_comment);
+                        pullToRefreshView.setLoadMoreEnable(canLoadMore);
+                    }else if(checkedId == R.id.rb_tutorial_group_f){
+                        fragmentTransaction.show(mTutorialGroupFragment);
+                        rg_tab.check(R.id.rb_tutorial_group);
                         pullToRefreshView.setLoadMoreEnable(canLoadMore);
                     }
                     fragmentTransaction.commitAllowingStateLoss();
@@ -1217,6 +1245,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         }*/
         if (mOnlineClassFragment.isVisible()) {
             mOnlineClassFragment.onHeaderRefresh();
+        }
+
+        if(mTutorialGroupFragment.isVisible()){
+            mTutorialGroupFragment.onHeaderRefresh();
         }
     }
 
@@ -1306,6 +1338,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
     private void updateView() {
         if (courseVo != null && courseDetailsVo != null) {
+
+            boolean tutorialMode = MainApplication.isTutorialMode();
+            tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
 
             if (isMyCourse && /*mCourseDetailParams.isClassCourseEnter() && */courseDetailsVo.isIsExpire()) {
                 // 班级学程入口进入
@@ -1418,29 +1453,50 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             if (courseVo.getPrice() == 0 || isLqExcellent) {//免费
                 if (courseDetailsVo.isIsJoin()) {
-                    textViewPay.setText(getResources().getString(R.string.to_learn));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.to_learn));
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    textViewPay.setText(getResources().getString(R.string.to_join));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.to_join));
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.to_join));
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 }
             } else {
                 if (courseDetailsVo.isIsBuy() && !courseDetailsVo.isIsExpire()) {
                     if(courseDetailsVo.isIsJoin()){
-                        textViewPay.setText(getResources().getString(R.string.to_learn));
+                        if(!tutorialMode){
+                            textViewPay.setText(getResources().getString(R.string.to_learn));
+                        }else{
+                            textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        }
                         mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     }else{
-                        textViewPay.setText(getResources().getString(R.string.to_join));
+                        if(!tutorialMode){
+                            textViewPay.setText(getResources().getString(R.string.to_join));
+                        }else{
+                            textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        }
                         mBtnEnterPay.setText(UIUtil.getString(R.string.to_join));
                     }
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    textViewPay.setText(getResources().getString(R.string.buy_immediately));
+                    if(!tutorialMode){
+                        textViewPay.setText(getResources().getString(R.string.buy_immediately));
+                        textViewPay.setCompoundDrawables(null,
+                                getResources().getDrawable(R.drawable.ic_pay), null, null);
+                    }else{
+                        textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
+                        textViewPay.setCompoundDrawables(null, null, null, null);
+                    }
                     mBtnEnterPay.setText(UIUtil.getString(R.string.buy_immediately));
-                    textViewPay.setCompoundDrawables(null,
-                            getResources().getDrawable(R.drawable.ic_pay), null, null);
                 }
             }
 
@@ -1451,10 +1507,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // 并且已经授权的
                     // 设置文本
                     // 并且设置Tag
-                    mBtnEnterPay.setTag(1);
-                    textViewPay.setTag(1);
-                    textViewPay.setText(getString(R.string.label_join_course));
-                    mBtnEnterPay.setText(getString(R.string.label_join_course));
+                    if(!tutorialMode) {
+                        mBtnEnterPay.setTag(1);
+                        textViewPay.setTag(1);
+                        textViewPay.setText(getString(R.string.label_join_course));
+                        mBtnEnterPay.setText(getString(R.string.label_join_course));
+                    }
                 }
             }
 
@@ -1527,6 +1585,25 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
+                boolean tutorialMode = MainApplication.isTutorialMode();
+                tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+
+                if(tutorialMode){
+                    // TODO 申请成为课程的帮辅老师
+                    TutorialCourseApplyForFragment.show(
+                            getSupportFragmentManager(),
+                            mCurMemberId, courseId,courseVo.getOrganId(),
+                            courseDetailsVo.getIsOrganTutorStatus(),new CourseApplyForNavigator() {
+                        @Override
+                        public void onCourseTutorEnter(boolean isCourseTutor) {
+                            if(isCourseTutor){
+                                toJoinCourseDetailsActivity();
+                            }
+                        }
+                    });
+                    return;
+                }
+
                 if(id == R.id.btn_enter_pay || id == R.id.pay_tv){
                     if(EmptyUtil.isNotEmpty(view.getTag()) &&
                             view.getTag() instanceof Integer){

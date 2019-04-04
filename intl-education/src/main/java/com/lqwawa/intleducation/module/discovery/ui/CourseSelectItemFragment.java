@@ -46,14 +46,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
-  * ================================================
-  * 作    者：Blizzard-liu
-  * 版    本：1.0
-  * 创建日期：2017/8/10 10:19
-  * 描    述：课程选择---课程列表条目界面
-  * 修订历史：
-  * ================================================
-  */
+ * ================================================
+ * 作    者：Blizzard-liu
+ * 版    本：1.0
+ * 创建日期：2017/8/10 10:19
+ * 描    述：课程选择---课程列表条目界面
+ * 修订历史：
+ * ================================================
+ */
 
 public class CourseSelectItemFragment extends MyBaseFragment {
     private static final String TAG = "CourseSelectItemFragment";
@@ -70,7 +70,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     private FrameLayout mEmptyView;
     OnLoadStatusChangeListener onLoadStatusChangeListener;
     private ResourceSelectListener mListener;
-    private ChapterVo mChapterVo ;
+    private ChapterVo mChapterVo;
     private TopBar topBar;
     private PullToRefreshView pullToRefresh;
     private SectionDetailsVo sectionDetailsVo;
@@ -81,7 +81,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     public static final int KEY_WATCH_COURSE = 9;//看课件
     public static final int KEY_RELL_COURSE = 5;//复述课件
     public static final int KEY_TASK_ORDER = 8;//任务单
-    public static final int KEY_TEXT_BOOK = 13;// 看课本
+    public static final int KEY_TEXT_BOOK = 14;// 看课本 // V5.14兼容Q配音的类型
+    public static final int KEY_LECTURE_COURSE = 15; // 讲解课类型
     public static final String RESULT_LIST = "result_list";
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
@@ -92,8 +93,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_select, container, false);
-        topBar = (TopBar)view.findViewById(R.id.select_top_bar);
-        pullToRefresh = (PullToRefreshView)view.findViewById(R.id.select_pull_to_refresh);
+        topBar = (TopBar) view.findViewById(R.id.select_top_bar);
+        pullToRefresh = (PullToRefreshView) view.findViewById(R.id.select_pull_to_refresh);
         mEmptyView = (FrameLayout) view.findViewById(R.id.empty_layout);
         listView = (SuperListView) view.findViewById(R.id.course_select_listView);
         return view;
@@ -104,25 +105,24 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         super.onActivityCreated(savedInstanceState);
         activity = CourseSelectItemFragment.this.getActivity();
         Bundle arguments = getArguments();
-        mChapterVo  = (ChapterVo) arguments.getSerializable("ChapterVo");
+        mChapterVo = (ChapterVo) arguments.getSerializable("ChapterVo");
         mTaskType = arguments.getInt("tasktype");
         mRealTaskType = arguments.getInt(KEY_EXTRA_REAL_TASK_TYPE);
         mMultipleChoiceCount = arguments.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         isOnlineRelevance = arguments.getBoolean(KEY_EXTRA_ONLINE_RELEVANCE);
         mFilterArray = arguments.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
-        if(EmptyUtil.isEmpty(mReadWeikeHelper)){
+        if (EmptyUtil.isEmpty(mReadWeikeHelper)) {
             mReadWeikeHelper = new ReadWeikeHelper(activity);
         }
         initData();
     }
 
 
-
     public void setOnLoadStatusChangeListener(OnLoadStatusChangeListener listener) {
         onLoadStatusChangeListener = listener;
     }
 
-    public void updateData(){
+    public void updateData() {
         getData();
     }
 
@@ -150,9 +150,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                     ArrayList<SectionResListVo> selectData = (ArrayList<SectionResListVo>)
                             courseResListAdapter.getSelectData();
                     if (selectData.size() <= 0) {
-                        ToastUtil.showToast(activity,getString(R.string.str_select_tips));
+                        ToastUtil.showToast(activity, getString(R.string.str_select_tips));
                     } else {
-                        for (SectionResListVo vo:selectData) {
+                        for (SectionResListVo vo : selectData) {
                             vo.setChapterId(vo.getId());
                         }
                         // 学程馆选取资源使用的
@@ -172,15 +172,15 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             @Override
             public void onHeaderRefresh(PullToRefreshView view) {
 
-                    getData();
+                getData();
 
             }
         });
         pullToRefresh.setLoadMoreEnable(false);
 
         courseResListAdapter = new CourseResListAdapter(activity, false);
-        courseResListAdapter.setCourseSelect(true,mTaskType);
-        courseResListAdapter.setMultipleChoiceCount(true,mMultipleChoiceCount);
+        courseResListAdapter.setCourseSelect(true, mTaskType);
+        courseResListAdapter.setMultipleChoiceCount(true, mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
         listView.setAdapter(courseResListAdapter);
 
@@ -188,12 +188,12 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
-                if(sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4){
+                if (sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4) {
                     // 看课件类型
-                    if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+                    if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                         mReadWeikeHelper.readWeike(sectionResListVo);
                     }
-                }else{
+                } else {
                     if (TaskSliderHelper.onTaskSliderListener != null &&
                             sectionResListVo != null) {
                         TaskSliderHelper.onTaskSliderListener.viewCourse(
@@ -212,10 +212,12 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     }
 
     private int pageIndex = 0;
-    private void getData(){
+
+    private void getData() {
         pageIndex = 0;
         getData(AppConfig.PAGE_SIZE);
     }
+
     private void getData(int pageSize) {
         RequestVo requestVo = new RequestVo();
 
@@ -269,20 +271,19 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
                 for (int i = 0; i < sectionDetailsVo.getTaskList().size(); i++) {
                     int taskType = sectionDetailsVo.getTaskList().get(i).getTaskType();
-
-                        if (sectionDetailsVo.getTaskList().get(i).getData() != null ) {
-
-                            if (mTaskType == KEY_WATCH_COURSE && taskType == 1) {
-                                updateData(i);
-                            } else if (mTaskType == KEY_RELL_COURSE && taskType == 2) {
-                                updateData(i);
-                            } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
-                                updateData(i);
-                            }else if(mTaskType == KEY_TEXT_BOOK && taskType == 4){
-                                updateData(i);
-                            }
-
+                    if (sectionDetailsVo.getTaskList().get(i).getData() != null) {
+                        if (mTaskType == KEY_WATCH_COURSE && taskType == 1) {
+                            updateData(i);
+                        } else if (mTaskType == KEY_RELL_COURSE && taskType == 2) {
+                            updateData(i);
+                        } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
+                            updateData(i);
+                        } else if(mTaskType == KEY_TEXT_BOOK && taskType == 4){
+                            updateData(i);
+                        } else if(mTaskType == KEY_LECTURE_COURSE && taskType == 5){
+                            updateData(i);
                         }
+                    }
                 }
                 courseResListAdapter.notifyDataSetChanged();
             }
@@ -303,30 +304,43 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         List<SectionResListVo> voListNew = new ArrayList<>();
         for (SectionResListVo sectionResListVo : voList) {
             int resType = sectionResListVo.getResType();
-            if(mRealTaskType != CourseSelectItemFragment.KEY_WATCH_COURSE){
-                if(resType > 10000){
+            if (mRealTaskType != CourseSelectItemFragment.KEY_WATCH_COURSE) {
+                if (resType > 10000) {
                     resType -= 10000;
                 }
 
                 // 原本不是看课件类型，是读写单和听读课类型，需要过滤视频音频
-                if(resType == 2 || resType == 3){
+                if (resType == 2 || resType == 3) {
                     // 过滤视频 和 音频
                     continue;
                 }
 
-                if(mRealTaskType == CourseSelectItemFragment.KEY_TASK_ORDER){
+                if (mRealTaskType == CourseSelectItemFragment.KEY_TASK_ORDER) {
                     // 如果显示的是读写单类型，那就需要过滤看课件中的听读课课件
-                    if(resType == 18 || resType == 19){
+                    if (resType == 18 || resType == 19) {
                         // 过滤18,19
                         continue;
                     }
                 }
             }
 
+            if (mRealTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK) {
+                // Q配音的选择
+                if (resType != 30) {
+                    continue;
+                }
+            }
+
+            if(mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
+                    && mTaskType == KEY_LECTURE_COURSE){
+                // 选择复述课件，讲解课的显示
+                // sectionResListVo.setResProperties("");
+            }
+
             if (!sectionResListVo.isIsShield()) {
-                if(isOnlineRelevance && mTaskType == KEY_RELL_COURSE){
+                if (isOnlineRelevance && mTaskType == KEY_RELL_COURSE) {
                     // int resType = sectionResListVo.getResType();
-                    if(EmptyUtil.isNotEmpty(mFilterArray) && mFilterArray.contains(resType)){
+                    if (EmptyUtil.isNotEmpty(mFilterArray) && mFilterArray.contains(resType)) {
                         voListNew.add(sectionResListVo);
                     }
                 } else {
@@ -334,14 +348,15 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                 }
             }
         }
+
         courseResListAdapter.addData(voListNew);
         listView.setAdapter(courseResListAdapter);
 
-        if(EmptyUtil.isNotEmpty(voListNew)){
+        if (EmptyUtil.isNotEmpty(voListNew)) {
             // 有数据
             mEmptyView.setVisibility(View.GONE);
             pullToRefresh.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 没有数据
             mEmptyView.setVisibility(View.VISIBLE);
             pullToRefresh.setVisibility(View.GONE);
@@ -351,7 +366,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+        if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
             mReadWeikeHelper.release();
         }
     }
@@ -372,13 +387,14 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
     /**
      * 获取资源选择的Adapter
+     *
      * @return courseResListAdapter
      */
-    public CourseResListAdapter getResourceAdapter(){
+    public CourseResListAdapter getResourceAdapter() {
         return courseResListAdapter;
     }
 
-    public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener){
+    public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener) {
         this.mListener = listener;
     }
 }

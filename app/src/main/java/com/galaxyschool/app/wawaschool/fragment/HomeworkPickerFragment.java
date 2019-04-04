@@ -650,10 +650,19 @@ public class HomeworkPickerFragment extends ContactsPickerFragment
         StudyTaskTypeInfo superTask = new StudyTaskTypeInfo();
         superTask.setType("11");
         superTask.setTypeName(getString(R.string.str_super_task));
+
+        //Q配音
+        StudyTaskTypeInfo qDubbingTask = new StudyTaskTypeInfo();
+        qDubbingTask.setType("14,15");
+        qDubbingTask.setTypeName(getString(R.string.str_q_dubbing));
+
+
         //目前：隐藏看微课，看课件，交作业。
         //目前放开：看微课（“看微课”类型不变，名称改为“看课件”，原来的“看课件”类型暂时不动，仍然隐藏），交作业。
         //综合任务
         list.add(superTask);
+        //Q配音
+        list.add(qDubbingTask);
         //做任务单
         list.add(taskOrder);
         //复述课件

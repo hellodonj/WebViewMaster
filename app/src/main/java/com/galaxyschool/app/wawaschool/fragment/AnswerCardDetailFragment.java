@@ -31,11 +31,14 @@ import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
+import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
@@ -43,6 +46,8 @@ import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.ExerciseTeacherCommentDialog;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.client.pojo.LearnTaskCardType;
+import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -71,7 +76,8 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
     private String studentCommitAnswerString;
     private boolean hasObjectiveProblem;
     private String taskScoreReMark;
-
+    private QuestionResourceModel markModel;
+    private CommitTask commitTask;
     private final int[] colorList = {
             Color.parseColor("#76c905"),
             Color.parseColor("#38c2e0"),
@@ -105,6 +111,8 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             cardParam = (ExerciseAnswerCardParam) args.getSerializable(ExerciseAnswerCardParam
                     .class.getSimpleName());
             if (cardParam != null) {
+                markModel = cardParam.getMarkModel();
+                commitTask = cardParam.getCommitTask();
                 //评语
                 taskScoreReMark = cardParam.getTaskScoreRemark();
                 JSONArray jsonArray = JSONObject.parseArray(cardParam.getExerciseAnswerString());
@@ -254,10 +262,14 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
 
     private void initTitleView() {
         TextView headTitleTextV = (TextView) findViewById(R.id.contacts_header_title);
-        headTitleTextV.setText(cardParam.getCommitTaskTitle());
+        if (headTitleTextV != null) {
+            headTitleTextV.setText(cardParam.getCommitTaskTitle());
+        }
         TextView lookAnswerParsingTextV = (TextView) findViewById(R.id.tv_look_answer_parsing);
         //查看答案解析
-        lookAnswerParsingTextV.setOnClickListener(v -> lookAnswerParsingDetail());
+        if (lookAnswerParsingTextV != null) {
+            lookAnswerParsingTextV.setOnClickListener(v -> lookAnswerParsingDetail());
+        }
     }
 
     private void initReMarkViewData() {
@@ -267,6 +279,10 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
             //未点评
             remarkTextV.setVisibility(View.VISIBLE);
             remarkTextV.setOnClickListener(v -> openTeacherReMarkDialog());
+        } else if (TextUtils.equals(getMemeberId(),cardParam.getStudentId()) && commitTask != null && commitTask.isHasTutorialPermission()) {
+            //显示老师批阅
+            ApplyMarkHelper.showApplyMarkView(getActivity(),remarkTextV);
+            remarkTextV.setOnClickListener(v -> lookAnswerParsingDetail());
         } else {
             remarkTextV.setVisibility(View.GONE);
         }
@@ -495,6 +511,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
                 String savePath = Utils.PIC_TEMP_FOLDER + new MD5FileNameGenerator()
                         .generate(dataList.get(0).resourceurl);
                 cardParam.setExerciseItem(itemData);
+                cardParam.setMarkModel(null);
                 DoCourseHelper doCourseHelper = new DoCourseHelper(mContext);
                 doCourseHelper.doAnswerQuestionCheckMarkData(
                         cardParam,
@@ -615,7 +632,7 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         cardParam.setShowExerciseNode(true);
         cardParam.setQuestionDetails(exerciseItems);
         //server返回的学生提交的信息
-        cardParam.setExerciseAnswerString(cardParam.getExerciseAnswerString());
+        cardParam.setExerciseAnswerString(this.cardParam.getExerciseAnswerString());
         cardParam.setStudentCommitAnswerString(studentCommitAnswerString);
         cardParam.setTaskId(cardParam.getTaskId());
         cardParam.setResId(courseData.id + "-" + courseData.type);
@@ -625,6 +642,10 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
         cardParam.setCommitTaskTitle(this.cardParam.getCommitTaskTitle());
         cardParam.setClassId(this.cardParam.getClassId());
         cardParam.setSchoolId(this.cardParam.getSchoolId());
+        cardParam.setMarkModel(this.markModel);
+        cardParam.setStudyTask(this.cardParam.getStudyTask());
+        cardParam.setCommitTask(this.cardParam.getCommitTask());
+        cardParam.setRoleType(this.cardParam.getRoleType());
         mParam.exerciseCardParam = cardParam;
     }
 

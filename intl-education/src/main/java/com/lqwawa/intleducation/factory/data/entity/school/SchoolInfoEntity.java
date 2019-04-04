@@ -39,10 +39,26 @@ public class SchoolInfoEntity extends BaseVo{
     private boolean IsLiveShowMgr;//是否是直播管理员
     private boolean IsOnlineSchool;//是不是空中课堂的机构
     private String SchoolIntranetIP;//校园内网的ip
+    private boolean IsAssistant;
 
     private String PName;//省
     private String CName;//市
     private String DName;//区
+
+    // V5.15添加的字段
+    private String Id;
+    private String SName;
+    private int Type;
+    private String SchoolType;
+    private String SchoolLevel;
+
+    public boolean isIsAssistant() {
+        return IsAssistant;
+    }
+
+    public void setIsAssistant(boolean IsAssistant) {
+        this.IsAssistant = IsAssistant;
+    }
 
     public String getSchoolId() {
         return SchoolId;
@@ -236,6 +252,46 @@ public class SchoolInfoEntity extends BaseVo{
         this.DName = DName;
     }
 
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getSName() {
+        return SName;
+    }
+
+    public void setSName(String SName) {
+        this.SName = SName;
+    }
+
+    public int getType() {
+        return Type;
+    }
+
+    public void setType(int type) {
+        Type = type;
+    }
+
+    public String getSchoolType() {
+        return SchoolType;
+    }
+
+    public void setSchoolType(String schoolType) {
+        SchoolType = schoolType;
+    }
+
+    public String getSchoolLevel() {
+        return SchoolLevel;
+    }
+
+    public void setSchoolLevel(String schoolLevel) {
+        SchoolLevel = schoolLevel;
+    }
+
     public boolean isTeacher() {
         return Roles != null && Roles.contains("0");
     }
@@ -266,5 +322,8 @@ public class SchoolInfoEntity extends BaseVo{
         }
     }
 
-
+    @Override
+    public String toString() {
+        return getSName();
+    }
 }

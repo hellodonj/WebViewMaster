@@ -327,7 +327,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType) {
+        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare) {
             if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(vo)) {
                 return;
             }
@@ -338,7 +338,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             } else {
                 checkMarkTaskDetail(SectionTaskDetailsActivity.this,
                         mHandleRole, sectionResListVo, vo,
-                        isCheckMark, sourceType);
+                        isCheckMark, sourceType,taskCourseWare);
             }
         }
 
@@ -507,10 +507,17 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         //初始化顶部工具条
         topBar.setBack(true);
         if (sectionResListVo != null) {
-            if (sectionResListVo.getResType() == 23) {
+            /*if (sectionResListVo.getResType() == 23) {
                 topBar.setTitle(getResources().getString(R.string.do_task));
             } else {
                 topBar.setTitle(getResources().getString(R.string.retell_course));
+            }*/
+            if (sectionResListVo.getTaskType() == 3) {
+                topBar.setTitle(getResources().getString(R.string.do_task));
+            } else if(sectionResListVo.getTaskType() == 2){
+                topBar.setTitle(getResources().getString(R.string.retell_course));
+            } else if(sectionResListVo.getTaskType() == 5){
+                topBar.setTitle(getResources().getString(R.string.label_lecture_course));
             }
             // 加载Tab资源
             if (sectionResListVo.getTaskType() == 2) {
@@ -520,6 +527,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             } else if (sectionResListVo.getTaskType() == 3) {
                 // 做读写单
                 String[] titles = UIUtil.getStringArray(R.array.label_lesson_task_tab_array);
+                mTabTexts = new ArrayList<>(Arrays.asList(titles));
+            } else if(sectionResListVo.getTaskType() == 5){
+                // 试讲
+                String[] titles = UIUtil.getStringArray(R.array.label_lecture_lesson_task_tab_array);
                 mTabTexts = new ArrayList<>(Arrays.asList(titles));
             }
         }
@@ -627,7 +638,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                             bundle.putString("examId", examId);
                             bundle.putBoolean(TaskCommitListFragment.KEY_ROLE_FREE_USER, isAudition);
                             TaskCommitParams params = TaskCommitParams.build(mTaskParams);
-                            if (sectionResListVo.getTaskType() == 2) {
+                            if (sectionResListVo.getTaskType() == 2 || sectionResListVo.getTaskType() == 5) {
                                 params.setCommitType(TaskCommitParams.TYPE_RETELL_COMMIT);
                             } else if (sectionResListVo.getTaskType() == 3) {
                                 params.setCommitType(TaskCommitParams.TYPE_ALL);
@@ -1106,13 +1117,15 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
      * @param studentCommit 学生提交的任务
      * @param isCheckMark   是不是查看批阅 （查看批阅[true] 查看item进入提问和批阅的详情[false]）
      * @param sourceType    资源type
+     * @param taskCourseWare 是否是读写单课件
      */
     protected void checkMarkTaskDetail(Activity activity,
                                        int roleType,
                                        SectionResListVo task,
                                        LqTaskCommitVo studentCommit,
                                        boolean isCheckMark,
-                                       int sourceType) {
+                                       int sourceType,
+                                       boolean taskCourseWare) {
 
     }
 

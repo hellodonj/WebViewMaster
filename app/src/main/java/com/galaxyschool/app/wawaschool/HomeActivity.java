@@ -38,11 +38,16 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
+import com.galaxyschool.app.wawaschool.views.ThirdLoginSuccessTipsDialog;
 import com.galaxyschool.app.wawaschool.views.ToolbarBottomView;
 import com.lecloud.skin.init.InitResultListener;
 import com.lecloud.skin.init.LqInit;
 import com.lqwawa.client.pojo.SourceFromType;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqbasic.LQBasicFragment;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.TabCourseFragment;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
@@ -70,6 +75,8 @@ public class HomeActivity extends BaseCompatActivity
 
     public static final String ACTION_ACCOUNT_LOGOUT = "com.galaxyschool.app.wawaschool.ACTION_LOGOUT";
     public static final String ACTION_CHANGE_LQCOURSE_TAB = "action_change_lqCourse_tab";
+    public static final String EXTRA_THIRD_LOGIN_TIP_MESSAGE = "third_login_tip_message";
+    public static final String EXTRA_PUSH_ASSISTANT_ENTER = "entra_push_assistant_enter";
     private static final int TAB_LQ_COURSE = 0;//lq学程、学程馆
     private static final int TAB_ONLINE_STUDY = 1;//在线学习
     private static final int TAB_MY_COURSE = 2;//我的课程
@@ -121,7 +128,6 @@ public class HomeActivity extends BaseCompatActivity
     private ToolbarBottomView bottomBar;
     private MyShareManager mShareManager;
     private ImageView myCourseImage;
-
     Map<String, Integer> hashMap = new HashMap<String, Integer>();
 
     static {
@@ -170,7 +176,6 @@ public class HomeActivity extends BaseCompatActivity
 
         this.app = (MyApplication) getApplication();
         this.app.setAccountListener(this);
-
         initViews();
 
 //        initChatModule();
@@ -213,6 +218,17 @@ public class HomeActivity extends BaseCompatActivity
                     app.setCdeInitSuccess(result);
                 }
             });
+        }
+        loadIntentData();
+    }
+
+    private void loadIntentData(){
+        Bundle args = getIntent().getExtras();
+        if (args != null) {
+            boolean isAssistantEnter = args.getBoolean(EXTRA_PUSH_ASSISTANT_ENTER,false);
+            if (isAssistantEnter) {
+                setCurrPage(TAB_MY_COURSE);
+            }
         }
     }
 
@@ -278,6 +294,7 @@ public class HomeActivity extends BaseCompatActivity
             mShareManager
                     .setOpenPackage("com.oosic.apps.kuke_receiver/com.oosic.apps.iemaker_receiver.ShareBox");
         }
+        updateBottomViewText();
     }
 
     /**
@@ -377,9 +394,12 @@ public class HomeActivity extends BaseCompatActivity
         LQBasicFragment lqBasicFragment = LQBasicFragment.newInstance();
         fragments.add(lqBasicFragment);
 
-        //我的课程
-        TabCourseFragment tabCourseFragment = TabCourseFragment.newInstance();
-        fragments.add(tabCourseFragment);
+        // 我的课程
+        // TabCourseFragment tabCourseFragment = TabCourseFragment.newInstance();
+        // fragments.add(tabCourseFragment);
+        // 帮辅盒子
+        TutorialSpaceBoxFragment boxFragment = TutorialSpaceBoxFragment.newInstance();
+        fragments.add(boxFragment);
 
         //空中学校
         MySchoolSpaceFragment mySchoolSpaceFragment = new MySchoolSpaceFragment();
@@ -578,6 +598,8 @@ public class HomeActivity extends BaseCompatActivity
         filter.addAction(MyCourseListPagerFragment.ACTION_GO_COURSE_SHOP);
         //接收系统网络切换的广播
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(EXTRA_THIRD_LOGIN_TIP_MESSAGE);
+        filter.addAction(EXTRA_PUSH_ASSISTANT_ENTER);
         registerReceiver(homeReceiver, filter);
     }
 
@@ -598,6 +620,7 @@ public class HomeActivity extends BaseCompatActivity
 //					conversationHelper.clear();
 //				}
                 setCurrPage();
+                updateBottomViewText();
             } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
                 //接收系统网络切换的广播
 //                Log.d("TTT","打印是否走了当前的广播通道");
@@ -628,6 +651,12 @@ public class HomeActivity extends BaseCompatActivity
             } else if (TextUtils.equals(MyCourseListPagerFragment.ACTION_GO_COURSE_SHOP, intent.getAction())) {
                 // 去学程馆
                 setCurrPage(TAB_LQ_COURSE);
+            } else if (TextUtils.equals(intent.getAction(),EXTRA_THIRD_LOGIN_TIP_MESSAGE)) {
+                showThirdLoginTipMessage();
+            } else if (TextUtils.equals(intent.getAction(),EXTRA_PUSH_ASSISTANT_ENTER)) {
+                //切换到帮辅空间
+                updateBottomViewText();
+                setCurrPage(TAB_MY_COURSE);
             }
         }
     }
@@ -675,4 +704,22 @@ public class HomeActivity extends BaseCompatActivity
         }
     };
 
+    private void showThirdLoginTipMessage(){
+        UserInfo userInfo = DemoApplication.getInstance().getUserInfo();
+        if (userInfo != null){
+            ThirdLoginSuccessTipsDialog dialog = new ThirdLoginSuccessTipsDialog(this,userInfo);
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+    }
+
+    public void updateBottomViewText(){
+        if (bottomBar != null){
+            if (MainApplication.isTutorialMode()) {
+                bottomBar.updateBottomViewText(2,getString(R.string.str_assistance_space));
+            } else {
+                bottomBar.updateBottomViewText(2,getString(R.string.str_my_courses));
+            }
+        }
+    }
 }

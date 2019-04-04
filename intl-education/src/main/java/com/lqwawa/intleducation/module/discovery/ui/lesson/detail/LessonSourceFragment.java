@@ -189,13 +189,13 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         return;
                     }
 
-                    if(mCourseResListAdapter.getChoiceMode()){
-                        if(resVo.getTaskType() == 1 || resVo.getTaskType() == 4){
+                    if (mCourseResListAdapter.getChoiceMode()) {
+                        if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
                             // 看课件类型
-                            if(EmptyUtil.isNotEmpty(mReadWeikeHelper)){
+                            if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                                 mReadWeikeHelper.readWeike(resVo);
                             }
-                        }else{
+                        } else {
                             if (TaskSliderHelper.onTaskSliderListener != null &&
                                     resVo != null) {
                                 TaskSliderHelper.onTaskSliderListener.viewCourse(
@@ -234,7 +234,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                 flagRead(resVo, position);
                             }
                         }*/
-                    } else if (resVo.getTaskType() == 2) {
+                    } else if (resVo.getTaskType() == 2 || resVo.getTaskType() == 5) {
                         //复述微课
                         if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
@@ -384,7 +384,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes,token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
+        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -407,87 +407,36 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             getActivity().getIntent().putExtra(SECTION_TITLE, mSectionDetailsVo.getSectionTitle());
             getActivity().getIntent().putExtra(STATUS, mSectionDetailsVo.getStatus());
             getActivity().getIntent().putExtra("isPublic", mSectionDetailsVo.isIsOpen());
-            if (mSectionDetailsVo.getTaskList() != null) {
-                if (mSectionDetailsVo.getTaskList().size() > 0) {
-                    if (mSectionDetailsVo.getTaskList().get(0).getData() != null) {
-                        // this.textViewLessonIntroduction.setText("" + sectionDetailsVo.getIntroduction());
-                        List<SectionResListVo> voList = mSectionDetailsVo.getTaskList().get(0).getData();
-                        if (voList.size() > 0) {
-                            voList.get(0).setIsTitle(true);
+
+            List<SectionTaskListVo> taskList = mSectionDetailsVo.getTaskList();
+            if (EmptyUtil.isNotEmpty(taskList)) {
+                for (int index = 0; index < taskList.size(); index++) {
+                    SectionTaskListVo listVo = taskList.get(index);
+                    if (listVo.getTaskType() == mTaskType) {
+                        List<SectionResListVo> data = listVo.getData();
+                        if (EmptyUtil.isNotEmpty(data)) {
+                            data.get(0).setIsTitle(true);
+                            for (SectionResListVo vo : data) {
+                                vo.setTaskName(getTaskName(index));
+                                vo.setChapterId(vo.getId());
+                                vo.setTaskType(listVo.getTaskType());
+                                if(mTaskType == 5){
+                                    // 讲解课的显示Fragment
+                                    // vo.setResProperties("");
+                                }
+                            }
                         }
-                        for (SectionResListVo vo : voList) {
-                            vo.setTaskName(getTaskName(0));
-                            vo.setChapterId(vo.getId());
-                            vo.setTaskType(mSectionDetailsVo.getTaskList().get(0).getTaskType());
-                        }
-                        if (mSectionDetailsVo.getTaskList().get(0).getTaskType() == mTaskType) {
-                            mCourseResListAdapter.setData(voList);
-                        }
-                        mListView.setAdapter(mCourseResListAdapter);
+
+                        mCourseResListAdapter.addData(data);
+                        mCourseResListAdapter.notifyDataSetChanged();
+                        break;
                     }
                 }
-                if (mSectionDetailsVo.getTaskList().size() > 1) {
-                    if (mSectionDetailsVo.getTaskList().get(1).getData() != null) {
-                        // this.textViewLessonIntroduction.setText("" + sectionDetailsVo.getIntroduction());
-                        List<SectionResListVo> voList = mSectionDetailsVo.getTaskList().get(1).getData();
-                        if (voList.size() > 0) {
-                            voList.get(0).setIsTitle(true);
-                        }
-                        for (SectionResListVo vo : voList) {
-                            vo.setTaskName(getTaskName(1));
-                            vo.setChapterId(vo.getId());
-                            vo.setTaskType(mSectionDetailsVo.getTaskList().get(1).getTaskType());
-                        }
-                        if (mSectionDetailsVo.getTaskList().get(1).getTaskType() == mTaskType) {
-                            mCourseResListAdapter.addData(voList);
-                        }
-
-                    }
-                }
-                if (mSectionDetailsVo.getTaskList().size() > 2) {
-                    if (mSectionDetailsVo.getTaskList().get(2).getData() != null) {
-                        // this.textViewLessonIntroduction.setText("" + sectionDetailsVo.getIntroduction());
-                        List<SectionResListVo> voList = mSectionDetailsVo.getTaskList().get(2).getData();
-                        if (voList.size() > 0) {
-                            voList.get(0).setIsTitle(true);
-                        }
-                        for (SectionResListVo vo : voList) {
-                            vo.setTaskName(getTaskName(2));
-                            vo.setChapterId(vo.getId());
-                            vo.setTaskType(mSectionDetailsVo.getTaskList().get(2).getTaskType());
-                        }
-
-                        if (mSectionDetailsVo.getTaskList().get(2).getTaskType() == mTaskType) {
-                            mCourseResListAdapter.addData(voList);
-                        }
-
-                    }
-                }
-
-                if (mSectionDetailsVo.getTaskList().size() > 3) {
-                    if (mSectionDetailsVo.getTaskList().get(3).getData() != null) {
-                        // this.textViewLessonIntroduction.setText("" + sectionDetailsVo.getIntroduction());
-                        List<SectionResListVo> voList = mSectionDetailsVo.getTaskList().get(3).getData();
-                        if (voList.size() > 0) {
-                            voList.get(0).setIsTitle(true);
-                        }
-                        for (SectionResListVo vo : voList) {
-                            vo.setTaskName(getTaskName(3));
-                            vo.setChapterId(vo.getId());
-                            vo.setTaskType(mSectionDetailsVo.getTaskList().get(3).getTaskType());
-                        }
-
-                        if (mSectionDetailsVo.getTaskList().get(3).getTaskType() == mTaskType) {
-                            mCourseResListAdapter.addData(voList);
-                        }
-
-                    }
-                }
-                mCourseResListAdapter.notifyDataSetChanged();
             }
         }
 
         if (mCourseResListAdapter.getCount() > 0) {
+            mListView.setAdapter(mCourseResListAdapter);
             mListView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
         } else {

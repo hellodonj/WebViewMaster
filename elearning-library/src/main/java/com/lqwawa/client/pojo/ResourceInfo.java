@@ -31,7 +31,15 @@ public class ResourceInfo implements Parcelable,Serializable{
     private String Point;//总分
     private int completionMode = 1;//1 复述课件 2 复述课件+语音评测
     private int resPropertyMode = 2; //1 自动评测 2 人工评测
+    private int ResPropType;//1 任务单自动批阅 2 q配音按句配音 3 q配音通篇配音
 
+    public int getResPropType() {
+        return ResPropType;
+    }
+
+    public void setResPropType(int resPropType) {
+        ResPropType = resPropType;
+    }
     public int getResPropertyMode() {
         return resPropertyMode;
     }

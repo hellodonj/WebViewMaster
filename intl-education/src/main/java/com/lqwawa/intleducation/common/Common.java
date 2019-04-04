@@ -31,6 +31,8 @@ public class Common {
         // 是否过滤测试课程 1或者不传 过滤
         // 0 不过滤
         int isAppStore = Config.UPLOAD_BUGLY_EXCEPTION ? 1 : 0;
+
+        boolean isAssistant = false;
     }
 
 }

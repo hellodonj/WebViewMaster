@@ -34,6 +34,9 @@ public class CourseDetailsVo extends BaseVo {
     private String bindSchoolId;
     private String bindClassId;
 
+    // V5.14新加的字段
+    private int isOrganTutorStatus;
+
     public CourseDetailsVo(){
         course = null;
         chapterList = null;
@@ -203,6 +206,14 @@ public class CourseDetailsVo extends BaseVo {
 
     public void setBindClassId(String bindClassId) {
         this.bindClassId = bindClassId;
+    }
+
+    public int getIsOrganTutorStatus() {
+        return isOrganTutorStatus;
+    }
+
+    public void setIsOrganTutorStatus(int isOrganTutorStatus) {
+        this.isOrganTutorStatus = isOrganTutorStatus;
     }
 
     /**

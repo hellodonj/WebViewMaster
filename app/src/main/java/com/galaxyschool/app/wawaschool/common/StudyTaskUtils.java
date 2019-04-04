@@ -17,7 +17,9 @@ import com.galaxyschool.app.wawaschool.pojo.LookResDto;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
+import com.galaxyschool.app.wawaschool.pojo.SpeechAssessmentData;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
+import com.icedcap.dubbing.entity.DubbingEntity;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -466,4 +468,23 @@ public class StudyTaskUtils {
                 });
         messageDialog.show();
     }
+
+    public static int getTotalScore(List<DubbingEntity> dubbingEntityList){
+        int totalScore = 0;
+        for (int i = 0, len = dubbingEntityList.size(); i < len; i++) {
+            DubbingEntity data = dubbingEntityList.get(i);
+            totalScore = totalScore + data.getScore();
+        }
+        return totalScore / dubbingEntityList.size();
+    }
+
+    public static String getScoreArrayList(List<DubbingEntity> dubbingEntityList) {
+        com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
+        for (int i = 0, len = dubbingEntityList.size(); i < len; i++) {
+            DubbingEntity data = dubbingEntityList.get(i);
+            jsonArray.add(data.getScore());
+        }
+        return jsonArray.toJSONString();
+    }
+
 }

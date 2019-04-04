@@ -248,7 +248,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             }*/
             if (!TextUtils.isEmpty(vo.getTaskScore()) &&
                     // 自动批阅的读写单 或者正常的读写单已经批阅过
-                    (mSectionResListVo.isAutoMark() || vo.isHasCommitTaskReview()) &&
+                    (vo.isAutoMark() || vo.isHasCommitTaskReview()) &&
                     (mTaskCommitParams.getHandleRole() == UserHelper.MoocRoleType.TEACHER ||
                             mTaskCommitParams.getHandleRole() == UserHelper.MoocRoleType.EDITOR ||
                             mTaskCommitParams.getHandleRole() == UserHelper.MoocRoleType.PARENT ||
@@ -261,7 +261,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                 try{
 
                     int passingGradle = 60;
-                    if(mSectionResListVo.isAutoMark()){
+                    if(vo.isAutoMark()){
                         passingGradle = (int)(Integer.parseInt(mSectionResListVo.getPoint()) * 0.6);
                     }
 
@@ -283,7 +283,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             }
 
             // 显示用户提交课程缩略图
-            if(mSectionResListVo.isAutoMark()){
+            if(vo.isAutoMark()){
                 // 自动批阅的读写单
                 x.image().bind(holder.mCourseIcon, vo.getStudentResThumbnailUrl(), autoMarkImageOptions);
             }else{
@@ -318,7 +318,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             // 显示用户提交课程名称
             holder.mCourseName.setText(vo.getStudentResTitle());
         }else{
-            if(mSectionResListVo.isAutoMark()){
+            if(vo.isAutoMark()){
                 holder.mCourseName.setText(mSectionResListVo.getName());
             }
         }
@@ -346,7 +346,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                     if(EmptyUtil.isNotEmpty(mNavigator)){
                         mNavigator.onRefreshState(false);
                     }
-                    mDoWorkListener.onItemClick(vo, true, getSourceType());
+                    mDoWorkListener.onItemClick(vo, true, getSourceType(),false);
                 }
             }
         });
@@ -369,11 +369,31 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             }
         });
 
-        if(mSectionResListVo.isAutoMark()){
+        if(vo.isAutoMark()){
             holder.mTvResDetail.setVisibility(View.GONE);
             holder.mCourseWareDetailsLayout.setOnClickListener(null);
+            if(EmptyUtil.isNotEmpty(vo.getStudentResId())) {
+                holder.mCourseIconLayout.setEnabled(true);
+                holder.mCourseIconLayout.setClickable(true);
+                holder.mCourseIconLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!EmptyUtil.isEmpty(mDoWorkListener)) {
+                            mDoWorkListener.onItemClick(vo, false, getSourceType(), true);
+                        }
+                    }
+                });
+            }else{
+
+                holder.mCourseIconLayout.setEnabled(false);
+                holder.mCourseIconLayout.setClickable(false);
+                holder.mCourseIconLayout.setOnClickListener(null);
+            }
         }else{
             holder.mTvResDetail.setVisibility(View.VISIBLE);
+            holder.mCourseIconLayout.setOnClickListener(null);
+            holder.mCourseIconLayout.setEnabled(false);
+            holder.mCourseIconLayout.setClickable(false);
             // 点击课件详情的跳转拦截
             holder.mCourseWareDetailsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

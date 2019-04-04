@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.CustomerServiceActivity;
 import com.galaxyschool.app.wawaschool.HomeActivity;
@@ -36,6 +37,10 @@ import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.UserInfoResult;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
+import com.icedcap.dubbing.DubbingActivity;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.oosic.apps.share.ShareHelper;

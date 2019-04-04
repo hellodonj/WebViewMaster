@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.AirClassroomActivity;
 import com.galaxyschool.app.wawaschool.ClassResourceListActivity;
+import com.galaxyschool.app.wawaschool.HomeActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -22,10 +23,19 @@ import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudentMemberInfo;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfoResult;
+import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.osastudio.common.library.ActivityStack;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +81,12 @@ public class PushOpenResourceHelper {
     }
 
     private void openResource() {
-        if (pushMessageInfo.getAirClassId() <= 0) {
+        if (pushMessageInfo.getPushModuleType() == 7
+                || pushMessageInfo.getPushModuleType() == 8
+                || pushMessageInfo.getPushModuleType() == 9) {
+            //打开帮辅的推送
+            enterAssistantDetail();
+        } else if (pushMessageInfo.getAirClassId() <= 0) {
             //学习任务
             loadClassInfo(false);
         } else {
@@ -326,5 +341,35 @@ public class PushOpenResourceHelper {
         }
         intent.putExtras(args);
         context.startActivity(intent);
+    }
+
+    private void enterAssistantDetail() {
+        if (ActivityStack.getInstance().getCount() == 0) {
+            Intent intent = new Intent(context, HomeActivity.class);
+            if (pushMessageInfo.getPushModuleType() == 9) {
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, false);
+            } else {
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+            }
+            intent.putExtra(HomeActivity.EXTRA_PUSH_ASSISTANT_ENTER, true);
+            context.startActivity(intent);
+        } else {
+            // 结束除了HomeActivity之外的所有页面
+            ActivityUtil.finishToActivity(HomeActivity.class,false);
+            ActivityStack.getInstance().finishUtil(HomeActivity.class);
+            if (pushMessageInfo.getPushModuleType() == 9) {
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, false);
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            } else {
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            }
+            context.sendBroadcast(new Intent().setAction(HomeActivity.EXTRA_PUSH_ASSISTANT_ENTER));
+            Intent intent = new Intent(context, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
+        }
     }
 }

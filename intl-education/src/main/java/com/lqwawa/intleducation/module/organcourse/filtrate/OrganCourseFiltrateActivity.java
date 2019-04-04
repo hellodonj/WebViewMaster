@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,12 +25,10 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
@@ -63,7 +60,6 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivi
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.pager.CourseClassifyPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 
@@ -125,6 +121,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
+
+    // iTEP
+    private static final int ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID = 2244;
 
     private TopBar mTopBar;
 
@@ -645,6 +644,11 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+        }else{
+            // 数据为空
+            mHeaderLayout.setVisibility(View.GONE);
+            mRefreshLayout.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
         }
 
 
@@ -1008,12 +1012,16 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
                 // 数据请求
                 int firstId = tabData.getId();
-                if(rootId == ENGLISH_INTERNATIONAL_COURSE){
-                    if(firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
+                if (rootId == ENGLISH_INTERNATIONAL_COURSE) {
+                    if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID) {
                         // 选中了英语国际课程的 LQ English Primary
                         mTabVector3.setVisibility(View.VISIBLE);
                         mTabLabel2.setText(getString(R.string.label_colon_type));
-                    }else{
+                    } else if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID) {
+                        // 选中了英语国际课程的 iTEP
+                        mTabVector3.setVisibility(View.VISIBLE);
+                        mTabLabel2.setText(getString(R.string.label_colon_subject));
+                    } else {
                         mTabLabel2.setText(getString(R.string.label_colon_subject));
                         mTabVector3.setVisibility(View.GONE);
                     }
@@ -1054,10 +1062,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 if(EmptyUtil.isNotEmpty(tabAt)){
                     Tab firstTab = (Tab) tabAt.getTag();
                     int firstId = firstTab.getId();
-                    if(rootId == MINORITY_LANGUAGE_COURSE ||
+                    if (rootId == MINORITY_LANGUAGE_COURSE ||
                             rootId == CHARACTERISTICS_ENGLISH ||
                             rootId == BASIC_COURSE ||
-                            rootId == ENGLISH_INTERNATIONAL_COURSE && firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID){
+                            rootId == ENGLISH_INTERNATIONAL_COURSE &&
+                                    (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID ||
+                                            firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID)) {
                         // 选中的是小语种的Id
                         triggerUpdateData();
                     }

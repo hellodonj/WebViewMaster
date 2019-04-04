@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -195,7 +196,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             // UIUtil.showToastSafe("学习统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
             String classId = mCourseDetailParams.getClassId();
-            LearningStatisticsActivity.show(getActivity(),classId,mCourseId,0,mCourseDetailParams);
+            LearningStatisticsActivity.show(getActivity(),UIUtil.getString(R.string.title_learning_statistics),classId,mCourseId,0,mCourseDetailParams);
         }else if(view.getId() == R.id.btn_course_statistics){
             // 课程统计
             // UIUtil.showToastSafe("课程统计");

@@ -65,6 +65,12 @@
         <item>&#8195;讨论&#8195;</item>
     </string-array>
 
+    <string-array name="label_lecture_lesson_task_tab_array">
+        <item>任务要求</item>
+        <item>试讲列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+
     <string name="label_course_learning_progress_percent">%d%%</string>
 
     <!--占位图-->
@@ -342,6 +348,113 @@
     <string name="label_assigned">【已布置】</string>
     <string name="label_unset_choose_subject">您尚未选择科目，请前往选择科目</string>
     <string name="label_choose_subject">选择科目</string>
+
+    <!--V5.15字符串信息-->
+    <string name="label_add_tutorial">+帮辅</string>
+    <string name="label_add_tutorial_line">添加帮辅</string>
+    <string name="label_add_tutorial_lines">添加\n帮辅</string>
+    <string name="label_un_mark">未批阅</string>
+    <string name="label_have_mark">已批阅</string>
+    <string name="label_watch_task_requirement">查看任务要求</string>
+    <string name="label_task_type_template">"[%s]"</string>
+    <string name="label_user_name">姓名*：</string>
+    <string name="label_user_name_hint">请填写姓名</string>
+    <string name="label_phone_number">手机号码：</string>
+    <string name="label_phone_number_hint">请填写手机号码</string>
+    <string name="label_verification_code">验证码：</string>
+    <string name="label_verification_code_hint">请填写验证码</string>
+    <string name="label_get_verification_code">获取验证码</string>
+    <string name="label_identify_type">证件类型*：</string>
+    <string name="label_identify_card">身份证</string>
+    <string name="label_identify_passport">护照</string>
+    <string name="label_identify_number">证件号码*：</string>
+    <string name="label_identify_number_hint">请填写证件号码</string>
+    <string name="label_please_input_valid_card_hint">请输入有效的身份证号码</string>
+    <string name="label_please_input_valid_passport_hint">请输入有效的护照号码</string>
+    <string name="label_identify_digits">0123456789qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM</string>
+    <string name="label_choice_organ">选择机构*：</string>
+    <string name="label_choice_organ_hint">平台助教机构(机构)</string>
+    <string name="label_your_address">您的地址*：</string>
+    <string name="label_province">省</string>
+    <string name="label_city">市</string>
+    <string name="label_district">区</string>
+    <string name="label_mark_price">批阅价格*：</string>
+    <string name="label_mark_price_tip">请输入批阅价格</string>
+    <string name="label_RMB">元</string>
+    <string name="label_mark_price_hint">*建议价格，可修改</string>
+    <string name="label_work_period">工作年限：</string>
+    <string name="label_work_period_hint">请输入工作年限</string>
+    <string name="label_person_academic_certificate">个人学历证书：</string>
+    <string name="label_business_certificate">行业资历认证证书：</string>
+    <string name="label_upload">上传</string>
+    <string name="label_submit_apply">提交申请</string>
+    <string name="label_upload_completed">上传成功</string>
+    <string name="label_telephone_hot_line">垂询热线：%s</string>
+    <string name="label_apply_for_have_commit">申请已提交</string>
+    <string name="label_applying_for">机构管理员正在审核，请耐心等待</string>
+    <string name="label_tutorial_space">帮辅空间</string>
+    <string name="label_course_box">我的课程</string>
+    <string name="label_tutorial_work">作业列表</string>
+    <string name="label_tutorial_student">我帮辅的学生</string>
+    <string name="label_tutorial_course">我帮辅的课程</string>
+    <string name="label_tutorial_organ">我的帮辅机构</string>
+    <string name="label_student_work">我的作业</string>
+    <string name="label_student_tutorial">我的帮辅</string>
+    <string name="label_student_course">我的习教辅</string>
+    <string name="label_student_live">我的空中课堂</string>
+    <string name="label_my">我的</string>
+    <string name="label_tutorial_student_review_count">%d未批</string>
+    <string name="label_viewer_count">%d人浏览</string>
+    <string name="label_attention_count">%d人关注</string>
+    <string name="label_personal_introduce">个人介绍</string>
+    <string name="label_showing">显示</string>
+    <string name="label_hide">屏蔽</string>
+    <string name="label_tutorial_group">帮辅群</string>
+    <string name="label_watch_more_tutorial_group">查看更多帮辅</string>
+    <string name="label_tutorial_free">限时免费</string>
+    <string name="label_placeholder_task_have_mark">%d任务已批阅</string>
+    <string name="label_added_tutorial_succeed">+帮辅成功</string>
+    <string name="label_added_tutorial_failed">+帮辅失败</string>
+    <string name="label_new_work">最新作业</string>
+    <string name="label_commit_placeholder_teacher">提交给%s老师</string>
+    <string name="label_choice_tutor_tip">请选择帮辅老师</string>
+    <string name="label_commit_succeed">提交成功</string>
+    <string name="label_commit_succeed_tip">提交的作业已发送给%s老师，老师将在2个工作日内完成批阅，请耐心等待。</string>
+    <string name="label_again_submit">继续提交</string>
+    <string name="label_watch_work">查看作业</string>
+    <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
+    <string name="label_please_apply_to_be_tutorial">请先申请成为帮辅</string>
+    <string name="label_course_tutor_apply_for">申请成功，请等待机构管理员审核！</string>
+    <string name="label_input_province_tip">请选择省份</string>
+    <string name="label_input_city_tip">请选择城市</string>
+    <string name="label_input_district_tip">请选择区域</string>
+    <string name="label_upload_academic_certificate_tip">请上传个人学历证书</string>
+    <string name="label_upload_business_certificate_tip">请上传行业资历认证证书</string>
+    <string name="label_user_works">%s的作业</string>
+    <string name="label_committed_works">提交给%s的作业</string>
+    <string name="label_upload_again">重新上传</string>
+    <string name="label_lecture_course">讲解课</string>
+    <string name="label_trial_lecture">试讲</string>
+    <string name="label_placeholder_book">《%s》</string>
+    <string name="label_personal_qrcode">个人二维码</string>
+    <string name="label_please_update_marking_price_range">请输入有效的批阅价格</string>
+    <string name="label_placeholder_tutorial_group_teacher">%s老师</string>
+    <!--<string name="label_null_tutorial_introduces">&#060;p style=\"font-size:30;\"&#062;&#060;center&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;center&#062;&#060;&#047;p&#062;</string>-->
+    <!--<string name="label_null_tutorial_introduces">&#060;div style=\"font:48px; text-align:center;\"&#062;请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”&#060;&#047;div&#062;</string>-->
+    <string name="label_null_tutorial_introduces">请登录www.lqwawa.com，进入个人空间编辑“我的信息-个人介绍”</string>
+    <string name="label_auditing">审核中</string>
+    <string name="label_audit_reject">被拒绝</string>
+    <string name="label_audit">申请记录</string>
+
+    <string-array name="label_tutorial_group_tabs">
+        <item>最新</item>
+        <item>热门</item>
+    </string-array>
+
+    <string-array name="label_tutorial_page_tabs">
+        <item>帮辅的课程</item>
+        <item>学员评价</item>
+    </string-array>
 
     <string-array name="label_online_class_details_tabs">
         <item>课堂简介</item>

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.utils.LogUtil;
@@ -139,29 +140,39 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             mBtnDone.setText(getResources().getString(R.string.retell_task));
         } else if (sectionResListVo.getTaskType() == 3) {
             mBtnDone.setText(getResources().getString(R.string.do_task));
+        } else if(sectionResListVo.getTaskType() == 5){
+            mBtnDone.setText(getResources().getString(R.string.label_trial_lecture));
         }
 
         // 班级学程入口，才有成绩统计
         CourseDetailParams courseParams = mCommitParams.getCourseParams();
         if(courseParams.isClassCourseEnter() &&
                 !mCommitParams.isTeacherVisitor() &&
-                (sectionResListVo.getTaskType() == 2 || sectionResListVo.getTaskType() == 3)){
-            // 听读课 和 读写单都有成绩统计
+                (sectionResListVo.getTaskType() == 2 ||
+                        sectionResListVo.getTaskType() == 5 ||
+                        sectionResListVo.getTaskType() == 3)){
+            // 听读课 讲解课 和 读写单都有成绩统计
             mBtnStatisticalScores.setVisibility(View.VISIBLE);
         }else{
             mBtnStatisticalScores.setVisibility(View.GONE);
         }
 
-        // 只有学生才显示读写单和复述课件
-        if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
-            // 试听身份可以查看到按钮
-            mBtnDone.setVisibility(View.VISIBLE);
-            // 只有学生，支持语音评测的听读课才显示语音评测
-            if(sectionResListVo.getTaskType() == 2 &&
-                    SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())){
-                // 支持语音评测的听读课
-                mBtnSpeechEvaluation.setVisibility(View.VISIBLE);
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(!(tutorialMode && isAudition)){
+            // 只有学生才显示读写单和复述课件
+            if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
+                // 试听身份可以查看到按钮
+                mBtnDone.setVisibility(View.VISIBLE);
+                // 只有学生，支持语音评测的听读课才显示语音评测
+                if(sectionResListVo.getTaskType() == 2 &&
+                        SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())){
+                    // 支持语音评测的听读课
+                    mBtnSpeechEvaluation.setVisibility(View.VISIBLE);
+                }else{
+                    mBtnSpeechEvaluation.setVisibility(View.GONE);
+                }
             }else{
+                mBtnDone.setVisibility(View.GONE);
                 mBtnSpeechEvaluation.setVisibility(View.GONE);
             }
         }else{
@@ -224,7 +235,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 updateItemDeleteState(false);
                 LqTaskCommitVo item = (LqTaskCommitVo) committedTasksAdapter.getItem(i);
                 if(!EmptyUtil.isEmpty(doWorkListener)){
-                    doWorkListener.onItemClick(item,false,getSourceType());
+                    doWorkListener.onItemClick(item,false,getSourceType(),false);
                 }
             }
         });
@@ -358,7 +369,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                     public void onDataLoaded(LqTaskCommitListVo lqTaskCommitListVo) {
                         pullToRefreshView.onHeaderRefreshComplete();
                         mLqTaskCommitListVo = lqTaskCommitListVo;
-                        filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
+                        // filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
                         committedTasksAdapter.setData(getCommitTaskList(mLqTaskCommitListVo.getListCommitTaskOnline()));
                         committedTasksAdapter.setDoWorkListener(doWorkListener);
                         committedTasksAdapter.setAnswerData(mAnswerData);
@@ -584,8 +595,9 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
          * @param vo 批阅任务实体
          * @param isCheckMark 是否是查看批阅
          * @param sourceType 数据类型
+         * @param taskCourseWare 是否是读写单的课件打开
          */
-        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType);
+        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare);
         void onClickCommitListItem(SectionTaskCommitListVo vo);
         void openCourseWareDetails(String resId,
                                    int resType,

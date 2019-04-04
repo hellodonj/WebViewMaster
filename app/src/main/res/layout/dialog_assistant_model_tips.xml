@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/do_task_order_tips_content_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/separate_20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/str_assistant_model_title"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center|left"
+            android:text="@string/str_assistant_dialog_tips"
+            android:textColor="@color/text_black"
+            android:textSize="14sp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/separate_20dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_no_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:button="@null"
+                android:checked="false"
+                android:drawableLeft="@drawable/ecourse_choice_btn"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="@string/no_more_tips"
+                android:textColor="@color/text_black"
+                android:textSize="14sp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_know"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_corner_text_green_20_dp"
+                android:gravity="center"
+                android:minWidth="80dp"
+                android:padding="5dp"
+                android:text="@string/i_see"
+                android:textColor="@color/text_white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

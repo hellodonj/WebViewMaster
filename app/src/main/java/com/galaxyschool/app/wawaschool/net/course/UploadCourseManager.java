@@ -529,6 +529,9 @@ public class UploadCourseManager {
             params.put("SchoolId", uploadSchoolInfo.SchoolId);
         }
         params.put("IsPmaterial", uploadParameter.isPmaterial());
+        if (uploadParameter.getSchoolMaterialType() > 0) {
+            params.put("SchoolMaterialType", uploadParameter.getSchoolMaterialType());
+        }
         int resType = courseData.type % ResType.RES_TYPE_BASE;
         if (resType == ResType.RES_TYPE_STUDY_CARD){
             //任务类型的教辅材料

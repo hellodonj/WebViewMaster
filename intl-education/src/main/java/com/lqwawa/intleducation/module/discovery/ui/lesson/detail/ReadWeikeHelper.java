@@ -94,10 +94,12 @@ public class ReadWeikeHelper {
             case 19:
             case 3:
             case 23:
+            case 30:
+                // 30 V5.14新添加的Q配音资源
                 if (!SharedPreferencesHelper.getBoolean(mActivity,
                         AppConfig.BaseConfig.KEY_ALLOW_4G, false)) {
                     if (NetWorkUtils.isWifiActive(mActivity.getApplication().getApplicationContext())) {
-                        if (resVo.getResType() == 3) {
+                        if (resVo.getResType() == 3 || resVo.getResType() == 30) {
 //                            LqResViewHelper.playBaseRes(resVo.getResType(), activity, resVo.getVuid().trim(), resVo.getName());
                             playMedia(resVo, VodVideoSettingUtil.VIDEO_TYPE);
                         } else {

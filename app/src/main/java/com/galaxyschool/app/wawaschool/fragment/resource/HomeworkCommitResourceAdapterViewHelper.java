@@ -108,9 +108,12 @@ public abstract class HomeworkCommitResourceAdapterViewHelper<T> extends Adapter
             layoutParams.width = width;
             layoutParams.height = width * 210/297;
             imageView.setLayoutParams(layoutParams);
-
+            String thumbnailResUrl = data.getStudentResUrl();
+            if (data.isVideoType() || (data.isMarkCard() && data.isCourseType())){
+                thumbnailResUrl = data.getStudentResThumbnailUrl();
+            }
             MyApplication.getThumbnailManager(this.activity).displayUserIconWithDefault(
-                    AppSettings.getFileUrl(data.getStudentResUrl()), imageView,
+                    AppSettings.getFileUrl(thumbnailResUrl), imageView,
                     R.drawable.default_cover);
         }
 

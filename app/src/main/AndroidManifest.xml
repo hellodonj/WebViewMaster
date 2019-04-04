@@ -1362,6 +1362,36 @@
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity android:name="com.galaxyschool.app.wawaschool.QDubbingActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+                  android:screenOrientation="portrait"
+                  android:hardwareAccelerated="true"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <!--帮辅个人主页入口-->
+        <activity
+            android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--申请成为帮辅，注册信息的入口-->
+        <activity android:name="com.lqwawa.mooc.modle.tutorial.regist.TutorialRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.Common"/>
+
+        <!--帮辅申请提交入口-->
+        <activity android:name="com.lqwawa.mooc.modle.tutorial.audit.TutorialAuditActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.Common"/>
+>>>>>>> lqwawa-phone-dev-v5.15
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1"/>

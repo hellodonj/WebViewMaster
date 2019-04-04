@@ -76,6 +76,24 @@ public class ExerciseItem implements Serializable{
     private List<Double> subAverageScore = new ArrayList<>();
     private List<String> subCommonError = new ArrayList<>();
     private List<Float> subErrorRate = new ArrayList<>();
+    private String student_answer_res_url;
+    private String student_state;
+
+    public String getStudent_state() {
+        return student_state;
+    }
+
+    public void setStudent_state(String student_state) {
+        this.student_state = student_state;
+    }
+
+    public String getStudent_answer_res_url() {
+        return student_answer_res_url;
+    }
+
+    public void setStudent_answer_res_url(String student_answer_res_url) {
+        this.student_answer_res_url = student_answer_res_url;
+    }
 
     public float getErrorRate() {
         return errorRate;

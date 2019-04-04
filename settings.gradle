@@ -9,5 +9,6 @@ include ':scanner-lib'
 include ':letv-sdk'
 include ':intl-education'
 include ':lqbase-lib'
+include ':dubbing'
 
 

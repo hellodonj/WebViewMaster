@@ -26,11 +26,13 @@ import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.course.PlaybackActivityPhone;
 import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
 import com.galaxyschool.app.wawaschool.fragment.HomeworkCommitFragment;
 import com.galaxyschool.app.wawaschool.pojo.AnswerAnalysisInfo;
+import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
@@ -51,6 +53,7 @@ import com.galaxyschool.app.wawaschool.slide.UploadDialog;
 import com.galaxyschool.app.wawaschool.views.MarkScoreDialog;
 import com.lqwawa.client.pojo.LearnTaskCardType;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -86,6 +89,8 @@ public class DoTaskOrderHelper {
     private ExerciseItem itemData;
     private String markScore;
     private boolean isUpdateAnswerDetail;
+    private String resId;
+    private String resUrl;
 
     public DoTaskOrderHelper(Context mContext) {
         this.mContext = mContext;
@@ -113,6 +118,16 @@ public class DoTaskOrderHelper {
 
     public DoTaskOrderHelper setUploadDialogHandler(UploadDialog.UploadDialogHandler handler) {
         this.handler = handler;
+        return this;
+    }
+
+    public DoTaskOrderHelper setResId(String resId){
+        this.resId = resId;
+        return this;
+    }
+
+    public DoTaskOrderHelper setResUrl(String resUrl){
+        this.resUrl = resUrl;
         return this;
     }
 
@@ -372,6 +387,8 @@ public class DoTaskOrderHelper {
         param.put("TaskId", cardParam.getTaskId());
         param.put("StudentId", cardParam.getStudentId());
         param.put("StudentResTitle", cardParam.getCommitTaskTitle());
+        param.put("StudentResId", resId);
+        param.put("StudentResUrl", resUrl);
         if (cardParam.isFromOnlineStudyTask()) {
             param.put("SchoolId", cardParam.getSchoolId());
             param.put("SchoolName", cardParam.getSchoolName());
@@ -637,8 +654,8 @@ public class DoTaskOrderHelper {
             } else if (type == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                 //主观题
                 if (isUpdateAnswerDetail){
-                    List<MediaInfo> mediaInfos = getSubjectProblemImage();
-                    if (mediaInfos != null && mediaInfos.size() > 0){
+                    List<learnTaskCardData> cardData = item.getCardData();
+                    if (cardData != null && cardData.size() > 0){
                         jsonObject.put("EQState", 6);
                     } else {
                         jsonObject.put("EQState", 5);
@@ -837,14 +854,19 @@ public class DoTaskOrderHelper {
             return;
         }
         itemData = cardParam.getExerciseItem();
-        if (itemData == null) {
-            return;
-        }
-        if (itemData.getEqState() == 4 || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
-            //已打分
-            showCommitDialog(isTeacherOrEditor());
+        QuestionResourceModel model = cardParam.getMarkModel();
+        if (model != null) {
+            showCommitDialog(false);
         } else {
-            showMarkScoreDialog();
+            if (itemData == null) {
+                return;
+            }
+            if (itemData.getEqState() == 4 || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
+                //已打分
+                showCommitDialog(isTeacherOrEditor());
+            } else {
+                showMarkScoreDialog();
+            }
         }
     }
 
@@ -880,7 +902,7 @@ public class DoTaskOrderHelper {
             showMarkScoreDialog();
         });
 
-        if (isTeacher && itemData.getEqState() == 4 && !TextUtils.isEmpty(itemData.getStudent_score())) {
+        if (isTeacher && itemData != null && itemData.getEqState() == 4 && !TextUtils.isEmpty(itemData.getStudent_score())) {
             //老师身份 并且 分数不为空才显示重新打分
             rightBtn.setVisibility(View.VISIBLE);
         }
@@ -1015,7 +1037,12 @@ public class DoTaskOrderHelper {
                                                                 if (uploadResult.data != null && uploadResult.data.size() > 0) {
                                                                     final CourseData courseData = uploadResult.data.get(0);
                                                                     if (courseData != null) {
-                                                                        commitStudentCourse(userInfo, courseData);
+                                                                        if (cardParam != null && cardParam.getMarkModel() != null) {
+                                                                            ApplyMarkHelper.enterApplyTeacherMarkActivity(mContext,
+                                                                                    courseData, cardParam.getMarkModel());
+                                                                        } else {
+                                                                            commitStudentCourse(userInfo, courseData);
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -1229,7 +1256,9 @@ public class DoTaskOrderHelper {
                                           String studentName,
                                           int commitTaskId,
                                           boolean fromOnlineStudy,
-                                          boolean isDoExercise) {
+                                          boolean isDoExercise,
+                                          QuestionResourceModel markModel,
+                                          boolean hasAssistantPermission) {
 
         String tempResId = courseId;
         int resType = 0;
@@ -1270,7 +1299,9 @@ public class DoTaskOrderHelper {
                                     studentName,
                                     commitTaskId,
                                     fromOnlineStudy,
-                                    isDoExercise);
+                                    isDoExercise,
+                                    markModel,
+                                    hasAssistantPermission);
                         }
                     }
                 }
@@ -1297,7 +1328,9 @@ public class DoTaskOrderHelper {
                             studentName,
                             commitTaskId,
                             fromOnlineStudy,
-                            isDoExercise);
+                            isDoExercise,
+                            markModel,
+                            hasAssistantPermission);
                 }
             });
         }
@@ -1321,7 +1354,9 @@ public class DoTaskOrderHelper {
                                              String studentName,
                                              int commitTaskId,
                                              boolean fromOnlineStudy,
-                                             boolean isDoExercise) {
+                                             boolean isDoExercise,
+                                             QuestionResourceModel markModel,
+                                             boolean hasAssistantPermission) {
         if (courseData != null) {
             PlaybackParam mParam = new PlaybackParam();
             //隐藏收藏按钮
@@ -1345,6 +1380,10 @@ public class DoTaskOrderHelper {
             cardParam.setClassName(className);
             cardParam.setStudentName(studentName);
             cardParam.setCommitTaskId(commitTaskId);
+            cardParam.setMarkModel(markModel);
+            CommitTask commitTask = new CommitTask();
+            commitTask.setHasTutorialPermission(hasAssistantPermission);
+            cardParam.setCommitTask(commitTask);
             if (isDoExercise) {
                 mParam.exerciseCardParam = cardParam;
                 ActivityUtils.openOnlineOnePage(activity, courseData.getNewResourceInfo(), true,

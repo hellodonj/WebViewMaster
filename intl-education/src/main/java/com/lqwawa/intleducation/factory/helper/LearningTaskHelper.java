@@ -9,18 +9,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.vo.LqResponseDataVo;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
+import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.factory.data.entity.response.LQResourceDetailVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
+import com.lqwawa.intleducation.module.learn.vo.LqTaskInfoVo;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,6 +105,52 @@ public class LearningTaskHelper {
                 }else{
                     String message = responseVo.getMessage();
                     UIUtil.showToastSafe(message);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if(null != callback){
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 根据资源Id获取资源详情
+     * @param taskId taskId
+     * @param callback 回调对象
+     */
+    public static void requestTaskInfoByTaskId(@NonNull String taskId,
+                                                 @NonNull final DataSource.Callback<LqTaskInfoVo> callback) {
+
+        RequestVo requestVo = new RequestVo();
+
+        requestVo.addParams("TaskId",taskId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostTaskInfoByTaskId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                TypeReference<LqResponseDataVo<List<LqTaskInfoVo>>> typeReference = new TypeReference<LqResponseDataVo<List<LqTaskInfoVo>>>(){};
+                LqResponseDataVo<List<LqTaskInfoVo>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()){
+                    if(EmptyUtil.isNotEmpty(callback) &&
+                            EmptyUtil.isNotEmpty(responseVo.getModel()) &&
+                            EmptyUtil.isNotEmpty(responseVo.getModel().getData())){
+                        callback.onDataLoaded(responseVo.getModel().getData().get(0));
+                    }
+                }else{
+                    String ErrorMessage = (String) responseVo.getErrorMessage();
+                    Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
+                    if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
+                            && errorHashMap.containsKey(ErrorMessage)) {
+                        UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
                 }
             }
 

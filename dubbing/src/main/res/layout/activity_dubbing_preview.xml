@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/bottom_bg"
+             android:clipChildren="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44.0dp"
+            android:background="#ff282828"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:scaleType="center"
+                android:src="@drawable/dubbing_icon_cancel"/>
+
+            <TextView
+                android:id="@+id/video_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="00:00/00:00"
+                android:textColor="@color/white"
+                android:textSize="14.0sp"/>
+
+            <TextView
+                android:id="@+id/complete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10.0dp"
+                android:gravity="center_vertical"
+                android:text="保存"
+                android:textColor="#ffbdbdbd"
+                android:textSize="15sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/video_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.icedcap.dubbing.view.DubbingVideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="200.0dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#3000"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tv_current_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:indeterminateDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:progressDrawable="@drawable/uvv_star_play_progress_seek"
+                    android:thumb="@drawable/uvv_seek_dot"
+                    android:thumbOffset="10dip"/>
+
+                <TextView
+                    android:id="@+id/tv_total_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!--显示通篇配音-->
+        <com.lqwawa.apps.views.lrcview.LrcView
+            android:id="@+id/lrc_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_white_rectrangle"
+            android:padding="10dp"
+            app:lrcAnimationDuration="200"
+            app:lrcCurrentTextColor="#00FF00"
+            app:lrcDividerHeight="25dp"
+            app:lrcLabel=""
+            app:lrcNormalTextColor="#000000"
+            app:lrcPadding="5dp"
+            app:lrcTextGravity="center"
+            app:lrcTextSize="18sp"
+            app:lrcTimeTextColor="#BDBDBD"
+            app:lrcTimelineColor="#80BDBDBD"
+            app:lrcTimelineTextColor="#9FA8DA"/>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/art_process_view"
+        layout="@layout/process_view"
+        android:visibility="gone"/>
+</FrameLayout>

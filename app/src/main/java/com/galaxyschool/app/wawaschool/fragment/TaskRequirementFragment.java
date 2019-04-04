@@ -296,7 +296,9 @@ public class TaskRequirementFragment extends ContactsListFragment{
                 commitBtn.setVisibility(View.GONE);
             } else if (taskType == StudyTaskType.TASK_ORDER) {
                 result = getString(R.string.do_task);
-            }else {
+            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                result = getString(R.string.str_start_dubbing);
+            } else {
                 commitBtn.setVisibility(View.GONE);
             }
             commitBtn.setText(result);
@@ -436,7 +438,9 @@ public class TaskRequirementFragment extends ContactsListFragment{
             }
             if (task.getScoringRule() != 0) {
                 //复述课件,任务单显示成绩统计  打分
-                if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                if (taskType == StudyTaskType.TASK_ORDER
+                        || taskType == StudyTaskType.RETELL_WAWA_COURSE
+                        || taskType == StudyTaskType.Q_DUBBING) {
                     mStatisticFl.setVisibility(View.VISIBLE);
                 } else {
                     mStatisticFl.setVisibility(View.GONE);

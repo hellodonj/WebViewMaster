@@ -106,6 +106,7 @@ public class CheckMarkInfo implements Serializable {
         private String CreateName;
         private String HeadPicUrl;
         private String CreateTime;
+        private int ReviewFlag;
 
         /**
          * 班级分组  http://121.42.155.135:8080/
@@ -141,6 +142,41 @@ public class CheckMarkInfo implements Serializable {
 
         private boolean showDeleted;
         private boolean IsOnlineSchool;
+        private String MemberId;
+        private int SubmitRole;
+        private String SubmitTime;
+
+        public String getMemberId() {
+            return MemberId;
+        }
+
+        public void setMemberId(String memberId) {
+            MemberId = memberId;
+        }
+
+        public int getSubmitRole() {
+            return SubmitRole;
+        }
+
+        public void setSubmitRole(int submitRole) {
+            SubmitRole = submitRole;
+        }
+
+        public String getSubmitTime() {
+            return SubmitTime;
+        }
+
+        public void setSubmitTime(String submitTime) {
+            SubmitTime = submitTime;
+        }
+
+        public int getReviewFlag() {
+            return ReviewFlag;
+        }
+
+        public void setReviewFlag(int reviewFlag) {
+            ReviewFlag = reviewFlag;
+        }
 
         public boolean isOnlineSchool() {
             return IsOnlineSchool;
@@ -430,6 +466,10 @@ public class CheckMarkInfo implements Serializable {
             dest.writeString(this.resType);
             dest.writeByte(this.showDeleted ? (byte) 1 : (byte) 0);
             dest.writeByte(this.IsOnlineSchool ? (byte) 1 : (byte) 0);
+            dest.writeInt(this.ReviewFlag);
+            dest.writeString(this.MemberId);
+            dest.writeInt(SubmitRole);
+            dest.writeString(SubmitTime);
         }
 
         protected ModelBean(Parcel in) {
@@ -463,6 +503,10 @@ public class CheckMarkInfo implements Serializable {
             this.resType = in.readString();
             this.showDeleted = in.readByte() != 0;
             this.IsOnlineSchool = in.readByte() != 0;
+            this.ReviewFlag = in.readInt();
+            this.MemberId = in.readString();
+            this.SubmitRole = in.readInt();
+            this.SubmitTime = in.readString();
         }
 
         public static final Creator<ModelBean> CREATOR = new Creator<ModelBean>() {

@@ -21,9 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/btn_green_selector"
             android:gravity="center"
             android:padding="10dp"
@@ -35,16 +35,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/comfirm_commit"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical"
                 >
 
@@ -62,8 +62,8 @@
                     style="@style/txt_wawa_big_black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/topic_input_gray_bg"
                     android:gravity="center_vertical"
                     android:hint="@string/topic_title_hint"
@@ -225,8 +225,8 @@
                     style="@style/txt_wawa_big_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
                     android:text="@string/student_should_complete_task"/>
 
                 <com.lqwawa.apps.views.ContainsEmojiEditText
@@ -234,9 +234,9 @@
                     style="@style/txt_wawa_big_black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/topic_input_gray_bg"
                     android:gravity="top"
                     android:hint="@string/topic_description_hint"
@@ -334,8 +334,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:drawablePadding="5dp"
                             android:drawableRight="@drawable/arrow_down_ico"
+                            android:drawablePadding="5dp"
                             android:gravity="center"
                             android:hint=""
                             android:padding="10dp"
@@ -353,8 +353,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/article_limit_word"
@@ -431,8 +431,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:drawablePadding="10dp"
                         android:drawableRight="@drawable/arrow_right"
+                        android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/item_small_height"
                         android:padding="5dp"
@@ -467,8 +467,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:drawablePadding="10dp"
                         android:drawableRight="@drawable/arrow_right"
+                        android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:minHeight="@dimen/item_small_height"
                         android:padding="5dp"
@@ -515,9 +515,9 @@
                             android:id="@+id/rb_publish_according_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:button="@drawable/com_checkbox"
                             android:padding="10dp"
-                            android:layout_marginLeft="10dp"
                             android:text="@string/str_publish_according_to_time"
                             android:textColor="@color/text_normal"
                             android:textSize="14sp"/>
@@ -588,7 +588,7 @@
                         android:layout_height="1dp"
                         android:background="#c3c3c3"/>
 
-
+                    <!--打分规则-->
                     <LinearLayout
                         android:id="@+id/ll_select_mark"
                         android:layout_width="match_parent"
@@ -632,10 +632,7 @@
                                 android:text="@string/str_system_of_ten"
                                 android:textSize="14sp"/>
                         </RadioGroup>
-
-
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <!--================================需要学生提交====================================-->
@@ -653,18 +650,16 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:drawableRight="@drawable/unselect"
-                        android:paddingBottom="10dp"
-                        android:paddingRight="10dp"
                         android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
                         android:text="@string/need_student_to_commit"/>
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="#c3c3c3"/>
-
                 </LinearLayout>
-
 
                 <View
                     android:layout_width="match_parent"

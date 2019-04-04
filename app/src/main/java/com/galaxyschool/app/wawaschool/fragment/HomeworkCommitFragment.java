@@ -32,6 +32,7 @@ import com.galaxyschool.app.wawaschool.EnglishWritingBuildActivity;
 import com.galaxyschool.app.wawaschool.EnglishWritingCompositionRequirementsActivity;
 import com.galaxyschool.app.wawaschool.HomeworkFinishStatusActivity;
 import com.galaxyschool.app.wawaschool.Note.OnlineMediaPaperActivity;
+import com.galaxyschool.app.wawaschool.QDubbingActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ScoreStatisticsActivity;
 import com.galaxyschool.app.wawaschool.SpeechAssessmentActivity;
@@ -54,13 +55,16 @@ import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
+import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.course.CacheCourseImagesTask;
 import com.galaxyschool.app.wawaschool.course.DownloadOnePageTask;
 import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
+import com.galaxyschool.app.wawaschool.db.MediaDao;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
+import com.galaxyschool.app.wawaschool.db.dto.MediaDTO;
 import com.galaxyschool.app.wawaschool.fragment.library.DataAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerTitleAdapter;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
@@ -72,8 +76,15 @@ import com.galaxyschool.app.wawaschool.pojo.AutoMarkText;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkTextResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTaskResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
+import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaUploadList;
 import com.galaxyschool.app.wawaschool.views.DoTaskOrderTipsDialog;
+import com.icedcap.dubbing.DubbingActivity;
+import com.icedcap.dubbing.entity.DubbingEntity;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
+import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
@@ -214,7 +225,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean isStudentFinishRetellTask;
     private boolean isStudentFinishEValTask;
     private boolean isFistIn = true;
-
+    public CourseData taskData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -518,6 +529,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     CommitTask commitTask = data.get(i);
                     commitTask.setScoreRule(ScoringRule);
                     commitTask.setScreenType(taskCourseOrientation);
+                    commitTask.setResPropType(task.getResPropType());
+                    if (taskData != null){
+                        commitTask.setParentResourceUrl(taskData.resourceurl);
+                        commitTask.setLevel(taskData.level);
+                    }
                     if (isAnswerTaskOrderQuestion) {
                         //答题卡的统计
                         if (!TextUtils.isEmpty(commitTask.getTaskScore())) {
@@ -617,7 +633,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (TaskType == StudyTaskType.SUBMIT_HOMEWORK
                 || TaskType == StudyTaskType.WATCH_HOMEWORK
                 || TaskType == StudyTaskType.ENGLISH_WRITING
-                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
+                || TaskType == StudyTaskType.Q_DUBBING) {
             hidden = true;
         }
         return hidden;
@@ -911,9 +928,15 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (studyTask != null) {
                 ScoringRule = studyTask.getScoringRule();
                 checkSpeechAssessmentPermission(studyTask.getResId(), result);
-                if (studyTask.getResPropType() == 1) {
-                    //任务单答题卡类型
-                    checkTaskOrderAnswerQuestionCard();
+//                if (studyTask.getResPropType() == 1) {
+//                    //任务单答题卡类型
+//                    checkTaskOrderAnswerQuestionCard();
+//                }
+                //任务单答题卡类型
+                checkTaskOrderAnswerQuestionCard();
+                if (TaskType == StudyTaskType.Q_DUBBING){
+                    //加载配音视频的信息
+                    loadQDubbingVideoDetail();
                 }
             }
         }
@@ -1269,6 +1292,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (roleType == RoleType.ROLE_TYPE_PARENT) {
                 param.mMemberId = StudentId;
                 if (stuUserInfo != null) {
+                    if (!TextUtils.isEmpty(StudentId)){
+                        stuUserInfo.setMemberId(StudentId);
+                    }
                     param.mUserInfo = stuUserInfo;
                 }
             } else {
@@ -1340,13 +1366,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
 
         } else if (v.getId() == R.id.iv_icon || v.getId() == R.id.layout_assign_homework) {
-
             if (TaskType == StudyTaskType.ENGLISH_WRITING
                     || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                 return;
                 //英文写作/新版看课件不跳转
             }
-
             //点击图片直接打开
             if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER)
                     && (taskResType == ResType.RES_TYPE_PPT
@@ -1354,6 +1378,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     || taskResType == ResType.RES_TYPE_DOC
                     || taskResType == ResType.RES_TYPE_IMG)) {
                 openPptAndPdf();
+            } else if (TaskType == StudyTaskType.Q_DUBBING) {
+                //打开Q配音的视频
+                openQDubbingVideo();
             } else {
                 openImage(task, false);
             }
@@ -1528,6 +1555,20 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
     }
 
+    /**
+     * 打开Q配音的原视频
+     */
+    private void openQDubbingVideo(){
+        if (task == null){
+            return;
+        }
+        ResourceInfoTag info = new ResourceInfoTag();
+        info.setResId(task.getResId());
+        info.setResourcePath(task.getResUrl());
+        WatchWawaCourseResourceOpenUtils.openResource(getActivity(), info,
+                true, false, true);
+    }
+
     private void enterEnglishWritingCompositionRequirementsActivity() {
 
         if (task == null) {
@@ -1545,11 +1586,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
             //导读
             showIntroductionWaWaCoursePopupWindow();
-
         } else if (taskType == StudyTaskType.SUBMIT_HOMEWORK) {
             //提交作业
             showSubmitHomeworkPopupWindow();
-
         } else if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             //复述课件
             retellCourse();
@@ -1570,6 +1609,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             } else {
                 takeTask(true);
             }
+        } else if (taskType == StudyTaskType.Q_DUBBING){
+            startDubbingVideo(null,false);
         }
     }
 
@@ -2352,7 +2393,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                                                                 if (uploadResult.data != null && uploadResult.data.size() > 0) {
                                                                     final CourseData courseData = uploadResult.data.get(0);
                                                                     if (courseData != null) {
-                                                                        commitStudentCourse(userInfo, courseData, slidePath);
+                                                                        commitStudentCourse(userInfo, courseData, slidePath,new ArrayList<>());
                                                                     }
                                                                 }
                                                             }
@@ -2368,7 +2409,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
     }
 
-    private void commitStudentCourse(final UserInfo userInfo, final CourseData courseData, final String slidePath) {
+    private void commitStudentCourse(final UserInfo userInfo,
+                                     final CourseData courseData,
+                                     final String slidePath,
+                                     List<DubbingEntity> dubbingEntityList) {
         if (task == null) {
             return;
         }
@@ -2412,16 +2456,14 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                                         temSlidePath, true);
                             }
                         }
-                        TipMsgHelper.ShowLMsg(getActivity(), getString(R.string.save_to_lq_cloud));
-                        //刷新页面
-                        //5.10屏蔽
-                       /* if (Double.valueOf(score) > -1) {
-                            SetCommitTaskScore(taskResult.Model.CommitTaskId, courseData);
-                            return;
-                        }*/
-                        refreshData();
-                        setHasCommented(true);
-                        EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_COURSE));
+                        if (TaskType == StudyTaskType.Q_DUBBING){
+                            SetCommitTaskScore(taskResult.Model.CommitTaskId, courseData,dubbingEntityList);
+                        } else {
+                            TipMsgHelper.ShowLMsg(getActivity(), getString(R.string.save_to_lq_cloud));
+                            refreshData();
+                            setHasCommented(true);
+                            EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_COURSE));
+                        }
                     } else {
                         String errorMessage = getString(R.string.publish_course_error);
                         if (result != null && !TextUtils.isEmpty(result.getErrorMessage())) {
@@ -2705,6 +2747,36 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                                 slidePath, true);
                     }
                 }
+            } else if (requestCode == QDubbingActivity.COMMIT_Q_DUBBING_TASK_SUCCESS){
+                if (data != null){
+                    String videoPath = data.getStringExtra(DubbingActivity.Constant.MERGE_VIDEO_PATH);
+                    List<DubbingEntity> dubbingEntityList = (List<DubbingEntity>) data.getSerializableExtra(
+                            DubbingActivity.Constant.DUBBING_ENTITY_LIST_DATA);
+                    if (TextUtils.isEmpty(videoPath) || dubbingEntityList == null || dubbingEntityList.size() == 0){
+                        return;
+                    }
+                    File file = new File(videoPath);
+                    if (file.exists()) {
+                        MediaDTO mediaDTO = new MediaDTO();
+                        mediaDTO.setPath(videoPath);
+                        if (task != null){
+                            mediaDTO.setTitle(task.getTaskTitle());
+                        } else {
+                            mediaDTO.setTitle(Utils.getFileNameFromPath(videoPath));
+                        }
+                        mediaDTO.setMediaType(MediaType.VIDEO);
+                        mediaDTO.setCreateTime(System.currentTimeMillis());
+                        MediaDao mediaDao = new MediaDao(getActivity());
+                        mediaDao.addOrUpdateMediaDTO(mediaDTO);
+                        MediaInfo mediaInfo = mediaDTO.toMediaInfo();
+                        if (mediaInfo != null) {
+                            UserInfo userInfo = getUserInfo();
+                            if (userInfo != null) {
+                                uploadCourseToServer(userInfo, mediaInfo,dubbingEntityList);
+                            }
+                        }
+                    }
+                }
             }
         }
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -2851,6 +2923,52 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
     }
 
+    private void uploadCourseToServer(final UserInfo userInfo,
+                                      final MediaInfo mediaInfo,
+                                      List<DubbingEntity> dubbingEntityList) {
+        UploadParameter uploadParameter = UploadUtils.getUploadParameter(userInfo, MediaType.VIDEO, 1);
+        List<String> paths = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+        if (mediaInfo != null) {
+            paths.add(mediaInfo.getPath());
+            builder.append(Utils.removeFileNameSuffix(mediaInfo.getTitle()) + ";");
+        }
+        String fileName = builder.toString();
+        if (!TextUtils.isEmpty(fileName) && fileName.endsWith(";")) {
+            fileName = fileName.substring(0, fileName.length() - 1);
+        }
+        if (!TextUtils.isEmpty(fileName)) {
+            uploadParameter.setFileName(fileName);
+        }
+        uploadParameter.setPaths(paths);
+        showLoadingDialog();
+        UploadUtils.uploadMedia(getActivity(), uploadParameter, new CallbackListener() {
+            @Override
+            public void onBack(Object result) {
+                dismissLoadingDialog();
+                if (result != null) {
+                    MediaUploadList uploadResult = (MediaUploadList) result;
+                    if (uploadResult.getCode() == 0) {
+                        List<MediaData> datas = uploadResult.getData();
+                        if (datas != null && datas.size() > 0) {
+                            MediaData mediaData = datas.get(0);
+                            if (mediaData != null) {
+                                CourseData courseData = new CourseData();
+                                courseData.id = mediaData.id;
+                                courseData.type = ResType.RES_TYPE_VIDEO;
+                                courseData.nickname = task.getTaskTitle();
+                                courseData.resourceurl = mediaData.resourceurl;
+                                commitStudentCourse(userInfo, courseData, null,dubbingEntityList);
+                            }
+                        }
+                    } else {
+                        TipMsgHelper.ShowLMsg(getActivity(), R.string.upload_file_failed);
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * 导读提交
      *
@@ -2859,8 +2977,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
      * @param slidePath
      * @param commitType
      */
-    private void commitStudentCourse(final UserInfo userInfo, final CourseData courseData, final String
-            slidePath, String commitType) {
+    private void commitStudentCourse(final UserInfo userInfo,
+                                     final CourseData courseData,
+                                     final String slidePath,
+                                     String commitType) {
         Map<String, Object> params = new HashMap<String, Object>();
         if (task != null) {
             params.put("TaskId", task.getId());
@@ -2921,18 +3041,20 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     /**
      * 上传自动批阅分数
      */
-    private void SetCommitTaskScore(int taskId, CourseData courseData) {
+    private void SetCommitTaskScore(int taskId,
+                                    CourseData courseData,
+                                    List<DubbingEntity> dubbingEntityList) {
         Map<String, Object> params = new HashMap<>();
         if (task != null) {
             params.put("CommitTaskId", taskId);
         }
-        params.put("TaskScore", score);
+        params.put("TaskScore", StudyTaskUtils.getTotalScore(dubbingEntityList));
         if (courseData != null) {
             params.put("ResId", courseData.getIdType());
             params.put("ResUrl", courseData.resourceurl);
         }
-        params.put("AutoEvalCompanyType", schemeId);
-        params.put("AutoEvalContent", resultContent);
+        params.put("AutoEvalCompanyType", 4);
+        params.put("AutoEvalContent", StudyTaskUtils.getScoreArrayList(dubbingEntityList));
         RequestHelper.RequestListener<DataResult> listener = new RequestHelper.RequestListener<DataResult>(getActivity(), DataResult.class) {
             @Override
             public void onSuccess(String jsonString) {
@@ -2942,10 +3064,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 super.onSuccess(jsonString);
                 if (getResult() != null && getResult().isSuccess()) {
                     //自动批阅分数上传成功
+                    TipMsgHelper.ShowLMsg(getActivity(), getString(R.string.commit_success));
                     refreshData();
                     setHasCommented(true);
                 }
-                score = "-1";
             }
         };
         RequestHelper.sendPostRequest(getActivity(), ServerUrl.COMMIT_AUTO_MARK_SCORE,
@@ -3406,6 +3528,20 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
     public EvalHomeworkListFragment getEvalHomeworkListFragment() {
         return evalHomeworkListFragment;
+    }
+
+    private void loadQDubbingVideoDetail(){
+        WawaCourseUtils wawaCourseUtils = new WawaCourseUtils(getActivity());
+        wawaCourseUtils.loadCourseDetail(studyTask.getResId());
+        wawaCourseUtils.setOnCourseDetailFinishListener(courseData -> taskData = courseData);
+    }
+
+    /**
+     * 开始配音的动作
+     */
+    public void startDubbingVideo(CommitTask data,boolean hasReviewPermission){
+        QDubbingActivity.start(getActivity(),taskData.resourceurl,taskData.level,data,
+                hasReviewPermission, task.getResPropType());
     }
 
     private class MyBroadCastReceiver extends BroadcastReceiver {

@@ -430,15 +430,21 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
 
     @Override
-    protected void checkMarkTaskDetail(Activity activity, int roleType, SectionResListVo task, LqTaskCommitVo studentCommit, boolean isCheckMark, int sourceType) {
-        super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType);
+    protected void checkMarkTaskDetail(Activity activity,
+                                       int roleType,
+                                       SectionResListVo task,
+                                       LqTaskCommitVo studentCommit,
+                                       boolean isCheckMark,
+                                       int sourceType,
+                                       boolean taskCourseWare) {
+        super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType, taskCourseWare);
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo) || EmptyUtil.isEmpty(sectionResListVo)) return;
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
-
-        if (sectionResListVo.isAutoMark()) {
+        // V5.14列表兼容两种数据
+        // if (sectionResListVo.isAutoMark()) {
+        if (studentCommit.isAutoMark() && !taskCourseWare) {
             // 做任务单 自动批阅的类型
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
-
 
             LearningTaskHelper.requestResourceDetailById(resourceId, true, new DataSource.Callback<LQResourceDetailVo>() {
                 @Override
@@ -453,6 +459,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     List<LQResourceDetailVo.DataBean> data = vo.getData();
                     if (EmptyUtil.isEmpty(vo.getExercise())) return;
                     String answerString = JSON.toJSONString(vo.getExercise());
+
+                    sectionResListVo.setEnterType(mCourseParams.getCourseEnterType(false));
+                    boolean isTutorialPermission = sectionResListVo.isTutorialPermission();
 
                     if (isCheckMark) {
 
@@ -476,6 +485,11 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         int commitTaskId = studentCommit.getId();
 
                         String taskScoreReMark = studentCommit.getTaskScoreRemark();
+                        String courseId = mCourseParams.getCourseId();
+                        String courseName = mCourseParams.getCourseName();
+
+                        String classId = mCourseParams.getClassId();
+                        String className = mCourseParams.getClassName();
 
                         TaskSliderHelper.enterExerciseDetailActivity(activity,
                                 sectionResListVo.getPoint(),
@@ -491,7 +505,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 studentCommit.getStudentName(),
                                 studentCommit.getStudentId(),
                                 commitTaskId,
-                                taskScoreReMark);
+                                taskScoreReMark,
+                                courseId,
+                                courseName,
+                                classId,
+                                className,
+                                isTutorialPermission);
 
                     } else {
 
@@ -521,12 +540,13 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         }
 
                         int commitTaskId = studentCommit.getId();
-
+                        String courseId = mCourseParams.getCourseId();
+                        String courseName = mCourseParams.getCourseName();
                         TaskSliderHelper.doExerciseTask(
                                 activity,
                                 answerString,
                                 sectionResListVo.getTaskId(),
-                                mTaskParams.getMemberId(),
+                                studentCommit.getStudentId(),
                                 resourceId,
                                 sectionResListVo.getName(),
                                 schoolId,
@@ -534,13 +554,35 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 classId,
                                 null,
                                 studentCommit.getStudentName(),
-                                commitTaskId, false);
+                                commitTaskId, false,
+                                courseId,courseName,
+                                isTutorialPermission);
 
                     }
 
                 }
             });
 
+            return;
+        }
+
+        if(taskCourseWare && EmptyUtil.isNotEmpty(studentCommit.getStudentResId())){
+            if (TaskSliderHelper.onTaskSliderListener != null) {
+                try{
+                    String resId = studentCommit.getStudentResId();
+                    if (resId != null && resId.contains("-")) {
+                        String id = resId.split("-")[0];
+                        int type = Integer.parseInt(resId.split("-")[1]);
+                        TaskSliderHelper.onTaskSliderListener.viewCourse(
+                                activity, id,type,
+                                activity.getIntent().getStringExtra("schoolId"),
+                                getSourceType());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
             return;
         }
 
@@ -554,6 +596,40 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
             int scoringRule = mLqTaskCommitListVo.getTaskInfo().getScoringRule();
             scoringRule = 2;
+
+            // 设置CourseId 和 CourseName信息
+            task.setCourseId(mCourseParams.getCourseId());
+            task.setCourseName(mCourseParams.getCourseName());
+
+            // 班级学程中必传
+            String schoolId = mCourseParams.getSchoolId();
+            String classId = mCourseParams.getClassId();
+
+            // 如果从大厅进来，提交的时候需要传绑定的机构班级
+            /*if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER) {
+                schoolId = mCourseParams.getBindSchoolId();
+                classId = mCourseParams.getBindClassId();
+            } else if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER) {
+                // 学程馆学习任务入口
+                // 课程发生了绑定
+                // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
+                // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
+                if (mCourseParams.isBindClass()) {
+                    if (TextUtils.equals(mCourseParams.getSchoolId(), mCourseParams.getBindSchoolId())) {
+                        // 学程馆Id和绑定的Id,相等
+                        schoolId = mCourseParams.getBindSchoolId();
+                        classId = mCourseParams.getBindClassId();
+                    }
+                } else {
+                    schoolId = mCourseParams.getSchoolId();
+                    classId = null;
+                }
+            }*/
+
+            task.setClassId(classId);
+            task.setClassName(mCourseParams.getClassName());
+            task.setLqwawaType(UserHelper.transferResourceTypeWithMooc(task.getTaskType()));
+            task.setEnterType(mCourseParams.getCourseEnterType(false));
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }
@@ -623,7 +699,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             if (resType > 10000) {
                 resType -= 10000;
             }
-            if (sectionResListVo.getTaskType() == 2) {//复述微课
+            if (sectionResListVo.getTaskType() == 2 ||
+                    sectionResListVo.getTaskType() == 5) {//复述微课
                 if (resType == ResType.RES_TYPE_OLD_COURSE || resType == ResType.RES_TYPE_COURSE
                         || resType == ResType.RES_TYPE_COURSE_SPEAKER) {//有声相册
                     DoCourseHelper doCourseHelper = new DoCourseHelper(activity, downloadService);
@@ -638,7 +715,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     //retellOnePageCourse(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
 
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType());
+                    String name = sectionResListVo.getName();
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
                 } else if (resType == ResType.RES_TYPE_PDF
                         || resType == ResType.RES_TYPE_PPT
                         || resType == ResType.RES_TYPE_IMG
@@ -659,6 +737,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
             } else if (sectionResListVo.getTaskType() == 3) {
+                // V5.14列表兼容两种数据
+                // if (sectionResListVo.isAutoMark()) {
                 if (sectionResListVo.isAutoMark()) {
                     // ShowWarning
                     // boolean ignore = SPUtil.getInstance().getBoolean(SharedConstant.KEY_AUTO_MARK_WARNING);
@@ -683,7 +763,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     // TODO 做任务单
                     // retellOnePageCourse(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType());
+                    String name = sectionResListVo.getName();
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
                 }
             }
         }
@@ -730,6 +811,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
 
+                String courseId = mCourseParams.getCourseId();
+                String courseName = mCourseParams.getCourseName();
+
+                sectionResListVo.setEnterType(mCourseParams.getCourseEnterType(false));
+                boolean isTutorialPermission = sectionResListVo.isTutorialPermission();
+
                 TaskSliderHelper.doExerciseTask(
                         activity,
                         answerString,
@@ -741,7 +828,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         null,
                         classId,
                         null,
-                        null, 0, true);
+                        null, 0, true,
+                        courseId,courseName,
+                        isTutorialPermission);
             }
         });
     }
@@ -926,11 +1015,11 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         if (EmptyUtil.isNotEmpty(data)) {
             // 循环遍历提交列表，复述课件提交和语音评测
             for (LqTaskCommitVo vo : data) {
-                if(sectionResListVo.isAutoMark() &&
+                /*if(sectionResListVo.isAutoMark() &&
                         EmptyUtil.isNotEmpty(vo.getStudentResId())){
                     // 过滤人工批阅的
                     continue;
-                }
+                }*/
 
                 CommitTask commitTask = CommitTask.buildVo(vo);
                 commitTask.setCommitTaskId(commitTask.getId());
@@ -958,7 +1047,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     CommitTask maxCommit = retellFilterMap.get(studentId);
                     if (EmptyUtil.isEmpty(maxCommit)) {
                         // 第一次提交，put
-                        if (sectionResListVo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                        if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
                             // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
                             retellFilterMap.put(studentId, commitTask);
                         }
@@ -971,7 +1060,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         if ((Double.parseDouble(commitTask.getTaskScore()) >
                                 Double.parseDouble(maxCommit.getTaskScore()))) {
                             // 如果遍历到的提交记录分数大于之前保存的，覆盖保存
-                            if (sectionResListVo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                            if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
                                 // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
                                 retellFilterMap.put(studentId, commitTask);
                             }
@@ -1026,7 +1115,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         /*enterScoreStatisticsActivity(this,retellArrays,evalArrays,classAllMemberCount,
                 resultRoleType,scoringRule,resultMark,null);*/
 
-        if (sectionResListVo.getTaskType() == 3 && sectionResListVo.isAutoMark()) {
+        if (hasAutoMark) {
             // 做任务单
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
             LearningTaskHelper.requestResourceDetailById(resourceId, true, new DataSource.Callback<LQResourceDetailVo>() {

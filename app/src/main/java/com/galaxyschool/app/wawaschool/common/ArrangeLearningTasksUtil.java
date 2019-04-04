@@ -1,4 +1,5 @@
 package com.galaxyschool.app.wawaschool.common;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -11,10 +12,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.fragment.library.DataAdapter;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.views.ContactsGridDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class ArrangeLearningTasksUtil {
         return this;
     }
 
-    public ArrangeLearningTasksUtil setIsIntroSuperTask(boolean isIntroSuperTask){
+    public ArrangeLearningTasksUtil setIsIntroSuperTask(boolean isIntroSuperTask) {
         this.isIntroSuperTask = isIntroSuperTask;
         return this;
     }
@@ -85,8 +88,9 @@ public class ArrangeLearningTasksUtil {
             }
         };
 
-        if (isIntroSuperTask){
+        if (isIntroSuperTask) {
             taskTypes = new String[]{
+                    activity.getString(R.string.str_q_dubbing),
                     activity.getString(R.string.do_task),
                     activity.getString(R.string.retell_course),
                     activity.getString(R.string.look_through_courseware),
@@ -97,6 +101,7 @@ public class ArrangeLearningTasksUtil {
         } else {
             taskTypes = new String[]{
                     activity.getString(R.string.str_super_task),
+                    activity.getString(R.string.str_q_dubbing),
                     activity.getString(R.string.do_task),
                     activity.getString(R.string.retell_course),
 //                    activity.getString(R.string.str_listen_read_and_write),
@@ -115,7 +120,7 @@ public class ArrangeLearningTasksUtil {
                 activity,
                 R.style.Theme_ContactsDialog,
                 isIntroSuperTask ? activity.getString(R.string.str_add_task) : activity.getString
-                (R.string.assign_task_line),
+                        (R.string.assign_task_line),
                 taskTypeList,
                 R.layout.contacts_dialog_grid_text_item,
                 adapterViewCreator,
@@ -187,30 +192,36 @@ public class ArrangeLearningTasksUtil {
                 enterIntroductionCourse(activity.getString(R.string.str_super_task),
                         StudyTaskType.SUPER_TASK);
                 break;
+            case StudyTaskType.Q_DUBBING://q配音
+                enterIntroductionCourse(activity.getString(R.string.str_q_dubbing),
+                        StudyTaskType.Q_DUBBING);
+                break;
         }
     }
 
     private int getStudyTaskType(int position) {
         int type = -1;
         String selectTextString = taskTypes[position];
-        if (TextUtils.equals(selectTextString,activity.getString(R.string.str_super_task))){
+        if (TextUtils.equals(selectTextString, activity.getString(R.string.str_super_task))) {
             type = StudyTaskType.SUPER_TASK;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.do_task))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.do_task))) {
             type = StudyTaskType.TASK_ORDER;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.retell_course))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.retell_course))) {
             type = StudyTaskType.RETELL_WAWA_COURSE;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.str_listen_read_and_write))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.str_listen_read_and_write))) {
             type = StudyTaskType.LISTEN_READ_AND_WRITE;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.look_through_courseware))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.look_through_courseware))) {
             type = StudyTaskType.WATCH_WAWA_COURSE;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.english_writing))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.english_writing))) {
             type = StudyTaskType.ENGLISH_WRITING;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.introduction))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.introduction))) {
             type = StudyTaskType.INTRODUCTION_WAWA_COURSE;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.discuss_topic))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.discuss_topic))) {
             type = StudyTaskType.TOPIC_DISCUSSION;
-        } else if (TextUtils.equals(selectTextString,activity.getString(R.string.other))){
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.other))) {
             type = StudyTaskType.WATCH_HOMEWORK;
+        } else if (TextUtils.equals(selectTextString, activity.getString(R.string.str_q_dubbing))) {
+            type = StudyTaskType.Q_DUBBING;
         }
         return type;
     }

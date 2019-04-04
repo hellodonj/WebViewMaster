@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.MyPageHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
+import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -378,7 +380,9 @@ public class MediaListFragment extends ContactsListFragment
             //视频和照片的布局
             layoutId = R.layout.video_grid_item;
             //微课和有声相册用单独的布局
-            if (mediaType == MediaType.ONE_PAGE || mediaType == MediaType.MICROCOURSE || mediaType == MediaType.TASK_ORDER) {
+            if (mediaType == MediaType.ONE_PAGE
+                    || mediaType == MediaType.MICROCOURSE
+                    || mediaType == MediaType.TASK_ORDER) {
                 layoutId = R.layout.lq_course_grid_item;
             }
             maxColumn = MAX_COLUMN;
@@ -667,6 +671,15 @@ public class MediaListFragment extends ContactsListFragment
                     //                    flag.setVisibility(viewMode == ViewMode.NORMAL ? View.INVISIBLE : View.VISIBLE);
                     //                    已收藏的不能重命名
 
+                    ImageView videoTypeView = (ImageView) view.findViewById(R.id.iv_video_type_flag);
+                    if (videoTypeView != null) {
+                        if (data.getResourceType() == MaterialResourceType.Q_DUBBING_VIDEO) {
+                            videoTypeView.setVisibility(View.VISIBLE);
+                        } else {
+                            videoTypeView.setVisibility(View.GONE);
+                        }
+                    }
+
                     TextView tvMark = (TextView) view.findViewById(R.id.tv_auto_mark);
                     if (tvMark != null){
                         if (!TextUtils.isEmpty(data.getResProperties())
@@ -680,6 +693,7 @@ public class MediaListFragment extends ContactsListFragment
                             tvMark.setVisibility(View.GONE);
                         }
                     }
+
                     if (editMode == EditMode.RENAME) {
                         if (data.isHasCollected()) {
                             flag.setVisibility(View.GONE);

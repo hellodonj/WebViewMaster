@@ -18,10 +18,14 @@ public interface CourseDetailType {
     int COURSE_DETAIL_CLASS_ENTER = 1;
     // 自主学习（学程馆）入口进入
     int COURSE_DETAIL_SCHOOL_ENTER = 2;
+    // 订单类型
+    int COURSE_DETAIL_ORDER_ENTER = 3;
+    // 我的授课类型
+    int COURSE_DETAIL_GIVE_INSTRUCTION_ENTER = 4;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({COURSE_DETAIL_MOOC_ENTER,COURSE_DETAIL_CLASS_ENTER,COURSE_DETAIL_SCHOOL_ENTER})
+    @IntDef({COURSE_DETAIL_MOOC_ENTER,COURSE_DETAIL_CLASS_ENTER,COURSE_DETAIL_SCHOOL_ENTER,COURSE_DETAIL_ORDER_ENTER,COURSE_DETAIL_GIVE_INSTRUCTION_ENTER})
     public @interface CourseDetailRes{
 
     }

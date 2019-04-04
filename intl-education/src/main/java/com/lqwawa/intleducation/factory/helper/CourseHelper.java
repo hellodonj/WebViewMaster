@@ -8,12 +8,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.LogUtil;
-import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
@@ -21,16 +21,19 @@ import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.learn.vo.CourseProcessVo;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -225,7 +228,7 @@ public class CourseHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                com.lqwawa.intleducation.common.utils.LogUtil.i(CourseHelper.class, "获取课程详情失败:type" + ",msg:" + throwable.getMessage());
+                LogUtil.i(CourseHelper.class, "获取课程详情失败:type" + ",msg:" + throwable.getMessage());
             }
 
             @Override
@@ -563,6 +566,242 @@ public class CourseHelper {
             @Override
             public void onError(Throwable throwable, boolean b) {
 
+            }
+        });
+    }
+
+    /**
+     * 获取课程助教列表
+     * @param courseId 课程Id
+     * @param memberId 用户Id
+     * @type 1 课程 2 课堂
+     * @param callback 请求回调对象
+     */
+    public static void requestTutorDataByCourseId(@NonNull String courseId,
+                                                  @NonNull String memberId,
+                                                  int type,
+                                                  int pageIndex,int pageSize,
+                                                  @NonNull final DataSource.Callback<List<TutorialGroupEntity>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId", courseId);
+        if(EmptyUtil.isNotEmpty(memberId)) {
+            requestVo.addParams("memberId", memberId);
+        }
+        requestVo.addParams("type", type);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetTutorListByCourseId + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>(){};
+                ResponseVo<List<TutorialGroupEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 查看课程的帮辅列表
+     * @param courseId 课程Id
+     * @param chapterId 资源Id
+     * @param memberId 用户Id
+     * @param callback 请求回调对象
+     */
+    public static void requestTutorsByCourseId(@NonNull String memberId,
+                                               @Nullable String courseId,
+                                               @Nullable String chapterId,
+                                               int pageIndex,int pageSize,
+                                               @NonNull final DataSource.Callback<List<TutorChoiceEntity>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        if(EmptyUtil.isNotEmpty(courseId)) {
+            requestVo.addParams("courseId", courseId);
+        }
+
+        if(EmptyUtil.isNotEmpty(chapterId)){
+            requestVo.addParams("chapterId", chapterId);
+        }
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostTutorsByCourseId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<TutorChoiceEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorChoiceEntity>>>(){};
+                ResponseVo<List<TutorChoiceEntity>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 查看该用户是否是某课程的帮辅老师
+     * @param courseId 课程Id
+     * @param memberId 用户Id
+     * @param callback 请求回调对象
+     */
+    public static void isTutorCourseBycourseId(@NonNull String memberId,
+                                               @Nullable String courseId,
+                                               @NonNull final DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("memberId", memberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostIsTutorCourseByCourseId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        CourseTutorResponseVo.CourseTutorEntity entity = new CourseTutorResponseVo.CourseTutorEntity();
+                        entity.setTutorCourse(responseVo.isTutorCourse());
+                        entity.setIsOrganTutorStatus(responseVo.getIsOrganTutorStatus());
+                        callback.onDataLoaded(entity);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                UIUtil.showToastSafe(R.string.net_error_tip);
+            }
+        });
+    }
+
+    /**
+     * 申请课程帮辅老师
+     * @param memberId 帮辅Id
+     * @param courseId 课程Id
+     * @param type 1 课程 2 课堂
+     * @param isOrganTutorStatus 是否已经是该机构的帮辅老师  -1 未申请过，0 正在申请当中 1已经是机构的帮辅老师
+     * @param realName 真实姓名,
+     * @param markingPrice 批阅价格
+     * @param provinceId 省份Id
+     * @param provinceName 省份名称
+     * @param cityId 城市Id
+     * @param cityName 城市名称
+     * @param countyId 区Id
+     * @param countyName 区名称
+     * @param isLqOrganTutor 是否已经是机构帮辅
+     */
+    public static void requestApplyForCourseTutor(@NonNull String memberId,
+                                                  @NonNull int courseId,
+                                                  int type, int isOrganTutorStatus,
+                                                  @NonNull String realName, @NonNull String markingPrice,
+                                                  @NonNull String provinceId, @NonNull String provinceName,
+                                                  @NonNull String cityId, @NonNull String cityName,
+                                                  @NonNull String countyId, @NonNull String countyName,
+                                                  boolean isLqOrganTutor,
+                                                  @NonNull final DataSource.Callback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("type", type);
+        requestVo.addParams("source", 0);
+
+        // requestVo.addParams("isOrganTutorStatus", isOrganTutorStatus);
+        try {
+            String encodeRealName = URLEncoder.encode(realName, "utf-8");
+            requestVo.addParams("realName", encodeRealName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        /*if(MainApplication.getInstance() != null){
+            requestVo.addParams("isLqOrganTutor", MainApplication.isIsAssistant());
+        }*/
+        /*requestVo.addParams("isLqOrganTutor", isLqOrganTutor);
+        if(isOrganTutorStatus == -1){
+            requestVo.addParams("markingPrice", markingPrice);
+            requestVo.addParams("provinceId", provinceId);
+            requestVo.addParams("provinceName", provinceName);
+            if(EmptyUtil.isNotEmpty(cityId) && EmptyUtil.isNotEmpty(cityName)){
+                requestVo.addParams("cityId",cityId);
+                requestVo.addParams("cityName",cityName);
+            }
+
+            if(EmptyUtil.isNotEmpty(countyId) && EmptyUtil.isNotEmpty(countyName)){
+                requestVo.addParams("countyId",countyId);
+                requestVo.addParams("countyName",countyName);
+            }
+        }*/
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetApplyForCourseTutor + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
+
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    // 不管成功还是失败，都dismiss窗体
+                    callback.onDataLoaded(responseVo.isTutor());
+                }
+
+                if(!responseVo.isSucceed() || !responseVo.isTutor()){
+                    if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
+                        UIUtil.showToastSafe(responseVo.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
             }
         });
     }

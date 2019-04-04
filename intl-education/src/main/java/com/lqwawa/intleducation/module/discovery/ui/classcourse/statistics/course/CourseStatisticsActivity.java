@@ -92,7 +92,8 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
 
         mTopBar.setBack(true);
-        mTopBar.setTitle(configValue);
+        mTopBar.setTitle(getString(R.string.label_course_statistics));
+        // mTopBar.setTitle(configValue);
 
         ViewGroup.LayoutParams layoutParams = mPieView.getLayoutParams();
 
@@ -116,7 +117,7 @@ public class CourseStatisticsActivity extends PresenterActivity<CourseStatistics
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, CourseStatisticsEntity entity) {
                 super.onItemClick(holder, entity);
-                LearningStatisticsActivity.show(CourseStatisticsActivity.this,mClassId,mCourseId,entity.getType(),mCourseParams);
+                LearningStatisticsActivity.show(CourseStatisticsActivity.this,entity.getName(),mClassId,mCourseId,entity.getType(),mCourseParams);
             }
         });
     }

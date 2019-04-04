@@ -124,7 +124,10 @@
     </style>
 
     <style name="AppTheme.Dialog" parent="AppTheme.Dialog.Base">
+    </style>
 
+    <style name="AppTheme.Dialog.InputMode" parent="AppTheme.Dialog">
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
     </style>
 
     <style name="AppTheme.Dialog.Alert" parent="AppTheme.Dialog.Alert.Base">

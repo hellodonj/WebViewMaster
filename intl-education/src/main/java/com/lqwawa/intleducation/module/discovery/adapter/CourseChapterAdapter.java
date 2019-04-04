@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -23,10 +24,13 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
@@ -76,6 +80,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     // 是否老师看孩子
     private boolean mTeacherVisitor;
 
+    private boolean tutorialMode;
+
     private OnSelectListener mOnSelectListener;//课程选择
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -111,6 +117,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
                 .build();
+
+        tutorialMode = MainApplication.isTutorialMode();
+        CourseDetailParams params = getCourseDetailParams();
+        // 只有Mooc来的帮辅才作帮辅模式处理
+        tutorialMode = tutorialMode && params.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
     }
 
     @Override
@@ -330,6 +341,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         public void onClick(View v) {
                             if (mOnSelectListener != null) {
                                 mOnSelectListener.onSelect(vo);
+                                return;
+                            }
+
+                            if(tutorialMode && !isJoinCourse){
+                                if(!vo.getParentId().equals(list.get(0).getId())) {
+                                    UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
+                                }else{
+                                    // 直接拦截
+                                    toLessonDetailsActivity(vo,true);
+                                }
                                 return;
                             }
 
@@ -691,6 +712,24 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             });
         }
 
+
+
+        if(tutorialMode){
+            // 如果是帮辅模式
+            // 不显示章状态
+            if(EmptyUtil.isNotEmpty(holder.mTvChapterState))
+            holder.mTvChapterState.setVisibility(View.GONE);
+            // 不显示节状态
+            if(EmptyUtil.isNotEmpty(holder.mTvLessonState))
+            holder.mTvLessonState.setVisibility(View.GONE);
+            // 不显示价格
+            if(EmptyUtil.isNotEmpty(holder.tvPrice))
+            holder.tvPrice.setVisibility(View.GONE);
+            // 不显示试听
+            if(EmptyUtil.isNotEmpty(holder.auditionTv))
+            holder.auditionTv.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 
@@ -1043,22 +1082,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         String memberId = activity.getIntent().getStringExtra("memberId");
         String schoolId = activity.getIntent().getStringExtra("schoolId");
         // 获取课程大纲所属课程的课程详情参数
-        CourseDetailParams courseParams = null;
-        if(activity.getIntent().hasExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT)){
-            courseParams = (CourseDetailParams) activity.getIntent().getSerializableExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT);
-        }else{
-            courseParams = new CourseDetailParams();
-        }
-        if (courseParams != null && courseVo != null) {
-            courseParams.setBindSchoolId(courseVo.getBindSchoolId());
-            courseParams.setBindClassId(courseVo.getBindClassId());
-        }
+        CourseDetailParams courseParams = getCourseDetailParams(courseVo,isFreeUser);
 
         int role = handleBusinessRole();
         // 自己的真实角色 和 老师类型
         int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
         int teacherType = handleTeacherType();
-        if(courseParams.isClassTeacher()){
+
+        if(courseParams.isClassTeacher() || (tutorialMode && isJoinCourse)){
             // 班级学程的老师
             if(mTeacherVisitor){
                 realRole = UserHelper.MoocRoleType.TEACHER;
@@ -1101,6 +1132,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
      * 获取课程章节的参数
      * @return
      */
+    private CourseDetailParams getCourseDetailParams(){
+        return getCourseDetailParams(courseVo,false);
+    }
+
+    /**
+     * 获取课程章节的参数
+     * @return
+     */
     private CourseDetailParams getCourseDetailParams(@NonNull CourseVo vo,boolean isFreeUser){
         // 获取课程大纲所属课程的课程详情参数
         CourseDetailParams courseParams = null;
@@ -1112,6 +1151,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         if (courseParams != null && courseVo != null) {
             courseParams.setBindSchoolId(courseVo.getBindSchoolId());
             courseParams.setBindClassId(courseVo.getBindClassId());
+            courseParams.setCourseId(courseVo.getId());
+            courseParams.setCourseName(courseVo.getName());
         }
         return courseParams;
     }

@@ -97,4 +97,21 @@ public class MissionRequireFragment extends PresenterFragment<MissionRequireCont
             }
         }
     }
+
+    /**
+     * 加载到数据,Fragment UI更新
+     * @param taskInfoVo 任务信息
+     */
+    public void updateViews(LqTaskInfoVo taskInfoVo) {
+        if(!EmptyUtil.isEmpty(taskInfoVo.getDiscussContent())){
+            // 有任务要求文本
+            mEmptyLayout.setVisibility(View.GONE);
+            mTxtContent.setVisibility(View.VISIBLE);
+            mTxtContent.setText(taskInfoVo.getDiscussContent());
+        }else{
+            // 没有任务要求文本
+            mEmptyLayout.setVisibility(View.VISIBLE);
+            mTxtContent.setVisibility(View.GONE);
+        }
+    }
 }

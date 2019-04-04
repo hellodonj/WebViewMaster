@@ -1,7 +1,9 @@
 package com.lqwawa.intleducation.module.learn.vo;
 
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 
 /**
  * Created by XChen on 2017/3/27.
@@ -68,6 +70,16 @@ public class SectionResListVo extends BaseVo {
 
     // 是否作业库选中
     private boolean activated;
+
+    // V5.14新添加的课程信息
+    private String courseId;
+    private String courseName;
+    private String classId;
+    private String className;
+    private int lqwawaType;
+
+    // 入口类型
+    private int enterType;
 
 
     public String getTaskId() {
@@ -263,7 +275,7 @@ public class SectionResListVo extends BaseVo {
 
     public String getPoint() {
         // 如果不是自动批阅类型，point = null
-        if(!isAutoMark()) point = "";
+        // if(!isAutoMark()) point = "";
         return point;
     }
 
@@ -303,11 +315,74 @@ public class SectionResListVo extends BaseVo {
         this.activated = activated;
     }
 
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public int getLqwawaType() {
+        return lqwawaType;
+    }
+
+    public void setLqwawaType(int lqwawaType) {
+        this.lqwawaType = lqwawaType;
+    }
+
+    public int getEnterType() {
+        return enterType;
+    }
+
+    public void setEnterType(int enterType) {
+        this.enterType = enterType;
+    }
+
     /**
      * 是否是任务单的自动批阅
      */
     public boolean isAutoMark(){
-        // return taskType == 3 && EmptyUtil.isNotEmpty(point);
-        return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
+        return taskType == 3 && EmptyUtil.isNotEmpty(point);
+        // CommitType == 6 || (CommitType != 6 && EmptyUtil.isEmpty(studentResId))
+        // return taskType == 3 && resPropType == ORDER_TASK_AUTO_MARK;
+    }
+
+    /**
+     * 目前支持返回是否申请批阅
+     * @return true 显示申请批阅
+     */
+    public boolean isTutorialPermission(){
+        // 课程模式 所有入口都可以申请批阅
+        // 帮辅模式 只有大厅的入口不可以申请批阅
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        if(enterType == CourseDetailType.COURSE_DETAIL_MOOC_ENTER && tutorialMode){
+            return false;
+        }
+        return true;
     }
 }

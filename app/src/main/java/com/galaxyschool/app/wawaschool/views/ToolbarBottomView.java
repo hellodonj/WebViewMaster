@@ -88,7 +88,7 @@ public class ToolbarBottomView extends LinearLayout {
             case 1:
                 return R.string.str_national_course;
             case 2:
-                return R.string.my_course;
+                return R.string.str_my_courses;
             case 3:
                 return R.string.school_space;
             case 4:
@@ -145,6 +145,15 @@ public class ToolbarBottomView extends LinearLayout {
 		} else {
 			tipsViews[index].setVisibility(View.GONE);
 		}
+    }
+
+    public void updateBottomViewText(int position,String text){
+        if (itemViews != null && position < itemViews.length) {
+            TextView textView = (TextView) itemViews[position].findViewById(R.id.item_title);
+            if (textView != null) {
+                textView.setText(text);
+            }
+        }
     }
 
     public void hideBadgeView(int index) {

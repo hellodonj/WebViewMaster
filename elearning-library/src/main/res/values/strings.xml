@@ -9,4 +9,9 @@
     <string name="edit_course">Add click reading</string>
     <string name="downloading">Loading, please wait…</string>
     <string name="cs_loading_error">Loading error</string>
+    <string name="lrc_label">暂无字幕</string>
+    <string name="to_expand_hint_prefix">展</string>
+    <string name="to_shrink_hint_prefix">收</string>
+    <string name="to_expand_hint">展开</string>
+    <string name="to_shrink_hint">收起</string>
 </resources>
