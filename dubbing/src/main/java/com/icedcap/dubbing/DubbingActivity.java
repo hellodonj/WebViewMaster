@@ -364,8 +364,28 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 //                }
                 matchingLrcText();
                 updateViews();
+                configOnClick();
             }
         }.execute();
+    }
+
+    private void configOnClick(){
+        if (wholeRecordImageV == null){
+            return;
+        }
+        wholeRecordImageV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //开始配音
+                if (isRecording) {
+                    TipMsgHelper.ShowMsg(DubbingActivity.this, R.string.str_dubbing_recording);
+                } else {
+                    isSupportPause = false;
+                    dubbingVideoView.setIsSupportPause(false);
+                    onAudioRecord();
+                }
+            }
+        });
     }
 
     protected void handleDataView() {
@@ -478,19 +498,6 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 wholeRecordImageV.setVisibility(View.VISIBLE);
                 listenSoundTextV.setVisibility(View.GONE);
             }
-            wholeRecordImageV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //开始配音
-                    if (isRecording) {
-                        TipMsgHelper.ShowMsg(DubbingActivity.this, R.string.str_dubbing_recording);
-                    } else {
-                        isSupportPause = false;
-                        dubbingVideoView.setIsSupportPause(false);
-                        onAudioRecord();
-                    }
-                }
-            });
         }
     }
 

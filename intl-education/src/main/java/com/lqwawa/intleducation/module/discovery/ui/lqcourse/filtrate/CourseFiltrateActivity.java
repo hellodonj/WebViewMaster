@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -405,6 +406,11 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     /**
      * 添加全部信息,以及判断Top标题的显示与隐藏
      * @param triggerFiltrate 是否触发筛选
@@ -430,7 +436,10 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
             mLaySort2.setVisibility(View.VISIBLE);
             mCbSort2.setVisibility(View.VISIBLE);
             mVerticalLine1.setVisibility(View.VISIBLE);
-            showTabLayout = false;
+            // iTEP展示样式改为TabLayout
+            if (!TextUtils.equals(mClassifyEntity.getConfigValue(), "iTEP")) {
+                showTabLayout = false;
+            }
         }
 
         // 必须保证所有的筛选条件 allTab都不是同一个对象

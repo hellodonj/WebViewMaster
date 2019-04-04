@@ -287,6 +287,7 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
 
     public boolean setUserInfo(UserInfo userInfo) {
         if (userInfo != null) {
+            userInfo.setAllRoles(userInfo.getRoles());
             boolean isRealTeacher = Utils.isRealTeacher(userInfo.getSchoolList());
             if (!isRealTeacher && userInfo.isTeacher()) {
                 userInfo.setRoles(Utils.removeOnlineRole(userInfo.getRoles()));

@@ -110,7 +110,11 @@ public class MOOCHelper {
         userInfoVo.setUserName(StringUtils.isValidString(userInfo.getRealName())
                 ? userInfo.getRealName() : userInfo.getNickName());
         userInfoVo.setThumbnail(userInfo.getHeaderPic());
-        userInfoVo.setRoles(userInfo.getRoles());
+        if (TextUtils.isEmpty(userInfo.getAllRoles())){
+            userInfoVo.setRoles(userInfo.getRoles());
+        } else {
+            userInfoVo.setRoles(userInfo.getAllRoles());
+        }
         userInfoVo.setSchoolIds(getSchoolsFromUserInfo(userInfo));
         MainApplication.setIsAssistant(userInfo.isAssistant());
 
