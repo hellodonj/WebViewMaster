@@ -1779,7 +1779,7 @@
     <string name="str_bind_current_account">Bind this Account</string>
     <string name="str_open_assistance">Apply to be Tutor</string>
     <string name="str_assistance_mode">Tutorial Mode</string>
-    <string name="str_assistance_space">Tutor Space</string>
+    <string name="str_assistance_space">Tutor</string>
     <string name="str_apply_mark">Apply for Remark</string>
     <string name="str_apply_mark_line_feed">Apply\nRemark</string>
     <string name="str_assistance">Tutor</string>
@@ -1794,4 +1794,5 @@
     <string name="str_assistant_dialog_tips">Select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor.\n
         Enter Tutor Space to solve puzzles for students.</string>
     <string name="str_no_longer_prompt">Do not show</string>
+    <string name="str_my_courses">Courses</string>
 </resources>

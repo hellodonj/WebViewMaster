@@ -1700,4 +1700,5 @@
     <string name="str_assistant_model_title">打开帮辅模式</string>
     <string name="str_assistant_dialog_tips">在【多语种】课程和【国家课程】中选取您擅长的课程，同步跟进帮辅。\n\n进入【帮辅空间】，为学生答题解惑。</string>
     <string name="str_no_longer_prompt">不再提示</string>
+    <string name="str_my_courses">我的课程</string>
 </resources>

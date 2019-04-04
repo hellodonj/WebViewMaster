@@ -718,7 +718,7 @@ public class HomeActivity extends BaseCompatActivity
             if (MainApplication.isTutorialMode()) {
                 bottomBar.updateBottomViewText(2,getString(R.string.str_assistance_space));
             } else {
-                bottomBar.updateBottomViewText(2,getString(R.string.my_courses));
+                bottomBar.updateBottomViewText(2,getString(R.string.str_my_courses));
             }
         }
     }
