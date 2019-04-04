@@ -381,9 +381,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 if (isRecording) {
                     TipMsgHelper.ShowMsg(DubbingActivity.this, R.string.str_dubbing_recording);
                 } else {
-                    isSupportPause = false;
-                    dubbingVideoView.setIsSupportPause(false);
                     if (loadVideoComplete) {
+                        isSupportPause = false;
+                        dubbingVideoView.setIsSupportPause(false);
                         onAudioRecord();
                     }
                 }
