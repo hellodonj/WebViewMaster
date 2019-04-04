@@ -581,9 +581,9 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                                                 isHistoryClass ? RoleType.ROLE_TYPE_VISITOR : roleType,
                                                 isHistoryClass ? true : isVisitor,
                                                 isNeedMark,
-                                                isOnlineReporter,
-                                                isOnlineHost,
-                                                isHeadMaster);
+                                                isOnlineReporter && !isHistoryClass,
+                                                isOnlineHost && !isHistoryClass,
+                                                isHeadMaster && !isHistoryClass);
                                 getParentFragment().getFragmentManager().beginTransaction()
                                         .add(R.id.activity_body, checkMarkFragment, CheckMarkFragment.TAG)
                                         .hide(getParentFragment())
@@ -693,8 +693,7 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                                 }
 
                                 final CommitTask data = (CommitTask) holder.data;
-                                if (data != null) {
-
+                                if (data != null && !isHistoryClass) {
                                     if (isOnlineReporter || isOnlineHost || (isHeadMaster && roleType != RoleType.ROLE_TYPE_PARENT) ||
                                             (roleType == RoleType.ROLE_TYPE_TEACHER && task.getCreateId().equalsIgnoreCase(getMemeberId()))) {
                                         //小编主编班主任可以删除全部
