@@ -249,6 +249,12 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             int exerciseIndex = currentPosition + 1;
             cardParam.setExerciseIndex(exerciseIndex);
             if (cardParam.getMarkModel() != null) {
+                if (exerciseItemList != null && exerciseItemList.size() > 0){
+                    ExerciseItem item = exerciseItemList.get(currentPosition);
+                    if (item != null){
+                        cardParam.getMarkModel().setTitle(item.getName());
+                    }
+                }
                 cardParam.getMarkModel().setT_EQId(String.valueOf(exerciseIndex));
             }
             cardParam.setExerciseListString(exerciseString);
