@@ -88,7 +88,7 @@ public class ToolbarBottomView extends LinearLayout {
             case 1:
                 return R.string.str_national_course;
             case 2:
-                return R.string.my_course;
+                return R.string.str_my_courses;
             case 3:
                 return R.string.school_space;
             case 4:
