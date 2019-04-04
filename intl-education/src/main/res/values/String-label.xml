@@ -438,6 +438,8 @@
     <string name="label_auditing">Pending</string>
     <string name="label_audit_reject">Rejected</string>
     <string name="label_audit">Applications</string>
+    <string name="label_tutorial_task_type_listen_read_course">Listen-Read Course</string>
+    <string name="label_tutorial_task_type_do_task">Do Read-Write Task</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>

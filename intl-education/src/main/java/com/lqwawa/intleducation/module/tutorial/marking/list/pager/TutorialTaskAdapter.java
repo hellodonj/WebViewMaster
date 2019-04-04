@@ -147,8 +147,15 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             // 任务标题
             StringUtil.fillSafeTextView(mTaskName,taskEntity.getTitle());
             // 任务类型
-            String typeName = String.format(UIUtil.getString(R.string.label_task_type_template),taskEntity.getT_TaskTypeName());
-            StringUtil.fillSafeTextView(mTaskType,typeName);
+            if(taskEntity.getT_TaskType() == 5 || taskEntity.getT_TaskType() == 12){
+                // 听读课
+                String typeName = String.format(UIUtil.getString(R.string.label_task_type_template),UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));
+                StringUtil.fillSafeTextView(mTaskType,typeName);
+            }else{
+                // 做读写单
+                String typeName = String.format(UIUtil.getString(R.string.label_task_type_template),UIUtil.getString(R.string.label_tutorial_task_type_do_task));
+                StringUtil.fillSafeTextView(mTaskType,typeName);
+            }
 
             if(EmptyUtil.isNotEmpty(taskEntity.getT_ClassName())){
                 // 任务班级
