@@ -31,6 +31,8 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
     private static final String KEY_EXTRA_MULTIPLE_CHOICE_COUNT = "KEY_EXTRA_MULTIPLE_CHOICE_COUNT";
     // 需要显示的复述课件，听说课类型集合
     private static final String KEY_EXTRA_FILTER_COLLECTION = "KEY_EXTRA_FILTER_COLLECTION";
+    // 是否主动选择关联学程
+    private static final String KEY_EXTRA_INITIATIVE_TRIGGER = "KEY_EXTRA_INITIATIVE_TRIGGER";
     // 课程编号
     private String mCourseId;
     // 查看类型
@@ -39,6 +41,10 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
     private int mMultipleChoiceCount;
     // 听读课 限制显示的资源类型集合
     private ArrayList<Integer> mFilterArray;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
+
+
 
     @Override
     protected int getContentLayoutId() {
@@ -56,6 +62,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         mTaskType = bundle.getInt(KEY_EXTRA_TASK_TYPE);
         mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         mFilterArray = bundle.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
+        initiativeTrigger = bundle.getBoolean(KEY_EXTRA_INITIATIVE_TRIGGER);
 
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE && mFilterArray == null){
             return false;
@@ -105,12 +112,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @NonNull String courseId,
                             @WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
+                            boolean initiativeTrigger,
                             int requestCode){
         Intent intent = new Intent(activity,WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
+        bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,requestCode);
     }
@@ -131,6 +140,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
                             ArrayList<Integer> filterArray,
+                            boolean initiativeTrigger,
                             int requestCode){
         Intent intent = new Intent(activity,WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
@@ -138,6 +148,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION,filterArray);
+        bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,requestCode);
     }
@@ -156,12 +167,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @NonNull String courseId,
                             @WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
+                            boolean initiativeTrigger,
                             int requestCode){
         Intent intent = new Intent(fragment.getContext(),WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
+        bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         intent.putExtras(bundle);
         fragment.startActivityForResult(intent,requestCode);
     }
@@ -181,6 +194,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
                             ArrayList<Integer> filterArray,
+                            boolean initiativeTrigger,
                             int requestCode){
         Intent intent = new Intent(fragment.getContext(),WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
@@ -188,6 +202,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION,filterArray);
+        bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         intent.putExtras(bundle);
         fragment.startActivityForResult(intent,requestCode);
     }

@@ -17,6 +17,8 @@ public class ClassResourceData implements Serializable {
     private int taskType;
     private int multipleChoiceCount;
     private ArrayList<Integer> filterArray;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
     private int requestCode;
 
     public ClassResourceData(@WatchResourceType.WatchResourceRes int taskType,
@@ -51,6 +53,14 @@ public class ClassResourceData implements Serializable {
 
     public void setFilterArray(ArrayList<Integer> filterArray) {
         this.filterArray = filterArray;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
+    public void setInitiativeTrigger(boolean initiativeTrigger) {
+        this.initiativeTrigger = initiativeTrigger;
     }
 
     public int getRequestCode() {

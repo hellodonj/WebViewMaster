@@ -16,6 +16,8 @@ public class CourseShopClassifyParams extends BaseVo{
     private boolean selectResource;
 
     private ShopResourceData data;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
 
     public CourseShopClassifyParams(String organId) {
         this.organId = organId;
@@ -37,5 +39,13 @@ public class CourseShopClassifyParams extends BaseVo{
 
     public ShopResourceData getData() {
         return data;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
+    public void setInitiativeTrigger(boolean initiativeTrigger) {
+        this.initiativeTrigger = initiativeTrigger;
     }
 }

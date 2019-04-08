@@ -450,6 +450,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                             mResourceData.getTaskType(),
                             mResourceData.getMultipleChoiceCount(),
                             mResourceData.getFilterArray(),
+                            mResourceData.isInitiativeTrigger(),
                             0);
                 }else{
                     // 班级学程的详情入口

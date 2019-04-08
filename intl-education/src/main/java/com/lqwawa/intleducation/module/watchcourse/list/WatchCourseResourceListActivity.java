@@ -43,6 +43,7 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
     private int mMultipleChoiceCount;
     // 听读课 限制显示的资源类型集合
     private ArrayList<Integer> mFilterArray;
+    private boolean mInitiativeTrigger;
     // 请求码
     private int mRequestCode;
 
@@ -60,6 +61,7 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
         mTaskType = mCourseResourceParams.getTaskType();
         mMultipleChoiceCount = mCourseResourceParams.getMultipleChoiceCount();
         mFilterArray = mCourseResourceParams.getFilterArray();
+        mInitiativeTrigger = mCourseResourceParams.isInitiativeTrigger();
         mRequestCode = mCourseResourceParams.getRequestCode();
         if(EmptyUtil.isEmpty(mParentName) || EmptyUtil.isEmpty(mCourseIds)) return false;
 
@@ -104,9 +106,9 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
             public void onItemClick(RecyclerAdapter.ViewHolder holder, String courseId) {
                 super.onItemClick(holder, courseId);
                 if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE){
-                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mFilterArray,mRequestCode);
+                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mFilterArray,mInitiativeTrigger,mRequestCode);
                 }else{
-                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mRequestCode);
+                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mInitiativeTrigger,mRequestCode);
                 }
             }
         });

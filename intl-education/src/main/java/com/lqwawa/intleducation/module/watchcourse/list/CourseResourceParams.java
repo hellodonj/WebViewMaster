@@ -20,6 +20,8 @@ public class CourseResourceParams extends BaseVo {
     private int requestCode;
     // 听读课 限制显示的资源类型集合
     private ArrayList<Integer> filterArray;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
 
     public CourseResourceParams(String parentName, String courseIds,int taskType,int multipleChoiceCount) {
         this.parentName = parentName;
@@ -58,5 +60,13 @@ public class CourseResourceParams extends BaseVo {
 
     public void setFilterArray(ArrayList<Integer> filterArray) {
         this.filterArray = filterArray;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
+    public void setInitiativeTrigger(boolean initiativeTrigger) {
+        this.initiativeTrigger = initiativeTrigger;
     }
 }
