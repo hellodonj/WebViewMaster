@@ -447,6 +447,9 @@
     <string name="label_audit">申请记录</string>
     <string name="label_tutorial_task_type_listen_read_course">听读课</string>
     <string name="label_tutorial_task_type_do_task">做读写单</string>
+    
+    <!--V5.14.X版本字符串-->
+    <string name="label_watch_history_course">查看历史学程</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

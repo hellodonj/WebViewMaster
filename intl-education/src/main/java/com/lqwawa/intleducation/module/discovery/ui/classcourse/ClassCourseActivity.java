@@ -13,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -322,6 +323,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         layoutParams.topMargin = topMargin;
         mTvCartPoint.setLayoutParams(layoutParams);
         mTvCartPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
+        mNewCartContainer.setOnClickListener(this);
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         this.isTeacher = isTeacher;
@@ -369,10 +371,18 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
         if(isResult){
             mWorkCart.setVisibility(View.VISIBLE);
+            // 旧作业库改为查看历史学程
+            mWorkCart.setText(R.string.label_watch_history_course);
             mCartContainer.setVisibility(View.VISIBLE);
+            // 显示作业库
+            mNewCartContainer.setVisibility(View.VISIBLE);
         }else{
-            mCartContainer.setVisibility(View.GONE);
             mWorkCart.setVisibility(View.GONE);
+            // 旧作业库改为查看历史学程
+            mWorkCart.setText(R.string.label_watch_history_course);
+            mCartContainer.setVisibility(View.GONE);
+            // 隐藏作业库
+            mNewCartContainer.setVisibility(View.GONE);
         }
 
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
@@ -526,10 +536,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             mTvPoint.setText(Integer.toString(count));
+            mTvCartPoint.setText(Integer.toString(count));
             if(count == 0 || mBottomLayout.isActivated()){
                 mTvPoint.setVisibility(View.GONE);
+                mTvCartPoint.setVisibility(View.GONE);
             }else{
-                mTvPoint.setVisibility(View.VISIBLE);
+                // 旧作业库不显示角标
+                mTvPoint.setVisibility(View.GONE);
+                mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1262,6 +1276,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 requestAuthorizedPermission(isExist);
             }
         }else if(viewId == R.id.btn_work_cart){
+            // 点击作业库
+            // handleSubjectSettingData(this,UserHelper.getUserId());
+            // V.5.14.X改成查看历史课程
+            UIUtil.showToastSafe(R.string.label_watch_history_course);
+        }else if(viewId == R.id.new_cart_container){
             // 点击作业库
             handleSubjectSettingData(this,UserHelper.getUserId());
         }else if(viewId == R.id.btn_add_subject){
