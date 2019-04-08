@@ -178,6 +178,43 @@
 
         </com.lqwawa.intleducation.base.CourseEmptyView>
 
+        <!--作业库功能-->
+        <FrameLayout
+            android:id="@+id/new_cart_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/ic_work_cart_shadow">
+
+            <TextView
+                android:id="@+id/tv_work_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:text="@string/label_work_cart"
+                android:textColor="@color/textLight"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_cart_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/textLight"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_gravity="top|center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+        </FrameLayout>
+
         <TextView
             android:id="@+id/tv_action"
             android:layout_width="wrap_content"
@@ -244,10 +281,10 @@
 
             <net.qiujuer.genius.ui.widget.Button
                 android:id="@+id/btn_work_cart"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_margin="8dp"
+                android:layout_width="144dp"
+                android:layout_height="33dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
                 android:background="@drawable/btn_accent_radius_19"
                 android:gravity="center"
                 android:text="@string/label_work_cart"

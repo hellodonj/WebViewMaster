@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.common.utils.SizeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -123,15 +125,21 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private LinearLayout mBottomLayout;
     private Button mAddSubject;
+
     private LinearLayout mBottomActionLayout;
     private FrameLayout mCartContainer,mActionContainer;
     private Button mWorkCart,mAddCourse;
     private TextView mTvPoint;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
+    private TextView mTvAction;
+
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
     private CourseEmptyView mEmptyLayout;
-    private TextView mTvAction;
 
     private ClassCourseParams mClassCourseParams;
     private boolean mResourceFlag;
@@ -216,6 +224,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     protected void initWidget() {
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
         mTvAction = (TextView) findViewById(R.id.tv_action);
 
         mTopBar.setBack(true);
@@ -302,9 +313,15 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mAddCourse.setOnClickListener(this);
 
         int color = UIUtil.getColor(R.color.colorPink);
-        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
+        int radius = DisplayUtil.dip2px(UIUtil.getContext(),8);
         mTvPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
 
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+        float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
+        int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(),8);
+        layoutParams.topMargin = topMargin;
+        mTvCartPoint.setLayoutParams(layoutParams);
+        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         this.isTeacher = isTeacher;
