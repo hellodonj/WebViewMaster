@@ -1201,6 +1201,7 @@
 
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity"
+            android:theme="@style/AppTheme.Common"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
         </activity>
