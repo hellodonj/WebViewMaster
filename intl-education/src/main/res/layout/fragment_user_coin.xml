@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/user_balance" />
+
+
+        <TextView
+            android:id="@+id/balance_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/com_text_black"
+            android:textSize="@dimen/com_font_size_12" />
+
+        <TextView
+            style="@style/text_gray_xl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wawa_coin" />
+
+
+        <TextView
+            android:id="@+id/charge_textView"
+            style="@style/text_white_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/shape_charge_bg"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="@string/charge_coin" />
+
+        <TextView
+            android:id="@+id/tv_give_money"
+            style="@style/text_white_xl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/shape_charge_bg"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="@string/label_give_money" />
+
+    </LinearLayout>
+
+</LinearLayout>
