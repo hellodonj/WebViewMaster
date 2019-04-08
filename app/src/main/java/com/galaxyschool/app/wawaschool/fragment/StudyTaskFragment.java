@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.duowan.mobile.netroid.NetroidError;
+import com.galaxyschool.app.wawaschool.HandleCheckResourceActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.Note.OnlineMediaPaperActivity;
 import com.galaxyschool.app.wawaschool.R;
@@ -1053,18 +1054,19 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
 
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            ArrangeLearningTasksUtil.getInstance()
-                    .setActivity(getActivity())
-                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                        @Override
-                        public void selectedTypeData(String title, int type) {
-                            if (schoolInfo != null) {
-                                ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
-                                        schoolInfo, false, false, null,schoolInfo.getSchoolId(), null);
-                            }
-                        }
-                    })
-                    .show();
+            HandleCheckResourceActivity.start(getActivity(),schoolInfo.getSchoolId(),null,false);
+//            ArrangeLearningTasksUtil.getInstance()
+//                    .setActivity(getActivity())
+//                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+//                        @Override
+//                        public void selectedTypeData(String title, int type) {
+//                            if (schoolInfo != null) {
+//                                ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
+//                                        schoolInfo, false, false, null,schoolInfo.getSchoolId(), null);
+//                            }
+//                        }
+//                    })
+//                    .show();
         });
     }
 

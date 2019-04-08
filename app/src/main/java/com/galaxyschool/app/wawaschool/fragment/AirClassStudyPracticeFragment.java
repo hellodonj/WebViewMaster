@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.AirClassroomActivity;
+import com.galaxyschool.app.wawaschool.HandleCheckResourceActivity;
 import com.galaxyschool.app.wawaschool.IntroductionForReadCourseActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -848,15 +849,16 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
      */
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            ArrangeLearningTasksUtil.getInstance()
-                    .setActivity(getActivity())
-                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                        @Override
-                        public void selectedTypeData(String title, int type) {
-                            enterIntroductionCourse(title,type);
-                        }
-                    })
-                    .show();
+            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineClass);
+//            ArrangeLearningTasksUtil.getInstance()
+//                    .setActivity(getActivity())
+//                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+//                        @Override
+//                        public void selectedTypeData(String title, int type) {
+//                            enterIntroductionCourse(title,type);
+//                        }
+//                    })
+//                    .show();
         });
     }
 
