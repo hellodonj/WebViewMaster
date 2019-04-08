@@ -69,6 +69,7 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
     private int selectMaxCount;
     private BookStoreListFragment bookListFragment;
     private OnEnterSchoolSpaceListener listener;
+    private boolean fromWorkLibTask;
 
     public interface OnEnterSchoolSpaceListener {
         void onEnterSchoolSpace(SchoolInfo schoolInfo);
@@ -108,6 +109,7 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
             isFromChoiceLib = getArguments().getBoolean(ActivityUtils.IS_FROM_CHOICE_LIB);
             isLqcourseShop = getArguments().getBoolean(ActivityUtils.EXTRA_LQCOURSE_SHOP);
             selectMaxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT,1);
+            fromWorkLibTask = getArguments().getBoolean(ActivityUtils.EXTRA_ASSIGN_WORK_LIB_TASK);
         }
         ToolbarTopView toolbarTopView = (ToolbarTopView) findViewById(R.id.toolbar_top_view);
         if (toolbarTopView != null) {
@@ -342,6 +344,7 @@ public class MyAttendedSchooListFragment extends ContactsListFragment {
         ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
         // OrganCourseClassifyActivity.show(getActivity(),data.getSchoolId(),true,resourceData);
         CourseShopClassifyParams params = new CourseShopClassifyParams(data.getSchoolId(),true,resourceData);
+        params.setInitiativeTrigger(fromWorkLibTask);
         CourseShopClassifyActivity.show(getActivity(),params);
     }
 

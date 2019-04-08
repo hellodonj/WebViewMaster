@@ -21,6 +21,10 @@ public class ClassResourceData implements Serializable {
     private boolean initiativeTrigger;
     private int requestCode;
 
+    public ClassResourceData(){
+
+    }
+
     public ClassResourceData(@WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
                             @NonNull ArrayList<Integer> filterArray,

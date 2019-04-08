@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.galaxyschool.app.wawaschool.MyAttendedSchoolListActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
@@ -21,10 +24,22 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.pojo.ClassInfoListResult;
+import com.galaxyschool.app.wawaschool.pojo.ResType;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
+import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
+import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
+import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -266,14 +281,40 @@ public class HandleCheckResourceFragment extends AdapterFragment {
      * 进入学程馆选取资源
      */
     private void enterLqCourseShopSpace() {
+        if (isOnlineClass){
+            chooseSchoolResources();
+        } else {
+            enterLqCourseShopDetail();
+        }
+    }
 
+    /**
+     * 选取校本资源库资源
+     */
+    private void chooseSchoolResources() {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), MyAttendedSchoolListActivity.class);
+        intent.putExtra(ActivityUtils.EXTRA_IS_PICK, true);
+        intent.putExtra(ActivityUtils.EXTRA_IS_PICK_SCHOOL_RESOURCE, true);
+        intent.putExtra(ActivityUtils.EXTRA_LQCOURSE_SHOP, true);
+        intent.putExtra(ActivityUtils.EXTRA_ASSIGN_WORK_LIB_TASK,true);
+        startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
+    }
+
+    private void enterLqCourseShopDetail(){
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,new ShopResourceData());
+        params.setInitiativeTrigger(true);
+        CourseShopClassifyActivity.show(getActivity(),params);
     }
 
     /**
      * 选择班级学程
      */
     private void chooseClassLessonCourse(String classId) {
-
+        ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
+        ClassResourceData data = new ClassResourceData();
+        data.setInitiativeTrigger(true);
+        ClassCourseActivity.show(getActivity(),classCourseParams,data);
     }
 
     /**
@@ -289,6 +330,10 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             @Override
             public void onDataLoaded(String courseId) {
                 //点击关联学程
+                CourseResourceParams params = new CourseResourceParams(getString(R.string.label_space_school_relevance_course), courseId, 0, 0);
+                params.setInitiativeTrigger(true);
+                params.setRequestCode(LQCourseCourseListActivity.RC_SelectCourseRes);
+                WatchCourseResourceListActivity.show(getActivity(), params);
             }
         });
     }
