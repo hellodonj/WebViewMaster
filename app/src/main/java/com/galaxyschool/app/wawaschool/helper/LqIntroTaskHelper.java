@@ -98,7 +98,7 @@ public class LqIntroTaskHelper {
     public void enterIntroTaskDetailActivity(Activity activity,
                                              String schoolId,
                                              String classId) {
-        if (activity == null || TextUtils.isEmpty(schoolId) || TextUtils.isEmpty(classId)) {
+        if (activity == null || TextUtils.isEmpty(schoolId)) {
             return;
         }
         ActivityUtils.enterIntroductionCourseActivity(

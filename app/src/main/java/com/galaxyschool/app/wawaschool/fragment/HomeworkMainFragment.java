@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.ContactsPickerActivity;
+import com.galaxyschool.app.wawaschool.HandleCheckResourceActivity;
 import com.galaxyschool.app.wawaschool.HomeworkPickerActivity;
 import com.galaxyschool.app.wawaschool.Note.OnlineMediaPaperActivity;
 import com.galaxyschool.app.wawaschool.R;
@@ -1019,16 +1020,17 @@ public class HomeworkMainFragment extends ContactsListFragment implements
 
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            ArrangeLearningTasksUtil.getInstance()
-                    .setActivity(getActivity())
-                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
-                        @Override
-                        public void selectedTypeData(String title, int type) {
-                            ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
-                                    schoolInfo,false,isOnlineSchoolClass,classId,schoolId,null);
-                        }
-                    })
-                    .show();
+            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineSchoolClass);
+//            ArrangeLearningTasksUtil.getInstance()
+//                    .setActivity(getActivity())
+//                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
+//                        @Override
+//                        public void selectedTypeData(String title, int type) {
+//                            ActivityUtils.enterIntroductionCourseActivity(getActivity(), title, type,
+//                                    schoolInfo,false,isOnlineSchoolClass,classId,schoolId,null);
+//                        }
+//                    })
+//                    .show();
         });
     }
 
