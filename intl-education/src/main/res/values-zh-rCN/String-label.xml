@@ -497,5 +497,10 @@
         <item>价格</item>
     </string-array>
 
+    <string-array name="label_user_coin_tabs">
+        <item>蛙蛙币</item>
+        <item>代金券</item>
+    </string-array>
+
     <string name="voice_evaluating">语音评测</string>
 </resources>

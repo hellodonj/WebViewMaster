@@ -445,6 +445,12 @@
     <string name="ali">支付宝</string>
     <string name="activation_code">激活码</string>
 
+    <string name="voucher_amount">代金券金额</string>
+    <string name="voucher_explain">使用说明</string>
+    <string name="voucher_explain_1">1.请在代金券的有效期内使用，过期未使用的自动清空。</string>
+    <string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>
+
     <string name="wawa_pay">蛙蛙币支付</string>
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -421,10 +422,10 @@ public class DonationCoinActivity extends PresenterActivity<DonationCoinContract
      * @param activity 上下文对象
      * @param requestCode 请求码
      */
-    public static void show(@NonNull Activity activity,int requestCode){
-        Intent intent = new Intent(activity,DonationCoinActivity.class);
+    public static void show(@NonNull Fragment activity, int requestCode) {
+        Intent intent = new Intent(activity.getActivity(), DonationCoinActivity.class);
         Bundle bundle = new Bundle();
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent,requestCode);
+        activity.startActivityForResult(intent, requestCode);
     }
 }
