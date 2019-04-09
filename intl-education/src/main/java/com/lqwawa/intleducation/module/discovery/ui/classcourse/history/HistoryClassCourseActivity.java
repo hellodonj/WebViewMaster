@@ -984,7 +984,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     return;
                 }
 
-                mPresenter.requestAddHistoryCourseFromClass(mSchoolId,mClassId,entities);
+                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId,mClassId,entities);
                 updateActionStatus(false);
             } else {
                 // UIUtil.showToastSafe(R.string.label_add_in);
