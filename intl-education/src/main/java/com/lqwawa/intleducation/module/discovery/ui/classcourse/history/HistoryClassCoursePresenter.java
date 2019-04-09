@@ -34,9 +34,7 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
     public void requestHistoryClassConfigData(@NonNull String hostId) {
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        // TODO 测试数据
-        // hostId = "c9a1a1ac-a72f-436a-90e4-a91600c0347a";
-        LQConfigHelper.requestSetupConfigData(hostId, SetupConfigType.TYPE_CLASS,languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestSetupConfigData(hostId, SetupConfigType.TYPE_HISTORY_COURSE,languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final HistoryClassCourseContract.View view = getView();
@@ -57,8 +55,7 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
 
     @Override
     public void requestHistoryClassCourseData(@NonNull String classId, int role, @NonNull String name, @NonNull String level, int paramOneId, int paramTwoId, int pageIndex) {
-        // TODO 测试数据
-        int status = 0;
+        int status = 1;
         ClassCourseHelper.requestClassCourseData(classId,status, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {

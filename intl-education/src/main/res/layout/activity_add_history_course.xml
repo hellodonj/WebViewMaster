@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorLight">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </android.support.v7.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+
+                    <com.lqwawa.intleducation.base.CourseEmptyView
+                        android:id="@+id/empty_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        app:call_show="true"
+                        app:empty_icon_drawable="@drawable/ic_course_empty"
+                        app:empty_text_loading="@string/label_course_empty_info_2"
+                        app:empty_text_loading_visible="false"
+                        app:empty_text_remind="@string/label_empty_content"
+                        app:empty_text_remind_visible="true">
+
+                    </com.lqwawa.intleducation.base.CourseEmptyView>
+                </FrameLayout>
+
+            </ScrollView>
+
+
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="2">
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_cancel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_confirm_authorization"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -34,6 +34,7 @@ import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
@@ -52,6 +53,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     implements HistoryClassCourseContract.View,View.OnClickListener{
 
     private static final int SEARCH_REQUEST_CODE = 1 << 0;
+    private static final int ADD_HISTORY_REQUEST_CODE = 1 << 1;
 
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
@@ -900,9 +902,17 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     @Override
     public void updateUpdateHistoryCourseFromClassView(Boolean aBoolean) {
+        this.hideLoading();
         // 刷新UI
         // 刷新标签和课程
         mPresenter.requestHistoryClassConfigData(mClassId);
+    }
+
+    @Override
+    public void showError(int str) {
+        super.showError(str);
+        mRefreshLayout.onHeaderRefreshComplete();
+        mRefreshLayout.onFooterRefreshComplete();
     }
 
     @Override
@@ -918,7 +928,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }else if(viewId == R.id.btn_add_course){
-            UIUtil.showToastSafe(R.string.label_add_in);
+            // UIUtil.showToastSafe(R.string.label_add_in);
+            AddHistoryCourseActivity.show(this,mClassCourseParams,ADD_HISTORY_REQUEST_CODE);
         }else if(viewId == R.id.btn_remove_course){
             UIUtil.showToastSafe(R.string.label_remove_out);
         }
@@ -935,6 +946,12 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 mKeyWord = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();
+            }else if(requestCode == ADD_HISTORY_REQUEST_CODE){
+                List<ClassCourseEntity> entities = (List<ClassCourseEntity>) data.getSerializableExtra(AddHistoryCourseActivity.KEY_EXTRA_CHOICE_ENTITIES);
+                if(EmptyUtil.isNotEmpty(entities)){
+                    showLoading();
+                    mPresenter.requestAddHistoryCourseFromClass(mSchoolId,mClassId,entities);
+                }
             }
         }
     }

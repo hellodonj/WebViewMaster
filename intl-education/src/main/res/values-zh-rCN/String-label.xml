@@ -454,6 +454,7 @@
     <string name="label_remove_out">移除</string>
     <string name="label_delete">删除</string>
     <string name="label_please_choice_action">请选择您要进行的操作！</string>
+    <string name="label_please_choice_history_course">请选择需要添加的历史学程</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

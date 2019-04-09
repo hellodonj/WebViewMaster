@@ -22,6 +22,7 @@ public class ClassCourseEntity extends BaseVo{
     private String thumbnailUrl;
 
     private boolean hold;
+    private boolean checked;
 
     public String getBuyType() {
         return buyType;
@@ -85,6 +86,14 @@ public class ClassCourseEntity extends BaseVo{
 
     public void setHold(boolean hold) {
         this.hold = hold;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     /**
