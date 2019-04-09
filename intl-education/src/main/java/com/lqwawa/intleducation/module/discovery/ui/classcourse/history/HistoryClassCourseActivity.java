@@ -932,7 +932,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     }
 
     @Override
-    public void updateUpdateHistoryCourseFromClassView(Boolean aBoolean) {
+    public void updateHistoryCourseFromClassView(Boolean aBoolean) {
         this.hideLoading();
         // 刷新UI
         // 刷新标签和课程

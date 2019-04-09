@@ -12,7 +12,6 @@ import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.helper.ClassCourseHelper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseContract;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 
@@ -123,7 +122,7 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
             public void onDataLoaded(Boolean aBoolean) {
                 final HistoryClassCourseContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
-                    view.updateUpdateHistoryCourseFromClassView(aBoolean);
+                    view.updateHistoryCourseFromClassView(aBoolean);
                 }
             }
         });
@@ -148,7 +147,7 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
             public void onDataLoaded(Boolean aBoolean) {
                 final HistoryClassCourseContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
-                    view.updateUpdateHistoryCourseFromClassView(aBoolean);
+                    view.updateHistoryCourseFromClassView(aBoolean);
                 }
             }
         });

@@ -40,7 +40,7 @@ public class HistoryClassCourseContract {
         // 班主任从班级中删除课程的回调
         void updateDeleteCourseFromClassView(Boolean aBoolean);
         // 老师添加课程完成的回调
-        void updateUpdateHistoryCourseFromClassView(Boolean aBoolean);
+        void updateHistoryCourseFromClassView(Boolean aBoolean);
 
         // 是否触发更改历史学程的回调
         void triggerUpdate();
