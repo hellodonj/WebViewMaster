@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
@@ -43,6 +44,7 @@ import java.util.List;
 public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingListContract.Presenter>
     implements CommonMarkingListContract.View{
 
+    private TextView mTitleName;
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private CourseEmptyView mEmptyView;
@@ -86,6 +88,10 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
     @Override
     protected void initWidget() {
         super.initWidget();
+        mTitleName = (TextView) mRootView.findViewById(R.id.title_name);
+        if(!mTutorialMode){
+            mTitleName.setText(R.string.label_new_tutorial_answer);
+        }
         mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mEmptyView = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
 

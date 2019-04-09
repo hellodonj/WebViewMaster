@@ -409,6 +409,7 @@
     <string name="label_added_tutorial_succeed">Tutor added</string>
     <string name="label_added_tutorial_failed">Adding failed</string>
     <string name="label_new_work">Latest Homework</string>
+    <string name="label_new_tutorial_answer">Latest Homework</string>
     <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
     <string name="label_choice_tutor_tip">Please select tutor</string>
     <string name="label_commit_succeed">Submitted successfully</string>

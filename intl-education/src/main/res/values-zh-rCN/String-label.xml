@@ -398,10 +398,10 @@
     <string name="label_tutorial_student">我帮辅的学生</string>
     <string name="label_tutorial_course">我帮辅的课程</string>
     <string name="label_tutorial_organ">我的帮辅机构</string>
-    <string name="label_student_work">我的作业</string>
-    <string name="label_student_tutorial">我的帮辅</string>
-    <string name="label_student_course">我的习教辅</string>
-    <string name="label_student_live">我的空中课堂</string>
+    <string name="label_student_work">帮辅答疑</string>
+    <string name="label_student_tutorial">帮辅老师</string>
+    <string name="label_student_course">习教辅</string>
+    <string name="label_student_live">空中课堂</string>
     <string name="label_my">我的</string>
     <string name="label_tutorial_student_review_count">%d未批</string>
     <string name="label_viewer_count">%d人浏览</string>
@@ -416,6 +416,7 @@
     <string name="label_added_tutorial_succeed">+帮辅成功</string>
     <string name="label_added_tutorial_failed">+帮辅失败</string>
     <string name="label_new_work">最新作业</string>
+    <string name="label_new_tutorial_answer">最新帮辅答疑</string>
     <string name="label_commit_placeholder_teacher">提交给%s老师</string>
     <string name="label_choice_tutor_tip">请选择帮辅老师</string>
     <string name="label_commit_succeed">提交成功</string>
