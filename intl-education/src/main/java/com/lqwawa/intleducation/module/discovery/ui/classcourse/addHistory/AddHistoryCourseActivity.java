@@ -1,7 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,26 +8,20 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
-import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -207,7 +200,7 @@ public class AddHistoryCourseActivity extends PresenterActivity<AddHistoryCourse
 
             if(EmptyUtil.isEmpty(entities)){
                 // 提示选择要添加的历史学程
-                UIUtil.showToastSafe(R.string.label_please_choice_history_course);
+                UIUtil.showToastSafe(R.string.label_please_choice_add_history_course);
                 return;
             }
 

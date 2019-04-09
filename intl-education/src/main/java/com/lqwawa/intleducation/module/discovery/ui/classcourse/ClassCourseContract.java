@@ -30,6 +30,8 @@ public class ClassCourseContract {
         void requestDeleteCourseFromClass(@NonNull String token, @NonNull String classId, @NonNull String ids);
         // 老师添加课程
         void requestAddCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull String courseIds);
+        // 老师添加历史课程
+        void requestAddHistoryCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull List<ClassCourseEntity> entities);
     }
 
     interface View extends SchoolPermissionContract.View<Presenter>{
@@ -45,5 +47,7 @@ public class ClassCourseContract {
         void updateDeleteCourseFromClassView(Boolean aBoolean);
         // 老师添加课程完成的回调
         void updateAddCourseFromClassView(Boolean aBoolean);
+        // 老师添加课程完成的回调
+        void updateHistoryCourseFromClassView(Boolean aBoolean);
     }
 }

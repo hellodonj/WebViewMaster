@@ -53,6 +53,8 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
@@ -491,7 +493,24 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
             ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
-            deleteCourseFromClass(entity);
+            ActionDialogFragment.show(getSupportFragmentManager(),
+                    getString(R.string.label_please_choice_action),
+                    R.string.label_remove_out, R.string.label_delete,
+                    new ActionDialogNavigator() {
+                        @Override
+                        public void onAction(@NonNull View button, ActionDialogFragment.Tag tag) {
+                            if (tag == ActionDialogFragment.Tag.LEFT) {
+                                // 移除
+                                List<ClassCourseEntity> entities = new ArrayList<>();
+                                entities.add(entity);
+                                showLoading();
+                                mPresenter.requestAddHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                            } else if (tag == ActionDialogFragment.Tag.RIGHT) {
+                                // 删除
+                                deleteCourseFromClass(entity);
+                            }
+                        }
+                    });
         });
 
         // 下拉刷新与加载更多
@@ -1360,6 +1379,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 刷新UI
         // requestClassCourse(false);
 
+        // 刷新标签和课程
+        mPresenter.requestClassConfigData(mClassId);
+    }
+
+    @Override
+    public void updateHistoryCourseFromClassView(Boolean aBoolean) {
+        this.hideLoading();
+        // 刷新UI
         // 刷新标签和课程
         mPresenter.requestClassConfigData(mClassId);
     }

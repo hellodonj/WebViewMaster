@@ -1,7 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.history;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +38,6 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDia
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
-import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -979,11 +976,12 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 }
 
                 if(EmptyUtil.isEmpty(entities)){
-                    // 提示选择要添加的历史学程
-                    UIUtil.showToastSafe(R.string.label_please_choice_history_course);
+                    // 提示选择要移除的历史学程
+                    UIUtil.showToastSafe(R.string.label_please_choice_remove_history_course);
                     return;
                 }
 
+                showLoading();
                 mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId,mClassId,entities);
                 updateActionStatus(false);
             } else {

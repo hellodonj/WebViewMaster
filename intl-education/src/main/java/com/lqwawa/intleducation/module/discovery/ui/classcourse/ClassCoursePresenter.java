@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author mrmedici
@@ -153,6 +154,29 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
                 final ClassCourseContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
                     view.updateAddCourseFromClassView(aBoolean);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestAddHistoryCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull List<ClassCourseEntity> entities) {
+        StringBuilder courseIds = new StringBuilder();
+        ListIterator<ClassCourseEntity> iterator = entities.listIterator();
+        while (iterator.hasNext()){
+            ClassCourseEntity entity = iterator.next();
+            courseIds.append(entity.getCourseId());
+            if(iterator.hasNext()){
+                courseIds.append(",");
+            }
+        }
+
+        ClassCourseHelper.requestAddClassHistoryCourse(classId, courseIds.toString(), new DataSource.SucceedCallback<Boolean>() {
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateHistoryCourseFromClassView(aBoolean);
                 }
             }
         });
