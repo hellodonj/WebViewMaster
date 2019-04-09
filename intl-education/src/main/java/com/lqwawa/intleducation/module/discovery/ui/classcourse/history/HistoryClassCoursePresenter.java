@@ -83,6 +83,8 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
 
     @Override
     public void requestDeleteCourseFromHistoryClass(@NonNull String token, @NonNull String classId, @NonNull String ids) {
+        getView().triggerUpdate();
+
         ClassCourseHelper.requestDeleteCourseFromClass(token, classId, ids, new DataSource.Callback<Boolean>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -104,6 +106,8 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
 
     @Override
     public void requestAddHistoryCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull List<ClassCourseEntity> entities) {
+        getView().triggerUpdate();
+
         StringBuilder courseIds = new StringBuilder();
         ListIterator<ClassCourseEntity> iterator = entities.listIterator();
         while (iterator.hasNext()){
@@ -127,6 +131,8 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
 
     @Override
     public void requestRemoveHistoryCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull List<ClassCourseEntity> entities) {
+        getView().triggerUpdate();
+
         StringBuilder courseIds = new StringBuilder();
         ListIterator<ClassCourseEntity> iterator = entities.listIterator();
         while (iterator.hasNext()){

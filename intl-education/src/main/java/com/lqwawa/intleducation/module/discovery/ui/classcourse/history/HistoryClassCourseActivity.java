@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.history;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +55,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     private static final int SEARCH_REQUEST_CODE = 1 << 0;
     private static final int ADD_HISTORY_REQUEST_CODE = 1 << 1;
+
+    public static final String KEY_EXTRA_TRIGGER = "KEY_EXTRA_TRIGGER";
 
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
@@ -115,6 +118,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     // 搜索关键词
     private String mKeyWord;
 
+    private boolean isUpdate;
+
 
     @Override
     protected HistoryClassCourseContract.Presenter initPresenter() {
@@ -148,6 +153,18 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_history_course);
+        mTopBar.findViewById(R.id.left_function1_image).setOnClickListener(view->{
+            if(isUpdate){
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(KEY_EXTRA_TRIGGER,isUpdate);
+                intent.putExtras(bundle);
+                setResult(Activity.RESULT_OK,intent);
+            }
+
+            finish();
+        });
+
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
             // 搜索
             SearchActivity.show(
@@ -909,6 +926,11 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     }
 
     @Override
+    public void triggerUpdate() {
+        isUpdate = true;
+    }
+
+    @Override
     public void showError(int str) {
         super.showError(str);
         mRefreshLayout.onHeaderRefreshComplete();
@@ -961,21 +983,30 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         if(mClassCourseParams.isHeadMaster() && holdState == true){
             switchHoldState(false);
         }else{
+            if(isUpdate){
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(KEY_EXTRA_TRIGGER,isUpdate);
+                intent.putExtras(bundle);
+                setResult(Activity.RESULT_OK,intent);
+            }
+
             finish();
         }
     }
 
     /**
      * 班级历史学程页面的入口
-     * @param context 上下文对象
+     * @param activity 上下文对象
      * @param params 核心参数
      */
-    public static void show(@NonNull Context context,
-                            @NonNull ClassCourseParams params){
-        Intent intent = new Intent(context,HistoryClassCourseActivity.class);
+    public static void show(@NonNull Activity activity,
+                            @NonNull ClassCourseParams params,
+                            int requestCode){
+        Intent intent = new Intent(activity,HistoryClassCourseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent,requestCode);
     }
 }

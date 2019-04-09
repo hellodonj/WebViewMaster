@@ -94,6 +94,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
+    // 进入历史学程的Code
+    private static final int ENTER_HISTORY_REQUEST_CODE = 1 << 2;
+
     private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
     private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
     // 小语种课程
@@ -1282,7 +1285,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // handleSubjectSettingData(this,UserHelper.getUserId());
             // V.5.14.X改成查看历史课程
             // UIUtil.showToastSafe(R.string.label_watch_history_course);
-            HistoryClassCourseActivity.show(this,mClassCourseParams);
+            HistoryClassCourseActivity.show(this,mClassCourseParams,ENTER_HISTORY_REQUEST_CODE);
         }else if(viewId == R.id.new_cart_container){
             // 点击作业库
             handleSubjectSettingData(this,UserHelper.getUserId());
@@ -1429,6 +1432,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 if(EmptyUtil.isNotEmpty(extras)){
                     boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
                     if(completed){
+                        // 刷新标签和课程
+                        mPresenter.requestClassConfigData(mClassId);
+                    }
+                }
+            }else if(requestCode == ENTER_HISTORY_REQUEST_CODE){
+                // 刷新标签和课程
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean trigger = extras.getBoolean(HistoryClassCourseActivity.KEY_EXTRA_TRIGGER);
+                    if(trigger){
                         // 刷新标签和课程
                         mPresenter.requestClassConfigData(mClassId);
                     }

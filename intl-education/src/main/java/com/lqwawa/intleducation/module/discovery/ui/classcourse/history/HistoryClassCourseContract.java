@@ -41,5 +41,8 @@ public class HistoryClassCourseContract {
         void updateDeleteCourseFromClassView(Boolean aBoolean);
         // 老师添加课程完成的回调
         void updateUpdateHistoryCourseFromClassView(Boolean aBoolean);
+
+        // 是否触发更改历史学程的回调
+        void triggerUpdate();
     }
 }
