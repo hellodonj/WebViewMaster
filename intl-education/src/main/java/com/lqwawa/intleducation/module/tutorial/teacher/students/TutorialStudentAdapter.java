@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.ImageUtil;
+import com.lqwawa.intleducation.common.utils.LqServerHelper;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
@@ -30,12 +32,14 @@ public class TutorialStudentAdapter extends RecyclerAdapter<AssistStudentEntity>
 
     private static class StudentTutorialHolder extends ViewHolder<AssistStudentEntity>{
 
+        private ImageView mIvAvatar;
         private TextView mTvContent;
         private TextView mTvNotMark;
         private ImageView mIvArrow;
 
         public StudentTutorialHolder(View itemView) {
             super(itemView);
+            mIvAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             mTvContent = (TextView) itemView.findViewById(R.id.tv_content);
             mTvNotMark = (TextView) itemView.findViewById(R.id.tv_not_mark_count);
             mIvArrow = (ImageView) itemView.findViewById(R.id.iv_right_arrow);
@@ -43,6 +47,11 @@ public class TutorialStudentAdapter extends RecyclerAdapter<AssistStudentEntity>
 
         @Override
         protected void onBind(AssistStudentEntity entity) {
+            mIvAvatar.setVisibility(View.VISIBLE);
+            // 显示用户头像
+            String studentUrl = LqServerHelper.getFullImgUrl(entity.getStuHeadPicUrl() + "").trim();
+            ImageUtil.fillUserAvatar(mIvAvatar,studentUrl,R.drawable.user_header_def);
+
             if(EmptyUtil.isNotEmpty(entity.getStuRealName())) {
                 StringUtil.fillSafeTextView(mTvContent, entity.getStuRealName());
             }else{
