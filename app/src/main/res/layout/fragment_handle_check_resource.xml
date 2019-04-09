@@ -33,28 +33,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/ic_work_cart_shadow">
 
             <TextView
                 android:id="@+id/tv_work_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
+                android:singleLine="true"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:singleLine="true"
                 android:text="@string/label_work_cart"
                 android:textColor="@color/textLight"
-                android:textSize="16sp"/>
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:id="@+id/tv_task_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="2dp"
                 android:background="@drawable/shape_corner_text_light_red_20_dp"
                 android:ellipsize="end"
                 android:gravity="center"

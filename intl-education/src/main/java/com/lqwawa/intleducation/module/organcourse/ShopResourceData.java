@@ -21,6 +21,9 @@ public class ShopResourceData implements Serializable{
     private boolean initiativeTrigger;
     private int requestCode;
 
+    public ShopResourceData() {
+    }
+
     public ShopResourceData(@WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
                             @NonNull ArrayList<Integer> filterArray,

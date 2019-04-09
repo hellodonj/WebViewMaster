@@ -152,6 +152,7 @@ public class ActivityUtils {
     public static final String EXTRA_IS_FINISH_LECTURE = "is_finish_lecture";//完成授课
     public static final String EXTRA_IS_GET_APPOINT_RESOURCE = "get_appoint_resource";//获取指定的资源
     public static final String EXTRA_IS_APPLICATION_START = "isApplicationStart";
+    public static final String EXTRA_ASSIGN_WORK_LIB_TASK = "extra_assign_work_lib_task";
     public static CommitTask commitTask = null;
 
     /**
