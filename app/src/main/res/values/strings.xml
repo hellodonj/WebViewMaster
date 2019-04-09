@@ -5,7 +5,7 @@
     <string name="contacts">Contacts</string>
     <string name="wawatv">Happy Learning</string>
     <string name="createspace">LQ Tool</string>
-    <string name="personal_space">My Zone</string>
+    <string name="personal_space">My</string>
     <string name="personal_resource_library">Personal Courses</string>
     <string name="local_course_task">Local Course</string>
     <string name="load_platform_outline">Reference platform outline</string>
@@ -1794,5 +1794,5 @@
     <string name="str_assistant_dialog_tips">Select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor.\n
         Enter Tutor Space to solve puzzles for students.</string>
     <string name="str_no_longer_prompt">Do not show</string>
-    <string name="str_my_courses">Courses</string>
+    <string name="str_my_courses">学习空间</string>
 </resources>
