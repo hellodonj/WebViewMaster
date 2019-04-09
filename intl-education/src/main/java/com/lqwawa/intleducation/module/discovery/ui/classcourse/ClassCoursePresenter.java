@@ -63,8 +63,8 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
         // 测试数据
         // classId = "164cdc60-243e-4318-92dd-a91f00a85974";
         // token = "4f961e8f-778a-4cf1-97a4-09fe25a183ff";
-        role = 1;
-        ClassCourseHelper.requestClassCourseData(classId, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
+        // role = 1;
+        ClassCourseHelper.requestClassCourseData(classId,0, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final ClassCourseContract.View view = getView();

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarSize">
+
+    </com.lqwawa.intleducation.base.widgets.TopBar>
+
+    <include
+        layout="@layout/holder_top_search_layout"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLight"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tab_vector_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tab_label_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/tab_vector_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tab_label_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_vector_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tab_label_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/horizontalDividerHeight"
+            android:background="@color/divider_color" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorLight">
+
+        <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+
+        </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+        <com.lqwawa.intleducation.base.CourseEmptyView
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:call_show="true"
+            app:empty_icon_drawable="@drawable/ic_course_empty"
+            app:empty_text_loading="@string/label_course_empty_info_2"
+            app:empty_text_loading_visible="false"
+            app:empty_text_remind="@string/label_empty_content"
+            app:empty_text_remind_visible="true">
+
+        </com.lqwawa.intleducation.base.CourseEmptyView>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="2"
+        android:visibility="gone">
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_remove_course"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_remove_out"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_add_course"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_add_in"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

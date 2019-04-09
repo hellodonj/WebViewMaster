@@ -55,6 +55,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
@@ -1280,7 +1281,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // 点击作业库
             // handleSubjectSettingData(this,UserHelper.getUserId());
             // V.5.14.X改成查看历史课程
-            UIUtil.showToastSafe(R.string.label_watch_history_course);
+            // UIUtil.showToastSafe(R.string.label_watch_history_course);
+            HistoryClassCourseActivity.show(this,mClassCourseParams);
         }else if(viewId == R.id.new_cart_container){
             // 点击作业库
             handleSubjectSettingData(this,UserHelper.getUserId());

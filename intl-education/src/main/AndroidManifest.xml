@@ -964,6 +964,11 @@
             android:theme="@style/AppTheme.Common"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 
+        <!--班级历史学程页面的入口-->
+        <activity android:name=".module.discovery.ui.classcourse.history.HistoryClassCourseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
     </application>
 
 </manifest>

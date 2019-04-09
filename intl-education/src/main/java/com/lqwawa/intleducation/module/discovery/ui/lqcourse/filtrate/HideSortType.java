@@ -53,7 +53,6 @@ public interface HideSortType {
     // 国家课程一级页面搜索
     String TYPE_BASIC_COURSE_SEARCH = "1007";
 
-
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({TYPE_SORT_HOT_RECOMMEND,TYPE_SORT_HOT_RECOMMEND,
