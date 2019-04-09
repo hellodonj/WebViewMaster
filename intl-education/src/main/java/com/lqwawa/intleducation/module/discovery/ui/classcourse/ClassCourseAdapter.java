@@ -53,6 +53,10 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
         return new CommonCourseViewHolder(root);
     }
 
+    public void setChoiceMode(boolean choiceMode) {
+        isChoiceMode = choiceMode;
+    }
+
     public boolean isChoiceMode() {
         return isChoiceMode;
     }
