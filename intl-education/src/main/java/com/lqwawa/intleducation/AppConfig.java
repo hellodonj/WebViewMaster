@@ -905,5 +905,13 @@ public final class AppConfig {
         public static final String PostTaskInfoByTaskId =
                 LQWAWA_BASE_SERVER + "NewApi/JavaResource/GetStudyTaskInfo";
 
+        // 添加历史学程
+        public static final String PostAddClassHistoryCourse =
+                ServerBase + "api/class/addClassHistoryCourse";
+
+        // 删除历史学程
+        public static final String PostRemoveClassHistoryCourse =
+                ServerBase + "api/class/removeClassHistoryCourse";
+
     }
 }

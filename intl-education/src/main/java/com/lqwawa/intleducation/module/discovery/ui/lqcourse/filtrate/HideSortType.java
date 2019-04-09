@@ -52,7 +52,8 @@ public interface HideSortType {
     String TYPE_NEW_ONLINE_CLASS = "1006";
     // 国家课程一级页面搜索
     String TYPE_BASIC_COURSE_SEARCH = "1007";
-
+    // 班级历史学程搜索入口
+    String TYPE_SORT_CLASS_HISTORY_COURSE = "1008";
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
@@ -62,7 +63,8 @@ public interface HideSortType {
             TYPE_SORT_TEACH_ONLINE_CLASS,TYPE_SORT_TEACH_ONLINE_CLASS_SUPER,
             TYPE_SORT_CLASS_COURSE,TYPE_SORT_NEW_SCHOOL_SHOP,
             TYPE_SORT_ONLINE_SHOP_PRICE_UP,TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,
-            TYPE_SORT_BASIC_GRADE,TYPE_NEW_ONLINE_CLASS,TYPE_BASIC_COURSE_SEARCH})
+            TYPE_SORT_BASIC_GRADE,TYPE_NEW_ONLINE_CLASS,TYPE_BASIC_COURSE_SEARCH,
+            TYPE_SORT_CLASS_HISTORY_COURSE})
     public @interface SortRes{
 
     }

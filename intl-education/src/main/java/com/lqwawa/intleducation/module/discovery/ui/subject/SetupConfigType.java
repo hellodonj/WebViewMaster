@@ -12,10 +12,11 @@ public interface SetupConfigType {
     int TYPE_TEACHER = 1;
     int TYPE_STUDENT = 2;
     int TYPE_CLASS = 3;
+    int TYPE_HISTORY_COURSE = 4;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({TYPE_TEACHER,TYPE_STUDENT,TYPE_CLASS})
+    @IntDef({TYPE_TEACHER,TYPE_STUDENT,TYPE_CLASS,TYPE_HISTORY_COURSE})
     public @interface SetupConfigRes{
 
     }

@@ -11,10 +11,12 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -39,7 +41,7 @@ public class ClassCourseHelper {
      * @param pageSize 每页加载的数目
      * @param callback 数据回调接口
      */
-    public static void requestClassCourseData(@NonNull String classId,
+    public static void requestClassCourseData(@NonNull String classId,int status,
                                               int role,@NonNull String name,
                                               @NonNull String level,
                                               int paramOneId,int paramTwoId,
@@ -47,6 +49,7 @@ public class ClassCourseHelper {
                                                @NonNull final DataSource.Callback<List<ClassCourseEntity>> callback){
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("classId",classId);
+        requestVo.addParams("status",status);
         requestVo.addParams("role",role);
         requestVo.addParams("level",level);
         requestVo.addParams("paramOneId",paramOneId);
@@ -225,6 +228,94 @@ public class ClassCourseHelper {
                 LogUtil.w(ClassCourseHelper.class,"request "+params.getUri()+" failed");
                 if(!EmptyUtil.isEmpty(callback)){
                     callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 添加历史学程
+     * @param classId 班级id
+     * @param courseIds 历史学生Ids集合
+     * @param callback 回调对象
+     */
+    public static void requestAddClassHistoryCourse(@NonNull String classId,
+                                                    @NonNull String courseIds,
+                                                    @NonNull DataSource.SucceedCallback<Boolean> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseIds);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddClassHistoryCourse);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(ClassCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(ClassCourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(responseVo.isSucceed());
+                }
+
+                if(!responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        String message = responseVo.getMessage();
+                        UIUtil.showToastSafe(message);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    UIUtil.showToastSafe(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 添加历史学程
+     * @param classId 班级id
+     * @param courseIds 历史学生Ids集合
+     * @param callback 回调对象
+     */
+    public static void requestRemoveClassHistoryCourse(@NonNull String classId,
+                                                    @NonNull String courseIds,
+                                                    @NonNull DataSource.SucceedCallback<Boolean> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseIds);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRemoveClassHistoryCourse);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(ClassCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(ClassCourseHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>(){};
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(responseVo.isSucceed());
+                }
+
+                if(!responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        String message = responseVo.getMessage();
+                        UIUtil.showToastSafe(message);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    UIUtil.showToastSafe(R.string.net_error_tip);
                 }
             }
         });
