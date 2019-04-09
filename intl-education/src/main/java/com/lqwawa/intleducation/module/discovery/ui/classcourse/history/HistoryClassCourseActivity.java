@@ -38,6 +38,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDia
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -149,8 +150,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             // 搜索
             SearchActivity.show(
                     HistoryClassCourseActivity.this,
-                    HideSortType.TYPE_SORT_CLASS_COURSE,
-                    UIUtil.getString(R.string.title_class_course),
+                    HideSortType.TYPE_SORT_CLASS_HISTORY_COURSE,
+                    UIUtil.getString(R.string.title_history_course),
                     SEARCH_REQUEST_CODE);
         });
 
@@ -920,6 +921,21 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             UIUtil.showToastSafe(R.string.label_add_in);
         }else if(viewId == R.id.btn_remove_course){
             UIUtil.showToastSafe(R.string.label_remove_out);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == SEARCH_REQUEST_CODE){
+                // 更新字符串发生更新
+                // 设置Top隐藏
+                // mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+                mKeyWord = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
+                // 刷新数据
+                triggerUpdateData();
+            }
         }
     }
 
