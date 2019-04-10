@@ -190,6 +190,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private TextView resTitleTv;
     private TextView introductionTitleTv;
 
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
+
     private LinearLayout mBottomLayout;
     private FrameLayout mCartContainer;
     private FrameLayout mAddCartContainer;
@@ -239,6 +243,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
         mCartContainer = (FrameLayout) findViewById(R.id.cart_container);
         mAddCartContainer = (FrameLayout) findViewById(R.id.action_container);
@@ -249,6 +257,13 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         int color = UIUtil.getColor(R.color.colorPink);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
         mTvPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));
+
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+        float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
+        int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(), 8);
+        layoutParams.topMargin = topMargin;
+        mTvCartPoint.setLayoutParams(layoutParams);
+        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));
 
         introductionTitleTv = (TextView) findViewById(R.id.introduction_title_tv);
         resTitleTv = (TextView) findViewById(R.id.res_title_tv);
@@ -274,8 +289,12 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
         if (!mChapterParams.isTeacherVisitor() &&
                 courseParams.isClassCourseEnter() &&
-                courseParams.isClassTeacher()) {
+                courseParams.isClassTeacher() ||
+                mChapterParams.isChoiceMode()) {
             mBottomLayout.setVisibility(View.VISIBLE);
+            mNewCartContainer.setVisibility(View.VISIBLE);
+            mNewCartContainer.setOnClickListener(this);
+
             mCartContainer.setOnClickListener(this);
             mAddCartContainer.setOnClickListener(this);
         } else {
@@ -975,6 +994,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             initBottomLayout();
             refreshCartPoint();
+        } else if(viewId == R.id.new_cart_container){
+            handleSubjectSettingData(this, UserHelper.getUserId(), false);
         }
     }
 
@@ -1133,10 +1154,13 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             mTvPoint.setText(Integer.toString(count));
+            mTvCartPoint.setText(Integer.toString(count));
             if (count == 0 || mBottomLayout.isActivated()) {
                 mTvPoint.setVisibility(View.GONE);
+                mTvCartPoint.setVisibility(View.GONE);
             } else {
                 mTvPoint.setVisibility(View.VISIBLE);
+                mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1167,8 +1191,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             super.onPageSelected(position);
             // 清除所有的作业库资源选中状态
             // 当前是否显示BottomLayout,以及BottomLayout是否是激活状态
-            if (mBottomLayout.getVisibility() == View.VISIBLE &&
-                    mBottomLayout.isActivated()) {
+            if ((mBottomLayout.getVisibility() == View.VISIBLE &&
+                    mBottomLayout.isActivated()) ||
+                    mChapterParams.isChoiceMode()) {
                 clearAllResource();
             }
         }

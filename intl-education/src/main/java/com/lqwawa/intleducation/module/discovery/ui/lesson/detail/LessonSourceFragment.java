@@ -172,7 +172,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
         mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, true);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
-        mCourseResListAdapter.setClassTeacher(courseParams.isClassCourseEnter() && courseParams.isClassTeacher());
+        mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+                (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger()));
+
+        mCourseResListAdapter.triggerChoiceMode(mSourceParams.isChoiceMode());
+
         // canRead 是否可以查阅资源
         // 试听功能，都可以查阅资源，以及学程馆授权的
         if (canRead) {

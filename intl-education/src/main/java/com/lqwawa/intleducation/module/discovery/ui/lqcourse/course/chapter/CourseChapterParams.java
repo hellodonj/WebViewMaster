@@ -21,6 +21,10 @@ public class CourseChapterParams extends BaseVo{
     private String memberId;
     // 是否是试听
     private boolean isAudition;
+    // 是否是选择模式
+    private boolean choiceMode;
+    // 是否是主动触发
+    private boolean initiativeTrigger;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
@@ -72,5 +76,18 @@ public class CourseChapterParams extends BaseVo{
     public void fillVisitorInfo(boolean teacherVisitor,int realRole){
         this.teacherVisitor = teacherVisitor;
         this.realRole = realRole;
+    }
+
+    public void setChoiceMode(boolean choiceMode,boolean initiativeTrigger){
+        this.choiceMode = choiceMode;
+        this.initiativeTrigger = initiativeTrigger;
+    }
+
+    public boolean isChoiceMode() {
+        return choiceMode;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
     }
 }
