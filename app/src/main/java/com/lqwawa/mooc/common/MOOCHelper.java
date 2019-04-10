@@ -309,7 +309,8 @@ public class MOOCHelper {
 
         @Override
         public void enterIntroTaskDetailActivity(@NonNull Activity activity, @NonNull String schoolId, @NonNull String classId) {
-            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity, schoolId, classId);
+            LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity, schoolId,
+                    classId,null);
         }
     };
 

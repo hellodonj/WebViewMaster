@@ -451,7 +451,7 @@
     <string name="data_rsp_error_unknown">request failed</string>
 
     <string name="my_coins">My Balance</string>
-    <string name="coin_detail">Transactions</string>
+    <string name="coin_detail">Transactions></string>
     <string name="coin_count_detail">Transactions</string>
     <string name="wawa_coin_balance">Balance</string>
     <string name="charge_coin">Top Up</string>
