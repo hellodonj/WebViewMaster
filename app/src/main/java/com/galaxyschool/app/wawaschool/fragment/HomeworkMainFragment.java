@@ -1020,7 +1020,8 @@ public class HomeworkMainFragment extends ContactsListFragment implements
 
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineSchoolClass);
+            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineSchoolClass,
+                    null);
 //            ArrangeLearningTasksUtil.getInstance()
 //                    .setActivity(getActivity())
 //                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {

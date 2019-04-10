@@ -56,11 +56,13 @@ import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ContactsSchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
+import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.pojo.NocEnterDetailArguments;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
+import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
@@ -1092,7 +1094,8 @@ public class ActivityUtils {
                 classId,
                 schoolId,
                 uploadParameter,
-                false);
+                false,
+                null);
     }
 
     public static void enterIntroductionCourseActivity(Activity activity,
@@ -1104,7 +1107,8 @@ public class ActivityUtils {
                                                        String classId,
                                                        String schoolId,
                                                        UploadParameter uploadParameter,
-                                                       boolean isFromMoocIntroTask) {
+                                                       boolean isFromMoocIntroTask,
+                                                       Bundle args) {
         if (activity == null) {
             return;
         }
@@ -1128,6 +1132,19 @@ public class ActivityUtils {
             intent.putExtra(UploadParameter.class.getSimpleName(), uploadParameter);
         }
         intent.putExtra("is_from_mooc_intro_task",isFromMoocIntroTask);
+        if (args != null){
+            int currentStudyType = args.getInt(ActivityUtils.EXTRA_STDUY_TYPE);
+            intent.putExtra(ActivityUtils.EXTRA_STDUY_TYPE, currentStudyType);//当前练习的类型
+            Emcee onlineRes = (Emcee) args.getSerializable(ActivityUtils.EXTRA_DATA_INFO);
+            if (onlineRes != null) {
+                intent.putExtra(ActivityUtils.EXTRA_DATA_INFO, onlineRes);
+            }
+            List<ShortSchoolClassInfo> schoolClassInfos = (List<ShortSchoolClassInfo>) args.getSerializable(ActivityUtils.EXTRA_SCHOOL_INFO_LIST_DATA);
+            if (schoolClassInfos != null && schoolClassInfos.size() > 0) {
+                intent.putExtra(ActivityUtils.EXTRA_SCHOOL_INFO_LIST_DATA, (Serializable) schoolClassInfos);
+                intent.putExtra(ActivityUtils.EXTRA_IS_ONLINE_CLASS,args.getBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS));
+            }
+        }
         activity.startActivityForResult(intent, ActivityUtils.REQUEST_CODE_RETURN_REFRESH);
     }
 

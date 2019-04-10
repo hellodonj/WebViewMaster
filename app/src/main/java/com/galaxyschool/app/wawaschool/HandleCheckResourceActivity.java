@@ -15,9 +15,13 @@ public class HandleCheckResourceActivity extends BaseFragmentActivity {
     public static void start(Activity activity,
                              String schoolId,
                              String classId,
-                             boolean isOnlineClass){
+                             boolean isOnlineClass,
+                             Bundle bundle){
         Intent intent = new Intent(activity,HandleCheckResourceActivity.class);
-        Bundle args = new Bundle();
+        Bundle args = bundle;
+        if (args == null){
+            args = new Bundle();
+        }
         if (!TextUtils.isEmpty(schoolId)){
             args.putString(ActivityUtils.EXTRA_SCHOOL_ID, schoolId);
         }
