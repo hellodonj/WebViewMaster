@@ -43,6 +43,7 @@ public class UserCoinFragment extends MyBaseFragment implements View.OnClickList
     private TextView tvBalance;
     private TextView tvCharge;
     private TextView mTvGiveMoney;
+    private TextView detailBtn;
 
     @Nullable
     @Override
@@ -57,6 +58,8 @@ public class UserCoinFragment extends MyBaseFragment implements View.OnClickList
         mTvGiveMoney = (TextView) view.findViewById(R.id.tv_give_money);
         mTvGiveMoney.setVisibility(View.VISIBLE);
         mTvGiveMoney.setOnClickListener(this);
+        detailBtn = (TextView) view.findViewById(R.id.detail_btn);
+        detailBtn.setOnClickListener(this);
 
         return view;
     }
@@ -141,6 +144,9 @@ public class UserCoinFragment extends MyBaseFragment implements View.OnClickList
         } else if (i == R.id.tv_give_money) {
             // 转赠他人
             DonationCoinActivity.show(this, KEY_BALANCE_REQUEST_CODE);
+        } else if (i == R.id.detail_btn) {
+            // 明细
+            startActivity(new Intent(getContext(), CoinsDetailActivity.class));
         }
     }
 

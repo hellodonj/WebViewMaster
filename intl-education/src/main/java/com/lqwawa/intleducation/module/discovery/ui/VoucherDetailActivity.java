@@ -1,24 +1,23 @@
 package com.lqwawa.intleducation.module.discovery.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.JsonArray;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.module.discovery.adapter.CoinsDetailAdapter;
+import com.lqwawa.intleducation.module.discovery.adapter.VoucherDetailAdapter;
 import com.lqwawa.intleducation.module.discovery.vo.CoinsDetailInfo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
+import com.osastudio.apps.BaseFragmentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,37 +27,33 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class UserVoucherFragment extends MyBaseFragment {
+public class VoucherDetailActivity extends BaseFragmentActivity {
 
-    private TextView voucherAmount;
-    private TextView detailBtn;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_voucher, container, false);
-        voucherAmount = (TextView) view.findViewById(R.id.voucher_amount);
-        detailBtn = (TextView) view.findViewById(R.id.detail_btn);
-        detailBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), VoucherDetailActivity.class)));
-        return view;
-    }
+    private TopBar topBar;
+    private RecyclerView listView;
+
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_voucher_detail);
+        topBar = (TopBar) findViewById(R.id.top_bar);
+
+        initView();
         initData();
+
     }
 
-    public void initData() {
+    private void initData() {
         RequestVo requestVo = new RequestVo();
 
         UserInfoVo userInfo = UserHelper.getUserInfo();
         requestVo.addParams("memberId", userInfo.getUserId());
         // dataType:1只获取总额  2获取总额及明细
-        requestVo.addParams("dataType", 1);
+        requestVo.addParams("dataType", 2);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GET_INTEGRAL_RECORD_LIST);
         params.setConnectTimeout(10000);
         params.setAsJsonContent(true);
@@ -81,9 +76,20 @@ public class UserVoucherFragment extends MyBaseFragment {
 
                 if (code == 0) {
                     //请求成功
+                    JSONArray jsonArray = jsonObject.optJSONArray("data");
+                    List<CoinsDetailInfo> coinsDetailInfos = JSON.parseArray(jsonArray.toString(), CoinsDetailInfo.class);
                     String integralCount = jsonObject.optString("integralCount", "0");
-                    voucherAmount.setText(integralCount);
+                    List<CoinsDetailInfo> filterData = new ArrayList<>();
+                    for (CoinsDetailInfo info : coinsDetailInfos) {
+                        if (info.getRecordType() == 2 && info.getType() == 1) {
+                            continue;
+                        }
+                        filterData.add(info);
+                    }
+                    listView.setAdapter(new VoucherDetailAdapter(filterData, VoucherDetailActivity.this, R.layout.item_coins_detail));
                 }
+
+
             }
 
             @Override
@@ -101,5 +107,19 @@ public class UserVoucherFragment extends MyBaseFragment {
 
             }
         });
+
+
     }
+
+    private void initView() {
+
+        topBar.setBack(true);
+        topBar.setTitle(getResources().getString(R.string.coin_count_detail));
+
+
+        listView = (RecyclerView) findViewById(R.id.voucher_detail_list);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        listView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
 }

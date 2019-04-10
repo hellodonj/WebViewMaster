@@ -1220,6 +1220,12 @@
         </activity>
 
         <activity
+            android:name="com.lqwawa.intleducation.module.discovery.ui.VoucherDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name="com.galaxyschool.app.wawaschool.AssociateAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"/>

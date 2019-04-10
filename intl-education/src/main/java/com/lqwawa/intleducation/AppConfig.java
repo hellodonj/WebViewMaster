@@ -440,6 +440,9 @@ public final class AppConfig {
         //蛙蛙币余额
         public static String GET_USER_COINS_COUNT = CHARGE_BASE + "/api/wacoin/myWacoin?j=";
 
+        // 代金券余额、明细
+        public static String GET_INTEGRAL_RECORD_LIST = PayBase + "api/integral/getIntegralRecordList";
+
         //娃娃币支付
         public static String PAY_USE_WAWA_COIN = PayBase + "api/order/payUseWawaCoin?j=";
 

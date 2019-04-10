@@ -428,7 +428,7 @@
     <string name="data_rsp_error_unknown">请求错误</string>
 
     <string name="my_coins">我的余额</string>
-    <string name="coin_detail">明细</string>
+    <string name="coin_detail">明细></string>
     <string name="coin_count_detail">余额明细</string>
     <string name="wawa_coin_balance">蛙蛙币余额</string>
     <string name="charge_coin">充值</string>
