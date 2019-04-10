@@ -25,6 +25,10 @@ public class LessonSourceParams extends BaseVo{
     private String memberId;
     // 是否是试听
     private boolean isAudition;
+    // 是否是选择模式
+    private boolean choiceMode;
+    // 是否是主动触发
+    private boolean initiativeTrigger;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
@@ -101,6 +105,19 @@ public class LessonSourceParams extends BaseVo{
         return teacherType == UserHelper.TeacherType.TEACHER_COUNSELOR;
     }
 
+    public void setChoiceMode(boolean choiceMode,boolean initiativeTrigger){
+        this.choiceMode = choiceMode;
+        this.initiativeTrigger = initiativeTrigger;
+    }
+
+    public boolean isChoiceMode() {
+        return choiceMode;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
     /**
      * 通过课程大纲传到节详情的参数来build出节资源详情列表数据的参数
      * @param params 节详情的参数
@@ -114,6 +131,7 @@ public class LessonSourceParams extends BaseVo{
         newParams.courseParams = params.getCourseParams();
         newParams.teacherVisitor = params.isTeacherVisitor();
         newParams.realRole = params.getRealRole();
+        newParams.setChoiceMode(params.isChoiceMode(),params.isInitiativeTrigger());
         return newParams;
     }
 

@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse;
 
+import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 

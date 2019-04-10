@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -419,10 +421,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
      * 班级学程列表选择的页面
      * @param context 上下文对象
      */
-    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params){
+    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params,@Nullable Bundle extras){
         Intent intent = new Intent(context,CourseShopClassifyActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -431,10 +434,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
      * 学程馆学程学习任务选择的入口
      * @param activity 上下文对象
      */
-    public static void show(@NonNull Activity activity,@NonNull CourseShopClassifyParams params){
+    public static void show(@NonNull Activity activity, @NonNull CourseShopClassifyParams params, @Nullable Bundle extras){
         Intent intent = new Intent(activity,CourseShopClassifyActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         if(params.isSelectResource()){
             ShopResourceData data = params.getData();

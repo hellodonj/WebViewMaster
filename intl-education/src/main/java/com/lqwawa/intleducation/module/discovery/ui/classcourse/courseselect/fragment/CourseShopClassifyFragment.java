@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -347,10 +349,11 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
      * 学程馆学程学习任务选择的入口
      * @param params 核心参数
      */
-    public static CourseShopClassifyFragment newInstance(@NonNull CourseShopClassifyParams params){
+    public static CourseShopClassifyFragment newInstance(@NonNull CourseShopClassifyParams params,@Nullable Bundle extras){
         CourseShopClassifyFragment fragment = new CourseShopClassifyFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         fragment.setArguments(bundle);
         return fragment;
     }

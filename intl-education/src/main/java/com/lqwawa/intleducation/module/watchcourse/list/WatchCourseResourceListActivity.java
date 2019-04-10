@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,7 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 import com.lqwawa.intleducation.module.watchcourse.WatchResourceType;
@@ -44,6 +46,9 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
     // 听读课 限制显示的资源类型集合
     private ArrayList<Integer> mFilterArray;
     private boolean mInitiativeTrigger;
+    private Bundle mExtras;
+    private String mSchoolId;
+    private String mClassId;
     // 请求码
     private int mRequestCode;
 
@@ -62,6 +67,9 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
         mMultipleChoiceCount = mCourseResourceParams.getMultipleChoiceCount();
         mFilterArray = mCourseResourceParams.getFilterArray();
         mInitiativeTrigger = mCourseResourceParams.isInitiativeTrigger();
+        mSchoolId = mCourseResourceParams.getSchoolId();
+        mClassId = mCourseResourceParams.getClassId();
+        mExtras = bundle.getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
         mRequestCode = mCourseResourceParams.getRequestCode();
         if(EmptyUtil.isEmpty(mParentName) || EmptyUtil.isEmpty(mCourseIds)) return false;
 
@@ -106,9 +114,26 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
             public void onItemClick(RecyclerAdapter.ViewHolder holder, String courseId) {
                 super.onItemClick(holder, courseId);
                 if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE){
-                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mFilterArray,mInitiativeTrigger,mRequestCode);
+                    WatchCourseResourceActivity.show(
+                            WatchCourseResourceListActivity.this,
+                            courseId,
+                            mTaskType,
+                            mMultipleChoiceCount,
+                            mFilterArray,
+                            mInitiativeTrigger,
+                            mExtras,
+                            mSchoolId,mClassId,
+                            mRequestCode);
                 }else{
-                    WatchCourseResourceActivity.show(WatchCourseResourceListActivity.this,courseId,mTaskType,mMultipleChoiceCount,mInitiativeTrigger,mRequestCode);
+                    WatchCourseResourceActivity.show(
+                            WatchCourseResourceListActivity.this,
+                            courseId,
+                            mTaskType,
+                            mMultipleChoiceCount,
+                            mInitiativeTrigger,
+                            mExtras,
+                            mSchoolId,mClassId,
+                            mRequestCode);
                 }
             }
         });
@@ -137,10 +162,11 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
      * @param activity 上下文对象
      * @param params 核心参数
      */
-    public static void show(@NonNull Activity activity, @NonNull CourseResourceParams params){
+    public static void show(@NonNull Activity activity, @NonNull CourseResourceParams params, @Nullable Bundle extras){
         Intent intent = new Intent(activity,WatchCourseResourceListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,params.getRequestCode());
     }
@@ -150,10 +176,11 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
      * @param fragment 上下文对象
      * @param params 核心参数
      */
-    public static void show(@NonNull Fragment fragment, @NonNull CourseResourceParams params){
+    public static void show(@NonNull Fragment fragment, @NonNull CourseResourceParams params, @Nullable Bundle extras){
         Intent intent = new Intent(fragment.getContext(),WatchCourseResourceListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         fragment.startActivityForResult(intent,params.getRequestCode());
     }

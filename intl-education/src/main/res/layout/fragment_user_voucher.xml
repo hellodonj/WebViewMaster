@@ -14,6 +14,15 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_user_voucher_radius">
 
+        <TextView
+            android:id="@+id/detail_btn"
+            style="@style/text_green_xl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/coin_detail" />
 
         <TextView
             style="@style/text_gray_xl"

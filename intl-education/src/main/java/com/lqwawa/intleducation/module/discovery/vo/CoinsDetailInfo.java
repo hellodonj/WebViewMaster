@@ -32,6 +32,14 @@ public class CoinsDetailInfo extends BaseVo{
     private String mobile;
     private String realName;
     private String userName;
+    // 积分明细-余额
+    private String remainder;
+    // 积分明细-消耗类型：0-自己购买，1-帮别人买
+    private int type;
+    // 积分明细-1表示赠送 2消耗
+    private int recordType;
+    // 积分明细-创建时间
+    private String createDate;
 
 
     public long getCreateTime() {
@@ -160,5 +168,37 @@ public class CoinsDetailInfo extends BaseVo{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getRemainder() {
+        return remainder;
+    }
+
+    public void setRemainder(String remainder) {
+        this.remainder = remainder;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(int recordType) {
+        this.recordType = recordType;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }
