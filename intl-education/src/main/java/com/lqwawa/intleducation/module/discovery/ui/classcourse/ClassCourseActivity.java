@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Contacts;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -1372,8 +1374,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      */
     private void addCourseToClass(){
         // 进入选择课程页面
-        CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId);
-        CourseShopClassifyActivity.show(this,params);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId,mClassId);
+        CourseShopClassifyActivity.show(this,params,null);
     }
 
     @Override
@@ -1556,17 +1558,20 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * @param activity 上下文对象
      * @param params 核心参数
      * @param data 选择学习任务的筛选
+     * @param extras 直播参数
      * <p>onActivityResult回调选择数据,resultCode = {@link Activity.RESULT_OK}</p>
      * <p>data 为List<SectionResListVo> Key = {@link CourseSelectItemFragment.RESULT_LIST}</p>
      */
     public static void show(@NonNull Activity activity,
                             @NonNull ClassCourseParams params,
-                            @NonNull ClassResourceData data){
+                            @NonNull ClassResourceData data,
+                            @Nullable Bundle extras){
         Intent intent = new Intent(activity,ClassCourseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         bundle.putBoolean(KEY_EXTRA_RESOURCE_FLAG,true);
         bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA,data);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,data.getRequestCode());
     }

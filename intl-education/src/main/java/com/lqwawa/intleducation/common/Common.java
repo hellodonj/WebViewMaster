@@ -33,6 +33,8 @@ public class Common {
         int isAppStore = Config.UPLOAD_BUGLY_EXCEPTION ? 1 : 0;
 
         boolean isAssistant = false;
+
+        String KEY_EXTRAS_STUDY_TASK = "KEY_EXTRAS_STUDY_TASK";
     }
 
 }

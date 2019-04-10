@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 public class CourseResourceParams extends BaseVo {
 
+    private String schoolId;
+    private String classId;
+
     private String parentName;
     private String courseIds;
     // 查看类型
@@ -28,6 +31,22 @@ public class CourseResourceParams extends BaseVo {
         this.courseIds = courseIds;
         this.taskType = taskType;
         this.multipleChoiceCount = multipleChoiceCount;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
     public String getParentName() {
