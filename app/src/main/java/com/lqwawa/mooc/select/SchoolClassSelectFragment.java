@@ -74,6 +74,7 @@ public class SchoolClassSelectFragment extends AdapterFragment
     private int checkCount;
     private String schoolId;
     private boolean filterAppointClassInfo;
+    private boolean fromWorkLibTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +99,7 @@ public class SchoolClassSelectFragment extends AdapterFragment
             checkCount = args.getInt(Constants.CHECK_STUDY_TASK_COUNT);
             schoolId = args.getString(ActivityUtils.EXTRA_SCHOOL_ID);
             filterAppointClassInfo = args.getBoolean(Constants.FILTER_APPOINT_CLASS_INFO);
+            fromWorkLibTask = getArguments().getBoolean(ActivityUtils.EXTRA_ASSIGN_WORK_LIB_TASK);
         }
     }
 
@@ -200,6 +202,9 @@ public class SchoolClassSelectFragment extends AdapterFragment
         } else {
             data = new ClassResourceData(taskType,checkCount,new ArrayList<Integer>(),
                     LQCourseCourseListActivity.RC_SelectCourseRes);
+        }
+        if (fromWorkLibTask){
+            data.setInitiativeTrigger(true);
         }
         ClassCourseActivity.show(getActivity(),classCourseParams,data);
     }

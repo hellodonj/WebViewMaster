@@ -41,6 +41,9 @@ import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.mooc.select.SchoolClassSelectActivity;
+import com.lqwawa.mooc.select.SchoolClassSelectFragment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -311,10 +314,21 @@ public class HandleCheckResourceFragment extends AdapterFragment {
      * 选择班级学程
      */
     private void chooseClassLessonCourse(String classId) {
-        ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
-        ClassResourceData data = new ClassResourceData();
-        data.setInitiativeTrigger(true);
-        ClassCourseActivity.show(getActivity(),classCourseParams,data);
+        if (isOnlineClass){
+            Intent intent = new Intent(getActivity(), SchoolClassSelectActivity.class);
+            Bundle args = new Bundle();
+            args.putBoolean(SchoolClassSelectFragment.Constants.FROM_STUDYTASK_CHECK_DATA, true);
+            args.putString(ActivityUtils.EXTRA_SCHOOL_ID, schoolId);
+            args.putBoolean(SchoolClassSelectFragment.Constants.FILTER_APPOINT_CLASS_INFO, false);
+            args.putBoolean(ActivityUtils.EXTRA_ASSIGN_WORK_LIB_TASK,true);
+            intent.putExtras(args);
+            startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
+        } else {
+            ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
+            ClassResourceData data = new ClassResourceData();
+            data.setInitiativeTrigger(true);
+            ClassCourseActivity.show(getActivity(), classCourseParams, data);
+        }
     }
 
     /**
