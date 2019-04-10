@@ -969,31 +969,44 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 handleSubjectSettingData(this, UserHelper.getUserId(), false);
             }
         } else if (viewId == R.id.action_container) {
-            boolean originalActivated = mBottomLayout.isActivated();
-            if (!originalActivated) {
-                // 点击添加到作业库,或者确定
-                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            if(mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()){
+                // 直接添加到作业库
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
                     int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                    if (count >= 6) {
+                    if(count >= 6){
                         UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                         return;
                     }
                 }
-            }
 
-            if (originalActivated) {
-                int count = confirmResourceCart();
-                if (count > 0) {
-                    mBottomLayout.setActivated(!originalActivated);
+                int count = confirmResourceCart(false);
+            }else{
+                boolean originalActivated = mBottomLayout.isActivated();
+                if (!originalActivated) {
+                    // 点击添加到作业库,或者确定
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                        int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+                        if (count >= 6) {
+                            UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                            return;
+                        }
+                    }
                 }
-            } else {
-                // triggerToCartAction();
-                // mBottomLayout.setActivated(!originalActivated);
-                handleSubjectSettingData(this, UserHelper.getUserId(), true);
-            }
 
-            initBottomLayout();
-            refreshCartPoint();
+                if (originalActivated) {
+                    int count = confirmResourceCart();
+                    if (count > 0) {
+                        mBottomLayout.setActivated(!originalActivated);
+                    }
+                } else {
+                    // triggerToCartAction();
+                    // mBottomLayout.setActivated(!originalActivated);
+                    handleSubjectSettingData(this, UserHelper.getUserId(), true);
+                }
+
+                initBottomLayout();
+                refreshCartPoint();
+            }
         } else if(viewId == R.id.new_cart_container){
             handleSubjectSettingData(this, UserHelper.getUserId(), false);
         }
@@ -1086,12 +1099,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         refreshCartPoint();
     }
 
+    private int confirmResourceCart(){
+        return confirmResourceCart(true);
+    }
+
     /**
      * 确定所有作业库中的资源
      *
      * @return 添加了几条资源
      */
-    private int confirmResourceCart() {
+    private int confirmResourceCart(boolean clearStatus) {
         // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
         int currentPosition = mViewPager.getCurrentItem();
@@ -1126,7 +1143,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
         // 清楚所有的作业库资源选中状态
         clearAllResource();
-        switchAdapterMode(false);
+
+        if(clearStatus){
+            switchAdapterMode(false);
+        }
 
         return choiceArray.size();
     }
@@ -1157,7 +1177,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mTvCartPoint.setText(Integer.toString(count));
             if (count == 0 || mBottomLayout.isActivated()) {
                 mTvPoint.setVisibility(View.GONE);
-                mTvCartPoint.setVisibility(View.GONE);
+                if(count == 0) {
+                    mTvCartPoint.setVisibility(View.GONE);
+                }
             } else {
                 mTvPoint.setVisibility(View.VISIBLE);
                 mTvCartPoint.setVisibility(View.VISIBLE);
@@ -1174,11 +1196,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mBtnCart.setText(getString(R.string.label_cancel));
             mBtnAction.setText(getString(R.string.label_confirm_authorization));
             mTvPoint.setVisibility(View.GONE);
+
+            // 如果是激活状态
+            mCartContainer.setVisibility(View.VISIBLE);
         } else {
             // 当前是未激活状态,显示作业库和添加到作业库
             mBtnCart.setText(getString(R.string.label_work_cart));
             mBtnAction.setText(getString(R.string.label_action_to_cart));
             mTvPoint.setVisibility(View.VISIBLE);
+
+            mCartContainer.setVisibility(View.GONE);
         }
     }
 
