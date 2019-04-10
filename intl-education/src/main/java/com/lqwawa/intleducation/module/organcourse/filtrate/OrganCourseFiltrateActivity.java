@@ -119,8 +119,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     // 特色英语ID
     private static final int CHARACTERISTICS_ENGLISH = 2005;
 
+    // LQ English Kids
+    private static final int ENGLISH_INTERNATIONAL_ENGLISH_KIDS_ID = 2010;
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
+    // Think
+    private static final int ENGLISH_INTERNATIONAL_ENGLISH_THINK_ID = 2245;
 
     // iTEP
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID = 2244;
@@ -1013,7 +1017,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
                 // 数据请求
                 int firstId = tabData.getId();
-                if (rootId == ENGLISH_INTERNATIONAL_COURSE) {
+                /*if (rootId == ENGLISH_INTERNATIONAL_COURSE) {
                     if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID) {
                         // 选中了英语国际课程的 LQ English Primary
                         mTabVector3.setVisibility(View.VISIBLE);
@@ -1022,6 +1026,23 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                         // 选中了英语国际课程的 iTEP
                         mTabVector3.setVisibility(View.VISIBLE);
                         mTabLabel2.setText(getString(R.string.label_colon_subject));
+                    } else {
+                        mTabLabel2.setText(getString(R.string.label_colon_subject));
+                        mTabVector3.setVisibility(View.GONE);
+                    }
+                }*/
+
+
+                if (rootId == ENGLISH_INTERNATIONAL_COURSE) {
+                    if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID ||
+                            firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID) {
+                        // 选中了英语国际课程的 LQ English Primary Or ITEP
+                        mTabVector3.setVisibility(View.VISIBLE);
+                        mTabLabel2.setText(getString(R.string.label_colon_grade));
+                    } else if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_THINK_ID ||
+                            firstId == ENGLISH_INTERNATIONAL_ENGLISH_KIDS_ID) {
+                        mTabLabel2.setText(getString(R.string.label_colon_grade));
+                        mTabVector3.setVisibility(View.GONE);
                     } else {
                         mTabLabel2.setText(getString(R.string.label_colon_subject));
                         mTabVector3.setVisibility(View.GONE);
