@@ -340,7 +340,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
 
     private void enterWorkLibDetailActivity(){
         LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(getActivity(),
-                schoolId,classId);
+                schoolId,classId,getArguments());
     }
 
 

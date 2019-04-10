@@ -849,7 +849,8 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
      */
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineClass);
+            HandleCheckResourceActivity.start(getActivity(),schoolId,classId,isOnlineClass,
+                    getBundleInfo());
 //            ArrangeLearningTasksUtil.getInstance()
 //                    .setActivity(getActivity())
 //                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
@@ -860,6 +861,21 @@ public class AirClassStudyPracticeFragment extends ContactsListFragment implemen
 //                    })
 //                    .show();
         });
+    }
+
+    private Bundle getBundleInfo(){
+        Bundle args = new Bundle();
+        args.putInt(ActivityUtils.EXTRA_STDUY_TYPE, currentStudyType);//当前练习的类型
+        args.putSerializable(ActivityUtils.EXTRA_DATA_INFO, onlineRes);
+        args.putSerializable(ActivityUtils.EXTRA_SCHOOL_INFO_LIST_DATA, (Serializable) ScreenSchoolListData());
+        args.putBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS,isOnlineClass);
+        if (!TextUtils.isEmpty(classId)) {
+            args.putString(ActivityUtils.EXTRA_CLASS_ID,classId);
+        }
+        if (!TextUtils.isEmpty(schoolId)){
+            args.putString(ActivityUtils.EXTRA_SCHOOL_ID,schoolId);
+        }
+        return args;
     }
 
     /**

@@ -1054,7 +1054,7 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
 
     private void showTaskTypeDialog() {
         StudyTaskUtils.handleSubjectSettingData(getActivity(),getMemeberId(),v -> {
-            HandleCheckResourceActivity.start(getActivity(),schoolInfo.getSchoolId(),null,false);
+            HandleCheckResourceActivity.start(getActivity(),schoolInfo.getSchoolId(),null,false,null);
 //            ArrangeLearningTasksUtil.getInstance()
 //                    .setActivity(getActivity())
 //                    .setCallBackListener(new ArrangeLearningTasksUtil.ArrangeLearningTaskListener() {
