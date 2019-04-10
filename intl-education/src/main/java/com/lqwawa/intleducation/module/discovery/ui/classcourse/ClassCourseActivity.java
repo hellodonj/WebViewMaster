@@ -457,6 +457,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     }*/
 
                     String courseId = entity.getCourseId();
+                    Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                     // 进入选择资源的Activity
                     WatchCourseResourceActivity.show(
                             ClassCourseActivity.this,
@@ -465,6 +466,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                             mResourceData.getMultipleChoiceCount(),
                             mResourceData.getFilterArray(),
                             mResourceData.isInitiativeTrigger(),
+                            extras,
+                            mSchoolId,
+                            mClassId,
                             0);
                 }else{
                     // 班级学程的详情入口
@@ -1375,7 +1379,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private void addCourseToClass(){
         // 进入选择课程页面
         CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId,mClassId);
-        CourseShopClassifyActivity.show(this,params,null);
+        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+        CourseShopClassifyActivity.show(this,params,extras);
     }
 
     @Override
