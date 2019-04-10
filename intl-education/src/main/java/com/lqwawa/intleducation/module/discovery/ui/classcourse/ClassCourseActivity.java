@@ -375,7 +375,13 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         // 班级学程进入参数
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
-        if(isResult){
+
+        boolean initiativeTrigger = false;
+        if(mResourceFlag){
+            initiativeTrigger = mResourceData.isInitiativeTrigger();
+        }
+
+        if(isResult && initiativeTrigger){
             mWorkCart.setVisibility(View.VISIBLE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);

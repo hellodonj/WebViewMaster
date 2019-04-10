@@ -88,6 +88,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         arguments.putSerializable("CourseVo",vo);
         arguments.putInt("tasktype",mTaskType);
         arguments.putBoolean(CourseSelectFragment.KEY_EXTRA_ONLINE_RELEVANCE,true);
+        arguments.putBoolean(CourseSelectFragment.KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT,mMultipleChoiceCount);
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE){
             arguments.putIntegerArrayList(CourseSelectFragment.KEY_EXTRA_FILTER_COLLECTION,mFilterArray);
