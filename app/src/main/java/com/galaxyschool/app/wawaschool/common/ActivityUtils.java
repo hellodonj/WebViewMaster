@@ -50,6 +50,7 @@ import com.galaxyschool.app.wawaschool.fragment.IntroductionForReadCourseFragmen
 import com.galaxyschool.app.wawaschool.fragment.PersonalSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.SchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.TaskOrderFragment;
+import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
@@ -945,6 +946,8 @@ public class ActivityUtils {
         SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
         EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
                 EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+        //退出登录清空任务数据
+        LqIntroTaskHelper.getInstance().clearTaskList();
 //        ConversationHelper.logout();
         if (activity != null) {
             UserHelper.logout();
