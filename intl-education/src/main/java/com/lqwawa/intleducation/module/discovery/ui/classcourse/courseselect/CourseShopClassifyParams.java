@@ -27,6 +27,10 @@ public class CourseShopClassifyParams extends BaseVo{
         this.classId = classId;
     }
 
+    public CourseShopClassifyParams(String organId,boolean selectResource, ShopResourceData data) {
+        this(organId,null,selectResource,data);
+    }
+
     public CourseShopClassifyParams(String organId, @Nullable String classId,boolean selectResource, ShopResourceData data) {
         this(organId,classId);
         this.selectResource = selectResource;

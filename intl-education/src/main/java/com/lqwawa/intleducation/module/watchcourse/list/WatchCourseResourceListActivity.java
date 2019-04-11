@@ -157,6 +157,9 @@ public class WatchCourseResourceListActivity extends ToolbarActivity {
         }
     }
 
+    public static void show(@NonNull Activity activity, @NonNull CourseResourceParams params){
+        show(activity,params,null);
+    }
     /**
      * 关联学程的入口
      * @param activity 上下文对象

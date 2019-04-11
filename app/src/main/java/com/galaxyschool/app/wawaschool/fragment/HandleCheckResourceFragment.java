@@ -305,9 +305,10 @@ public class HandleCheckResourceFragment extends AdapterFragment {
     }
 
     private void enterLqCourseShopDetail(){
-        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,new ShopResourceData());
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,classId,true,
+                new ShopResourceData());
         params.setInitiativeTrigger(true);
-        CourseShopClassifyActivity.show(getActivity(),params);
+        CourseShopClassifyActivity.show(getActivity(),params,getArguments());
     }
 
     /**
@@ -327,7 +328,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
             ClassResourceData data = new ClassResourceData();
             data.setInitiativeTrigger(true);
-            ClassCourseActivity.show(getActivity(), classCourseParams, data);
+            ClassCourseActivity.show(getActivity(), classCourseParams, data,getArguments());
         }
     }
 
@@ -346,8 +347,10 @@ public class HandleCheckResourceFragment extends AdapterFragment {
                 //点击关联学程
                 CourseResourceParams params = new CourseResourceParams(getString(R.string.label_space_school_relevance_course), courseId, 0, 0);
                 params.setInitiativeTrigger(true);
+                params.setSchoolId(schoolId);
+                params.setClassId(classId);
                 params.setRequestCode(LQCourseCourseListActivity.RC_SelectCourseRes);
-                WatchCourseResourceListActivity.show(getActivity(), params);
+                WatchCourseResourceListActivity.show(getActivity(), params,getArguments());
             }
         });
     }

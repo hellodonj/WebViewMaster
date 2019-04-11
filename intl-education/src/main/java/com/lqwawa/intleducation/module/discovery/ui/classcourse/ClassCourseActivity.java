@@ -1558,6 +1558,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         context.startActivity(intent);
     }
 
+    public static void show(@NonNull Activity activity,
+                            @NonNull ClassCourseParams params,
+                            @NonNull ClassResourceData data){
+        show(activity,params,data,null);
+    }
     /**
      * 班级学程页面的入口, 选择学习任务的入口
      * @param activity 上下文对象

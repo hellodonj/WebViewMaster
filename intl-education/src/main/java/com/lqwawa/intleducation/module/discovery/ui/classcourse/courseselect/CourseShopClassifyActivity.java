@@ -417,6 +417,10 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         }
     }
 
+    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params){
+        show(context,params,null);
+    }
+
     /**
      * 班级学程列表选择的页面
      * @param context 上下文对象
