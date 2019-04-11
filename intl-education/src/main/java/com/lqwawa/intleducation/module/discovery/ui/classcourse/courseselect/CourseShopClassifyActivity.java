@@ -74,6 +74,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
 
     private CourseShopClassifyParams mParams;
     private String mSchoolId;
+    private String mClassId;
     private boolean mSelectResource;
     private ShopResourceData mResourceData;
     // 授权信息
@@ -127,10 +128,16 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         }
 
         mSchoolId = mParams.getOrganId();
+        mClassId = mParams.getClassId();
         mSelectResource = mParams.isSelectResource();
         mResourceData = mParams.getData();
         if(EmptyUtil.isEmpty(mSchoolId)) return false;
         if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
+
+        mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+        mResourceData.setSchoolId(mSchoolId);
+        mResourceData.setClassId(mClassId);
+
         return super.initArgs(bundle);
     }
 
@@ -201,10 +208,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                     public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
                         String roles = schoolInfoEntity.getRoles();
                         if(mSelectResource){
+                            Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity,mSelectResource,false,
-                                    mResourceData,isAuthorized,isReallyAuthorized,false,roles);
+                                    mResourceData,extras,isAuthorized,isReallyAuthorized,false,roles);
                         }else{
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,

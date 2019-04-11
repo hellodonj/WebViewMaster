@@ -21,6 +21,9 @@ public class ShopResourceData implements Serializable{
     private boolean initiativeTrigger;
     private int requestCode;
 
+    private String schoolId;
+    private String classId;
+
     public ShopResourceData() {
     }
 
@@ -64,6 +67,22 @@ public class ShopResourceData implements Serializable{
 
     public void setInitiativeTrigger(boolean initiativeTrigger) {
         this.initiativeTrigger = initiativeTrigger;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
     public int getRequestCode() {

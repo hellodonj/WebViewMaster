@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
@@ -451,6 +453,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             return;
                         }
                         // 进入选择资源的Activity
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                         WatchCourseResourceActivity.show(
                                 OrganCourseFiltrateActivity.this,
                                 vo.getId(),
@@ -458,9 +461,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                                 mResourceData.getMultipleChoiceCount(),
                                 mResourceData.getFilterArray(),
                                 mResourceData.isInitiativeTrigger(),
-                                null,
-                                mEntity.getEntityOrganId(),
-                                null,0);
+                                extras,
+                                mResourceData.getSchoolId(),
+                                mResourceData.getClassId(),0);
                     } else {
                         // 线下机构学程馆,是从空中学校进入的 isSchoolEnter = true;
                         String organId = mEntity.getEntityOrganId();
@@ -1823,7 +1826,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             boolean isReallyAuthorized,
                             boolean isHostEnter,
                             String roles) {
-        Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
+        show(activity,entity,selectResource,isClassCourseEnter,data,null,isAuthorized,isReallyAuthorized,isHostEnter,roles);
+        /*Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_ENTITY, entity);
         bundle.putBoolean(KEY_EXTRA_ORGAN_SELECT, selectResource);
@@ -1834,6 +1838,50 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         bundle.putString(KEY_EXTRA_ROLES,roles);
         if (selectResource)
             bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
+        intent.putExtras(bundle);
+        if (selectResource) {
+            activity.startActivityForResult(intent, data.getRequestCode());
+        } else {
+            activity.startActivity(intent);
+        }*/
+    }
+
+    /**
+     * 学程馆二级筛选页面的入口
+     *
+     * @param activity           上下文对象
+     * @param entity             实体数据对象
+     * @param selectResource     是否是选择资源
+     * @param isClassCourseEnter 是否是班级学程入口
+     * @param data               选择学程馆资源的data
+     * @param extras 布置任务直播参数
+     * @param isAuthorized       是否已经获取到授权
+     * @param isReallyAuthorized 该分类是否获取到授权了
+     * @param isHostEnter        是否直接从学程馆入口进来的
+     */
+    public static void show(@NonNull Activity activity,
+                            @NonNull LQCourseConfigEntity entity,
+                            boolean selectResource,
+                            boolean isClassCourseEnter,
+                            @NonNull ShopResourceData data,
+                            @Nullable Bundle extras,
+                            boolean isAuthorized,
+                            boolean isReallyAuthorized,
+                            boolean isHostEnter,
+                            String roles) {
+        Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_ENTITY, entity);
+        bundle.putBoolean(KEY_EXTRA_ORGAN_SELECT, selectResource);
+        bundle.putBoolean(KEY_EXTRA_IS_AUTHORIZED, isAuthorized);
+        bundle.putBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED, isReallyAuthorized);
+        bundle.putBoolean(KEY_EXTRA_HOST_ENTER, isHostEnter);
+        bundle.putBoolean(KEY_EXTRA_CLASS_COURSE_ENTER, isClassCourseEnter);
+        bundle.putString(KEY_EXTRA_ROLES,roles);
+        if (selectResource) {
+            bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
+            bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
+        }
         intent.putExtras(bundle);
         if (selectResource) {
             activity.startActivityForResult(intent, data.getRequestCode());
