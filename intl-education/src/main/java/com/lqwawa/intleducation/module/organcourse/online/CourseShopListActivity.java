@@ -1,9 +1,11 @@
 package com.lqwawa.intleducation.module.organcourse.online;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,15 +34,19 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.online.pager.CourseShopPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -60,6 +66,8 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
 
     private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
 
+    private static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+
     private static final String KEY_EXTRA_IS_SCHOOL_ENTER = "KEY_EXTRA_IS_SCHOOL_ENTER";
     // 是不是从在线课堂班级进入的
     private static final String KEY_EXTRA_IS_ONLINE_CLASS_ENTER = "KEY_EXTRA_IS_ONLINE_CLASS_ENTER";
@@ -75,8 +83,13 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     private String mTitle;
     private String mSortType;
     private String mSchoolId;
+    private String mClassId;
     private boolean isSchoolEnter;
     private boolean isOnlineClassEnter;
+
+    private CourseShopClassifyParams mParams;
+    private boolean mSelectResource;
+    private ShopResourceData mResourceData;
 
     private String[] mTabTitles;
 
@@ -98,6 +111,20 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
         isSchoolEnter = bundle.getBoolean(KEY_EXTRA_IS_SCHOOL_ENTER);
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
+
+        mParams = (CourseShopClassifyParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
+        mSchoolId = mParams.getOrganId();
+        mClassId = mParams.getClassId();
+        mSelectResource = mParams.isSelectResource();
+        mResourceData = mParams.getData();
+        if(EmptyUtil.isEmpty(mSchoolId)) return false;
+        if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
+
+        if(mSelectResource) {
+            mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+            mResourceData.setSchoolId(mSchoolId);
+            mResourceData.setClassId(mClassId);
+        }
         if(EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)){
             return false;
         }
@@ -317,7 +344,9 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
      * @param sort 热门列表或者其它
      * @param title 标题文本
      */
-    public static void show(@NonNull Context context, @NonNull @HideSortType.SortRes String sort, @NonNull String title){
+    public static void show(@NonNull Context context,
+                            @NonNull @HideSortType.SortRes String sort,
+                            @NonNull String title){
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
@@ -335,7 +364,9 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
      * @param isSchoolEnter 是否从在线机构主页进来的
      * @param isOnlineClassEnter 是否是在线课堂班级过来的，如果是，需要隐藏在线课堂Tab
      */
-    public static void show(@NonNull Context context, @NonNull @HideSortType.SortRes String sort, @NonNull String title,@NonNull String schoolId,
+    public static void show(@NonNull Context context,
+                            @NonNull @HideSortType.SortRes String sort,
+                            @NonNull String title,@NonNull String schoolId,
                             boolean isSchoolEnter,boolean isOnlineClassEnter){
         Intent intent = new Intent(context, CourseShopListActivity.class);
         Bundle bundle = new Bundle();
@@ -346,5 +377,31 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         bundle.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter);
         intent.putExtras(bundle);
         context.startActivity(intent);
+    }
+
+    /**
+     * 学程馆学程学习任务选择的入口
+     * @param activity 上下文对象
+     */
+    public static void show(@NonNull Activity activity,
+                            @NonNull String title,
+                            @NonNull @HideSortType.SortRes String sort,
+                            @NonNull CourseShopClassifyParams params,
+                            @Nullable Bundle extras){
+        Intent intent = new Intent(activity,CourseShopListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
+        bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID,params.getOrganId());
+        bundle.putString(KEY_EXTRA_CLASS_ID,params.getClassId());
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
+        intent.putExtras(bundle);
+        if(params.isSelectResource()){
+            ShopResourceData data = params.getData();
+            activity.startActivityForResult(intent,data.getRequestCode());
+        }else{
+            activity.startActivity(intent);
+        }
     }
 }

@@ -134,9 +134,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         if(EmptyUtil.isEmpty(mSchoolId)) return false;
         if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
 
-        mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
-        mResourceData.setSchoolId(mSchoolId);
-        mResourceData.setClassId(mClassId);
+        if(mSelectResource) {
+            mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+            mResourceData.setSchoolId(mSchoolId);
+            mResourceData.setClassId(mClassId);
+        }
 
         return super.initArgs(bundle);
     }
