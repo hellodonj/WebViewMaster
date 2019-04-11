@@ -30,12 +30,15 @@ import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
+import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -54,6 +57,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private static final int ADD_HISTORY_REQUEST_CODE = 1 << 1;
 
     public static final String KEY_EXTRA_TRIGGER = "KEY_EXTRA_TRIGGER";
+    private static final String KEY_EXTRA_AUTHORIZATION = "KEY_EXTRA_AUTHORIZATION";
 
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
@@ -117,6 +121,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     private boolean isUpdate;
 
+    private boolean isAuthorized;
+
 
     @Override
     protected HistoryClassCourseContract.Presenter initPresenter() {
@@ -131,6 +137,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
         mClassCourseParams = (ClassCourseParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
+        isAuthorized = bundle.getBoolean(KEY_EXTRA_AUTHORIZATION);
         if (EmptyUtil.isEmpty(mClassCourseParams)) return false;
         mSchoolId = mClassCourseParams.getSchoolId();
         mClassId = mClassCourseParams.getClassId();
@@ -262,9 +269,31 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity entity) {
                 super.onItemClick(holder, entity);
-                // 添加选择,或者取消选择
-                entity.setChecked(!entity.isChecked());
-                mCourseAdapter.notifyDataSetChanged();
+                if(mCourseAdapter.isChoiceMode()) {
+                    // 添加选择,或者取消选择
+                    entity.setChecked(!entity.isChecked());
+                    mCourseAdapter.notifyDataSetChanged();
+                }else{
+                    // 班级学程的详情入口
+                    String courseId = entity.getCourseId();
+                    // 班级学程进入参数
+                    boolean isTeacher = UserHelper.isTeacher(mRoles);
+                    boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
+                    boolean isParent = UserHelper.isParent(mRoles);
+
+                    CourseDetailParams params = new CourseDetailParams(mSchoolId,mClassId,mClassName,isAuthorized);
+                    params.setClassTeacher(isResult);
+                    // 优先老师处理
+                    params.setClassParent(!isResult && isParent);
+
+                    // CourseDetailsActivity.start(ClassCourseActivity.this , courseId, true, UserHelper.getUserId(),params);
+
+                    CourseDetailsActivity.start(isAuthorized,params,false,HistoryClassCourseActivity.this,courseId, true, UserHelper.getUserId());
+                    // 如果是班主任,清除Hold状态
+                    if(mClassCourseParams.isHeadMaster()){
+                        switchHoldState(false);
+                    }
+                }
             }
 
             @Override
@@ -1065,13 +1094,16 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
      *
      * @param activity 上下文对象
      * @param params   核心参数
+     * @param isAuthorized 是否授权
      */
     public static void show(@NonNull Activity activity,
                             @NonNull ClassCourseParams params,
+                            boolean isAuthorized,
                             int requestCode) {
         Intent intent = new Intent(activity, HistoryClassCourseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
+        bundle.putBoolean(KEY_EXTRA_AUTHORIZATION, isAuthorized);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, requestCode);
     }

@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
 import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -69,6 +70,10 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     public static final String KEY_EXTRA_FILTER_COLLECTION = "KEY_EXTRA_FILTER_COLLECTION";
     // 是否主动触发
     public static final String KEY_EXTRA_INITIATIVE_TRIGGER = "KEY_EXTRA_INITIATIVE_TRIGGER";
+    // 学校ID
+    public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
+    // ClassId
+    public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
 
     private SuperListView listView;
     private FrameLayout mEmptyView;
@@ -97,6 +102,10 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     private TextView mTvCartPoint;
     private boolean initiativeTrigger;
 
+    private String mSchoolId;
+    private String mClassId;
+    private Bundle mExtras;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_select, container, false);
@@ -117,6 +126,9 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
 
         flagCourseData = (CourseVo) getArguments().getSerializable("CourseVo");
         initiativeTrigger = getArguments().getBoolean(KEY_EXTRA_INITIATIVE_TRIGGER);
+        mSchoolId = getArguments().getString(KEY_EXTRA_SCHOOL_ID);
+        mClassId = getArguments().getString(KEY_EXTRA_CLASS_ID);
+        mExtras = getArguments().getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
 
         if (initiativeTrigger) {
             int color = UIUtil.getColor(R.color.colorPink);
@@ -183,7 +195,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
         int viewId = v.getId();
         if (viewId == R.id.new_cart_container) {
             if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-                // TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(getActivity(),mSchoolId,mClassId);
+                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(getActivity(),mSchoolId,mClassId,mExtras);
             }
         }
     }
@@ -249,6 +261,9 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             courseParams.setBindClassId(courseVo.getBindClassId());
                             courseParams.setCourseId(courseVo.getId());
                             courseParams.setCourseName(courseVo.getName());
+                            // 填充参数
+                            courseParams.setSchoolId(mSchoolId);
+                            courseParams.setClassId(mClassId);
                         }
 
                         int role = UserHelper.MoocRoleType.TEACHER;
@@ -261,7 +276,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                 sectionName, name,false,true,true,
                                 status, memberId,chapterVo.isContainAssistantWork(),
                                 "",false, courseVo,
-                                false,false,params);
+                                false,false,params,
+                                mExtras);
                     } else {
                         Bundle arguments = getArguments();
                         /*Bundle bundle = new Bundle();

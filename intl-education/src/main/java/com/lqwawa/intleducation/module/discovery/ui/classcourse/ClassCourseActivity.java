@@ -383,7 +383,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             initiativeTrigger = mResourceData.isInitiativeTrigger();
         }
 
-        if(isResult && initiativeTrigger){
+        if(isResult && (initiativeTrigger || !mResourceFlag)){
             mWorkCart.setVisibility(View.VISIBLE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);
@@ -1316,7 +1316,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // handleSubjectSettingData(this,UserHelper.getUserId());
             // V.5.14.X改成查看历史课程
             // UIUtil.showToastSafe(R.string.label_watch_history_course);
-            HistoryClassCourseActivity.show(this,mClassCourseParams,ENTER_HISTORY_REQUEST_CODE);
+            HistoryClassCourseActivity.show(this,mClassCourseParams,isAuthorized,ENTER_HISTORY_REQUEST_CODE);
         }else if(viewId == R.id.new_cart_container){
             // 点击作业库
             handleSubjectSettingData(this,UserHelper.getUserId());
@@ -1343,7 +1343,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 } else {
                     //有数据
                     if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
-                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId);
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId,extras);
                     }
                 }
             }
@@ -1511,7 +1512,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * 取消发布作业库
      */
     private boolean cancelPublishWorkCart() {
-        if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+        /*if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             int taskCount = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             if(taskCount > 0){
                 WorkCartDialogFragment fragment = new WorkCartDialogFragment();
@@ -1519,7 +1520,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     @Override
                     public void onConfirm() {
                         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
-                            TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId);
+                            Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                            TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId,extras);
                             fragment.dismiss();
                         }
                     }
@@ -1532,7 +1534,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 fragment.show(getSupportFragmentManager(),WorkCartDialogFragment.class.getSimpleName());
                 return true;
             }
-        }
+        }*/
         return false;
     }
 

@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +45,7 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerSelectedAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -136,7 +138,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                              boolean canRead, boolean canEdit, int status, String memberId,
                              boolean isContainAssistantWork, String schoolId,
                              boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
-                             boolean isFreeUser, @NonNull CourseChapterParams params) {
+                             boolean isFreeUser, @NonNull CourseChapterParams params,
+                             @Nullable Bundle extras) {
         activity.startActivity(new Intent(activity, LessonDetailsActivity.class)
                 .putExtra(COURSE_ID, courseId)
                 .putExtra(SECTION_ID, sectionId)
@@ -153,7 +156,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 .putExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, isFromMyCourse)
                 .putExtra(KEY_ROLE_FREE_USER, isFreeUser)
                 .putExtra(CourseVo.class.getSimpleName(), courseVo)
-                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
+                .putExtra(ACTIVITY_BUNDLE_OBJECT, params)
+                .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras));
     }
 
     /**
@@ -1081,7 +1085,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             CourseDetailParams courseParams = mChapterParams.getCourseParams();
             if (EmptyUtil.isNotEmpty(courseParams)) {
-                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId());
+                Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId(),extras);
             }
         }
     }

@@ -50,6 +50,10 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
     // 是否主动选择作业库资源
     private boolean initiativeTrigger;
 
+    private String mSchoolId;
+    private String mClassId;
+    private Bundle mExtras;
+
 
 
     @Override
@@ -69,6 +73,9 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         mFilterArray = bundle.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
         initiativeTrigger = bundle.getBoolean(KEY_EXTRA_INITIATIVE_TRIGGER);
+        mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
+        mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
+        mExtras = bundle.getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
 
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE && mFilterArray == null){
             return false;
@@ -96,6 +103,9 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         arguments.putBoolean(CourseSelectFragment.KEY_EXTRA_ONLINE_RELEVANCE,true);
         arguments.putBoolean(CourseSelectFragment.KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
         arguments.putInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT,mMultipleChoiceCount);
+        arguments.putString(CourseSelectFragment.KEY_EXTRA_SCHOOL_ID,mSchoolId);
+        arguments.putString(CourseSelectFragment.KEY_EXTRA_CLASS_ID,mClassId);
+        arguments.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,mExtras);
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE){
             arguments.putIntegerArrayList(CourseSelectFragment.KEY_EXTRA_FILTER_COLLECTION,mFilterArray);
         }
