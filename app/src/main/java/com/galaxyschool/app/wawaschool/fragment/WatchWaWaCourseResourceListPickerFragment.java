@@ -41,8 +41,10 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParam
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
@@ -243,7 +245,8 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_LQCOURSE_SHOP) {
             //学程馆
             if (isOnlineClass){
-                chooseSchoolResources(TAB_LQCOURSE_SHOP);
+//                chooseSchoolResources(TAB_LQCOURSE_SHOP);
+                chooseOnlineLqCourseShopRes();
             } else {
                 enterLqCourseShopSpace();
             }
@@ -251,6 +254,34 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             //班级学程
             chooseClassLessonCourse();
         }
+    }
+
+    private void chooseOnlineLqCourseShopRes(){
+        int taskType = getTaskTypeOrSelectCount(true);
+        int selectMaxCount = getTaskTypeOrSelectCount(false);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
+            arrayList.add(ResType.RES_TYPE_ONEPAGE);
+        } else if (taskType == StudyTaskType.TASK_ORDER){
+            arrayList.add(ResType.RES_TYPE_STUDY_CARD);
+        } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
+                taskType == StudyTaskType.WATCH_WAWA_COURSE){
+            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
+            arrayList.add(ResType.RES_TYPE_ONEPAGE);
+            arrayList.add(ResType.RES_TYPE_IMG);
+            arrayList.add(ResType.RES_TYPE_PPT);
+            arrayList.add(ResType.RES_TYPE_PDF);
+            arrayList.add(ResType.RES_TYPE_VOICE);
+            arrayList.add(ResType.RES_TYPE_VIDEO);
+            arrayList.add(ResType.RES_TYPE_DOC);
+        }
+        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
+        CourseShopListActivity.show(getActivity(),
+                HideSortType.TYPE_SORT_ONLINE_COURSE,
+                getString(R.string.assign_task_line)
+                ,params,null);
     }
 
     /**

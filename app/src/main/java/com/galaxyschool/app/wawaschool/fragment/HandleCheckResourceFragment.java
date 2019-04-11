@@ -37,7 +37,9 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParam
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -289,10 +291,22 @@ public class HandleCheckResourceFragment extends AdapterFragment {
      */
     private void enterLqCourseShopSpace() {
         if (isOnlineClass){
-            chooseSchoolResources();
+//            chooseSchoolResources();
+            chooseOnlineLqCourseShopRes();
         } else {
             enterLqCourseShopDetail();
         }
+    }
+
+    private void chooseOnlineLqCourseShopRes(){
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,classId,true,
+                new ShopResourceData());
+        params.setInitiativeTrigger(true);
+        CourseShopListActivity.show(getActivity(),
+                HideSortType.TYPE_SORT_ONLINE_COURSE,
+                getString(R.string.assign_task_line)
+                ,params,
+                getArguments());
     }
 
     /**
