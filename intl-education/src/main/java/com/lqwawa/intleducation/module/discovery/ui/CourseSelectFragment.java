@@ -183,6 +183,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
+        refreshCartPoint();
     }
 
     @Override

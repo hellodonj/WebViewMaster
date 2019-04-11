@@ -1445,7 +1445,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
             mPresenter.requestAddCourseFromClass(mSchoolId,mClassId,courseIds);
         }else if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
-            if(mResourceFlag){
+            if(mResourceFlag && EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()){
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
                 // 杀掉所有可能的UI

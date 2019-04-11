@@ -379,9 +379,11 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event){
         if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
-            ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
-            setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
-            finish();
+            if(EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()) {
+                ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
+                setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
+                finish();
+            }
         }
     }
 

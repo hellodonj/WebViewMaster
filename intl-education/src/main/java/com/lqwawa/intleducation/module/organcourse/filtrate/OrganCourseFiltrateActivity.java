@@ -1764,12 +1764,14 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event) {
         if (EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)) {
-            ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
-            setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
-            // 杀掉所有可能的UI
-            ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
-            ActivityUtil.finishActivity(SearchActivity.class);
-            finish();
+            if(EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()){
+                ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
+                setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
+                // 杀掉所有可能的UI
+                ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
+                ActivityUtil.finishActivity(SearchActivity.class);
+                finish();
+            }
         }
     }
 
