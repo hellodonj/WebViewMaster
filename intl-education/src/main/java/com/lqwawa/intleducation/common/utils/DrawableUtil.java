@@ -35,18 +35,29 @@ public class DrawableUtil {
 	 * @param radius       圆角
 	 */
 	public static GradientDrawable createDrawable(int contentColor, int strokeColor, int radius) {
-		// 生成Shape
-		GradientDrawable drawable = new GradientDrawable();
-		// 设置矩形
-		drawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		// 内容区域的颜色
-		drawable.setColor(contentColor);
-		// 四周描边,描边后四角真正为圆角，不会出现黑色阴影,如果父窗体是可以滑动的,就把父View设置setScrollCache(false)
-		drawable.setStroke(1, strokeColor);
-		// 设置四角都为圆角
-		drawable.setCornerRadius(radius); 
-		return drawable;
+		return createDrawable(contentColor,strokeColor,1,radius);
 	}
+
+    /**
+     * 创建背景图片
+     * @param contentColor 内部填充颜色
+     * @param strokeColor  描边颜色
+     * @param strokeWidth 描边宽度
+     * @param radius       圆角
+     */
+    public static GradientDrawable createDrawable(int contentColor, int strokeColor, int strokeWidth, int radius) {
+        // 生成Shape
+        GradientDrawable drawable = new GradientDrawable();
+        // 设置矩形
+        drawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        // 内容区域的颜色
+        drawable.setColor(contentColor);
+        // 四周描边,描边后四角真正为圆角，不会出现黑色阴影,如果父窗体是可以滑动的,就把父View设置setScrollCache(false)
+        drawable.setStroke(strokeWidth, strokeColor);
+        // 设置四角都为圆角
+        drawable.setCornerRadius(radius);
+        return drawable;
+    }
 
 	/**
 	 * 通过反射机制 清除底部横线
