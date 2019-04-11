@@ -384,7 +384,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         }
 
         if(isResult && (initiativeTrigger || !mResourceFlag)){
-            mWorkCart.setVisibility(View.VISIBLE);
+            mWorkCart.setVisibility(View.GONE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);
             mCartContainer.setVisibility(View.VISIBLE);
@@ -505,7 +505,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
             ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
-            ActionDialogFragment.show(getSupportFragmentManager(),
+            // 删除
+            deleteCourseFromClass(entity);
+            /*ActionDialogFragment.show(getSupportFragmentManager(),
                     getString(R.string.label_please_choice_action),
                     R.string.label_remove_out, R.string.label_delete,
                     new ActionDialogNavigator() {
@@ -522,7 +524,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                                 deleteCourseFromClass(entity);
                             }
                         }
-                    });
+                    });*/
         });
 
         // 下拉刷新与加载更多
