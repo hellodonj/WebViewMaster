@@ -70,7 +70,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
         @Override
         protected void onBind(TutorialGroupEntity entity) {
-            GradientDrawable drawable = DrawableUtil.createDrawable(UIUtil.getColor(R.color.colorLight), UIUtil.getColor(R.color.colorAccent), SizeUtil.dp2px(1));
+            GradientDrawable drawable = DrawableUtil.createDrawable(UIUtil.getColor(R.color.colorLight), UIUtil.getColor(R.color.colorAccent), SizeUtil.dp2px(1),SizeUtil.dp2px(4));
             mIvGroupAvatar.setBackground(drawable);
 
             LQwawaImageUtil.loadCommonIcon(mIvGroupAvatar.getContext(),mIvGroupAvatar,entity.getHeadPicUrl());
