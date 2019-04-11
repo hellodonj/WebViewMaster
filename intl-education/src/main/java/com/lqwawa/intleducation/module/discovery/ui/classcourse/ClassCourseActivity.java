@@ -384,10 +384,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         }
 
         if(isResult && (initiativeTrigger || !mResourceFlag)){
-            mWorkCart.setVisibility(View.GONE);
+            mWorkCart.setVisibility(View.VISIBLE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);
-            mCartContainer.setVisibility(View.VISIBLE);
+            mCartContainer.setVisibility(View.GONE);
             // 显示作业库
             mNewCartContainer.setVisibility(View.VISIBLE);
         }else{
