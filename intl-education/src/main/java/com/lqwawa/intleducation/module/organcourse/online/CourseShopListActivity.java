@@ -35,9 +35,12 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
@@ -46,13 +49,21 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortTy
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.pager.CourseShopPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment.RESULT_LIST;
 
 /**
  * @desc 在线课堂的学程馆
@@ -227,6 +238,10 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     @Override
     protected void initData() {
         super.initData();
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
         Bundle extra = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
         CourseShopPagerFragment recentUpdateFragment = null;
@@ -358,6 +373,23 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         @Override
         public CharSequence getPageTitle(int position) {
             return mTabTitles[position];
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventWrapper event){
+        if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
+            ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
+            setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
         }
     }
 

@@ -1381,7 +1381,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 进入选择课程页面
         CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId,mClassId);
         Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-        CourseShopClassifyActivity.show(this,params,extras);
+        CourseShopClassifyActivity.show(this,params,extras,true);
     }
 
     @Override

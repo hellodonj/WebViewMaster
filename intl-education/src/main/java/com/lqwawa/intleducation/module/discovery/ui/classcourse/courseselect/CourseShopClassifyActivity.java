@@ -427,15 +427,18 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         }
     }
 
-    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params){
-        show(context,params,null);
+    public static void show(@NonNull Activity activity,@NonNull CourseShopClassifyParams params){
+        show(activity,params,null);
     }
 
     /**
      * 班级学程列表选择的页面
      * @param context 上下文对象
      */
-    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params,@Nullable Bundle extras){
+    public static void show(@NonNull Context context,
+                            @NonNull CourseShopClassifyParams params,
+                            @Nullable Bundle extras,
+                            boolean addClassCourse){
         Intent intent = new Intent(context,CourseShopClassifyActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
