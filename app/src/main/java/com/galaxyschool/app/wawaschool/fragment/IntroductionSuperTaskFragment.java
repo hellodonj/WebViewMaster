@@ -1279,6 +1279,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                     if (result != null && result.isSuccess()) {
                         //布置完成刷新布置任务页面
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
                         finish();
                     } else {
