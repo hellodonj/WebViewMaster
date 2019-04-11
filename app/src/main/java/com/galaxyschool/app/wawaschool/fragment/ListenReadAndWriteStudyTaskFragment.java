@@ -46,6 +46,7 @@ import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.DataResult;
@@ -369,6 +370,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     }
 
     private void updateDataView(List<HomeworkListInfo> taskData, boolean updateData) {
+        if (!isAdded()){
+            return;
+        }
         if (listenData == null) {
             listenData = new ArrayList<>();
         } else {
@@ -470,7 +474,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.ll_parent_layout);
         //任务要求
         if (homeworkListInfo != null && !lookStudentTaskFinish && !isPick) {
-            View requireChildView = LayoutInflater.from(getContext()).inflate(R.layout.item_classify_layout, parentLayout, false);
+            View requireChildView = LayoutInflater.from(UIUtil.getContext()).inflate(R.layout.item_classify_layout, parentLayout, false);
             TextView introTitleTextV = (TextView) requireChildView.findViewById(R.id.title_name);
             introTitleTextV.setText(R.string.task_requirements);
             GridView gridView = (GridView) requireChildView.findViewById(R.id.common_grid_view);
@@ -516,12 +520,12 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
         if (listenData != null && listenData.size() > 0) {
             if (!lookStudentTaskFinish && !isPick) {
-                View tenDistanceDp = LayoutInflater.from(getContext()).inflate(R.layout
+                View tenDistanceDp = LayoutInflater.from(UIUtil.getContext()).inflate(R.layout
                         .include_10_dp_horizontal_line_layout, parentLayout, false);
                 parentLayout.addView(tenDistanceDp);
             }
             //听说课
-            View listenChildView = LayoutInflater.from(getContext()).inflate(R.layout
+            View listenChildView = LayoutInflater.from(UIUtil.getContext()).inflate(R.layout
                     .item_classify_layout, parentLayout, false);
             TextView listenTitleTextV = (TextView) listenChildView.findViewById(R.id.title_name);
             if (listenTitleTextV != null) {
@@ -651,7 +655,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
         //读写单
         if (readAndWriteData != null && readAndWriteData.size() > 0) {
-            View tenDistanceDp = LayoutInflater.from(getContext()).inflate(R.layout
+            View tenDistanceDp = LayoutInflater.from(UIUtil.getContext()).inflate(R.layout
                     .include_10_dp_horizontal_line_layout, parentLayout, false);
             if (lookStudentTaskFinish && isSuperTaskOrder()) {
 
@@ -659,7 +663,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 parentLayout.addView(tenDistanceDp);
             }
             //听说课
-            View readAndWriteChildView = LayoutInflater.from(getContext()).inflate(R.layout
+            View readAndWriteChildView = LayoutInflater.from(UIUtil.getContext()).inflate(R.layout
                     .item_classify_layout, parentLayout, false);
             TextView listenTitleTextV = (TextView) readAndWriteChildView.findViewById(R.id.title_name);
             if (listenTitleTextV != null) {
@@ -1129,4 +1133,5 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         RequestHelper.sendPostRequest(getActivity(), ServerUrl.STUDENT_COMMIT_HOMEWORK_URL,
                 params, listener);
     }
+
 }
