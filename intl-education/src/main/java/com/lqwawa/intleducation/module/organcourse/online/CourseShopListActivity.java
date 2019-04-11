@@ -113,18 +113,21 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
 
         mParams = (CourseShopClassifyParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-        mSchoolId = mParams.getOrganId();
-        mClassId = mParams.getClassId();
-        mSelectResource = mParams.isSelectResource();
-        mResourceData = mParams.getData();
-        if(EmptyUtil.isEmpty(mSchoolId)) return false;
-        if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
+        if(EmptyUtil.isNotEmpty(mParams)) {
+            mSchoolId = mParams.getOrganId();
+            mClassId = mParams.getClassId();
+            mSelectResource = mParams.isSelectResource();
+            mResourceData = mParams.getData();
+            if (EmptyUtil.isEmpty(mSchoolId)) return false;
+            if (mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
 
-        if(mSelectResource) {
-            mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
-            mResourceData.setSchoolId(mSchoolId);
-            mResourceData.setClassId(mClassId);
+            if (mSelectResource) {
+                mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+                mResourceData.setSchoolId(mSchoolId);
+                mResourceData.setClassId(mClassId);
+            }
         }
+
         if(EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)){
             return false;
         }

@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.organcourse.online.pager;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,15 +14,22 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
+import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.OnlineSortType;
+import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.organcourse.online.SearchNavigator;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 import com.lqwawa.intleducation.ui.course.notice.CourseNoticeContract;
 
 import java.util.Date;
@@ -56,17 +64,35 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
 
     private String mSortType;
     private String mSchoolId;
+    private String mClassId;
     private boolean isSchoolEnter;
     private boolean isOnlineClassEnter;
 
-    public static CourseShopPagerFragment newInstance(@NonNull @HideSortType.SortRes String sort, @NonNull String schoolId,
-                                       boolean isSchoolEnter, boolean isOnlineClassEnter){
+    private CourseShopClassifyParams mParams;
+    private boolean mSelectResource;
+    private ShopResourceData mResourceData;
+
+    public static CourseShopPagerFragment newInstance(@NonNull @HideSortType.SortRes String sort,
+                                                      @NonNull String schoolId,
+                                                      boolean isSchoolEnter, boolean isOnlineClassEnter){
         CourseShopPagerFragment fragment = new CourseShopPagerFragment();
         Bundle arguments = new Bundle();
         arguments.putString(KEY_EXTRA_SORT_TYPE,sort);
         arguments.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         arguments.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter);
         arguments.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    public static CourseShopPagerFragment newInstance(@NonNull @HideSortType.SortRes String sort,
+                                                      @NonNull CourseShopClassifyParams params,
+                                                      @Nullable Bundle extras){
+        CourseShopPagerFragment fragment = new CourseShopPagerFragment();
+        Bundle arguments = new Bundle();
+        arguments.putString(KEY_EXTRA_SORT_TYPE,sort);
+        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        arguments.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -88,6 +114,23 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
         isSchoolEnter = bundle.getBoolean(KEY_EXTRA_IS_SCHOOL_ENTER);
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
+
+        mParams = (CourseShopClassifyParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
+        if(EmptyUtil.isNotEmpty(mParams)) {
+            mSchoolId = mParams.getOrganId();
+            mClassId = mParams.getClassId();
+            mSelectResource = mParams.isSelectResource();
+            mResourceData = mParams.getData();
+            if (EmptyUtil.isEmpty(mSchoolId)) return false;
+            if (mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
+
+            if (mSelectResource) {
+                mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+                mResourceData.setSchoolId(mSchoolId);
+                mResourceData.setClassId(mClassId);
+            }
+        }
+
         if(EmptyUtil.isEmpty(mSchoolId)){
             return false;
         }
@@ -105,7 +148,29 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
-                CourseDetailsActivity.start(getActivity(),isSchoolEnter,isOnlineClassEnter, vo.getId(), true, UserHelper.getUserId());
+
+                if (mSelectResource) {
+                    /*if (!isAuthorized) {
+                        UIUtil.showToastSafe(R.string.label_please_request_authorization);
+                        return;
+                    }*/
+
+                    // 进入选择资源的Activity
+                    Bundle extras = getArguments().getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                    WatchCourseResourceActivity.show(
+                            getActivity(),
+                            vo.getId(),
+                            mResourceData.getTaskType(),
+                            mResourceData.getMultipleChoiceCount(),
+                            mResourceData.getFilterArray(),
+                            mResourceData.isInitiativeTrigger(),
+                            extras,
+                            mResourceData.getSchoolId(),
+                            mResourceData.getClassId(),0);
+                }else{
+                    CourseDetailsActivity.start(getActivity(),isSchoolEnter,isOnlineClassEnter, vo.getId(), true, UserHelper.getUserId());
+                }
+
             }
         });
 
