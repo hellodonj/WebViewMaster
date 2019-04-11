@@ -228,9 +228,29 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     protected void initData() {
         super.initData();
         mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
-        CourseShopPagerFragment recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,mSchoolId,isSchoolEnter,isOnlineClassEnter);
-        CourseShopPagerFragment hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND,mSchoolId,isSchoolEnter,isOnlineClassEnter);
-        CourseShopPagerFragment priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        Bundle extra = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+        CourseShopPagerFragment recentUpdateFragment = null;
+        if(mSelectResource){
+            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,mParams,extra);
+        }else{
+            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        }
+
+
+        CourseShopPagerFragment hotFragment = null;
+        if(mSelectResource){
+            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND,mParams,extra);
+        }else{
+            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        }
+
+
+        CourseShopPagerFragment priceFragment = null;
+        if(mSelectResource){
+            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,mParams,extra);
+        }else{
+            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        }
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(recentUpdateFragment);
