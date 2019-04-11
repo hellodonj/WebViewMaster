@@ -605,12 +605,16 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         item.type = TAB_LQCOURSE_SHOP;
         list.add(item);
 
-        //班级学程
-        item = new HomeTypeEntry();
-        item.icon = R.drawable.icon_class_lesson_task;
-        item.typeName = R.string.str_class_lesson;
-        item.type = TAB_CLASS_LESSON;
-        list.add(item);
+        if (isOnlineClass) {
+
+        } else {
+            //班级学程
+            item = new HomeTypeEntry();
+            item.icon = R.drawable.icon_class_lesson_task;
+            item.typeName = R.string.str_class_lesson;
+            item.type = TAB_CLASS_LESSON;
+            list.add(item);
+        }
 
         getCurrAdapterViewHelper().setData(list);
     }

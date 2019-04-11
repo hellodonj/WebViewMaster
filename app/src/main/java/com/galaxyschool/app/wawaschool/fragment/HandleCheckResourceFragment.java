@@ -153,12 +153,16 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             }
         } else {
             //班级学程
-            item = new HomeTypeEntry();
-            item.icon = R.drawable.icon_class_lesson_task;
-            item.typeName = getString(R.string.str_class_lesson);
-            item.type = 2;
-            item.classId = this.classId;
-            list.add(item);
+            if (isOnlineClass){
+
+            } else {
+                item = new HomeTypeEntry();
+                item.icon = R.drawable.icon_class_lesson_task;
+                item.typeName = getString(R.string.str_class_lesson);
+                item.type = 2;
+                item.classId = this.classId;
+                list.add(item);
+            }
         }
         getCurrAdapterViewHelper().setData(list);
     }

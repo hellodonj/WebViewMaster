@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -26,12 +28,16 @@ public class UserVoucherFragment extends MyBaseFragment {
 
     private TextView voucherAmount;
     private TextView detailBtn;
+    private TextView voucherExplain;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_voucher, container, false);
         voucherAmount = (TextView) view.findViewById(R.id.voucher_amount);
+        // 文字说明可滑动
+        voucherExplain = (TextView) view.findViewById(R.id.voucher_explain);
+        voucherExplain.setMovementMethod(new ScrollingMovementMethod());
         detailBtn = (TextView) view.findViewById(R.id.detail_btn);
         detailBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), VoucherDetailActivity.class)));
         return view;

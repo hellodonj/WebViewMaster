@@ -4,6 +4,7 @@ import android.app.Activity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.CampusOnline;
@@ -192,7 +193,7 @@ public class StudyInfoRecordUtil {
         if (prefsManager == null) {
             prefsManager = DemoApplication.getInstance().getPrefsManager();
         }
-        currentSchoolId = prefsManager.getLatestSchool(activity, userInfo.getMemberId());
+        currentSchoolId = prefsManager.getLatestSchool(UIUtil.getContext(), userInfo.getMemberId());
         if (currentModel == RecordModel.STUDY_MODEL) {
             sendStudyInfoData();
         } else if (currentModel == RecordModel.ONLINE_MODEL) {
@@ -239,15 +240,15 @@ public class StudyInfoRecordUtil {
         }
         //必填 观看的时长
         parms.put("ViewDuration", recordTime);
-        parms.put("ClientTypeStr", Utils.getApplicationStamp(activity));
+        parms.put("ClientTypeStr", Utils.getApplicationStamp(UIUtil.getContext()));
         RequestHelper.RequestModelResultListener listener = new RequestHelper
-                .RequestModelResultListener(activity, ModelResult.class){
+                .RequestModelResultListener(UIUtil.getContext(), ModelResult.class){
             @Override
             public void onSuccess(String jsonString) {
             }
         };
         listener.setShowErrorTips(false);
-        RequestHelper.sendPostRequest(activity, ServerUrl.ADD_RESOURCE_INFO_RECORD_BASE_URL, parms, listener);
+        RequestHelper.sendPostRequest(UIUtil.getContext(), ServerUrl.ADD_RESOURCE_INFO_RECORD_BASE_URL, parms, listener);
     }
 
     /**
@@ -275,12 +276,12 @@ public class StudyInfoRecordUtil {
         }
         parms.put("ViewDuration", recordTime);
         RequestHelper.RequestModelResultListener listener = new RequestHelper
-                .RequestModelResultListener(activity, ModelResult.class){
+                .RequestModelResultListener(UIUtil.getContext(), ModelResult.class){
             @Override
             public void onSuccess(String jsonString) {
             }
         };
         listener.setShowErrorTips(false);
-        RequestHelper.sendPostRequest(activity, ServerUrl.ADD_ONLINE_INFO_RECORD_BASE_URL, parms, listener);
+        RequestHelper.sendPostRequest(UIUtil.getContext(), ServerUrl.ADD_ONLINE_INFO_RECORD_BASE_URL, parms, listener);
     }
 }
