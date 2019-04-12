@@ -1274,7 +1274,7 @@
     <string name="txt_info_company">Copyright©2014-2017 青岛两栖蛙蛙信息技术有限公司版权所有</string>
 
     <string name="i_see">知道了</string>
-    <string name="learn_more_course">试听结束，为获得更好的畅学体验，推荐参与习教辅。</string>
+    <string name="learn_more_course">试听结束，为获得更好的畅学体验，推荐参与习课程。</string>
 
     <string name="be_sure_to_commit">是否需要提交？</string>
     <string name="str_check_update">检查更新</string>
@@ -1653,7 +1653,7 @@
     <string name="str_subject_setting">科目设置</string>
     <string name="str_choose_subject">选择科目</string>
     <string name="str_intro_task_choose_subject">您尚未选择科目，请前往选择科目</string>
-    <string name="str_tutoring_center">习教辅</string>
+    <string name="str_tutoring_center">习课程</string>
     <string name="str_lecture_hall">名师课</string>
     <!--5.13-->
     <string name="str_national_course">国家课程</string>
