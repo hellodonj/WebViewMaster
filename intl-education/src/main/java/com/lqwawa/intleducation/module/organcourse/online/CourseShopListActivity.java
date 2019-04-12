@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.organcourse.online;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,20 +37,29 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
@@ -71,6 +82,8 @@ import static com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragm
  */
 public class CourseShopListActivity extends ToolbarActivity implements View.OnClickListener{
 
+    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
+
     private static final String KEY_EXTRA_TITLE_TEXT = "KEY_EXTRA_TITLE_TEXT";
 
     private static final String KEY_EXTRA_SORT_TYPE = "KEY_EXTRA_SORT_TYPE";
@@ -90,6 +103,10 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     private TextView mSearchFilter;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
 
     private String mTitle;
     private String mSortType;
@@ -157,6 +174,15 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mSearchClear = (ImageView) findViewById(R.id.search_clear_iv);
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+
+        if(mSelectResource && mResourceData.isInitiativeTrigger()) {
+            mNewCartContainer.setVisibility(View.VISIBLE);
+            mNewCartContainer.setOnClickListener(this);
+        }
 
         mSearchEt.setImeOptions(EditorInfo.IME_ACTION_NONE);
         mSearchEt.setHint(R.string.search);
@@ -233,6 +259,27 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshCartPoint();
+    }
+
+    /**
+     * 刷新红点
+     */
+    private void refreshCartPoint() {
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            mTvCartPoint.setText(Integer.toString(count));
+            if (count == 0) {
+                mTvCartPoint.setVisibility(View.GONE);
+            } else {
+                mTvCartPoint.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -348,7 +395,59 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                 boolean isVisible = navigator.search(searchKey);
                 if(isVisible) break;
             }
+        }else if(viewId == R.id.new_cart_container){
+            // 点击作业库
+            handleSubjectSettingData(this,UserHelper.getUserId());
         }
+    }
+
+
+    public void handleSubjectSettingData(Context context,
+                                         String memberId) {
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                //没有数据
+                popChooseSubjectDialog(context);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                if (entities == null || entities.size() == 0) {
+                    popChooseSubjectDialog(context);
+                } else {
+                    //有数据
+                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(CourseShopListActivity.this,mSchoolId,mClassId,extras);
+                    }
+                }
+            }
+        });
+    }
+
+    private static void popChooseSubjectDialog(Context context) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                context,
+                null,
+                context.getString(R.string.label_unset_choose_subject),
+                context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                context.getString(R.string.label_choose_subject),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddSubjectActivity.show((Activity) context, false, SUBJECT_SETTING_REQUEST_CODE);
+                    }
+                });
+        messageDialog.show();
     }
 
     private class TabPagerAdapter extends FragmentPagerAdapter{

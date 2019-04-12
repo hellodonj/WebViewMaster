@@ -39,13 +39,57 @@
 
         </FrameLayout>
 
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </android.support.v4.view.ViewPager>
+            <!--作业库功能-->
+            <FrameLayout
+                android:id="@+id/new_cart_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/ic_work_cart_shadow"
+                android:layout_marginBottom="40dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_work_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:text="@string/label_work_cart"
+                    android:textColor="@color/textLight"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_cart_point"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/textLight"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:background="@drawable/bg_red_circle_point"/>
+
+            </FrameLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v4.view.ViewPager>
+
+        </FrameLayout>
 
     </LinearLayout>
 

@@ -117,7 +117,7 @@
     <string name="label_space_school_function_principal_assistant">校长助手</string>
     <string name="label_space_school_function_campus_patrol">校园巡查</string>
     <string name="label_space_school_function_SCHOOL_FORUM">学校论坛</string>
-    <string name="label_space_school_relevance_course">关联习教辅</string>
+    <string name="label_space_school_relevance_course">关联习课程</string>
     <string name="label_save_qrcode">保存二维码</string>
     <string name="label_course_qrcode">课件二维码</string>
     <string name="label_qrcode">二维码</string>
@@ -194,7 +194,7 @@
     <string name="label_image_saved_to">图片已保存至%s</string>
     <string name="label_image_save_failed">图片保存失败</string>
     <string name="label_image_save_to_photo">保存到相册</string>
-    <string name="label_tab_course_empty_remind">还没有参加习教辅学习？</string>
+    <string name="label_tab_course_empty_remind">还没有参加习课程学习？</string>
     <string name="label_tab_class_empty_remind">还没有参加空中课堂？</string>
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
@@ -225,7 +225,7 @@
     <string name="label_old_in_class">已指定班级</string>
     <string name="label_picker_class">选择班级</string>
     <string name="label_cancel_order">取消订单</string>
-    <string name="label_watch_more_course">查看更多习教辅</string>
+    <string name="label_watch_more_course">查看更多习课程</string>
     <string name="label_basics_course">基础课程</string>
     <string name="label_class_notice_default_text">暂无通知</string>
     <string name="label_committed_list">提交列表</string>
@@ -237,7 +237,7 @@
 
     <!--V5.11版本字符串-->
     <string name="label_share_online_class_title">【两栖空中课堂】</string>
-    <string name="label_share_course_title">【两栖习教辅】</string>
+    <string name="label_share_course_title">【两栖习课程】</string>
     <string name="label_timetable">课程表</string>
     <string name="label_today">今天</string>
     <string name="label_study_number">%d人报名</string>
@@ -245,11 +245,11 @@
     <string name="label_teach_class">空中课堂</string>
     <string name="label_teach_course">空中课堂</string>
     <!--<string name="label_tab_course_chapter">课程大纲</string>-->
-    <string name="label_tab_course_chapter">习教辅</string>
-    <string name="label_study_course">习教辅</string>
-    <string name="label_tab_new_study_course">我的习教辅</string>
+    <string name="label_tab_course_chapter">习课程</string>
+    <string name="label_study_course">习课程</string>
+    <string name="label_tab_new_study_course">我的习课程</string>
     <string name="label_tab_new_teach_course">我的空中课堂</string>
-    <string name="label_tab_new_give_study_course">我开设的习教辅</string>
+    <string name="label_tab_new_give_study_course">我开设的习课程</string>
     <string name="label_tab_new_give_teach_course">我开设的空中课堂</string>
     <string name="label_new_tab_class_empty_remind">还没有参加空中课堂？</string>
     <string name="label_new_go_online_study">去空中课堂</string>
@@ -258,7 +258,7 @@
     <string name="label_history_give">历史授课</string>
     <string name="label_give_complete">完成授课</string>
     <string name="label_history_setting">设成历史课</string>
-    <string name="label_self_study_class">去习教辅</string>
+    <string name="label_self_study_class">去习课程</string>
     <string name="label_live_source">来源：%s</string>
     <string name="label_online_class_give_history_tip">您正在将课程设成历史课，确认后，将不能再对课程进行开课、批阅等操作</string>
     <string name="label_this_class_give_history">该班级已设成历史课</string>
@@ -400,7 +400,7 @@
     <string name="label_tutorial_organ">我的帮辅机构</string>
     <string name="label_student_work">帮辅答疑</string>
     <string name="label_student_tutorial">帮辅老师</string>
-    <string name="label_student_course">习教辅</string>
+    <string name="label_student_course">习课程</string>
     <string name="label_student_live">空中课堂</string>
     <string name="label_my">我的</string>
     <string name="label_tutorial_student_review_count">%d未批</string>
@@ -480,7 +480,7 @@
         <item>授课计划</item>
         <item>学员评论</item>
         <!--<item>相关课程</item>-->
-        <item>习教辅</item>
+        <item>习课程</item>
     </string-array>
 
 

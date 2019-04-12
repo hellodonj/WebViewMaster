@@ -2,7 +2,7 @@
 <resources>
     <string name="tip_not_find_ware_course_source">未找到课件资源</string>
     <!--<string name="tip_class_not_relevance_course">本开课班未关联学程</string>-->
-    <string name="tip_class_not_relevance_course">本开课班未关联习教辅</string>
+    <string name="tip_class_not_relevance_course">本开课班未关联习课程</string>
     <string name="tip_join_or_by_course">请参加或购买课程</string>
     <string name="tip_order_expire">该订单中的部分/全部商品已经购买了</string>
     <string name="tip_attention_succeed">关注成功</string>

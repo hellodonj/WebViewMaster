@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.organcourse.filtrate;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,6 +33,7 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
@@ -45,6 +48,7 @@ import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermission
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
@@ -58,10 +62,13 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.SortLinePo
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 
@@ -211,6 +218,10 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     // 分页数
     private int currentPage;
 
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
+
     private boolean isAuthorized;
     // 是否真正的授权
     private boolean isReallyAuthorized;
@@ -358,6 +369,15 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
         mListView = (ListView) findViewById(R.id.listView);
+
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+
+        if(mSelectResource && mResourceData.isInitiativeTrigger()) {
+            mNewCartContainer.setVisibility(View.VISIBLE);
+            mNewCartContainer.setOnClickListener(this);
+        }
 
         mSortButtons = new ArrayList<>();
         mLaySort1 = (LinearLayout) findViewById(R.id.lay_sort1);
@@ -518,6 +538,27 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 requestCourseData(true);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshCartPoint();
+    }
+
+    /**
+     * 刷新红点
+     */
+    private void refreshCartPoint() {
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            mTvCartPoint.setText(Integer.toString(count));
+            if (count == 0) {
+                mTvCartPoint.setVisibility(View.GONE);
+            } else {
+                mTvCartPoint.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -1730,7 +1771,60 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         }else if(viewId == R.id.btn_add_subject){
             // 点击确定
             AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
+        }else if(viewId == R.id.new_cart_container){
+            // 点击作业库
+            handleSubjectSettingData(this,UserHelper.getUserId());
         }
+    }
+
+    public void handleSubjectSettingData(Context context,
+                                         String memberId) {
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                //没有数据
+                popChooseSubjectDialog(context);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                if (entities == null || entities.size() == 0) {
+                    popChooseSubjectDialog(context);
+                } else {
+                    //有数据
+                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                        String schoolId = mResourceData.getSchoolId();
+                        String classId = mResourceData.getClassId();
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(OrganCourseFiltrateActivity.this,schoolId,classId,extras);
+                    }
+                }
+            }
+        });
+    }
+
+    private static void popChooseSubjectDialog(Context context) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                context,
+                null,
+                context.getString(R.string.label_unset_choose_subject),
+                context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                context.getString(R.string.label_choose_subject),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddSubjectActivity.show((Activity) context, false, SUBJECT_SETTING_REQUEST_CODE);
+                    }
+                });
+        messageDialog.show();
     }
 
     @Override

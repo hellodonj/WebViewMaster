@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
@@ -63,6 +65,10 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
     private RecyclerView mRecycler;
     private CourseShopClassifyAdapter mAdapter;
     private NoPermissionView mNoPermissionView;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
 
     private CourseShopClassifyParams mParams;
     private String mSchoolId;
@@ -124,6 +130,10 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mNoPermissionView = (NoPermissionView) mRootView.findViewById(R.id.permission_view);
         mNoPermissionView.setDescription(getString(R.string.label_organ_shop_permission_description));
+
+        mNewCartContainer = (FrameLayout) mRootView.findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) mRootView.findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) mRootView.findViewById(R.id.tv_cart_point);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mLayoutManager);
