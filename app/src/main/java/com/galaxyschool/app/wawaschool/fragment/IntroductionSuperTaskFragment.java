@@ -768,12 +768,19 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (isPick) {
             popStack();
         } else {
-            if (isFromMoocIntroTask){
-                //同步更新数据
-                LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
-                LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
-            }
+            updateParameterDataList();
             finish();
+        }
+    }
+
+    private void updateParameterDataList(){
+        if (isPick){
+            return;
+        }
+        if (isFromMoocIntroTask){
+            //同步更新数据
+            LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
+            LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
         }
     }
 
@@ -1356,6 +1363,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        updateParameterDataList();
         unRegistResultBroadcast();
     }
 
