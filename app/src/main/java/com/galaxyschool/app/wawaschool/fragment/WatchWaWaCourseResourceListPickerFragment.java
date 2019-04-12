@@ -279,9 +279,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
         CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
         CourseShopListActivity.show(getActivity(),
+                getString(R.string.assign_task_line),
                 HideSortType.TYPE_SORT_ONLINE_COURSE,
-                getString(R.string.assign_task_line)
-                ,params,null);
+                params,null);
     }
 
     /**

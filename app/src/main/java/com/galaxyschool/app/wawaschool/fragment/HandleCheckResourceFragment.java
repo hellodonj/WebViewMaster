@@ -303,9 +303,9 @@ public class HandleCheckResourceFragment extends AdapterFragment {
                 new ShopResourceData());
         params.setInitiativeTrigger(true);
         CourseShopListActivity.show(getActivity(),
+                getString(R.string.assign_task_line),
                 HideSortType.TYPE_SORT_ONLINE_COURSE,
-                getString(R.string.assign_task_line)
-                ,params,
+                params,
                 getArguments());
     }
 

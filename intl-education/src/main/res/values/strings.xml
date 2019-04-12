@@ -450,7 +450,6 @@
     <!--网络请求解析的Code描述-->
     <string name="data_rsp_error_unknown">request failed</string>
 
-    <string name="my_coins">My Balance</string>
     <string name="coin_detail">Transactions></string>
     <string name="coin_count_detail">Transactions</string>
     <string name="wawa_coin_balance">Balance</string>
@@ -509,6 +508,6 @@
     <string name="plz_install_ex">Please install WeChat</string>
 
     <string name="buy_online_school">Buy class: %s</string>
-
+    <string name="my_coins">我的账户</string>
 
 </resources>
