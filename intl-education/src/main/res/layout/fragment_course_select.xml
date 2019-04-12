@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:background="@drawable/ic_work_cart_shadow"
+        android:layout_marginBottom="40dp"
         android:visibility="gone">
 
         <TextView
@@ -82,8 +83,10 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="center"
+            android:layout_marginTop="4dp"
             android:layout_gravity="top|center_horizontal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:background="@drawable/bg_red_circle_point"/>
 
     </FrameLayout>
 </FrameLayout>
