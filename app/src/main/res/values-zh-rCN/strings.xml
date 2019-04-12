@@ -1687,8 +1687,8 @@
     <string name="str_open_assistance">开通帮辅</string>
     <string name="str_assistance_mode">帮辅模式</string>
     <string name="str_assistance_space">帮辅空间</string>
-    <string name="str_apply_mark">申请批阅</string>
-    <string name="str_apply_mark_line_feed">申请\n批阅</string>
+    <string name="str_apply_mark">申请帮辅</string>
+    <string name="str_apply_mark_line_feed">申请\n帮辅</string>
     <string name="str_assistance">帮辅</string>
     <string name="str_check_mark_way">选择批阅方式</string>
     <string name="str_point_reading_tips">可添加喇叭、画笔等</string>

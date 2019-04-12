@@ -90,8 +90,9 @@ public class HandleCheckResourceFragment extends AdapterFragment {
         if (taskCountTextV != null){
             int count = LqIntroTaskHelper.getInstance().getTaskCount();
             if (count > 0){
-                taskCountTextV.setText(String.valueOf(count));
                 taskCountTextV.setVisibility(View.VISIBLE);
+                taskCountTextV.setText(String.valueOf(count));
+                taskCountTextV.requestLayout();
             } else {
                 taskCountTextV.setVisibility(View.GONE);
             }
