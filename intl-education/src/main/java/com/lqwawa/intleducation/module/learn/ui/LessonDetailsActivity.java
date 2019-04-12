@@ -977,6 +977,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         } else if (viewId == R.id.action_container) {
             if(mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()){
                 // 直接添加到作业库
+
+                // 获取指定Tab所有的选中的作业库资源
+                int currentPosition = mViewPager.getCurrentItem();
+                LessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
+                List<SectionResListVo> choiceArray = navigator.takeChoiceResource();
+                if (EmptyUtil.isEmpty(choiceArray)) {
+                    UIUtil.showToastSafe(R.string.str_select_tips);
+                    return;
+                }
+
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
                     int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
                     if(count >= 6){
