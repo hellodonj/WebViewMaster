@@ -15,4 +15,9 @@ public class MessageEventConstantUtils {
      * 发送制作课件的result 路径
      */
     public static String SEND_DO_COURSE_PATH_RESULT = "send_do_course_path_result";
+
+    /**
+     * 发送作业成功
+     */
+    public static String SEND_HOME_WORK_LIB_SUCCESS = "send_home_work_lib_success";
 }
