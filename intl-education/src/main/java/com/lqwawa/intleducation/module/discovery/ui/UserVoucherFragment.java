@@ -40,6 +40,7 @@ public class UserVoucherFragment extends MyBaseFragment {
         voucherExplain.setMovementMethod(new ScrollingMovementMethod());
         detailBtn = (TextView) view.findViewById(R.id.detail_btn);
         detailBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), VoucherDetailActivity.class)));
+        detailBtn.setVisibility(View.GONE);
         return view;
     }
 
