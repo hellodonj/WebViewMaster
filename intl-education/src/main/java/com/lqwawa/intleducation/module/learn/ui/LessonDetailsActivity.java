@@ -946,12 +946,14 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             // getData();
         }
 
-        if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
-            // 科目设置成功的回调
-            Bundle extras = data.getExtras();
-            if (EmptyUtil.isNotEmpty(extras)) {
-                boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
-                if (completed) {
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if (EmptyUtil.isNotEmpty(extras)) {
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if (completed) {
+                    }
                 }
             }
         }
