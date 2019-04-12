@@ -1695,7 +1695,7 @@
     <string name="str_record_course_tips">可录制解答过程和解答说明、添加画笔等</string>
     <string name="str_lecture_course">讲解课</string>
     <string name="str_look_task_require">查看任务要求</string>
-    <string name="str_exit_assistant_model">退出帮辅模式，进入我的课程</string>
+    <string name="str_exit_assistant_model">退出帮辅模式，进入学习空间</string>
     <string name="str_open_assistant_model">打开帮辅模式，进入帮辅空间</string>
     <string name="str_assistant_model_title">打开帮辅模式</string>
     <string name="str_assistant_dialog_tips">在【多语种】课程和【国家课程】中选取您擅长的课程，同步跟进帮辅。\n\n进入【帮辅空间】，为学生答题解惑。</string>
