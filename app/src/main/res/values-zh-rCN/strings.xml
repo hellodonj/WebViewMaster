@@ -262,9 +262,9 @@
     <string name="loading_and_wait">正在加载，请稍侯...</string>
 
 
-    <string name="temp_no_content"> 暂无内容,请到个人空间/LQ云板制作参赛作品。</string>
-    <string name="personal_library_no_content_video">暂无内容,请将制作的视频参赛作品上传到个人空间/个人资源库/视频</string>
-    <string name="personal_library_no_content_lq_course">暂无内容,请将LQ云板制作的参赛作品上传到个人空间/个人资源库/听读课</string>
+    <string name="temp_no_content"> 暂无内容,请到我的/LQ云板制作参赛作品。</string>
+    <string name="personal_library_no_content_video">暂无内容,请将制作的视频参赛作品上传到我的/个人资源库/视频</string>
+    <string name="personal_library_no_content_lq_course">暂无内容,请将LQ云板制作的参赛作品上传到我的/个人资源库/听读课</string>
     <string name="help">服务与帮助</string>
 
     <string-array name="qrcode_titles">
@@ -859,8 +859,8 @@
     <string name="start_airclass_dialog_prompt">已进入直播状态，请使用直播机进行直播</string>
     <string name="publish_course_ok">发送成功</string>
     <string name="publish_course_error">发送失败</string>
-    <string name="scan_task_save_ok">课件已保存至个人空间/个人资源库/听读课，素材已保存到个人空间/LQ云板。</string>
-    <string name="scan_task_send_ok">发送成功，课件已备份到个人空间/个人资源库/听读课，素材已备份到个人空间/LQ云板。</string>
+    <string name="scan_task_save_ok">课件已保存至我的/个人资源库/听读课，素材已保存到我的/LQ云板。</string>
+    <string name="scan_task_send_ok">发送成功，课件已备份到我的/个人资源库/听读课，素材已备份到我的/LQ云板。</string>
     <string name="add_sb">添加个人</string>
     <string name="add_authority">添加机构</string>
     <string name="myself">（本人）</string>
@@ -1006,12 +1006,12 @@
     <string name="upload_exist">%s已存在！</string>
     <string name="search_acccount">搜索账号</string>
 
-    <string name="save_to_lq_cloud">听读课已保存至个人空间/LQ云板。</string>
+    <string name="save_to_lq_cloud">听读课已保存至我的/LQ云板。</string>
 
-    <string name="collect_to_my_course">已放入个人空间/个人资源库/我的书架</string>
-    <string name="collect_to_lq_course">已收藏到个人空间/个人资源库/听读课</string>
-    <string name="collect_to_yuntieba">已收藏到个人空间/云贴吧</string>
-    <string name="collect_different_to_personalLibrary">已收藏到个人空间/个人资源库/%s</string>
+    <string name="collect_to_my_course">已放入我的/个人资源库/我的书架</string>
+    <string name="collect_to_lq_course">已收藏到我的/个人资源库/听读课</string>
+    <string name="collect_to_yuntieba">已收藏到我的/云贴吧</string>
+    <string name="collect_different_to_personalLibrary">已收藏到我的/个人资源库/%s</string>
     <string name="add_school">加入机构</string>
     <string name="open_consultion_content">
         “空中课堂-精品资源库”是两栖蛙蛙优质课程的展示平台，其中包括幼儿园、小学、初中、高中等多个学科的精品教学资源和特色课程。\n如需开通，请联系两栖蛙蛙客服。
@@ -1044,7 +1044,7 @@
     <string name="online_time">直播时间：</string>
     <string name="open_consultion">开通咨询</string>
     <string name="choice_pool_open_consultion">精品资源库开通咨询</string>
-    <string name="lqcourse_save_local">听读课已保存至个人空间/LQ云板。</string>
+    <string name="lqcourse_save_local">听读课已保存至我的/LQ云板。</string>
     <string name="class_infos">班级信息</string>
     <string name="contacts_infos">通讯录信息</string>
     <string name="today">今天</string>
@@ -1679,7 +1679,7 @@
     <string name="str_complete_method">完成方式：</string>
     <string name="str_look_review">查看点评</string>
     <string name="str_third_login_tip0">微信/QQ授权成功，已同步生成新的两栖蛙蛙账号</string>
-    <string name="str_thrid_login_tip1">登录后，请尽快到个人空间，点击头像，进入个人详情中修改密码</string>
+    <string name="str_thrid_login_tip1">登录后，请尽快到我的，点击头像，进入个人详情中修改密码</string>
     <string name="str_tip_account">您的两栖蛙蛙账号：%s</string>
     <string name="str_tip_password">初始密码：%s</string>
     <string name="str_third_account_already_bind">此%1$s账号已关联其他两栖蛙蛙账号（%2$s），是否需要绑定到当前账号？</string>

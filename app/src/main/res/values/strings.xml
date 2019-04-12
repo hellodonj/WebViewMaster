@@ -1791,8 +1791,8 @@
     <string name="str_assistant_dialog_tips">Select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor.\n
         Enter Tutor Space to solve puzzles for students.</string>
     <string name="str_no_longer_prompt">Do not show</string>
-    <string name="str_my_courses">学习空间</string>
-    <string name="str_exit_assistant_model">退出帮辅模式，进入学习空间</string>
-    <string name="str_apply_mark">申请帮辅</string>
-    <string name="str_apply_mark_line_feed">申请\n帮辅</string>
+    <string name="str_my_courses">Learning</string>
+    <string name="str_exit_assistant_model">Exit tutorial mode, enter Learning Space</string>
+    <string name="str_apply_mark">Consult Tutor</string>
+    <string name="str_apply_mark_line_feed">Consult\nTutor</string>
 </resources>

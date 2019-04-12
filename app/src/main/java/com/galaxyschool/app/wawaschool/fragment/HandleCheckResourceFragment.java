@@ -14,9 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.galaxyschool.app.wawaschool.AirClassroomDetailActivity;
+import com.galaxyschool.app.wawaschool.ClassResourceListActivity;
 import com.galaxyschool.app.wawaschool.MyAttendedSchoolListActivity;
+import com.galaxyschool.app.wawaschool.MyStudyTaskActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterFragment;
@@ -24,11 +28,10 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.pojo.ClassInfoListResult;
-import com.galaxyschool.app.wawaschool.pojo.ResType;
-import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
+import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
 import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
-import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
@@ -43,8 +46,12 @@ import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +69,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
     private String classId;
     private String schoolId;
     private List<SubscribeClassInfo> dataList = new ArrayList<SubscribeClassInfo>();
+    private Emcee onlineRes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +86,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
         loadIntentData();
         initViews();
         initData();
+        addEventBusReceiver();
     }
 
     @Override
@@ -105,6 +114,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             schoolId = args.getString(ActivityUtils.EXTRA_SCHOOL_ID);
             classId = args.getString(ActivityUtils.EXTRA_CLASS_ID);
             isOnlineClass = args.getBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS);
+            onlineRes = (Emcee) args.getSerializable(ActivityUtils.EXTRA_DATA_INFO);
         }
     }
 
@@ -387,4 +397,20 @@ public class HandleCheckResourceFragment extends AdapterFragment {
         String classId;
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(), MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS)){
+            //作业发送成功
+            if (onlineRes != null){
+                ActivityUtil.finishToActivity(AirClassroomDetailActivity.class,false);
+            } else if (TextUtils.isEmpty(classId)){
+                //个人空间
+                ActivityUtil.finishToActivity(MyStudyTaskActivity.class,false);
+            } else {
+                ActivityUtil.finishToActivity(ClassResourceListActivity.class,false);
+            }
+
+        }
+    }
 }
