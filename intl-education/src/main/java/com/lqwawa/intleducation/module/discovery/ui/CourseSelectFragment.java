@@ -134,12 +134,12 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             int color = UIUtil.getColor(R.color.colorPink);
             int radius = DisplayUtil.dip2px(UIUtil.getContext(), 8);
 
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+            /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
             float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
             int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(), 8);
             layoutParams.topMargin = topMargin;
             mTvCartPoint.setLayoutParams(layoutParams);
-            mTvCartPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));
+            mTvCartPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));*/
 
             mNewCartContainer.setVisibility(View.VISIBLE);
             mNewCartContainer.setOnClickListener(this);

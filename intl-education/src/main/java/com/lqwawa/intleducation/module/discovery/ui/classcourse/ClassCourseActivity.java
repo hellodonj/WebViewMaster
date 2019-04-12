@@ -325,12 +325,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         int radius = DisplayUtil.dip2px(UIUtil.getContext(),8);
         mTvPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
 
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+        /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
         float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
         int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(),8);
         layoutParams.topMargin = topMargin;
         mTvCartPoint.setLayoutParams(layoutParams);
-        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
+        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));*/
         mNewCartContainer.setOnClickListener(this);
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
