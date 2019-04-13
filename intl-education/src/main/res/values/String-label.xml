@@ -391,10 +391,10 @@
     <string name="label_tutorial_student">Student</string>
     <string name="label_tutorial_course">Course</string>
     <string name="label_tutorial_organ">Institution</string>
-    <string name="label_student_work">My Homework</string>
-    <string name="label_student_tutorial">My Tutor</string>
-    <string name="label_student_course">My Tutorial</string>
-    <string name="label_student_live">My Class</string>
+    <string name="label_student_work">Q&#038;A</string>
+    <string name="label_student_tutorial">Tutor</string>
+    <string name="label_student_course">Course</string>
+    <string name="label_student_live">Class</string>
     <string name="label_my">My</string>
     <string name="label_tutorial_student_review_count">%d unmarked</string>
     <string name="label_viewer_count">%d viewers</string>
@@ -409,7 +409,7 @@
     <string name="label_added_tutorial_succeed">Tutor added</string>
     <string name="label_added_tutorial_failed">Adding failed</string>
     <string name="label_new_work">Latest Homework</string>
-    <string name="label_new_tutorial_answer">Latest Homework</string>
+    <string name="label_new_tutorial_answer">Latest Q&#038;A</string>
     <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
     <string name="label_choice_tutor_tip">Please select tutor</string>
     <string name="label_commit_succeed">Submitted successfully</string>
