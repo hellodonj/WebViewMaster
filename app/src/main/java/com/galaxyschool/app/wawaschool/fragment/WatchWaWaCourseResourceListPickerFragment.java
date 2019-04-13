@@ -89,7 +89,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private String controlGetStudyTaskTypeString;
     private String vipSchoolId = "D8FE8280-FB40-4B61-9936-08819AA7E611";
     private boolean openSelectSchoolRes = false;
-
+    private String titleName = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,7 +119,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (linearLayout != null) {
             linearLayout.setBackgroundColor(getResources().getColor(R.color.text_white));
         }
-        String titleName = null;
         if (getArguments() != null) {
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             isCheckTaskOrderRes = getArguments().getBoolean(ActivityUtils.EXTRA_CHOOSE_TASKORDER_DATA);
@@ -279,7 +278,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
         CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
         CourseShopListActivity.show(getActivity(),
-                getString(R.string.assign_task_line),
+                titleName,
                 HideSortType.TYPE_SORT_ONLINE_COURSE,
                 params,null);
     }
