@@ -443,13 +443,13 @@
     <string name="label_tutorial_task_type_do_task">Do Read-Write Task</string>
 
     <!--V5.14.X版本字符串-->
-    <string name="label_watch_history_course">查看历史学程</string>
-    <string name="label_add_in">添加</string>
-    <string name="label_remove_out">移除</string>
-    <string name="label_delete">删除</string>
-    <string name="label_please_choice_action">请选择您要进行的操作！</string>
-    <string name="label_please_choice_add_history_course">请选择需要添加的历史学程</string>
-    <string name="label_please_choice_remove_history_course">请选择需要移除的历史学程</string>
+    <string name="label_watch_history_course">History</string>
+    <string name="label_add_in">Add</string>
+    <string name="label_remove_out">Remove</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_please_choice_action">Please select option!</string>
+    <string name="label_please_choice_add_history_course">Please select historical course</string>
+    <string name="label_please_choice_remove_history_course">Please select course to remove</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>
@@ -496,8 +496,8 @@
     </string-array>
 
     <string-array name="label_user_coin_tabs">
-        <item>蛙蛙币</item>
-        <item>代金券</item>
+        <item>WaWacoin</item>
+        <item>Voucher</item>
     </string-array>
 
     <string name="voice_evaluating">Oral Test</string>
