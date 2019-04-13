@@ -469,7 +469,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             } else {
                                 content = data.getStudentResTitle();
                             }
-                            processTitle(textView, content,data.getCommitTime());
+                            processTitle(textView, content,data.getCommitTime(),data);
                         }
                         //作业图片布局
                         View iconLayout = view.findViewById(R.id.layout_icon);
@@ -2018,8 +2018,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
      * @param textView
      * @param content
      */
-    private void processTitle(TextView textView, String content,String commitTime) {
-        if (textView != null && isAnswerTaskOrderQuestion) {
+    private void processTitle(TextView textView, String content,String commitTime,CommitTask data) {
+        if (textView != null && data.isMarkCard()) {
             textView.setText(StudyTaskUtils.getCommitTaskTitle(getActivity(),task.getTaskTitle(),commitTime,
                     task.getEndTime()));
             return;

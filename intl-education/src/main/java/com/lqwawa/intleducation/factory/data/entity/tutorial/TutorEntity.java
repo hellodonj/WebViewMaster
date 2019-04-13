@@ -23,6 +23,7 @@ public class TutorEntity implements Serializable {
     private String stuMemberId;
     private String tutorMemberId;
     private String tutorName;
+    private String HeadPicUrl;
 
     public String getCreateTime() {
         return createTime;
@@ -70,5 +71,13 @@ public class TutorEntity implements Serializable {
 
     public void setTutorName(String tutorName) {
         this.tutorName = tutorName;
+    }
+
+    public String getHeadPicUrl() {
+        return HeadPicUrl;
+    }
+
+    public void setHeadPicUrl(String headPicUrl) {
+        HeadPicUrl = headPicUrl;
     }
 }

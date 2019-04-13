@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,6 +45,7 @@ import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerSelectedAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -136,7 +138,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                              boolean canRead, boolean canEdit, int status, String memberId,
                              boolean isContainAssistantWork, String schoolId,
                              boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
-                             boolean isFreeUser, @NonNull CourseChapterParams params) {
+                             boolean isFreeUser, @NonNull CourseChapterParams params,
+                             @Nullable Bundle extras) {
         activity.startActivity(new Intent(activity, LessonDetailsActivity.class)
                 .putExtra(COURSE_ID, courseId)
                 .putExtra(SECTION_ID, sectionId)
@@ -153,7 +156,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 .putExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, isFromMyCourse)
                 .putExtra(KEY_ROLE_FREE_USER, isFreeUser)
                 .putExtra(CourseVo.class.getSimpleName(), courseVo)
-                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
+                .putExtra(ACTIVITY_BUNDLE_OBJECT, params)
+                .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras));
     }
 
     /**
@@ -189,6 +193,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private Button reloadBt;
     private TextView resTitleTv;
     private TextView introductionTitleTv;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
 
     private LinearLayout mBottomLayout;
     private FrameLayout mCartContainer;
@@ -239,6 +247,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
         mCartContainer = (FrameLayout) findViewById(R.id.cart_container);
         mAddCartContainer = (FrameLayout) findViewById(R.id.action_container);
@@ -249,6 +261,13 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         int color = UIUtil.getColor(R.color.colorPink);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
         mTvPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));
+
+       /* FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+        float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
+        int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(), 8);
+        layoutParams.topMargin = topMargin;
+        mTvCartPoint.setLayoutParams(layoutParams);
+        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));*/
 
         introductionTitleTv = (TextView) findViewById(R.id.introduction_title_tv);
         resTitleTv = (TextView) findViewById(R.id.res_title_tv);
@@ -274,8 +293,12 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
         if (!mChapterParams.isTeacherVisitor() &&
                 courseParams.isClassCourseEnter() &&
-                courseParams.isClassTeacher()) {
+                courseParams.isClassTeacher() ||
+                mChapterParams.isChoiceMode()) {
             mBottomLayout.setVisibility(View.VISIBLE);
+            mNewCartContainer.setVisibility(View.VISIBLE);
+            mNewCartContainer.setOnClickListener(this);
+
             mCartContainer.setOnClickListener(this);
             mAddCartContainer.setOnClickListener(this);
         } else {
@@ -923,12 +946,14 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             // getData();
         }
 
-        if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
-            // 科目设置成功的回调
-            Bundle extras = data.getExtras();
-            if (EmptyUtil.isNotEmpty(extras)) {
-                boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
-                if (completed) {
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if (EmptyUtil.isNotEmpty(extras)) {
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if (completed) {
+                    }
                 }
             }
         }
@@ -950,31 +975,56 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 handleSubjectSettingData(this, UserHelper.getUserId(), false);
             }
         } else if (viewId == R.id.action_container) {
-            boolean originalActivated = mBottomLayout.isActivated();
-            if (!originalActivated) {
-                // 点击添加到作业库,或者确定
-                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            if(mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()){
+                // 直接添加到作业库
+
+                // 获取指定Tab所有的选中的作业库资源
+                int currentPosition = mViewPager.getCurrentItem();
+                LessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
+                List<SectionResListVo> choiceArray = navigator.takeChoiceResource();
+                if (EmptyUtil.isEmpty(choiceArray)) {
+                    UIUtil.showToastSafe(R.string.str_select_tips);
+                    return;
+                }
+
+                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
                     int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                    if (count >= 6) {
+                    if(count >= 6){
                         UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                         return;
                     }
                 }
-            }
 
-            if (originalActivated) {
-                int count = confirmResourceCart();
-                if (count > 0) {
-                    mBottomLayout.setActivated(!originalActivated);
+                int count = confirmResourceCart(false);
+            }else{
+                boolean originalActivated = mBottomLayout.isActivated();
+                if (!originalActivated) {
+                    // 点击添加到作业库,或者确定
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                        int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+                        if (count >= 6) {
+                            UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                            return;
+                        }
+                    }
                 }
-            } else {
-                // triggerToCartAction();
-                // mBottomLayout.setActivated(!originalActivated);
-                handleSubjectSettingData(this, UserHelper.getUserId(), true);
-            }
 
-            initBottomLayout();
-            refreshCartPoint();
+                if (originalActivated) {
+                    int count = confirmResourceCart();
+                    if (count > 0) {
+                        mBottomLayout.setActivated(!originalActivated);
+                    }
+                } else {
+                    // triggerToCartAction();
+                    // mBottomLayout.setActivated(!originalActivated);
+                    handleSubjectSettingData(this, UserHelper.getUserId(), true);
+                }
+
+                initBottomLayout();
+                refreshCartPoint();
+            }
+        } else if(viewId == R.id.new_cart_container){
+            handleSubjectSettingData(this, UserHelper.getUserId(), false);
         }
     }
 
@@ -1047,7 +1097,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             CourseDetailParams courseParams = mChapterParams.getCourseParams();
             if (EmptyUtil.isNotEmpty(courseParams)) {
-                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId());
+                Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId(),extras);
             }
         }
     }
@@ -1065,12 +1116,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         refreshCartPoint();
     }
 
+    private int confirmResourceCart(){
+        return confirmResourceCart(true);
+    }
+
     /**
      * 确定所有作业库中的资源
      *
      * @return 添加了几条资源
      */
-    private int confirmResourceCart() {
+    private int confirmResourceCart(boolean clearStatus) {
         // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
         int currentPosition = mViewPager.getCurrentItem();
@@ -1105,7 +1160,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
         // 清楚所有的作业库资源选中状态
         clearAllResource();
-        switchAdapterMode(false);
+
+        if(clearStatus){
+            switchAdapterMode(false);
+        }
 
         return choiceArray.size();
     }
@@ -1133,10 +1191,15 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             mTvPoint.setText(Integer.toString(count));
+            mTvCartPoint.setText(Integer.toString(count));
             if (count == 0 || mBottomLayout.isActivated()) {
                 mTvPoint.setVisibility(View.GONE);
+                if(count == 0) {
+                    mTvCartPoint.setVisibility(View.GONE);
+                }
             } else {
                 mTvPoint.setVisibility(View.VISIBLE);
+                mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1150,11 +1213,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mBtnCart.setText(getString(R.string.label_cancel));
             mBtnAction.setText(getString(R.string.label_confirm_authorization));
             mTvPoint.setVisibility(View.GONE);
+
+            // 如果是激活状态
+            mCartContainer.setVisibility(View.VISIBLE);
         } else {
             // 当前是未激活状态,显示作业库和添加到作业库
             mBtnCart.setText(getString(R.string.label_work_cart));
             mBtnAction.setText(getString(R.string.label_action_to_cart));
             mTvPoint.setVisibility(View.VISIBLE);
+
+            mCartContainer.setVisibility(View.GONE);
         }
     }
 
@@ -1167,8 +1235,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             super.onPageSelected(position);
             // 清除所有的作业库资源选中状态
             // 当前是否显示BottomLayout,以及BottomLayout是否是激活状态
-            if (mBottomLayout.getVisibility() == View.VISIBLE &&
-                    mBottomLayout.isActivated()) {
+            if ((mBottomLayout.getVisibility() == View.VISIBLE &&
+                    mBottomLayout.isActivated()) ||
+                    mChapterParams.isChoiceMode()) {
                 clearAllResource();
             }
         }

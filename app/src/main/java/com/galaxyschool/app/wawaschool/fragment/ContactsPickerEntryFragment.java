@@ -21,6 +21,7 @@ import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.LogUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.NoteHelper;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
@@ -57,10 +58,12 @@ import com.galaxyschool.app.wawaschool.pojo.UploadSchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.hyphenate.EMCallBack;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.share.ShareType;
 import com.oosic.apps.share.SharedResource;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -1066,6 +1069,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
                         //发送广播刷新mooc的数据
                         getActivity().sendBroadcast(new Intent().setAction(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION));
+                        EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS));
                         finish();
                     } else {
                         String errorMessage = getString(R.string.publish_course_error);

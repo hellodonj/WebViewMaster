@@ -391,10 +391,10 @@
     <string name="label_tutorial_student">Student</string>
     <string name="label_tutorial_course">Course</string>
     <string name="label_tutorial_organ">Institution</string>
-    <string name="label_student_work">My Homework</string>
-    <string name="label_student_tutorial">My Tutor</string>
-    <string name="label_student_course">My Tutorial</string>
-    <string name="label_student_live">My Class</string>
+    <string name="label_student_work">Q&#038;A</string>
+    <string name="label_student_tutorial">Tutor</string>
+    <string name="label_student_course">Course</string>
+    <string name="label_student_live">Class</string>
     <string name="label_my">My</string>
     <string name="label_tutorial_student_review_count">%d unmarked</string>
     <string name="label_viewer_count">%d viewers</string>
@@ -409,6 +409,7 @@
     <string name="label_added_tutorial_succeed">Tutor added</string>
     <string name="label_added_tutorial_failed">Adding failed</string>
     <string name="label_new_work">Latest Homework</string>
+    <string name="label_new_tutorial_answer">Latest Q&#038;A</string>
     <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
     <string name="label_choice_tutor_tip">Please select tutor</string>
     <string name="label_commit_succeed">Submitted successfully</string>
@@ -440,6 +441,15 @@
     <string name="label_audit">Applications</string>
     <string name="label_tutorial_task_type_listen_read_course">Listen-Read Course</string>
     <string name="label_tutorial_task_type_do_task">Do Read-Write Task</string>
+
+    <!--V5.14.X版本字符串-->
+    <string name="label_watch_history_course">History</string>
+    <string name="label_add_in">Add</string>
+    <string name="label_remove_out">Remove</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_please_choice_action">Please select option!</string>
+    <string name="label_please_choice_add_history_course">Please select historical course</string>
+    <string name="label_please_choice_remove_history_course">Please select course to remove</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>
@@ -483,6 +493,11 @@
         <item>Latest</item>
         <item>Hot</item>
         <item>Price</item>
+    </string-array>
+
+    <string-array name="label_user_coin_tabs">
+        <item>WaWacoin</item>
+        <item>Voucher</item>
     </string-array>
 
     <string name="voice_evaluating">Oral Test</string>

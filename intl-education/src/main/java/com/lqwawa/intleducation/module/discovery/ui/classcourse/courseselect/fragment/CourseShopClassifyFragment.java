@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
@@ -16,6 +19,7 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -61,6 +65,10 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
     private RecyclerView mRecycler;
     private CourseShopClassifyAdapter mAdapter;
     private NoPermissionView mNoPermissionView;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
 
     private CourseShopClassifyParams mParams;
     private String mSchoolId;
@@ -122,6 +130,10 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mNoPermissionView = (NoPermissionView) mRootView.findViewById(R.id.permission_view);
         mNoPermissionView.setDescription(getString(R.string.label_organ_shop_permission_description));
+
+        mNewCartContainer = (FrameLayout) mRootView.findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) mRootView.findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) mRootView.findViewById(R.id.tv_cart_point);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mLayoutManager);
@@ -347,10 +359,11 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
      * 学程馆学程学习任务选择的入口
      * @param params 核心参数
      */
-    public static CourseShopClassifyFragment newInstance(@NonNull CourseShopClassifyParams params){
+    public static CourseShopClassifyFragment newInstance(@NonNull CourseShopClassifyParams params,@Nullable Bundle extras){
         CourseShopClassifyFragment fragment = new CourseShopClassifyFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         fragment.setArguments(bundle);
         return fragment;
     }

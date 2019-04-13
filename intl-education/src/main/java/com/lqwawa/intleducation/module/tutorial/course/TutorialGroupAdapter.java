@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.tutorial.course;
 
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.SizeUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
@@ -68,6 +70,9 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
         @Override
         protected void onBind(TutorialGroupEntity entity) {
+            GradientDrawable drawable = DrawableUtil.createDrawable(UIUtil.getColor(R.color.colorLight), UIUtil.getColor(R.color.colorAccent), SizeUtil.dp2px(1),SizeUtil.dp2px(4));
+            mIvGroupAvatar.setBackground(drawable);
+
             LQwawaImageUtil.loadCommonIcon(mIvGroupAvatar.getContext(),mIvGroupAvatar,entity.getHeadPicUrl());
             if(EmptyUtil.isNotEmpty(entity.getCreateName())){
                 String tutorName = String.format(UIUtil.getString(R.string.label_placeholder_tutorial_group_teacher),entity.getCreateName());

@@ -427,8 +427,8 @@
     <!--网络请求解析的Code描述-->
     <string name="data_rsp_error_unknown">请求错误</string>
 
-    <string name="my_coins">我的余额</string>
-    <string name="coin_detail">明细</string>
+    <string name="my_coins">我的账户</string>
+    <string name="coin_detail">明细></string>
     <string name="coin_count_detail">余额明细</string>
     <string name="wawa_coin_balance">蛙蛙币余额</string>
     <string name="charge_coin">充值</string>
@@ -444,6 +444,12 @@
     <string name="weChat">微信</string>
     <string name="ali">支付宝</string>
     <string name="activation_code">激活码</string>
+
+    <string name="voucher_amount">代金券金额</string>
+    <string name="voucher_explain">使用说明</string>
+    <string name="voucher_explain_1">1.该代金券只可用于两栖蛙蛙小程序购买学程的第一章节；\n\n2.混合购买其他章节时不可使用；\n\n3.代金券每次消费的余额可下次继续使用；\n\n4.不可提现，不可转让；\n\n5.最终解释权归两栖蛙蛙信息技术有限公司所有。</string>
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="wawa_pay">蛙蛙币支付</string>
 

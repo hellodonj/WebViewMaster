@@ -41,8 +41,10 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParam
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
@@ -87,7 +89,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private String controlGetStudyTaskTypeString;
     private String vipSchoolId = "D8FE8280-FB40-4B61-9936-08819AA7E611";
     private boolean openSelectSchoolRes = false;
-
+    private String titleName = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,7 +119,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (linearLayout != null) {
             linearLayout.setBackgroundColor(getResources().getColor(R.color.text_white));
         }
-        String titleName = null;
         if (getArguments() != null) {
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             isCheckTaskOrderRes = getArguments().getBoolean(ActivityUtils.EXTRA_CHOOSE_TASKORDER_DATA);
@@ -243,7 +244,8 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_LQCOURSE_SHOP) {
             //学程馆
             if (isOnlineClass){
-                chooseSchoolResources(TAB_LQCOURSE_SHOP);
+//                chooseSchoolResources(TAB_LQCOURSE_SHOP);
+                chooseOnlineLqCourseShopRes();
             } else {
                 enterLqCourseShopSpace();
             }
@@ -251,6 +253,34 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             //班级学程
             chooseClassLessonCourse();
         }
+    }
+
+    private void chooseOnlineLqCourseShopRes(){
+        int taskType = getTaskTypeOrSelectCount(true);
+        int selectMaxCount = getTaskTypeOrSelectCount(false);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
+            arrayList.add(ResType.RES_TYPE_ONEPAGE);
+        } else if (taskType == StudyTaskType.TASK_ORDER){
+            arrayList.add(ResType.RES_TYPE_STUDY_CARD);
+        } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
+                taskType == StudyTaskType.WATCH_WAWA_COURSE){
+            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
+            arrayList.add(ResType.RES_TYPE_ONEPAGE);
+            arrayList.add(ResType.RES_TYPE_IMG);
+            arrayList.add(ResType.RES_TYPE_PPT);
+            arrayList.add(ResType.RES_TYPE_PDF);
+            arrayList.add(ResType.RES_TYPE_VOICE);
+            arrayList.add(ResType.RES_TYPE_VIDEO);
+            arrayList.add(ResType.RES_TYPE_DOC);
+        }
+        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
+        CourseShopListActivity.show(getActivity(),
+                titleName,
+                HideSortType.TYPE_SORT_ONLINE_COURSE,
+                params,null);
     }
 
     /**
@@ -605,12 +635,16 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         item.type = TAB_LQCOURSE_SHOP;
         list.add(item);
 
-        //班级学程
-        item = new HomeTypeEntry();
-        item.icon = R.drawable.icon_class_lesson_task;
-        item.typeName = R.string.str_class_lesson;
-        item.type = TAB_CLASS_LESSON;
-        list.add(item);
+        if (isOnlineClass) {
+
+        } else {
+            //班级学程
+            item = new HomeTypeEntry();
+            item.icon = R.drawable.icon_class_lesson_task;
+            item.typeName = R.string.str_class_lesson;
+            item.type = TAB_CLASS_LESSON;
+            list.add(item);
+        }
 
         getCurrAdapterViewHelper().setData(list);
     }

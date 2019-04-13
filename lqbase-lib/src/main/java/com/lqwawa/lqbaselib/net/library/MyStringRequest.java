@@ -67,7 +67,7 @@ public class MyStringRequest extends StringRequest {
 							new Exception("Network not available")));
 				}
 			}
-			TipMsgHelper.ShowMsg(context, R.string.lqbase_network_unavailable);
+			this.handler.post(() -> TipMsgHelper.ShowMsg(context, R.string.lqbase_network_unavailable));
 			return;
 		}
 
@@ -89,15 +89,12 @@ public class MyStringRequest extends StringRequest {
 
 		// Re-enabled host view to allow user clicking again
         if (this.hostView != null) {
-            this.handler.post(new Runnable() {
-                @Override
-                public void run() {
-					if (getContext() == null) {
-						return;
-					}
-                    getHostView().setEnabled(true);
-                }
-            });
+            this.handler.post(() -> {
+				if (getContext() == null) {
+					return;
+				}
+				getHostView().setEnabled(true);
+			});
         }
 	}
 

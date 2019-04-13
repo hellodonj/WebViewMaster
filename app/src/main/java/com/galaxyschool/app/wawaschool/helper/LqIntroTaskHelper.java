@@ -1,6 +1,7 @@
 package com.galaxyschool.app.wawaschool.helper;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.galaxyschool.app.wawaschool.R;
@@ -97,8 +98,9 @@ public class LqIntroTaskHelper {
      */
     public void enterIntroTaskDetailActivity(Activity activity,
                                              String schoolId,
-                                             String classId) {
-        if (activity == null || TextUtils.isEmpty(schoolId) || TextUtils.isEmpty(classId)) {
+                                             String classId,
+                                             Bundle args) {
+        if (activity == null || TextUtils.isEmpty(schoolId)) {
             return;
         }
         ActivityUtils.enterIntroductionCourseActivity(
@@ -111,7 +113,8 @@ public class LqIntroTaskHelper {
                 classId,
                 schoolId,
                 null,
-                true);
+                true,
+                args);
     }
 
     /**

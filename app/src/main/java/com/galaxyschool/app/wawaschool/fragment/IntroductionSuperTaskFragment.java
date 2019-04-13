@@ -38,6 +38,7 @@ import com.galaxyschool.app.wawaschool.common.ArrangeLearningTasksUtil;
 import com.galaxyschool.app.wawaschool.common.CampusPatrolUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -60,7 +61,9 @@ import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.DataResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -619,7 +622,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || taskType == StudyTaskType.SUBMIT_HOMEWORK
-                || taskType == StudyTaskType.ENGLISH_WRITING) {
+                || taskType == StudyTaskType.ENGLISH_WRITING
+                || taskType == StudyTaskType.Q_DUBBING) {
             needCommitFlag = true;
         }
         return needCommitFlag;
@@ -765,12 +769,19 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (isPick) {
             popStack();
         } else {
-            if (isFromMoocIntroTask){
-                //同步更新数据
-                LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
-                LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
-            }
+            updateParameterDataList();
             finish();
+        }
+    }
+
+    private void updateParameterDataList(){
+        if (isPick){
+            return;
+        }
+        if (isFromMoocIntroTask){
+            //同步更新数据
+            LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
+            LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
         }
     }
 
@@ -1279,7 +1290,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                     if (result != null && result.isSuccess()) {
                         //布置完成刷新布置任务页面
                         CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
                         TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
+                        EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS));
                         finish();
                     } else {
                         String errorMessage = getString(R.string.publish_course_error);

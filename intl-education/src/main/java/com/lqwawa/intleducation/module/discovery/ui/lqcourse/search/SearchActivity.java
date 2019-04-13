@@ -222,6 +222,12 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
                     setResult(Activity.RESULT_OK,intent);
                     finish();
+                }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_HISTORY_COURSE)){
+                    // 班级历史学程搜索筛选
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,key);
+                    setResult(Activity.RESULT_OK,intent);
+                    finish();
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_NEW_SCHOOL_SHOP)){
                     // 班级课程搜索筛选
                     Intent intent = new Intent();
@@ -293,6 +299,12 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                             finish();
                         }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_COURSE)){
                             // 班级课程搜索筛选
+                            Intent intent = new Intent();
+                            intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
+                            setResult(Activity.RESULT_OK,intent);
+                            finish();
+                        }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_CLASS_HISTORY_COURSE)){
+                            // 班级历史学程搜索筛选
                             Intent intent = new Intent();
                             intent.putExtra(KEY_EXTRA_SEARCH_KEYWORD,keyString);
                             setResult(Activity.RESULT_OK,intent);

@@ -2,28 +2,22 @@ package com.lqwawa.intleducation.module.discovery.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.vo.RequestVo;
-import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferDialogFragment;
-import com.lqwawa.intleducation.module.discovery.ui.coin.JavaCoinTransferNavigator;
-import com.lqwawa.intleducation.module.discovery.ui.coin.UserParams;
-import com.lqwawa.intleducation.module.discovery.ui.coin.donation.DonationCoinActivity;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.osastudio.apps.BaseFragmentActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ================================================
@@ -40,9 +34,9 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
     private String memberId;
     private ImageView ivClose;
     private TextView tvDetail;
-    private TextView tvBalance;
-    private TextView tvCharge;
-    private TextView mTvGiveMoney;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +47,9 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
 
         initView();
 
-        initData();
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        initData();
     }
 
     private void initView() {
-
 
         ivClose = (ImageView) findViewById(R.id.header_left_btn);
         ivClose.setOnClickListener(this);
@@ -72,72 +57,20 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
         tvDetail = (TextView) findViewById(R.id.header_right_btn);
         tvDetail.setOnClickListener(this);
 
-        tvBalance = (TextView) findViewById(R.id.balance_textView);
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new UserCoinFragment());
+        fragments.add(new UserVoucherFragment());
+        TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments,
+                UIUtil.getStringArray(R.array.label_user_coin_tabs));
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(tabPagerAdapter);
+        viewPager.setOffscreenPageLimit(fragments.size());
 
-        tvCharge = (TextView) findViewById(R.id.charge_textView);
-        tvCharge.setOnClickListener(this);
 
-        mTvGiveMoney = (TextView) findViewById(R.id.tv_give_money);
-        mTvGiveMoney.setVisibility(View.VISIBLE);
-        mTvGiveMoney.setOnClickListener(this);
-
-    }
-
-    private void initData() {
-
-        RequestVo requestVo = new RequestVo();
-
-        UserInfoVo userInfo = UserHelper.getUserInfo();
-        requestVo.addParams("token", userInfo.getToken());
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.GET_USER_COINS_COUNT + requestVo.getParams());
-
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String jsonString) {
-                if (TextUtils.isEmpty(jsonString)) {
-                    return;
-                }
-
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(jsonString);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                int code = jsonObject.optInt("code");
-
-                if (code == 0) {
-                    //请求成功
-                    JSONObject jsonCoins = jsonObject.optJSONObject("data");
-
-                    if (jsonCoins == null) {
-                        tvBalance.setText("0");
-
-                    } else {
-                        tvBalance.setText(jsonCoins.optString("amount"));
-                    }
-
-                }
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -148,39 +81,39 @@ public class UserCoinActivity extends BaseFragmentActivity implements View.OnCli
             finish();
         } else if (i == R.id.header_right_btn) {
             //明细
-
-            intent = new Intent(this, CoinsDetailActivity.class);
+            if (viewPager.getCurrentItem() == 0) {
+                intent = new Intent(this, CoinsDetailActivity.class);
+            } else {
+                intent = new Intent(this, VoucherDetailActivity.class);
+            }
             startActivity(intent);
-        } else if (i == R.id.charge_textView) {
-            //充值
-            JavaCoinTransferDialogFragment.show(getSupportFragmentManager(), new JavaCoinTransferNavigator() {
-                @Override
-                public void onChoiceConfirm(@NonNull UserParams user) {
-                    Intent intent = new Intent(UserCoinActivity.this, ChargeCenterActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(ChargeCenterActivity.KEY_EXTRA_USER,user);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-        }else if(i == R.id.tv_give_money){
-            // 转赠他人
-            DonationCoinActivity.show(this,KEY_BALANCE_REQUEST_CODE);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == KEY_BALANCE_REQUEST_CODE){
-                Bundle extras = data.getExtras();
-                boolean result = extras.getBoolean(DonationCoinActivity.KEY_RESULT_BALANCE_STATE);
-                if(result){
-                    // 发生余额更新
-                    initData();
-                }
-            }
+    private class TabPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragments;
+        private String[] tabTitles;
+
+        public TabPagerAdapter(FragmentManager fm, List<Fragment> fragments, String[] tabTitles) {
+            super(fm);
+            this.fragments = fragments;
+            this.tabTitles = tabTitles;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
         }
     }
 }

@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author mrmedici
@@ -63,8 +64,8 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
         // 测试数据
         // classId = "164cdc60-243e-4318-92dd-a91f00a85974";
         // token = "4f961e8f-778a-4cf1-97a4-09fe25a183ff";
-        role = 1;
-        ClassCourseHelper.requestClassCourseData(classId, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
+        // role = 1;
+        ClassCourseHelper.requestClassCourseData(classId,0, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final ClassCourseContract.View view = getView();
@@ -153,6 +154,29 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
                 final ClassCourseContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
                     view.updateAddCourseFromClassView(aBoolean);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestAddHistoryCourseFromClass(@NonNull String schoolId, @NonNull String classId, @NonNull List<ClassCourseEntity> entities) {
+        StringBuilder courseIds = new StringBuilder();
+        ListIterator<ClassCourseEntity> iterator = entities.listIterator();
+        while (iterator.hasNext()){
+            ClassCourseEntity entity = iterator.next();
+            courseIds.append(entity.getCourseId());
+            if(iterator.hasNext()){
+                courseIds.append(",");
+            }
+        }
+
+        ClassCourseHelper.requestAddClassHistoryCourse(classId, courseIds.toString(), new DataSource.SucceedCallback<Boolean>() {
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final ClassCourseContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.updateHistoryCourseFromClassView(aBoolean);
                 }
             }
         });

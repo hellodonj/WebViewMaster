@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,11 +34,13 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.common.utils.SizeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -50,8 +55,11 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
@@ -90,6 +98,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
+    // 进入历史学程的Code
+    private static final int ENTER_HISTORY_REQUEST_CODE = 1 << 2;
+
     private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
     private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
     // 小语种课程
@@ -123,15 +134,21 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
     private LinearLayout mBottomLayout;
     private Button mAddSubject;
+
     private LinearLayout mBottomActionLayout;
     private FrameLayout mCartContainer,mActionContainer;
     private Button mWorkCart,mAddCourse;
     private TextView mTvPoint;
+
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
+    private TextView mTvAction;
+
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
     private ClassCourseAdapter mCourseAdapter;
     private CourseEmptyView mEmptyLayout;
-    private TextView mTvAction;
 
     private ClassCourseParams mClassCourseParams;
     private boolean mResourceFlag;
@@ -216,6 +233,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     protected void initWidget() {
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
         mTvAction = (TextView) findViewById(R.id.tv_action);
 
         mTopBar.setBack(true);
@@ -302,9 +322,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mAddCourse.setOnClickListener(this);
 
         int color = UIUtil.getColor(R.color.colorPink);
-        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
+        int radius = DisplayUtil.dip2px(UIUtil.getContext(),8);
         mTvPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));
 
+        /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
+        float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
+        int topMargin = layoutParams.topMargin = 40 - DisplayUtil.dip2px(UIUtil.getContext(),8);
+        layoutParams.topMargin = topMargin;
+        mTvCartPoint.setLayoutParams(layoutParams);
+        mTvCartPoint.setBackground(DrawableUtil.createDrawable(color,color,radius));*/
+        mNewCartContainer.setOnClickListener(this);
 
         boolean isTeacher = UserHelper.isTeacher(mRoles);
         this.isTeacher = isTeacher;
@@ -350,12 +377,26 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         // 班级学程进入参数
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
-        if(isResult){
+
+        boolean initiativeTrigger = false;
+        if(mResourceFlag){
+            initiativeTrigger = mResourceData.isInitiativeTrigger();
+        }
+
+        if(isResult && (initiativeTrigger || !mResourceFlag)){
             mWorkCart.setVisibility(View.VISIBLE);
-            mCartContainer.setVisibility(View.VISIBLE);
-        }else{
+            // 旧作业库改为查看历史学程
+            mWorkCart.setText(R.string.label_watch_history_course);
             mCartContainer.setVisibility(View.GONE);
+            // 显示作业库
+            mNewCartContainer.setVisibility(View.VISIBLE);
+        }else{
             mWorkCart.setVisibility(View.GONE);
+            // 旧作业库改为查看历史学程
+            mWorkCart.setText(R.string.label_watch_history_course);
+            mCartContainer.setVisibility(View.GONE);
+            // 隐藏作业库
+            mNewCartContainer.setVisibility(View.GONE);
         }
 
         mTopBar.setRightFunctionImage1(R.drawable.search,view->{
@@ -416,6 +457,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     }*/
 
                     String courseId = entity.getCourseId();
+                    Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                     // 进入选择资源的Activity
                     WatchCourseResourceActivity.show(
                             ClassCourseActivity.this,
@@ -423,6 +465,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                             mResourceData.getTaskType(),
                             mResourceData.getMultipleChoiceCount(),
                             mResourceData.getFilterArray(),
+                            mResourceData.isInitiativeTrigger(),
+                            extras,
+                            mSchoolId,
+                            mClassId,
                             0);
                 }else{
                     // 班级学程的详情入口
@@ -459,7 +505,26 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
             ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
+            // 删除
             deleteCourseFromClass(entity);
+            /*ActionDialogFragment.show(getSupportFragmentManager(),
+                    getString(R.string.label_please_choice_action),
+                    R.string.label_remove_out, R.string.label_delete,
+                    new ActionDialogNavigator() {
+                        @Override
+                        public void onAction(@NonNull View button, ActionDialogFragment.Tag tag) {
+                            if (tag == ActionDialogFragment.Tag.LEFT) {
+                                // 移除
+                                List<ClassCourseEntity> entities = new ArrayList<>();
+                                entities.add(entity);
+                                showLoading();
+                                mPresenter.requestAddHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                            } else if (tag == ActionDialogFragment.Tag.RIGHT) {
+                                // 删除
+                                deleteCourseFromClass(entity);
+                            }
+                        }
+                    });*/
         });
 
         // 下拉刷新与加载更多
@@ -509,10 +574,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             mTvPoint.setText(Integer.toString(count));
+            mTvCartPoint.setText(Integer.toString(count));
             if(count == 0 || mBottomLayout.isActivated()){
                 mTvPoint.setVisibility(View.GONE);
+                mTvCartPoint.setVisibility(View.GONE);
             }else{
-                mTvPoint.setVisibility(View.VISIBLE);
+                // 旧作业库不显示角标
+                mTvPoint.setVisibility(View.GONE);
+                mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1246,6 +1315,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             }
         }else if(viewId == R.id.btn_work_cart){
             // 点击作业库
+            // handleSubjectSettingData(this,UserHelper.getUserId());
+            // V.5.14.X改成查看历史课程
+            // UIUtil.showToastSafe(R.string.label_watch_history_course);
+            HistoryClassCourseActivity.show(this,mClassCourseParams,isAuthorized,ENTER_HISTORY_REQUEST_CODE);
+        }else if(viewId == R.id.new_cart_container){
+            // 点击作业库
             handleSubjectSettingData(this,UserHelper.getUserId());
         }else if(viewId == R.id.btn_add_subject){
             // 点击确定
@@ -1270,7 +1345,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 } else {
                     //有数据
                     if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
-                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId);
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId,extras);
                     }
                 }
             }
@@ -1305,8 +1381,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      */
     private void addCourseToClass(){
         // 进入选择课程页面
-        CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId);
-        CourseShopClassifyActivity.show(this,params);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId,mClassId);
+        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+        CourseShopClassifyActivity.show(this,params,extras,true);
     }
 
     @Override
@@ -1318,6 +1395,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 刷新UI
         // requestClassCourse(false);
 
+        // 刷新标签和课程
+        mPresenter.requestClassConfigData(mClassId);
+    }
+
+    @Override
+    public void updateHistoryCourseFromClassView(Boolean aBoolean) {
+        this.hideLoading();
+        // 刷新UI
         // 刷新标签和课程
         mPresenter.requestClassConfigData(mClassId);
     }
@@ -1362,7 +1447,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
             mPresenter.requestAddCourseFromClass(mSchoolId,mClassId,courseIds);
         }else if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
-            if(mResourceFlag){
+            if(mResourceFlag && EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()){
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
                 // 杀掉所有可能的UI
@@ -1394,6 +1479,16 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                         mPresenter.requestClassConfigData(mClassId);
                     }
                 }
+            }else if(requestCode == ENTER_HISTORY_REQUEST_CODE){
+                // 刷新标签和课程
+                Bundle extras = data.getExtras();
+                if(EmptyUtil.isNotEmpty(extras)){
+                    boolean trigger = extras.getBoolean(HistoryClassCourseActivity.KEY_EXTRA_TRIGGER);
+                    if(trigger){
+                        // 刷新标签和课程
+                        mPresenter.requestClassConfigData(mClassId);
+                    }
+                }
             }
         }
     }
@@ -1419,7 +1514,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * 取消发布作业库
      */
     private boolean cancelPublishWorkCart() {
-        if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+        /*if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
             int taskCount = TaskSliderHelper.onWorkCartListener.takeTaskCount();
             if(taskCount > 0){
                 WorkCartDialogFragment fragment = new WorkCartDialogFragment();
@@ -1427,7 +1522,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     @Override
                     public void onConfirm() {
                         if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
-                            TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId);
+                            Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                            TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(ClassCourseActivity.this,mSchoolId,mClassId,extras);
                             fragment.dismiss();
                         }
                     }
@@ -1440,7 +1536,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 fragment.show(getSupportFragmentManager(),WorkCartDialogFragment.class.getSimpleName());
                 return true;
             }
-        }
+        }*/
         return false;
     }
 
@@ -1466,22 +1562,30 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         context.startActivity(intent);
     }
 
+    public static void show(@NonNull Activity activity,
+                            @NonNull ClassCourseParams params,
+                            @NonNull ClassResourceData data){
+        show(activity,params,data,null);
+    }
     /**
      * 班级学程页面的入口, 选择学习任务的入口
      * @param activity 上下文对象
      * @param params 核心参数
      * @param data 选择学习任务的筛选
+     * @param extras 直播参数
      * <p>onActivityResult回调选择数据,resultCode = {@link Activity.RESULT_OK}</p>
      * <p>data 为List<SectionResListVo> Key = {@link CourseSelectItemFragment.RESULT_LIST}</p>
      */
     public static void show(@NonNull Activity activity,
                             @NonNull ClassCourseParams params,
-                            @NonNull ClassResourceData data){
+                            @NonNull ClassResourceData data,
+                            @Nullable Bundle extras){
         Intent intent = new Intent(activity,ClassCourseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
         bundle.putBoolean(KEY_EXTRA_RESOURCE_FLAG,true);
         bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA,data);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,data.getRequestCode());
     }

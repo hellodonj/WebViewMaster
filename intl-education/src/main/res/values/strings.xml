@@ -450,8 +450,7 @@
     <!--网络请求解析的Code描述-->
     <string name="data_rsp_error_unknown">request failed</string>
 
-    <string name="my_coins">My Balance</string>
-    <string name="coin_detail">Transactions</string>
+    <string name="coin_detail">Transactions></string>
     <string name="coin_count_detail">Transactions</string>
     <string name="wawa_coin_balance">Balance</string>
     <string name="charge_coin">Top Up</string>
@@ -468,6 +467,13 @@
     <string name="ali">Alipay</string>
     <string name="wawa_pay">WaWacoin</string>
     <string name="activation_code">Activation Code</string>
+
+    <string name="voucher_amount">Voucher Amount</string>
+    <string name="voucher_explain">Instructions</string>
+    <string name="voucher_explain_1">1.Voucher can only be used to purchase the first chapter of each course on LQWaWa Mini Program in WeChat.\n\n2.Mixed purchase with other chapters are not allowed.\n\n3.Balance can be used in next purchase.\n\n4.No-withdraw，no-transferable.\n\n5.All rights reserved by LQWaWa Information Technology Co. Ltd.</string>
+
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="charge_account">Top up</string>
     <string name="buy_course">Buy course: %s</string>
@@ -503,6 +509,6 @@
     <string name="plz_install_ex">Please install WeChat</string>
 
     <string name="buy_online_school">Buy class: %s</string>
-
+    <string name="my_coins">My Account</string>
 
 </resources>

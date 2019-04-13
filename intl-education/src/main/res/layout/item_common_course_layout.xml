@@ -31,6 +31,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
+    <ImageView
+        android:id="@+id/iv_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:padding="4dp"
+        android:src="@drawable/com_checkbox_ll"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/tv_buy_type"
         android:layout_width="wrap_content"

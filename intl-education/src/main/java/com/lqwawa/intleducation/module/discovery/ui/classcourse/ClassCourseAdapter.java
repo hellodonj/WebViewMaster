@@ -27,6 +27,8 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
     private boolean isHeadMaster;
     // 当前角色信息
     private String mRoles;
+    // 当前模式
+    private boolean isChoiceMode;
     // 事件回调类
     private ClassCourseNavigator mNavigator;
 
@@ -34,6 +36,11 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
         super();
         this.isHeadMaster = isHeadMaster;
         this.mRoles = roles;
+    }
+
+    public ClassCourseAdapter(boolean isHeadMaster,@NonNull String roles,boolean choiceMode) {
+        this(isHeadMaster,roles);
+        this.isChoiceMode = choiceMode;
     }
 
     @Override
@@ -44,6 +51,14 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
     @Override
     protected ViewHolder<ClassCourseEntity> onCreateViewHolder(View root, int viewType) {
         return new CommonCourseViewHolder(root);
+    }
+
+    public void setChoiceMode(boolean choiceMode) {
+        isChoiceMode = choiceMode;
+    }
+
+    public boolean isChoiceMode() {
+        return isChoiceMode;
     }
 
     public void setNavigator(@NonNull ClassCourseNavigator navigator){
@@ -59,6 +74,7 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
         private ImageView mCourseIcon;
         private TextView mCourseName;
         private ImageView mIvDelete;
+        private ImageView mIvChoice;
         private TextView mBuyType;
 
         public CommonCourseViewHolder(View itemView) {
@@ -66,6 +82,7 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
             mCourseIcon = (ImageView) itemView.findViewById(R.id.iv_course_icon);
             mCourseName = (TextView) itemView.findViewById(R.id.tv_course_name);
             mIvDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            mIvChoice = (ImageView) itemView.findViewById(R.id.iv_choice);
             mBuyType = (TextView) itemView.findViewById(R.id.tv_buy_type);
         }
 
@@ -107,6 +124,13 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
                 });
             }else{
                 mIvDelete.setVisibility(View.GONE);
+            }
+
+            if(isHeadMaster && isChoiceMode){
+                mIvChoice.setVisibility(View.VISIBLE);
+                mIvChoice.setActivated(entity.isChecked());
+            }else{
+                mIvChoice.setVisibility(View.GONE);
             }
         }
     }

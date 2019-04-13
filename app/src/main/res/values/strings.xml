@@ -5,7 +5,7 @@
     <string name="contacts">Contacts</string>
     <string name="wawatv">Happy Learning</string>
     <string name="createspace">LQ Tool</string>
-    <string name="personal_space">My Zone</string>
+    <string name="personal_space">Me</string>
     <string name="personal_resource_library">Personal Courses</string>
     <string name="local_course_task">Local Course</string>
     <string name="load_platform_outline">Reference platform outline</string>
@@ -255,7 +255,7 @@
     <string name="server_connect_error">Server connect error,please retry later!</string>
     <string name="no_students">No student in this class, unable to send homework!</string>
 
-    <string name="me">Me</string>
+    <string name="me">My</string>
     <string name="message">Message</string>
 
     <!-- contacts -->
@@ -917,11 +917,11 @@
     <string name="want_to_delete_sb">Are you sure to delete %s？</string>
     <string name="publish_course_ok">Send successfully</string>
     <string name="publish_course_error">Fail</string>
-    <string name="scan_task_save_ok">Course has been saved in My Zone/Private Resource Pool/LQ
-        Course, material has been saved in My Zone/Creation Zone.
+    <string name="scan_task_save_ok">Course has been saved in Me/Private Resource Pool/LQ
+        Course, material has been saved in Me/Creation Zone.
     </string>
-    <string name="scan_task_send_ok">Send successfully, course has been back up in My
-        Zone/Private Resource Pool/Listen-Read Course, material has been back up in My Zone/Creation Zone.
+    <string name="scan_task_send_ok">Send successfully, course has been back up in Me/Private
+        Resource Pool/Listen-Read Course, material has been back up in Me/Creation Zone.
     </string>
 
 
@@ -1078,16 +1078,16 @@
     <string name="upload_exist">%s already exists!</string>
     <string name="search_acccount">Search account</string>
 
-    <string name="save_to_lq_cloud">Listen-Read Course has been saved in My Zone/LQ Cloud.</string>
+    <string name="save_to_lq_cloud">Listen-Read Course has been saved in Me/LQ Cloud.</string>
 
-    <string name="collect_to_my_course">Has been put into My Zone/Private Resource Pool/My
+    <string name="collect_to_my_course">Has been put into Me/Private Resource Pool/My
         Course.
     </string>
-    <string name="collect_to_lq_course">Has been collected to My Zone/Private Resource Pool/My
+    <string name="collect_to_lq_course">Has been collected to Me/Private Resource Pool/My
         Course.
     </string>
-    <string name="collect_to_yuntieba">Has been collected to My Zone/Cloud Post Bar.</string>
-    <string name="collect_different_to_personalLibrary">Has been collected to My Zone/Private
+    <string name="collect_to_yuntieba">Has been collected to Me/Cloud Post Bar.</string>
+    <string name="collect_different_to_personalLibrary">Has been collected to Me/Private
         Resource Pool/%s
     </string>
     <string name="add_school">Join a school</string>
@@ -1125,7 +1125,7 @@
     <string name="student_should_complete_task">Student should complete task:</string>
     <string name="open_consultion">Consult</string>
     <string name="choice_pool_open_consultion">Consult on activating Choice Course Pool</string>
-    <string name="lqcourse_save_local">course has been back up in My Zone/Creation Zone.</string>
+    <string name="lqcourse_save_local">course has been back up in Me/Creation Zone.</string>
     <string name="class_infos">Class Info</string>
     <string name="contacts_infos">Contacts Info</string>
     <string name="today">Today</string>
@@ -1488,7 +1488,7 @@
     <string name="str_already_change_headMaster">Changed</string>
     <string name="str_confirm_remove_master">Remove %s from teacher list?</string>
     <string name="str_success_remove_master">Successfully removed %s from teacher list</string>
-    <string name="str_mark_ask">\'s Question</string>
+    <string name="str_mark_ask">Question</string>
     <string name="str_mark_teacher">\'s Mark</string>
     <string name="str_mark_watch">View</string>
     <string name="str__delete_from_this_class">Remove from Current Class</string>
@@ -1772,7 +1772,7 @@
     <string name="str_start_dubbing">Dub</string>
     <string name="str_look_review">View Remark</string>
     <string name="str_third_login_tip0">WeChat/QQ authorization succeeded, a new LQWaWa account generated</string>
-    <string name="str_thrid_login_tip1">Please change password in My Zone > Profile after login</string>
+    <string name="str_thrid_login_tip1">Please change password in Me > Profile after login</string>
     <string name="str_tip_account">Your LQWaWa account: %s</string>
     <string name="str_tip_password">Initial password: %s</string>
     <string name="str_third_account_already_bind">%1$s account already bound other LQWaWa account (%2$s), unbind and bind this account?</string>
@@ -1780,19 +1780,19 @@
     <string name="str_open_assistance">Apply to be Tutor</string>
     <string name="str_assistance_mode">Tutorial Mode</string>
     <string name="str_assistance_space">Tutor</string>
-    <string name="str_apply_mark">Apply for Remark</string>
-    <string name="str_apply_mark_line_feed">Apply\nRemark</string>
     <string name="str_assistance">Tutor</string>
     <string name="str_check_mark_way">Select remark method</string>
     <string name="str_point_reading_tips">Can add audio, write on sheet, etc.</string>
     <string name="str_record_course_tips">Can record the whole marking process, add explanation, write on sheet, etc.</string>
     <string name="str_lecture_course">Expository Course</string>
     <string name="str_look_task_require">View Task Requirement</string>
-    <string name="str_exit_assistant_model">Exit tutorial mode, enable My Course module</string>
     <string name="str_open_assistant_model">Enable tutorial mode, enter Tutor Space</string>
     <string name="str_assistant_model_title">Enable tutorial mode</string>
     <string name="str_assistant_dialog_tips">Select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor.\n
         Enter Tutor Space to solve puzzles for students.</string>
     <string name="str_no_longer_prompt">Do not show</string>
-    <string name="str_my_courses">Courses</string>
+    <string name="str_my_courses">Learning</string>
+    <string name="str_exit_assistant_model">Exit tutorial mode, enter Learning Space</string>
+    <string name="str_apply_mark">Consult Tutor</string>
+    <string name="str_apply_mark_line_feed">Consult\nTutor</string>
 </resources>

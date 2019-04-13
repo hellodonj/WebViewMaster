@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 public class CourseResourceParams extends BaseVo {
 
+    private String schoolId;
+    private String classId;
+
     private String parentName;
     private String courseIds;
     // 查看类型
@@ -20,12 +23,30 @@ public class CourseResourceParams extends BaseVo {
     private int requestCode;
     // 听读课 限制显示的资源类型集合
     private ArrayList<Integer> filterArray;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
 
     public CourseResourceParams(String parentName, String courseIds,int taskType,int multipleChoiceCount) {
         this.parentName = parentName;
         this.courseIds = courseIds;
         this.taskType = taskType;
         this.multipleChoiceCount = multipleChoiceCount;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
     public String getParentName() {
@@ -58,5 +79,13 @@ public class CourseResourceParams extends BaseVo {
 
     public void setFilterArray(ArrayList<Integer> filterArray) {
         this.filterArray = filterArray;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
+    public void setInitiativeTrigger(boolean initiativeTrigger) {
+        this.initiativeTrigger = initiativeTrigger;
     }
 }

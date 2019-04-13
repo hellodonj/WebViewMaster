@@ -1125,7 +1125,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     sectionName, name,needFlagRead,true,canEdit,
                                     status, memberId,vo.isContainAssistantWork(),
                                     schoolId,isFromMyCourse, courseVo,
-                                    isOnlineTeacher,isFreeUser,params);
+                                    isOnlineTeacher,isFreeUser,params,null);
     }
 
     /**

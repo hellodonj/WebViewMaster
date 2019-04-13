@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse;
 
+import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
@@ -17,7 +18,13 @@ public class ClassResourceData implements Serializable {
     private int taskType;
     private int multipleChoiceCount;
     private ArrayList<Integer> filterArray;
+    // 是否主动选择作业库资源
+    private boolean initiativeTrigger;
     private int requestCode;
+
+    public ClassResourceData(){
+
+    }
 
     public ClassResourceData(@WatchResourceType.WatchResourceRes int taskType,
                             @IntRange(from = 1,to = Integer.MAX_VALUE) int multipleChoiceCount,
@@ -51,6 +58,14 @@ public class ClassResourceData implements Serializable {
 
     public void setFilterArray(ArrayList<Integer> filterArray) {
         this.filterArray = filterArray;
+    }
+
+    public boolean isInitiativeTrigger() {
+        return initiativeTrigger;
+    }
+
+    public void setInitiativeTrigger(boolean initiativeTrigger) {
+        this.initiativeTrigger = initiativeTrigger;
     }
 
     public int getRequestCode() {

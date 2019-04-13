@@ -440,6 +440,9 @@ public final class AppConfig {
         //蛙蛙币余额
         public static String GET_USER_COINS_COUNT = CHARGE_BASE + "/api/wacoin/myWacoin?j=";
 
+        // 代金券余额、明细
+        public static String GET_INTEGRAL_RECORD_LIST = PayBase + "api/integral/getIntegralRecordList";
+
         //娃娃币支付
         public static String PAY_USE_WAWA_COIN = PayBase + "api/order/payUseWawaCoin?j=";
 
@@ -904,6 +907,14 @@ public final class AppConfig {
         // 获取学习任务信息
         public static final String PostTaskInfoByTaskId =
                 LQWAWA_BASE_SERVER + "NewApi/JavaResource/GetStudyTaskInfo";
+
+        // 添加历史学程
+        public static final String PostAddClassHistoryCourse =
+                ServerBase + "api/class/addClassHistoryCourse";
+
+        // 删除历史学程
+        public static final String PostRemoveClassHistoryCourse =
+                ServerBase + "api/class/removeClassHistoryCourse";
 
     }
 }

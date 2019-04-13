@@ -2,15 +2,19 @@ package com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
@@ -19,9 +23,12 @@ import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
@@ -29,12 +36,17 @@ import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermission
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
@@ -67,11 +79,16 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     private CourseShopClassifyAdapter mAdapter;
     private NoPermissionView mNoPermissionView;
 
+    private FrameLayout mNewCartContainer;
+    private TextView mTvWorkCart;
+    private TextView mTvCartPoint;
+
     private LinearLayout mSubjectLayout;
     private Button mAddSubject;
 
     private CourseShopClassifyParams mParams;
     private String mSchoolId;
+    private String mClassId;
     private boolean mSelectResource;
     private ShopResourceData mResourceData;
     // 授权信息
@@ -108,6 +125,27 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        refreshCartPoint();
+    }
+
+    /**
+     * 刷新红点
+     */
+    private void refreshCartPoint() {
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            mTvCartPoint.setText(Integer.toString(count));
+            if (count == 0) {
+                mTvCartPoint.setVisibility(View.GONE);
+            } else {
+                mTvCartPoint.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
     protected CourseShopClassifyContract.Presenter initPresenter() {
         return new CourseShopClassifyPresenter(this);
     }
@@ -125,10 +163,18 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         }
 
         mSchoolId = mParams.getOrganId();
+        mClassId = mParams.getClassId();
         mSelectResource = mParams.isSelectResource();
         mResourceData = mParams.getData();
         if(EmptyUtil.isEmpty(mSchoolId)) return false;
         if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
+
+        if(mSelectResource) {
+            mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
+            mResourceData.setSchoolId(mSchoolId);
+            mResourceData.setClassId(mClassId);
+        }
+
         return super.initArgs(bundle);
     }
 
@@ -139,11 +185,20 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mNoPermissionView = (NoPermissionView) findViewById(R.id.permission_view);
         mNoPermissionView.setDescription(getString(R.string.label_organ_shop_permission_description));
+
+        mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
+        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
+        mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+
         mSubjectLayout = (LinearLayout) findViewById(R.id.subject_layout);
         mAddSubject = (Button) findViewById(R.id.btn_add_subject);
         mAddSubject.setOnClickListener(this);
 
         if(mSelectResource){
+            if(mResourceData.isInitiativeTrigger()) {
+                mNewCartContainer.setVisibility(View.VISIBLE);
+                mNewCartContainer.setOnClickListener(this);
+            }
             mSubjectLayout.setVisibility(View.VISIBLE);
         }
 
@@ -199,10 +254,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                     public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
                         String roles = schoolInfoEntity.getRoles();
                         if(mSelectResource){
+                            Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity,mSelectResource,false,
-                                    mResourceData,isAuthorized,isReallyAuthorized,false,roles);
+                                    mResourceData,extras,isAuthorized,isReallyAuthorized,false,roles);
                         }else{
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
@@ -379,7 +435,58 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         if(viewId == R.id.btn_add_subject){
             // 点击确定
             AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
+        }else if(viewId == R.id.new_cart_container){
+            // 点击作业库
+            handleSubjectSettingData(this,UserHelper.getUserId());
         }
+    }
+
+    public void handleSubjectSettingData(Context context,
+                                         String memberId) {
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                //没有数据
+                popChooseSubjectDialog(context);
+            }
+
+            @Override
+            public void onDataLoaded(List<LQCourseConfigEntity> entities) {
+                if (entities == null || entities.size() == 0) {
+                    popChooseSubjectDialog(context);
+                } else {
+                    //有数据
+                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                        Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(CourseShopClassifyActivity.this,mSchoolId,mClassId,extras);
+                    }
+                }
+            }
+        });
+    }
+
+    private static void popChooseSubjectDialog(Context context) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                context,
+                null,
+                context.getString(R.string.label_unset_choose_subject),
+                context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                },
+                context.getString(R.string.label_choose_subject),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        AddSubjectActivity.show((Activity) context, false, SUBJECT_SETTING_REQUEST_CODE);
+                    }
+                });
+        messageDialog.show();
     }
 
     private boolean isActivityResult;
@@ -406,23 +513,33 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event){
         if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
-            ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
-            setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
-            // 杀掉所有可能的UI
-            ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
-            ActivityUtil.finishActivity(SearchActivity.class);
-            finish();
+            if(EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()) {
+                ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
+                setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
+                // 杀掉所有可能的UI
+                ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
+                ActivityUtil.finishActivity(SearchActivity.class);
+                finish();
+            }
         }
+    }
+
+    public static void show(@NonNull Activity activity,@NonNull CourseShopClassifyParams params){
+        show(activity,params,null);
     }
 
     /**
      * 班级学程列表选择的页面
      * @param context 上下文对象
      */
-    public static void show(@NonNull Context context,@NonNull CourseShopClassifyParams params){
+    public static void show(@NonNull Context context,
+                            @NonNull CourseShopClassifyParams params,
+                            @Nullable Bundle extras,
+                            boolean addClassCourse){
         Intent intent = new Intent(context,CourseShopClassifyActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -431,10 +548,11 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
      * 学程馆学程学习任务选择的入口
      * @param activity 上下文对象
      */
-    public static void show(@NonNull Activity activity,@NonNull CourseShopClassifyParams params){
+    public static void show(@NonNull Activity activity, @NonNull CourseShopClassifyParams params, @Nullable Bundle extras){
         Intent intent = new Intent(activity,CourseShopClassifyActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
         intent.putExtras(bundle);
         if(params.isSelectResource()){
             ShopResourceData data = params.getData();

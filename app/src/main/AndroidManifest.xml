@@ -156,6 +156,12 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity
+            android:name="com.galaxyschool.app.wawaschool.HandleCheckResourceActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity
             android:name=".StudentFinishedHomeworkListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"/>
@@ -1195,6 +1201,7 @@
 
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity"
+            android:theme="@style/AppTheme.Common"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
         </activity>
@@ -1208,6 +1215,12 @@
 
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.CoinsDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="com.lqwawa.intleducation.module.discovery.ui.VoucherDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait">
         </activity>

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -81,7 +82,8 @@ public class TaskSliderHelper {
         // 跳转综合任务
         void enterIntroTaskDetailActivity(@NonNull Activity activity,
                                           @NonNull String schoolId,
-                                          @NonNull String classId);
+                                          @NonNull String classId,
+                                          @Nullable Bundle extras);
     }
 
     public interface OnTaskSliderListener {
