@@ -622,7 +622,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || taskType == StudyTaskType.SUBMIT_HOMEWORK
-                || taskType == StudyTaskType.ENGLISH_WRITING) {
+                || taskType == StudyTaskType.ENGLISH_WRITING
+                || taskType == StudyTaskType.Q_DUBBING) {
             needCommitFlag = true;
         }
         return needCommitFlag;
