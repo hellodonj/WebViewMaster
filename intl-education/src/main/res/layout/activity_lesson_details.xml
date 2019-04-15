@@ -119,13 +119,14 @@
                 android:id="@+id/bottom_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:weightSum="2">
+
+                <!--android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"-->
 
                 <FrameLayout
                     android:id="@+id/cart_container"
