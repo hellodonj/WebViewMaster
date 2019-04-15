@@ -1364,7 +1364,6 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        updateParameterDataList();
         unRegistResultBroadcast();
     }
 

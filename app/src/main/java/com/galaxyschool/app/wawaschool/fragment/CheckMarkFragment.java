@@ -420,7 +420,7 @@ public class CheckMarkFragment extends ContactsListFragment {
 
                     if (getMemeberId().equalsIgnoreCase(data.getCreateId())) {
                         createName = getString(R.string.me);
-                        title.setText(new StringBuilder().append(createName).append(suffTitle));
+                        title.setText(new StringBuilder().append(createName).append(" ").append(suffTitle));
                     } else {
                         SpannableString spannableString = new SpannableString(new StringBuilder(createName).append(suffTitle));
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.com_text_green));

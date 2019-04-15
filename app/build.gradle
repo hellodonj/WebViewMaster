@@ -4,7 +4,7 @@ apply plugin: 'bugly'
 bugly {
     appId = 'eea1375c3e' // 注册时分配的App ID
     appKey = 'a07b42dc-cb09-4c1f-9de1-289f839b35a9' // 注册时分配的App Key
-    uploadMapping = false
+    uploadMapping = true
 }
 
 dependencies {
@@ -50,8 +50,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 575
-        versionName "5.14.6"
+        versionCode 577
+        versionName "5.14.10"
 
         multiDexEnabled true
         ndk {
