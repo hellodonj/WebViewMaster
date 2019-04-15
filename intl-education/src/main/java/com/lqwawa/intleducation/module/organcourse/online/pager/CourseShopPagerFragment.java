@@ -166,7 +166,8 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
                             mResourceData.isInitiativeTrigger(),
                             extras,
                             mResourceData.getSchoolId(),
-                            mResourceData.getClassId(),0);
+                            mResourceData.getClassId(),
+                            mResourceData.getEnterType(),0);
                 }else{
                     CourseDetailsActivity.start(getActivity(),isSchoolEnter,isOnlineClassEnter, vo.getId(), true, UserHelper.getUserId());
                 }

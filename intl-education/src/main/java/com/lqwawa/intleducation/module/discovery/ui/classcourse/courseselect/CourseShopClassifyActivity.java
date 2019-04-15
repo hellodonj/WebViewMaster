@@ -42,6 +42,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
@@ -174,6 +175,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
             mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
             mResourceData.setSchoolId(mSchoolId);
             mResourceData.setClassId(mClassId);
+            mResourceData.setEnterType(CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER);
         }
 
         return super.initArgs(bundle);

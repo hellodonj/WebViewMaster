@@ -69,6 +69,10 @@ public class CourseDetailParams extends BaseVo{
         courseEnterType = CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER;
     }
 
+    public void setCourseEnterType(int courseEnterType) {
+        this.courseEnterType = courseEnterType;
+    }
+
     public int getCourseEnterType() {
         return getCourseEnterType(true);
     }

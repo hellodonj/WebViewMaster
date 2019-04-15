@@ -483,7 +483,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                                 mResourceData.isInitiativeTrigger(),
                                 extras,
                                 mResourceData.getSchoolId(),
-                                mResourceData.getClassId(),0);
+                                mResourceData.getClassId(),
+                                mResourceData.getEnterType(),0);
                     } else {
                         // 线下机构学程馆,是从空中学校进入的 isSchoolEnter = true;
                         String organId = mEntity.getEntityOrganId();

@@ -63,6 +63,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.MinorityLanguageHolder;
@@ -480,6 +481,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                             extras,
                             mSchoolId,
                             mClassId,
+                            CourseDetailType.COURSE_DETAIL_CLASS_ENTER,
                             0);
                 }else{
                     // 班级学程的详情入口

@@ -384,6 +384,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         String classId = "";
         if (role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()) {
             classId = mSourceParams.getCourseParams().getClassId();
+        }else if(role == 1 && mCourseResListAdapter.getChoiceMode()){
+            if(EmptyUtil.isNotEmpty(mSourceParams.getCourseParams().getClassId())){
+                classId = mSourceParams.getCourseParams().getClassId();
+            }
         }
 
         // 获取中英文数据

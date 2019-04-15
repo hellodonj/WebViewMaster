@@ -87,6 +87,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
     // ClassId
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+    // 入口类型
+    public static final String KEY_EXTRA_ENTER_TYPE = "KEY_EXTRA_ENTER_TYPE";
 
     private SuperListView listView;
     private FrameLayout mEmptyView;
@@ -119,6 +121,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     private String mClassId;
     private Bundle mExtras;
 
+    private int mEnterType;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_select, container, false);
@@ -142,6 +146,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
         mSchoolId = getArguments().getString(KEY_EXTRA_SCHOOL_ID);
         mClassId = getArguments().getString(KEY_EXTRA_CLASS_ID);
         mExtras = getArguments().getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+        mEnterType = getArguments().getInt(KEY_EXTRA_ENTER_TYPE);
 
         if (initiativeTrigger) {
             int color = UIUtil.getColor(R.color.colorPink);
@@ -352,10 +357,17 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         CourseSelectItemFragment courseSelectFragment = new CourseSelectItemFragment();
                         courseSelectFragment.setArguments(bundle);*/
 
+                        CourseDetailParams courseParams = new CourseDetailParams();
+                        // 填充参数
+                        courseParams.setSchoolId(mSchoolId);
+                        courseParams.setClassId(mClassId);
+                        courseParams.setCourseEnterType(mEnterType);
+
+
                         int taskType = arguments.getInt("tasktype", 1);
                         int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
                         Fragment courseSelectFragment =
-                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance);
+                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance,courseParams);
 
 
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
