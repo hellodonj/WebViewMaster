@@ -387,7 +387,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mWorkCart.setVisibility(View.VISIBLE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);
-            mCartContainer.setVisibility(View.GONE);
+            mCartContainer.setVisibility(View.VISIBLE);
             // 显示作业库
             mNewCartContainer.setVisibility(View.VISIBLE);
         }else{
