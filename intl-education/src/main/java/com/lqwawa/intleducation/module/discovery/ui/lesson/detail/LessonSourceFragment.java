@@ -173,7 +173,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, true);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
-                (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger()));
+                (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));
 
         mCourseResListAdapter.triggerChoiceMode(mSourceParams.isChoiceMode());
 

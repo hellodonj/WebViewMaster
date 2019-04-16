@@ -331,6 +331,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             // 填充参数
                             courseParams.setSchoolId(mSchoolId);
                             courseParams.setClassId(mClassId);
+                            courseParams.setCourseEnterType(mEnterType);
                         }
 
                         int role = UserHelper.MoocRoleType.TEACHER;
