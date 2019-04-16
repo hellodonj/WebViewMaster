@@ -83,6 +83,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     private boolean tutorialMode;
 
     private OnSelectListener mOnSelectListener;//课程选择
+
+    //是否从班级学程进入
+    private boolean isClassCourseEnter;
+
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
     }
@@ -91,8 +95,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.mOnSelectListener = selectListener;
     }
 
-    public CourseChapterAdapter(Activity activity, String courseId, boolean needFlagRead,boolean isOnlineTeacher, OnContentChangedListener listener) {
-        this(activity,courseId,needFlagRead,listener);
+    public CourseChapterAdapter(Activity activity, String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
+        this(activity, courseId, needFlagRead, listener);
         this.isOnlineTeacher = isOnlineTeacher;
     }
 
@@ -104,7 +108,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<ChapterVo>();
         // 是否获取到授权
-        isAuthorized = activity.getIntent().getBooleanExtra("isAuthorized",false);
+        isAuthorized = activity.getIntent().getBooleanExtra("isAuthorized", false);
 
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
         img_width = 2 * p_width / 5;
@@ -158,7 +162,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         if (vo.getIsChildren()) {
             //课程
             Drawable drawableFlagHere = activity.getResources().getDrawable(R.drawable.ic_flag_here);
-            drawableFlagHere.setBounds(0, 0, (int)(DisplayUtil.sp2px(activity, 35)), (int)(DisplayUtil.sp2px(activity, 14)));
+            drawableFlagHere.setBounds(0, 0, (int) (DisplayUtil.sp2px(activity, 35)), (int) (DisplayUtil.sp2px(activity, 14)));
             if (vo.isIsHide()) {
                 holder.lessonRootLay.setVisibility(View.GONE);
             } else {
@@ -170,25 +174,25 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (vo.getType() == TYPE_CWORK) {//测验
                     // @date   :2018/4/24 0024 下午 2:12
                     // @func   :测验缩进
-                    setLessonViewMargin(holder.lessonLayout,(int)(20* UIUtil.getResources().getDisplayMetrics().density));
+                    setLessonViewMargin(holder.lessonLayout, (int) (20 * UIUtil.getResources().getDisplayMetrics().density));
                     holder.lessonFlagView.setVisibility(View.GONE);
                     holder.mTvLessonState.setVisibility(View.GONE);
                     holder.lessonNameTv.setText(activity.getResources().getString(R.string.unit_exam));
-                    if((vo.getFlag() & 0x01) > 0){
+                    if ((vo.getFlag() & 0x01) > 0) {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.black));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,drawableFlagHere, null);
-                    }else{
+                        holder.lessonNameTv.setCompoundDrawables(null, null, drawableFlagHere, null);
+                    } else {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.black));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,null, null);
+                        holder.lessonNameTv.setCompoundDrawables(null, null, null, null);
                     }
 
                     // 是否是老师
                     // boolean isTeacher = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
                     boolean isTeacher = isTeacher();
-                    if(isJoinCourse && (vo.isBuyed() || isTeacher)){
+                    if (isJoinCourse && (vo.isBuyed() || isTeacher)) {
                         // 购买 或许是老师身份 显示测验
                         holder.resRootLay.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         // 未购买 不是老师身份
                         holder.resRootLay.setVisibility(View.GONE);
                     }
@@ -206,7 +210,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             }
 
                             // 判空
-                            if(EmptyUtil.isEmpty(courseVo)) return;
+                            if (EmptyUtil.isEmpty(courseVo)) return;
 
                             UnitExamListActivity.start(activity, vo.getCourseId(), vo.getParentId(),
                                     activity.getIntent().getBooleanExtra("canEdit", false),
@@ -217,18 +221,18 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         }
                     });
 
-                } else if(vo.getType() == TYPE_CEXAM){ //考试
+                } else if (vo.getType() == TYPE_CEXAM) { //考试
                     // @date   :2018/4/24 0024 下午 2:12
                     // @func   :考试不缩进
-                    setLessonViewMargin(holder.lessonLayout,(int)(0* UIUtil.getResources().getDisplayMetrics().density));
+                    setLessonViewMargin(holder.lessonLayout, (int) (0 * UIUtil.getResources().getDisplayMetrics().density));
                     holder.lessonFlagView.setVisibility(View.GONE);
                     holder.mTvLessonState.setVisibility(View.GONE);
-                    if((vo.getFlag() & 0x02) > 0){
+                    if ((vo.getFlag() & 0x02) > 0) {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.black));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,drawableFlagHere, null);
-                    }else{
+                        holder.lessonNameTv.setCompoundDrawables(null, null, drawableFlagHere, null);
+                    } else {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.black));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,null, null);
+                        holder.lessonNameTv.setCompoundDrawables(null, null, null, null);
                     }
                     // holder.lessonNameTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, DisplayUtil.sp2px(activity, 16));
                     holder.lessonNameTv.setText(activity.getResources().getString(R.string.exam));
@@ -236,10 +240,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     // 只有全部购买,才显示考试 或者是老师身份
                     // boolean isTeacher = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
                     boolean isTeacher = isTeacher();
-                    if(isJoinCourse && (buyAll || isTeacher)){
+                    if (isJoinCourse && (buyAll || isTeacher)) {
                         // 已全部购买 或者是老师身份 显示考试
                         holder.resRootLay.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         // 不显示考试
                         holder.resRootLay.setVisibility(View.GONE);
                     }
@@ -263,7 +267,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             }
 
                             // 判空
-                            if(EmptyUtil.isEmpty(courseVo)) return;
+                            if (EmptyUtil.isEmpty(courseVo)) return;
 
                             CourseExamListActivity.start(activity, vo.getCourseId(),
                                     TextUtils.equals(activity.getClass().getSimpleName()
@@ -279,9 +283,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 } else {//小节
                     // @date   :2018/4/24 0024 下午 2:12
                     // @func   :小节缩进
-                    setLessonViewMargin(holder.lessonLayout,(int)(20* UIUtil.getResources().getDisplayMetrics().density));
+                    setLessonViewMargin(holder.lessonLayout, (int) (20 * UIUtil.getResources().getDisplayMetrics().density));
 
-                    if(activity.getClass().getSimpleName().equals("MyCourseDetailsActivity")) {
+                    if (activity.getClass().getSimpleName().equals("MyCourseDetailsActivity")) {
                         if (vo.getStatus() == 1) {
                             holder.lessonFlagView.setBackgroundResource(R.drawable.com_cicle_green_bg);
                         } else {
@@ -293,42 +297,47 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.lessonFlagView.setVisibility(View.GONE);
                     holder.mTvLessonState.setVisibility(View.VISIBLE);
                     // 节标识
-                    holder.mTvLessonState.setText(String.format("%d/%d",vo.getFinishNum(),vo.getTotalNum()));
-                    if(vo.getFinishNum() == 0){
+                    holder.mTvLessonState.setText(String.format("%d/%d", vo.getFinishNum(), vo.getTotalNum()));
+                    if (vo.getFinishNum() == 0) {
                         // 还未开始做
                         int color = UIUtil.getColor(R.color.section_state_idle_color);
-                        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
-                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color,color,radius));
-                    }else if(vo.getFinishNum() < vo.getTotalNum()){
+                        int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
+                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color, color, radius));
+                    } else if (vo.getFinishNum() < vo.getTotalNum()) {
                         // 做了一半
                         int color = UIUtil.getColor(R.color.section_state_starting_color);
-                        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
-                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color,color,radius));
-                    }else if(vo.getFinishNum() >= vo.getTotalNum()){
+                        int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
+                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color, color, radius));
+                    } else if (vo.getFinishNum() >= vo.getTotalNum()) {
                         // 做完了
                         int color = UIUtil.getColor(R.color.section_state_complete_color);
-                        int radius = DisplayUtil.dip2px(UIUtil.getContext(),16);
-                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color,color,radius));
+                        int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
+                        holder.mTvLessonState.setBackground(DrawableUtil.createDrawable(color, color, radius));
                     }
 
                     boolean isTeacher = isTeacher();
 
-                    if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
-                        holder.mTvLessonState.setVisibility(View.GONE);
-                    }else{
-                        if(vo.isBuyed() || mTeacherVisitor){
-                            holder.mTvLessonState.setVisibility(View.VISIBLE);
-                        }else{
+                    //老师布置任务从班级学程选取资源时显示进度
+                    if (isCourseSelect && isClassCourseEnter) {
+                        holder.mTvLessonState.setVisibility(View.VISIBLE);
+                    } else {
+                        if (!isJoinCourse || (isTeacher && !isClassTeacher())) {
                             holder.mTvLessonState.setVisibility(View.GONE);
+                        } else {
+                            if (vo.isBuyed() || mTeacherVisitor) {
+                                holder.mTvLessonState.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.mTvLessonState.setVisibility(View.GONE);
+                            }
                         }
                     }
 
-                    if(vo.getFlag() > 0){
+                    if (vo.getFlag() > 0) {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.textGray));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,drawableFlagHere, null);
-                    }else{
+                        holder.lessonNameTv.setCompoundDrawables(null, null, drawableFlagHere, null);
+                    } else {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.textGray));
-                        holder.lessonNameTv.setCompoundDrawables(null,null,null, null);
+                        holder.lessonNameTv.setCompoundDrawables(null, null, null, null);
                     }
                     // @date   :2018/4/10 0010 上午 10:13
                     // @func   :V5.5取消课时字符串的显示
@@ -344,26 +353,26 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 return;
                             }
 
-                            if(tutorialMode && !isJoinCourse){
-                                if(!vo.getParentId().equals(list.get(0).getId())) {
+                            if (tutorialMode && !isJoinCourse) {
+                                if (!vo.getParentId().equals(list.get(0).getId())) {
                                     UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
-                                }else{
+                                } else {
                                     // 直接拦截
-                                    toLessonDetailsActivity(vo,true);
+                                    toLessonDetailsActivity(vo, true);
                                 }
                                 return;
                             }
 
 
-                            if (!isTeacher && !vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized){
+                            if (!isTeacher && !vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized) {
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
-                                if(mTeacherVisitor){
+                                if (mTeacherVisitor) {
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
-                                }else{
+                                } else {
                                     ToastUtil.showToast(activity,
                                             activity.getResources().getString(R.string.buy_course_please));
                                 }
-                            }else {
+                            } else {
                                 /*if(!UserHelper.isLogin()){
                                     // 前去登录
                                     LoginHelper.enterLogin(activity);
@@ -374,7 +383,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         .getStringExtra("memberId"), courseVo);
 
                                 // 是否试听权限 没有阅读全部
-                                boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+                                boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
 
                                 if (role == UserHelper.MoocRoleType.STUDENT ||
                                         role == UserHelper.MoocRoleType.PARENT) {
@@ -401,42 +410,42 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     int intId = Integer.parseInt(vo.getParentId());
                                     CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
-                                    if(!firstChapter && isJoinCourse && !vo.isBuyed() && !isAuthorized){
+                                    if (!firstChapter && isJoinCourse && !vo.isBuyed() && !isAuthorized) {
 
                                         // TODO 添加老师看学生的逻辑
-                                        if(mTeacherVisitor){
+                                        if (mTeacherVisitor) {
                                             UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
                                             return;
                                         }
 
-                                        if(role == UserHelper.MoocRoleType.PARENT){
-                                            if(activity instanceof FragmentActivity){
+                                        if (role == UserHelper.MoocRoleType.PARENT) {
+                                            if (activity instanceof FragmentActivity) {
                                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
                                                 String childMemberId = activity.getIntent().getStringExtra("memberId");
                                                 int intCourseId = Integer.parseInt(courseId);
-                                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo,null,true, childMemberId,intCourseId,PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
+                                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo, null, true, childMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
                                                     @Override
                                                     public void onChoiceConfirm(@NonNull String curMemberId) {
                                                         // 弹框点击确认的回调
                                                         // UIUtil.showToastSafe(curMemberId);
-                                                        LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,curMemberId);
+                                                        LQCourseOrderActivity.show(activity, params, courseVo, courseVo.getOrganId(), intId, curMemberId);
                                                     }
                                                 });
                                             }
-                                        }else{
+                                        } else {
                                             // 给自己买
                                             // String memberId = UserHelper.getUserId();
                                             // LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,memberId);
-                                            if(activity instanceof FragmentActivity){
+                                            if (activity instanceof FragmentActivity) {
                                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
                                                 String childMemberId = activity.getIntent().getStringExtra("memberId");
                                                 int intCourseId = Integer.parseInt(courseId);
-                                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(),courseVo,null,intCourseId,PayCourseDialogFragment.TYPE_COURSE,new PayDialogNavigator() {
+                                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
                                                     @Override
                                                     public void onChoiceConfirm(@NonNull String curMemberId) {
                                                         // 弹框点击确认的回调
                                                         // UIUtil.showToastSafe(curMemberId);
-                                                        LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,curMemberId);
+                                                        LQCourseOrderActivity.show(activity, params, courseVo, courseVo.getOrganId(), intId, curMemberId);
                                                     }
                                                 });
                                             }
@@ -446,21 +455,21 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     }
                                 }
 
-                                if(mTeacherVisitor && !vo.isBuyed()){
+                                if (mTeacherVisitor && !vo.isBuyed()) {
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
                                     return;
                                 }
 
                                 // 用户从我的授课进来，在没购买的章节 小节点击之前，需要判断是否是家长，如果是家长，判断
                                 // 是不是学程的老师，如果是学程的老师，则提示不允许学习自己的学程
-                                if(!vo.isBuyed() && role == UserHelper.MoocRoleType.PARENT){
+                                if (!vo.isBuyed() && role == UserHelper.MoocRoleType.PARENT) {
                                     // 家长身份，需要判断，自己是不是老师
-                                    if((UserHelper.isCourseTeacher(courseVo) ||
-                                            UserHelper.isCourseTutor(courseVo))){
+                                    if ((UserHelper.isCourseTeacher(courseVo) ||
+                                            UserHelper.isCourseTutor(courseVo))) {
                                         boolean firstChapter = vo.getParentId().equals(list.get(0).getId());
-                                        if(firstChapter)
-                                        isFreeUser = true;
-                                        if(isJoinCourse) {
+                                        if (firstChapter)
+                                            isFreeUser = true;
+                                        if (isJoinCourse) {
                                             // 如果是讲师，就是自己的课程
                                             UIUtil.showToastSafe(R.string.label_not_study_course_for_me);
                                             return;
@@ -469,7 +478,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 }
 
 
-                                toLessonDetailsActivity(vo,isFreeUser);
+                                toLessonDetailsActivity(vo, isFreeUser);
                                 /*LessonDetailsActivity.start(activity, courseId, vo.getId(),
                                         vo.getSectionName(), vo.getName(),
                                         needFlagRead,
@@ -490,59 +499,59 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 }
             }
         } else {//章节
-            if(activity.getClass().getSimpleName().equals("MyCourseDetailsActivity")) {
+            if (activity.getClass().getSimpleName().equals("MyCourseDetailsActivity")) {
                 holder.chapter_flag_iv.setVisibility(View.VISIBLE);
                 if (vo.getStatus() == 1) {
                     holder.chapter_flag_iv.setBackgroundResource(R.drawable.ic_chapter_flag);
                 } else {
                     holder.chapter_flag_iv.setBackgroundResource(R.drawable.ic_chapter_normal);
                 }
-            }else{
+            } else {
                 holder.chapter_flag_iv.setVisibility(View.GONE);
             }
             // V5.11.X改版
             holder.chapter_flag_iv.setVisibility(View.GONE);
 
-            if(TextUtils.equals(activity.getClass().getSimpleName(),"MyCourseDetailsActivity") ||
-                    TextUtils.equals(activity.getClass().getSimpleName(),"WatchStudentChapterActivity")) {
+            if (TextUtils.equals(activity.getClass().getSimpleName(), "MyCourseDetailsActivity") ||
+                    TextUtils.equals(activity.getClass().getSimpleName(), "WatchStudentChapterActivity")) {
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    if(isClassTeacher() && !mTeacherVisitor){
+                    if (isClassTeacher() && !mTeacherVisitor) {
                         holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
-                    }else{
+                    } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
 
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
-                    if(isClassTeacher() && !mTeacherVisitor){
+                    if (isClassTeacher() && !mTeacherVisitor) {
                         holder.mTvChapterState.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
                     }
                 }
-            }else{
+            } else {
                 holder.mTvChapterState.setVisibility(View.GONE);
             }
 
             final boolean isTeacher = isTeacher();
 
-            if(isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())){
+            if (isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())) {
                 // 是老师但不是班级学程的老师
                 holder.mTvChapterState.setVisibility(View.GONE);
-            }else{
-                if(vo.isBuyed() || mTeacherVisitor){
+            } else {
+                if (vo.isBuyed() || mTeacherVisitor) {
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                     // 添加班级学程的逻辑
-                    if(isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0){
+                    if (isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0) {
                         // 班级学程的老师没有布置完成
                         holder.mTvChapterState.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     holder.mTvChapterState.setVisibility(View.GONE);
                 }
             }
@@ -553,15 +562,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             NumberTool.numberToChinese(vo.getWeekNum())));
 
             holder.auditionTv.setVisibility(View.GONE);
-            boolean isOwner = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+            boolean isOwner = UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
             // if (position == 0 && (!canReadAll() || !vo.isBuyed())) {//发现页面 第一张 显示试听字样
             // TODO 加判断逻辑 老师看孩子
             if (position == 0 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {//发现页面 第一张 显示试听字样
                 holder.auditionTv.setVisibility(View.VISIBLE);
-                if(!isCourseSelect){
-                    holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),200));
+                if (!isCourseSelect) {
+                    holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
                 }
-            }else{
+            } else {
                 holder.auditionTv.setVisibility(View.GONE);
                 holder.chapterTitleTv.setMaxWidth(Integer.MAX_VALUE);
             }
@@ -577,27 +586,27 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             // boolean isTeacher = UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
             // final boolean isTeacher = isTeacher();
             // TODO 加判断逻辑 老师看孩子
-            if(isTeacher && !mTeacherVisitor){
+            if (isTeacher && !mTeacherVisitor) {
                 holder.tvPrice.setVisibility(View.INVISIBLE);
-            }else{
-                if(!(vo.getPrice() == 0) && !isCourseSelect){
+            } else {
+                if (!(vo.getPrice() == 0) && !isCourseSelect) {
                     // 是已经加入课程显示的 并且不是免费的
                     // 不是学习任务选择
                     // V5.9后期，未加入也显示价格
                     holder.tvPrice.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     holder.tvPrice.setVisibility(View.GONE);
                 }
 
 
-                if(vo.isBuyed()){
+                if (vo.isBuyed()) {
                     // 章节已经购买 已购
                     holder.tvPrice.setText(R.string.label_yet_pay);
                     // 灰色 改成绿色
                     // holder.tvPrice.setTextColor(UIUtil.getColor(R.color.textSecond));
                     holder.tvPrice.setTextColor(UIUtil.getColor(R.color.textAccent));
                     holder.tvPrice.setBackground(new ColorDrawable(UIUtil.getColor(R.color.colorLight)));
-                }else{
+                } else {
                     // 显示价格
                     holder.tvPrice.setText(Common.Constance.MOOC_MONEY_MARK + Integer.toString(vo.getPrice()));
                     // 红色
@@ -616,59 +625,57 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     }
 
                     // TODO 加判断逻辑 老师看孩子
-                    if(mTeacherVisitor) return;
+                    if (mTeacherVisitor) return;
 
-                    if(vo.isBuyed()){
+                    if (vo.isBuyed()) {
                         // 必须要是没有购买
                         // 如果已经购买 return
                         return;
                     }
 
 
-
                     int role = UserHelper.getCourseAuthorRole(activity.getIntent()
                             .getStringExtra("memberId"), courseVo);
 
 
-
-                    if(role == UserHelper.MoocRoleType.STUDENT ||
-                            role == UserHelper.MoocRoleType.PARENT){
+                    if (role == UserHelper.MoocRoleType.STUDENT ||
+                            role == UserHelper.MoocRoleType.PARENT) {
 
                         // 没有购买 点击购买
                         int intId = Integer.parseInt(vo.getId());
                         // 是否试听权限 没有阅读全部
-                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
                         CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
-                        if(role == UserHelper.MoocRoleType.PARENT){
-                            if(activity instanceof FragmentActivity){
+                        if (role == UserHelper.MoocRoleType.PARENT) {
+                            if (activity instanceof FragmentActivity) {
                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
                                 String childMemberId = activity.getIntent().getStringExtra("memberId");
                                 int intCourseId = Integer.parseInt(courseId);
-                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo,null,true, childMemberId,intCourseId,PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
+                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo, null, true, childMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
                                     @Override
                                     public void onChoiceConfirm(@NonNull String curMemberId) {
                                         // 弹框点击确认的回调
                                         // UIUtil.showToastSafe(curMemberId);
-                                        LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,curMemberId);
+                                        LQCourseOrderActivity.show(activity, params, courseVo, courseVo.getOrganId(), intId, curMemberId);
                                     }
                                 });
                             }
 
-                        }else{
+                        } else {
                             // 给自己买
                             // String memberId = UserHelper.getUserId();
                             // LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,memberId);
-                            if(activity instanceof FragmentActivity){
+                            if (activity instanceof FragmentActivity) {
                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
                                 String childMemberId = activity.getIntent().getStringExtra("memberId");
                                 int intCourseId = Integer.parseInt(courseId);
-                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(),courseVo,null,intCourseId,PayCourseDialogFragment.TYPE_COURSE,new PayDialogNavigator() {
+                                PayCourseDialogFragment.show(fragmentActivity.getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, new PayDialogNavigator() {
                                     @Override
                                     public void onChoiceConfirm(@NonNull String curMemberId) {
                                         // 弹框点击确认的回调
                                         // UIUtil.showToastSafe(curMemberId);
-                                        LQCourseOrderActivity.show(activity,params,courseVo,courseVo.getOrganId(),intId,curMemberId);
+                                        LQCourseOrderActivity.show(activity, params, courseVo, courseVo.getOrganId(), intId, curMemberId);
                                     }
                                 });
                             }
@@ -676,8 +683,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         return;
                     }
 
-                    if(role == UserHelper.MoocRoleType.PARENT){
-                        if(UserHelper.isCourseTeacher(courseVo) || UserHelper.isCourseTutor(courseVo)){
+                    if (role == UserHelper.MoocRoleType.PARENT) {
+                        if (UserHelper.isCourseTeacher(courseVo) || UserHelper.isCourseTutor(courseVo)) {
                             // 如果是讲师，就是自己的课程
                             UIUtil.showToastSafe(R.string.label_not_study_course_for_me);
                             return;
@@ -713,21 +720,20 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         }
 
 
-
-        if(tutorialMode){
+        if (tutorialMode) {
             // 如果是帮辅模式
             // 不显示章状态
-            if(EmptyUtil.isNotEmpty(holder.mTvChapterState))
-            holder.mTvChapterState.setVisibility(View.GONE);
+            if (EmptyUtil.isNotEmpty(holder.mTvChapterState))
+                holder.mTvChapterState.setVisibility(View.GONE);
             // 不显示节状态
-            if(EmptyUtil.isNotEmpty(holder.mTvLessonState))
-            holder.mTvLessonState.setVisibility(View.GONE);
+            if (EmptyUtil.isNotEmpty(holder.mTvLessonState))
+                holder.mTvLessonState.setVisibility(View.GONE);
             // 不显示价格
-            if(EmptyUtil.isNotEmpty(holder.tvPrice))
-            holder.tvPrice.setVisibility(View.GONE);
+            if (EmptyUtil.isNotEmpty(holder.tvPrice))
+                holder.tvPrice.setVisibility(View.GONE);
             // 不显示试听
-            if(EmptyUtil.isNotEmpty(holder.auditionTv))
-            holder.auditionTv.setVisibility(View.GONE);
+            if (EmptyUtil.isNotEmpty(holder.auditionTv))
+                holder.auditionTv.setVisibility(View.GONE);
         }
 
         return convertView;
@@ -735,16 +741,17 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * 当显示课程小节缩进的时候,需要设置Layout Margin
-     * @param view 设置对象
+     *
+     * @param view            设置对象
      * @param leftMarginValue 设置值
      */
-    private void setLessonViewMargin(@NonNull View view,int leftMarginValue){
+    private void setLessonViewMargin(@NonNull View view, int leftMarginValue) {
         LinearLayout.LayoutParams mLayoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-        mLayoutParams.setMargins(leftMarginValue,0,0,0);
+        mLayoutParams.setMargins(leftMarginValue, 0, 0, 0);
         view.setLayoutParams(mLayoutParams);
     }
 
-    private boolean canReadAll(){
+    private boolean canReadAll() {
         boolean isCourseDetails = activity.getClass().getSimpleName().equals("CourseDetailsActivity");
         boolean isClassTeacherDetails = activity.getClass().getSimpleName().equalsIgnoreCase("WatchStudentChapterActivity");
         if (!isCourseDetails && !isClassTeacherDetails) {
@@ -794,7 +801,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             resRootLay = (LinearLayout) parent.findViewById(R.id.res_root_lay);
             lessonNameTv = (TextView) parent.findViewById(R.id.lesson_name_tv);
             lessonFlagView = parent.findViewById(R.id.lesson_flag_view);
-            chapter_flag_iv = (ImageView)parent.findViewById(R.id.chapter_flag_iv);
+            chapter_flag_iv = (ImageView) parent.findViewById(R.id.chapter_flag_iv);
             mTvChapterState = (TextView) parent.findViewById(R.id.tv_chapter_state);
             mTvLessonState = (TextView) parent.findViewById(R.id.tv_lesson_state);
             lessonLayout = (LinearLayout) parent.findViewById(R.id.lesson_layout);
@@ -813,7 +820,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
      * @author medici
      * @desc 设置是否全部购买
      */
-    public void buyAll(boolean buyAll){
+    public void buyAll(boolean buyAll) {
         this.buyAll = buyAll;
     }
 
@@ -890,16 +897,20 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         }
     }
 
-    public void setJoinCourse(@NonNull boolean joinCourse){
+    public void setJoinCourse(@NonNull boolean joinCourse) {
         this.isJoinCourse = joinCourse;
     }
 
-    public void setTeacherVisitor(boolean visitor){
+    public void setTeacherVisitor(boolean visitor) {
         this.mTeacherVisitor = visitor;
     }
 
     public void setCourseSelect(boolean b) {
         isCourseSelect = b;
+    }
+
+    public void setIsClassCourseEnter(boolean isClassCourseEnter) {
+        this.isClassCourseEnter = isClassCourseEnter;
     }
 
     public void setCourseVo(CourseVo courseVo) {
@@ -916,6 +927,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * 找到未学习的章节开始索引
+     *
      * @return
      */
     private int getLearnChapterStartPos() {
@@ -934,12 +946,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * 找到未学习的章节结束索引
+     *
      * @return
      */
     private int getLearnChapterEndPos() {
         int pos = list != null ? list.size() : 0;
         int startPos = getLearnChapterStartPos();
-        
+
         if (list != null && list.size() > 0) {
             if (startPos + 1 < list.size()) {
                 for (int i = startPos + 1; i < list.size(); i++) {
@@ -959,6 +972,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * "考试"需判断前一个是否已完成
+     *
      * @param position
      * @return
      */
@@ -973,7 +987,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     for (int i = position; i >= 0; i--) {
                         ChapterVo item = list.get(i);
                         if (!item.getIsChildren()) {
-                            if (item.getStatus() != 1 ) {
+                            if (item.getStatus() != 1) {
                                 TipMsgHelper.ShowLMsg(activity, R.string.exam_chapter_first);
                                 return true;
                             } else {
@@ -990,6 +1004,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * 学习进度判断，只有之前的章节全部学完才能学当前章
+     *
      * @param position
      * @return
      */
@@ -1008,11 +1023,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (chapterVo != null) {
                     TipMsgHelper.ShowLMsg(activity, activity.getResources().getString(R.string
                             .learn_chapter_first, chapterVo.getName()));
-                 }
+                }
             }
             return true;
         } else {
-            
+
         }
         return false;
     }
@@ -1020,21 +1035,22 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     /**
      * @desc 是否是老师身份
      */
-    private boolean isTeacher(){
-        boolean canEdit = activity.getIntent().getBooleanExtra("canEdit",false);
-        if(!canEdit){
+    private boolean isTeacher() {
+        boolean canEdit = activity.getIntent().getBooleanExtra("canEdit", false);
+        if (!canEdit) {
             String memberId = activity.getIntent().getStringExtra("memberId");
-            return UserHelper.MoocRoleType.TEACHER == UserHelper.getCourseAuthorRole(memberId,courseVo);
-        }else{
-            return UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher);
+            return UserHelper.MoocRoleType.TEACHER == UserHelper.getCourseAuthorRole(memberId, courseVo);
+        } else {
+            return UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
         }
     }
 
     /**
      * 是否是班级学程的老师
+     *
      * @return true 是班级学程的老师,显示状态信息
      */
-    private boolean isClassTeacher(){
+    private boolean isClassTeacher() {
         CourseDetailParams params = getCourseDetailParams(null, false);
         return params.isClassCourseEnter() && params.isClassTeacher();
     }
@@ -1042,23 +1058,24 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     /**
      * 处理业务角色判断
      */
-    private int handleBusinessRole(){
+    private int handleBusinessRole() {
         String curMemberId = activity.getIntent().getStringExtra("memberId");
-        int role = UserHelper.getCourseAuthorRole(curMemberId,courseVo,isOnlineTeacher);
+        int role = UserHelper.getCourseAuthorRole(curMemberId, courseVo, isOnlineTeacher);
         return role;
     }
 
     /**
      * 判断老师类型
+     *
      * @return TeacherType
      */
-    private int handleTeacherType(){
+    private int handleTeacherType() {
         int teacherType = UserHelper.TeacherType.TEACHER_DEFAULT;
-        if(UserHelper.isCourseTeacher(courseVo)){
+        if (UserHelper.isCourseTeacher(courseVo)) {
             teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
-        }else if(UserHelper.isCourseTutor(courseVo)){
+        } else if (UserHelper.isCourseTutor(courseVo)) {
             teacherType = UserHelper.TeacherType.TEACHER_TUTOR;
-        }else if(UserHelper.isCourseCounselor(courseVo)){
+        } else if (UserHelper.isCourseCounselor(courseVo)) {
             teacherType = UserHelper.TeacherType.TEACHER_COUNSELOR;
         }
 
@@ -1067,11 +1084,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     /**
      * 去节详情页面
+     *
      * @param vo 章节
      */
-    private void toLessonDetailsActivity(@NonNull ChapterVo vo,boolean isFreeUser){
+    private void toLessonDetailsActivity(@NonNull ChapterVo vo, boolean isFreeUser) {
         // 判空
-        if(EmptyUtil.isEmpty(courseVo)) return;
+        if (EmptyUtil.isEmpty(courseVo)) return;
 
         String chapterId = vo.getId();
         String sectionName = vo.getSectionName();
@@ -1082,33 +1100,33 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         String memberId = activity.getIntent().getStringExtra("memberId");
         String schoolId = activity.getIntent().getStringExtra("schoolId");
         // 获取课程大纲所属课程的课程详情参数
-        CourseDetailParams courseParams = getCourseDetailParams(courseVo,isFreeUser);
+        CourseDetailParams courseParams = getCourseDetailParams(courseVo, isFreeUser);
 
         int role = handleBusinessRole();
         // 自己的真实角色 和 老师类型
-        int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(),courseVo,isOnlineTeacher);
+        int realRole = UserHelper.getCourseAuthorRole(UserHelper.getUserId(), courseVo, isOnlineTeacher);
         int teacherType = handleTeacherType();
 
-        if(courseParams.isClassTeacher() || (tutorialMode && isJoinCourse)){
+        if (courseParams.isClassTeacher() || (tutorialMode && isJoinCourse)) {
             // 班级学程的老师
-            if(mTeacherVisitor){
+            if (mTeacherVisitor) {
                 realRole = UserHelper.MoocRoleType.TEACHER;
-            }else{
+            } else {
                 role = UserHelper.MoocRoleType.TEACHER;
             }
             // 类型等于讲师
             teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
         }
 
-        if(courseParams.isClassParent() || courseParams.isOrganCounselor()){
+        if (courseParams.isClassParent() || courseParams.isOrganCounselor()) {
             // 这个时候遵从权限最大原则
-            if(role != UserHelper.MoocRoleType.TEACHER){
+            if (role != UserHelper.MoocRoleType.TEACHER) {
                 // 已经是老师了,不需要变换成老师角色
                 // 班级学程的家长,辅导老师身份处理
                 // 机构的授权老师,辅导老师身份处理
-                if(mTeacherVisitor){
+                if (mTeacherVisitor) {
                     realRole = UserHelper.MoocRoleType.TEACHER;
-                }else{
+                } else {
                     role = UserHelper.MoocRoleType.TEACHER;
                 }
                 // 类型等于辅导老师
@@ -1116,36 +1134,38 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             }
         }
 
-        CourseChapterParams params = new CourseChapterParams(memberId,role,teacherType,isFreeUser);
-        params.fillVisitorInfo(mTeacherVisitor,realRole);
+        CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
+        params.fillVisitorInfo(mTeacherVisitor, realRole);
         params.setCourseParams(courseParams);
 
-        boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE,false);
+        boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false);
         LessonDetailsActivity.start(activity, courseId, chapterId,
-                                    sectionName, name,needFlagRead,true,canEdit,
-                                    status, memberId,vo.isContainAssistantWork(),
-                                    schoolId,isFromMyCourse, courseVo,
-                                    isOnlineTeacher,isFreeUser,params,null);
+                sectionName, name, needFlagRead, true, canEdit,
+                status, memberId, vo.isContainAssistantWork(),
+                schoolId, isFromMyCourse, courseVo,
+                isOnlineTeacher, isFreeUser, params, null);
     }
 
     /**
      * 获取课程章节的参数
+     *
      * @return
      */
-    private CourseDetailParams getCourseDetailParams(){
-        return getCourseDetailParams(courseVo,false);
+    private CourseDetailParams getCourseDetailParams() {
+        return getCourseDetailParams(courseVo, false);
     }
 
     /**
      * 获取课程章节的参数
+     *
      * @return
      */
-    private CourseDetailParams getCourseDetailParams(@NonNull CourseVo vo,boolean isFreeUser){
+    private CourseDetailParams getCourseDetailParams(@NonNull CourseVo vo, boolean isFreeUser) {
         // 获取课程大纲所属课程的课程详情参数
         CourseDetailParams courseParams = null;
-        if(activity.getIntent().hasExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT)){
+        if (activity.getIntent().hasExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT)) {
             courseParams = (CourseDetailParams) activity.getIntent().getSerializableExtra(CourseDetailsActivity.ACTIVITY_BUNDLE_OBJECT);
-        }else{
+        } else {
             courseParams = new CourseDetailParams();
         }
         if (courseParams != null && courseVo != null) {

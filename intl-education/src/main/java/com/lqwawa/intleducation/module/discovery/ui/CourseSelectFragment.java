@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +36,14 @@ import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
+import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseIntroduceAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.CourseSelectItemOuterFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -213,7 +216,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     public void onClick(View v) {
         int viewId = v.getId();
         if (viewId == R.id.new_cart_container) {
-            handleSubjectSettingData(getActivity(),UserHelper.getUserId());
+            handleSubjectSettingData(getActivity(), UserHelper.getUserId());
             /*if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                 TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(getActivity(),mSchoolId,mClassId,mExtras);
             }*/
@@ -236,8 +239,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     popChooseSubjectDialog(context);
                 } else {
                     //有数据
-                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
-                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(activity,mSchoolId,mClassId,mExtras);
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(activity, mSchoolId, mClassId, mExtras);
                     }
                 }
             }
@@ -291,9 +294,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
         pullToRefresh.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
             @Override
             public void onHeaderRefresh(PullToRefreshView view) {
-
                 getData();
-
             }
         });
         pullToRefresh.setLoadMoreEnable(false);
@@ -306,6 +307,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     }
                 });
         courseChapterAdapter.setCourseSelect(true);
+        courseChapterAdapter.setIsClassCourseEnter(mEnterType == CourseDetailType.COURSE_DETAIL_CLASS_ENTER);
         courseChapterList = new ArrayList<ChapterVo>();
         listView.setAdapter(courseChapterAdapter);
         courseChapterAdapter.setOnSelectListener(new CourseChapterAdapter.OnSelectListener() {
@@ -336,15 +338,15 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
 
                         int role = UserHelper.MoocRoleType.TEACHER;
                         int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
-                        CourseChapterParams params = new CourseChapterParams(memberId,role,teacherType,false);
+                        CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
                         params.setCourseParams(courseParams);
-                        params.setChoiceMode(true,true);
+                        params.setChoiceMode(true, true);
 
                         LessonDetailsActivity.start(activity, courseId, chapterId,
-                                sectionName, name,false,true,true,
-                                status, memberId,chapterVo.isContainAssistantWork(),
-                                "",false, courseVo,
-                                false,false,params,
+                                sectionName, name, false, true, true,
+                                status, memberId, chapterVo.isContainAssistantWork(),
+                                "", false, courseVo,
+                                false, false, params,
                                 mExtras);
                     } else {
                         Bundle arguments = getArguments();
@@ -368,7 +370,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         int taskType = arguments.getInt("tasktype", 1);
                         int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
                         Fragment courseSelectFragment =
-                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance,courseParams);
+                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams);
 
 
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -390,157 +392,59 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
 
     private void getData() {
         pageIndex = 0;
-        getData(AppConfig.PAGE_SIZE);
+        if (!TextUtils.isEmpty(mSchoolId)) {
+            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(), flagCourseData.getId(),
+                    mSchoolId, new Callback());
+        } else {
+            LQCourseHelper.requestChapterByCourseId(mClassId, flagCourseData.getId(),
+                    new Callback());
+        }
     }
 
-    private void getData(int pageSize) {
-        RequestVo requestVo = new RequestVo();
-//        requestVo.addParams("token", activity.getIntent().getStringExtra("memberId"));
+    private class Callback implements DataSource.Callback<CourseDetailsVo> {
+        @Override
+        public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
+            if (onLoadStatusChangeListener != null) {
+                onLoadStatusChangeListener.onLoadSuccess();
+            }
+            pullToRefresh.onHeaderRefreshComplete();
 
-//            requestVo.addParams("pageIndex", pageIndex);
-//            requestVo.addParams("pageSize", pageSize);
-        requestVo.addParams("dataType", 2);
-        requestVo.addParams("id", flagCourseData.getId());
-        // requestVo.addParams("taskType",mTaskType);
+            if (courseDetailsVo.getCode() == 0) {
 
-        RequestParams params =
-                new RequestParams(
-                        AppConfig.ServerUrl.GetCourseDetailsById + requestVo.getParams());
-        pageIndex = 0;
+                courseChapterList = courseDetailsVo.getChapters();
 
-        params.setConnectTimeout(50000);
-
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String s) {
-                if (onLoadStatusChangeListener != null) {
-                    onLoadStatusChangeListener.onLoadSuccess();
-                }
-                pullToRefresh.onHeaderRefreshComplete();
-                courseDetailsVo = JSON.parseObject(s,
-                        new TypeReference<CourseDetailsVo>() {
-                        });
-                if (courseDetailsVo.getCode() == 0) {
-
-                    courseChapterList = courseDetailsVo.getChapterList();
-
-                    if (courseChapterList != null) {
-                        for (int i = 0; i < courseChapterList.size(); i++) {
-                            courseChapterList.get(i).setCourseId(flagCourseData.getCourseId());
-                            courseChapterList.get(i).setChapterName(courseDetailsVo.getChapterName());
-                            courseChapterList.get(i).setSectionName(courseDetailsVo.getSectionName());
-                        }
+                if (courseChapterList != null) {
+                    for (int i = 0; i < courseChapterList.size(); i++) {
+                        ChapterVo chapterVo = courseChapterList.get(i);
+                        chapterVo.setCourseId(flagCourseData.getCourseId());
+                        chapterVo.setChapterName(courseDetailsVo.getChapterName());
+                        chapterVo.setSectionName(courseDetailsVo.getSectionName());
                     }
-                    if (flagCourseData != null && !haveInitListData) {
-                        if (flagCourseData.getChapList() != null && flagCourseData.getChapList().size() > 0) {
-                            for (int i = 0; i < courseChapterList.size(); i++) {
-                                for (int j = 0; j < flagCourseData.getChapList().size(); j++) {
-                                    if (courseChapterList.get(i).getId() != null && courseChapterList.get(i).getId()
-                                            .equals(flagCourseData.getChapList().get(j).getId())) {
-                                        if (flagCourseData.getChapList().get(j).getSectionList() != null
-                                                && flagCourseData.getChapList().get(j).getSectionList().size() > 0) {//在小节下
-                                            for (int p = 0; p < courseChapterList.get(i).getChildren().size(); p++) {
-                                                for (int k = 0; k < flagCourseData.getChapList().get(j).getSectionList().size(); k++) {
-                                                    if (courseChapterList.get(i).getChildren().get(p).getId() != null &&
-                                                            courseChapterList.get(i).getChildren().get(p).getId()
-                                                                    .equals(flagCourseData.getChapList().get(j).getSectionList().get(k).getId())) {
-                                                        courseChapterList.get(i).getChildren().get(p).setFlag(1);
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            int flagValue = 0;
-                                            flagValue |= (flagCourseData.getChapList().get(j).getTaskList() != null
-                                                    && flagCourseData.getChapList().get(j).getTaskList().size() > 0) ? 0x01 : 0;
-                                            flagValue |= (flagCourseData.getChapList().get(j).getTaskList() != null
-                                                    && flagCourseData.getChapList().get(j).getTaskList().size() > 0) ? 0x02 : 0;
-                                            courseChapterList.get(i).setFlag(flagValue);
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    haveInitListData = true;
-                    courseChapterAdapter.setData(courseChapterList);
-                    courseChapterAdapter.notifyDataSetChanged();
-
-                    if (EmptyUtil.isNotEmpty(courseChapterList)) {
-                        // 有数据
-                        mEmptyView.setVisibility(View.GONE);
-                        pullToRefresh.setVisibility(View.VISIBLE);
-                    } else {
-                        // 没有数据
-                        mEmptyView.setVisibility(View.VISIBLE);
-                        pullToRefresh.setVisibility(View.GONE);
-                    }
-
                 }
-            }
+                courseChapterAdapter.setData(courseChapterList);
+                courseChapterAdapter.notifyDataSetChanged();
 
-            @Override
-            public void onCancelled(CancelledException e) {
-                pullToRefresh.onHeaderRefreshComplete();
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-                pullToRefresh.onHeaderRefreshComplete();
-                if (onLoadStatusChangeListener != null) {
-                    onLoadStatusChangeListener.onLoadFlailed();
+                if (EmptyUtil.isNotEmpty(courseChapterList)) {
+                    // 有数据
+                    mEmptyView.setVisibility(View.GONE);
+                    pullToRefresh.setVisibility(View.VISIBLE);
+                } else {
+                    // 没有数据
+                    mEmptyView.setVisibility(View.VISIBLE);
+                    pullToRefresh.setVisibility(View.GONE);
                 }
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-    }
-
-    public void getMore() {
-        RequestVo requestVo = new RequestVo();
-
-//            requestVo.addParams("pageIndex", pageIndex + 1);
-//            requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
-
-
-        requestVo.addParams("dataType", 2);
-        requestVo.addParams("id", flagCourseData.getId());
-
-//            requestVo.addParams("token", activity.getIntent().getStringExtra("memberId"));
-
-        RequestParams params =
-                new RequestParams(
-                        AppConfig.ServerUrl.GetCourseDetailsById + requestVo.getParams());
-        pageIndex = 0;
-        params.setConnectTimeout(10000);
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String s) {
-                pullToRefresh.onFooterRefreshComplete();
-                courseDetailsVo = JSON.parseObject(s,
-                        new TypeReference<CourseDetailsVo>() {
-                        });
-                if (courseDetailsVo.getCode() == 0) {
-
-                }
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
 
             }
 
-            @Override
-            public void onFinished() {
+        }
+
+        @Override
+        public void onDataNotAvailable(int strRes) {
+            pullToRefresh.onHeaderRefreshComplete();
+            if (onLoadStatusChangeListener != null) {
+                onLoadStatusChangeListener.onLoadFlailed();
             }
-        });
+        }
     }
 
     /**
