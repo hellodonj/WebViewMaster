@@ -392,12 +392,13 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
 
     private void getData() {
         pageIndex = 0;
-        if (!TextUtils.isEmpty(mSchoolId)) {
-            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(), flagCourseData.getId(),
-                    mSchoolId, new Callback());
-        } else {
+        // mSchoolId和mClassId都不空来自班级学程
+        if (!TextUtils.isEmpty(mSchoolId) && !TextUtils.isEmpty(mClassId)) {
             LQCourseHelper.requestChapterByCourseId(mClassId, flagCourseData.getId(),
                     new Callback());
+        } else {
+            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(), flagCourseData.getId(),
+                    mSchoolId, new Callback());
         }
     }
 
