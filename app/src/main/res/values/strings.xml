@@ -1795,4 +1795,6 @@
     <string name="str_exit_assistant_model">Exit tutorial mode, enter Learning Space</string>
     <string name="str_apply_mark">Consult Tutor</string>
     <string name="str_apply_mark_line_feed">Consult\nTutor</string>
+    <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
+        belongings.</string>
 </resources>
