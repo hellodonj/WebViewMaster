@@ -511,4 +511,7 @@
     <string name="buy_online_school">Buy class: %s</string>
     <string name="my_coins">My Account</string>
 
+    <string name="reward_vouchers">奖励代金券</string>
+    <string name="n_buy_first_chapter">购买【%s】第一章</string>
+
 </resources>
