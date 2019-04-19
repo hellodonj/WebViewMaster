@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.WatchStudentChapterActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
@@ -147,6 +148,7 @@ public class WatchCourseResourceListActivity extends ToolbarActivity implements 
                             mInitiativeTrigger,
                             mExtras,
                             mSchoolId,mClassId,
+                            CourseDetailType.COURSE_DETAIL_MOOC_ENTER,
                             mRequestCode);
                 }else{
                     WatchCourseResourceActivity.show(
@@ -157,6 +159,7 @@ public class WatchCourseResourceListActivity extends ToolbarActivity implements 
                             mInitiativeTrigger,
                             mExtras,
                             mSchoolId,mClassId,
+                            CourseDetailType.COURSE_DETAIL_MOOC_ENTER,
                             mRequestCode);
                 }
             }

@@ -15,6 +15,7 @@ import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
     private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
     // ClassId
     private static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+    // 入口类型
+    private static final String KEY_EXTRA_ENTER_TYPE = "KEY_EXTRA_ENTER_TYPE";
     // 课程编号
     private String mCourseId;
     // 查看类型
@@ -53,6 +56,8 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
     private String mSchoolId;
     private String mClassId;
     private Bundle mExtras;
+
+    private int mEnterType;
 
 
 
@@ -76,6 +81,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
         mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
         mExtras = bundle.getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+        mEnterType = bundle.getInt(KEY_EXTRA_ENTER_TYPE);
 
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE && mFilterArray == null){
             return false;
@@ -106,6 +112,7 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
         arguments.putString(CourseSelectFragment.KEY_EXTRA_SCHOOL_ID,mSchoolId);
         arguments.putString(CourseSelectFragment.KEY_EXTRA_CLASS_ID,mClassId);
         arguments.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,mExtras);
+        arguments.putInt(CourseSelectFragment.KEY_EXTRA_ENTER_TYPE,mEnterType);
         if(mTaskType == WatchResourceType.TYPE_RETELL_COURSE){
             arguments.putIntegerArrayList(CourseSelectFragment.KEY_EXTRA_FILTER_COLLECTION,mFilterArray);
         }
@@ -133,12 +140,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @Nullable Bundle extras,
                             @Nullable String schoolId,
                             @Nullable String classId,
+                            @NonNull @CourseDetailType.CourseDetailRes int enterType,
                             int requestCode){
         Intent intent = new Intent(activity,WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
+        bundle.putInt(KEY_EXTRA_ENTER_TYPE,enterType);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
@@ -167,12 +176,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @Nullable Bundle extras,
                             @Nullable String schoolId,
                             @Nullable String classId,
+                            @NonNull @CourseDetailType.CourseDetailRes int enterType,
                             int requestCode){
         Intent intent = new Intent(activity,WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
+        bundle.putInt(KEY_EXTRA_ENTER_TYPE,enterType);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION,filterArray);
@@ -200,12 +211,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @Nullable Bundle extras,
                             @Nullable String schoolId,
                             @Nullable String classId,
+                            @NonNull @CourseDetailType.CourseDetailRes int enterType,
                             int requestCode){
         Intent intent = new Intent(fragment.getContext(),WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
+        bundle.putInt(KEY_EXTRA_ENTER_TYPE,enterType);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putBoolean(KEY_EXTRA_INITIATIVE_TRIGGER,initiativeTrigger);
@@ -233,12 +246,14 @@ public class WatchCourseResourceActivity extends PresenterActivity<WatchCourseRe
                             @Nullable Bundle extras,
                             @Nullable String schoolId,
                             @Nullable String classId,
+                            @NonNull @CourseDetailType.CourseDetailRes int enterType,
                             int requestCode){
         Intent intent = new Intent(fragment.getContext(),WatchCourseResourceActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_COURSE_ID,courseId);
         bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         bundle.putString(KEY_EXTRA_CLASS_ID,classId);
+        bundle.putInt(KEY_EXTRA_ENTER_TYPE,enterType);
         bundle.putInt(KEY_EXTRA_TASK_TYPE,taskType);
         bundle.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         bundle.putIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION,filterArray);

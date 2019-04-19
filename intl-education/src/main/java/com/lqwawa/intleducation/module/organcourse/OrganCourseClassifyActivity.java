@@ -253,8 +253,9 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             mResourceData.getFilterArray(),
                             mResourceData.isInitiativeTrigger(),
                             null,
-                            mSchoolId,
-                            null,
+                            mResourceData.getSchoolId(),
+                            mResourceData.getClassId(),
+                            mResourceData.getEnterType(),
                             0);
                 }else{
                     // 获取该分类是否获取到授权

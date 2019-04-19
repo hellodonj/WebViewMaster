@@ -719,7 +719,14 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                                     Log.d("TTT", "videPath=" + videoPath);
                                     Intent intent = new Intent();
                                     intent.putExtra(Constant.MERGE_VIDEO_PATH, videoPath);
-                                    intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
+                                    if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                                        //通篇配音
+                                        List<DubbingEntity> entityList = new ArrayList<>();
+                                        entityList.add(dubbingEntityList.get(0));
+                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) entityList);
+                                    } else {
+                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
+                                    }
                                     setResult(Activity.RESULT_OK, intent);
                                 }
                                 finish();

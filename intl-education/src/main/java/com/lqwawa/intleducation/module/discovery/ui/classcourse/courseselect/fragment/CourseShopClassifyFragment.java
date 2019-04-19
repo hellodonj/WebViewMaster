@@ -37,6 +37,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyContract;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyPresenter;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;

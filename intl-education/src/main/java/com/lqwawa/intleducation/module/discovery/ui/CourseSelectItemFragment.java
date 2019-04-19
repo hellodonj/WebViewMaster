@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.ResourceSelectListener;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
@@ -90,6 +91,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     private ArrayList<Integer> mFilterArray;
     private ReadWeikeHelper mReadWeikeHelper;
 
+    private CourseDetailParams mParams;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_select, container, false);
@@ -111,6 +114,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         mMultipleChoiceCount = arguments.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         isOnlineRelevance = arguments.getBoolean(KEY_EXTRA_ONLINE_RELEVANCE);
         mFilterArray = arguments.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
+        mParams = (CourseDetailParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         if (EmptyUtil.isEmpty(mReadWeikeHelper)) {
             mReadWeikeHelper = new ReadWeikeHelper(activity);
         }
@@ -182,6 +186,10 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         courseResListAdapter.setCourseSelect(true, mTaskType);
         courseResListAdapter.setMultipleChoiceCount(true, mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
+        courseResListAdapter.setClassTeacher(
+                EmptyUtil.isNotEmpty(mParams) &&
+                        mParams.isClassCourseEnter() &&
+                        EmptyUtil.isNotEmpty(mParams.getClassId()));
         listView.setAdapter(courseResListAdapter);
 
         listView.setOnItemClickListener(new SuperListView.OnItemClickListener() {
@@ -225,6 +233,14 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
         requestVo.addParams("role", 1);
+        if(EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()){
+            if(EmptyUtil.isNotEmpty(mParams.getClassId())){
+                String classId = mParams.getClassId();
+                requestVo.addParams("classId", classId);
+            }
+        }
+
+
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.courseSectionDetail + requestVo.getParams());
         params.setConnectTimeout(10000);

@@ -183,7 +183,9 @@ public class CaptureActivity extends ScanActivity {
                     }
                     enterCourseFiltrateView(result);
                 }else{
-                    gotoBrowser(result);
+//                    gotoBrowser(result);
+                    TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.invalid_lqwawa_resource);
+                    finish();
                 }
             }
         } else {

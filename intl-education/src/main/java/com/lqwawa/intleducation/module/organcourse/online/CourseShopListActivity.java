@@ -52,6 +52,7 @@ import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -153,6 +154,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                 mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
                 mResourceData.setSchoolId(mSchoolId);
                 mResourceData.setClassId(mClassId);
+                mResourceData.setEnterType(CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER);
             }
         }
 

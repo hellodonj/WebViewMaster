@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -62,6 +63,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.MinorityLanguageHolder;
@@ -413,9 +415,19 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         if(mResourceFlag){
             mHeaderLayout.setVisibility(View.GONE);
-            mBottomLayout.setVisibility(View.VISIBLE);
+            mBottomLayout.setVisibility(View.GONE);
             mBottomActionLayout.setVisibility(View.GONE);
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+
+            // 作业库设置margin
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mNewCartContainer.getLayoutParams();
+            layoutParams.bottomMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
+            mNewCartContainer.setLayoutParams(layoutParams);
+
+            // 科目设置
+            mTopBar.setRightFunctionText1(R.string.title_subject_setting,view->{
+                AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
+            });
         }else{
             mBottomLayout.setVisibility(View.GONE);
             if(!isTeacher && UserHelper.isParent(mRoles)){
@@ -469,6 +481,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                             extras,
                             mSchoolId,
                             mClassId,
+                            CourseDetailType.COURSE_DETAIL_CLASS_ENTER,
                             0);
                 }else{
                     // 班级学程的详情入口

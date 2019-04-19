@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.organcourse;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.watchcourse.WatchResourceType;
 
 import java.io.Serializable;
@@ -23,6 +24,8 @@ public class ShopResourceData implements Serializable{
 
     private String schoolId;
     private String classId;
+
+    private int enterType;
 
     public ShopResourceData() {
     }
@@ -83,6 +86,14 @@ public class ShopResourceData implements Serializable{
 
     public void setClassId(String classId) {
         this.classId = classId;
+    }
+
+    public int getEnterType() {
+        return enterType;
+    }
+
+    public void setEnterType(@NonNull @CourseDetailType.CourseDetailRes int enterType) {
+        this.enterType = enterType;
     }
 
     public int getRequestCode() {

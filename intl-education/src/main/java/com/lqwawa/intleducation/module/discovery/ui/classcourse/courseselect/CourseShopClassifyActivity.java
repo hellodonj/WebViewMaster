@@ -42,6 +42,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
@@ -51,6 +52,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -173,6 +175,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
             mResourceData.setInitiativeTrigger(mParams.isInitiativeTrigger());
             mResourceData.setSchoolId(mSchoolId);
             mResourceData.setClassId(mClassId);
+            mResourceData.setEnterType(CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER);
         }
 
         return super.initArgs(bundle);
@@ -199,28 +202,37 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                 mNewCartContainer.setVisibility(View.VISIBLE);
                 mNewCartContainer.setOnClickListener(this);
             }
-            mSubjectLayout.setVisibility(View.VISIBLE);
+
+            // 更改，不显示
+            mSubjectLayout.setVisibility(View.GONE);
         }
 
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_course_shop);
 
-        mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 点击获取授权
-                if(isAuthorized){
-                    // 已经获取到授权
-                    UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
-                    return;
-                }
-                // 获取授权
-                requestAuthorizedPermission(isExist);
-            }
-        });
-
         if(mSelectResource){
-            mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.GONE);
+            // mTopBar.findViewById(R.id.right_function1_text).setVisibility(View.GONE);
+            mTopBar.setRightFunctionText1(R.string.title_subject_setting, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 科目设置
+                    AddSubjectActivity.show(CourseShopClassifyActivity.this,true,SUBJECT_SETTING_REQUEST_CODE);
+                }
+            });
+        }else{
+            mTopBar.setRightFunctionText1(R.string.label_request_authorization, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 点击获取授权
+                    if(isAuthorized){
+                        // 已经获取到授权
+                        UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+                        return;
+                    }
+                    // 获取授权
+                    requestAuthorizedPermission(isExist);
+                }
+            });
         }
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);

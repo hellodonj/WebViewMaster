@@ -173,7 +173,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, true);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
-                (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger()));
+                (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));
 
         mCourseResListAdapter.triggerChoiceMode(mSourceParams.isChoiceMode());
 
@@ -384,6 +384,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         String classId = "";
         if (role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()) {
             classId = mSourceParams.getCourseParams().getClassId();
+        }else if(role == 1 && mCourseResListAdapter.getChoiceMode()){
+            if(EmptyUtil.isNotEmpty(mSourceParams.getCourseParams().getClassId())){
+                classId = mSourceParams.getCourseParams().getClassId();
+            }
         }
 
         // 获取中英文数据

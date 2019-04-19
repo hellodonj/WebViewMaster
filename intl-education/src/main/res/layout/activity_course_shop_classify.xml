@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:background="@drawable/ic_work_cart_shadow"
+            android:layout_marginBottom="40dp"
             android:visibility="gone">
 
             <TextView

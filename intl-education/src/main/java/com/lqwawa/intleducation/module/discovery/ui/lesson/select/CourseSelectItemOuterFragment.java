@@ -34,6 +34,7 @@ import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -78,6 +79,8 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
     // 资源类型映射
     private SparseIntArray typeTable = new SparseIntArray();
 
+    private CourseDetailParams mParams;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -100,7 +103,8 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                                        int taskType,
                                        int multiChoiceCount,
                                        ArrayList<Integer> filterArray,
-                                       boolean isOnlineRelevance) {
+                                       boolean isOnlineRelevance,
+                                       @Nullable CourseDetailParams params){
         CourseSelectItemOuterFragment fragment = new CourseSelectItemOuterFragment();
         Bundle arguments = new Bundle();
         arguments.putSerializable(KEY_EXTRA_CHAPTER_OBJECT, vo);
@@ -108,8 +112,28 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multiChoiceCount);
         arguments.putSerializable(KEY_EXTRA_FILTER_COLLECTION, filterArray);
         arguments.putBoolean(KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
+        if(EmptyUtil.isNotEmpty(params)){
+            arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        }
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    public static Fragment newInstance(@NonNull ChapterVo vo,
+                                       int taskType,
+                                       int multiChoiceCount,
+                                       ArrayList<Integer> filterArray,
+                                       boolean isOnlineRelevance) {
+        return newInstance(vo,taskType,multiChoiceCount,filterArray,isOnlineRelevance,null);
+        /*CourseSelectItemOuterFragment fragment = new CourseSelectItemOuterFragment();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(KEY_EXTRA_CHAPTER_OBJECT, vo);
+        arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
+        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multiChoiceCount);
+        arguments.putSerializable(KEY_EXTRA_FILTER_COLLECTION, filterArray);
+        arguments.putBoolean(KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
+        fragment.setArguments(arguments);
+        return fragment;*/
     }
 
     @Override
@@ -122,6 +146,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         mMultipleChoiceCount = arguments.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         isOnlineRelevance = arguments.getBoolean(KEY_EXTRA_ONLINE_RELEVANCE);
         mFilterArray = arguments.getIntegerArrayList(KEY_EXTRA_FILTER_COLLECTION);
+        mParams = (CourseDetailParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
 
         typeTable.append(1, CourseSelectItemFragment.KEY_WATCH_COURSE);
         typeTable.append(2, CourseSelectItemFragment.KEY_RELL_COURSE);
@@ -219,6 +244,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                     cloneArguments.putIntegerArrayList(CourseSelectItemFragment.KEY_EXTRA_FILTER_COLLECTION, mFilterArray);
                     cloneArguments.putBoolean(CourseSelectItemFragment.KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
                     cloneArguments.putInt(CourseSelectItemFragment.KEY_EXTRA_REAL_TASK_TYPE, mTaskType);
+                    cloneArguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,mParams);
                     fragment.setArguments(cloneArguments);
                     fragments.add(fragment);
                 }
