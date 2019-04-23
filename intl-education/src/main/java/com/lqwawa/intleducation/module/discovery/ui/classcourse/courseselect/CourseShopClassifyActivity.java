@@ -49,7 +49,6 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;

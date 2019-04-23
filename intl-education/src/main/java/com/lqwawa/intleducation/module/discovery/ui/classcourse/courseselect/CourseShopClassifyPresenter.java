@@ -12,7 +12,6 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.OrganCourseHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
-import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 
