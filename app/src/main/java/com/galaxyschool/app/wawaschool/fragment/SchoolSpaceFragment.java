@@ -695,41 +695,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         return roleType;
     }
 
-    /**
-     * 是否显示LQ银河国际
-     *
-     * @return
-     */
-    private boolean showLQGalaxyInternational() {
-        boolean show = false;
-        if (schoolInfo != null) {
-            String roles = schoolInfo.getRoles();
-            if (!TextUtils.isEmpty(roles) && roles.contains(
-                    String.valueOf(RoleType.ROLE_TYPE_TEACHER))) {
-                if (MySchoolSpaceFragment.validSchoolIds != null && MySchoolSpaceFragment
-                        .validSchoolIds.length > 0) {
-                    for (String schoolId : MySchoolSpaceFragment.validSchoolIds) {
-                        if (!TextUtils.isEmpty(schoolId)) {
-                            String lowerCaseSchoolId = schoolId.toLowerCase();
-                            String schoolIdInfo = this.schoolInfo.getSchoolId();
-                            if (!TextUtils.isEmpty(schoolIdInfo)) {
-                                String lowerCaseSchoolIdInfo = schoolIdInfo.toLowerCase();
-                                if (!TextUtils.isEmpty(lowerCaseSchoolIdInfo)
-                                        && !TextUtils.isEmpty(lowerCaseSchoolId)) {
-                                    if (lowerCaseSchoolId.equals(lowerCaseSchoolIdInfo)) {
-                                        show = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return show;
-    }
-
     protected void updateSchoolSpaceViewCount() {
         if (getUserInfo() == null) {
             return;

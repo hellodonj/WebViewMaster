@@ -80,7 +80,7 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_NOTICE = 103;
         // 秀秀
         int TAB_ENTITY_TYPE_WAWA_SHOW = 104;
-        // 在线课堂
+        // 关联学程
         int TAB_ENTITY_TYPE_RELEVANCE_COURSE = 105;
         // 空中课堂
         int TAB_ENTITY_TYPE_AIR_CLASSROOM = 106;

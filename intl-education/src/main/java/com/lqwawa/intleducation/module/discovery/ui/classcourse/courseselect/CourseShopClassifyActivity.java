@@ -293,9 +293,9 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         this.showLoading();
         String organId = mParams.getOrganId();
         if(mSelectResource){
-            mPresenter.requestCourseShopClassifyResourceData(organId, -1);
+            mPresenter.requestCourseShopClassifyResourceData(organId, 0);
         }else{
-            mPresenter.requestCourseShopClassifyData(organId, -1);
+            mPresenter.requestCourseShopClassifyData(organId, 0);
         }
     }
 

@@ -1687,7 +1687,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             //根据切换的班级去加载图书信息
             if (classInfo != null) {
                 updateClassView(true);
-                //loadSchoolMessageList();
             }
         }
     };
