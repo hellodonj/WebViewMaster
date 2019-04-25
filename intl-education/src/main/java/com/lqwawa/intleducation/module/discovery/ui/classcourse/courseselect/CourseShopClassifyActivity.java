@@ -92,6 +92,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     private String mClassId;
     private boolean mSelectResource;
     private ShopResourceData mResourceData;
+    private int libraryType = 0;
     // 授权信息
     private CheckSchoolPermissionEntity mPermissionEntity;
 
@@ -269,12 +270,13 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity,mSelectResource,false,
-                                    mResourceData,extras,isAuthorized,isReallyAuthorized,false,roles);
+                                    mResourceData,extras,isAuthorized,isReallyAuthorized,false,
+                                    roles, 0);
                         }else{
                             OrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity,false,true,
-                                    null,isAuthorized,isReallyAuthorized,false,roles);
+                                    null,isAuthorized,isReallyAuthorized,false,roles, 0);
                         }
                     }
                 });
@@ -291,9 +293,9 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         this.showLoading();
         String organId = mParams.getOrganId();
         if(mSelectResource){
-            mPresenter.requestCourseShopClassifyResourceData(organId);
+            mPresenter.requestCourseShopClassifyResourceData(organId, -1);
         }else{
-            mPresenter.requestCourseShopClassifyData(organId);
+            mPresenter.requestCourseShopClassifyData(organId, -1);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -78,8 +79,8 @@ public class CaptureActivity extends ScanActivity {
     // 学程标签的分享
     public static final String COURSE_LABEL_STR = "courseLabel";
 
-    public static final String ID_PERFORM="Id=";
-    public static final String ASSOCIATED_FIELDS="ShareLqPerformClass";
+    public static final String ID_PERFORM = "Id=";
+    public static final String ASSOCIATED_FIELDS = "ShareLqPerformClass";
 
     public static final String ROBOTPEN_FLAG = "0C";
 
@@ -88,8 +89,13 @@ public class CaptureActivity extends ScanActivity {
     private String schoolId;
     private String classId;
     private boolean isScanTask;
-    private String courseSectionDataString ;
+    private String courseSectionDataString;
     private boolean isPublicRes = true;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, CaptureActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle state) {
@@ -99,7 +105,7 @@ public class CaptureActivity extends ScanActivity {
 
         schoolId = getIntent().getStringExtra(SlideWawaPageActivity.SCHOOL_ID);
         classId = getIntent().getStringExtra(SlideWawaPageActivity.CLASS_ID);
-        isScanTask = getIntent().getBooleanExtra(SlideWawaPageActivity.IS_SCAN_TASK,false);
+        isScanTask = getIntent().getBooleanExtra(SlideWawaPageActivity.IS_SCAN_TASK, false);
     }
 
     @Override
@@ -166,7 +172,7 @@ public class CaptureActivity extends ScanActivity {
                         return;
                     }
                     enterPerformDetails(result);
-                } else if(result.contains(COURSE_DETAIL_STR)){
+                } else if (result.contains(COURSE_DETAIL_STR)) {
                     // 学程分享
                     if (!isLogin()) {
                         enterLogin();
@@ -174,7 +180,7 @@ public class CaptureActivity extends ScanActivity {
                         return;
                     }
                     enterCourseDetail(result);
-                }else if(result.contains(COURSE_LABEL_STR)){
+                } else if (result.contains(COURSE_LABEL_STR)) {
                     // 学程标签分享
                     if (!isLogin()) {
                         enterLogin();
@@ -182,7 +188,7 @@ public class CaptureActivity extends ScanActivity {
                         return;
                     }
                     enterCourseFiltrateView(result);
-                }else{
+                } else {
 //                    gotoBrowser(result);
                     TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.invalid_lqwawa_resource);
                     finish();
@@ -202,13 +208,14 @@ public class CaptureActivity extends ScanActivity {
 
     /**
      * 进入到表演课堂的详情界面
+     *
      * @param result
      */
-    private void enterPerformDetails(String result){
-        String [] dataArray=result.split("[?]");
-        final String id=dataArray[1].split("=")[1];
+    private void enterPerformDetails(String result) {
+        String[] dataArray = result.split("[?]");
+        final String id = dataArray[1].split("=")[1];
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("Id",Integer.valueOf(id));
+        params.put("Id", Integer.valueOf(id));
         RequestHelper.RequestListener listener =
                 new RequestHelper.RequestDataResultListener<PerformClassListResult>(
                         this, PerformClassListResult.class) {
@@ -218,16 +225,16 @@ public class CaptureActivity extends ScanActivity {
                         if (getResult() == null || !getResult().isSuccess()) {
                             return;
                         }
-                        PerformClassListResult result=getResult();
-                        List<PerformClassList> list=result.getModel().getData();
-                        if (list!=null&&list.size()>0){
-                            Intent intent=new Intent(CaptureActivity.this, ActClassroomDetailActivity.class);
-                            Bundle bundle=new Bundle();
-                            bundle.putInt(ActClassroomFragment.Constants.EXTRA_PERFORM_ID,Integer.valueOf(id));
+                        PerformClassListResult result = getResult();
+                        List<PerformClassList> list = result.getModel().getData();
+                        if (list != null && list.size() > 0) {
+                            Intent intent = new Intent(CaptureActivity.this, ActClassroomDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(ActClassroomFragment.Constants.EXTRA_PERFORM_ID, Integer.valueOf(id));
                             intent.putExtras(bundle);
                             startActivity(intent);
-                        }else {
-                            TipMsgHelper.ShowMsg(CaptureActivity.this,R.string.resource_no_exist);
+                        } else {
+                            TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.resource_no_exist);
                         }
                         finish();
 
@@ -239,21 +246,22 @@ public class CaptureActivity extends ScanActivity {
 
     /**
      * 进入LQ学程标签筛选页面
+     *
      * @param result 扫描二维码获取到的内容
      */
-    private void enterCourseFiltrateView(@NonNull String result){
+    private void enterCourseFiltrateView(@NonNull String result) {
         String[] splitStrings = result.split("[?]");
-        if(EmptyUtil.isNotEmpty(splitStrings) && splitStrings.length == 2){
+        if (EmptyUtil.isNotEmpty(splitStrings) && splitStrings.length == 2) {
             String params = splitStrings[1];
-            if(params.contains("&")){
+            if (params.contains("&")) {
                 String[] listParams = params.split("&");
-                if(EmptyUtil.isNotEmpty(listParams) && listParams.length == 5){
+                if (EmptyUtil.isNotEmpty(listParams) && listParams.length == 5) {
                     // 获取Level
                     String levelParams = listParams[0];
                     String level = null;
-                    if(EmptyUtil.isNotEmpty(levelParams) && levelParams.contains("=")){
+                    if (EmptyUtil.isNotEmpty(levelParams) && levelParams.contains("=")) {
                         String[] paramStrings = levelParams.split("=");
-                        if(EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
+                        if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
                             if ("level".equals(paramStrings[0])) {
                                 level = paramStrings[1];
                             }
@@ -264,9 +272,9 @@ public class CaptureActivity extends ScanActivity {
                     // 获取parentId
                     String parentIdParams = listParams[1];
                     String parentId = null;
-                    if(EmptyUtil.isNotEmpty(parentIdParams) && parentIdParams.contains("=")){
+                    if (EmptyUtil.isNotEmpty(parentIdParams) && parentIdParams.contains("=")) {
                         String[] paramStrings = parentIdParams.split("=");
-                        if(EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
+                        if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
                             if ("parentId".equals(paramStrings[0])) {
                                 parentId = paramStrings[1];
                             }
@@ -277,9 +285,9 @@ public class CaptureActivity extends ScanActivity {
                     // 获取 paramTwoId
                     String paramTwoIdParams = listParams[2];
                     String paramTwoId = null;
-                    if(EmptyUtil.isNotEmpty(paramTwoIdParams) && paramTwoIdParams.contains("=")){
+                    if (EmptyUtil.isNotEmpty(paramTwoIdParams) && paramTwoIdParams.contains("=")) {
                         String[] paramStrings = paramTwoIdParams.split("=");
-                        if(EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
+                        if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
                             if ("paramTwoId".equals(paramStrings[0])) {
                                 paramTwoId = paramStrings[1];
                             }
@@ -291,9 +299,9 @@ public class CaptureActivity extends ScanActivity {
                     // 获取 paramThreeId
                     String paramThreeIdParams = listParams[3];
                     String paramThreeId = null;
-                    if(EmptyUtil.isNotEmpty(paramThreeIdParams) && paramThreeIdParams.contains("=")){
+                    if (EmptyUtil.isNotEmpty(paramThreeIdParams) && paramThreeIdParams.contains("=")) {
                         String[] paramStrings = paramThreeIdParams.split("=");
-                        if(EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
+                        if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
                             if ("paramThreeId".equals(paramStrings[0])) {
                                 paramThreeId = paramStrings[1];
                             }
@@ -304,9 +312,9 @@ public class CaptureActivity extends ScanActivity {
                     // 获取标题
                     String titleParams = listParams[4];
                     String title = null;
-                    if(EmptyUtil.isNotEmpty(titleParams) && titleParams.contains("=")){
+                    if (EmptyUtil.isNotEmpty(titleParams) && titleParams.contains("=")) {
                         String[] titleStings = titleParams.split("=");
-                        if(EmptyUtil.isNotEmpty(titleStings) && titleStings.length == 2) {
+                        if (EmptyUtil.isNotEmpty(titleStings) && titleStings.length == 2) {
                             if ("title".equals(titleStings[0])) {
                                 title = titleStings[1];
                             }
@@ -315,11 +323,11 @@ public class CaptureActivity extends ScanActivity {
 
 
                     // 非空判断
-                    if(EmptyUtil.isEmpty(level) ||
+                    if (EmptyUtil.isEmpty(level) ||
                             EmptyUtil.isEmpty(parentId) ||
                             EmptyUtil.isEmpty(paramTwoId) ||
                             EmptyUtil.isEmpty(paramThreeId) ||
-                            EmptyUtil.isEmpty(title)){
+                            EmptyUtil.isEmpty(title)) {
                         return;
                     }
 
@@ -331,10 +339,10 @@ public class CaptureActivity extends ScanActivity {
                     // 获取二级标签
                     int _level = 2;
                     int _parentId = Integer.parseInt(parentId);
-                    if(level.contains(".")){
+                    if (level.contains(".")) {
                         // 获取二级标签的parentId，获取二级标签列表，然后model跟parentId比较
                         String[] levelStrings = level.split("[\\.]");
-                        if(EmptyUtil.isNotEmpty(levelStrings) && levelStrings.length == 2){
+                        if (EmptyUtil.isNotEmpty(levelStrings) && levelStrings.length == 2) {
                             _parentId = Integer.parseInt(levelStrings[0]);
                         }
                     }
@@ -348,15 +356,15 @@ public class CaptureActivity extends ScanActivity {
 
                         @Override
                         public void onDataLoaded(List<LQCourseConfigEntity> entities) {
-                            if(EmptyUtil.isNotEmpty(entities)){
-                                for (LQCourseConfigEntity entity:entities) {
-                                    if(entity.getId() == resultParentId){
+                            if (EmptyUtil.isNotEmpty(entities)) {
+                                for (LQCourseConfigEntity entity : entities) {
+                                    if (entity.getId() == resultParentId) {
                                         // 找到该实体
                                         entity.setParamTwoId(_paramTwoId);
                                         entity.setParamThreeId(_paramThreeId);
                                         entity.setConfigValue(_title);
                                         GroupFiltrateState state = new GroupFiltrateState(entity);
-                                        CourseFiltrateActivity.show(CaptureActivity.this,entity,state);
+                                        CourseFiltrateActivity.show(CaptureActivity.this, entity, state);
                                         break;
                                     }
                                 }
@@ -371,18 +379,19 @@ public class CaptureActivity extends ScanActivity {
 
     /**
      * 进入LQ学程课程详情页
+     *
      * @param result 扫描二维码获取到的内容
      */
-    private void enterCourseDetail(@NonNull String result){
+    private void enterCourseDetail(@NonNull String result) {
         String[] splitStrings = result.split("[?]");
-        if(EmptyUtil.isNotEmpty(splitStrings) && splitStrings.length == 2){
+        if (EmptyUtil.isNotEmpty(splitStrings) && splitStrings.length == 2) {
             String params = splitStrings[1];
-            if(params.contains("=")){
+            if (params.contains("=")) {
                 String[] paramStrings = params.split("=");
-                if(EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2){
-                    if("id".equals(paramStrings[0])){
+                if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
+                    if ("id".equals(paramStrings[0])) {
                         String id = paramStrings[1];
-                        CourseDetailsActivity.start(this,id,true, UserHelper.getUserId());
+                        CourseDetailsActivity.start(this, id, true, UserHelper.getUserId());
                     }
                 }
             }
@@ -410,7 +419,7 @@ public class CaptureActivity extends ScanActivity {
                 switch (type) {
                     case 0:
                         //TODO 快乐学习
-                        if (!isLogin()){
+                        if (!isLogin()) {
                             enterLogin();
                             this.finish();
                             return;
@@ -544,92 +553,93 @@ public class CaptureActivity extends ScanActivity {
         if (result == null || result.length() == 0) {
             return;
         }
-        if(!result.contains(ServerUrl.SHARE_BASE_SERVER)) {
+        if (!result.contains(ServerUrl.SHARE_BASE_SERVER)) {
             TipMsgHelper.ShowLMsg(CaptureActivity.this, R.string.resource_not_exist);
             finish();
             return;
         }
         String courseId = null;
-        String type23=null;
-        String subFlag23=null;
+        String type23 = null;
+        String subFlag23 = null;
         //备注:需要判断用户有没有被授权&auth=true&source=lqwawa
         String auth = null;
         String parentId = null;
-        if(!TextUtils.isEmpty(result)) {
+        if (!TextUtils.isEmpty(result)) {
             String[] strs = result.split("&");
-            if(strs != null && strs.length > 0) {
-                for(int i = 0; i < strs.length; i++) {
-                    if(!TextUtils.isEmpty(strs[i])) {
+            if (strs != null && strs.length > 0) {
+                for (int i = 0; i < strs.length; i++) {
+                    if (!TextUtils.isEmpty(strs[i])) {
                         String value = null;
-                        if(strs[i].contains("=")) {
+                        if (strs[i].contains("=")) {
                             value = strs[i].substring(strs[i]
                                     .indexOf("=") + 1, strs[i].length());
                         }
-                        if(strs[i].contains("pType")) {
+                        if (strs[i].contains("pType")) {
                             type23 = value;
-                        } else if(strs[i].contains("subFlag")) {
+                        } else if (strs[i].contains("subFlag")) {
                             subFlag23 = value;
-                        } else if (strs[i].contains("auth")&& (i != 0)) {
+                        } else if (strs[i].contains("auth") && (i != 0)) {
                             auth = value;
-                        } else if (strs[i].contains("parentId") &&(i != 0)){
+                        } else if (strs[i].contains("parentId") && (i != 0)) {
                             parentId = value;
                         }
                     }
                 }
             }
         }
-        if(type23!=null&&type23.equals("23")){
+        if (type23 != null && type23.equals("23")) {
             int startIndex = result.lastIndexOf("vId=");
-            int endIndex=0;
-            if(result.contains("&")){
+            int endIndex = 0;
+            if (result.contains("&")) {
                 endIndex = result.indexOf("&");
-            }else{
+            } else {
                 endIndex = result.length();
             }
             if (startIndex >= 0 && endIndex > 0 && startIndex < endIndex) {
                 courseId = result.substring(startIndex + 4, endIndex);
             }
-            if(subFlag23!=null&&subFlag23.equals("1")){
-                if(!courseId.contains("-10023")){
-                    courseId=courseId+"-10023";
+            if (subFlag23 != null && subFlag23.equals("1")) {
+                if (!courseId.contains("-10023")) {
+                    courseId = courseId + "-10023";
                 }
             }
 //            if (TextUtils.isEmpty(sourceTag)){
 //                prepareOpenCourse(ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD, courseId,true);
 //            }else {
-                //判断是否有打开的权限
-                if (!isLogin()) {
-                    enterLogin();
-                    this.finish();
-                    return;
-                }
-                if (!courseId.contains("-")){
-                    courseId = courseId + "-" + ResType.RES_TYPE_STUDY_CARD;
-                }
-                if ("false".equals(auth)){
-                    prepareOpenCourse(ResType.RES_TYPE_STUDY_CARD, courseId,null, true);
-                } else {
-                    isPublicRes = false;
-                    prepareOpenCourse(ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD,
-                            courseId,null,false);                }
+            //判断是否有打开的权限
+            if (!isLogin()) {
+                enterLogin();
+                this.finish();
+                return;
+            }
+            if (!courseId.contains("-")) {
+                courseId = courseId + "-" + ResType.RES_TYPE_STUDY_CARD;
+            }
+            if ("false".equals(auth)) {
+                prepareOpenCourse(ResType.RES_TYPE_STUDY_CARD, courseId, null, true);
+            } else {
+                isPublicRes = false;
+                prepareOpenCourse(ResType.RES_TYPE_BASE + ResType.RES_TYPE_STUDY_CARD,
+                        courseId, null, false);
+            }
 
-        }else{
+        } else {
             int startIndex = result.lastIndexOf("vId=");
-            int endIndex=0;
-            if(result.contains("&")){
+            int endIndex = 0;
+            if (result.contains("&")) {
                 endIndex = result.indexOf("&");
-            }else{
+            } else {
                 endIndex = result.length();
             }
             if (startIndex >= 0 && endIndex > 0 && startIndex < endIndex) {
                 courseId = result.substring(startIndex + 4, endIndex);
             }
             if (!TextUtils.isEmpty(courseId)) {
-                if(courseId.contains("-")){
-                    String type=courseId.substring(courseId.indexOf("-")+1,courseId.length());
-                    if (TextUtils.isEmpty(auth)){
-                        prepareOpenCourse(Integer.parseInt(type), courseId,null,true);
-                    }else {
+                if (courseId.contains("-")) {
+                    String type = courseId.substring(courseId.indexOf("-") + 1, courseId.length());
+                    if (TextUtils.isEmpty(auth)) {
+                        prepareOpenCourse(Integer.parseInt(type), courseId, null, true);
+                    } else {
                         //判断是否有打开的权限
                         if (!isLogin()) {
                             enterLogin();
@@ -637,30 +647,30 @@ public class CaptureActivity extends ScanActivity {
                             return;
                         }
                         isPublicRes = false;
-                        prepareOpenCourse(Integer.valueOf(type), courseId,parentId,false);
+                        prepareOpenCourse(Integer.valueOf(type), courseId, parentId, false);
                     }
-                }else{
-                    String subFlag=null;
-                    String pType=null;
-                    String pTypeSubFlag = result.substring(result.indexOf("&")+1,result.length());
+                } else {
+                    String subFlag = null;
+                    String pType = null;
+                    String pTypeSubFlag = result.substring(result.indexOf("&") + 1, result.length());
                     //解决扫描二维码不能播放的问题
-                    if(!TextUtils.isEmpty(pTypeSubFlag)) {
+                    if (!TextUtils.isEmpty(pTypeSubFlag)) {
                         String[] pTypeSubFlags = pTypeSubFlag.split("&");
-                        if(pTypeSubFlags != null && pTypeSubFlags.length > 0) {
-                            for(int i = 0; i < pTypeSubFlags.length; i++) {
-                                if(!TextUtils.isEmpty(pTypeSubFlags[i])) {
+                        if (pTypeSubFlags != null && pTypeSubFlags.length > 0) {
+                            for (int i = 0; i < pTypeSubFlags.length; i++) {
+                                if (!TextUtils.isEmpty(pTypeSubFlags[i])) {
                                     String value = null;
-                                    if(pTypeSubFlags[i].contains("=")) {
+                                    if (pTypeSubFlags[i].contains("=")) {
                                         value = pTypeSubFlags[i].substring(pTypeSubFlags[i]
                                                 .indexOf("=") + 1, pTypeSubFlags[i].length());
                                     }
-                                    if(pTypeSubFlags[i].contains("pType")) {
+                                    if (pTypeSubFlags[i].contains("pType")) {
                                         pType = value;
-                                    } else if(pTypeSubFlags[i].contains("subFlag")) {
+                                    } else if (pTypeSubFlags[i].contains("subFlag")) {
                                         subFlag = value;
-                                    } else if (pTypeSubFlags[i].contains("parentId") && (i != 0)){
+                                    } else if (pTypeSubFlags[i].contains("parentId") && (i != 0)) {
                                         parentId = value;
-                                    } else if (pTypeSubFlags[i].contains("auth")&& (i != 0)) {
+                                    } else if (pTypeSubFlags[i].contains("auth") && (i != 0)) {
                                         auth = value;
                                     }
                                 }
@@ -675,17 +685,17 @@ public class CaptureActivity extends ScanActivity {
 //                    }else{
 //                        pType=  pTypeSubFlag.substring(pTypeSubFlag.indexOf("=")+1,pTypeSubFlag.length());
 //                    }
-                    int type=0;
-                    if(subFlag!=null&&Integer.parseInt(subFlag)==1){
-                        type=Integer.parseInt(pType)+ResType.RES_TYPE_BASE;
-                    }else{
-                        type=Integer.parseInt(pType);
+                    int type = 0;
+                    if (subFlag != null && Integer.parseInt(subFlag) == 1) {
+                        type = Integer.parseInt(pType) + ResType.RES_TYPE_BASE;
+                    } else {
+                        type = Integer.parseInt(pType);
                     }
-                    courseId=courseId+"-"+type;
+                    courseId = courseId + "-" + type;
 
-                    if (TextUtils.isEmpty(auth)){
-                        prepareOpenCourse(type, courseId,null,true);
-                    }else {
+                    if (TextUtils.isEmpty(auth)) {
+                        prepareOpenCourse(type, courseId, null, true);
+                    } else {
                         //判断是否有打开的权限
                         if (!isLogin()) {
                             enterLogin();
@@ -693,7 +703,7 @@ public class CaptureActivity extends ScanActivity {
                             return;
                         }
                         isPublicRes = false;
-                        prepareOpenCourse(type, courseId,parentId,false);
+                        prepareOpenCourse(type, courseId, parentId, false);
                     }
                 }
 
@@ -703,27 +713,27 @@ public class CaptureActivity extends ScanActivity {
     }
 
     private void prepareOpenCourse(final int type, final String courseId, final String parentId, final boolean
-            isPublicResource){
+            isPublicResource) {
         WawaCourseUtils utils = new WawaCourseUtils(CaptureActivity.this);
-        if(type== ResType.RES_TYPE_ONEPAGE||type==
-                ResType.RES_TYPE_COURSE_SPEAKER||type== ResType.RES_TYPE_OLD_COURSE||type==
-                ResType.RES_TYPE_COURSE){
+        if (type == ResType.RES_TYPE_ONEPAGE || type ==
+                ResType.RES_TYPE_COURSE_SPEAKER || type == ResType.RES_TYPE_OLD_COURSE || type ==
+                ResType.RES_TYPE_COURSE) {
             //18 19 5 16
             utils.loadCourseDetail(courseId, true);
             utils.setOnCourseDetailFinishListener(new WawaCourseUtils.OnCourseDetailFinishListener() {
                 @Override
                 public void onCourseDetailFinish(CourseData courseData) {
                     if (isPublicResource || isMySelfCourse(courseData) || VipConfig.isVip(CaptureActivity.this)) {
-                        processData(courseData, courseId,true);
-                    }else {
-                        checkResourcePermission(type,courseId,null,courseData);
+                        processData(courseData, courseId, true);
+                    } else {
+                        checkResourcePermission(type, courseId, null, courseData);
                     }
                 }
             });
-        }else  if(type==(ResType.RES_TYPE_BASE+ResType
-                .RES_TYPE_COURSE_SPEAKER )){
+        } else if (type == (ResType.RES_TYPE_BASE + ResType
+                .RES_TYPE_COURSE_SPEAKER)) {
             //10019
-            utils.loadSplitCourseDetail(Long.parseLong(courseId.substring(0,courseId.indexOf("-"))));
+            utils.loadSplitCourseDetail(Long.parseLong(courseId.substring(0, courseId.indexOf("-"))));
             utils.setOnSplitCourseDetailFinishListener(new WawaCourseUtils.OnSplitCourseDetailFinishListener() {
                 @Override
                 public void onSplitCourseDetailFinish(SplitCourseInfo info) {
@@ -732,27 +742,27 @@ public class CaptureActivity extends ScanActivity {
                         if (courseData != null) {
                             if (isPublicResource || isMySelfCourse(courseData) || VipConfig.isVip(CaptureActivity.this)) {
                                 processData(courseData, courseId, true);
-                            }else {
-                                String splitParentId  = parentId;
-                                if (TextUtils.isEmpty(parentId)){
+                            } else {
+                                String splitParentId = parentId;
+                                if (TextUtils.isEmpty(parentId)) {
                                     splitParentId = String.valueOf(info.getParentId());
                                 }
-                                checkResourcePermission(type,courseId,splitParentId,courseData);
+                                checkResourcePermission(type, courseId, splitParentId, courseData);
                             }
                         }
                     }
                 }
             });
-        }else if(type % ResType.RES_TYPE_BASE==ResType.RES_TYPE_STUDY_CARD ){
+        } else if (type % ResType.RES_TYPE_BASE == ResType.RES_TYPE_STUDY_CARD) {
             // 10023 23
             //TODO 快乐学习
-            if (!isLogin()){
+            if (!isLogin()) {
                 enterLogin();
                 this.finish();
                 return;
             }
             String resId = null;
-            String [] splitArray = courseId.split("-");
+            String[] splitArray = courseId.split("-");
             if (Integer.valueOf(splitArray[1]) == ResType.RES_TYPE_STUDY_CARD) {
                 resId = splitArray[0];
             } else {
@@ -766,14 +776,14 @@ public class CaptureActivity extends ScanActivity {
                     if (info != null) {
                         CourseData courseData = info.getCourseData();
                         if (courseData != null) {
-                            if (isPublicResource || isMySelfCourse(courseData) || VipConfig.isVip(CaptureActivity.this)){
-                                processData(courseData, courseId,true);
-                            }else {
+                            if (isPublicResource || isMySelfCourse(courseData) || VipConfig.isVip(CaptureActivity.this)) {
+                                processData(courseData, courseId, true);
+                            } else {
                                 String parentId = null;
-                                if (finalResId.contains("-")){
+                                if (finalResId.contains("-")) {
                                     parentId = String.valueOf(courseData.parentid);
                                 }
-                                checkResourcePermission(type,courseId,parentId,courseData);
+                                checkResourcePermission(type, courseId, parentId, courseData);
                             }
                         }
                     }
@@ -799,7 +809,7 @@ public class CaptureActivity extends ScanActivity {
                     newResourceInfo.setIsPublicResource(isPublicRes);
                     ActivityUtils.openPictureDetailActivity(this, newResourceInfo,
                             PictureBooksDetailActivity.FROM_OTHRE, false);
-                }else {
+                } else {
 //                    ActivityUtils.playCourse(CaptureActivity.this, courseData.getCourseInfo(), null);
                     PlaybackParam playbackParam = new PlaybackParam();
                     playbackParam.mIsAuth = true;
@@ -812,58 +822,60 @@ public class CaptureActivity extends ScanActivity {
                 if (isScanTask) {
                     if (isPublicRescourse) {
                         getCourseSectionDataList(courseData, courseId);
-                    }else {
-                        TipMsgHelper.ShowMsg(CaptureActivity.this,R.string.copyright_protected_content);
+                    } else {
+                        TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.copyright_protected_content);
                         finish();
                     }
                 } else {
-                    if (isPublicRescourse){
+                    if (isPublicRescourse) {
                         NewResourceInfo newResourceInfo = courseData.getNewResourceInfo();
                         newResourceInfo.setIsFromSchoolResource(true);
                         //这个表示不要右上角的返回主页按钮
                         newResourceInfo.setIsFromAirClass(true);
                         newResourceInfo.setIsScanTask(true);
-                        if (isPublicRes){
+                        if (isPublicRes) {
                             newResourceInfo.setIsHasPermission(true);
-                        }else {
+                        } else {
                             newResourceInfo.setIsHasPermission(false);
                         }
-                        ActivityUtils.enterTaskOrderDetailActivity(this,newResourceInfo);
-                    }else {
+                        ActivityUtils.enterTaskOrderDetailActivity(this, newResourceInfo);
+                    } else {
                         PlaybackParam playbackParam = new PlaybackParam();
                         playbackParam.mIsAuth = true;
                         ActivityUtils.openOnlineOnePage(CaptureActivity.this, courseData.getNewResourceInfo
-                                (), true,playbackParam);
+                                (), true, playbackParam);
                     }
                     finish();
                 }
-            }else if(resType == ResType.RES_TYPE_ONEPAGE){
-                if (isPublicRescourse){
+            } else if (resType == ResType.RES_TYPE_ONEPAGE) {
+                if (isPublicRescourse) {
                     NewResourceInfo newResourceInfo = courseData.getNewResourceInfo();
                     newResourceInfo.setIsPublicResource(isPublicRes);
-                    ActivityUtils.openPictureDetailActivity(this,newResourceInfo,
-                            PictureBooksDetailActivity.FROM_OTHRE,false);
-                }else {
+                    ActivityUtils.openPictureDetailActivity(this, newResourceInfo,
+                            PictureBooksDetailActivity.FROM_OTHRE, false);
+                } else {
                     PlaybackParam playbackParam = new PlaybackParam();
                     playbackParam.mIsAuth = true;
                     ActivityUtils.openOnlineOnePage(CaptureActivity.this, courseData.getNewResourceInfo
-                            (), true,playbackParam);
+                            (), true, playbackParam);
                 }
 
                 finish();
             }
         }
     }
+
     /**
      * 判断课件的作者是不是自己
+     *
      * @param courseData
      * @return
      */
-    private boolean isMySelfCourse(CourseData courseData){
-        if (courseData != null){
+    private boolean isMySelfCourse(CourseData courseData) {
+        if (courseData != null) {
             String memberId = DemoApplication.getInstance().getMemberId();
-            if (!TextUtils.isEmpty(memberId)){
-                if (memberId.equals(courseData.code)){
+            if (!TextUtils.isEmpty(memberId)) {
+                if (memberId.equals(courseData.code)) {
                     return true;
                 }
             }
@@ -872,16 +884,16 @@ public class CaptureActivity extends ScanActivity {
     }
 
     private void getCourseSectionDataList(final CourseData courseData, String courseId) {
-        if(TextUtils.isEmpty(courseId)) {
+        if (TextUtils.isEmpty(courseId)) {
             return;
         }
         String id = courseId;
-        if(id.contains("-")) {
+        if (id.contains("-")) {
             id = id.substring(0, id.indexOf('-'));
         }
         Map<String, Object> params = new HashMap();
         params.put("id", id);
-        if(!AppConfig.BaseConfig.needShowPay()){//只显示免费课程
+        if (!AppConfig.BaseConfig.needShowPay()) {//只显示免费课程
             params.put("payType", 0);
         }
         RequestHelper.RequestListener listener =
@@ -922,13 +934,13 @@ public class CaptureActivity extends ScanActivity {
             @Override
             public void onBack(Object result) {
                 if (result != null) {
-                    LocalCourseDTO localCourseDTO = (LocalCourseDTO)result;
+                    LocalCourseDTO localCourseDTO = (LocalCourseDTO) result;
                     openLocalOnePage(localCourseDTO, courseData.screentype, jsonString);
                     finish();
                 }
             }
         });
-        task.checkCanReplaceIPAddress(courseData.id,courseData.type,task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type, task);
     }
 
     private void openLocalOnePage(LocalCourseDTO data, int screenType, String jsonString) {
@@ -944,29 +956,29 @@ public class CaptureActivity extends ScanActivity {
         param.courseSectionDataString = jsonString;
         CreateSlideHelper.startSlide(param, Common.ACTIVITY_REQUEST_ATTACHMENGT_EDIT);
     }
-    
+
     private void parseTaskIdUrl(String result) {
         if (result == null || result.length() == 0) {
             return;
         }
-        if(!result.contains(ServerUrl.SHARE_BASE_SERVER)) {
+        if (!result.contains(ServerUrl.SHARE_BASE_SERVER)) {
             TipMsgHelper.ShowLMsg(CaptureActivity.this, R.string.resource_not_exist);
             finish();
             return;
         }
         int startIndex = result.lastIndexOf("taskId=");
-        int endIndex=result.length();
-        String taskIdStr=result.substring(startIndex,endIndex);
-        String taskIds=null;
-        if(taskIdStr.contains("&")){
-            taskIds = taskIdStr.substring(0,taskIdStr.indexOf("&"));
-        }else{
+        int endIndex = result.length();
+        String taskIdStr = result.substring(startIndex, endIndex);
+        String taskIds = null;
+        if (taskIdStr.contains("&")) {
+            taskIds = taskIdStr.substring(0, taskIdStr.indexOf("&"));
+        } else {
             taskIds = taskIdStr;
         }
         String[] strs = taskIds.split("=");
-        if(strs!=null&&strs.length==2){
-            if(strs[0].equals(TASKID_STR)){
-                String taskId=strs[1];
+        if (strs != null && strs.length == 2) {
+            if (strs[0].equals(TASKID_STR)) {
+                String taskId = strs[1];
                 loadTaskFinishInfo(taskId);
             }
         }
@@ -977,7 +989,7 @@ public class CaptureActivity extends ScanActivity {
             return;
         }
         Map<String, Object> params = new HashMap();
-        params.put("TaskId",taskId);
+        params.put("TaskId", taskId);
         RequestHelper.sendPostRequest(CaptureActivity.this,
                 ServerUrl.GET_TASK_FINISH_INFO_URL, params,
                 new RequestHelper.RequestDataResultListener<StudyTaskFinishInfoResult>
@@ -1003,16 +1015,16 @@ public class CaptureActivity extends ScanActivity {
                         if (data != null) {
                             //跳转到导读详情页
                             StudyTaskInfo info = new StudyTaskInfo();
-                            info.setTaskId(data.getTaskId()+"");
+                            info.setTaskId(data.getTaskId() + "");
                             info.setTaskType(data.getTaskType());
-                            StudyTaskOpenHelper.openTask(CaptureActivity.this, data.getResId(),info,
-                                    0,"");
+                            StudyTaskOpenHelper.openTask(CaptureActivity.this, data.getResId(), info,
+                                    0, "");
                         }
                     }
                 });
     }
 
-    private void checkResourcePermission(int type, String courseId, String parentId, final CourseData courseData){
+    private void checkResourcePermission(int type, String courseId, String parentId, final CourseData courseData) {
         CheckResPermissionHelper permissionHelper = new CheckResPermissionHelper(this);
         permissionHelper.setResType(type)
                 .setCouseId(courseId)
@@ -1021,25 +1033,26 @@ public class CaptureActivity extends ScanActivity {
                 .setCheckListener(new CheckResPermissionHelper.CheckResourceResultListener() {
                     @Override
                     public void onCheckResult(int resType, String courseId, boolean isPublicResource) {
-                        processData(courseData,courseId,isPublicResource);
+                        processData(courseData, courseId, isPublicResource);
                     }
                 })
                 .checkResource();
 
     }
 
-    private boolean isLogin(){
-        if (this.getApplication()!=null){
-            UserInfo userInfo=((MyApplication)this.getApplication()).getUserInfo();
-            if (userInfo!=null){
-                String memberId=userInfo.getMemberId();
-                if (!TextUtils.isEmpty(memberId)){
+    private boolean isLogin() {
+        if (this.getApplication() != null) {
+            UserInfo userInfo = ((MyApplication) this.getApplication()).getUserInfo();
+            if (userInfo != null) {
+                String memberId = userInfo.getMemberId();
+                if (!TextUtils.isEmpty(memberId)) {
                     return true;
                 }
             }
         }
         return false;
     }
+
     private void enterLogin() {
         Bundle args = new Bundle();
         args.putBoolean(AccountActivity.EXTRA_HAS_LOGINED, false);

@@ -72,6 +72,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolStarEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.ui.ClassifyIndexActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.HQCCourseListActivity;
 import com.lqwawa.intleducation.module.spanceschool.SchoolFunctionStateType;
@@ -89,6 +90,7 @@ import java.util.Map;
 public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements SchoolSpaceBaseFragment.Constants {
 
     public static final String TAG = MySchoolSpaceFragment.class.getSimpleName();
+
     public static final String[] validSchoolIds = new String[]{
             "18733931-C586-45EE-B9AF-DEFBAD5ACE10",//1 私立青岛银河学校幼儿园
             "45BCD99F-9E4C-4857-AB28-C187170933EB",//2 私立青岛银河学校小学部
@@ -100,8 +102,8 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             "CF2BBF92-D844-44D0-B2A4-FB2185644F01",//8 创意绘本屋
             "bfbba4e6-c98a-4160-bca4-540087fb1d89",//9 两栖蛙蛙体验学校
             "D8FE8280-FB40-4B61-9936-08819AA7E611",//10聊城银河学校
-            "16746338-CA55-4D67-B4D1-D88CFDD280AF"};//11两栖晋城崇实学校
-
+            "16746338-CA55-4D67-B4D1-D88CFDD280AF" //11两栖晋城崇实学校
+    };
 
     private View subscribeTipsView;
 
@@ -112,8 +114,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
     private TextView classTextView;
     private TextView moreClassTextView;
-    private TextView schoolClassBookTextview;
-    private TextView classManageTextview;
 
     LinearLayout resourceLayout;
     LinearLayout noClassTipLayout;
@@ -124,7 +124,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private GridView schoolGridView;
     private GridView classGridView;
     private String schoolGridViewTag;
-    //private String classGridViewTag;
     // 切换机构
     private TextView moreSchoolTextView;
     private TextView mTvToggleSchool;
@@ -140,54 +139,20 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private HashMap<String, TabEntityPOJO> entryInfoHashMap = new HashMap<String, TabEntityPOJO>();
     private boolean isCampusPatrol;
     private String oldUserId;
-    //    private long timeHistory= 0L;
     private MyBroadCastReceiver receiver;
-    private boolean isHasSchool;
-
-    public interface ITabEntityTypeInfo {
-
-        int TAB_ENTITY_TYPE_SCHOOL_INTRODUCTION = 0;
-        int TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS = 1;
-        int TAB_ENTITY_TYPE_SCHOOL_CLASS = 2;
-        int TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM = 3;
-        int TAB_ENTITY_TYPE_LEARNING_TASKS = 4;
-        int TAB_ENTITY_TYPE_GEN_E_SCHOOL = 5;
-        int TAB_ENTITY_TYPE_LIVE_CLASS = 6;
-        int TAB_ENTITY_TYPE_CLASS_INFORMATION = 7;
-        int TAB_ENTITY_TYPE_NOTICE = 8;
-        int TAB_ENTITY_TYPE_WAWA_SHOW = 9;
-        int TAB_ENTITY_TYPE_CHOICE_BOOKS = 10;
-        int TAB_ENTITY_TYPE_CAMPUS_PATROL = 11;
-        int TAB_ENTITY_TYPE_CAMPUS_DIRECT = 12;
-
-        // 在线课堂新添加的类型
-        int TAB_ENTITY_TYPE_RELEVANCE_COURSE = 11111;
-        //空中课堂的字段
-        int TAB_ENTITY_TYPE_AIR_CLASSROOM = 13;
-        //表演课堂的字段
-        int TAB_ENTITY_TYPE_ACT_CLASSROOM = 14;
-        int TAB_ENTITY_TYPE_LQCOURSE_SHOP = 15;
-        int TAB_ENTITY_TYPE_CLASS_LESSON = 16;
-        //点评统计
-        int TAB_ENTITY_TYPE_COMMENT_STATISTIC = 17;
-        int TAB_ENTITY_TYPE_LQ_GALAXY_INTL = 100;
-    }
 
     private GridView newlyClassGridView;// 调整后的GridView
-    // 功能菜单
-    private RelativeLayout mFunctionLayout;
     private SpaceSchoolHolderFragment mSpaceHolderFragment;
     private String newlyClassGridViewTag;
     private ChannelView channelView;//可滑动的布局
     private List<ChannelView.ChannelItem> channelItemList = new ArrayList<>();
-    private boolean showChannelView = true; //控制是否显示滑动布局
+    private boolean showChannelView = false; //控制是否显示滑动布局
     private boolean isChangeLqCourseTab;
     private String lqCourseSchoolId;
     private String lqCourseClassId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fromType = FROM_MY_SCHOOL_SPACE_FRAGMENT;
         return inflater.inflate(R.layout.fragment_my_school_space, null);
     }
 
@@ -259,7 +224,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         }
         params.put("VersionCode", 1);
 
-
         // 获取机构星级
         if (schoolInfo != null) {
             SchoolHelper.requestSchoolStar(schoolInfo.getSchoolId(), new DataSource.Callback<SchoolStarEntity>() {
@@ -292,7 +256,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 schoolInfo = getResult().getModel();
                 if (schoolInfo != null) {
 
-
                     RelativeLayout userHeader = (RelativeLayout) findViewById(R.id.user_head_without_tab);
                     RelativeLayout mRootLayout = (RelativeLayout) findViewById(R.id.root_layout);
                     if (schoolInfo.isOnlineSchool()) {
@@ -304,7 +267,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                         mRootLayout.setVisibility(View.GONE);
                         userHeader.setVisibility(View.VISIBLE);
                     }
-
 
                     // 开放校园巡查功能
                     // 查询到SchoolInfo，判断显示片段
@@ -321,7 +283,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                         String schoolName = schoolInfo.getSchoolName();
                         String roles = schoolInfo.getRoles();
                         String role = UserHelper.getOnlineRoleWithUserRoles(roles);
-
 
                         // 是否显示校园助手和校园巡查
                         // 校园巡查/校长助手
@@ -363,13 +324,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                         fragmentManager.beginTransaction().replace(R.id.function_layout, mSpaceHolderFragment).commitAllowingStateLoss();
 
                     } else {
-                                /*// 减少条目
-                                TabEntityPOJO item = new TabEntityPOJO();
-                                item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_RELEVANCE_COURSE;
-                                item.title = getString(R.string.label_space_school_relevance_course);
-                                item.resId = R.drawable.ic_relevance_course;
-                                getAdapterViewHelper(MySchoolSpaceFragment.this.newlyClassGridViewTag).getData().remove(item);
-                                getAdapterViewHelper(MySchoolSpaceFragment.this.newlyClassGridViewTag).update();*/
                         // 展示在线课堂功能菜单
                         if (showChannelView) {
                             channelView.setVisibility(View.VISIBLE);
@@ -443,9 +397,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
 
     private void initViews() {
-        TextView shareView = (TextView) findViewById(R.id.share_btn);
-        TextView tvMenu = (TextView) findViewById(R.id.btn_menu);
-
         moreSchoolTextView = (TextView) findViewById(R.id.user_more);
         mTvToggleSchool = (TextView) findViewById(R.id.tv_toggle_school);
 
@@ -457,42 +408,19 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         mTvIntro = (TextView) findViewById(R.id.tv_intro);
         mTvIntro.setOnClickListener(this);
 
+        TextView shareView = (TextView) findViewById(R.id.share_btn);
+        TextView tvMenu = (TextView) findViewById(R.id.btn_menu);
         if (shareView != null) {
-            shareView.setText("");
-            Drawable plusDrawable = getResources().getDrawable(R.drawable.icon_plus_white);
-            plusDrawable.setBounds(0, 0, plusDrawable.getMinimumWidth(), plusDrawable.getMinimumHeight());
-            shareView.setCompoundDrawables(null, null, plusDrawable, null);
-            //替换为“＋”，变为下拉菜单。
-            shareView.setVisibility(View.VISIBLE);
-            shareView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMoreMenu(v);
-                }
-            });
+            setShareView(shareView);
         }
 
         if (tvMenu != null) {
-            tvMenu.setText("");
-            Drawable plusDrawable = getResources().getDrawable(R.drawable.icon_plus_white);
-            plusDrawable.setBounds(0, 0, plusDrawable.getMinimumWidth(), plusDrawable.getMinimumHeight());
-            tvMenu.setCompoundDrawables(null, null, plusDrawable, null);
-            //替换为“＋”，变为下拉菜单。
-            tvMenu.setVisibility(View.VISIBLE);
-            tvMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMoreMenu(v);
-                }
-            });
+            setShareView(tvMenu);
         }
 
         //隐藏一些元素
         countLayout.setVisibility(View.GONE);
         schoolQrCodeView.setVisibility(View.GONE);
-        //隐藏Tab栏
-        findViewById(R.id.layout_tab_class_management).setVisibility(View.GONE);
-        schoolMessageListView.setVisibility(View.GONE);
         if (schoolIconView != null) {
             AnimationUtil.setAnimation(schoolIconView);
             //点击头像跳转到机构详情页面
@@ -538,11 +466,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         moreClassTextView = (TextView) findViewById(R.id.more_class_textview);
         moreClassTextView.setOnClickListener(this);
         moreClassTextView.setVisibility(View.GONE);
-        schoolClassBookTextview = (TextView) findViewById(R.id.school_class_book_textview);
-        classManageTextview = (TextView) findViewById(R.id.class_manage_textview);
-        classManageTextview.setText(getString(R.string.class_list));
-        schoolClassBookTextview.setOnClickListener(this);
-        classManageTextview.setOnClickListener(this);
         resourceLayout = (LinearLayout) findViewById(R.id.resource_layout);
         noClassTipLayout = (LinearLayout) findViewById(R.id.no_class_tip_layout);
         addToClassTextview = (TextView) findViewById(R.id.add_to_class_textview);
@@ -554,6 +477,16 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         setStopPullUpState(true);
         setPullToRefreshView(pullToRefreshView);
         initGridView();
+    }
+
+    private void setShareView(TextView shareView) {
+        shareView.setText("");
+        Drawable plusDrawable = getResources().getDrawable(R.drawable.icon_plus_white);
+        plusDrawable.setBounds(0, 0, plusDrawable.getMinimumWidth(), plusDrawable.getMinimumHeight());
+        shareView.setCompoundDrawables(null, null, plusDrawable, null);
+        //替换为“＋”，变为下拉菜单。
+        shareView.setVisibility(View.VISIBLE);
+        shareView.setOnClickListener(v -> showMoreMenu(v));
     }
 
     private void enterSchoolSpace() {
@@ -692,10 +625,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.resId = R.drawable.banjixiangqing;
         itemList.add(item);
 
-        /*// 添加条目
-        getAdapterViewHelper(MySchoolSpaceFragment.this.newlyClassGridViewTag).getData().add(item);
-        getAdapterViewHelper(MySchoolSpaceFragment.this.newlyClassGridViewTag).update();*/
-
         getAdapterViewHelper(this.newlyClassGridViewTag).setData(itemList);
     }
 
@@ -709,7 +638,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             AdapterViewHelper newlyClassGridViewHelper = new AdapterViewHelper(getActivity(), newlyClassGridView, R.layout.item_common_personal_space_entity) {
                 @Override
                 public void loadData() {
-                    //  timeHistory=System.currentTimeMillis();
                     loadSchools();
                 }
 
@@ -792,7 +720,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     }
 
     private void initSchoolGridViewHelper() {
-        mFunctionLayout = (RelativeLayout) findViewById(R.id.function_layout);
         schoolGridView = (GridView) findViewById(R.id.school_grid_view);
         if (schoolGridView != null) {
             AdapterViewHelper schoolGridViewHelper = new AdapterViewHelper(getActivity(), schoolGridView, R.layout.item_tab_entity_gridview) {
@@ -953,36 +880,27 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_GEN_E_SCHOOL:
                 enterClassResourceByChannel(ClassResourceListActivity.CHANNEL_TYPE_LECTURE);
                 break;
-
-            //直播课堂
-            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIVE_CLASS:
-                break;
-
             //通知
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_NOTICE:
                 enterClassResourceByChannel(ClassResourceListActivity.CHANNEL_TYPE_NOTICE);
                 break;
-
             //秀秀
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_WAWA_SHOW:
                 enterClassResourceByChannel(ClassResourceListActivity.CHANNEL_TYPE_SHOW);
                 break;
-
             //班级信息
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_INFORMATION:
                 enterGroupMembers();
                 break;
-
             // 关联学程
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_RELEVANCE_COURSE:
                 if (EmptyUtil.isEmpty(classInfo)) return;
-                // WatchCourseResourceActivity.show(this,"420", WatchResourceType.TYPE_TASK_ORDER,2,0);
                 OnlineCourseHelper.requestOnlineCourseWithClassId(classInfo.getClassId(), new DataSource.Callback<String>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
                         UIUtil.showToastSafe(R.string.tip_class_not_relevance_course);
                     }
-
+                    
                     @Override
                     public void onDataLoaded(String courseId) {
                         // 进入课程详情
@@ -992,19 +910,18 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     }
                 });
                 break;
-
             //精品资源库
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS:
-//                enterChoiceBooks();
                 UIUtils.currentSourceFromType = SourceFromType.CHOICE_LIBRARY;
                 ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo, true);
                 break;
-
-            //学程馆
+            //习课程馆, 视频馆，图书馆, 练测馆
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP:
-                ActivityUtils.enterLqCourseShopActivity(getActivity(), schoolInfo);
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
+                enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
-
             //校园巡查
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CAMPUS_PATROL:
                 if (CampusPatrolUtils.SHOW_PRINCIPAL_ASSISTANT) {
@@ -1015,12 +932,12 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     enterCampusPatrol();
                 }
                 break;
-
+            //校园电视台
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CAMPUS_DIRECT:
                 ActivityUtils.enterCampusDirect(getActivity(), schoolInfo);
                 break;
+            //班级学程
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_LESSON:
-                //班级学程
                 ActivityUtils.enterClassCourseDetailActivity(getActivity(), schoolInfo, classInfo);
                 break;
             //空中课堂
@@ -1032,15 +949,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_ACT_CLASSROOM:
                 enterActClassroom();
                 break;
-
-            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL://进入LQ银河国际
-                com.lqwawa.mooc.common.MOOCHelper.init(getUserInfo());
-                /*ClassifyIndexActivity.start(getActivity(),
-                        ClassifyIndexActivity.ClassifyValues.LQGalaxyInt);*/
-
-                HQCCourseListActivity.start(getActivity(), schoolId);
-                break;
-                //点评统计
+            //点评统计
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_COMMENT_STATISTIC:
                 CommentStatisticActivity.start(getActivity(), classInfo);
                 break;
@@ -1143,11 +1052,32 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             itemList.add(item);
         }
 
-        //学程馆
+        //习课程馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP;
         item.title = getString(R.string.common_course_shop);
-        item.resId = R.drawable.icon_lqcourse_lib;
+        item.resId = R.drawable.ic_lqcourse_shop;
+        itemList.add(item);
+
+        //视频馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY;
+        item.title = getString(R.string.common_video_library);
+        item.resId = R.drawable.ic_video_library;
+        itemList.add(item);
+        
+        //图书馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY;
+        item.title = getString(R.string.common_library);
+        item.resId = R.drawable.ic_library;
+        itemList.add(item);
+
+        //练测馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY;
+        item.title = getString(R.string.common_practice_library);
+        item.resId = R.drawable.ic_practice_library;
         itemList.add(item);
 
         //学校班级
@@ -1166,31 +1096,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             itemList.add(item);
         }
 
-//        //精品资源库
-//        item = new TabEntityPOJO();
-//        item.type = MySchoolSpaceFragment.ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
-//        item.title = getString(R.string.choice_books);
-//        item.resId = R.drawable.choice_books_ico;
-//        itemList.add(item);
-
-//        boolean showLqGalaxyIntl = false;
-//        if (schoolInfo.getRoles().contains("0")){//在当前学校包含老师身份
-//            for (String schoolId : validSchoolIds) {
-//                if (this.schoolInfo.getSchoolId().toLowerCase().equals(schoolId.toLowerCase())) {
-//                    showLqGalaxyIntl = true;
-//                    break;
-//                }
-//            }
-//        }
-        //LQ银河国际
-        //if (showLqGalaxyIntl) {
-//            item = new TabEntityPOJO();
-//            item.type = MySchoolSpaceFragment.ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL;
-//            //改成LQ精品学程
-//            item.title = getString(R.string.lq_excellent_program);
-//            item.resId = R.drawable.lqyinheguoji;
-//            itemList.add(item);
-        //}
 
         //校园电视台
         item = new TabEntityPOJO();
@@ -1298,7 +1203,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             AdapterViewHelper classGridViewHelper = new AdapterViewHelper(getActivity(), classGridView, R.layout.item_tab_entity_gridview) {
                 @Override
                 public void loadData() {
-                    //  timeHistory=System.currentTimeMillis();
                     loadSchools();
                 }
 
@@ -1365,9 +1269,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     }
                 }
             };
-            //根据tag来区分不同的数据源
-            //  this.classGridViewTag = String.valueOf(classGridView.getId());
-            // addAdapterViewHelper(this.classGridViewTag, classGridViewHelper);
             setCurrAdapterViewHelper(classGridView, classGridViewHelper);
         }
     }
@@ -1401,7 +1302,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         List<SchoolInfo> list = result.getModel().getSubscribeNoList();
         Utils.removeOnlineSchoolInfo(list);
         if (list == null || list.size() <= 0) {
-            isHasSchool = false;
             subscribeTipsView.setVisibility(View.VISIBLE);
             if (schoolInfoList != null) {
                 schoolInfoList.clear();
@@ -1409,7 +1309,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             schoolInfo = null;
             return;
         }
-        isHasSchool = true;
         subscribeTipsView.setVisibility(View.GONE);
         schoolInfoList = list;
         if (schoolInfoList.size() > 1) {
@@ -1440,7 +1339,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         if (!tag) {
             schoolInfo = schoolInfoList.get(0);
         }
-//        loadData();
         loadSchoolInfo();
         saveLatestSchool(getUserInfo().getMemberId(), schoolInfo.getSchoolId());
         //保存当前所有学校的集合
@@ -1450,7 +1348,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             updateSchoolSpaceViewCount();
         } else {
             updateSchoolInfoViews();
-
             if (schoolInfo != null) {
                 getThumbnailManager().displayUserIconWithDefault(
                         AppSettings.getFileUrl(schoolInfo.getSchoolLogo()),
@@ -1485,7 +1382,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         params.put("MemberId", getUserInfo().getMemberId());
         params.put("SchoolId", schoolInfo.getSchoolId());
         params.put("IsHistory", 1);
-        String paramString = JSON.toJSONString(params);
         RequestHelper.sendPostRequest(getActivity(), ServerUrl.PICBOOKS_GET_CLASS_MAIL_URL, params, new RequestHelper.RequestDataResultListener<ClassInfoListResult>(getActivity(), ClassInfoListResult.class) {
             @Override
             public void onSuccess(String jsonString) {
@@ -1501,13 +1397,11 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 List<SubscribeClassInfo> dataList = new ArrayList<SubscribeClassInfo>();
                 for (SubscribeClassInfo item : list) {
                     if (item.getType() != 1) {
-//                                item.setHeadMaster(item.isHeader());
                         if (item.getIsHeader() == 1) {
                             item.setHeadMaster(true);
                         } else {
                             item.setHeadMaster(false);
                         }
-
                         dataList.add(item);
                     }
                 }
@@ -1518,11 +1412,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     } else {
                         moreClassTextView.setVisibility(View.GONE);
                     }
-//                            if (cachehelper.isNeedUseCache2(getMemeberId(), schoolInfoList, classInfoList)) {
-//                                classInfo = cachehelper.getClassInfo();
-//                                updateClassView(true);
-//                                getCurrAdapterViewHelper().setData(cachehelper.getBookList());
-//                            } else {
                     boolean tag = false;
                     if (!TextUtils.isEmpty(getLatestClass(getMemeberId())) && !TextUtils.isEmpty(getLatestSchool(getMemeberId()))) {
                         for (SubscribeClassInfo sc : classInfoList) {
@@ -1550,8 +1439,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     }
                     saveLatestClass(getUserInfo().getMemberId(), classInfo.getClassId());
                     updateClassView(true);
-                    // loadSchoolMessageList();
-                    // }
                 } else {
                     updateClassView(false);
                 }
@@ -1732,10 +1619,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             showSchoolList(v, toggleSchoolListener);
         } else if (v.getId() == R.id.more_class_textview) {
             showMoreClasses(getActivity(), ToggleClassListener, v);
-        } else if (v.getId() == R.id.school_class_book_textview) {
-            ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo);
-        } else if (v.getId() == R.id.class_manage_textview) {
-            enterSchoolClasses();
         } else if (v.getId() == R.id.add_to_class_textview) {
             enterSchoolClasses();
         } else if (v.getId() == R.id.more_resource_textview) {

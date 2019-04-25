@@ -17,8 +17,8 @@ import java.util.List;
 public interface CourseShopClassifyContract {
 
     interface Presenter extends SchoolPermissionContract.Presenter{
-        void requestCourseShopClassifyData(@NonNull String organId);
-        void requestCourseShopClassifyResourceData(@NonNull String organId);
+        void requestCourseShopClassifyData(@NonNull String organId, int libraryType);
+        void requestCourseShopClassifyResourceData(@NonNull String organId, int libraryType);
     }
 
     interface View extends SchoolPermissionContract.View<Presenter>{

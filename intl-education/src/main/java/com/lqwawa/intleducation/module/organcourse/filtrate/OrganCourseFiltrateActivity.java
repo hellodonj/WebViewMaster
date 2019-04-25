@@ -115,6 +115,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private static final String KEY_EXTRA_CLASS_COURSE_ENTER = "KEY_EXTRA_CLASS_COURSE_ENTER";
     // 该机构的角色信息
     private static final String KEY_EXTRA_ROLES = "KEY_EXTRA_ROLES";
+    // 学程馆类型
+    private static final String KEY_EXTRA_LIBRARY_TYPE = "KEY_EXTRA_LIBRARY_TYPE";
     // 特色英语ID
     private static final int CHARACTER_ENGLISH_ID = 2096;
     // 英语国际课程ID
@@ -228,6 +230,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private boolean isHostEnter;
     // 机构角色信息
     private String mRoles;
+    // 学程馆类型
+    private int mLibraryType;
     private boolean isTeacher;
 
     // 授权码是否过期
@@ -280,6 +284,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         isReallyAuthorized = bundle.getBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED);
         isHostEnter = bundle.getBoolean(KEY_EXTRA_HOST_ENTER);
         mRoles = bundle.getString(KEY_EXTRA_ROLES);
+        mLibraryType = bundle.getInt(KEY_EXTRA_LIBRARY_TYPE);
         isTeacher = UserHelper.isTeacher(mRoles);
         if (mSelectResource)
             mResourceData = (ShopResourceData) bundle.getSerializable(KEY_EXTRA_RESOURCE_DATA);
@@ -576,7 +581,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         String organId = mEntity.getEntityOrganId();
         int parentId = mEntity.getId();
         String level = mEntity.getLevel();
-        mPresenter.requestOrganCourseLabelData(organId, parentId, level);
+        mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
 
         if (!isClassCourseEnter) {
 
@@ -1849,7 +1854,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                         String organId = mEntity.getEntityOrganId();
                         int parentId = mEntity.getId();
                         String level = mEntity.getLevel();
-                        mPresenter.requestOrganCourseLabelData(organId,parentId,level);
+                        mPresenter.requestOrganCourseLabelData(organId,parentId,level, mLibraryType);
                     }
                 }
             }
@@ -1913,6 +1918,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
      * @param isAuthorized       是否已经获取到授权
      * @param isReallyAuthorized 该分类是否获取到授权了
      * @param isHostEnter        是否直接从学程馆入口进来的
+     * @param roles 用户角色
+     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     public static void show(@NonNull Activity activity,
                             @NonNull LQCourseConfigEntity entity,
@@ -1922,25 +1929,10 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             boolean isAuthorized,
                             boolean isReallyAuthorized,
                             boolean isHostEnter,
-                            String roles) {
-        show(activity,entity,selectResource,isClassCourseEnter,data,null,isAuthorized,isReallyAuthorized,isHostEnter,roles);
-        /*Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_ENTITY, entity);
-        bundle.putBoolean(KEY_EXTRA_ORGAN_SELECT, selectResource);
-        bundle.putBoolean(KEY_EXTRA_IS_AUTHORIZED, isAuthorized);
-        bundle.putBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED, isReallyAuthorized);
-        bundle.putBoolean(KEY_EXTRA_HOST_ENTER, isHostEnter);
-        bundle.putBoolean(KEY_EXTRA_CLASS_COURSE_ENTER, isClassCourseEnter);
-        bundle.putString(KEY_EXTRA_ROLES,roles);
-        if (selectResource)
-            bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
-        intent.putExtras(bundle);
-        if (selectResource) {
-            activity.startActivityForResult(intent, data.getRequestCode());
-        } else {
-            activity.startActivity(intent);
-        }*/
+                            String roles,
+                            int libraryType) {
+        show(activity,entity,selectResource,isClassCourseEnter,data,null,isAuthorized,
+                isReallyAuthorized,isHostEnter,roles, libraryType);
     }
 
     /**
@@ -1965,7 +1957,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             boolean isAuthorized,
                             boolean isReallyAuthorized,
                             boolean isHostEnter,
-                            String roles) {
+                            String roles,
+                            int libraryType) {
         Intent intent = new Intent(activity, OrganCourseFiltrateActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_ENTITY, entity);
@@ -1975,6 +1968,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         bundle.putBoolean(KEY_EXTRA_HOST_ENTER, isHostEnter);
         bundle.putBoolean(KEY_EXTRA_CLASS_COURSE_ENTER, isClassCourseEnter);
         bundle.putString(KEY_EXTRA_ROLES,roles);
+        bundle.putInt(KEY_EXTRA_LIBRARY_TYPE, libraryType);
         if (selectResource) {
             bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
             bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);

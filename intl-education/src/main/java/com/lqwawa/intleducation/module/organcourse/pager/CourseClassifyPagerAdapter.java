@@ -17,6 +17,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.SchoolFunctionEntity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import java.util.List;
 
@@ -86,6 +87,9 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
                 // 未授权
                 StringUtil.fillSafeTextView(mAuthorizedState,UIUtil.getString(R.string.label_unauthorized));
             }
+            // 习学程馆显示授权状态，其他不显示
+            mAuthorizedState.setVisibility(entity.getLibraryType()
+                    == OrganLibraryType.TYPE_LQCOURSE_SHOP ? View.VISIBLE : View.GONE);
         }
     }
 }

@@ -78,18 +78,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
     private TextView holder1;
     private TextView holder2;
 
-    public interface ITabEntityTypeInfo {
-        int TAB_ENTITY_TYPE_SCHOOL_INTRODUCTION = 0;
-        int TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS = 1;
-        int TAB_ENTITY_TYPE_SCHOOL_CLASS = 2;
-        int TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM = 3;
-        int TAB_ENTITY_TYPE_SCHOOL_CHOICE_BOOKS = 4;
-        int TAB_ENTITY_TYPE_CAMPUS_DIRECT = 5;
-        int TAB_ENTITY_TYPE_CAMPUS_PATROL = 6;//校园巡查
-        int TAB_ENTITY_TYPE_LQ_GALAXY_INTL = 7; //LQ银河国际
-        int TAB_ENTITY_TYPE_LQCOURSE_SHOP = 8;//学程馆
-    }
-
     public static final int REQUEST_CODE_SCHOOL_SPACE = 408;
     private static boolean hasFocusChanged;
 
@@ -97,8 +85,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fromType = FROM_SCHOOL_SPACE_FRAGMENT;
-        return inflater.inflate(R.layout.fragment_school_space, null);
+        return inflater.inflate(R.layout.fragment_school_space, container, false);
     }
 
     @Override
@@ -114,13 +101,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void refreshData() {
-        loadSchoolMessageList();
         updateSchoolSpaceViewCount();
         loadSchoolInfo();
     }
@@ -141,11 +122,32 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             itemList.add(item);
         }
 
-        //学程馆
+        //习课程馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP;
         item.title = getString(R.string.common_course_shop);
-        item.resId = R.drawable.icon_lqcourse_shcool_space;
+        item.resId = R.drawable.ic_lqcourse_shop_rect;
+        itemList.add(item);
+
+        //视频馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY;
+        item.title = getString(R.string.common_video_library);
+        item.resId = R.drawable.ic_video_library_rect;
+        itemList.add(item);
+
+        //图书馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY;
+        item.title = getString(R.string.common_library);
+        item.resId = R.drawable.ic_library_rect;
+        itemList.add(item);
+
+        //练测馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY;
+        item.title = getString(R.string.common_practice_library);
+        item.resId = R.drawable.ic_practice_library_rect;
         itemList.add(item);
 
         //学校班级
@@ -158,7 +160,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         if (schoolInfo != null && schoolInfo.isTeacher()) {
             //精品资源库
             item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL;
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
             item.title = getString(R.string.choice_books);
             item.resId = R.drawable.ic_lq_galaxy_intl;
             itemList.add(item);
@@ -194,12 +196,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             itemList.add(item);
         }
 
-//        item = new TabEntityPOJO();
-//        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CHOICE_BOOKS;
-//        item.title = getString(R.string.choice_books);
-//        item.resId = R.drawable.choice_books_ico;
-//        itemList.add(item);
-
         //学校介绍
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_INTRODUCTION;
@@ -214,20 +210,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
 
     }
 
-
-    protected TabEntityPOJO getLQGalaxyInternationalItem() {
-        //LQ银河国际
-//        TabEntityPOJO item = new TabEntityPOJO();
-//        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL;
-//        item.title = getString(R.string.lq_excellent_program);
-//        item.resId = R.drawable.ic_lq_galaxy_intl;
-        //精品资源库
-        TabEntityPOJO item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL;
-        item.title = getString(R.string.choice_books);
-        item.resId = R.drawable.ic_lq_galaxy_intl;
-        return item;
-    }
 
     private void init() {
         Bundle args = getArguments();
@@ -444,10 +426,10 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
                 UIUtils.currentSourceFromType = SourceFromType.PUBLIC_LIBRARY;
                 ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo);
                 break;
-            //老版的精品资源库
-            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CHOICE_BOOKS:
+            //新的精品资源库
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS:
                 UIUtils.currentSourceFromType = SourceFromType.CHOICE_LIBRARY;
-                enterChoiceBooks();
+                ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo, true);
                 break;
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CAMPUS_DIRECT:
                 ActivityUtils.enterCampusDirect(getActivity(), schoolInfo);
@@ -463,35 +445,18 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
                 }
                 break;
 
-            //LQ银河国际
-            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQ_GALAXY_INTL:
-//                if (!isLogin()) {
-//                    enterAccountActivity();
-//                    return;
-//                }
-//                enterLQGalaxyInternational();
-                //精品资源库
-                UIUtils.currentSourceFromType = SourceFromType.CHOICE_LIBRARY;
-                ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo, true);
-                break;
-
+            //习课程馆, 视频馆，图书馆, 练测馆
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP:
-                ActivityUtils.enterLqCourseShopActivity(getActivity(), schoolInfo);
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
+                enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * 进入LQ银河国际
-     */
-    private void enterLQGalaxyInternational() {
-        com.lqwawa.mooc.common.MOOCHelper.init(getUserInfo());
-//        ClassifyIndexActivity.start(getActivity(),
-//                ClassifyIndexActivity.ClassifyValues.LQGalaxyInt);
-        HQCCourseListActivity.start(getActivity(), schoolId);
-    }
 
     private void enterCampusPatrol() {
 

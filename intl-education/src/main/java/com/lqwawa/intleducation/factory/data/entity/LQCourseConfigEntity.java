@@ -51,6 +51,9 @@ public class LQCourseConfigEntity extends BaseVo{
     // V5.12新添加的字段
     private boolean selected;
 
+    // 学程馆类型
+    private int libraryType;
+
     public int getConfigType() {
         return configType;
     }
@@ -265,5 +268,14 @@ public class LQCourseConfigEntity extends BaseVo{
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public int getLibraryType() {
+        return libraryType;
+    }
+
+    public LQCourseConfigEntity setLibraryType(int libraryType) {
+        this.libraryType = libraryType;
+        return this;
     }
 }

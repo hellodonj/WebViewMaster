@@ -18,7 +18,8 @@ public interface OrganCourseFiltrateContract {
 
     interface Presenter extends SchoolPermissionContract.Presenter{
         // 获取机构相关的所有标签
-        void requestOrganCourseLabelData(@NonNull String organId, @NonNull int parentId, @NonNull String level);
+        void requestOrganCourseLabelData(@NonNull String organId, @NonNull int parentId,
+                                         @NonNull String level, int libraryType);
 
         /**
          * 获取符合筛选条件的课程数据
