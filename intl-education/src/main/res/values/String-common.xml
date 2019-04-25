@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <string name="common_course_library">学程馆</string>
     <string name="common_course_shop">Course Library</string>
     <string name="common_practice_library">练测馆</string>
     <string name="common_library">图书馆</string>

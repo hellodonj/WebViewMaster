@@ -122,7 +122,15 @@ public class HandleCheckResourceFragment extends AdapterFragment {
         if (!TextUtils.isEmpty(schoolId) && TextUtils.isEmpty(classId)) {
             loadClassListData();
         } else {
-            loadViews();
+            //空中学校班级学程进入，直接跳转
+            if (!isOnlineClass && !TextUtils.isEmpty(classId)){
+                chooseClassLessonCourse(classId);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            } else {
+                loadViews();
+            }
         }
     }
 
@@ -145,14 +153,14 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             item.typeName = getString(R.string.label_space_school_relevance_course);
             item.type = 0;
             list.add(item);
-        }
 
-        //学程馆
-        item = new HomeTypeEntry();
-        item.icon = R.drawable.icon_lqcourse_circle;
-        item.typeName = getString(R.string.common_course_shop);
-        item.type = 1;
-        list.add(item);
+            //学程馆
+            item = new HomeTypeEntry();
+            item.icon = R.drawable.icon_lqcourse_circle;
+            item.typeName = getString(R.string.common_course_library);
+            item.type = 1;
+            list.add(item);
+        }
 
         if (dataList != null && dataList.size() > 0){
             for (SubscribeClassInfo classInfo : dataList){
@@ -162,18 +170,6 @@ public class HandleCheckResourceFragment extends AdapterFragment {
                 item.typeName = typeName;
                 item.type = 2;
                 item.classId = classInfo.getClassId();
-                list.add(item);
-            }
-        } else {
-            //班级学程
-            if (isOnlineClass){
-
-            } else {
-                item = new HomeTypeEntry();
-                item.icon = R.drawable.icon_class_lesson_task;
-                item.typeName = getString(R.string.str_class_lesson);
-                item.type = 2;
-                item.classId = this.classId;
                 list.add(item);
             }
         }
