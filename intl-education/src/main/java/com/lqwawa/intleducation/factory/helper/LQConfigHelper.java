@@ -87,6 +87,7 @@ public class LQConfigHelper {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("memberId", memberId);
         requestVo.addParams("language", language);
+        requestVo.addParams("version", 0);
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetAssignConfigDataUrl + requestVo.getParams());
         params.setConnectTimeout(10000);

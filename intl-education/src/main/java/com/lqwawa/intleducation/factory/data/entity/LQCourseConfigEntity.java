@@ -15,7 +15,7 @@ import java.util.List;
  * @history v1.0
  * **********************************
  */
-public class LQCourseConfigEntity extends BaseVo{
+public class LQCourseConfigEntity extends BaseVo implements Cloneable {
 
 
     private int configType;
@@ -277,5 +277,15 @@ public class LQCourseConfigEntity extends BaseVo{
     public LQCourseConfigEntity setLibraryType(int libraryType) {
         this.libraryType = libraryType;
         return this;
+    }
+
+    public LQCourseConfigEntity clone() {
+        LQCourseConfigEntity entity = null;
+        try {
+            entity = (LQCourseConfigEntity) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return entity;
     }
 }
