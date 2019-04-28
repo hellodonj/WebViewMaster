@@ -170,7 +170,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
-        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, true);
+        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));
@@ -411,7 +411,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mCourseResListAdapter.setData(null);
         if (mSectionDetailsVo != null) {
             getActivity().getIntent().putExtra(SECTION_NAME, mSectionDetailsVo.getSectionName());
-            // topBar.setTitle(sectionDetailsVo.getSectionName());
             getActivity().getIntent().putExtra(SECTION_TITLE, mSectionDetailsVo.getSectionTitle());
             getActivity().getIntent().putExtra(STATUS, mSectionDetailsVo.getStatus());
             getActivity().getIntent().putExtra("isPublic", mSectionDetailsVo.isIsOpen());
@@ -423,7 +422,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                     if (listVo.getTaskType() == mTaskType) {
                         List<SectionResListVo> data = listVo.getData();
                         if (EmptyUtil.isNotEmpty(data)) {
-                            data.get(0).setIsTitle(true);
                             for (SectionResListVo vo : data) {
                                 vo.setTaskName(getTaskName(index));
                                 vo.setChapterId(vo.getId());

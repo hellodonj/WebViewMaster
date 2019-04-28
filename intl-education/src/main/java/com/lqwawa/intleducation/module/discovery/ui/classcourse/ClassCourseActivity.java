@@ -54,7 +54,6 @@ import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;

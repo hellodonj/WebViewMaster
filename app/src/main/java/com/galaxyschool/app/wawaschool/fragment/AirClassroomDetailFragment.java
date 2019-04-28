@@ -86,7 +86,6 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.ConfirmOrderActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.LiveDetailsVo;
-import com.lqwawa.intleducation.module.learn.ui.LiveResListFragment;
 import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -181,8 +180,6 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
 
     private LinearLayout bottomBtnLayout;
     private boolean isFromMOOC = false;
-    private LiveResListFragment beforeResListFragment;
-    private LiveResListFragment afterResListFragment;
     private LiveDetailsVo liveDetailsVo;
     private boolean isLogin = false;
     private boolean isFromCourse = false;
@@ -381,8 +378,6 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                 viewBottomSplit.setVisibility(View.GONE);
                 textViewBuyOrAdd.setVisibility(View.GONE);
             }
-            beforeResListFragment.updateLiveInfo(liveDetailsVo);
-            afterResListFragment.updateLiveInfo(liveDetailsVo);
             if (StringUtils.isValidString(liveDetailsVo.getLive().getEmceeIds())
                     && liveDetailsVo.getLive().getEmceeIds().contains(UserHelper.getUserId())) {
                 role = 1;
@@ -527,7 +522,6 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
     private void initViews() {
         initNormalView();
         initFragments();
-        initForMOOC();
         initAirClassAddMyLive();
     }
 
@@ -546,85 +540,6 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     }
                 }
             });
-        }
-    }
-
-    private void initForMOOC() {
-        if (!isFromMOOC) {
-            return;
-        }
-        View btn = findViewById(R.id.lq_look_course);
-        btn.setVisibility(View.GONE);
-
-        int roleType = getMoocLiveRoleType(onlineRes);
-
-        LinearLayout layoutInfoMore = (LinearLayout) findViewById(R.id.layout_info_more);
-        bottomBtnLayout = (LinearLayout) findViewById(R.id.layout_bottom_btn);
-        bottomBtnLayout.setVisibility(View.VISIBLE);
-        beforeResListFragment = new LiveResListFragment();
-        afterResListFragment = new LiveResListFragment();
-        Bundle bundle1 = new Bundle();
-        bundle1.putString("liveId", "" + onlineRes.getId());
-        bundle1.putInt("type", 0);
-        bundle1.putBoolean("isHost", getArguments().getBoolean("isHost"));
-        bundle1.putString("memberId", getArguments().getString("memberId"));
-        bundle1.putInt("roleType", roleType);
-        beforeResListFragment.setArguments(bundle1);
-        Bundle bundle2 = new Bundle();
-        bundle2.putString("liveId", "" + onlineRes.getId());
-        bundle2.putInt("type", 1);
-        bundle2.putBoolean("isHost", getArguments().getBoolean("isHost"));
-        bundle2.putString("memberId", getArguments().getString("memberId"));
-        bundle2.putInt("roleType", roleType);
-        afterResListFragment.setArguments(bundle2);
-        if (layoutInfoMore != null) {
-            layoutInfoMore.setVisibility(View.VISIBLE);
-            TextView textViewBuyOrAdd = (TextView) findViewById(R.id.buy_or_add_tv);
-            textViewBuyOrAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!UserHelper.isLogin()) {
-                        LoginHelper.enterLogin(getActivity());
-                        return;
-                    }
-                    if (liveDetailsVo == null) {
-                        return;
-                    }
-                    if ((liveDetailsVo.isIsBuy() && !liveDetailsVo.isIsExpire())
-                            || liveDetailsVo.getLive().getPayType() == 0) {
-                        if (!ButtonUtils.isFastDoubleClick()) {
-                            addToMyLive(liveDetailsVo);
-                        }
-                    } else {
-                        ConfirmOrderActivity.start(getActivity(), liveDetailsVo);
-                    }
-                }
-            });
-            TextView textViewViewCourse = (TextView) findViewById(R.id.view_course_tv);
-            textViewViewCourse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (UserHelper.isLogin()) {
-                        if (liveDetailsVo == null) {
-                            return;
-                        }
-                        String courseId = liveDetailsVo.getLive().getCourseId();
-                        if (!TextUtils.isEmpty(courseId)) {
-                            if (courseId.contains(",")) {
-
-                                WatchCourseListActivity.newInstance(getActivity(), courseId);
-
-                            } else {
-
-                                CourseDetailsActivity.start(getActivity(), courseId, true, UserHelper.getUserId());
-                            }
-                        }
-                    } else {
-                        LoginHelper.enterLogin(getActivity());
-                    }
-                }
-            });
-            getLiveDetails();
         }
     }
 
@@ -931,12 +846,12 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
             displaySourceTextV.setOnClickListener(v -> {
                 //跳转
                 String passMemberId = getMemeberId();
-                if (roleType == RoleType.ROLE_TYPE_PARENT){
+                if (roleType == RoleType.ROLE_TYPE_PARENT) {
                     Bundle args = getArguments();
-                    if (args != null){
+                    if (args != null) {
                         String studentId = args.getString("memberId");
                         boolean isMyLive = args.getBoolean("isAirClassRoomLive");
-                        if (isMyLive && !TextUtils.isEmpty(studentId)){
+                        if (isMyLive && !TextUtils.isEmpty(studentId)) {
                             passMemberId = studentId;
                         }
                     }
@@ -2199,17 +2114,9 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    if (isFromMOOC) {
-                        return beforeResListFragment;
-                    } else {
-                        return beforeStudyFragment;
-                    }
+                    return beforeStudyFragment;
                 case 1:
-                    if (isFromMOOC) {
-                        return afterResListFragment;
-                    } else {
-                        return afterStudyFragment;
-                    }
+                    return afterStudyFragment;
                 case 2:
                     return teachResourceFragment;
                 default:
@@ -2224,16 +2131,6 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
         if (requestCode == ConfirmOrderActivity.Rc_pay) {//从支付界面返回则刷新数据
             sendBroadcastToUpdateLiveDetail();
             getLiveDetails();
-        } else if (requestCode == SectionTaskDetailsActivity.Rs_task_commit) {
-            if (isFromMOOC) {
-                if (beforeResListFragment != null && beforeResListFragment.isVisible()) {
-                    beforeResListFragment.getData();
-                }
-
-                if (afterResListFragment != null && afterResListFragment.isVisible()) {
-                    afterResListFragment.getData();
-                }
-            }
         }
     }
 
@@ -2686,7 +2583,7 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     String resTitle = onlineRes.getResTitle();
                     CheckLanMp4UrlHelper mp4UrlHelper = new CheckLanMp4UrlHelper(getActivity());
                     mp4UrlHelper.setCallBackListener(result -> {
-                        if (getView() == null){
+                        if (getView() == null) {
                             return;
                         }
                         getView().postDelayed(() -> {
@@ -2695,7 +2592,7 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                             } else {
                                 playMp4FormatVideo(resUrl);
                             }
-                        },50);
+                        }, 50);
 
                     });
                     if (!TextUtils.isEmpty(resTitle)) {
@@ -2705,7 +2602,7 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
                     } else if (!TextUtils.isEmpty(resUrl)) {
                         mp4UrlHelper.setMp4ResourceUrl(resUrl).checkLanUrl(false);
                     }
-                } else if (!TextUtils.isEmpty(vUid)){
+                } else if (!TextUtils.isEmpty(vUid)) {
                     //用乐视的进行播放
                     onlineRes.setDemandId(vUid);
                     playSchoolResVideo();
@@ -2752,8 +2649,8 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
         mp4VideoView.start();
     }
 
-    public void onBackPress(boolean isFullScreen){
-        if (mp4PlayRootView != null){
+    public void onBackPress(boolean isFullScreen) {
+        if (mp4PlayRootView != null) {
             onScaleChange(isFullScreen);
         }
     }

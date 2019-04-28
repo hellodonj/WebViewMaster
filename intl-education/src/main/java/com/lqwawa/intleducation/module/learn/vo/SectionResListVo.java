@@ -81,6 +81,8 @@ public class SectionResListVo extends BaseVo {
     // 入口类型
     private int enterType;
 
+    private int viewCount;
+
 
     public String getTaskId() {
         return taskId;
@@ -113,13 +115,6 @@ public class SectionResListVo extends BaseVo {
     public void setScreenType(int screenType) {
         this.screenType = screenType;
     }
-
-    public SectionResListVo(){
-        isTitle = false;
-        isShow = true;
-    }
-    private boolean isTitle;
-    private boolean isShow;
 
     public String getId() {
         return id;
@@ -191,22 +186,6 @@ public class SectionResListVo extends BaseVo {
 
     public void setOriginName(String originName) {
         this.originName = originName;
-    }
-
-    public boolean isIsTitle() {
-        return isTitle;
-    }
-
-    public void setIsTitle(boolean title) {
-        isTitle = title;
-    }
-
-    public boolean isIsShow() {
-        return isShow;
-    }
-
-    public void setIsShow(boolean show) {
-        isShow = show;
     }
 
     public int getTaskType() {
@@ -361,6 +340,15 @@ public class SectionResListVo extends BaseVo {
 
     public void setEnterType(int enterType) {
         this.enterType = enterType;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public SectionResListVo setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+        return this;
     }
 
     /**

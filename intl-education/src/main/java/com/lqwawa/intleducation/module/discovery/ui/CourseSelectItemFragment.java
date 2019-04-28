@@ -184,7 +184,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
         courseResListAdapter = new CourseResListAdapter(activity, false);
         courseResListAdapter.setCourseSelect(true, mTaskType);
-        courseResListAdapter.setMultipleChoiceCount(true, mMultipleChoiceCount);
+        courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
         courseResListAdapter.setClassTeacher(
                 EmptyUtil.isNotEmpty(mParams) &&
@@ -309,10 +309,6 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     private void updateData(int i) {
         List<SectionResListVo> voList = sectionDetailsVo.getTaskList().get(i).getData();
         RefreshUtil.getInstance().refresh(voList);
-        if (voList.size() > 0) {
-            // V5.11版本 取消标题的显示
-            voList.get(0).setIsTitle(false);
-        }
         for (SectionResListVo vo : voList) {
             vo.setTaskName(getTaskName(i));
             vo.setTaskType(sectionDetailsVo.getTaskList().get(i).getTaskType());
