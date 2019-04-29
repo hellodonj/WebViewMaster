@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -21,6 +23,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.SuperGridView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
@@ -67,7 +70,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     // 真实的选择类型
     public static final String KEY_EXTRA_REAL_TASK_TYPE = "KEY_EXTRA_REAL_TASK_TYPE";
 
-    private SuperListView listView;
+    private SuperGridView listView;
     private FrameLayout mEmptyView;
     OnLoadStatusChangeListener onLoadStatusChangeListener;
     private ResourceSelectListener mListener;
@@ -99,7 +102,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         topBar = (TopBar) view.findViewById(R.id.select_top_bar);
         pullToRefresh = (PullToRefreshView) view.findViewById(R.id.select_pull_to_refresh);
         mEmptyView = (FrameLayout) view.findViewById(R.id.empty_layout);
-        listView = (SuperListView) view.findViewById(R.id.course_select_listView);
+        listView = (SuperGridView) view.findViewById(R.id.course_select_listView);
         return view;
     }
 
@@ -191,8 +194,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                         mParams.isClassCourseEnter() &&
                         EmptyUtil.isNotEmpty(mParams.getClassId()));
         listView.setAdapter(courseResListAdapter);
+        listView.setNumColumns(1);
 
-        listView.setOnItemClickListener(new SuperListView.OnItemClickListener() {
+        listView.setOnItemClickListener(new SuperGridView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
@@ -386,14 +390,6 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     @NonNull
     private String getTaskName(int i) {
         String taskName = sectionDetailsVo.getTaskList().get(i).getTaskName();
-        /*int taskType = sectionDetailsVo.getTaskList().get(i).getTaskType();
-        if (taskType == 1) {//看课件
-            taskName = getString(R.string.lq_watch_course);
-        } else if (taskType == 2) {//复述课件
-            taskName = getResources().getString(R.string.retell_course);
-        }else if (taskType == 3) {//任务单
-            taskName = getResources().getString(R.string.coursetask);
-        }*/
         return taskName;
     }
 

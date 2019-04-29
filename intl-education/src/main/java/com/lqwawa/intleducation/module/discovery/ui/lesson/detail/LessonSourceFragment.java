@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -98,13 +99,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     public static String SECTION_TITLE = "section_title";
     public static String STATUS = "status";
 
-    private ListView mListView;
+    private GridView mListView;
     private CourseEmptyView mEmptyLayout;
     private CourseResListAdapter mCourseResListAdapter;
     private boolean needFlag;
     private boolean canRead;
-    private boolean canEdit;
-    private boolean isOnlineTeacher;
     private String courseId;
     private String sectionId;
     private int mTaskType;
@@ -142,9 +141,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     @Override
     protected boolean initArgs(Bundle bundle) {
         needFlag = bundle.getBoolean(KEY_EXTRA_NEED_FLAG);
-        canEdit = bundle.getBoolean(KEY_EXTRA_CAN_EDIT);
         canRead = bundle.getBoolean(KEY_EXTRA_CAN_READ);
-        isOnlineTeacher = bundle.getBoolean(KEY_EXTRA_ONLINE_TEACHER);
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         mTaskType = bundle.getInt(KEY_EXTRA_TASK_TYPE);
@@ -166,7 +163,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     @Override
     protected void initWidget() {
         super.initWidget();
-        mListView = (ListView) mRootView.findViewById(R.id.listView);
+        mListView = (GridView) mRootView.findViewById(R.id.listView);
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
@@ -174,8 +171,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));
-
         mCourseResListAdapter.triggerChoiceMode(mSourceParams.isChoiceMode());
+        mListView.setNumColumns(1);
 
         // canRead 是否可以查阅资源
         // 试听功能，都可以查阅资源，以及学程馆授权的
@@ -229,15 +226,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                 flagRead(resVo, position);
                             }
                         }
-
-                        /*if (needFlag && canEdit || freeUser) {
-                            if(getRoleWithCourse() != UserHelper.MoocRoleType.EDITOR
-                                    && getRoleWithCourse() != UserHelper.MoocRoleType.TEACHER && !freeUser){
-                                // Teacher 是小编 Editor 是主编
-                                // 不是主编和小编才FlagRead
-                                flagRead(resVo, position);
-                            }
-                        }*/
                     } else if (resVo.getTaskType() == 2 || resVo.getTaskType() == 5) {
                         //复述微课
                         if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
@@ -248,13 +236,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             // 其它情况，只能看微课
                             mReadWeikeHelper.readWeike(resVo);
                         }
-                        /*if(canEdit && needFlag || freeUser
-                                || !TextUtils.equals(getActivity().getIntent().getStringExtra("memberId"),
-                                UserHelper.getUserId())){
-                            enterSectionTaskDetail(resVo);
-                        }else{
-                            readWeike(resVo, position);
-                        }*/
                     } else if (resVo.getTaskType() == 3) {
                         if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
@@ -271,23 +252,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                                 ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
                             }
                         }
-
-
-                        /*if(canEdit && needFlag || freeUser
-                                || !TextUtils.equals(getActivity().getIntent().getStringExtra("memberId"),
-                                UserHelper.getUserId())) {
-                            enterSectionTaskDetail(resVo);
-                        }else{
-                            if(TaskSliderHelper.onTaskSliderListener != null) {
-                                TaskSliderHelper.onTaskSliderListener.viewCourse(getActivity(),
-                                        resVo.getResId(), resVo.getResType(),
-                                        getActivity().getIntent().getStringExtra("schoolId"),
-                                        getActivity().getIntent().getBooleanExtra("isPublic", false),
-                                        getActivity().getIntent().getBooleanExtra(MyCourseDetailsActivity
-                                                .KEY_IS_FROM_MY_COURSE, false)
-                                                ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
-                            }
-                        }*/
                     }
                 }
 
@@ -452,17 +416,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     }
 
     /**
-     * 根据上层页面传来的信息判断角色
-     */
-    /*private int getRoleWithCourse(){
-        String memberId = getActivity().getIntent().getStringExtra("memberId");
-        CourseVo courseVo = (CourseVo) getActivity().getIntent().getSerializableExtra(CourseVo
-                .class.getSimpleName());
-        int role = UserHelper.getCourseAuthorRole(memberId, courseVo);
-        return role;
-    }*/
-
-    /**
      * 进入复述课件，任务单详情
      *
      * @param vo 复述课件，任务单消息实体
@@ -513,253 +466,12 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                         ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
                         (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
                 null, originalRole, handleRole, null, isAudition, params);
-
-
-        /*String memberId = getActivity().getIntent().getStringExtra("memberId");
-        CourseVo courseVo = (CourseVo) getActivity().getIntent().getSerializableExtra(CourseVo
-                .class.getSimpleName());
-        int originRole = UserHelper.getCourseAuthorRole(memberId, courseVo);
-        final String taskId = vo.getTaskId();
-        if (originRole == UserHelper.MoocRoleType.STUDENT && !TextUtils.isEmpty(taskId)) {
-            LessonHelper.DispatchTask(taskId, memberId, null);
-        }
-
-        boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER,false);
-        if(freeUser){
-            // 如果是游客身份,试听也是做辅导老师身份处理，也就是老师
-            originRole = UserHelper.MoocRoleType.TEACHER;
-        }
-        // 辅导老师的身份等同家长处理 已经角色处理过的 role
-        int role = originRole;
-        if(UserHelper.isCourseCounselor(courseVo,isOnlineTeacher) || freeUser){
-            // 如果是空中课堂的老师,当做家长处理 如果是游客身份,试听也是做家长身份处理
-            role = UserHelper.MoocRoleType.PARENT;
-        }
-
-        if (originRole == UserHelper.MoocRoleType.TEACHER || isOnlineTeacher) {
-            if (UserHelper.isCourseCounselor(courseVo,isOnlineTeacher)) {
-                role = UserHelper.MoocRoleType.PARENT;
-            }
-            if (UserHelper.isCourseTeacher(courseVo)) {
-                role = UserHelper.MoocRoleType.EDITOR;
-            }
-        }
-
-        SectionTaskDetailsActivity.startForResultEx(getActivity(), vo, memberId, getActivity().getIntent
-                ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
-                (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false), null, originRole,role, null,freeUser);*/
     }
 
-    /**
-     * 看微课
-     * @param resVo
-     * @param position
-     */
-    /*private void readWeike(final SectionResListVo resVo, int position) {
-        int resType = resVo.getResType();
-        if (resType > 10000) {
-            resType -= 10000;
-        }
-        switch (resType) {
-            case 1:
-                showPic(resVo);
-//
-//                ImageDetailActivity.showStatic(activity,
-//                        resVo.getResourceUrl().trim(), resVo.getName());
-                break;
-            case 2:
-                playMedia(resVo, VodVideoSettingUtil.AUDIO_TYPE);
-                break;
-            case 6:
-            case 20:
-                if (TaskSliderHelper.onTaskSliderListener != null) {
-                    TaskSliderHelper.onTaskSliderListener
-                            .viewPdfOrPPT(getActivity(), "" + resVo.getResId(), resVo.getResType(),
-                                    resVo.getOriginName(), resVo.getCreateId(),
-                                    getActivity().getIntent().getBooleanExtra(MyCourseDetailsActivity
-                                            .KEY_IS_FROM_MY_COURSE, false)
-                                            ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
-                }
-                break;
-            case 24:
-            case 25:
-                LqResViewHelper.playBaseRes(resVo.getResType(), getActivity(),
-                        resVo.getResourceUrl().trim(), resVo.getName());
-                break;
-            case 5:
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-            case 3:
-            case 23:
-                if (!SharedPreferencesHelper.getBoolean(getActivity(),
-                        AppConfig.BaseConfig.KEY_ALLOW_4G, false)) {
-                    if (NetWorkUtils.isWifiActive(getActivity().getApplication().getApplicationContext())) {
-                        if (resVo.getResType() == 3) {
-//                            LqResViewHelper.playBaseRes(resVo.getResType(), activity, resVo.getVuid().trim(), resVo.getName());
-                            playMedia(resVo, VodVideoSettingUtil.VIDEO_TYPE);
-                        } else {
-                            *//*LqResViewHelper.playWeike(activity,
-                                    UserHelper.getUserId(),
-                                    UserHelper.getUserName(),
-                                    resVo.getResourceUrl().trim(),
-                                    resVo.getOriginName(),
-                                    1,
-                                    Utils.getCacheDir(),
-                                    resVo.getScreenType(),
-                                    resVo.getResType());*//*
-                            if (TaskSliderHelper.onTaskSliderListener != null) {
-                                TaskSliderHelper.onTaskSliderListener.viewCourse(getActivity(),
-                                        resVo.getResId(), resVo.getResType(),
-                                        getActivity().getIntent().getStringExtra("schoolId"),
-                                        getActivity().getIntent().getBooleanExtra("isPublic", false),
-                                        getActivity().getIntent().getBooleanExtra(MyCourseDetailsActivity
-                                                .KEY_IS_FROM_MY_COURSE, false)
-                                                ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
-                            }
-                        }
-                    } else {
-                        UIUtil.showToastSafe(R.string.can_not_use_4g);
-                    }
-                } else {
-                    if (NetWorkUtils.isWifiActive(getActivity().getApplication().getApplicationContext())) {
-                        if (resVo.getResType() == 3) {
-//                            LqResViewHelper.playBaseRes(resVo.getResType(), activity, resVo.getVuid().trim(), resVo.getName());
-                            playMedia(resVo, VodVideoSettingUtil.VIDEO_TYPE);
-                        } else {
-                            *//*LqResViewHelper.playWeike(activity,
-                                    UserHelper.getUserId(),
-                                    UserHelper.getUserName(),
-                                    resVo.getResourceUrl().trim(),
-                                    resVo.getOriginName(),
-                                    1,
-                                    Utils.getCacheDir(),
-                                    resVo.getScreenType(),
-                                    resVo.getResType());*//*
-                            if (TaskSliderHelper.onTaskSliderListener != null) {
-                                TaskSliderHelper.onTaskSliderListener.viewCourse(getActivity(),
-                                        resVo.getResId(), resVo.getResType(),
-                                        getActivity().getIntent().getStringExtra("schoolId"),
-                                        getActivity().getIntent().getBooleanExtra("isPublic", false),
-                                        getActivity().getIntent().getBooleanExtra(MyCourseDetailsActivity
-                                                .KEY_IS_FROM_MY_COURSE, false)
-                                                ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
-                            }
-                        }
-                    } else {
-                        CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
-                        builder.setMessage(UIUtil.getString(R.string.play_use_4g) + "?");
-                        builder.setTitle(UIUtil.getString(R.string.tip));
-                        builder.setPositiveButton(UIUtil.getResources().getString(R.string.continue_play),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        if (resVo.getResType() == 3) {
-//                                            LqResViewHelper.playBaseRes(resVo.getResType(), activity, resVo.getVuid().trim(), resVo.getName());
-                                            playMedia(resVo, VodVideoSettingUtil.VIDEO_TYPE);
-                                        } else {
-                                            *//*LqResViewHelper.playWeike(activity,
-                                                    UserHelper.getUserId(),
-                                                    UserHelper.getUserName(),
-                                                    resVo.getResourceUrl().trim(),
-                                                    resVo.getOriginName(),
-                                                    1,
-                                                    Utils.getCacheDir(),
-                                                    resVo.getScreenType(),
-                                                    resVo.getResType());*//*
-                                            if (TaskSliderHelper.onTaskSliderListener != null) {
-                                                TaskSliderHelper.onTaskSliderListener.viewCourse(getActivity(),
-                                                        resVo.getResId(), resVo.getResType(),
-                                                        getActivity().getIntent().getStringExtra("schoolId"),
-                                                        getActivity().getIntent().getBooleanExtra("isPublic", false),
-                                                        getActivity().getIntent().getBooleanExtra(MyCourseDetailsActivity
-                                                                .KEY_IS_FROM_MY_COURSE, false)
-                                                                ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
-                                            }
-                                        }
-                                    }
-                                });
-                        builder.setNegativeButton(UIUtil.getResources().getString(R.string.cancel),
-                                new android.content.DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
 
-                        builder.create().show();
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    *//**
-     * 图片浏览
-     *
-     * @param resVo
-     *//*
-    private void showPic(SectionResListVo resVo) {
-        List<ImageInfo> resourceInfoList = new ArrayList<>();
-        ImageInfo newResourceInfo = new ImageInfo();
-        newResourceInfo.setTitle(resVo.getName());
-        newResourceInfo.setResourceUrl(resVo.getResourceUrl().trim());
-        newResourceInfo.setResourceId(resVo.getResId() + "-" + resVo.getResType());
-        newResourceInfo.setAuthorId(resVo.getCreateId());
-        newResourceInfo.setResourceType(resVo.getResType());
-        resourceInfoList.add(newResourceInfo);
-
-
-        Intent intent = new Intent();
-        intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity");
-        intent.putParcelableArrayListExtra(ImageBrowserActivity.EXTRA_IMAGE_INFOS, (ArrayList<? extends Parcelable>) resourceInfoList);
-        intent.putExtra(ImageBrowserActivity.EXTRA_CURRENT_INDEX, 0);
-        intent.putExtra(ImageBrowserActivity.ISPDF, false);
-
-        intent.putExtra(ImageBrowserActivity.KEY_ISHIDEMOREBTN, false);
-        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, true);
-        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOLLECT, false);//隐藏收藏功能
-        startActivity(intent);
-    }
-
-    */
-
-    /**
-     * 音视频播放
-     *
-     * @param resVo
-     * @param type
-     *//*
-    private void playMedia(SectionResListVo resVo, int type) {
-        new LetvVodHelperNew.VodVideoBuilder(getActivity())
-                .setNewUI(true)//使用自定义UI
-                .setTitle(resVo.getName())//视频标题
-                .setAuthorId(resVo.getCreateId())
-                .setResId(resVo.getResId() + "-" + resVo.getResType())
-                .setResourceType(resVo.getResType())
-                .setVuid(resVo.getVuid())
-                .setUrl(resVo.getResourceUrl())
-                .setMediaType(type)//设置媒体类型
-                .setPackageName(MainApplication.getInstance().getPackageName())
-                .setClassName("com.galaxyschool.app.wawaschool.medias.activity.VodPlayActivity")
-                .setHideBtnMore(true)
-                .setLeStatus(resVo.getLeStatus())
-                .setIsPublic(getActivity().getIntent().getBooleanExtra("isPublic", false))
-                .create();
-    }*/
     @NonNull
     private String getTaskName(int i) {
         String taskName = mSectionDetailsVo.getTaskList().get(i).getTaskName();
-        /*int taskType = mSectionDetailsVo.getTaskList().get(i).getTaskType();
-        if (taskType == 1) {//看课件
-            taskName = getString(R.string.lq_watch_course);
-        } else if (taskType == 2) {//复述课件
-            taskName = getResources().getString(R.string.retell_course);
-        } else if (taskType == 3) {//任务单
-            taskName = getResources().getString(R.string.coursetask);
-        }*/
         return taskName;
     }
 
@@ -809,44 +521,6 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                 CourseDetails.courseDetailsTriggerStudyTask(getActivity().getApplicationContext(), CourseDetailsItemFragment.LQWAWA_ACTION_CAN_COURSEWARE);
             }
         });
-
-        /*RequestVo requestVo = new RequestVo();
-        requestVo.addParams("cwareId", vo.getId());
-        if(vo.getTaskType() != 1){
-            // 1是看课件 除了看课件，其它都需要传resId
-            requestVo.addParams("resId", vo.getResId());
-        }
-        RequestParams params =
-                new RequestParams(AppConfig.ServerUrl.setReaded + requestVo.getParams());
-        params.setConnectTimeout(10000);
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            // TODO 还是刚刚那个接口的问题，课程是国际课程测试，接口返回flagRead是正确的。但是在加载的时候，isRead还是false
-            @Override
-            public void onSuccess(String s) {
-                ResponseVo<String> result = JSON.parseObject(s,
-                        new TypeReference<ResponseVo<String>>() {
-                        });
-                if (result.getCode() == 0) {
-                    ((SectionResListVo) mCourseResListAdapter.getItem(position)).setStatus(1);
-                    mCourseResListAdapter.notifyDataSetChanged();
-                    // 发送广播
-                    CourseDetails.courseDetailsTriggerStudyTask(getActivity().getApplicationContext(), CourseDetailsItemFragment.LQWAWA_ACTION_CAN_COURSEWARE);
-                }
-            }
-
-            @Override
-            public void onCancelled(CancelledException e) {
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-                UIUtil.showToastSafe(R.string.net_error_tip);
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });*/
     }
 
     @Override

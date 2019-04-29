@@ -19,17 +19,13 @@
 
     </com.lqwawa.intleducation.base.CourseEmptyView>
 
-    <ListView
+    <GridView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/windowsBackground"
-        android:divider="@null"
-        android:dividerHeight="0dp"
         android:scrollbars="none"
-        android:clipToPadding="false"
         android:paddingBottom="60dp"
-        android:fadingEdge="none"
         android:overScrollMode="never"/>
 
 </FrameLayout>

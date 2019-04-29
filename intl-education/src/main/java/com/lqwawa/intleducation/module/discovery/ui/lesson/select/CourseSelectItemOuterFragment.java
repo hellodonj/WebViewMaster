@@ -125,15 +125,6 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                                        ArrayList<Integer> filterArray,
                                        boolean isOnlineRelevance) {
         return newInstance(vo,taskType,multiChoiceCount,filterArray,isOnlineRelevance,null);
-        /*CourseSelectItemOuterFragment fragment = new CourseSelectItemOuterFragment();
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(KEY_EXTRA_CHAPTER_OBJECT, vo);
-        arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
-        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multiChoiceCount);
-        arguments.putSerializable(KEY_EXTRA_FILTER_COLLECTION, filterArray);
-        arguments.putBoolean(KEY_EXTRA_ONLINE_RELEVANCE, isOnlineRelevance);
-        fragment.setArguments(arguments);
-        return fragment;*/
     }
 
     @Override
