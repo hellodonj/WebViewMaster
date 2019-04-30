@@ -52,9 +52,14 @@ public class OrganCourseFiltratePresenter extends SchoolPermissionPresenter<Orga
     }
 
     @Override
-    public void requestCourseData(final boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString,@NonNull String level, int paramOneId, int paramTwoId, int paramThreeId) {
+    public void requestCourseData(final boolean more, @NonNull String organId, int pageIndex,
+                                  int pageSize, String keyString,@NonNull String level,
+                                  int paramOneId, int paramTwoId, int paramThreeId,
+                                  int libraryType) {
         // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        OrganCourseHelper.requestOrganCourseData(organId,pageIndex, pageSize,keyString, level,paramOneId, paramTwoId, paramThreeId, new DataSource.Callback<List<CourseVo>>() {
+        OrganCourseHelper.requestOrganCourseData(organId,pageIndex, pageSize,keyString, level,
+                paramOneId, paramTwoId, paramThreeId, libraryType,
+                new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();

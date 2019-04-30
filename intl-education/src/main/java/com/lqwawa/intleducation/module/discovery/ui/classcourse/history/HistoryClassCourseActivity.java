@@ -68,6 +68,13 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     // 基础课程
     private static final int COUNTRY_COURSE_ID = 2003;
 
+    // 分类阅读
+    public static final int CLASSIFIED_READING_ID = 1001;
+    // 绘本
+    public static final int PICTURE_BOOK_ID = 1002;
+    // Q配音
+    public static final int Q_DUBBING_ID = 1003;
+
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
 
@@ -502,31 +509,45 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
      * 组装Label数据
      */
     private void configLabel(@NonNull int rootId) {
-        // 是否配置全部
+        // 类型固定
+        mTabLabel1.setText(getString(R.string.label_colon_type));
         mTabVector2.setVisibility(View.VISIBLE);
-
         if (rootId == MINORITY_LANGUAGE_COURSE_ID) {
             // 小语种课程 二级页面
             mTabVector3.setVisibility(View.GONE);
 
-            // 类型语言
-            mTabLabel1.setText(getString(R.string.label_colon_type));
+            // 语言
             mTabLabel2.setText(getString(R.string.label_colon_language));
         } else if (rootId == ENGLISH_INTERNATIONAL_COURSE_ID) {
             // 英语国际课程 三级页面
-            // 三级页面
+            // 类型 科目
+
             mTabVector3.setVisibility(View.VISIBLE);
 
-            // 类型 类型 科目
-            mTabLabel1.setText(getString(R.string.label_colon_type));
             mTabLabel2.setText(getString(R.string.label_colon_type));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
+        } else if (rootId == CLASSIFIED_READING_ID) {
+            //分类阅读
+            mTabVector3.setVisibility(View.GONE);
+
+            // 科目, 级别
+            mTabLabel2.setText(getString(R.string.label_colon_subject));
+            mTabLabel3.setText(getString(R.string.label_colon_level));
+        } else if (rootId == PICTURE_BOOK_ID) {
+            //绘本  三级页面
+            mTabVector3.setVisibility(View.VISIBLE);
+
+            // 年龄段 语言
+            mTabLabel2.setText(getString(R.string.label_colon_age));
+            mTabLabel3.setText(getString(R.string.label_colon_language));
+        } else if (rootId == Q_DUBBING_ID) {
+            mTabVector2.setVisibility(View.GONE);
+            mTabVector3.setVisibility(View.GONE);
         } else {
             // 三级页面
             mTabVector3.setVisibility(View.VISIBLE);
 
-            // 类型 学段 科目
-            mTabLabel1.setText(getString(R.string.label_colon_type));
+            // 学段 科目
             mTabLabel2.setText(getString(R.string.label_colon_period));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
 
@@ -765,6 +786,11 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             recursionConfigArray(tabData.getChildList());
             configLabel(tabData.getId());
             initTabControl2();
+            if (tabData.getId() == PICTURE_BOOK_ID) {
+                clearArray(CONFIG_TYPE_3);
+                recursionConfigArray(tabData.getChildList());
+                initTabControl3();
+            }
             // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
             // initTabControl3();
 

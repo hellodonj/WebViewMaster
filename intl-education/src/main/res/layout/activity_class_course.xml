@@ -282,10 +282,9 @@
 
             <net.qiujuer.genius.ui.widget.Button
                 android:id="@+id/btn_work_cart"
-                android:layout_width="144dp"
-                android:layout_height="33dp"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
                 android:background="@drawable/btn_accent_radius_19"
                 android:gravity="center"
                 android:text="@string/label_work_cart"

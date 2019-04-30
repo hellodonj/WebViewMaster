@@ -67,6 +67,7 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivi
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -129,6 +130,13 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private static final int BASIC_COURSE = 2003;
     // 特色英语ID
     private static final int CHARACTERISTICS_ENGLISH = 2005;
+
+    // 分类阅读
+    public static final int CLASSIFIED_READING_ID = 1001;
+    // 绘本
+    public static final int PICTURE_BOOK_ID = 1002;
+    // Q配音
+    public static final int Q_DUBBING_ID = 1003;
 
     // LQ English Kids
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_KIDS_ID = 2010;
@@ -305,28 +313,6 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                     HideSortType.TYPE_SORT_NEW_SCHOOL_SHOP,
                     mEntity.getConfigValue(), SEARCH_REQUEST_CODE);
         });
-        // 不是搜索页面过来的
-        /*mTopBar.setRightFunctionImage1(R.drawable.search, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 筛选页面 mSortType 定死的-1;
-                if(mSelectResource){
-                    SearchActivity.show(
-                            OrganCourseFiltrateActivity.this,
-                            mEntity,
-                            HideSortType.TYPE_SORT_SCHOOL_SHOP,
-                            mEntity.getConfigValue(),
-                            mSelectResource,
-                            mResourceData,isHostEnter);
-                }else{
-                    SearchActivity.show(OrganCourseFiltrateActivity.this,
-                            mEntity,
-                            HideSortType.TYPE_SORT_SCHOOL_SHOP,
-                            mEntity.getConfigValue(),
-                            isHostEnter,isClassCourseEnter);
-                }
-            }
-        });*/
 
         mSearchContent = (EditText) findViewById(R.id.et_search);
         mSearchClear = (ImageView) findViewById(R.id.iv_search_clear);
@@ -438,6 +424,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         if (!isClassCourseEnter) {
             // 不管是不是直接点击学程馆进入的二级页面,都需要显示更多课程和申请授权
             mBtnConfirmAdd.setVisibility(View.GONE);
+            mBtnMoreCourse.setVisibility(mLibraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP ?
+                    View.VISIBLE : View.GONE);
             if (isHostEnter && !mSelectResource) {
                 mBottomLayout.setVisibility(View.VISIBLE);
                 mBtnRequestAuthorized.setOnClickListener(this);
@@ -584,13 +572,14 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
 
         if (!isClassCourseEnter) {
-
-            if (mSelectResource) {
-                // 选择资源检查授权 自动申请
-                mPresenter.requestCheckSchoolPermission(organId, 0, true);
-            } else {
-                // 手动授权,检查授权
-                mPresenter.requestCheckSchoolPermission(organId, 0, false);
+            if (mLibraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP) {
+                if (mSelectResource) {
+                    // 选择资源检查授权 自动申请
+                    mPresenter.requestCheckSchoolPermission(organId, 0, true);
+                } else {
+                    // 手动授权,检查授权
+                    mPresenter.requestCheckSchoolPermission(organId, 0, false);
+                }
             }
         }
     }
@@ -637,31 +626,6 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             }
         }
 
-        /*for (Tab tab:mFirstTabs) {
-            if(tab.isSelected()){
-                level = tab.getLevel();
-            }
-        }
-
-        for (Tab tab:mSecondTabs) {
-            if(tab.isSelected()){
-                paramOneId = tab.getLabelId();
-            }
-        }
-
-        for (Tab tab:mThirdTabs) {
-            if(tab.isSelected()){
-                paramTwoId = tab.getLabelId();
-            }
-        }
-
-        for (Tab tab:mFourTabs) {
-            if(tab.isSelected()){
-                paramThreeId = tab.getLabelId();
-            }
-        }*/
-
-        // mKeyString = mSearchContent.getText().toString().trim();
         if (EmptyUtil.isEmpty(mKeyString)) mKeyString = "";
         // 重新加载数据
         // 重新设置状态
@@ -677,7 +641,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             level = mEntity.getLevel();
             mPresenter.requestCourseResourceData(isMoreLoaded, mEntity.getEntityOrganId(), currentPage, AppConfig.PAGE_SIZE, mKeyString, level);
         } else {
-            mPresenter.requestCourseData(isMoreLoaded, mEntity.getEntityOrganId(), currentPage, AppConfig.PAGE_SIZE, mKeyString, level, paramOneId, paramTwoId, paramThreeId);
+            if (TextUtils.isEmpty(level)) {
+                level = mEntity.getLevel();
+            }
+            mPresenter.requestCourseData(isMoreLoaded, mEntity.getEntityOrganId(), currentPage,
+                    AppConfig.PAGE_SIZE, mKeyString, level, paramOneId, paramTwoId, paramThreeId,
+                    mLibraryType);
         }
 
     }
@@ -685,12 +654,13 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     @Override
     public void updateOrganCourseLabelView(@NonNull List<LQCourseConfigEntity> entities) {
         mAllLabels = entities;
-        if (EmptyUtil.isNotEmpty(entities)) {
-            mFiltrateArray1 = new ArrayList<>();
-            mFiltrateArray2 = new ArrayList<>();
-            mFiltrateArray3 = new ArrayList<>();
-            mFiltrateArray4 = new ArrayList<>();
 
+        mFiltrateArray1 = new ArrayList<>();
+        mFiltrateArray2 = new ArrayList<>();
+        mFiltrateArray3 = new ArrayList<>();
+        mFiltrateArray4 = new ArrayList<>();
+
+        if (EmptyUtil.isNotEmpty(entities)) {
             if (EmptyUtil.isEmpty(entities)) return;
             recursionConfig(entities);
 
@@ -702,37 +672,13 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
-        }else{
+        } else{
             // 数据为空
             mHeaderLayout.setVisibility(View.GONE);
-            mRefreshLayout.setVisibility(View.GONE);
-            mEmptyLayout.setVisibility(View.VISIBLE);
+//            mRefreshLayout.setVisibility(View.GONE);
+//            mEmptyLayout.setVisibility(View.VISIBLE);
+            triggerUpdateData();
         }
-
-
-
-        /*if(EmptyUtil.isNotEmpty(entities)){
-            fillAllTabs(entities,0,false);
-            fillTopFiltrateText(mEntity,false);
-            requestCourseData(false);
-        }else{
-            isEmptyLabel = true;
-            // 标签为空，这一般都是服务器返回错误的问题
-            Tab firstAllTab = Tab.buildAll(allText);
-            Tab secondAllTab = Tab.buildAll(allText);
-            if(!mFirstTabs.contains(secondAllTab) && (mFirstTabs.size() == 0 || mFirstTabs.size() > 1)){
-                firstAllTab.setSelected(true);
-                mFirstTabs.add(0,firstAllTab);
-            }
-            if(!mSecondTabs.contains(secondAllTab) && (mSecondTabs.size() == 0 || mSecondTabs.size() > 1)){
-                secondAllTab.setSelected(true);
-                mSecondTabs.add(0,secondAllTab);
-            }
-
-
-            fillTopFiltrateText(mEntity,true);
-            requestCourseData(false);
-        }*/
     }
 
 
@@ -891,6 +837,22 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mTabLabel2.setText(getString(R.string.label_colon_grade));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
             mTabLabel4.setText(getString(R.string.book_concern));
+        } else if (rootId == CLASSIFIED_READING_ID) {
+            //分类阅读
+            mTabVector3.setVisibility(View.GONE);
+            mTabVector4.setVisibility(View.GONE);
+
+            // 科目, 级别
+            mTabLabel1.setText(getString(R.string.label_colon_subject));
+            mTabLabel2.setText(getString(R.string.label_colon_level));
+        } else if (rootId == PICTURE_BOOK_ID) {
+            //绘本 三级页面
+            mTabVector4.setVisibility(View.GONE);
+
+            // 年龄段 语言 主题
+            mTabLabel1.setText(getString(R.string.label_colon_age));
+            mTabLabel2.setText(getString(R.string.label_colon_language));
+            mTabLabel3.setText(getString(R.string.label_colon_topic));
         }
     }
 
@@ -1044,6 +1006,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 // 全部发生数据联动
                 Tab tabData = (Tab) tab.getTag();
                 setTabItemSelected(mFiltrateArray1, tabData);
+                if (tabData.getChildList() == null || tabData.getChildList().isEmpty()) {
+                    initTabControl2();
+                    initTabControl3();
+                    assembleAllLabel();
+                    return;
+                }
                 // 重新配置2,3数据的联动效果
                 clearArray(mConfigType2);
                 recursionConfigArray(tabData.getChildList());

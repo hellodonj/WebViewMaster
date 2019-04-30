@@ -33,7 +33,9 @@ public interface OrganCourseFiltrateContract {
          * @param paramTwoId 筛选条件2
          * @param paramThreeId 筛选条件3
          */
-        void requestCourseData(boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString, @NonNull String level, int paramOneId, int paramTwoId, int paramThreeId);
+        void requestCourseData(boolean more, @NonNull String organId, int pageIndex, int pageSize
+                , String keyString, @NonNull String level, int paramOneId, int paramTwoId,
+                               int paramThreeId, int libraryType);
 
         /**
          * 获取符合筛选条件的选择资源课程数据

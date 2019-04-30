@@ -148,7 +148,7 @@ public class OrganCourseHelper {
         // 是否是中文字体,根据参数,后台返回相应语言
         requestVo.addParams("language",isZh);
         requestVo.addParams("parentId",parentId);
-        requestVo.addParams("level",level);
+        requestVo.addParams("level", level);
         if (libraryType >= 0) {
             requestVo.addParams("type", libraryType);
         }
@@ -244,7 +244,7 @@ public class OrganCourseHelper {
                                            @Nullable String keyString,
                                            @NonNull String level,
                                            int paramOneId, int paramTwoId,
-                                           int paramThreeId,
+                                           int paramThreeId, int libraryType,
                                            @NonNull final DataSource.Callback<List<CourseVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
@@ -277,6 +277,10 @@ public class OrganCourseHelper {
 
         if(paramThreeId != 0){
             requestVo.addParams("paramThreeId", paramThreeId);
+        }
+
+        if (libraryType >= 0) {
+            requestVo.addParams("type", libraryType);
         }
 
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseListUrl + requestVo.getParams());

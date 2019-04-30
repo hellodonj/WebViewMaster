@@ -581,8 +581,9 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             int libraryType) {
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        OrganCourseHelper.requestOrganCourseClassifyData(organId, languageRes, libraryType,
+         final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+//         final String finalOrganId = organId;
+        OrganCourseHelper.requestOrganCourseClassifyData(finalOrganId, languageRes, libraryType,
                 new DataSource.Callback<List<LQCourseConfigEntity>>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
@@ -601,7 +602,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                                 bundle.putSerializable(KEY_EXTRA_ORGAN_COURSE_OBJECT, (Serializable) lqCourseConfigEntities);
                             }
                             bundle.putBoolean(KEY_EXTRA_ORGAN_SELECT_RESOURCE, selectResource);
-                            bundle.putString(KEY_EXTRA_ORGAN_ID, organId);
+                            bundle.putString(KEY_EXTRA_ORGAN_ID, finalOrganId);
                             if (selectResource)
                                 bundle.putSerializable(KEY_EXTRA_ORGAN_RESOURCE_DATA, data);
                             bundle.putString(KEY_EXTRA_ROLES, roles);
