@@ -22,6 +22,8 @@ public class CourseShopClassifyParams extends BaseVo{
     // 是否主动选择作业库资源
     private boolean initiativeTrigger;
 
+    private int libraryType;
+
     public CourseShopClassifyParams(String organId, @Nullable String classId) {
         this.organId = organId;
         this.classId = classId;
@@ -59,5 +61,14 @@ public class CourseShopClassifyParams extends BaseVo{
 
     public void setInitiativeTrigger(boolean initiativeTrigger) {
         this.initiativeTrigger = initiativeTrigger;
+    }
+
+    public int getLibraryType() {
+        return libraryType;
+    }
+
+    public CourseShopClassifyParams setLibraryType(int libraryType) {
+        this.libraryType = libraryType;
+        return this;
     }
 }

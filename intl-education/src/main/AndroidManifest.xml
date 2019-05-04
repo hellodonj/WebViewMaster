@@ -814,6 +814,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"/>
 
+        <!--班级学程选择学程馆类型列表页面-->
+        <activity android:name=".module.discovery.ui.classcourse.organlibrary.OrganLibraryTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
+
         <!--在线班级课堂简介关联课程-->
         <activity android:name=".module.onclass.related.RelatedCourseListActivity"
             android:screenOrientation="portrait"

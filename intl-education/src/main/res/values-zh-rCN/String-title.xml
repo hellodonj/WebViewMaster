@@ -27,4 +27,5 @@
     <string name="title_submit_succeed">提交成功</string>
     <string name="title_watch_task_requirement">查看任务要求</string>
     <string name="title_history_course">历史学程</string>
+    <string name="title_add_course">添加学程</string>
 </resources>

@@ -60,6 +60,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDia
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary.OrganLibraryTypeActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.popup.WorkCartDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -1424,7 +1425,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 进入选择课程页面
         CourseShopClassifyParams params = new CourseShopClassifyParams(mSchoolId, mClassId);
         Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-        CourseShopClassifyActivity.show(this, params, extras, true);
+        OrganLibraryTypeActivity.show(this, params, extras);
     }
 
     @Override
