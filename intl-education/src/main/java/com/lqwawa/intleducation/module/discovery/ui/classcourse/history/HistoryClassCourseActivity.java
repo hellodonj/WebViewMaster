@@ -276,11 +276,11 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity entity) {
                 super.onItemClick(holder, entity);
-                if(mCourseAdapter.isChoiceMode()) {
+                if (mCourseAdapter.isChoiceMode()) {
                     // 添加选择,或者取消选择
                     entity.setChecked(!entity.isChecked());
                     mCourseAdapter.notifyDataSetChanged();
-                }else{
+                } else {
                     // 班级学程的详情入口
                     String courseId = entity.getCourseId();
                     // 班级学程进入参数
@@ -288,16 +288,16 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
 
-                    CourseDetailParams params = new CourseDetailParams(mSchoolId,mClassId,mClassName,isAuthorized);
+                    CourseDetailParams params = new CourseDetailParams(mSchoolId, mClassId, mClassName, isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
                     params.setClassParent(!isResult && isParent);
 
                     // CourseDetailsActivity.start(ClassCourseActivity.this , courseId, true, UserHelper.getUserId(),params);
 
-                    CourseDetailsActivity.start(isAuthorized,params,false,HistoryClassCourseActivity.this,courseId, true, UserHelper.getUserId());
+                    CourseDetailsActivity.start(isAuthorized, params, false, HistoryClassCourseActivity.this, courseId, true, UserHelper.getUserId());
                     // 如果是班主任,清除Hold状态
-                    if(mClassCourseParams.isHeadMaster()){
+                    if (mClassCourseParams.isHeadMaster()) {
                         switchHoldState(false);
                     }
                 }
@@ -793,9 +793,12 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             }
             // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
             // initTabControl3();
-
+            
             // 数据请求
             // triggerUpdateData();
+            if (tabData.getChildList() == null || tabData.getChildList().isEmpty()) {
+                triggerUpdateData();
+            }
         }
     };
 
@@ -1024,20 +1027,20 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 List<ClassCourseEntity> items = mCourseAdapter.getItems();
                 ArrayList<ClassCourseEntity> entities = new ArrayList<>();
                 for (ClassCourseEntity item : items) {
-                    if(item.isChecked()){
+                    if (item.isChecked()) {
                         item.setChecked(false);
                         entities.add(item);
                     }
                 }
 
-                if(EmptyUtil.isEmpty(entities)){
+                if (EmptyUtil.isEmpty(entities)) {
                     // 提示选择要移除的历史学程
                     UIUtil.showToastSafe(R.string.label_please_choice_remove_history_course);
                     return;
                 }
 
                 showLoading();
-                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId,mClassId,entities);
+                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
                 updateActionStatus(false);
             } else {
                 // UIUtil.showToastSafe(R.string.label_add_in);
@@ -1054,7 +1057,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 }
                 mCourseAdapter.notifyDataSetChanged();
                 updateActionStatus(false);
-            }else{
+            } else {
                 // 触发选择
                 mCourseAdapter.setChoiceMode(true);
                 mCourseAdapter.notifyDataSetChanged();
@@ -1063,13 +1066,13 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         }
     }
 
-    private void updateActionStatus(boolean checking){
-        if(checking){
+    private void updateActionStatus(boolean checking) {
+        if (checking) {
             mBtnAdd.setActivated(true);
             mBtnRemove.setActivated(true);
             mBtnRemove.setText(R.string.label_cancel);
             mBtnAdd.setText(R.string.label_confirm_authorization);
-        }else{
+        } else {
             mBtnAdd.setActivated(false);
             mBtnRemove.setActivated(false);
             mBtnRemove.setText(R.string.label_remove_out);
@@ -1118,8 +1121,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     /**
      * 班级历史学程页面的入口
      *
-     * @param activity 上下文对象
-     * @param params   核心参数
+     * @param activity     上下文对象
+     * @param params       核心参数
      * @param isAuthorized 是否授权
      */
     public static void show(@NonNull Activity activity,

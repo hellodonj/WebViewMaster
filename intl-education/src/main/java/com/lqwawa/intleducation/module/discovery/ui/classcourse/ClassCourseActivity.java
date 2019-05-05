@@ -1101,6 +1101,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
             // 数据请求
             // triggerUpdateData();
+            if (tabData.getChildList() == null || tabData.getChildList().isEmpty()) {
+                triggerUpdateData();
+            }
         }
     };
 
