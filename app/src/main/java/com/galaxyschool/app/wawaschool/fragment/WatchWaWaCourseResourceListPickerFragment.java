@@ -103,7 +103,14 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             hideSoftKeyboard(getActivity());
         }
         initViews();
-        loadGetStudyTaskResControl();
+        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
+            chooseClassLessonCourse();
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+        } else {
+            loadGetStudyTaskResControl();
+        }
     }
 
     private void loadViews() {
@@ -235,7 +242,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             //本机课件
             chooseLocalResource();
         } else if (data.type == TAB_LQ_PROGRAM) {
-            //LQ精品学程
+            //关联学程
 //            chooseLQProgramResources();
             chooseLqConnectCourse();
         } else if (data.type == TAB_SCHOOL_PICTUREBOOK) {
@@ -619,31 +626,36 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             list.add(item);
         }
 
-        // LQ精品学程
-        if (isOnlineClass && !TextUtils.isEmpty(classId)) {
+        if (isOnlineClass) {
+            if (!TextUtils.isEmpty(classId)) {
+                // 关联学程
+                item = new HomeTypeEntry();
+                item.icon = R.drawable.icon_connect_course;
+                item.typeName = R.string.label_space_school_relevance_course;
+                item.type = TAB_LQ_PROGRAM;
+                list.add(item);
+            }
+            
+            // 线上学程馆
             item = new HomeTypeEntry();
-            item.icon = R.drawable.icon_connect_course;
-            item.typeName = R.string.label_space_school_relevance_course;
-            item.type = TAB_LQ_PROGRAM;
+            item.icon = R.drawable.icon_lqcourse_circle;
+            item.typeName = R.string.common_course_library;
+            item.type = TAB_LQCOURSE_SHOP;
             list.add(item);
         }
 
-        //学程馆
-        item = new HomeTypeEntry();
-        item.icon = R.drawable.icon_lqcourse_circle;
-        item.typeName = R.string.common_course_shop;
-        item.type = TAB_LQCOURSE_SHOP;
-        list.add(item);
+
 
         if (isOnlineClass) {
 
         } else {
             //班级学程
-            item = new HomeTypeEntry();
-            item.icon = R.drawable.icon_class_lesson_task;
-            item.typeName = R.string.str_class_lesson;
-            item.type = TAB_CLASS_LESSON;
-            list.add(item);
+//            item = new HomeTypeEntry();
+//            item.icon = R.drawable.icon_class_lesson_task;
+//            item.typeName = R.string.str_class_lesson;
+//            item.type = TAB_CLASS_LESSON;
+//            list.add(item);
+
         }
 
         getCurrAdapterViewHelper().setData(list);
