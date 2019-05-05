@@ -83,6 +83,8 @@ public class SectionResListVo extends BaseVo {
 
     private int viewCount;
 
+    private String thumbnail;
+
 
     public String getTaskId() {
         return taskId;
@@ -348,6 +350,15 @@ public class SectionResListVo extends BaseVo {
 
     public SectionResListVo setViewCount(int viewCount) {
         this.viewCount = viewCount;
+        return this;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public SectionResListVo setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
         return this;
     }
 

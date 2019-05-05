@@ -248,35 +248,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 }
             }
         });
-        /*final CourseDetails courseDetails = new CourseDetails();
-        courseDetails.checkCourseDetails(activity, courseId, memberId, false, "",
-                new CourseDetails.OnCheckCourseStatusListener() {
-                    @Override
-                    public void onCheckSuccess(CourseDetailsVo courseDetailsVo, boolean needToLearn) {
-                        if(needToLearn || params.isOrganCounselor()){
-                            // 是否购买过
-                            params.buildOrganJoinState(needToLearn);
-                            MyCourseDetailsActivity.start(isAuthorized,params,isSchoolEnter,activity, courseId,  false, true, memberId);
-                        }else{
-                            *//*if(!isAuthorized){
-                                // 没有购买,并且是未授权的
-                                UIUtil.showToastSafe(R.string.label_please_request_authorization);
-                                return;
-                            }*//*
-                            activity.startActivity(new Intent(activity, CourseDetailsActivity.class)
-                                    .putExtra("id", courseId).putExtra("canEdit", canEdit)
-                                    .putExtra("memberId" ,memberId)
-                                    .putExtra("isAuthorized",isAuthorized)
-                                    .putExtra(ACTIVITY_BUNDLE_OBJECT,params)
-                                    .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter));
-                        }
-                    }
-
-                    @Override
-                    public void onCheckFailed(int code, String message) {
-
-                    }
-                });*/
     }
 
     /**
@@ -324,26 +295,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        /*final CourseDetails courseDetails = new CourseDetails();
-        courseDetails.checkCourseDetails(activity, courseId, memberId, false, "",
-                new CourseDetails.OnCheckCourseStatusListener() {
-                    @Override
-                    public void onCheckSuccess(CourseDetailsVo courseDetailsVo, boolean needToLearn) {
-                        if(needToLearn){
-                            MyCourseDetailsActivity.start(activity, courseId,  false, true, memberId);
-                        }else{
-                            activity.startActivity(new Intent(activity, CourseDetailsActivity.class)
-                                    .putExtra("id", courseId).putExtra("canEdit", canEdit)
-                                    .putExtra("memberId" ,memberId));
-                        }
-                    }
-
-                    @Override
-                    public void onCheckFailed(int code, String message) {
-
-                    }
-                });*/
-
             start(false,activity,courseId,canEdit,memberId);
     }
 
@@ -378,32 +329,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 }
             }
         });
-
-        /*final CourseDetails courseDetails = new CourseDetails();
-        courseDetails.checkCourseDetails(activity, courseId, memberId, false, "",
-                new CourseDetails.OnCheckCourseStatusListener() {
-                    @Override
-                    public void onCheckSuccess(CourseDetailsVo courseDetailsVo, boolean needToLearn) {
-                        if(needToLearn || params.isClassTeacher()
-                                || params.isClassParent()
-                                || params.isOrganCounselor()){
-                            // 或者班级学程的老师
-                            MyCourseDetailsActivity.start(activity, courseId,
-                                    false, true, memberId,params);
-                        }else{
-                            activity.startActivity(new Intent(activity, CourseDetailsActivity.class)
-                                    .putExtra("id", courseId)
-                                    .putExtra("canEdit", canEdit)
-                                    .putExtra("memberId" ,memberId)
-                                    .putExtra(ACTIVITY_BUNDLE_OBJECT,params));
-                        }
-                    }
-
-                    @Override
-                    public void onCheckFailed(int code, String message) {
-
-                    }
-                });*/
     }
 
     /**

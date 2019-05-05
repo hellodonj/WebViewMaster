@@ -167,7 +167,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
-        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag);
+        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, false);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));

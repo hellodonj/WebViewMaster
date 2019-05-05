@@ -185,7 +185,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        courseResListAdapter = new CourseResListAdapter(activity, false);
+        courseResListAdapter = new CourseResListAdapter(activity, false, false);
         courseResListAdapter.setCourseSelect(true, mTaskType);
         courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);

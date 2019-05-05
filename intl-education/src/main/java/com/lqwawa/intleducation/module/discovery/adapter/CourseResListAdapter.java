@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.app.Activity;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
@@ -20,8 +22,10 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.ResourceSelectListener;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -40,7 +44,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private List<SectionResListVo> list;
     private List<SectionResListVo> selectList = new ArrayList<>();
     private LayoutInflater inflater;
+    // 是否显示已读标识
     boolean needFlagRead;
+    boolean isVideoLibrary;
     private int lessonStatus;
     private OnItemClickListener onItemClickListener = null;
     private ResourceSelectListener mSelectListener;
@@ -54,9 +60,10 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private SparseArray<ResIcon> resIconSparseArray = new SparseArray<>();
 
 
-    public CourseResListAdapter(Activity activity, boolean needFlagRead) {
+    public CourseResListAdapter(Activity activity, boolean needFlagRead, boolean isVideoLibrary) {
         this.activity = activity;
         this.needFlagRead = needFlagRead;
+        this.isVideoLibrary = isVideoLibrary;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<SectionResListVo>();
         lessonStatus = activity.getIntent().getIntExtra("status", 0);
@@ -147,13 +154,21 @@ public class CourseResListAdapter extends MyBaseAdapter {
         if (resType > 10000) {
             resType -= 10000;
         }
+        if (isVideoLibrary) {
+                LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), holder.resIconIv, vo.getThumbnail());
+        } else {
+            setResIcon(holder.resIconIv, vo, resType);
 
-        setResIcon(holder.resIconIv, vo, resType);
+        }
+        setResIconLayout(holder.resIconIv, isVideoLibrary);
+
+        holder.mIvPlayIcon.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
 
         if (needFlagRead && vo.isIsRead()) {
             holder.mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
         } else {
-            holder.mIvNeedCommit.setImageResource(R.drawable.ic_need_to_commit);
+            int resId = isVideoLibrary ? 0 : R.drawable.ic_need_to_commit;
+            holder.mIvNeedCommit.setImageResource(resId);
         }
 
         String assigned = activity.getString(R.string.label_assigned);
@@ -229,6 +244,23 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 String.valueOf(vo.getViewCount())));
 
         return convertView;
+    }
+
+    private void setResIconLayout(ImageView resIconIv, boolean isVideoLibrary) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) resIconIv.getLayoutParams();
+        int iconWidth = DisplayUtil.dip2px(UIUtil.getContext(), 48);
+        int iconHeight = iconWidth;
+        if (isVideoLibrary) {
+            iconHeight = DisplayUtil.dip2px(UIUtil.getContext(), 72);
+            iconWidth = iconHeight * 16 / 9;
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        } else {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+
+        }
+        layoutParams.width = iconWidth;
+        layoutParams.height = iconHeight;
+        resIconIv.setLayoutParams(layoutParams);
     }
 
     private void setResIcon(ImageView imageView, SectionResListVo vo, int resType) {
@@ -321,15 +353,17 @@ public class CourseResListAdapter extends MyBaseAdapter {
         private TextView mTvAutoMask;
         private TextView mViewCount;
         private ImageView mIvNeedCommit;
+        private ImageView mIvPlayIcon;
 
         public ViewHolder(View view) {
             itemRootLay = (LinearLayout) view.findViewById(R.id.item_root_lay);
-            resIconIv = (ImageView) view.findViewById(R.id.res_icon_iv);
-            resNameTv = (TextView) view.findViewById(R.id.res_name_tv);
+            resIconIv = (ImageView) view.findViewById(R.id.iv_res_icon);
+            resNameTv = (TextView) view.findViewById(R.id.tv_res_name);
             checkbox = (CheckBox) view.findViewById(R.id.checkbox);
             mIvNeedCommit = (ImageView) view.findViewById(R.id.iv_need_commit);
             mTvAutoMask = (TextView) view.findViewById(R.id.tv_auto_mark);
             mViewCount = (TextView) view.findViewById(R.id.tv_view_count);
+            mIvPlayIcon = (ImageView) view.findViewById(R.id.iv_res_play);
         }
     }
 
