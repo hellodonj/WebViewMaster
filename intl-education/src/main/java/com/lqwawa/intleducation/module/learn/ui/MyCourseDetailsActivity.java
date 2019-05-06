@@ -179,7 +179,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private int img_height;
     private ImageOptions imageOptions;
     // 课程评价可以下拉刷新
-    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false,false};
+    private boolean[] canLoadMore = new boolean[]{false, false, false, false, false, false, false};
     // 是否加载更多的状态
     private boolean mCanLoadMore;
     private boolean isComeFromDetail = false;//是否是从首页的课程详情跳转过来的
@@ -225,204 +225,80 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private SchoolInfoEntity mSchoolEntity;
 
     // 在线课堂Tab
-    private RadioButton mRbLive,mRbLiveF;
+    private RadioButton mRbLive, mRbLiveF;
 
-    // NoScrollGridView gridViewLearnProcess;
-    // NoScrollGridView gridViewLearnProcessMore;
-    // @date   :2018/4/9 0009 上午 10:09
-    // @func   :v5.5取消进度列表显示进度条
-    // NoScrollGridView gridViewLearnProcess;
-    // NoScrollGridView gridViewLearnProcessMore;
-    // 版本5.5移除了该功能
-    // ImageView imageViewHideMore;
-    // CourseProcessAdapter courseProcessAdapter;
-    // CourseProcessAdapter courseProcessMoreAdapter;
-
-    public static void start(Activity activity, String id, boolean canEdit, String memberId) {
+    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
-                .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId));
-    }
-
-    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId,CourseDetailParams params) {
-        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
-                .putExtra("id", id).putExtra("canEdit", canEdit).putExtra("memberId", memberId)
+                .putExtra("id", id)
+                .putExtra("canEdit", canEdit)
+                .putExtra("memberId", memberId)
                 .putExtra("SchoolId", schoolId)
                 .putExtra(KEY_IS_FROM_MY_COURSE, true)
-                .putExtra(ACTIVITY_BUNDLE_OBJECT,params));
-    }
-
-    public static void start(Activity activity, String id, int tabIndex,
-                             boolean canEdit, String memberId) {
-        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
-                .putExtra("id", id).putExtra("tabIndex", tabIndex).putExtra("canEdit", canEdit)
-                .putExtra("memberId", memberId));
-    }
-
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId),
-                CourseDetailsActivity.Rs_collect);
-    }
-
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId,CourseVo vo) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra("CourseVo",vo),
-                CourseDetailsActivity.Rs_collect);
+                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
     }
 
     /**
-     * 班级学程和机构学程的入口
+     *
      * @param activity
      * @param id
      * @param isComeFromDetail
      * @param canEdit
      * @param memberId
-     */
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId, @NonNull CourseDetailParams params) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra(ACTIVITY_BUNDLE_OBJECT,params),
-                CourseDetailsActivity.Rs_collect);
-    }
-
-    /**
-     * @desc 学程馆进入的入口
-     * @param isAuthorized 是否授权
-     * @param params 机构学程传的参数
      * @param isSchoolEnter 是否是从空中学校过来
-     * @param activity
-     * @param id
-     * @param isComeFromDetail
-     * @param canEdit
-     * @param memberId
-     */
-    public static void start(boolean isAuthorized,
-                             @NonNull CourseDetailParams params,
-                             boolean isSchoolEnter,
-                             Activity activity, String id,
-                             boolean isComeFromDetail,
-                             boolean canEdit, String memberId) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra("isAuthorized",isAuthorized)
-                        .putExtra(ACTIVITY_BUNDLE_OBJECT,params)
-                        .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter),
-                CourseDetailsActivity.Rs_collect);
-    }
-
-    /**
-     * 在线课堂老师入口
-     * @param activity
-     * @param id
-     * @param isComeFromDetail
-     * @param canEdit
-     * @param memberId
-     * @param isOnlineTeacher
+     * @param isOnlineClassEnter 是否是在线课堂班级过来的
+     * @param isOnlineTeacher 是否是在线课堂的老师
+     * @param isAuthorized 是否授权
+     * @param params 课程详情参数
+     * @param vo 课程信息
      */
     public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId,boolean isOnlineTeacher) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId).putExtra("isOnlineTeacher",isOnlineTeacher),
-                CourseDetailsActivity.Rs_collect);
+                             boolean canEdit, String memberId, boolean isSchoolEnter, boolean isOnlineClassEnter,
+                             boolean isOnlineTeacher, boolean isAuthorized,
+                             CourseDetailParams params, CourseVo vo) {
+        Intent intent = new Intent(activity, MyCourseDetailsActivity.class)
+                .putExtra("id", id)
+                .putExtra("isComeFromDetail", isComeFromDetail)
+                .putExtra("canEdit", canEdit)
+                .putExtra("memberId", memberId)
+                .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
+                .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
+                .putExtra("isOnlineTeacher", isOnlineTeacher)
+                .putExtra("isAuthorized", isAuthorized);
+        if (params != null) {
+            intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
+        }
+        if (vo != null) {
+            intent.putExtra("CourseVo", vo);
+        }
+        activity.startActivityForResult(intent, CourseDetailsActivity.Rs_collect);
     }
-
-    /**
-     * 在线课堂进入的入口
-     * @param activity
-     * @param id
-     * @param isComeFromDetail
-     * @param canEdit
-     * @param memberId
-     * @param isSchoolEnter 是否是在线课堂进入
-     */
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId,boolean isSchoolEnter,boolean isOnlineClassEnter) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter)
-                        .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter),
-                CourseDetailsActivity.Rs_collect);
-    }
-
-    /**
-     * 在线课堂进入的入口
-     * @param activity
-     * @param id
-     * @param isComeFromDetail
-     * @param canEdit
-     * @param memberId
-     * @param isSchoolEnter 是否是在线课堂进入
-     */
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId,boolean isSchoolEnter,boolean isOnlineClassEnter,
-                            @NonNull CourseDetailParams params) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter)
-                        .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter)
-                        .putExtra(ACTIVITY_BUNDLE_OBJECT,params),
-                CourseDetailsActivity.Rs_collect);
-    }
-
-    /**
-     * 在线课堂进入的入口
-     * @param activity
-     * @param id
-     * @param isComeFromDetail
-     * @param canEdit
-     * @param memberId
-     * @param isSchoolEnter 是否是在线课堂进入
-     * @param isOnlineTeacher 是否是在线课堂老师
-     */
-    public static void start(Activity activity, String id, boolean isComeFromDetail,
-                             boolean canEdit, String memberId,boolean isSchoolEnter,boolean isOnlineClassEnter,
-                             boolean isOnlineTeacher) {
-        activity.startActivityForResult(new Intent(activity, MyCourseDetailsActivity.class)
-                        .putExtra("id", id).putExtra("isComeFromDetail", isComeFromDetail)
-                        .putExtra("canEdit", canEdit).putExtra("memberId", memberId)
-                        .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter)
-                        .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter)
-                        .putExtra("isOnlineTeacher",isOnlineTeacher),
-                CourseDetailsActivity.Rs_collect);
-    }
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_course_details);
         registerBroadcastReceiver();
 
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
-        isSchoolEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_SCHOOL_ENTER,false);
-        isOnlineClassEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,false);
-        if(getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT)){
+        isSchoolEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_SCHOOL_ENTER, false);
+        isOnlineClassEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, false);
+        if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT)) {
             mCourseDetailParams = (CourseDetailParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
-        }else{
+        } else {
             mCourseDetailParams = new CourseDetailParams();
         }
         // 是否是从在线课堂进来的老师
-        isOnlineTeacher = getIntent().getBooleanExtra("isOnlineTeacher",false);
+        isOnlineTeacher = getIntent().getBooleanExtra("isOnlineTeacher", false);
 
         mCommentLayout = (LinearLayout) findViewById(R.id.comment_layout);
         mCommentContent = (EditText) findViewById(R.id.et_comment_content);
         mBtnSend = (TextView) findViewById(R.id.btn_send);
 
         canEdit = getIntent().getBooleanExtra("canEdit", false);
-        mCanEdit = getIntent().getBooleanExtra("canEdit",false);
+        mCanEdit = getIntent().getBooleanExtra("canEdit", false);
         memberId = getIntent().getStringExtra("memberId");
         mCurMemberId = getIntent().getStringExtra("memberId");
 
@@ -469,7 +345,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
 
-        if(isOnlineClassEnter){
+        if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
             mRbLiveF.setVisibility(View.GONE);
         }
@@ -500,7 +376,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             public void onFooterRefresh(PullToRefreshView view) {
                 /*if (introductionFragment.isVisible()) {
                     introductionFragment.getMore();
-                } else */if (studyPlanFragment.isVisible()) {
+                } else */
+                if (studyPlanFragment.isVisible()) {
                     studyPlanFragment.getMore();
                 } else if (courseCommentFragment.isVisible()) {
                     // initData();
@@ -509,9 +386,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     homeworkListFragment.getMore();
                 } else if (examListFragment.isVisible()) {
                     examListFragment.getMore();
-                }else if(mOnlineClassFragment.isVisible()){
+                } else if (mOnlineClassFragment.isVisible()) {
                     mOnlineClassFragment.getMore();
-                }else if(mTutorialGroupFragment.isVisible()){
+                } else if (mTutorialGroupFragment.isVisible()) {
                     mTutorialGroupFragment.getMore();
                 }
             }
@@ -532,7 +409,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
         btnReload.setOnClickListener(this);
         textViewLiveTimetable.setOnClickListener(this);
-        if(isSchoolEnter || true){
+        if (isSchoolEnter || true) {
             mSchoolEnter.setVisibility(View.GONE);
             textViewOrganName.setEnabled(false);
 
@@ -588,25 +465,25 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     /**
      * Menu配置
      */
-    private void initMenu(){
-        if(mCanEdit && !mCourseDetailParams.isClassParent() &&
+    private void initMenu() {
+        if (mCanEdit && !mCourseDetailParams.isClassParent() &&
                 !mCourseDetailParams.isClassTeacher() &&
                 // 需要判断是否是机构的授权老师
                 !mCourseDetailParams.isOrganCounselor() &&
-                !UserHelper.checkCourseAuthor(courseVo,isOnlineCounselor) &&
-                !isOnlineTeacher){
+                !UserHelper.checkCourseAuthor(courseVo, isOnlineCounselor) &&
+                !isOnlineTeacher) {
             topBar.setRightFunctionImage1(R.drawable.ic_all_classify_small, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // 溢出菜单
                     List<PopupMenu.PopupMenuData> items = new ArrayList();
-                    if(EmptyUtil.isEmpty(courseVo)) return;
-                    if(courseVo.isInClass() && false){
+                    if (EmptyUtil.isEmpty(courseVo)) return;
+                    if (courseVo.isInClass() && false) {
                         // 没有这个inClass字段,用接口拉取
                         PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
                                 R.string.label_old_in_class);
                         items.add(data);
-                    }else{
+                    } else {
                         PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
                                 R.string.label_course_in_class);
                         items.add(data);
@@ -632,22 +509,22 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
                                             @Override
                                             public void onDataLoaded(LQCourseBindClassEntity lqCourseBindClassEntity) {
-                                                if(!lqCourseBindClassEntity.isBindClass()){
+                                                if (!lqCourseBindClassEntity.isBindClass()) {
                                                     // 去指定班级的页面
                                                     // 去指定到班级
                                                     Intent intent = new Intent();
-                                                    intent.setClassName(activity.getPackageName(),"com.lqwawa.mooc.select.SchoolClassSelectActivity");
+                                                    intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.SchoolClassSelectActivity");
                                                     Bundle bundle = new Bundle();
-                                                    bundle.putString("courseId",courseVo.getId());
+                                                    bundle.putString("courseId", courseVo.getId());
                                                     intent.putExtras(bundle);
                                                     activity.startActivity(intent);
-                                                }else{
+                                                } else {
                                                     // 吐司弹提示
                                                     UIUtil.showToastSafe(R.string.label_old_in_class);
                                                 }
                                             }
                                         });
-                                    }else{
+                                    } else {
 
                                     }
                                 }
@@ -682,7 +559,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 pullToRefreshView.onFooterRefreshComplete();
                 if (courseCommentFragment.isVisible()) {
                     pullToRefreshView.setLoadMoreEnable(canLoadMore);
-                }else if(mTutorialGroupFragment.isVisible()){
+                } else if (mTutorialGroupFragment.isVisible()) {
                     pullToRefreshView.setLoadMoreEnable(canLoadMore);
                 }
 
@@ -717,21 +594,21 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
 
         // 帮辅群
-        mTutorialGroupFragment = TutorialGroupFragment.newInstance(id,mCurMemberId);
+        mTutorialGroupFragment = TutorialGroupFragment.newInstance(id, mCurMemberId);
         mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
 
         Bundle bundle1 = new Bundle();
 
-        CourseDetailItemParams params1 = new CourseDetailItemParams(true,mCurMemberId,!mCanEdit,mCourseId);
+        CourseDetailItemParams params1 = new CourseDetailItemParams(true, mCurMemberId, !mCanEdit, mCourseId);
         params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
         params1.setCourseParams(mCourseDetailParams);
-        bundle1.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT,params1);
+        bundle1.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
         // introductionFragment.setArguments(bundle1);
 
         Bundle bundle2 = new Bundle();
-        bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
+        bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher);
         bundle2.putSerializable(CourseVo.class.getSimpleName(), courseVo);
-        if(getIntent().getExtras().containsKey("CourseVo")){
+        if (getIntent().getExtras().containsKey("CourseVo")) {
             CourseVo vo = (CourseVo) getIntent().getSerializableExtra("CourseVo");
             bundle2.putSerializable(CourseVo.class.getSimpleName(), vo);
         }
@@ -739,7 +616,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // 传入课程Item详情参数
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
-        bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT,params2);
+        bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
 
         studyPlanFragment.setArguments(bundle2);
         // TODO 我的课程详情课程评价 从课程详情迁移过来的,传参类型尚未明清
@@ -748,7 +625,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         CourseDetailItemParams params3 = (CourseDetailItemParams) params1.clone();
         params3.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT);
         params3.setComment(true);
-        bundle3.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT,params3);
+        bundle3.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params3);
         courseCommentFragment.setArguments(bundle3);
 
 
@@ -761,7 +638,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         bundle5.putString("id", id);
         bundle5.putString("memberId", memberId);
         // 是否是在线课堂老师
-        bundle5.putBoolean(ExamListFragment.KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
+        bundle5.putBoolean(ExamListFragment.KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher);
         bundle5.putSerializable(CourseDetailParams.class.getSimpleName(), mCourseDetailParams);
         bundle5.putSerializable(CourseVo.class.getSimpleName(), courseVo);
         examListFragment.setArguments(bundle5);
@@ -782,7 +659,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // fragmentTransaction.add(R.id.fragment_container, mClassroomFragment);
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
         // 添加帮辅群
-        fragmentTransaction.add(R.id.fragment_container,mTutorialGroupFragment);
+        fragmentTransaction.add(R.id.fragment_container, mTutorialGroupFragment);
 
         // @func   :V5.9默认先显示课程大纲
         fragmentTransaction.hide(courseCommentFragment);
@@ -822,7 +699,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(introductionFragment);
                     rg_tab_f.check(R.id.rb_course_introduction_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[0]);
-                } else */if (checkedId == R.id.rb_task) {
+                } else */
+                if (checkedId == R.id.rb_task) {
                     fragmentTransaction.show(studyPlanFragment);
                     rg_tab_f.check(R.id.rb_task_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[1]);
@@ -846,7 +724,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab_f.check(R.id.rb_live_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
-                }else if(checkedId == R.id.rb_tutorial_group){
+                } else if (checkedId == R.id.rb_tutorial_group) {
                     fragmentTransaction.show(mTutorialGroupFragment);
                     rg_tab_f.check(R.id.rb_tutorial_group_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
@@ -873,7 +751,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(introductionFragment);
                     rg_tab.check(R.id.rb_course_introduction);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[0]);
-                } else */if (checkedId == R.id.rb_task_f) {
+                } else */
+                if (checkedId == R.id.rb_task_f) {
                     fragmentTransaction.show(studyPlanFragment);
                     rg_tab.check(R.id.rb_task);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[1]);
@@ -897,7 +776,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab.check(R.id.rb_live);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
-                } else if(checkedId == R.id.rb_tutorial_group_f){
+                } else if (checkedId == R.id.rb_tutorial_group_f) {
                     fragmentTransaction.show(mTutorialGroupFragment);
                     rg_tab.check(R.id.rb_tutorial_group);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[6]);
@@ -910,7 +789,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private int getRadioBtnIndex(int id) {
         /*if (id == R.id.rb_course_introduction || id == R.id.rb_course_introduction_f) {
             return 0;
-        } else */if (id == R.id.rb_task || id == R.id.rb_task_f) {
+        } else */
+        if (id == R.id.rb_task || id == R.id.rb_task_f) {
             return 1;
         } else if (id == R.id.rb_scoring_criteria || id == R.id.rb_scoring_criteria_f) {
             return 2;
@@ -920,9 +800,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             return 4;
         } else if (id == R.id.rb_live || id == R.id.rb_live_f) {
             return 5;
-        } else if (id == R.id.rb_tutorial_group || id == R.id.rb_tutorial_group_f){
+        } else if (id == R.id.rb_tutorial_group || id == R.id.rb_tutorial_group_f) {
             return 6;
-        }else {
+        } else {
             return 0;
         }
     }
@@ -952,7 +832,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             topBar.showBottomSplitView(false);
             // 获取到左边返回,显示透明背景
             ImageView leftFunctionImage1 = (ImageView) topBar.findViewById(R.id.left_function1_image);
-            if(!EmptyUtil.isEmpty(leftFunctionImage1)){
+            if (!EmptyUtil.isEmpty(leftFunctionImage1)) {
                 leftFunctionImage1.setBackground(activity.getResources().getDrawable(
                         R.drawable.com_circle_black_trans_bg_selecter));
             }
@@ -979,7 +859,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private void updateData() {
         /*if (introductionFragment.isVisible()) {
             introductionFragment.updateData();
-        } else */if (studyPlanFragment.isVisible()) {
+        } else */
+        if (studyPlanFragment.isVisible()) {
             studyPlanFragment.updateData();
         } else if (courseCommentFragment.isVisible()) {
             refreshData();
@@ -988,13 +869,13 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             homeworkListFragment.updateData();
         } else if (examListFragment.isVisible()) {
             examListFragment.updateData();
-        } else if(mOnlineClassFragment.isVisible()){
+        } else if (mOnlineClassFragment.isVisible()) {
             // 下拉刷新
             mOnlineClassFragment.onHeaderRefresh();
-        }else if(mTutorialGroupFragment.isVisible()){
+        } else if (mTutorialGroupFragment.isVisible()) {
             // 下拉刷新
             mOnlineClassFragment.onHeaderRefresh();
-        }else if(mTutorialGroupFragment.isVisible()){
+        } else if (mTutorialGroupFragment.isVisible()) {
             // 帮辅群显示
             mTutorialGroupFragment.onHeaderRefresh();
         }
@@ -1007,17 +888,17 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
     private void initData() {
         String token = UserHelper.getUserId();
-        if(!mCanEdit){
+        if (!mCanEdit) {
             token = mCurMemberId;
         }
 
         int dataType = CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION;
         String schoolIds = null;
-        if(isLqExcellent){
+        if (isLqExcellent) {
             //来自LQ精品学程
             schoolIds = getIntent().getStringExtra("schoolId");
-        }else if(UserHelper.isLogin() && mCanEdit) {
-            schoolIds =  UserHelper.getUserInfo().getSchoolIds();
+        } else if (UserHelper.isLogin() && mCanEdit) {
+            schoolIds = UserHelper.getUserInfo().getSchoolIds();
         }
 
         CourseHelper.getCourseDetailsById(token, id, dataType, schoolIds, new DataSource.Callback<CourseDetailsVo>() {
@@ -1039,28 +920,28 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     courseVo = voList.get(0);
                     // 加载到课程信息
                     String teachersId = courseVo.getTeachersId();
-                    if(mCourseDetailParams.isClassTeacher() || tutorialMode){
+                    if (mCourseDetailParams.isClassTeacher() || tutorialMode) {
                         // 当前人为班级老师
                         // 如果是帮辅模式，那么进入到这页面，肯定是帮辅老师
                         // 如果不为空
-                        if(EmptyUtil.isEmpty(teachersId)){
+                        if (EmptyUtil.isEmpty(teachersId)) {
                             teachersId = UserHelper.getUserId();
-                        }else{
+                        } else {
                             teachersId = teachersId + "," + UserHelper.getUserId();
                         }
 
                         courseVo.setTeachersId(teachersId);
                     }
 
-                    if(isOnlineTeacher ||
+                    if (isOnlineTeacher ||
                             mCourseDetailParams.isClassParent()
-                            || mCourseDetailParams.isOrganCounselor()){
+                            || mCourseDetailParams.isOrganCounselor()) {
                         String counselorId = courseVo.getCounselorId();
                         // 从关联学程进来的 在线课堂的老师
                         // 或者是机构已经授权的老师
-                        if(EmptyUtil.isEmpty(counselorId)){
+                        if (EmptyUtil.isEmpty(counselorId)) {
                             counselorId = UserHelper.getUserId();
-                        }else{
+                        } else {
                             counselorId = counselorId + "," + UserHelper.getUserId();
                         }
 
@@ -1079,7 +960,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                         public void run() {
                             courseObservable.triggerObservers(courseVo);
                         }
-                    },0);
+                    }, 0);
 
 
                     // 获取用户的机构关注状态
@@ -1116,15 +997,16 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
     /**
      * 设置学习进度隐藏或者显示
+     *
      * @param vo 课程详细信息
      */
-    private void setProgressVisiable(@NonNull CourseVo vo){
+    private void setProgressVisiable(@NonNull CourseVo vo) {
         // 如果身份是该课程的老师,隐藏学习进度
         // TODO 是否未加入课程详情需要传是否是在线课堂的老师,来判断是否显示进度
-        if(UserHelper.checkCourseAuthor(vo,isOnlineTeacher)){
+        if (UserHelper.checkCourseAuthor(vo, isOnlineTeacher)) {
             // 老师身份
             mProgressLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             // 老师身份
             mProgressLayout.setVisibility(View.VISIBLE);
         }
@@ -1133,19 +1015,19 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     /**
      * 下拉刷新,刷新课程信息
      */
-    private void refreshData(){
+    private void refreshData() {
         String token = UserHelper.getUserId();
-        if(!mCanEdit){
+        if (!mCanEdit) {
             token = mCurMemberId;
         }
 
         int dataType = CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION;
         String schoolIds = null;
-        if(isLqExcellent){
+        if (isLqExcellent) {
             //来自LQ精品学程
             schoolIds = getIntent().getStringExtra("schoolId");
-        }else if(UserHelper.isLogin() && mCanEdit) {
-            schoolIds =  UserHelper.getUserInfo().getSchoolIds();
+        } else if (UserHelper.isLogin() && mCanEdit) {
+            schoolIds = UserHelper.getUserInfo().getSchoolIds();
         }
 
         CourseHelper.getCourseDetailsById(token, id, dataType, schoolIds, new DataSource.Callback<CourseDetailsVo>() {
@@ -1242,7 +1124,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
              */
             getIntent().putExtra("schoolId", courseVo.getOrganId());
 
-            if (!UserHelper.checkCourseAuthor(courseVo,isOnlineTeacher) && courseDetailsVo.isIsExpire()) {//课程权限已到期
+            if (!UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher) && courseDetailsVo.isIsExpire()) {//课程权限已到期
                 // 不是老师，并且过期
                 CustomDialog.Builder builder = new CustomDialog.Builder(activity);
                 builder.setMessage(activity.getResources().getString(R.string.course_out_permissions));
@@ -1284,7 +1166,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     /**
      * 填充课程详情信息
      */
-    private void fillCourseDetailInfo(@NonNull CourseVo vo){
+    private void fillCourseDetailInfo(@NonNull CourseVo vo) {
         // 设置学习进度信息
         setProgressVisiable(vo);
 
@@ -1332,7 +1214,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         textViewCourseProcess.append(processStr);
 
         textViewGrade.setText("(" + courseVo.getCommentNum() + ")");
-        textViewStrudyNumber.setText(String.format(getText(R.string.some_study).toString(),courseVo.getStudentNum()));
+        textViewStrudyNumber.setText(String.format(getText(R.string.some_study).toString(), courseVo.getStudentNum()));
         if (courseVo.getPrice() > 0) {
             textViewePriceTitle.setVisibility(View.VISIBLE);
             textViewCoursePrice.setText("¥" + courseVo.getPrice());
@@ -1347,10 +1229,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         if (view.getId() == R.id.reload_bt) {
             pullToRefreshView.showRefresh();
             initData();
-        }else if(view.getId() == R.id.tv_school_enter || view.getId() == R.id.organ_name_tv){
+        } else if (view.getId() == R.id.tv_school_enter || view.getId() == R.id.organ_name_tv) {
             // 点击关注
             // 进入机构主页
-            if(EmptyUtil.isNotEmpty(courseVo)){
+            if (EmptyUtil.isNotEmpty(courseVo)) {
                 /*Intent intent=new Intent();
                 intent.putExtra("isOpenSchoolSpace",true);
                 intent.putExtra("schoolId",courseVo.getOrganId());
@@ -1362,15 +1244,15 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     return;
                 }
 
-                if(EmptyUtil.isEmpty(mSchoolEntity)){
+                if (EmptyUtil.isEmpty(mSchoolEntity)) {
                     // 已经进入机构
                     return;
                 }
 
-                if(mSchoolEntity.hasJoinedSchool() || mSchoolEntity.hasSubscribed()){
+                if (mSchoolEntity.hasJoinedSchool() || mSchoolEntity.hasSubscribed()) {
                     // 已关注
                     sendSchoolSpaceRefreshBroadcast();
-                }else{
+                } else {
                     // 如果没有关注 +关注
                     SchoolHelper.requestSubscribeSchool(courseVo.getOrganId(), new DataSource.Callback<Object>() {
                         @Override
@@ -1405,15 +1287,15 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     id, "", "", "");
         } else if (view.getId() == R.id.notice_container) {
             CourseNoticeListActivity.start(this, id, memberId, canEdit);
-        } else if( view.getId() == R.id.btn_introduction){
+        } else if (view.getId() == R.id.btn_introduction) {
             // 简介
-            if(EmptyUtil.isEmpty(courseVo)) return;
-            CourseDetailItemParams params = new CourseDetailItemParams(true,mCurMemberId,!mCanEdit,courseVo.getId());
+            if (EmptyUtil.isEmpty(courseVo)) return;
+            CourseDetailItemParams params = new CourseDetailItemParams(true, mCurMemberId, !mCanEdit, courseVo.getId());
             params.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
-            CourseIntroductionActivity.show(this,params);
-        }else if(view.getId() == R.id.iv_share){
+            CourseIntroductionActivity.show(this, params);
+        } else if (view.getId() == R.id.iv_share) {
             // 分享
-            if(EmptyUtil.isEmpty(courseVo)) return;
+            if (EmptyUtil.isEmpty(courseVo)) return;
             StringBuilder titleBuilder = new StringBuilder();
             StringBuilder descriptionBuilder = new StringBuilder();
             String title = courseVo.getName();
@@ -1426,30 +1308,31 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 teachers = teachers.substring(0,7) + "...";
             }
             descriptionBuilder.append(teachers + "\n");*/
-            if(courseVo.getPrice() == 0){
+            if (courseVo.getPrice() == 0) {
                 descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
-            }else{
+            } else {
                 descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
             }
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
-            for(int index = 0; index < Math.ceil(score);index++){
+            for (int index = 0; index < Math.ceil(score); index++) {
                 descriptionBuilder.append("\u2B50");
             }
             final String thumbnailUrl = courseVo.getThumbnailUrl();
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
-            share(titleBuilder.toString(),descriptionBuilder.toString(),thumbnailUrl,url);
+            share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
         }
     }
 
     /**
      * 课程分享
-     * @param title 标题
-     * @param description 描述
+     *
+     * @param title        标题
+     * @param description  描述
      * @param thumbnailUrl 缩略图
-     * @param url 分享地址
+     * @param url          分享地址
      */
-    public void share(String title,String description,String thumbnailUrl,String url) {
+    public void share(String title, String description, String thumbnailUrl, String url) {
         ShareInfo shareInfo = new ShareInfo();
         shareInfo.setTitle(title);
         shareInfo.setContent(description);
@@ -1464,18 +1347,18 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
         shareInfo.setuMediaObject(umImage);
         BaseShareUtils utils = new BaseShareUtils(activity);
-        utils.share(activity.getWindow().getDecorView(),shareInfo);
+        utils.share(activity.getWindow().getDecorView(), shareInfo);
 
     }
 
     /**
      * 发送一个去空中学校并且刷新的广播
      */
-    private void sendSchoolSpaceRefreshBroadcast(){
+    private void sendSchoolSpaceRefreshBroadcast() {
         //关注/取消关注成功后，向校园空间发广播
         Intent broadIntent = new Intent();
         broadIntent.setAction("action_change_lqCourse_tab");
-        broadIntent.putExtra("schoolId",courseVo.getOrganId());
+        broadIntent.putExtra("schoolId", courseVo.getOrganId());
         activity.sendBroadcast(broadIntent);
     }
 
@@ -1578,7 +1461,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     protected void onDestroy() {
         super.onDestroy();
         unRegisterBroadcastReceiver();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -1636,7 +1519,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         return courseObservable;
     }
 
-    /**BroadcastReceiver************************************************/
+    /**
+     * BroadcastReceiver
+     ************************************************/
     protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1655,18 +1540,18 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     /**
      * 获取课程详细信息
      */
-    private void requestCourseDetailsData(){
+    private void requestCourseDetailsData() {
         boolean canEdit = getIntent().getBooleanExtra("canEdit", false);
         String memberId = getIntent().getStringExtra("memberId");
         String schoolIds = getIntent().getStringExtra("SchoolId");
         String token = null;
         if (!canEdit) {
-            token =  memberId;
+            token = memberId;
         }
 
         final String courseId = id;
 
-        if (UserHelper.isLogin() && TextUtils.equals(memberId,UserHelper.getUserId())) {
+        if (UserHelper.isLogin() && TextUtils.equals(memberId, UserHelper.getUserId())) {
             schoolIds = UserHelper.getUserInfo().getSchoolIds();
         }
 
@@ -1686,8 +1571,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(@NonNull EventWrapper event){
-        if(EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)){
+    public void onEvent(@NonNull EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
         }
@@ -1712,7 +1597,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     /**
      * 取消注册广播事件
      */
-    private void unRegisterBroadcastReceiver(){
+    private void unRegisterBroadcastReceiver() {
         unregisterReceiver(mBroadcastReceiver);
     }
 

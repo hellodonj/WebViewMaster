@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.AppConfig;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.vo.ResponseVo;

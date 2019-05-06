@@ -287,7 +287,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             String roles = schoolInfoEntity.getRoles();
                             CourseDetailParams params = new CourseDetailParams(reallyAuthorized, mSchoolId, roles);
                             // 传递该分类下，是否真的授权了
-                            CourseDetailsActivity.start(reallyAuthorized, params, true, OrganCourseClassifyActivity.this, courseVo.getId(), true, UserHelper.getUserId());
+                            CourseDetailsActivity.start(OrganCourseClassifyActivity.this,
+                                    courseVo.getId(), true, UserHelper.getUserId(), reallyAuthorized, params, true);
                         }
                     });
                 }

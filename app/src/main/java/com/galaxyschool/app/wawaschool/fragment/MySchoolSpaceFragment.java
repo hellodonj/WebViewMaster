@@ -900,13 +900,14 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     public void onDataNotAvailable(int strRes) {
                         UIUtil.showToastSafe(R.string.tip_class_not_relevance_course);
                     }
-                    
+
                     @Override
                     public void onDataLoaded(String courseId) {
                         // 进入课程详情
                         String roles = classInfo.getRoles();
                         boolean isTeacher = UserHelper.isTeacher(roles);
-                        CourseDetailsActivity.start(getActivity(), courseId, true, UserHelper.getUserId(), isTeacher);
+                        CourseDetailsActivity.start(getActivity(), courseId, true,
+                                UserHelper.getUserId(), false, false, isTeacher);
                     }
                 });
                 break;
@@ -1065,7 +1066,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.title = getString(R.string.common_video_library);
         item.resId = R.drawable.ic_video_library;
         itemList.add(item);
-        
+
         //图书馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY;

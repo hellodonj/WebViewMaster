@@ -72,14 +72,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
-        <!-- 主界面 -->
-        <activity
-            android:name=".module.home.ui.HomeActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
         <!-- 机构列表 -->
         <activity
             android:name=".module.discovery.ui.OrganListActivity"
@@ -141,66 +133,9 @@
             android:name=".module.learn.ui.MyCourseDetailsActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
-        <!-- 我的页面 -->
-        <activity
-            android:name=".module.user.ui.MyActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的个人信息 -->
-        <activity
-            android:name=".module.user.ui.PersonalInfoActivity"
-            android:screenOrientation="portrait" />
-        <!-- 选择城市 -->
-        <activity
-            android:name=".module.user.ui.AreaSelectActivity"
-            android:screenOrientation="portrait" />
-        <!-- 消息列表 -->
-        <activity
-            android:name=".module.user.ui.MessageListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 设置 -->
-        <activity
-            android:name=".module.user.ui.SettingActivity"
-            android:screenOrientation="portrait" />
-        <!-- 个人通讯录 -->
-        <activity
-            android:name=".module.user.ui.PersonalContactsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 名片详情 -->
-        <activity
-            android:name=".module.user.ui.ContactDetailsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 新朋友列表 -->
-        <activity
-            android:name=".module.user.ui.NewFriendListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的班级列表 -->
-        <activity
-            android:name=".module.user.ui.ClassContactsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 关注的学校 -->
-        <activity
-            android:name=".module.user.ui.MyAttentionOrganListActivity"
-            android:screenOrientation="portrait" />
         <!-- 我的订单列表 -->
         <activity
             android:name=".module.user.ui.MyOrderListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的收藏列表 -->
-        <activity
-            android:name=".module.user.ui.MyCollectionListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 意见反馈 -->
-        <activity
-            android:name=".module.user.ui.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible|stateUnchanged" />
-        <!-- 添加朋友 -->
-        <activity
-            android:name=".module.user.ui.AddFriendActivity"
-            android:screenOrientation="portrait" />
-        <!-- 发送好友请求 -->
-        <activity
-            android:name=".module.user.ui.SendFriendRequestActivity"
             android:screenOrientation="portrait" />
         <!-- 更多老师 -->
         <activity
@@ -215,13 +150,7 @@
             android:name=".module.discovery.ui.PayActivity"
             android:screenOrientation="portrait" />
         <!-- 班级成员列表 -->
-        <activity
-            android:name=".module.user.ui.ClassMembersActivity"
-            android:screenOrientation="portrait" />
         <!-- 添加关注机构 -->
-        <activity
-            android:name=".module.user.ui.AddAttentionOrganActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 通用图片全屏预览 -->
         <activity
@@ -555,9 +484,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.learn.ui.MyCredentialCourseListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.user.ui.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lqwawa.libs.appupdater.UpdateActivity"

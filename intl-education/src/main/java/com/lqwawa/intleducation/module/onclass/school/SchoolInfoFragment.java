@@ -53,7 +53,7 @@ import java.util.List;
  * **********************************
  */
 public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Presenter>
-    implements SchoolInfoContract.View{
+        implements SchoolInfoContract.View {
 
     private static final String KEY_EXTRA_SCHOOL_NAME = "KEY_EXTRA_SCHOOL_NAME";
     private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
@@ -87,17 +87,17 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
                                        @NonNull String schoolName,
                                        @NonNull String logoUrl,
                                        boolean isSchoolEnter,
-                                       @NonNull @OnlineClassRole.RoleRes String role){
+                                       @NonNull @OnlineClassRole.RoleRes String role) {
 
-        if(INSTANCE == null || true){
+        if (INSTANCE == null || true) {
             // 因为要切换机构的原因，所以不管怎么样，都创建新的实例
             INSTANCE = new SchoolInfoFragment();
             Bundle extras = new Bundle();
-            extras.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
-            extras.putString(KEY_EXTRA_SCHOOL_NAME,schoolName);
-            extras.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter);
-            extras.putString(KEY_EXTRA_SCHOOL_LOGO,logoUrl);
-            extras.putString(KEY_EXTRA_ROLE,role);
+            extras.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
+            extras.putString(KEY_EXTRA_SCHOOL_NAME, schoolName);
+            extras.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter);
+            extras.putString(KEY_EXTRA_SCHOOL_LOGO, logoUrl);
+            extras.putString(KEY_EXTRA_ROLE, role);
             INSTANCE.setArguments(extras);
         }
         return INSTANCE;
@@ -115,12 +115,12 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID,null);
-        mSchoolName = bundle.getString(KEY_EXTRA_SCHOOL_NAME,null);
+        mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID, null);
+        mSchoolName = bundle.getString(KEY_EXTRA_SCHOOL_NAME, null);
         mLogoUrl = bundle.getString(KEY_EXTRA_SCHOOL_LOGO);
         isSchoolEnter = bundle.getBoolean(KEY_EXTRA_IS_SCHOOL_ENTER);
         mRole = bundle.getString(KEY_EXTRA_ROLE);
-        if(EmptyUtil.isEmpty(mSchoolId) || EmptyUtil.isEmpty(mSchoolName) || EmptyUtil.isEmpty(mRole)){
+        if (EmptyUtil.isEmpty(mSchoolId) || EmptyUtil.isEmpty(mSchoolName) || EmptyUtil.isEmpty(mRole)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -135,41 +135,42 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
         mTeacherRecycler = (RecyclerView) mRootView.findViewById(R.id.teacher_recycler);
         mDiscoveryHolder = (DiscoveryHolder) mRootView.findViewById(R.id.discovery_holder);
         mDiscoveryHolder.setDiscoveryTitle(getString(R.string.label_study_course));
-        mDiscoveryHolder.setNavigator(new LQCourseNavigatorImpl(){
+        mDiscoveryHolder.setNavigator(new LQCourseNavigatorImpl() {
             @Override
             public void onClickCourseTitleLayout() {
                 super.onClickCourseTitleLayout();
                 // 进入课程列表 标题是课堂
                 // LQCourseListActivity.show(getActivity(), HideSortType.TYPE_SORT_ONLINE_COURSE,getString(R.string.label_course_shop),mSchoolId,true,false);
                 // CourseShopListActivity.show(getActivity(),HideSortType.TYPE_SORT_ONLINE_COURSE,getString(R.string.label_study_course), mSchoolId, true, false);
-                CourseShopListActivity.show(getActivity(),HideSortType.TYPE_SORT_ONLINE_COURSE,mSchoolName, mSchoolId, true, false);
+                CourseShopListActivity.show(getActivity(), HideSortType.TYPE_SORT_ONLINE_COURSE, mSchoolName, mSchoolId, true, false);
             }
 
             @Override
             public void onClickCourse(@NonNull CourseVo courseVo) {
                 super.onClickCourse(courseVo);
                 // 进入课程详情
-                CourseDetailsActivity.start(getActivity(),true,false,courseVo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(getActivity(), courseVo.getId(), true,
+                        UserHelper.getUserId(), true, false, false);
             }
         });
         // 设置标题点击事件
-        mTitleLayout.setOnClickListener(Void->{
-            OnlineClassListActivity.show(getActivity(),mSchoolId,mSchoolName,true);
+        mTitleLayout.setOnClickListener(Void -> {
+            OnlineClassListActivity.show(getActivity(), mSchoolId, mSchoolName, true);
         });
 
-        mTeacherLayout.setOnClickListener(Void->{
-            SchoolTeacherListActivity.show(getActivity(),mSchoolId,mSchoolName,mLogoUrl,mRole);
+        mTeacherLayout.setOnClickListener(Void -> {
+            SchoolTeacherListActivity.show(getActivity(), mSchoolId, mSchoolName, mLogoUrl, mRole);
         });
 
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),2){
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
         mRecycler.setLayoutManager(mLayoutManager);
-        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2,8,false));
+        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2, 8, false));
         mClassAdapter = new OnlineClassAdapter();
         mRecycler.setAdapter(mClassAdapter);
 
@@ -182,7 +183,7 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
         });
 
         // 显示机构老师信息
-        mTeacherRecycler.setLayoutManager(new GridLayoutManager(getContext(),4){
+        mTeacherRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -196,7 +197,7 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
     @Override
     protected void initData() {
         super.initData();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
@@ -206,6 +207,7 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
 
     /**
      * 点击在线课堂班级
+     *
      * @param onlineClassEntity 班级实体
      */
     private void onClickClass(OnlineClassEntity onlineClassEntity) {
@@ -213,8 +215,8 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
         String classId = onlineClassEntity.getClassId();
         // mPresenter.requestLoadClassInfo(classId);
 
-        ClassInfoParams params = new ClassInfoParams(onlineClassEntity,true,false);
-        ClassDetailActivity.show(getActivity(),params);
+        ClassInfoParams params = new ClassInfoParams(onlineClassEntity, true, false);
+        ClassDetailActivity.show(getActivity(), params);
     }
 
     @Override
@@ -235,38 +237,39 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
     @Override
     public void onClassCheckSucceed(JoinClassEntity entity) {
         // 非空判断
-        if(EmptyUtil.isEmpty(entity) || EmptyUtil.isEmpty(mCurrentClickEntity)){
+        if (EmptyUtil.isEmpty(entity) || EmptyUtil.isEmpty(mCurrentClickEntity)) {
             return;
         }
 
         boolean needToJoin = entity.isIsInClass();
         String role = getOnlineClassRoleInfo(entity);
-        if(needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)){
+        if (needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)) {
             // 已经加入班级 或者是老师身份
             // 从机构主页跳转,不显示机构关注
-            JoinClassDetailActivity.show(getActivity(),entity.getClassId(),entity.getSchoolId(),mCurrentClickEntity.getId(),role,true);
-        }else{
+            JoinClassDetailActivity.show(getActivity(), entity.getClassId(), entity.getSchoolId(), mCurrentClickEntity.getId(), role, true);
+        } else {
             // 未加入班级
-            ClassDetailActivity.show(getActivity(),entity.getClassId(),entity.getSchoolId(),mCurrentClickEntity.getId(),role,true);
+            ClassDetailActivity.show(getActivity(), entity.getClassId(), entity.getSchoolId(), mCurrentClickEntity.getId(), role, true);
         }
     }
 
     /**
      * 获取在线课堂角色信息
+     *
      * @param entity 数据实体
      * @return 判断顺序 老师->家长->学生
      */
-    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity){
+    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity) {
         String roles = entity.getRoles();
         // 默认学生身份
         String roleType = OnlineClassRole.ROLE_STUDENT;
-        if(UserHelper.isTeacher(roles)){
+        if (UserHelper.isTeacher(roles)) {
             // 老师身份
             roleType = OnlineClassRole.ROLE_TEACHER;
-        }else if(UserHelper.isParent(roles)){
+        } else if (UserHelper.isParent(roles)) {
             // 家长身份
             roleType = OnlineClassRole.ROLE_PARENT;
-        }else if(UserHelper.isStudent(roles)){
+        } else if (UserHelper.isStudent(roles)) {
             // 学生身份
             roleType = OnlineClassRole.ROLE_STUDENT;
         }
@@ -274,8 +277,8 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(@NonNull EventWrapper event){
-        if(EventWrapper.isMatch(event, EventConstant.ONLINE_CLASS_COMPLETE_GIVE_EVENT)){
+    public void onEvent(@NonNull EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.ONLINE_CLASS_COMPLETE_GIVE_EVENT)) {
             // 刷新UI
             mPresenter.requestOnlineSchoolInfoData(mSchoolId);
             mPresenter.requestOnlineSchoolTeacherData(mSchoolId);
@@ -285,7 +288,7 @@ public class SchoolInfoFragment extends PresenterFragment<SchoolInfoContract.Pre
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

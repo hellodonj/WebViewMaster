@@ -29,7 +29,6 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommentVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.intleducation.module.user.ui.ContactDetailsActivity;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;

@@ -45,7 +45,7 @@ import java.util.List;
 public class WatchCourseListActivity extends MyBaseActivity implements View.OnClickListener,
          GridView.OnItemClickListener {
 
-    private static String TAG = "PersonalContactsActivity";
+    private static String TAG = "WatchCourseListActivity";
 
     private TopBar topBar;
     private RelativeLayout loadFailedLayout;

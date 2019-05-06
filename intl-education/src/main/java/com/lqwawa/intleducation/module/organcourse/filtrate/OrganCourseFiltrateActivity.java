@@ -493,7 +493,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
                                 String roles = schoolInfoEntity.getRoles();
                                 CourseDetailParams params = new CourseDetailParams(isReallyAuthorized, organId, roles);
-                                CourseDetailsActivity.start(isReallyAuthorized, params, true, OrganCourseFiltrateActivity.this, vo.getId(), true, UserHelper.getUserId());
+                                CourseDetailsActivity.start(OrganCourseFiltrateActivity.this,
+                                        vo.getId(), true, UserHelper.getUserId(), isReallyAuthorized, params, true);
                             }
                         });
                     }

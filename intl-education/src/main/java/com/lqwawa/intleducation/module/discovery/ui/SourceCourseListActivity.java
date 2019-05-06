@@ -1,10 +1,12 @@
 package com.lqwawa.intleducation.module.discovery.ui;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.R;
@@ -17,7 +19,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.List;
 
-public class SourceCourseListActivity  extends MyBaseActivity implements View.OnClickListener{
+public class SourceCourseListActivity extends MyBaseActivity implements View.OnClickListener {
     private static final String TAG = SourceCourseListActivity.class.getSimpleName();
     //头部
     private TopBar topBar;
@@ -28,33 +30,33 @@ public class SourceCourseListActivity  extends MyBaseActivity implements View.On
     private List<CourseVo> courseList;
     private CourseListAdapter courseListAdapter;
 
-    public static void start(Activity activity, String courseData){
-        if(courseData == null){
+    public static void start(Activity activity, String courseData) {
+        if (courseData == null) {
             return;
         }
         scanActivity = null;
         List<CourseVo> courseList = null;
         try {
-            ResponseVo<List<CourseVo>> result= JSON.parseObject(courseData,
+            ResponseVo<List<CourseVo>> result = JSON.parseObject(courseData,
                     new TypeReference<ResponseVo<List<CourseVo>>>() {
                     });
-            if(result.getData() != null){
+            if (result.getData() != null) {
                 courseList = result.getData();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
-        if(courseList == null){
+        if (courseList == null) {
             return;
         }
-        if(courseList.size() == 0){
+        if (courseList.size() == 0) {
             return;
         }
-        if(courseList.size() == 1){
-            CourseDetailsActivity.start(activity, courseList.get(0).getCourseId(),true,
-                    0, courseList.get(0), UserHelper.getUserId());
+        if (courseList.size() == 1) {
+            CourseDetailsActivity.start(activity, courseList.get(0).getCourseId(), true,
+                    UserHelper.getUserId(), 0, courseList.get(0));
             activity.finish();
-        }else{
+        } else {
             activity.startActivity(new Intent(activity, SourceCourseListActivity.class)
                     .putExtra("courseData", courseData));
             scanActivity = activity;
@@ -80,9 +82,9 @@ public class SourceCourseListActivity  extends MyBaseActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
-                CourseDetailsActivity.start(activity, vo.getCourseId(), true, 0, vo,
-                        UserHelper.getUserId());
-                if(scanActivity != null){
+                CourseDetailsActivity.start(activity, vo.getCourseId(), true,
+                        UserHelper.getUserId(), 0, vo);
+                if (scanActivity != null) {
                     scanActivity.finish();
                 }
                 activity.finish();
@@ -92,21 +94,22 @@ public class SourceCourseListActivity  extends MyBaseActivity implements View.On
     }
 
     @Override
-    public void onClick(View view){
+    public void onClick(View view) {
 
     }
+
     private void initData() {
         courseListAdapter = new CourseListAdapter(this);
         listView.setAdapter(courseListAdapter);
         String courseData = getIntent().getStringExtra("courseData");
         try {
-            ResponseVo<List<CourseVo>> result= JSON.parseObject(courseData,
+            ResponseVo<List<CourseVo>> result = JSON.parseObject(courseData,
                     new TypeReference<ResponseVo<List<CourseVo>>>() {
                     });
-            if(result.getData() != null){
+            if (result.getData() != null) {
                 courseList = result.getData();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         courseListAdapter.setData(courseList);

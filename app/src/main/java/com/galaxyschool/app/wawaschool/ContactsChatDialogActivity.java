@@ -76,7 +76,6 @@ public class ContactsChatDialogActivity extends BaseActivity {
 //                getActivityStack().finishAll();
                 getActivityStack().finishUtilRoot();
                 //清空mooc的栈Activity
-                DemoApplication.getInstance().finishActivitysWithoutHome();
 
                 AccountListener listener = DemoApplication.getInstance().getAccountListener();
                 if (listener != null) {

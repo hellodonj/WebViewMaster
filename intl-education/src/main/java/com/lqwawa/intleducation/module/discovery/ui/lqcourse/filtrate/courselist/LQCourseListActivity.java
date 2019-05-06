@@ -43,7 +43,7 @@ import java.util.List;
  * **********************************
  */
 public class LQCourseListActivity extends PresenterActivity<LQCourseListContract.Presenter>
-    implements LQCourseListContract.View, View.OnClickListener{
+        implements LQCourseListContract.View, View.OnClickListener {
 
     private static final String KEY_EXTRA_TITLE_TEXT = "KEY_EXTRA_TITLE_TEXT";
 
@@ -106,11 +106,11 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
         isSchoolEnter = bundle.getBoolean(KEY_EXTRA_IS_SCHOOL_ENTER);
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
-        if(!EmptyUtil.isEmpty(mSearchKey)){
+        if (!EmptyUtil.isEmpty(mSearchKey)) {
             // 搜索页面过来的
             isSearchFilter = true;
         }
-        if(EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)){
+        if (EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -125,15 +125,15 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
 
         // 添加搜索 之前在线课堂不加搜索
         // if(!isSearchFilter && !HideSortType.TYPE_SORT_ONLINE_COURSE.equals(mSortType)){
-        if(!isSearchFilter && false){
+        if (!isSearchFilter && false) {
             mTopBar.setRightFunctionImage1(R.drawable.search, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(HideSortType.TYPE_SORT_ONLINE_COURSE.equals(mSortType)){
+                    if (HideSortType.TYPE_SORT_ONLINE_COURSE.equals(mSortType)) {
                         // 在线课堂类型
-                        SearchActivity.show(LQCourseListActivity.this,mSortType,mTitle,mSchoolId,isSchoolEnter);
-                    }else{
-                        SearchActivity.show(LQCourseListActivity.this,mSortType,mTitle,isSchoolEnter);
+                        SearchActivity.show(LQCourseListActivity.this, mSortType, mTitle, mSchoolId, isSchoolEnter);
+                    } else {
+                        SearchActivity.show(LQCourseListActivity.this, mSortType, mTitle, isSchoolEnter);
                     }
                 }
             });
@@ -173,7 +173,7 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
         mSearchContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     // 搜索，收起软件盘
                     KeyboardUtil.hideSoftInput(LQCourseListActivity.this);
                     requestCourseData(false);
@@ -190,7 +190,8 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
-                CourseDetailsActivity.start(LQCourseListActivity.this,isSchoolEnter,isOnlineClassEnter, vo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(LQCourseListActivity.this, vo.getId(), true,
+                        UserHelper.getUserId(), isSchoolEnter, isOnlineClassEnter, false);
             }
         });
 
@@ -223,16 +224,16 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
     /**
      * 查询课程 isMoreLoaded=true 加载更多数据
      */
-    public void requestCourseData(boolean isMoreLoaded){
+    public void requestCourseData(boolean isMoreLoaded) {
         int payType = Integer.MAX_VALUE;
-        if(!AppConfig.BaseConfig.needShowPay()){
+        if (!AppConfig.BaseConfig.needShowPay()) {
             //只显示免费课程
             payType = 0;
         }
 
         mSearchKey = mSearchContent.getText().toString().trim();
 
-        if(HideSortType.TYPE_SORT_ONLINE_COURSE.equals(mSortType)){
+        if (HideSortType.TYPE_SORT_ONLINE_COURSE.equals(mSortType)) {
             // 加载在线课堂关联课程
 
             /*if(isMoreLoaded){
@@ -243,20 +244,20 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
                 mPresenter.requestOnlineSchoolInfoData(currentPage,mSchoolId);
             }*/
 
-            if(isMoreLoaded){
+            if (isMoreLoaded) {
                 currentPage++;
-                mPresenter.requestMoreCourseData(mSchoolId,currentPage,0,mDataType,mSortType,payType,mSearchKey);
-            }else{
+                mPresenter.requestMoreCourseData(mSchoolId, currentPage, 0, mDataType, mSortType, payType, mSearchKey);
+            } else {
                 currentPage = 0;
-                mPresenter.requestCourseData(mSchoolId,currentPage,0,mDataType,mSortType,payType,mSearchKey);
+                mPresenter.requestCourseData(mSchoolId, currentPage, 0, mDataType, mSortType, payType, mSearchKey);
             }
-        }else{
-            if(isMoreLoaded){
+        } else {
+            if (isMoreLoaded) {
                 currentPage++;
-                mPresenter.requestMoreCourseData(null,currentPage,0,mDataType,mSortType,payType,mSearchKey);
-            }else{
+                mPresenter.requestMoreCourseData(null, currentPage, 0, mDataType, mSortType, payType, mSearchKey);
+            } else {
                 currentPage = 0;
-                mPresenter.requestCourseData(null,currentPage,0,mDataType,mSortType,payType,mSearchKey);
+                mPresenter.requestCourseData(null, currentPage, 0, mDataType, mSortType, payType, mSearchKey);
             }
         }
     }
@@ -272,11 +273,11 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
         courseListAdapter.setData(courseVos);
         mListView.setAdapter(courseListAdapter);
 
-        if(EmptyUtil.isEmpty(courseVos)){
+        if (EmptyUtil.isEmpty(courseVos)) {
             // 数据为空
             mRefreshLayout.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
@@ -304,11 +305,11 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
         courseListAdapter.setData(courseVos);
         mListView.setAdapter(courseListAdapter);
 
-        if(EmptyUtil.isEmpty(courseVos)){
+        if (EmptyUtil.isEmpty(courseVos)) {
             // 数据为空
             mRefreshLayout.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
@@ -318,15 +319,15 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.tv_filter){
+        if (viewId == R.id.tv_filter) {
             // 搜索 兼容其它平板问题，收起软件盘
             KeyboardUtil.hideSoftInput(this);
             requestCourseData(false);
-        }else if(viewId == R.id.iv_search_clear){
+        } else if (viewId == R.id.iv_search_clear) {
             // 删除关键字
             mSearchContent.getText().clear();
             requestCourseData(false);
-        }else if(viewId == R.id.et_search){
+        } else if (viewId == R.id.et_search) {
             // 点击搜索框
         }
     }
@@ -340,15 +341,16 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
 
     /**
      * 课程列表显示入口
-     * @param context 上下文对象
+     *
+     * @param context  上下文对象
      * @param dataType 数据类型 1 国家课程,0 非国家课程类型
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
+     * @param sort     热门列表或者其它
+     * @param title    标题文本
      */
     public static void show(@NonNull Context context,
                             int dataType,
                             @NonNull @HideSortType.SortRes String sort,
-                            @NonNull String title){
+                            @NonNull String title) {
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_EXTRA_DATA_TYPE, dataType);
@@ -360,62 +362,65 @@ public class LQCourseListActivity extends PresenterActivity<LQCourseListContract
 
     /**
      * 课程列表显示入口 在线课堂机构信息进来的
-     * @param context 上下文对象
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
-     * @param schoolId 机构Id
-     * @param isSchoolEnter 是否从在线机构主页进来的
+     *
+     * @param context            上下文对象
+     * @param sort               热门列表或者其它
+     * @param title              标题文本
+     * @param schoolId           机构Id
+     * @param isSchoolEnter      是否从在线机构主页进来的
      * @param isOnlineClassEnter 是否是在线课堂班级过来的，如果是，需要隐藏在线课堂Tab
      */
-    public static void show(@NonNull Context context, @NonNull @HideSortType.SortRes String sort, @NonNull String title,@NonNull String schoolId,
-                            boolean isSchoolEnter,boolean isOnlineClassEnter){
+    public static void show(@NonNull Context context, @NonNull @HideSortType.SortRes String sort, @NonNull String title, @NonNull String schoolId,
+                            boolean isSchoolEnter, boolean isOnlineClassEnter) {
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
-        bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
-        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter);
-        bundle.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
+        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter);
+        bundle.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     /**
      * 课程列表显示入口
+     *
      * @param context 上下文对象
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
-     * @param key 搜索关键词
+     * @param sort    热门列表或者其它
+     * @param title   标题文本
+     * @param key     搜索关键词
      */
     public static void showFromSearch(@NonNull Context context, @NonNull @HideSortType.SortRes String sort,
-                                      @NonNull String title,@NonNull String key,boolean isOnlineSchoolEnter){
+                                      @NonNull String title, @NonNull String key, boolean isOnlineSchoolEnter) {
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
-        bundle.putString(KEY_EXTRA_SEARCH_KEY,key);
-        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isOnlineSchoolEnter);
+        bundle.putString(KEY_EXTRA_SEARCH_KEY, key);
+        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isOnlineSchoolEnter);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     /**
      * 在线课堂课程列表显示入口
-     * @param context 上下文对象
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
-     * @param key 搜索关键词
+     *
+     * @param context  上下文对象
+     * @param sort     热门列表或者其它
+     * @param title    标题文本
+     * @param key      搜索关键词
      * @param schoolId 机构Id
      */
     public static void showFromSearch(@NonNull Context context, @NonNull @HideSortType.SortRes String sort,
-                                      @NonNull String title,@NonNull String key,@NonNull String schoolId,boolean isOnlineSchoolEnter){
+                                      @NonNull String title, @NonNull String key, @NonNull String schoolId, boolean isOnlineSchoolEnter) {
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
-        bundle.putString(KEY_EXTRA_SEARCH_KEY,key);
-        bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
-        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isOnlineSchoolEnter);
+        bundle.putString(KEY_EXTRA_SEARCH_KEY, key);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
+        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isOnlineSchoolEnter);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

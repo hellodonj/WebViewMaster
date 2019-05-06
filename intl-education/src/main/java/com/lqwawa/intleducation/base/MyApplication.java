@@ -6,7 +6,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.lqwawa.intleducation.module.home.ui.HomeActivity;
 import com.osastudio.apps.BaseApplication;
 
 import java.util.LinkedList;
@@ -165,14 +164,6 @@ public class MyApplication extends BaseApplication {
             return activitys.size();
         } else {
             return 0;
-        }
-    }
-
-    public void finishActivitysWithoutHome(){
-        for (Activity activity : activitys) {
-            if (!activity.getClass().equals(HomeActivity.class)) {
-                activity.finish();
-            }
         }
     }
 

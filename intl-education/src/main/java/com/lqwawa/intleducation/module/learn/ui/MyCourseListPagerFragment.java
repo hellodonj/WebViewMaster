@@ -67,7 +67,7 @@ import java.util.List;
  * email:man0fchina@foxmail.com
  */
 
-public class MyCourseListPagerFragment extends MyBaseFragment implements View.OnClickListener{
+public class MyCourseListPagerFragment extends MyBaseFragment implements View.OnClickListener {
 
     // 去在线学习
     public static final String ACTION_GO_COURSE_SHOP = "ACTION_GO_COURSE_SHOP";
@@ -126,7 +126,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         textViewLiveTimetable = (TextView) view.findViewById(R.id.live_timetable_tv);
         textViewLiveTimetable.setOnClickListener(this);
         mSearchLayout = (LinearLayout) view.findViewById(R.id.search_layout);
-        editTextSearch = (EditText)view.findViewById(R.id.search_et);
+        editTextSearch = (EditText) view.findViewById(R.id.search_et);
         textViewFilter = (TextView) view.findViewById(R.id.filter_tv);
         textViewFilter.setText(getString(R.string.search));
         textViewFilter.setOnClickListener(this);
@@ -139,31 +139,32 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
         initViews();
     }
+
     private void initViews() {
         curMemberId = getArguments().getString("MemberId");
         curSchoolId = getArguments().getString("SchoolId");
         mHideSearch = getArguments().getBoolean(KEY_HIDE_SEARCH);
-        if(getArguments().containsKey(KEY_CONFIG_ENTITY)){
+        if (getArguments().containsKey(KEY_CONFIG_ENTITY)) {
             mConfigEntity = (LQCourseConfigEntity) getArguments().getSerializable(KEY_CONFIG_ENTITY);
         }
         mLevel = getArguments().getString(KEY_EXTRA_CONFIG_LEVEL);
         mParamOneId = getArguments().getInt(KEY_EXTRA_CONFIG_ONEID);
         mParamTwoId = getArguments().getInt(KEY_EXTRA_CONFIG_TWOID);
 
-        if(mHideSearch){
+        if (mHideSearch) {
             // 隐藏搜索
             mSearchLayout.setVisibility(View.GONE);
         }
 
-        isTeacher = getArguments().getBoolean(KEY_IS_TEACHER,false);
-        courseListAdapter = new MyCourseListAdapter(activity,isTeacher);
-        courseListAdapter.setRoleInfo(curMemberId.equals(UserHelper.getUserId()),curMemberId);
+        isTeacher = getArguments().getBoolean(KEY_IS_TEACHER, false);
+        courseListAdapter = new MyCourseListAdapter(activity, isTeacher);
+        courseListAdapter.setRoleInfo(curMemberId.equals(UserHelper.getUserId()), curMemberId);
         listView.setAdapter(courseListAdapter);
         btnReload.setOnClickListener(this);
 
@@ -203,7 +204,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (editTextSearch.getText().toString().isEmpty()){
+                    if (editTextSearch.getText().toString().isEmpty()) {
                         return false;
                     }
                     search();
@@ -233,29 +234,29 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyCourseVo vo = (MyCourseVo) courseListAdapter.getItem(position);
-                if(vo != null) {
-                    if(isTeacher) {
+                if (vo != null) {
+                    if (isTeacher) {
                         // 如果是老师,直接进入已加入详情
                         CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER);
                         MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, curSchoolId,params);
-                    }else{
+                                , curMemberId, curSchoolId, params);
+                    } else {
                         // 学生或家长，需要更新状态
-                        CourseDetailsActivity.start(true,activity, vo.getCourseId(),
+                        CourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId);
+                                , curMemberId, true);
                     }
                 }
             }
         });
 
-        if(!isTeacher){
+        if (!isTeacher) {
             // 如果是老师身份，不允许长按退出课程
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(StringUtils.isValidString(curMemberId)
+                    if (StringUtils.isValidString(curMemberId)
                             && curMemberId.equals(UserHelper.getUserId())) {
                         final MyCourseVo vo = (MyCourseVo) courseListAdapter.getItem(position);
                         CustomDialog.Builder builder = new CustomDialog.Builder(activity);
@@ -279,34 +280,34 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
 
                         builder.create().show();
                         return true;
-                    }else{
+                    } else {
                         return false;
                     }
                 }
             });
         }
-        if(StringUtils.isValidString(curMemberId)){
+        if (StringUtils.isValidString(curMemberId)) {
             pullToRefreshView.showRefresh();
             getData();
         }
     }
 
 
-    private void search(){
+    private void search() {
         getData();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(!getUserVisibleHint()){
+        if (!getUserVisibleHint()) {
             // 隐藏
-            if(EmptyUtil.isNotEmpty(editTextSearch))
-            editTextSearch.getText().clear();
+            if (EmptyUtil.isNotEmpty(editTextSearch))
+                editTextSearch.getText().clear();
         }
     }
 
-    private void exitCourse(MyCourseVo vo){
+    private void exitCourse(MyCourseVo vo) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", vo.getCourseId());
         RequestParams params =
@@ -321,13 +322,13 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                 if (result.getCode() == 0) {
 
                     // 发送刷新标签的通知
-                    EventBus.getDefault().post(new EventWrapper(null,EventConstant.TRIGGER_EXIT_COURSE));
+                    EventBus.getDefault().post(new EventWrapper(null, EventConstant.TRIGGER_EXIT_COURSE));
 
                     ToastUtil.showToast(activity, getResources().getString(R.string.exit_course)
                             + getResources().getString(R.string.success));
                     pullToRefreshView.showRefresh();
                     getData();
-                }else{
+                } else {
                     ToastUtil.showToast(activity, getResources().getString(R.string.exit_course)
                             + getResources().getString(R.string.failed)
                             + ":" + result.getMessage());
@@ -352,10 +353,10 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.reload_bt) {
+        if (view.getId() == R.id.reload_bt) {
             pullToRefreshView.showRefresh();
             getData();
-        }else if(view.getId() == R.id.filter_tv){
+        } else if (view.getId() == R.id.filter_tv) {
             hideKeyboard();
             search();
         } else if (view.getId() == R.id.live_timetable_tv) {
@@ -368,18 +369,18 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                             LiveTimetableActivity.LiveSourceType.Type_my_course :
                             LiveTimetableActivity.LiveSourceType.Type_my_child_course,
                     curMemberId, "", "", "");*/
-            
+
             LiveTimetableActivity.start(activity,
                     TextUtils.equals(UserHelper.getUserId(), curMemberId) ?
                             LiveTimetableActivity.LiveSourceType.Type_my_course :
-                            LiveTimetableActivity.LiveSourceType.Type_my_child_course,""
+                            LiveTimetableActivity.LiveSourceType.Type_my_child_course, ""
                     , curMemberId, "", curSchoolId);
-        }else if(view.getId() == R.id.search_clear_iv) {
+        } else if (view.getId() == R.id.search_clear_iv) {
             editTextSearch.setText("");
             search();
-        }else if(view.getId() == R.id.btn_submit){
+        } else if (view.getId() == R.id.btn_submit) {
             // 去100%习课程
-            if(!isTeacher){
+            if (!isTeacher) {
                 // 我的习课程
                 getActivity().finish();
                 Intent broadIntent = new Intent();
@@ -388,13 +389,14 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
             }
         }
     }
+
     private int pageIndex = 0;
 
     public void getData() {
-        if(EmptyUtil.isEmpty(editTextSearch)) return;
+        if (EmptyUtil.isEmpty(editTextSearch)) return;
         searchKeyword = editTextSearch.getText().toString();
 
-        if(loadFailedLayout == null){
+        if (loadFailedLayout == null) {
             return;
         }
         pageIndex = 0;
@@ -403,22 +405,22 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
         requestVo.addParams("token", curMemberId);
-        if(searchKeyword != null){
-            try{
+        if (searchKeyword != null) {
+            try {
                 requestVo.addParams("name", URLEncoder.encode(searchKeyword, "UTF-8"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         LogUtil.d(TAG, requestVo.getParams());
         String url = null;
-        if(isTeacher){
+        if (isTeacher) {
             url = AppConfig.ServerUrl.GetMyEstablishCourseList + requestVo.getParams();
-        }else{
-            requestVo.addParams("level",mLevel);
-            requestVo.addParams("paramOneId",mParamOneId);
-            requestVo.addParams("paramTwoId",mParamTwoId);
+        } else {
+            requestVo.addParams("level", mLevel);
+            requestVo.addParams("paramOneId", mParamOneId);
+            requestVo.addParams("paramTwoId", mParamTwoId);
             url = AppConfig.ServerUrl.GetMyCourseList + requestVo.getParams();
         }
         RequestParams params = new RequestParams(url);
@@ -433,24 +435,24 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         });
                 if (result.getCode() == 0) {
                     loadFailedLayout.setVisibility(View.GONE);
-                    List<MyCourseVo>courseList = result.getData();
+                    List<MyCourseVo> courseList = result.getData();
                     pullToRefreshView.setLoadMoreEnable(courseList.size() >= AppConfig.PAGE_SIZE);
                     courseListAdapter.setData(courseList);
                     courseListAdapter.notifyDataSetChanged();
 
-                    if(EmptyUtil.isEmpty(courseList)){
+                    if (EmptyUtil.isEmpty(courseList)) {
                         // 数据为空
                         pullToRefreshView.setVisibility(View.VISIBLE);
                         mScrollLayout.setVisibility(View.VISIBLE);
                         listView.setVisibility(View.GONE);
-                        if(!isTeacher){
+                        if (!isTeacher) {
                             // 我参与的与我孩子的自主学习显示
                             mTabEmptyLayout.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             // 我的授课显示
                             mEmptyLayout.setVisibility(View.VISIBLE);
                         }
-                    }else{
+                    } else {
                         // 数据不为空
                         pullToRefreshView.setVisibility(View.VISIBLE);
                         listView.setVisibility(View.VISIBLE);
@@ -486,22 +488,22 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
         requestVo.addParams("pageSize", AppConfig.PAGE_SIZE);
         requestVo.addParams("token", curMemberId);
 
-        if(searchKeyword != null){
-            try{
+        if (searchKeyword != null) {
+            try {
                 requestVo.addParams("name", URLEncoder.encode(searchKeyword, "UTF-8"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         LogUtil.d(TAG, requestVo.getParams());
         String url = null;
-        if(isTeacher){
+        if (isTeacher) {
             url = AppConfig.ServerUrl.GetMyEstablishCourseList + requestVo.getParams();
-        }else{
-            requestVo.addParams("level",mLevel);
-            requestVo.addParams("paramOneId",mParamOneId);
-            requestVo.addParams("paramTwoId",mParamTwoId);
+        } else {
+            requestVo.addParams("level", mLevel);
+            requestVo.addParams("paramOneId", mParamOneId);
+            requestVo.addParams("paramTwoId", mParamTwoId);
             url = AppConfig.ServerUrl.GetMyCourseList + requestVo.getParams();
         }
         RequestParams params = new RequestParams(url);
@@ -545,16 +547,16 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(@NonNull EventWrapper event){
-        if(EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)){
+    public void onEvent(@NonNull EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             getData();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(@NonNull MessageEvent event){
-        if(TextUtils.equals(EventConstant.TRIGGER_UPDATE_COURSE,event.getUpdateAction())){
+    public void onEvent(@NonNull MessageEvent event) {
+        if (TextUtils.equals(EventConstant.TRIGGER_UPDATE_COURSE, event.getUpdateAction())) {
             // 发生课程信息更新，刷新UI
             getData();
         }
@@ -563,7 +565,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
@@ -42,6 +43,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,7 +94,7 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         initViews();
@@ -130,9 +132,9 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyCourseVo vo = (MyCourseVo) courseListAdapter.getItem(position);
-                if(vo != null) {
-                    MyCourseDetailsActivity.start(activity, vo.getCourseId(), true,
-                            UserHelper.getUserId());
+                if (vo != null) {
+                    MyCourseDetailsActivity.start(activity, vo.getCourseId(), false, true,
+                            UserHelper.getUserId(), false, false, false, false, null, null);
                 }
             }
         });
@@ -169,7 +171,7 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
         getData();
     }
 
-    private void exitCourse(MyCourseVo vo){
+    private void exitCourse(MyCourseVo vo) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", vo.getCourseId());
         RequestParams params =
@@ -186,7 +188,7 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
                             + getResources().getString(R.string.success));
                     pullToRefreshView.showRefresh();
                     getData();
-                }else{
+                } else {
                     ToastUtil.showToast(activity, getResources().getString(R.string.exit_course)
                             + getResources().getString(R.string.failed)
                             + ":" + result.getMessage());
@@ -213,10 +215,10 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
     public void onClick(View view) {
         if (view.getId() == R.id.course_status_tv) {
             showCourseStatusSort();
-        }else if(view.getId() == R.id.reload_bt) {
+        } else if (view.getId() == R.id.reload_bt) {
             pullToRefreshView.showRefresh();
             getData();
-        }else if(view.getId() == R.id.scanning_bt){
+        } else if (view.getId() == R.id.scanning_bt) {
         }
     }
 
@@ -228,7 +230,7 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
             }
         }
         LinePopupWindow LinePopupWindow =
-                new LinePopupWindow(activity, sortList,textViewCourseStatus.getText().toString(),
+                new LinePopupWindow(activity, sortList, textViewCourseStatus.getText().toString(),
                         new com.lqwawa.intleducation.common.ui.LinePopupWindow.PopupWindowListener() {
                             @Override
                             public void onItemClickListener(Object object) {
@@ -290,9 +292,9 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
                         });
                 if (result.getCode() == 0) {
                     loadFailedLayout.setVisibility(View.GONE);
-                    List<MyCourseVo>courseList = result.getData();
-                        courseListAdapter.setData(courseList);
-                        courseListAdapter.notifyDataSetChanged();
+                    List<MyCourseVo> courseList = result.getData();
+                    courseListAdapter.setData(courseList);
+                    courseListAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -363,8 +365,8 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(@NonNull EventWrapper event){
-        if(EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)){
+    public void onEvent(@NonNull EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             getData();
         }
@@ -375,12 +377,14 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
     public void onDestroy() {
         super.onDestroy();
         activity.unregisterReceiver(mBroadcastReceiver);
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
 
-    /**BroadcastReceiver************************************************/
+    /**
+     * BroadcastReceiver
+     ************************************************/
     protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

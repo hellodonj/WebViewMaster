@@ -295,7 +295,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
                     // CourseDetailsActivity.start(ClassCourseActivity.this , courseId, true, UserHelper.getUserId(),params);
 
-                    CourseDetailsActivity.start(isAuthorized, params, false, HistoryClassCourseActivity.this, courseId, true, UserHelper.getUserId());
+                    CourseDetailsActivity.start(HistoryClassCourseActivity.this, courseId, true,
+                            UserHelper.getUserId(), isAuthorized, params, false);
                     // 如果是班主任,清除Hold状态
                     if (mClassCourseParams.isHeadMaster()) {
                         switchHoldState(false);

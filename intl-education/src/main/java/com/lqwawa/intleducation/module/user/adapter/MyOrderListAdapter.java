@@ -142,13 +142,13 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         }
 
         String formatName = getViewNameByVo(vo);
-        if(EmptyUtil.isEmpty(formatName)){
+        if (EmptyUtil.isEmpty(formatName)) {
             // 自己买给自己
             holder.mBuyerLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             // 我买给别人,或者别人买给我
             holder.mBuyerLayout.setVisibility(View.VISIBLE);
-            StringUtil.fillSafeTextView(holder.mtvBuyer,formatName);
+            StringUtil.fillSafeTextView(holder.mtvBuyer, formatName);
         }
 
         holder.organName.setText(vo.getOrganName());
@@ -194,23 +194,23 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                         vo.isDeleted() ? R.color.com_text_light_gray : R.color.com_text_green));
                 holder.delete_order_tv.setBackground(activity.getResources().getDrawable(
                         vo.isDeleted() ? R.drawable.shape_circle_gray_stroke_h1_radius_18 : R.drawable.btn_green_stroke_bg_selector));
-                if(vo.isIsExpire()){
+                if (vo.isIsExpire()) {
                     holder.delete_order_tv.setVisibility(View.GONE);
                     holder.delete_order_tv.setBackgroundResource(R.drawable.shape_circle_gray_stroke_h1_radius_18);
                     holder.delete_order_tv.setTextColor(activity.getResources().getColor(R.color.com_text_gray));
                 }
-                if(vo.isIsJoin()) {
+                if (vo.isIsJoin()) {
                     holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_learn));
 
-                }else{
+                } else {
                     holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_join));
                 }
 
                 // 已完成删除去学习和立即参加按钮
-                if(getPayDirection(vo) == PayDirection.SELF_TO_OTHER){
+                if (getPayDirection(vo) == PayDirection.SELF_TO_OTHER) {
                     // 我买给其它人
                     holder.delete_order_tv.setVisibility(View.GONE);
-                }else{
+                } else {
                     //
                     holder.delete_order_tv.setVisibility(View.VISIBLE);
                 }
@@ -230,14 +230,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     // TODO: 2017/7/21 取消订单
                     CustomDialog.Builder builder = new CustomDialog.Builder(activity);
                     builder.setMessage(activity.getResources().getString(R.string.confirm)
-                            + activity.getResources().getString( R.string.label_cancel_order)
+                            + activity.getResources().getString(R.string.label_cancel_order)
                             + "?");
                     builder.setTitle(activity.getResources().getString(R.string.tip));
                     builder.setPositiveButton(activity.getResources().getString(R.string.confirm),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    doCancelOrDeleteOrder(vo,holder);
+                                    doCancelOrDeleteOrder(vo, holder);
                                 }
                             });
 
@@ -251,18 +251,18 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     builder.create().show();
 
                     // doCancelOrDeleteOrder(vo,holder);
-                }else if(vo.getStatus() == PayStatus.PAY_OK){//付款成功
+                } else if (vo.getStatus() == PayStatus.PAY_OK) {//付款成功
                     // TODO: 2017/9/20 删除订单
                     CustomDialog.Builder builder = new CustomDialog.Builder(activity);
                     builder.setMessage(activity.getResources().getString(R.string.confirm)
-                            + activity.getResources().getString( R.string.delete_order)
+                            + activity.getResources().getString(R.string.delete_order)
                             + "?");
                     builder.setTitle(activity.getResources().getString(R.string.tip));
                     builder.setPositiveButton(activity.getResources().getString(R.string.confirm),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    doCancelOrDeleteOrder(vo,holder);
+                                    doCancelOrDeleteOrder(vo, holder);
                                 }
                             });
 
@@ -280,15 +280,15 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         holder.delete_order_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(vo.isDeleted() && vo.getStatus() != PayStatus.PAY_FAILURE){
-                    if(vo.getType() == 1){
+                if (vo.isDeleted() && vo.getStatus() != PayStatus.PAY_FAILURE) {
+                    if (vo.getType() == 1) {
                         UIUtil.showToastSafe(R.string.live_is_invalid);
                         return;
-                    }else if(vo.getType() == 0){
+                    } else if (vo.getType() == 0) {
                         UIUtil.showToastSafe(R.string.course_is_invalid);
                         return;
-                    }else if(vo.getType() == 3){
-                        if(vo.getStatus() == PayStatus.PAY_OK){
+                    } else if (vo.getType() == 3) {
+                        if (vo.getStatus() == PayStatus.PAY_OK) {
                             // 去学习
                             // 已经被删除的历史班
                             // UIUtil.showToastSafe(R.string.label_online_course_invalid);
@@ -297,7 +297,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                             modelEntity.setClassId(vo.getClassId());
                             modelEntity.setId(Integer.parseInt(vo.getCourseId()));
                             ClassInfoParams params = new ClassInfoParams(modelEntity);
-                            ClassDetailActivity.show(activity,params);
+                            ClassDetailActivity.show(activity, params);
                             /*OnlineCourseHelper.loadOnlineClassInfo(UserHelper.getUserId(), vo.getClassId(), new DataSource.Callback<JoinClassEntity>() {
                                 @Override
                                 public void onDataNotAvailable(int strRes) {
@@ -327,11 +327,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
                 if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待付款
                     // TODO: 2017/7/18 去付款
-                    if(vo.getType() == 3){
+                    if (vo.getType() == 3) {
                         // 3是空中课堂
                         // 发送请求获取schoolId
                         // 发送获取班级详情细信息的请求
-                        if(vo.isDeleted()){
+                        if (vo.isDeleted()) {
                             // 已经是历史班了
 
                             // 去学习，如果已经是授课结束班，可以进入浏览
@@ -367,7 +367,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                             return;
                         }
 
-                        if(getPayDirection(vo) != PayDirection.SELF_TO_OTHER){
+                        if (getPayDirection(vo) != PayDirection.SELF_TO_OTHER) {
                             // 给自己付款
                             OnlineCourseHelper.loadOnlineClassInfo(UserHelper.getUserId(), vo.getClassId(), new DataSource.Callback<JoinClassEntity>() {
                                 @Override
@@ -378,21 +378,21 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 @Override
                                 public void onDataLoaded(JoinClassEntity joinClassEntity) {
                                     // 进行验证
-                                    if(!EmptyUtil.isEmpty(joinClassEntity)){
+                                    if (!EmptyUtil.isEmpty(joinClassEntity)) {
                                         // String role = getOnlineClassRoleInfo(joinClassEntity);
                                         // JoinClassDetailActivity.show(activity,vo.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
                                         boolean needToJoin = joinClassEntity.isIsInClass();
                                         String role = getOnlineClassRoleInfo(joinClassEntity);
-                                        if(needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)){
+                                        if (needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)) {
                                             // 已经加入班级 或者是老师身份
-                                            JoinClassDetailActivity.show(activity,joinClassEntity.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
-                                        }else{
+                                            JoinClassDetailActivity.show(activity, joinClassEntity.getClassId(), joinClassEntity.getSchoolId(), Integer.parseInt(vo.getCourseId()), role, false);
+                                        } else {
 
                                             PayActivity.newInstance(activity,
                                                     vo.getClassId(),
                                                     String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()),
-                                                    vo.getCourseName(),vo.getCourseId(),
+                                                    vo.getCourseName(), vo.getCourseId(),
                                                     UserHelper.getUserId());
                                             // 未加入班级
                                             // ClassDetailActivity.show(activity,joinClassEntity.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
@@ -400,7 +400,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                     }
                                 }
                             });
-                        }else{
+                        } else {
                             // 需要判断受益人有没有参加到课堂
                             OnlineCourseHelper.loadOnlineClassInfo(vo.getMemberId(), vo.getClassId(), new DataSource.Callback<JoinClassEntity>() {
                                 @Override
@@ -411,17 +411,17 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 @Override
                                 public void onDataLoaded(JoinClassEntity joinClassEntity) {
                                     // 进行验证
-                                    if(!EmptyUtil.isEmpty(joinClassEntity)){
+                                    if (!EmptyUtil.isEmpty(joinClassEntity)) {
                                         boolean needToJoin = joinClassEntity.isIsInClass();
-                                        if(!needToJoin){
+                                        if (!needToJoin) {
                                             // 给别人付款 传受益人的Id
                                             PayActivity.newInstance(activity,
                                                     vo.getClassId(),
                                                     String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()),
-                                                    vo.getCourseName(),vo.getCourseId(),
+                                                    vo.getCourseName(), vo.getCourseId(),
                                                     vo.getMemberId());
-                                        }else{
+                                        } else {
                                             UIUtil.showToastSafe(R.string.label_online_member_in_class_warning);
                                         }
                                     }
@@ -429,10 +429,10 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                             });
                         }
 
-                    }else{
+                    } else {
 
                         // 如果是学程
-                        if(vo.getType() == 0){
+                        if (vo.getType() == 0) {
                             OrderHelper.checkOrder(vo.getId(), new DataSource.Callback<ResponseVo<Object>>() {
                                 @Override
                                 public void onDataNotAvailable(int strRes) {
@@ -441,21 +441,21 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
                                 @Override
                                 public void onDataLoaded(ResponseVo<Object> responseVo) {
-                                    if(responseVo.isSucceed()){
-                                        if(getPayDirection(vo) != PayDirection.SELF_TO_OTHER){
+                                    if (responseVo.isSucceed()) {
+                                        if (getPayDirection(vo) != PayDirection.SELF_TO_OTHER) {
                                             // 自己买给自己，传自己的Id
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false,!vo.isBuyAll(),null,activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
                                                     UserHelper.getUserId());
-                                        }else{
+                                        } else {
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false,!vo.isBuyAll(),null,activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
                                                     vo.getMemberId());
                                         }
                                         /*PayActivity.newInstance(result,
-                            *//*isLive ? String.valueOf(liveDetailsVo.getLive().getPrice())
+                                         *//*isLive ? String.valueOf(liveDetailsVo.getLive().getPrice())
                                     : String.valueOf(courseVo.getPrice())*//*
                                                 price,
                                                 isLive ? liveDetailsVo.getLive().getTitle() : courseVo.getName(),
@@ -464,16 +464,16 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                                 ConfirmOrderActivity.this);*/
 
 
-                                    }else{
+                                    } else {
                                         // {"message":"该订单对应课程已购买,不能继续付款","code":-1}
                                         UIUtil.showToastSafe(R.string.tip_order_expire);
                                     }
                                 }
                             });
-                        }else{
+                        } else {
                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                    vo.getType() == 1, activity,UserHelper.getUserId());
+                                    vo.getType() == 1, activity, UserHelper.getUserId());
 
                         }
                     }
@@ -490,11 +490,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                         builder.create().show();
                     }*/
 //                  ConfirmOrderActivity.start(activity,vo.getCourseId());
-              } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
-                    if(vo.isIsExpire()){
+                } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    if (vo.isIsExpire()) {
                         CustomDialog.Builder builder = new CustomDialog.Builder(activity);
                         builder.setMessage(activity.getResources().getString(R.string.course_code_out_time_tip)
-                                );
+                        );
                         builder.setPositiveButton(activity.getResources().getString(R.string.buy_immediately),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -505,7 +505,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                         courseVo.setName(vo.getCourseName());
                                         courseVo.setOrganName(vo.getOrganId());
                                         String memberId = UserHelper.getUserId();
-                                        LQCourseOrderActivity.show(activity,courseVo,vo.getOrganId(),memberId);
+                                        LQCourseOrderActivity.show(activity, courseVo, vo.getOrganId(), memberId);
                                         // ConfirmOrderActivity.start(activity, vo.getCourseId());
                                     }
                                 });
@@ -518,29 +518,30 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 });
 
                         builder.create().show();
-                    }else {
+                    } else {
                         // TODO: 2017/7/18 去学习
                         if (!vo.isIsJoin()) {
-                            if(getPayDirection(vo) == PayDirection.SELF_TO_SELF &&
-                                    !TextUtils.equals(UserHelper.getUserId(),vo.getMemberId())){
+                            if (getPayDirection(vo) == PayDirection.SELF_TO_SELF &&
+                                    !TextUtils.equals(UserHelper.getUserId(), vo.getMemberId())) {
                                 // 自己买给自己,并且受益人不是自己,那就是给别人下单,别人自己买了
                                 UIUtil.showToastSafe(R.string.label_other_order_disabled);
-                            }else{
+                            } else {
                                 doRejoin(vo.getCourseId(), vo.getType());
                             }
                         } else {
-                            if(vo.getType() == 1){
+                            if (vo.getType() == 1) {
                                 LiveVo liveVo = LiveVo.fromMyOrder(vo);
                                 LiveDetails.jumpToLiveDetails(activity, liveVo, false, true, false);
                                 if (liveVo.getState() != 0) {
-                                    liveVo.setBrowseCount(liveVo.getBrowseCount()+1);
+                                    liveVo.setBrowseCount(liveVo.getBrowseCount() + 1);
                                 }
-                            }else if(vo.getType() == 0){
+                            } else if (vo.getType() == 0) {
                                 // 0是课程
                                 CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
-                                        false,true, UserHelper.getUserId(),params);
-                            }else if(vo.getType() == 3){
+                                        false, true, UserHelper.getUserId(), false, false, false,
+                                        false, params, null);
+                            } else if (vo.getType() == 3) {
                                 // 3是空中课堂
                                 // 发送请求获取schoolId
                                 // 发送获取班级详情细信息的请求
@@ -553,17 +554,17 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                     @Override
                                     public void onDataLoaded(JoinClassEntity joinClassEntity) {
                                         // 进行验证
-                                        if(!EmptyUtil.isEmpty(joinClassEntity)){
+                                        if (!EmptyUtil.isEmpty(joinClassEntity)) {
                                             // String role = getOnlineClassRoleInfo(joinClassEntity);
                                             // JoinClassDetailActivity.show(activity,vo.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
                                             boolean needToJoin = joinClassEntity.isIsInClass();
                                             String role = getOnlineClassRoleInfo(joinClassEntity);
-                                            if(needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)){
+                                            if (needToJoin || OnlineClassRole.ROLE_TEACHER.equals(role)) {
                                                 // 已经加入班级 或者是老师身份
-                                                JoinClassDetailActivity.show(activity,joinClassEntity.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
-                                            }else{
+                                                JoinClassDetailActivity.show(activity, joinClassEntity.getClassId(), joinClassEntity.getSchoolId(), Integer.parseInt(vo.getCourseId()), role, false);
+                                            } else {
                                                 // 未加入班级
-                                                ClassDetailActivity.show(activity,joinClassEntity.getClassId(),joinClassEntity.getSchoolId(),Integer.parseInt(vo.getCourseId()),role,false);
+                                                ClassDetailActivity.show(activity, joinClassEntity.getClassId(), joinClassEntity.getSchoolId(), Integer.parseInt(vo.getCourseId()), role, false);
                                             }
                                         }
                                     }
@@ -576,14 +577,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     // TODO: 2017/7/18 删除订单
                     CustomDialog.Builder builder = new CustomDialog.Builder(activity);
                     builder.setMessage(activity.getResources().getString(R.string.confirm)
-                            + activity.getResources().getString( R.string.delete_order)
+                            + activity.getResources().getString(R.string.delete_order)
                             + "?");
                     builder.setTitle(activity.getResources().getString(R.string.tip));
                     builder.setPositiveButton(activity.getResources().getString(R.string.confirm),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    doCancelOrDeleteOrder(vo,holder);
+                                    doCancelOrDeleteOrder(vo, holder);
                                 }
                             });
 
@@ -600,19 +601,19 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             }
         });
 
-        if(vo.getType() == 1){
+        if (vo.getType() == 1) {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 直播
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
-        }else if(vo.getType() == 0){
+        } else if (vo.getType() == 0) {
             holder.teacher_name.setVisibility(View.GONE);
             // 课程
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
-        }else{
+        } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂
             x.image().bind(holder.course_iv,
@@ -620,28 +621,28 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     imageOptions);
         }
 
-        if(vo.getType() == 0){
+        if (vo.getType() == 0) {
             // 学生
             holder.mTvBuyType.setVisibility(View.VISIBLE);
-            if(vo.isBuyAll()){
+            if (vo.isBuyAll()) {
                 // 全部购买
                 holder.mTvBuyType.setText(R.string.label_buy_all);
-            }else{
-                holder.mTvBuyType.setText(String.format(UIUtil.getString(R.string.label_order_buy_number_chapter),vo.getBuyChapterNum()));
+            } else {
+                holder.mTvBuyType.setText(String.format(UIUtil.getString(R.string.label_order_buy_number_chapter), vo.getBuyChapterNum()));
             }
-        }else{
+        } else {
             holder.mTvBuyType.setVisibility(View.GONE);
         }
 
 
-        if(vo.getType() == 1 || vo.getType() == 0){
+        if (vo.getType() == 1 || vo.getType() == 0) {
             // 课程和直播
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.course_iv.getLayoutParams();
             layoutParams.width = img_width;
             layoutParams.height = img_height;
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
-        }else{
+        } else {
             // 空中课堂
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.course_iv.getLayoutParams();
             layoutParams.width = img_height;
@@ -655,10 +656,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
     /**
      * 根据订单信息获取要显示购买方，支付方，受益方的信息
+     *
      * @param vo 订单信息
-     * @return 我买给谁,谁买给我
+     * @return 我买给谁, 谁买给我
      */
-    private String getViewNameByVo(@NonNull MyOrderVo vo){
+    private String getViewNameByVo(@NonNull MyOrderVo vo) {
         // 购买者
         String buyerId = vo.getBuyerId();
         // 付款者
@@ -667,38 +669,38 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         String memberId = vo.getMemberId();
 
         String formatName = null;
-        if(EmptyUtil.isEmpty(buyerId)){
+        if (EmptyUtil.isEmpty(buyerId)) {
             // 没有下单的人,说明自己买
             return null;
-        }else{
+        } else {
             // buyerId不为空
-            if(EmptyUtil.isEmpty(payerId)){
+            if (EmptyUtil.isEmpty(payerId)) {
                 // 付款人为空，说明下单但是未付款
-                if(TextUtils.equals(buyerId,memberId)){
+                if (TextUtils.equals(buyerId, memberId)) {
                     // 下单人等于受益人 自己买
                     return null;
-                }else{
-                    if(TextUtils.equals(memberId,UserHelper.getUserId())){
+                } else {
+                    if (TextUtils.equals(memberId, UserHelper.getUserId())) {
                         // 获益人是自己
                         // 别人买给我
-                        formatName = String.format(UIUtil.getString(R.string.label_who_buyer_self),vo.getBuyerName());
-                    }else{
+                        formatName = String.format(UIUtil.getString(R.string.label_who_buyer_self), vo.getBuyerName());
+                    } else {
                         // 我买给别人
-                        formatName = String.format(UIUtil.getString(R.string.label_self_buyer_who),vo.getRealName());
+                        formatName = String.format(UIUtil.getString(R.string.label_self_buyer_who), vo.getRealName());
                     }
                 }
-            }else{
-                if (TextUtils.equals(payerId,memberId)) {
+            } else {
+                if (TextUtils.equals(payerId, memberId)) {
                     // 付款人==受益人
                     // 自己买
                     return null;
-                }else{
-                    if (TextUtils.equals(payerId,UserHelper.getUserId())) {
+                } else {
+                    if (TextUtils.equals(payerId, UserHelper.getUserId())) {
                         // 我买给别人 受益者姓名
-                        formatName = String.format(UIUtil.getString(R.string.label_self_buyer_who),vo.getRealName());
-                    }else{
+                        formatName = String.format(UIUtil.getString(R.string.label_self_buyer_who), vo.getRealName());
+                    } else {
                         // 别人买给我
-                        formatName = String.format(UIUtil.getString(R.string.label_who_buyer_self),vo.getPayerName());
+                        formatName = String.format(UIUtil.getString(R.string.label_who_buyer_self), vo.getPayerName());
                     }
                 }
 
@@ -710,10 +712,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
     /**
      * 根据订单信息获取要显示购买方，支付方，受益方的信息
+     *
      * @param vo 订单信息
      * @return PayDirection 我买给谁,谁买给我
      */
-    private PayDirection getPayDirection(@NonNull MyOrderVo vo){
+    private PayDirection getPayDirection(@NonNull MyOrderVo vo) {
         // 购买者
         String buyerId = vo.getBuyerId();
         // 付款者
@@ -722,36 +725,36 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         String memberId = vo.getMemberId();
 
         String formatName = null;
-        if(EmptyUtil.isEmpty(buyerId)){
+        if (EmptyUtil.isEmpty(buyerId)) {
             // 没有下单的人,说明自己买
             return PayDirection.SELF_TO_SELF;
-        }else{
+        } else {
             // buyerId不为空
-            if(EmptyUtil.isEmpty(payerId)){
+            if (EmptyUtil.isEmpty(payerId)) {
                 // 付款人为空，说明下单但是未付款
-                if(TextUtils.equals(buyerId,memberId)){
+                if (TextUtils.equals(buyerId, memberId)) {
                     // 下单人等于受益人 自己买
                     return PayDirection.SELF_TO_SELF;
-                }else{
-                    if(TextUtils.equals(memberId,UserHelper.getUserId())){
+                } else {
+                    if (TextUtils.equals(memberId, UserHelper.getUserId())) {
                         // 获益人是自己
                         // 别人买给我
                         return PayDirection.OTHER_TO_SELF;
-                    }else{
+                    } else {
                         // 我买给别人
                         return PayDirection.SELF_TO_OTHER;
                     }
                 }
-            }else{
-                if (TextUtils.equals(payerId,memberId)) {
+            } else {
+                if (TextUtils.equals(payerId, memberId)) {
                     // 付款人==受益人
                     // 自己买
                     return PayDirection.SELF_TO_SELF;
-                }else{
-                    if (TextUtils.equals(payerId,UserHelper.getUserId())) {
+                } else {
+                    if (TextUtils.equals(payerId, UserHelper.getUserId())) {
                         // 我买给别人 受益者姓名
                         return PayDirection.SELF_TO_OTHER;
-                    }else{
+                    } else {
                         // 别人买给我
                         return PayDirection.OTHER_TO_SELF;
                     }
@@ -761,35 +764,37 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         }
     }
 
-    private enum PayDirection{
+    private enum PayDirection {
         // 自己买给自己,买给其他人,其他人买给自己
-        SELF_TO_SELF,SELF_TO_OTHER,OTHER_TO_SELF
+        SELF_TO_SELF, SELF_TO_OTHER, OTHER_TO_SELF
     }
 
     /**
      * 跳转到支付页面
+     *
      * @param vo 订单实体
      */
-    private void toPayActivity(@NonNull MyOrderVo vo){
+    private void toPayActivity(@NonNull MyOrderVo vo) {
 
     }
 
     /**
      * 获取空中课堂角色信息
+     *
      * @param entity 数据实体
      * @return 判断顺序 老师->家长->学生
      */
-    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity){
+    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity) {
         String roles = entity.getRoles();
         // 默认学生身份
         String roleType = OnlineClassRole.ROLE_STUDENT;
-        if(UserHelper.isTeacher(roles)){
+        if (UserHelper.isTeacher(roles)) {
             // 老师身份
             roleType = OnlineClassRole.ROLE_TEACHER;
-        }else if(UserHelper.isParent(roles)){
+        } else if (UserHelper.isParent(roles)) {
             // 家长身份
             roleType = OnlineClassRole.ROLE_PARENT;
-        }else if(UserHelper.isStudent(roles)){
+        } else if (UserHelper.isStudent(roles)) {
             // 学生身份
             roleType = OnlineClassRole.ROLE_STUDENT;
         }
@@ -798,6 +803,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
     /**
      * 取消或删除订单
+     *
      * @param
      */
     private void doCancelOrDeleteOrder(final MyOrderVo vo, final ViewHolder holder) {
@@ -947,15 +953,16 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
     /**
      * 课程直播重新加入，空中课堂不许reJoin
+     *
      * @param courseId
      * @param type
      */
-    private void doRejoin(String courseId, final int type){
+    private void doRejoin(String courseId, final int type) {
         RequestVo requestVo = new RequestVo();
-        if(type == 1){
+        if (type == 1) {
             requestVo.addParams("liveId", courseId);
             requestVo.addParams("type", 1);
-        }else if(type == 0){
+        } else if (type == 0) {
             requestVo.addParams("courseId", courseId);
         }
         RequestParams params =
@@ -972,12 +979,12 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 if (result.getCode() == 0) {
                     ToastUtil.showToast(activity, (activity.getResources().getString(
                             type == 1 ? R.string.join_live_success : R.string.join_success)));
-                    if(onContentChangedListener != null){
+                    if (onContentChangedListener != null) {
                         onContentChangedListener.OnContentChanged();
                     }
-                    if(type == 1){
+                    if (type == 1) {
                         activity.sendBroadcast(new Intent().setAction(AppConfig.ServerUrl.AddToMyLive));
-                    }else{
+                    } else {
                         activity.sendBroadcast(new Intent().setAction(AppConfig.ServerUrl.joinInCourse));
                     }
                 }

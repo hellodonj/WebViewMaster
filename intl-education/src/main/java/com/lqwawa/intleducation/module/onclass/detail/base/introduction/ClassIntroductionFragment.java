@@ -48,7 +48,7 @@ import java.util.List;
  * **********************************
  */
 public class ClassIntroductionFragment extends PresenterFragment<ClassIntroductionContract.Presenter>
-    implements ClassIntroductionContract.View,View.OnClickListener{
+        implements ClassIntroductionContract.View, View.OnClickListener {
 
     private static final String KEY_EXTRA_ENTITY = "KEY_EXTRA_ENTITY";
     private static final String KEY_EXTRA_IS_COURSE_ENTER = "KEY_EXTRA_IS_COURSE_ENTER";
@@ -93,10 +93,10 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
     // 是否从学程入口进来
     private boolean isCourseEnter;
 
-    public static Fragment newInstance(@NonNull OnlineTabParams params){
+    public static Fragment newInstance(@NonNull OnlineTabParams params) {
         ClassIntroductionFragment fragment = new ClassIntroductionFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -114,13 +114,13 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
     @Override
     protected boolean initArgs(Bundle bundle) {
         mTabParams = (OnlineTabParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
-        if(EmptyUtil.isEmpty(mTabParams)) return false;
+        if (EmptyUtil.isEmpty(mTabParams)) return false;
         schoolId = mTabParams.getSchoolId();
         mClassDetailEntity = mTabParams.getDetailEntity();
         mRole = mTabParams.getRole();
         isParent = mTabParams.isParent();
         isJoin = mTabParams.isJoin();
-        if(EmptyUtil.isEmpty(mClassDetailEntity)){
+        if (EmptyUtil.isEmpty(mClassDetailEntity)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -148,35 +148,35 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
 
 
         mTvTimeTable.setOnClickListener(this);
-        if(isJoin){
+        if (isJoin) {
             // V5.11隐藏课程表功能
             mTvTimeTable.setVisibility(View.GONE);
-        }else{
+        } else {
             mTvTimeTable.setVisibility(View.GONE);
         }
 
         // 填充适用对象
-        if(!EmptyUtil.isEmpty(mClassDetailEntity.getData())){
+        if (!EmptyUtil.isEmpty(mClassDetailEntity.getData())) {
             mSuitObjectContent.setText(mClassDetailEntity.getData().get(0).getSuitObj());
             // 填充授课目标
             mTeachingGoalContent.setText(mClassDetailEntity.getData().get(0).getLearnGoal());
 
             // 获取图文混排WebView加载的Url
             String url = AppConfig.ServerUrl.WebViewOnlineClassDetailIntroduction;
-            url = url.replace("{id}",Integer.toString(mClassDetailEntity.getData().get(0).getId()));
+            url = url.replace("{id}", Integer.toString(mClassDetailEntity.getData().get(0).getId()));
             // WebView加载地址
             mWVIntroduction.loadUrl(url);
         }
 
         // 填充授课老师
-        if(EmptyUtil.isEmpty(mClassDetailEntity.getTeacher())){
+        if (EmptyUtil.isEmpty(mClassDetailEntity.getTeacher())) {
             // 取消显示授课老师布局
             mTeacherLayout.setVisibility(View.GONE);
             mTeacherLine.setVisibility(View.GONE);
-        }else{
+        } else {
             mTeacherAdapter = new TeacherAdapter(mClassDetailEntity.getTeacher());
             mTeacherRecycler.setNestedScrollingEnabled(false);
-            mTeacherRecycler.setLayoutManager(new GridLayoutManager(getContext(),4){
+            mTeacherRecycler.setLayoutManager(new GridLayoutManager(getContext(), 4) {
                 @Override
                 public boolean canScrollVertically() {
                     return false;
@@ -192,16 +192,16 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
 
 
         // 填充关联课程
-        if(EmptyUtil.isEmpty(mClassDetailEntity.getRelatedCourse()) || isCourseEnter || true){
+        if (EmptyUtil.isEmpty(mClassDetailEntity.getRelatedCourse()) || isCourseEnter || true) {
             // 取消显示关联课程布局
             mCourseLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             List<CourseVo> relatedArray = mClassDetailEntity.getRelatedCourse();
-            if(EmptyUtil.isNotEmpty(relatedArray) && relatedArray.size() > 3){
-                relatedArray = new ArrayList<>(relatedArray.subList(0,3));
+            if (EmptyUtil.isNotEmpty(relatedArray) && relatedArray.size() > 3) {
+                relatedArray = new ArrayList<>(relatedArray.subList(0, 3));
             }
             mRelatedCourseAdapter = new CommonCourseAdapter(relatedArray);
-            GridLayoutManager mLayoutManger = new GridLayoutManager(getContext(),3){
+            GridLayoutManager mLayoutManger = new GridLayoutManager(getContext(), 3) {
                 @Override
                 public boolean canScrollVertically() {
                     return super.canScrollVertically();
@@ -218,24 +218,25 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
                     boolean isTeacher = UserHelper.isTeacher(roles);
                     CourseDetailsActivity.start(getActivity(),courseId, true, UserHelper.getUserId(),isTeacher);*/
                     // 进入课程详情 从在线课堂进入
-                    CourseDetailsActivity.start(getActivity(),true,true,courseVo.getId(), true, UserHelper.getUserId());
+                    CourseDetailsActivity.start(getActivity(), courseVo.getId(), true,
+                            UserHelper.getUserId(), true, true, false);
                 }
             });
         }
 
 
         // 填充推荐课程
-        if(EmptyUtil.isEmpty(mClassDetailEntity.getTjCourse()) || isCourseEnter || true){
+        if (EmptyUtil.isEmpty(mClassDetailEntity.getTjCourse()) || isCourseEnter || true) {
             // 不显示推荐课程
             // 取消显示推荐课程布局
             mRecommendCourseLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             List<ClassDetailEntity.RelatedCourseBean> tjArray = mClassDetailEntity.getTjCourse();
-            if(EmptyUtil.isNotEmpty(tjArray) && tjArray.size() > 1){
-                tjArray = new ArrayList<>(tjArray.subList(0,1));
+            if (EmptyUtil.isNotEmpty(tjArray) && tjArray.size() > 1) {
+                tjArray = new ArrayList<>(tjArray.subList(0, 1));
             }
             mRecommendAdapter = new RelatedCourseAdapter(tjArray);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext()){
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext()) {
                 @Override
                 public boolean canScrollVertically() {
                     return false;
@@ -251,7 +252,9 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
                     boolean isTeacher = UserHelper.isTeacher(roles);
                     CourseDetailsActivity.start(getActivity(),courseId, true, UserHelper.getUserId(),isTeacher);*/
                     // 进入课程详情 从在线课堂进入
-                    CourseDetailsActivity.start(getActivity(),true,true,Integer.toString(relatedCourseBean.getId()), true, UserHelper.getUserId());
+                    CourseDetailsActivity.start(getActivity(),
+                            Integer.toString(relatedCourseBean.getId()), true,
+                            UserHelper.getUserId(), true, true,  false);
                 }
             });
         }
@@ -261,7 +264,7 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
     protected void initData() {
         super.initData();
         // 获取到班级信息
-        if(EmptyUtil.isNotEmpty(mClassDetailEntity.getData())){
+        if (EmptyUtil.isNotEmpty(mClassDetailEntity.getData())) {
             String classId = mClassDetailEntity.getData().get(0).getClassId();
             mPresenter.requestLoadClassInfo(classId);
         }
@@ -276,15 +279,15 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.course_layout){
+        if (viewId == R.id.course_layout) {
             // 点击关联课程
-            RelatedCourseParams params = new RelatedCourseParams(mClassDetailEntity.getParam(),mClassDetailEntity.getRelatedCourse());
-            RelatedCourseListActivity.show(getActivity(),params);
-        }else if(viewId == R.id.tv_timetable){
+            RelatedCourseParams params = new RelatedCourseParams(mClassDetailEntity.getParam(), mClassDetailEntity.getRelatedCourse());
+            RelatedCourseListActivity.show(getActivity(), params);
+        } else if (viewId == R.id.tv_timetable) {
             // 课程表
-            if(EmptyUtil.isEmpty(mClassDetailEntity) ||
+            if (EmptyUtil.isEmpty(mClassDetailEntity) ||
                     EmptyUtil.isEmpty(mClassDetailEntity.getData()) ||
-                    EmptyUtil.isEmpty(mClassEntity)){
+                    EmptyUtil.isEmpty(mClassEntity)) {
                 return;
             }
 
@@ -292,26 +295,26 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
 
             boolean isTeacher = OnlineClassRole.ROLE_TEACHER.equals(mRole);
             boolean isHeadMaster = UserHelper.getUserId().equals(dataBean.getCreateId());
-            if(isParent){
+            if (isParent) {
                 mRole = OnlineClassRole.ROLE_PARENT;
                 isHeadMaster = false;
                 isTeacher = false;
             }
 
             Intent intent = new Intent();
-            intent.putExtra("schoolId",schoolId);
-            intent.putExtra("classId",dataBean.getClassId());
-            intent.putExtra("role_type",Integer.parseInt(mRole));
-            intent.putExtra("isHeadMaster",isHeadMaster);
-            intent.putExtra("isTeacher",isTeacher);
-            intent.putExtra("isOpenAirClassLiveTable",true);
-            intent.putExtra("id",mClassEntity.getClassMailListId());
-            intent.putExtra("className",dataBean.getName());
-            intent.putExtra("schoolName",dataBean.getOrganName());
+            intent.putExtra("schoolId", schoolId);
+            intent.putExtra("classId", dataBean.getClassId());
+            intent.putExtra("role_type", Integer.parseInt(mRole));
+            intent.putExtra("isHeadMaster", isHeadMaster);
+            intent.putExtra("isTeacher", isTeacher);
+            intent.putExtra("isOpenAirClassLiveTable", true);
+            intent.putExtra("id", mClassEntity.getClassMailListId());
+            intent.putExtra("className", dataBean.getName());
+            intent.putExtra("schoolName", dataBean.getOrganName());
             // 是否是历史班
-            intent.putExtra("is_histroy_class",mTabParams.isGiveHistory());
+            intent.putExtra("is_histroy_class", mTabParams.isGiveHistory());
             // 传参是否是结束授课
-            intent.putExtra("is_finish_lecture",mTabParams.isGiveFinish());
+            intent.putExtra("is_finish_lecture", mTabParams.isGiveFinish());
             intent.setClassName(getContext().getPackageName(),
                     "com.galaxyschool.app.wawaschool.OpenCourseHelpActivity");
             startActivity(intent);
@@ -323,14 +326,14 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
         super.setUserVisibleHint(isVisibleToUser);
         // 课堂简介显示
         Activity activity = getActivity();
-        if(activity instanceof ClassDetailNavigator){
+        if (activity instanceof ClassDetailNavigator) {
             ClassDetailNavigator navigator = (ClassDetailNavigator) activity;
             navigator.onCommentChanged(getUserVisibleHint());
         }
 
-        if(getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             // 显示了课堂简介
-            if(getActivity() instanceof BaseClassDetailActivity){
+            if (getActivity() instanceof BaseClassDetailActivity) {
                 BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
                 parentActivity.addRefreshView(mNestedView);
                 parentActivity.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

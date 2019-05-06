@@ -39,7 +39,7 @@ import java.util.List;
  * @desc 关联课程的Fragment
  */
 public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseListContract.Presenter>
-    implements RelatedCourseListContract.View{
+        implements RelatedCourseListContract.View {
 
     private NestedScrollView mNestedView;
 
@@ -56,12 +56,13 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
 
     /**
      * 关联课程列表的入口
+     *
      * @param params 核心参数
      */
-    public static Fragment newInstance(@NonNull RelatedCourseParams params){
+    public static Fragment newInstance(@NonNull RelatedCourseParams params) {
         RelatedCourseListFragment fragment = new RelatedCourseListFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -78,13 +79,13 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)){
+        if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mRelatedParams = (RelatedCourseParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
             mParam = mRelatedParams.getParam();
             mCourseVos = mRelatedParams.getRelatedCourse();
         }
 
-        if(EmptyUtil.isEmpty(mParam) || EmptyUtil.isEmpty(mCourseVos)) return false;
+        if (EmptyUtil.isEmpty(mParam) || EmptyUtil.isEmpty(mCourseVos)) return false;
         return super.initArgs(bundle);
     }
 
@@ -96,7 +97,7 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
         mListView = (ListView) mRootView.findViewById(R.id.listView);
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         mBtnMoreCourse = (Button) mRootView.findViewById(R.id.btn_more_course);
-        mBtnMoreCourse.setOnClickListener(view->{
+        mBtnMoreCourse.setOnClickListener(view -> {
             watchMoreCourse();
         });
 
@@ -104,11 +105,11 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
         mCourseListAdapter.setData(mCourseVos);
         mListView.setAdapter(mCourseListAdapter);
 
-        if(EmptyUtil.isEmpty(mCourseVos)){
+        if (EmptyUtil.isEmpty(mCourseVos)) {
             // 数据为空
             // mRefreshLayout.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             // mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
@@ -118,7 +119,8 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mCourseListAdapter.getItem(position);
-                CourseDetailsActivity.start(getActivity(),false,true, vo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(getActivity(), vo.getId(), true,
+                        UserHelper.getUserId(), false, true, false);
             }
         });
 
@@ -136,18 +138,18 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
     /**
      * 查看更多课程
      */
-    private void watchMoreCourse(){
+    private void watchMoreCourse() {
         // showLoading();
         mPresenter.requestConfigWithParam(mParam);
     }
 
     @Override
     public void updateConfigView(@NonNull int parentId, @NonNull ClassDetailEntity.ParamBean param, @NonNull List<LQCourseConfigEntity> entities) {
-        if(EmptyUtil.isNotEmpty(entities)){
+        if (EmptyUtil.isNotEmpty(entities)) {
             // 解决标签不对应的问题
             boolean haveEntity = false;
-            for (LQCourseConfigEntity entity:entities) {
-                if(entity.getId() == parentId){
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity.getId() == parentId) {
                     // 找到该实体
                     GroupFiltrateState state = new GroupFiltrateState(entity);
                     entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
@@ -155,14 +157,14 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                     // 用Server返回的名字
                     entity.setConfigValue(param.getRelationName());
                     // 如果基础课程可能会，标题错误
-                    CourseFiltrateActivity.show(getActivity(),entity,state);
+                    CourseFiltrateActivity.show(getActivity(), entity, state);
 
                     haveEntity = true;
                     break;
                 }
             }
 
-            if(!haveEntity){
+            if (!haveEntity) {
                 LQCourseConfigEntity entity = new LQCourseConfigEntity();
                 entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
                 entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
@@ -172,7 +174,7 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
                 entity.setConfigValue(param.getRelationName());
                 GroupFiltrateState state = new GroupFiltrateState(entity);
                 // 如果基础课程可能会，标题错误
-                CourseFiltrateActivity.show(getActivity(),entity,state);
+                CourseFiltrateActivity.show(getActivity(), entity, state);
             }
         }
     }
@@ -182,14 +184,14 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
         super.setUserVisibleHint(isVisibleToUser);
 
         Activity activity = getActivity();
-        if(activity instanceof ClassDetailNavigator){
+        if (activity instanceof ClassDetailNavigator) {
             ClassDetailNavigator navigator = (ClassDetailNavigator) activity;
             navigator.onCommentChanged(getUserVisibleHint());
         }
 
-        if(getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             // 显示了课堂简介
-            if(getActivity() instanceof BaseClassDetailActivity){
+            if (getActivity() instanceof BaseClassDetailActivity) {
                 BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
                 parentActivity.addRefreshView(mNestedView);
                 parentActivity.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

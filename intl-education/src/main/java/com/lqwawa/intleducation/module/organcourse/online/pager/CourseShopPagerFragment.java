@@ -36,11 +36,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @desc 在线机构学程馆分类的Fragment
  * @author medici
+ * @desc 在线机构学程馆分类的Fragment
  */
 public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerContract.Presenter>
-        implements CourseShopPagerContract.View,SearchNavigator{
+        implements CourseShopPagerContract.View, SearchNavigator {
 
     private static final String KEY_EXTRA_SORT_TYPE = "KEY_EXTRA_SORT_TYPE";
 
@@ -49,7 +49,6 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
     private static final String KEY_EXTRA_IS_SCHOOL_ENTER = "KEY_EXTRA_IS_SCHOOL_ENTER";
     // 是不是从在线课堂班级进入的
     private static final String KEY_EXTRA_IS_ONLINE_CLASS_ENTER = "KEY_EXTRA_IS_ONLINE_CLASS_ENTER";
-
 
 
     // 下拉刷新布局
@@ -74,25 +73,25 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
 
     public static CourseShopPagerFragment newInstance(@NonNull @HideSortType.SortRes String sort,
                                                       @NonNull String schoolId,
-                                                      boolean isSchoolEnter, boolean isOnlineClassEnter){
+                                                      boolean isSchoolEnter, boolean isOnlineClassEnter) {
         CourseShopPagerFragment fragment = new CourseShopPagerFragment();
         Bundle arguments = new Bundle();
-        arguments.putString(KEY_EXTRA_SORT_TYPE,sort);
-        arguments.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
-        arguments.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter);
-        arguments.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter);
+        arguments.putString(KEY_EXTRA_SORT_TYPE, sort);
+        arguments.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
+        arguments.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter);
+        arguments.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter);
         fragment.setArguments(arguments);
         return fragment;
     }
 
     public static CourseShopPagerFragment newInstance(@NonNull @HideSortType.SortRes String sort,
                                                       @NonNull CourseShopClassifyParams params,
-                                                      @Nullable Bundle extras){
+                                                      @Nullable Bundle extras) {
         CourseShopPagerFragment fragment = new CourseShopPagerFragment();
         Bundle arguments = new Bundle();
-        arguments.putString(KEY_EXTRA_SORT_TYPE,sort);
-        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
-        arguments.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
+        arguments.putString(KEY_EXTRA_SORT_TYPE, sort);
+        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
+        arguments.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -116,7 +115,7 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
 
         mParams = (CourseShopClassifyParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
-        if(EmptyUtil.isNotEmpty(mParams)) {
+        if (EmptyUtil.isNotEmpty(mParams)) {
             mSchoolId = mParams.getOrganId();
             mClassId = mParams.getClassId();
             mSelectResource = mParams.isSelectResource();
@@ -131,7 +130,7 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
             }
         }
 
-        if(EmptyUtil.isEmpty(mSchoolId)){
+        if (EmptyUtil.isEmpty(mSchoolId)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -167,9 +166,10 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
                             extras,
                             mResourceData.getSchoolId(),
                             mResourceData.getClassId(),
-                            mResourceData.getEnterType(),0);
-                }else{
-                    CourseDetailsActivity.start(getActivity(),isSchoolEnter,isOnlineClassEnter, vo.getId(), true, UserHelper.getUserId());
+                            mResourceData.getEnterType(), 0);
+                } else {
+                    CourseDetailsActivity.start(getActivity(), vo.getId(), true,
+                            UserHelper.getUserId(), isSchoolEnter, isOnlineClassEnter, false);
                 }
 
             }
@@ -202,13 +202,12 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
     }
 
 
-
     /**
      * 查询课程 isMoreLoaded=true 加载更多数据
      */
-    public void requestCourseData(boolean isMoreLoaded){
+    public void requestCourseData(boolean isMoreLoaded) {
         int payType = Integer.MAX_VALUE;
-        if(!AppConfig.BaseConfig.needShowPay()){
+        if (!AppConfig.BaseConfig.needShowPay()) {
             //只显示免费课程
             payType = 0;
         }
@@ -216,13 +215,13 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
         EditText searchEt = (EditText) getActivity().findViewById(R.id.search_et);
         String searchKey = searchEt.getText().toString();
 
-        if(isMoreLoaded){
+        if (isMoreLoaded) {
             currentPage++;
-            mPresenter.requestMoreCourseData(mSchoolId,currentPage,0,mSortType,payType,searchKey);
-        }else{
+            mPresenter.requestMoreCourseData(mSchoolId, currentPage, 0, mSortType, payType, searchKey);
+        } else {
             currentPage = 0;
             mRefreshLayout.showRefresh();
-            mPresenter.requestCourseData(mSchoolId,currentPage,0,mSortType,payType,searchKey);
+            mPresenter.requestCourseData(mSchoolId, currentPage, 0, mSortType, payType, searchKey);
         }
     }
 
@@ -237,11 +236,11 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
         courseListAdapter.setData(courseVos);
         mListView.setAdapter(courseListAdapter);
         courseListAdapter.notifyDataSetChanged();
-        if(EmptyUtil.isEmpty(courseVos)){
+        if (EmptyUtil.isEmpty(courseVos)) {
             // 数据为空
             mRefreshLayout.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
@@ -259,7 +258,6 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
     }
 
 
-
     @Override
     public void showError(int str) {
         super.showError(str);
@@ -269,7 +267,7 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
 
     @Override
     public boolean search(@NonNull String searchKey) {
-        if(getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             requestCourseData(false);
             return true;
         }
@@ -278,9 +276,9 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
 
     @Override
     public boolean triggerPriceSwitch(@NonNull boolean up) {
-        if(isVisible() &&
+        if (isVisible() &&
                 (mSortType == HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_UP ||
-                        mSortType == HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN)){
+                        mSortType == HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN)) {
             mSortType = up ? HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_UP : HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN;
             requestCourseData(false);
             return true;

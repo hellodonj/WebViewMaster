@@ -97,7 +97,7 @@ public class ClassifyIndexActivity extends MyBaseActivity implements View.OnClic
                 .putExtra("classify", vo).putExtra("classifyIndex", index));
     }
 
-    private static final String TAG = "DiscoveryFragment";
+    private static final String TAG = "ClassifyIndexActivity";
 
     private TopBar topBar;
     private PullToRefreshView pullToRefresh;
