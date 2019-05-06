@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.IBaseFragment;
 import com.lqwawa.intleducation.base.helper.SharedPreferencesHelper;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
+import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.utils.NetWorkUtils;
 import com.lqwawa.intleducation.base.utils.StringUtils;
@@ -110,6 +111,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private SectionDetailsVo mSectionDetailsVo;
     private LessonSourceParams mSourceParams;
     private ReadWeikeHelper mReadWeikeHelper;
+    private boolean isVideoLibrary;
 
     public static LessonSourceFragment newInstance(boolean needFlag,
                                                    boolean canEdit,
@@ -154,6 +156,11 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             mReadWeikeHelper = new ReadWeikeHelper(getActivity());
         }
 
+        if (mSourceParams != null && mSourceParams.getCourseParams() != null) {
+            CourseDetailParams courseDetailParams = mSourceParams.getCourseParams();
+            isVideoLibrary = courseDetailParams != null && courseDetailParams.isVideoLibrary();
+        }
+
         if (EmptyUtil.isEmpty(courseId) ||
                 EmptyUtil.isEmpty(sectionId) ||
                 EmptyUtil.isEmpty(mSourceParams)) return false;
@@ -167,7 +174,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
-        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, false);
+        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, isVideoLibrary);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));

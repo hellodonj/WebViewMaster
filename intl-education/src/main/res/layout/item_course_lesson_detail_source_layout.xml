@@ -18,9 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:orientation="horizontal">
 
 
             <RelativeLayout
@@ -40,7 +38,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_live_play"
+                    android:src="@drawable/ic_lqwawa_play"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -71,7 +69,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
                         android:text="0000"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/textDarkGray"

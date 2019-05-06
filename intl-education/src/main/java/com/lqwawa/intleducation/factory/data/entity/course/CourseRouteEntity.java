@@ -28,6 +28,7 @@ public class CourseRouteEntity extends BaseVo {
     private String counselorId;
     private boolean isExpire;
     private boolean isJoin;
+    private int type;
 
     public int getBuyType() {
         return buyType;
@@ -99,6 +100,15 @@ public class CourseRouteEntity extends BaseVo {
 
     public void setJoin(boolean join) {
         isJoin = join;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public CourseRouteEntity setType(int type) {
+        this.type = type;
+        return this;
     }
 
     /**

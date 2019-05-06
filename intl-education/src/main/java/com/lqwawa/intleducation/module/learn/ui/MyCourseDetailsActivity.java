@@ -272,7 +272,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         }
         activity.startActivityForResult(intent, CourseDetailsActivity.Rs_collect);
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -457,6 +457,15 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             }
         });
 
+        // 视频馆课程隐藏空中课堂和帮辅群
+        boolean isVideoLibrary =
+                mCourseDetailParams != null && mCourseDetailParams.isVideoLibrary();
+        findViewById(R.id.rb_live).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group_f).setVisibility(isVideoLibrary ? View.GONE :
+                View.VISIBLE);
+
         initData();
         scrollView.setScrollViewListener(this);
         mNoticeContainer.setOnClickListener(this);
@@ -575,8 +584,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
             }
         };
-        // introductionFragment = new CourseDetailsItemFragment();
-        // introductionFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         studyPlanFragment = new CourseDetailsItemFragment();
         studyPlanFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         courseCommentFragment = new CourseDetailsItemFragment();
@@ -585,14 +592,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         homeworkListFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         examListFragment = new ExamListFragment();
         examListFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
-        // 直播
-        // @date   :2018/6/8 0008 上午 1:01
-        // @func   :V5.7 直播修改为在线课堂
-        /*mClassroomFragment = new ClassroomFragment();
-        mClassroomFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);*/
         mOnlineClassFragment = OnlineClassListFragment.newInstance(id);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
-
         // 帮辅群
         mTutorialGroupFragment = TutorialGroupFragment.newInstance(id, mCurMemberId);
         mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
@@ -603,7 +604,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
         params1.setCourseParams(mCourseDetailParams);
         bundle1.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
-        // introductionFragment.setArguments(bundle1);
 
         Bundle bundle2 = new Bundle();
         bundle2.putBoolean(CourseDetailsItemFragment.KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher);
@@ -642,37 +642,23 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         bundle5.putSerializable(CourseDetailParams.class.getSimpleName(), mCourseDetailParams);
         bundle5.putSerializable(CourseVo.class.getSimpleName(), courseVo);
         examListFragment.setArguments(bundle5);
-        // @date   :2018/6/8 0008 上午 1:04
-        // @func   :V5.7将直播换成了在线课堂
-        /*Bundle bundle6 = new Bundle();
-        bundle6.putString("id", id);
-        mClassroomFragment.setArguments(bundle6);*/
+
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        // fragmentTransaction.add(R.id.fragment_container, introductionFragment);
         fragmentTransaction.add(R.id.fragment_container, studyPlanFragment);
         fragmentTransaction.add(R.id.fragment_container, courseCommentFragment);
         fragmentTransaction.add(R.id.fragment_container, homeworkListFragment);
-        // fragmentTransaction.add(R.id.fragment_container, examListFragment);
-        // @date   :2018/6/8 0008 上午 1:01
-        // @func   :V5.7 直播修改为在线课堂
-        // fragmentTransaction.add(R.id.fragment_container, mClassroomFragment);
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
         // 添加帮辅群
         fragmentTransaction.add(R.id.fragment_container, mTutorialGroupFragment);
 
-        // @func   :V5.9默认先显示课程大纲
-        fragmentTransaction.hide(courseCommentFragment);
         fragmentTransaction.show(studyPlanFragment);
+        fragmentTransaction.hide(courseCommentFragment);
         fragmentTransaction.hide(homeworkListFragment);
-        // fragmentTransaction.hide(examListFragment);
-        // @date   :2018/6/8 0008 上午 1:01
-        // @func   :V5.7 直播修改为在线课堂
-        // fragmentTransaction.hide(mClassroomFragment);
         fragmentTransaction.hide(mOnlineClassFragment);
         fragmentTransaction.hide(mTutorialGroupFragment);
-        // fragmentTransaction.hide(introductionFragment);
         fragmentTransaction.commit();
+
         rg_tab.setOnCheckedChangeListener(tabChangeListener);
         rg_tab_f.setOnCheckedChangeListener(tabChangeListener);
     }
@@ -683,23 +669,15 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             if (rg_tab.getVisibility() == View.VISIBLE && group.getId() == R.id.rg_tab) {
                 FragmentTransaction fragmentTransaction =
                         getSupportFragmentManager().beginTransaction();
-                // fragmentTransaction.hide(introductionFragment);
                 fragmentTransaction.hide(studyPlanFragment);
                 fragmentTransaction.hide(courseCommentFragment);
                 fragmentTransaction.hide(homeworkListFragment);
                 fragmentTransaction.hide(examListFragment);
-                // @date   :2018/6/8 0008 上午 1:04
-                // @func   :V5.7将直播换成了在线课堂
-                // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
                 fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
-                /*if (checkedId == R.id.rb_course_introduction) {
-                    fragmentTransaction.show(introductionFragment);
-                    rg_tab_f.check(R.id.rb_course_introduction_f);
-                    pullToRefreshView.setLoadMoreEnable(canLoadMore[0]);
-                } else */
+
                 if (checkedId == R.id.rb_task) {
                     fragmentTransaction.show(studyPlanFragment);
                     rg_tab_f.check(R.id.rb_task_f);
@@ -718,9 +696,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     rg_tab_f.check(R.id.rb_exam_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[4]);
                 } else if (checkedId == R.id.rb_live) {
-                    // @date   :2018/6/8 0008 上午 1:04
-                    // @func   :V5.7将直播换成了在线课堂
-                    // fragmentTransaction.show(mClassroomFragment);
                     fragmentTransaction.show(mOnlineClassFragment);
                     rg_tab_f.check(R.id.rb_live_f);
                     pullToRefreshView.setLoadMoreEnable(canLoadMore[5]);
@@ -735,23 +710,14 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             } else if (rg_tab_f.getVisibility() == View.VISIBLE && group.getId() == R.id.rg_tab_f) {
                 FragmentTransaction fragmentTransaction =
                         getSupportFragmentManager().beginTransaction();
-                // fragmentTransaction.hide(introductionFragment);
                 fragmentTransaction.hide(studyPlanFragment);
                 fragmentTransaction.hide(courseCommentFragment);
                 fragmentTransaction.hide(homeworkListFragment);
                 fragmentTransaction.hide(examListFragment);
-                // @date   :2018/6/8 0008 上午 1:04
-                // @func   :V5.7将直播换成了在线课堂
-                // fragmentTransaction.hide(mClassroomFragment);
                 fragmentTransaction.hide(mOnlineClassFragment);
                 fragmentTransaction.hide(mTutorialGroupFragment);
                 pullToRefreshView.setLoadMoreEnable(false);
                 pullToRefreshView.onFooterRefreshComplete();
-                /*if (checkedId == R.id.rb_course_introduction_f) {
-                    fragmentTransaction.show(introductionFragment);
-                    rg_tab.check(R.id.rb_course_introduction);
-                    pullToRefreshView.setLoadMoreEnable(canLoadMore[0]);
-                } else */
                 if (checkedId == R.id.rb_task_f) {
                     fragmentTransaction.show(studyPlanFragment);
                     rg_tab.check(R.id.rb_task);

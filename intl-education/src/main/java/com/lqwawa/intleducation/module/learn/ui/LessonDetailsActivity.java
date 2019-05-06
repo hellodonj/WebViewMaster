@@ -141,6 +141,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private Button mBtnCart;
     private TextView mTvPoint;
     private Button mBtnAction;
+    private LinearLayout mTopLayout;
 
     private boolean needFlag;
     private boolean canRead, isContainAssistantWork;
@@ -185,6 +186,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         mBtnCart = (Button) findViewById(R.id.btn_work_cart);
         mTvPoint = (TextView) findViewById(R.id.tv_point);
         mBtnAction = (Button) findViewById(R.id.btn_action);
+        mTopLayout = (LinearLayout) findViewById(R.id.lesson_top_layout);
 
         int color = UIUtil.getColor(R.color.colorPink);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
@@ -222,6 +224,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         } else {
             mBottomLayout.setVisibility(View.GONE);
         }
+
+        mTopLayout.setVisibility(courseParams != null && courseParams.isVideoLibrary() ?
+                View.GONE : View.VISIBLE);
 
         isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
         if (isContainAssistantWork) {

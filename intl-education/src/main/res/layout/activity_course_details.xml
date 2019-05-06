@@ -279,13 +279,6 @@
                                     android:foreground="@drawable/ic_touch_menu"
                                     android:layout_marginLeft="10dp"/>
 
-                                <!--<TextView
-                                    style="@style/text_gray"
-                                    android:text="@string/some_study"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>-->
-
                             </LinearLayout>
                         </LinearLayout>
 
@@ -302,12 +295,6 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="2dp">
-
-                            <!--<RadioButton
-                                android:id="@+id/rb_course_introduction"
-                                style="@style/CourseRadioButton"
-                                android:drawableTop="@drawable/rb_icon_lesson_introduce"
-                                android:text="@string/course_introduction"/>-->
 
                             <RadioButton
                                 android:id="@+id/rb_study_plan"
@@ -334,85 +321,6 @@
                                 android:drawableTop="@drawable/rb_icon_scoring_criteria"
                                 android:text="@string/label_course_evaluation"/>
 
-                            <!--<RadioButton
-                                android:id="@+id/rb_course_introduction"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/com_gray_line_bg"
-                                android:button="@null"
-                                android:checked="true"
-                                android:drawableBottom="@drawable/arrow_up_small_radio_bg"
-                                android:gravity="center"
-                                android:paddingTop="4dp"
-                                android:text="@string/course_introduction"
-                                android:textColor="@color/organ_tab_text"
-                                android:textSize="@dimen/com_font_size_4"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="12dp"
-                                android:layout_marginTop="12dp"
-                                android:background="@color/com_bg_light_white"/>
-
-                            <RadioButton
-                                android:id="@+id/rb_study_plan"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/com_gray_line_bg"
-                                android:button="@null"
-                                android:drawableBottom="@drawable/arrow_up_small_radio_bg"
-                                android:gravity="center"
-                                android:paddingTop="4dp"
-                                android:text="@string/study_plan"
-                                android:textColor="@color/organ_tab_text"
-                                android:textSize="@dimen/com_font_size_4"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="12dp"
-                                android:layout_marginTop="12dp"
-                                android:background="@color/com_bg_light_white"/>
-
-
-                            <RadioButton
-                                android:id="@+id/rb_live"
-                                style="@style/CourseRadioButton"
-                                android:text="@string/live_room"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/com_gray_line_bg"
-                                android:button="@null"
-                                android:drawableBottom="@drawable/arrow_up_small_radio_bg"
-                                android:gravity="center"
-                                android:paddingTop="4dp"
-                                android:textColor="@color/organ_tab_text"
-                                android:textSize="@dimen/com_font_size_4"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="12dp"
-                                android:layout_marginTop="12dp"
-                                android:background="@color/com_bg_light_white"/>
-
-                            <RadioButton
-                                android:id="@+id/rb_course_comment"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@drawable/com_gray_line_bg"
-                                android:button="@null"
-                                android:drawableBottom="@drawable/arrow_up_small_radio_bg"
-                                android:gravity="center"
-                                android:paddingTop="4dp"
-                                android:text="@string/course_comment"
-                                android:textColor="@color/organ_tab_text"
-                                android:textSize="@dimen/com_font_size_4"/>-->
                         </RadioGroup>
 
                         <FrameLayout
@@ -441,37 +349,6 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-                <!--<RadioButton
-                    android:id="@+id/rb_course_introduction_f"
-                    style="@style/CourseRadioButton"
-                    android:checked="true"
-                    android:drawableTop="@drawable/rb_icon_notices"
-                    android:text="@string/announcement"/>
-
-                <RadioButton
-                    android:id="@+id/rb_study_plan_f"
-                    style="@style/CourseRadioButton"
-                    android:drawableTop="@drawable/rb_icon_task"
-                    android:text="@string/learn_task"/>
-
-                <RadioButton
-                    android:id="@+id/rb_live_f"
-                    style="@style/CourseRadioButton"
-                    android:drawableTop="@drawable/rb_icon_live"
-                    android:text="@string/live_room"/>
-
-                <RadioButton
-                    android:id="@+id/rb_course_comment_f"
-                    style="@style/CourseRadioButton"
-                    android:drawableTop="@drawable/rb_icon_scoring_criteria"
-                    android:text="@string/scoring_criteria"/>-->
-
-                <!--<RadioButton
-                    android:id="@+id/rb_course_introduction_f"
-                    style="@style/CourseRadioButton"
-                    android:drawableTop="@drawable/rb_icon_lesson_introduce"
-                    android:text="@string/course_introduction"/>-->
-
                 <RadioButton
                     android:id="@+id/rb_study_plan_f"
                     style="@style/CourseRadioButton"
@@ -496,7 +373,6 @@
                     style="@style/CourseRadioButton"
                     android:drawableTop="@drawable/rb_icon_scoring_criteria"
                     android:text="@string/label_course_evaluation"/>
-
 
             </RadioGroup>
 

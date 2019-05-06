@@ -155,8 +155,10 @@ public class CourseResListAdapter extends MyBaseAdapter {
             resType -= 10000;
         }
         if (isVideoLibrary) {
-                LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), holder.resIconIv, vo.getThumbnail());
+            holder.resIconIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), holder.resIconIv, vo.getThumbnail());
         } else {
+            holder.resIconIv.setScaleType(ImageView.ScaleType.FIT_CENTER);
             setResIcon(holder.resIconIv, vo, resType);
 
         }
@@ -230,8 +232,8 @@ public class CourseResListAdapter extends MyBaseAdapter {
         if (!mChoiceMode) {
             int taskType = vo.getTaskType();
             if (taskType == 1 || taskType == 4) {
-                // 看课件
-                holder.mIvNeedCommit.setVisibility(View.GONE);
+                // 看课件 视频课
+                holder.mIvNeedCommit.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
             } else {
                 // 听读课,读写单
                 holder.mIvNeedCommit.setVisibility(View.VISIBLE);

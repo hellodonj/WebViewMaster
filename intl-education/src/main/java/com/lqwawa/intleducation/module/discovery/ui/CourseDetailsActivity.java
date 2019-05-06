@@ -243,17 +243,21 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
         route.navigation(activity, courseId, memberId, params, new CourseRoute.NavigationListener() {
             @Override
-            public void route(boolean needToLearn) {
-                super.route(needToLearn);
+            public void route(boolean needToLearn, int type) {
+                super.route(needToLearn, type);
+                CourseDetailParams courseDetailParams = params;
                 if (needToLearn) {
                     // 去详情页面
-                    if (params != null) {
-                        params.buildOrganJoinState(needToLearn);
+                    if (courseDetailParams != null) {
+                        courseDetailParams.buildOrganJoinState(needToLearn);
+                    } else {
+                        courseDetailParams = new CourseDetailParams();
                     }
+                    courseDetailParams.setIsVideoLibrary(type == 2);
                     final boolean isOnlineCounselor = route.isOnlineCounselor();
                     MyCourseDetailsActivity.start(activity, courseId, false,
                             true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
-                            isAuthorized, params, vo);
+                            isAuthorized, courseDetailParams, vo);
                 } else {
                     // 去未加入页面
                     Intent intent = new Intent(activity, CourseDetailsActivity.class)
@@ -264,8 +268,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
                             .putExtra("isAuthorized", isAuthorized)
                             .putExtra("isMyCourse", isMyCourse);
-                    if (params != null) {
-                        intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
+                    if (courseDetailParams != null) {
+                        intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                     }
                     if (tabIndex >= 0) {
                         intent.putExtra("tabIndex", tabIndex);
@@ -581,6 +585,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 if (null != courseCommentFragment) courseCommentFragment.commitComment(data);
             }
         });
+
+        // 视频馆课程隐藏空中课堂和帮辅群
+        boolean isVideoLibrary =
+                mCourseDetailParams != null && mCourseDetailParams.isVideoLibrary();
+        findViewById(R.id.rb_live).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group_f).setVisibility(isVideoLibrary ? View.GONE :
+                View.VISIBLE);
     }
 
     private void initTabAndFragment() {
@@ -618,19 +631,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 initData(true);
             }
         };
-        // introductionFragment = new CourseDetailsItemFragment();
         studyPlanFragment = new CourseDetailsItemFragment();
         courseCommentFragment = new CourseDetailsItemFragment();
-        //直播
-        // mClassroomFragment = new ClassroomFragment();
-        // @date   :2018/6/8 0008 上午 12:14
-        // @func   :V5.7 将直播修改为在线课堂列表
         mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
         mTutorialGroupFragment = TutorialGroupFragment.newInstance(courseId, mCurMemberId);
-        // introductionFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+        
         studyPlanFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         courseCommentFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
-        // mClassroomFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
 
@@ -660,6 +667,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // 课程大纲传参
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+        params2.setCourseParams(mCourseDetailParams);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
 
         studyPlanFragment.setArguments(bundle2);
@@ -677,22 +685,18 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         courseCommentFragment.setArguments(bundle3);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        // fragmentTransaction.add(R.id.fragment_container, introductionFragment);
+        // 习课程(课程大纲)
         fragmentTransaction.add(R.id.fragment_container, studyPlanFragment);
-        // fragmentTransaction.add(R.id.fragment_container, mClassroomFragment);
-        // @date   :2018/6/8 0008 上午 12:21
-        // @func   :V5.7将直播换成在线课堂
-
-        // @func   :V5.9默认先显示课程大纲
+        // 空中课堂
         fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        // 帮辅群
         fragmentTransaction.add(R.id.fragment_container, mTutorialGroupFragment);
+        // 课程评价
         fragmentTransaction.add(R.id.fragment_container, courseCommentFragment);
-        fragmentTransaction.hide(courseCommentFragment);
         fragmentTransaction.show(studyPlanFragment);
-        // fragmentTransaction.hide(mClassroomFragment);
+        fragmentTransaction.hide(courseCommentFragment);
         fragmentTransaction.hide(mOnlineClassFragment);
         fragmentTransaction.hide(mTutorialGroupFragment);
-        // fragmentTransaction.hide(introductionFragment);
         fragmentTransaction.commit();
 
         RadioGroup.OnCheckedChangeListener listener = new RadioGroup.OnCheckedChangeListener() {
@@ -701,7 +705,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 if (rg_tab.getVisibility() == View.VISIBLE && group.getId() == R.id.rg_tab) {
                     FragmentTransaction fragmentTransaction =
                             getSupportFragmentManager().beginTransaction();
-                    // fragmentTransaction.hide(introductionFragment);
                     fragmentTransaction.hide(studyPlanFragment);
                     fragmentTransaction.hide(courseCommentFragment);
                     // @date   :2018/6/8 0008 上午 12:23
