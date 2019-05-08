@@ -1976,4 +1976,29 @@ public class Utils {
         }
         return roles;
     }
+
+    public static boolean hasOpenUrlPermission(String url){
+        if (TextUtils.isEmpty(url)){
+            return false;
+        }
+        String result = "";
+        int j = 0, startIndex = 0, endIndex = 0;
+        for (int i = 0; i < url.length(); i++) {
+            if (url.charAt(i) == '/') {
+                j++;
+                if (j == 2)
+                    startIndex = i;
+                else if (j == 3)
+                    endIndex = i;
+            }
+
+        }
+        result = url.substring(startIndex + 1, endIndex);
+        if (!TextUtils.isEmpty(result)){
+            if (result.toLowerCase().contains("lqwawa") || result.toLowerCase().contains("lqmooc")){
+                return true;
+            }
+        }
+        return false;
+    }
 }
