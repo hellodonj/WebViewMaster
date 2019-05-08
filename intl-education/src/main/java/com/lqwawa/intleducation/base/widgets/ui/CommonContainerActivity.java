@@ -7,10 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ToolbarActivity;
+import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
@@ -22,25 +24,13 @@ import com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment;
  */
 public class CommonContainerActivity extends ToolbarActivity {
 
-    public static final String KEY_EXTRA_TITLE_BOOLEAN = "KEY_EXTRA_TITLE_BOOLEAN";
     public static final String KEY_EXTRA_TITLE_TEXT = "KEY_EXTRA_TITLE_TEXT";
-    public static final String KEY_EXTRA_CLASS_NAME = "KEY_EXTRA_CLASS_NAME";
-
-    public interface CourseFragmentConstance{
-        String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
-        String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
-        String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
-    }
-
-    public interface OnlineLiveFragmentConstance{
-        String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_CURRENT_MEMBER_ID";
-        String KEY_EXTRA_HIDE_SEARCH = "KEY_EXTRA_HIDE_SEARCH";
-    }
+    public static final String KEY_EXTRA_CLASS_OBJECT = "KEY_EXTRA_CLASS_OBJECT";
 
     private TopBar mTopBar;
-    private boolean mShowTitle;
-    private String mClassName;
-    private String mConfigValue;
+    private Class mClazz;
+    private String mTitle;
+    private Bundle args;
 
     @Override
     protected int getContentLayoutId() {
@@ -49,11 +39,9 @@ public class CommonContainerActivity extends ToolbarActivity {
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        mShowTitle = bundle.getBoolean(KEY_EXTRA_TITLE_BOOLEAN);
-        mConfigValue = bundle.getString(KEY_EXTRA_TITLE_TEXT);
-        mClassName = bundle.getString(KEY_EXTRA_CLASS_NAME);
-        if(mShowTitle && EmptyUtil.isEmpty(mConfigValue) ||
-                EmptyUtil.isEmpty(mClassName)) return false;
+        mTitle = bundle.getString(KEY_EXTRA_TITLE_TEXT);
+        mClazz = (Class) bundle.getSerializable(KEY_EXTRA_CLASS_OBJECT);
+        args = (Bundle) bundle.clone();
         return super.initArgs(bundle);
     }
 
@@ -61,11 +49,11 @@ public class CommonContainerActivity extends ToolbarActivity {
     protected void initWidget() {
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
-        if(mShowTitle){
+        if (!TextUtils.isEmpty(mTitle)) {
             mTopBar.setBack(true);
-            mTopBar.setTitle(mConfigValue);
+            mTopBar.setTitle(mTitle);
             mTopBar.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mTopBar.setVisibility(View.GONE);
         }
     }
@@ -73,39 +61,39 @@ public class CommonContainerActivity extends ToolbarActivity {
     @Override
     protected void initData() {
         super.initData();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        if(MyCourseListFragment.class.getName().equals(mClassName)){
-            String memberId = getIntent().getStringExtra(CourseFragmentConstance.KEY_EXTRA_MEMBER_ID);
-            String schoolId = getIntent().getStringExtra(CourseFragmentConstance.KEY_EXTRA_SCHOOL_ID);
-            boolean isTeacher = getIntent().getBooleanExtra(CourseFragmentConstance.KEY_EXTRA_BOOLEAN_TEACHER,false);
-
-            Fragment fragment = MyCourseListFragment.newInstance(schoolId,memberId,isTeacher);
-            fragmentTransaction.replace(R.id.lay_content,fragment);
-        }else if(MyOnlinePagerFragment.class.getName().equals(mClassName)){
-            String memberId = getIntent().getStringExtra(OnlineLiveFragmentConstance.KEY_EXTRA_MEMBER_ID);
-            boolean isHide = getIntent().getBooleanExtra(OnlineLiveFragmentConstance.KEY_EXTRA_HIDE_SEARCH,false);
-            Fragment fragment = MyOnlinePagerFragment.newInstance(memberId,isHide);
-            fragmentTransaction.replace(R.id.lay_content,fragment);
+        if (mClazz != null) {
+            try {
+                Fragment fragment = (Fragment) mClazz.newInstance();
+                if (fragment != null) {
+                    args.remove(KEY_EXTRA_TITLE_TEXT);
+                    args.remove(KEY_EXTRA_CLASS_OBJECT);
+                    fragment.setArguments(args);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.lay_content, fragment, mClazz.getSimpleName());
+                    ft.commit();
+                }
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
-        fragmentTransaction.commit();
     }
 
     /**
      * 统一Fragment容器的入口
-     * @param context 上下文对象
-     * @param showTitle 是否显示标题
-     * @param configValue 标题文本
-     * @param className 要显示的Fragment
-     * @param bundle bundle对象
+     *
+     * @param context     上下文对象
+     * @param title 标题文本
+     * @param clazz   要显示的Fragment
+     * @param bundle   bundle对象
      */
     public static void show(@NonNull Context context,
-                            boolean showTitle,
-                            @Nullable String configValue,
-                            @NonNull String className,@NonNull Bundle bundle){
-        Intent intent = new Intent(context,CommonContainerActivity.class);
-        bundle.putBoolean(KEY_EXTRA_TITLE_BOOLEAN,showTitle);
-        bundle.putString(KEY_EXTRA_TITLE_TEXT,configValue);
-        bundle.putString(KEY_EXTRA_CLASS_NAME,className);
+                            String title,
+                            @NonNull Class clazz, @NonNull Bundle bundle) {
+        Intent intent = new Intent(context, CommonContainerActivity.class);
+        bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
+        bundle.putSerializable(KEY_EXTRA_CLASS_OBJECT, clazz);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

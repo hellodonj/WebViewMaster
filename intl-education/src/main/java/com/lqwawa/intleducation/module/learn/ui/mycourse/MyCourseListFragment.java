@@ -53,9 +53,9 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
 
-    private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
-    private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
-    private static final String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
+    public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
+    public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
+    public static final String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
 
 
     private PullToRefreshView mRefreshLayout;

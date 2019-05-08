@@ -916,5 +916,17 @@ public final class AppConfig {
         public static final String PostRemoveClassHistoryCourse =
                 ServerBase + "api/class/removeClassHistoryCourse";
 
+        // 获取视频下配套教材
+        public static final String  PostGetSRListByChapterId =
+                ServerBase + "api/chapter/getSRListByChapterId";
+
+        // 获取视频下评论列表
+        public static final String PostGetVideoCommentList =
+                ServerBase + "api/tComment/getCommentList";
+
+        // 对视频发表评论
+        public static final String PostAddVideoComment =
+                ServerBase + "api/tComment/addComment";
+
     }
 }

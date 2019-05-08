@@ -59,6 +59,8 @@ public class MainApplication extends MyApplication {
 
     private static boolean IsAssistant;
 
+    private static boolean cdeInitSuccess;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -144,5 +146,12 @@ public class MainApplication extends MyApplication {
 
     public static void setIsAssistant(boolean isAssistant) {
         IsAssistant = isAssistant;
+    }
+
+    public static boolean getCdeInitSuccess(){
+        return cdeInitSuccess;
+    }
+    public void setCdeInitSuccess(boolean cdeInitSuccess){
+        this.cdeInitSuccess=cdeInitSuccess;
     }
 }

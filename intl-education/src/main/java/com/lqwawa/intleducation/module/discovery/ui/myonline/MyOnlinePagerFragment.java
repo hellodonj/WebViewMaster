@@ -64,8 +64,8 @@ public class MyOnlinePagerFragment extends PresenterFragment<MyOnlinePagerContra
     public static final String ACTION_GO_ONLINE_STUDY = "ACTION_GO_ONLINE_STUDY";
 
     // 当前MemberId的Key
-    private static final String KEY_EXTRA_CURRENT_MEMBER_ID = "KEY_EXTRA_CURRENT_MEMBER_ID";
-    private static final String KEY_EXTRA_HIDE_TOP_SEARCH = "KEY_EXTRA_HIDE_TOP_SEARCH";
+    public static final String KEY_EXTRA_CURRENT_MEMBER_ID = "KEY_EXTRA_CURRENT_MEMBER_ID";
+    public static final String KEY_EXTRA_HIDE_TOP_SEARCH = "KEY_EXTRA_HIDE_TOP_SEARCH";
 
     // 搜索
     private EditText mSearchContent;

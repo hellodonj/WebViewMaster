@@ -15,7 +15,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
-import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.utils.SpannableUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.LqResponseVo;
@@ -27,7 +26,6 @@ import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.LqServerHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommentVo;
-import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.xutils.common.Callback;
@@ -35,8 +33,6 @@ import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +93,7 @@ public class LqTaskCommentAdapter extends MyBaseAdapter {
             if (vo.getType() == 0) {
                 convertView = inflater.inflate(R.layout.item_task_comment_layout, null);
             } else {
-                convertView = inflater.inflate(R.layout.mod_course_reply_list_item, null);
+                convertView = inflater.inflate(R.layout.item_course_reply_list, null);
             }
             holder = new ViewHolder(convertView);
             holder.type = vo.getType();

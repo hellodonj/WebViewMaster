@@ -8,8 +8,9 @@
               android:orientation="vertical">
 
     <View
+        android:id="@+id/comment_custom_divider"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         android:layout_marginLeft="@dimen/com_item_space"
         android:layout_marginRight="@dimen/com_item_space_s"
         android:background="@color/com_line_gray"/>

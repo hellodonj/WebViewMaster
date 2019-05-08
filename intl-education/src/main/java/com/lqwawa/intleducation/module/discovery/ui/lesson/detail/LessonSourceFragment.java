@@ -51,6 +51,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
+import com.lqwawa.intleducation.module.discovery.ui.videodetail.VideoDetailActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
@@ -220,9 +221,13 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                     boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER, false);
 
                     if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
-                        // 看课件
-                        // V5.14 换成看课本,视频课
-                        mReadWeikeHelper.readWeike(resVo);
+                        if (isVideoLibrary) {
+                            VideoDetailActivity.start(getActivity(), resVo);
+                        } else {
+                            // 看课件
+                            // V5.14 换成看课本,视频课
+                            mReadWeikeHelper.readWeike(resVo);
+                        }
 
                         if ((needFlag && !mSourceParams.isParentRole())) {
                             // 是已经加入的课程, 并且不是家长身份

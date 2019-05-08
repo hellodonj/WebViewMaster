@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.base.utils.ResIconUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -57,7 +58,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private boolean mChoiceMode;
     private boolean mClassTeacher;
 
-    private SparseArray<ResIcon> resIconSparseArray = new SparseArray<>();
+    private SparseArray<ResIconUtils.ResIcon> resIconSparseArray = new SparseArray<>();
 
 
     public CourseResListAdapter(Activity activity, boolean needFlagRead, boolean isVideoLibrary) {
@@ -67,51 +68,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<SectionResListVo>();
         lessonStatus = activity.getIntent().getIntExtra("status", 0);
-        intData();
+        resIconSparseArray = ResIconUtils.resIconSparseArray;
     }
 
-    private void intData() {
-        ResIcon resIcon = new ResIcon(R.drawable.ic_pic, R.drawable.ic_pic_read,
-                R.drawable.ic_pic_shield, R.drawable.ic_pic_new);
-        resIconSparseArray.put(1, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_audio, R.drawable.ic_audio_read,
-                R.drawable.ic_audio_shield, R.drawable.ic_audio_new);
-        resIconSparseArray.put(2, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_video, R.drawable.ic_video_read,
-                R.drawable.ic_video_shield, R.drawable.ic_video_new);
-        resIconSparseArray.put(3, resIcon);
-        resIconSparseArray.put(30, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_pdf, R.drawable.ic_pdf_read,
-                R.drawable.ic_pdf_shield, R.drawable.ic_pdf_new);
-        resIconSparseArray.put(6, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_ppt, R.drawable.ic_ppt_read,
-                R.drawable.ic_ppt_shield, R.drawable.ic_ppt_new);
-        resIconSparseArray.put(20, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_word, R.drawable.ic_word_read,
-                R.drawable.ic_word_shield, 0);
-        resIconSparseArray.put(24, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_txt, R.drawable.ic_txt_read,
-                R.drawable.ic_txt_shield, 0);
-        resIconSparseArray.put(25, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_lqc, R.drawable.ic_lqc_read,
-                R.drawable.ic_lqc_shield, R.drawable.ic_lqc_new);
-        resIconSparseArray.put(5, resIcon);
-        resIconSparseArray.put(16, resIcon);
-        resIconSparseArray.put(17, resIcon);
-        resIconSparseArray.put(18, resIcon);
-        resIconSparseArray.put(19, resIcon);
-
-        resIcon = new ResIcon(R.drawable.ic_task_not_flag, R.drawable.ic_task_read,
-                R.drawable.ic_task_shield, R.drawable.ic_task_new);
-        resIconSparseArray.put(23, resIcon);
-    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
@@ -467,19 +426,5 @@ public class CourseResListAdapter extends MyBaseAdapter {
             }
         }
         return selectList;
-    }
-
-    public class ResIcon {
-        int resId;
-        int readResId;
-        int shieldResId;
-        int newResId;
-
-        public ResIcon(int resId, int readResId, int shieldResId, int newResId) {
-            this.resId = resId;
-            this.readResId = readResId;
-            this.shieldResId = shieldResId;
-            this.newResId = newResId;
-        }
     }
 }

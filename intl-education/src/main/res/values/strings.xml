@@ -513,5 +513,11 @@
 
     <string name="reward_vouchers">奖励代金券</string>
     <string name="n_buy_first_chapter">购买【%s】第一章</string>
+    <string-array name="video_resource_types">
+        <item>配套课件</item>
+        <item>配套教案</item>
+        <item>配套习题</item>
+    </string-array>
+    <string name="user_comment">用户评论</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.oosic.apps.iemaker.base.interactionlayer.data.User;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -100,9 +98,9 @@ public class CourseCommentAdapter extends MyBaseAdapter {
         }
         if (holder == null) {
             if (vo.getType() == 0) {
-                convertView = inflater.inflate(R.layout.mod_course_comment_list_item, null);
+                convertView = inflater.inflate(R.layout.item_course_comment_list, null);
             } else {
-                convertView = inflater.inflate(R.layout.mod_course_reply_list_item, null);
+                convertView = inflater.inflate(R.layout.item_course_reply_list, null);
             }
             holder = new ViewHolder(convertView);
             holder.type = vo.getType();
