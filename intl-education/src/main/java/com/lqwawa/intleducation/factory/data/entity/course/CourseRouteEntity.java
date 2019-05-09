@@ -29,6 +29,7 @@ public class CourseRouteEntity extends BaseVo {
     private boolean isExpire;
     private boolean isJoin;
     private int type;
+    private boolean isLabelAuthorized;
 
     public int getBuyType() {
         return buyType;
@@ -108,6 +109,15 @@ public class CourseRouteEntity extends BaseVo {
 
     public CourseRouteEntity setType(int type) {
         this.type = type;
+        return this;
+    }
+
+    public boolean isLabelAuthorized() {
+        return isLabelAuthorized;
+    }
+
+    public CourseRouteEntity setLabelAuthorized(boolean labelAuthorized) {
+        isLabelAuthorized = labelAuthorized;
         return this;
     }
 

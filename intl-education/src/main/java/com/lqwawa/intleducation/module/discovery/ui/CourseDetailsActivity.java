@@ -57,6 +57,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
@@ -243,8 +244,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
         route.navigation(activity, courseId, memberId, params, new CourseRoute.NavigationListener() {
             @Override
-            public void route(boolean needToLearn, int type) {
-                super.route(needToLearn, type);
+            public void route(boolean needToLearn, CourseRouteEntity entity) {
+                super.route(needToLearn, entity);
                 CourseDetailParams courseDetailParams = params;
                 if (needToLearn) {
                     // 去详情页面
@@ -253,20 +254,26 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     } else {
                         courseDetailParams = new CourseDetailParams();
                     }
-                    courseDetailParams.setIsVideoLibrary(type == 2);
+                    if (entity != null) {
+                        courseDetailParams.setIsVideoLibrary(entity.getType() == 2);
+                    }
                     final boolean isOnlineCounselor = route.isOnlineCounselor();
                     MyCourseDetailsActivity.start(activity, courseId, false,
                             true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
                             isAuthorized, courseDetailParams, vo);
                 } else {
                     // 去未加入页面
+                    boolean isAuth = isAuthorized;
+                    if (entity != null && entity.isLabelAuthorized()) {
+                        isAuth = true;
+                    }
                     Intent intent = new Intent(activity, CourseDetailsActivity.class)
                             .putExtra("id", courseId)
                             .putExtra("canEdit", canEdit)
                             .putExtra("memberId", memberId)
                             .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
                             .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
-                            .putExtra("isAuthorized", isAuthorized)
+                            .putExtra("isAuthorized", isAuth)
                             .putExtra("isMyCourse", isMyCourse);
                     if (courseDetailParams != null) {
                         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);

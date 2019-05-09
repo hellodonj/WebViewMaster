@@ -417,6 +417,7 @@ public class LQCourseHelper {
                                            String keyString,
                                            int payType,int paramOneId,
                                            int paramTwoId, int paramThreeId,
+                                           int dataType,
                                            @NonNull final DataSource.Callback<List<CourseVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
@@ -461,6 +462,9 @@ public class LQCourseHelper {
             requestVo.addParams("paramThreeId", paramThreeId);
         }
         requestVo.addParams("progressStatus", -1);
+        if (dataType > 0) {
+            requestVo.addParams("dataType", dataType);
+        }
 
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetCourseList + requestVo.getParams());
         params.setConnectTimeout(10000);
@@ -491,6 +495,17 @@ public class LQCourseHelper {
             }
         });
 
+    }
+
+    public static void requestLQCourseData(@Nullable String organId,
+                                           int pageIndex, int pageSize,
+                                           @NonNull String level, @NonNull String sort,
+                                           String keyString,
+                                           int payType,int paramOneId,
+                                           int paramTwoId, int paramThreeId,
+                                           @NonNull final DataSource.Callback<List<CourseVo>> callback) {
+        requestLQCourseData(organId, pageIndex, pageSize, level, sort, keyString, payType,
+                paramOneId, paramTwoId, paramThreeId, -1, callback);
     }
 
     /**
