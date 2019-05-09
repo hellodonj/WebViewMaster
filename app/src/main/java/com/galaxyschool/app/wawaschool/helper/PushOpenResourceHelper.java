@@ -86,6 +86,9 @@ public class PushOpenResourceHelper {
                 || pushMessageInfo.getPushModuleType() == 9) {
             //打开帮辅的推送
             enterAssistantDetail();
+        } else if (pushMessageInfo.getPushModuleType() == 10){
+          //助教审批通过--成为帮辅
+            openAssistantModel();
         } else if (pushMessageInfo.getAirClassId() <= 0) {
             //学习任务
             loadClassInfo(false);
@@ -367,6 +370,29 @@ public class PushOpenResourceHelper {
                         EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
             }
             context.sendBroadcast(new Intent().setAction(HomeActivity.EXTRA_PUSH_ASSISTANT_ENTER));
+            Intent intent = new Intent(context, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
+        }
+    }
+
+    /**
+     * 申请帮辅老师通过
+     */
+    private void openAssistantModel(){
+        if (ActivityStack.getInstance().getCount() == 0) {
+            Intent intent = new Intent(context, HomeActivity.class);
+            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+            intent.putExtra(HomeActivity.EXTRA_PUSH_ASSISTANT_APPLY_ADOPT, true);
+            context.startActivity(intent);
+        } else {
+            // 结束除了HomeActivity之外的所有页面
+            ActivityUtil.finishToActivity(HomeActivity.class,false);
+            ActivityStack.getInstance().finishUtil(HomeActivity.class);
+            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+            EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
+                    EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            context.sendBroadcast(new Intent().setAction(HomeActivity.EXTRA_PUSH_ASSISTANT_APPLY_ADOPT));
             Intent intent = new Intent(context, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
