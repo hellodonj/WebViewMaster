@@ -518,6 +518,15 @@
         <item>配套教案</item>
         <item>配套习题</item>
     </string-array>
+
+    <string-array name="course_type_names">
+        <item>读本</item>
+        <item>学本</item>
+        <item>练本</item>
+        <item>测本</item>
+        <item>视频</item>
+    </string-array>
+    
     <string name="user_comment">用户评论</string>
 
 </resources>
