@@ -19,6 +19,19 @@
         app:layout_constraintRight_toRightOf="parent"
         android:scaleType="center"/>
 
+    <TextView
+        android:id="@+id/tv_course_type"
+        style="@style/text_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/iv_delete"
         android:layout_width="wrap_content"

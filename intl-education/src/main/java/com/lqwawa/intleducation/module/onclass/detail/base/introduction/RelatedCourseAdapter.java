@@ -28,7 +28,7 @@ import java.util.List;
  * @history v1.0
  * **********************************
  */
-public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.RelatedCourseBean>{
+public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.RelatedCourseBean> {
 
     public RelatedCourseAdapter(List<ClassDetailEntity.RelatedCourseBean> relatedCourseBeans) {
         super(relatedCourseBeans, null);
@@ -44,16 +44,27 @@ public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.Rela
         return new ViewHolder(root);
     }
 
-    private class ViewHolder extends RecyclerAdapter.ViewHolder<ClassDetailEntity.RelatedCourseBean>{
+    private class ViewHolder extends RecyclerAdapter.ViewHolder<ClassDetailEntity.RelatedCourseBean> {
 
         private final int[] courseStatusResId = new int[]{
                 R.string.course_status_0,
                 R.string.course_status_1,
                 R.string.course_status_2};
 
+        private final int[] courseTypesBgId = new int[]{
+                R.drawable.shape_course_type_read,
+                R.drawable.shape_course_type_learn,
+                R.drawable.shape_course_type_practice,
+                R.drawable.shape_course_type_exam,
+                R.drawable.shape_course_type_video
+        };
+
+        private String[] courseTypeNames;
+
         private FrameLayout mCoverLay;
         private ImageView mCourseIv;
         private TextView mCourseName;
+        private TextView mCourseType;
         private TextView mOrganName;
         private TextView mTeacherName;
         private TextView mCourseStatus;
@@ -66,11 +77,15 @@ public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.Rela
             mCoverLay = (FrameLayout) itemView.findViewById(R.id.cover_lay);
             mCourseIv = (ImageView) itemView.findViewById(R.id.course_iv);
             mCourseName = (TextView) itemView.findViewById(R.id.course_name);
+            mCourseType = (TextView) itemView.findViewById(R.id.course_type);
             mOrganName = (TextView) itemView.findViewById(R.id.organ_name);
             mTeacherName = (TextView) itemView.findViewById(R.id.teacher_name);
             mCourseStatus = (TextView) itemView.findViewById(R.id.course_status);
             mPriceTitleTv = (TextView) itemView.findViewById(R.id.price_title_tv);
             mCoursePrice = (TextView) itemView.findViewById(R.id.course_price);
+
+            courseTypeNames =
+                    itemView.getContext().getResources().getStringArray(R.array.course_type_names);
         }
 
         @Override
@@ -80,19 +95,28 @@ public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.Rela
             mTeacherName.setText(relatedCourseBean.getTeachersName());
             int courseStatus = relatedCourseBean.getProgressStatus();
             String statusString;
-            if (courseStatus >= 0 && courseStatus < 3){
+            if (courseStatus >= 0 && courseStatus < 3) {
                 statusString = UIUtil.getString(courseStatusResId[courseStatus]);
-                if(courseStatus == 0){
+                if (courseStatus == 0) {
                     mCourseStatus.setBackgroundResource(R.drawable.radio_bg_pink);
-                }else if(courseStatus == 1){
+                } else if (courseStatus == 1) {
                     mCourseStatus.setBackgroundResource(R.drawable.radio_bg_flag_red);
-                }else{
+                } else {
                     mCourseStatus.setBackgroundResource(R.drawable.radio_bg_sky_blue);
                 }
-            }else{
+            } else {
                 statusString = UIUtil.getString(R.string.value_error) + ":" + courseStatus;
             }
             mCourseStatus.setText(statusString);
+
+            mCourseStatus.setVisibility(View.GONE);
+            int courseType = relatedCourseBean.getAssortment();
+            if (courseType >= 0 && courseType < courseTypesBgId.length) {
+                mCourseType.setText(courseTypeNames[courseType]);
+                mCourseType.setBackgroundResource(courseTypesBgId[courseType]);
+            }
+
+
             if (relatedCourseBean.getPrice() > 0) {
                 mPriceTitleTv.setVisibility(View.VISIBLE);
 
@@ -100,12 +124,12 @@ public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.Rela
 
                 mCoursePrice.setText(Common.Constance.MOOC_MONEY_MARK + relatedCourseBean.getPrice());
 
-            }else{
+            } else {
                 mPriceTitleTv.setVisibility(View.GONE);
                 mCoursePrice.setText(UIUtil.getString(R.string.free));
             }
 
-            ImageUtil.fillCourseIcon(mCourseIv,relatedCourseBean.getThumbnailUrl().trim());
+            ImageUtil.fillCourseIcon(mCourseIv, relatedCourseBean.getThumbnailUrl().trim());
         }
     }
 }

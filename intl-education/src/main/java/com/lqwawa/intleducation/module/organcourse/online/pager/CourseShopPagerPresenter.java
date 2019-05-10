@@ -28,7 +28,8 @@ public class CourseShopPagerPresenter extends BasePresenter<CourseShopPagerContr
 
     @Override
     public void requestCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString) {
-        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
+        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString,
+                payType, 0, 0, 0, 1, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final CourseShopPagerContract.View view = (CourseShopPagerContract.View) getView();
@@ -49,7 +50,8 @@ public class CourseShopPagerPresenter extends BasePresenter<CourseShopPagerContr
 
     @Override
     public void requestMoreCourseData(@Nullable String organId,int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString) {
-        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString, payType, 0, 0, 0, new DataSource.Callback<List<CourseVo>>() {
+        LQCourseHelper.requestLQCourseData(organId,pageIndex, pageSize, "", sort,keyString,
+                payType, 0, 0, 0, 1, new DataSource.Callback<List<CourseVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final CourseShopPagerContract.View view = (CourseShopPagerContract.View) getView();

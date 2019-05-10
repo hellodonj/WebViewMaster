@@ -23,6 +23,7 @@ public class ClassCourseEntity extends BaseVo{
 
     private boolean hold;
     private boolean checked;
+    private int assortment;
 
     public String getBuyType() {
         return buyType;
@@ -94,6 +95,15 @@ public class ClassCourseEntity extends BaseVo{
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public ClassCourseEntity setAssortment(int assortment) {
+        this.assortment = assortment;
+        return this;
     }
 
     /**

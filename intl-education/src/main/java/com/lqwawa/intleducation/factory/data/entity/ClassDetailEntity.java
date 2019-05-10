@@ -161,6 +161,7 @@ public class ClassDetailEntity extends BaseVo{
         private String organCounseName;
         private int verifyStatus;
         private String counselorId;
+        private int assortment;
 
         public int getProgress() {
             return progress;
@@ -616,6 +617,15 @@ public class ClassDetailEntity extends BaseVo{
 
         public void setCounselorId(String counselorId) {
             this.counselorId = counselorId;
+        }
+
+        public int getAssortment() {
+            return assortment;
+        }
+
+        public RelatedCourseBean setAssortment(int assortment) {
+            this.assortment = assortment;
+            return this;
         }
     }
 

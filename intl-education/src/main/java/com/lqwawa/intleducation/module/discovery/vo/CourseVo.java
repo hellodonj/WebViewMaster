@@ -79,6 +79,8 @@ public class CourseVo extends BaseVo {
     // V5.15新添加的字段
     private int joinCount;
 
+    private int assortment;
+
     public boolean isTag() {
         return tag;
     }
@@ -516,5 +518,14 @@ public class CourseVo extends BaseVo {
 
     public void setJoinCount(int joinCount) {
         this.joinCount = joinCount;
+    }
+
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public CourseVo setAssortment(int assortment) {
+        this.assortment = assortment;
+        return this;
     }
 }

@@ -40,6 +40,7 @@ public class MyCourseVo extends BaseVo {
     private int payType;
     // 是否指定到班级
     private boolean inClass;
+    private int assortment;
 
     public boolean isShowMoreWeek() {
         return showMoreWeek;
@@ -58,9 +59,9 @@ public class MyCourseVo extends BaseVo {
     }
 
     public String getCourseId() {
-        if(EmptyUtil.isNotEmpty(courseId)){
+        if (EmptyUtil.isNotEmpty(courseId)) {
             return courseId;
-        }else{
+        } else {
             return id;
         }
     }
@@ -70,9 +71,9 @@ public class MyCourseVo extends BaseVo {
     }
 
     public String getCourseName() {
-        if(EmptyUtil.isNotEmpty(courseName)){
+        if (EmptyUtil.isNotEmpty(courseName)) {
             return courseName;
-        }else{
+        } else {
             return name;
         }
     }
@@ -201,11 +202,21 @@ public class MyCourseVo extends BaseVo {
         this.inClass = inClass;
     }
 
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public MyCourseVo setAssortment(int assortment) {
+        this.assortment = assortment;
+        return this;
+    }
+
     /**
      * 返回是否是收费的课程
+     *
      * @return true 收费课程
      */
-    public boolean isCharge(){
+    public boolean isCharge() {
         return this.payType == PAY_TYPE_CHARGE;
     }
 }

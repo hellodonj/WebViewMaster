@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DateUtils;
@@ -22,6 +23,7 @@ import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +51,16 @@ public class CourseListAdapter extends MyBaseAdapter {
             R.string.course_status_1,
             R.string.course_status_2};
 
+    private final int[] courseTypesBgId = new int[]{
+            R.drawable.shape_course_type_read,
+            R.drawable.shape_course_type_learn,
+            R.drawable.shape_course_type_practice,
+            R.drawable.shape_course_type_exam,
+            R.drawable.shape_course_type_video
+    };
+
+    private String[] courseTypeNames;
+
     public CourseListAdapter(Activity activity) {
         this.activity = activity;
         this.inflater = LayoutInflater.from(activity);
@@ -65,15 +77,16 @@ public class CourseListAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
                 .build();
+        courseTypeNames = activity.getResources().getStringArray(R.array.course_type_names);
     }
 
-    public CourseListAdapter(boolean tutorialMode,@NonNull @AuditType.AuditTypeRes int type, Activity activity){
+    public CourseListAdapter(boolean tutorialMode, @NonNull @AuditType.AuditTypeRes int type, Activity activity) {
         this(activity);
         this.tutorialMode = tutorialMode;
         this.type = type;
     }
 
-    public CourseListAdapter(Activity activity,boolean isClassCourseEnter) {
+    public CourseListAdapter(Activity activity, boolean isClassCourseEnter) {
         this(activity);
         this.isClassCourseEnter = isClassCourseEnter;
     }
@@ -108,7 +121,7 @@ public class CourseListAdapter extends MyBaseAdapter {
 
         // 设置选中未选中
         holder.cbSelect.setChecked(vo.isTag());
-        if(isClassCourseEnter){
+        if (isClassCourseEnter) {
             holder.cbSelect.setVisibility(View.VISIBLE);
         }
 
@@ -117,19 +130,27 @@ public class CourseListAdapter extends MyBaseAdapter {
         holder.teacherName.setText(vo.getTeachersName());
         int courseStatus = vo.getProgressStatus();
         String statusString;
-        if (courseStatus >= 0 && courseStatus < 3){
+        if (courseStatus >= 0 && courseStatus < 3) {
             statusString = activity.getString(courseStatusResId[courseStatus]);
-            if(courseStatus == 0){
+            if (courseStatus == 0) {
                 holder.courseStatus.setBackgroundResource(R.drawable.radio_bg_pink);
-            }else if(courseStatus == 1){
+            } else if (courseStatus == 1) {
                 holder.courseStatus.setBackgroundResource(R.drawable.radio_bg_flag_red);
-            }else{
+            } else {
                 holder.courseStatus.setBackgroundResource(R.drawable.radio_bg_sky_blue);
             }
-        }else{
+        } else {
             statusString = activity.getString(R.string.value_error) + ":" + courseStatus;
         }
         holder.courseStatus.setText(statusString);
+
+        holder.courseStatus.setVisibility(View.GONE);
+        int courseType = vo.getAssortment();
+        if (courseType >= 0 && courseType < courseTypesBgId.length) {
+            holder.courseType.setText(courseTypeNames[courseType]);
+            holder.courseType.setBackgroundResource(courseTypesBgId[courseType]);
+        }
+        
         /*if (vo.getPrice() > 0) {
             holder.priceTitleTv.setVisibility(View.VISIBLE);
 
@@ -141,22 +162,22 @@ public class CourseListAdapter extends MyBaseAdapter {
             holder.priceTitleTv.setVisibility(View.GONE);
             holder.coursePrice.setText(activity.getResources().getString(R.string.free));
         }*/
-        if(vo.getPrice() == 0){
+        if (vo.getPrice() == 0) {
             // 免费
             holder.mOrginalPriceLayout.setVisibility(View.GONE);
             holder.mPriceLayout.setVisibility(View.VISIBLE);
-            StringUtil.fillSafeTextView(holder.coursePrice,UIUtil.getString(R.string.label_class_gratis));
-        }else{
+            StringUtil.fillSafeTextView(holder.coursePrice, UIUtil.getString(R.string.label_class_gratis));
+        } else {
             // 收费
-            StringUtil.fillSafeTextView(holder.coursePrice,Common.Constance.MOOC_MONEY_MARK + vo.getPrice());
-            if(vo.isDiscount()){
+            StringUtil.fillSafeTextView(holder.coursePrice, Common.Constance.MOOC_MONEY_MARK + vo.getPrice());
+            if (vo.isDiscount()) {
                 // 有打折价
                 holder.mOrginalPriceLayout.setVisibility(View.VISIBLE);
                 holder.mOrginalPrice.setVisibility(View.VISIBLE);
                 // 中划线
                 holder.mOrginalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                StringUtil.fillSafeTextView(holder.mOrginalPrice,Common.Constance.MOOC_MONEY_MARK + vo.getOriginalPrice());
-            }else{
+                StringUtil.fillSafeTextView(holder.mOrginalPrice, Common.Constance.MOOC_MONEY_MARK + vo.getOriginalPrice());
+            } else {
                 // 无打折价
                 holder.mOrginalPriceLayout.setVisibility(View.GONE);
                 holder.mOrginalPrice.setVisibility(View.GONE);
@@ -168,29 +189,29 @@ public class CourseListAdapter extends MyBaseAdapter {
                 imageOptions);
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
 
-        if(tutorialMode){
-            Date date = DateUtils.stringToDate(vo.getStartTime(),DateUtils.YYYYMMDD);
-            holder.course_date_tv.setText(DateUtils.dateToString(date,DateUtils.YYYYMMDDCH));
+        if (tutorialMode) {
+            Date date = DateUtils.stringToDate(vo.getStartTime(), DateUtils.YYYYMMDD);
+            holder.course_date_tv.setText(DateUtils.dateToString(date, DateUtils.YYYYMMDDCH));
             /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
                     DateUtils.YYYYMMDDCH));*/
             holder.mBodyLayout.setVisibility(View.GONE);
             holder.mBottomLayout.setVisibility(View.VISIBLE);
             holder.course_date_tv.setVisibility(View.VISIBLE);
-            if(type == AuditType.AUDITING || type == AuditType.AUDITED_REJECT){
+            if (type == AuditType.AUDITING || type == AuditType.AUDITED_REJECT) {
                 holder.tvType.setVisibility(View.VISIBLE);
-                if(type == AuditType.AUDITING){
+                if (type == AuditType.AUDITING) {
                     holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_green));
                     holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_accent_radius_19);
                     holder.tvType.setText(R.string.label_auditing);
-                }else if(type == AuditType.AUDITED_REJECT){
+                } else if (type == AuditType.AUDITED_REJECT) {
                     holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_light_gray));
                     holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_gary_radius_19);
                     holder.tvType.setText(R.string.label_audit_reject);
                 }
-            }else{
+            } else {
                 holder.tvType.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             holder.mBodyLayout.setVisibility(View.VISIBLE);
             holder.mBottomLayout.setVisibility(View.GONE);
         }
@@ -200,6 +221,7 @@ public class CourseListAdapter extends MyBaseAdapter {
     private class ViewHolder {
         FrameLayout coverLay;
         ImageView courseIv;
+        TextView courseType;
         TextView courseName;
         TextView organName;
         TextView teacherName;
@@ -217,16 +239,17 @@ public class CourseListAdapter extends MyBaseAdapter {
 
 
         CheckBox cbSelect;
-        
+
         public ViewHolder(View parent) {
             coverLay = (FrameLayout) parent.findViewById(R.id.cover_lay);
             courseIv = (ImageView) parent.findViewById(R.id.course_iv);
+            courseType = (TextView) parent.findViewById(R.id.course_type);
             courseName = (TextView) parent.findViewById(R.id.course_name);
             organName = (TextView) parent.findViewById(R.id.organ_name);
             teacherName = (TextView) parent.findViewById(R.id.teacher_name);
             courseStatus = (TextView) parent.findViewById(R.id.course_status);
 
-            mOrginalPriceLayout  = (LinearLayout) parent.findViewById(R.id.original_price_layout);
+            mOrginalPriceLayout = (LinearLayout) parent.findViewById(R.id.original_price_layout);
             mOrginalTitle = (TextView) parent.findViewById(R.id.tv_original_desc);
             mOrginalPrice = (TextView) parent.findViewById(R.id.tv_original_price);
             mPriceLayout = (LinearLayout) parent.findViewById(R.id.price_layout);
@@ -265,9 +288,10 @@ public class CourseListAdapter extends MyBaseAdapter {
 
     /**
      * 返回显示cell的集合
+     *
      * @return 集合
      */
-    public List<CourseVo> getItems(){
+    public List<CourseVo> getItems() {
         return list;
     }
 }
