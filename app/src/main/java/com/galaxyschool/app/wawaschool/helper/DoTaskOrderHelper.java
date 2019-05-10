@@ -1038,6 +1038,9 @@ public class DoTaskOrderHelper {
                                                                     final CourseData courseData = uploadResult.data.get(0);
                                                                     if (courseData != null) {
                                                                         if (cardParam != null && cardParam.getMarkModel() != null) {
+                                                                            if (TextUtils.isEmpty(cardParam.getMarkModel().getTitle())){
+                                                                                cardParam.getMarkModel().setTitle(courseData.nickname);
+                                                                            }
                                                                             ApplyMarkHelper.enterApplyTeacherMarkActivity(mContext,
                                                                                     courseData, cardParam.getMarkModel());
                                                                         } else {

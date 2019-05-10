@@ -104,6 +104,14 @@ public class ApplyMarkHelper {
                 DoCourseHelper.FromType.Do_Answer_Card_Check_Course);
     }
 
+    public static void doApplyMarkTask(Context mContext,
+                                       ExerciseAnswerCardParam cardParam){
+        DoCourseHelper doCourseHelper = new DoCourseHelper(mContext);
+        doCourseHelper.doAnswerQuestionCheckMarkData(
+                cardParam,
+                DoCourseHelper.FromType.Do_Answer_Card_Check_Course);
+    }
+
     public static void loadCourseImageList(Context mContext,
                                            ExerciseAnswerCardParam cardParam,
                                            List<Integer> pageIndex) {
