@@ -53,7 +53,7 @@ public class VideoCommentListFragment extends PresenterFragment<VideoCommentCont
     private Long courseId;
 
     private int pageIndex = 0;
-    private int pageSize = 12;
+    private int pageSize = AppConfig.PAGE_SIZE;
 
     public static VideoCommentListFragment newInstance(Long courseId) {
 

@@ -1662,12 +1662,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                             TaskSliderHelper.commitTaskInfo(taskUploadBackVo, getSourceType());
                             // 刷新UI
                             if (!EmptyUtil.isEmpty(mFragment0)) {
-                                mFragment0.updateData();
+                                mFragment0.updateData(false);
 
                             }
 
                             if (!EmptyUtil.isEmpty(mFragment1)) {
-                                mFragment1.updateData();
+                                mFragment1.updateData(false);
                             }
                         } else {
                             if (roleType != UserHelper.MoocRoleType.EDITOR
@@ -1722,12 +1722,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     //自动批阅分数上传成功
                     // 刷新UI
                     if (!EmptyUtil.isEmpty(mFragment0)) {
-                        mFragment0.updateData();
+                        mFragment0.updateData(false);
 
                     }
 
                     if (!EmptyUtil.isEmpty(mFragment1)) {
-                        mFragment1.updateData();
+                        mFragment1.updateData(false);
                     }
                 }
                 score = "0";
@@ -1817,7 +1817,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     // 复述列表刷新UI
                     // 刷新UI
                     if (!EmptyUtil.isEmpty(mFragment0)) {
-                        mFragment0.updateData();
+                        mFragment0.updateData(false);
 
                     }
                     if (!TextUtils.isEmpty(examId)) {
@@ -1828,7 +1828,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
                 // 语音评测刷新
                 if (!EmptyUtil.isEmpty(mFragment1)) {
-                    mFragment1.updateData();
+                    mFragment1.updateData(false);
                     Bundle extras = intent.getExtras();
                     if (EmptyUtil.isNotEmpty(extras) && extras.containsKey("commit_resId")) {
                         int resId = intent.getExtras().getInt("commit_resId");
