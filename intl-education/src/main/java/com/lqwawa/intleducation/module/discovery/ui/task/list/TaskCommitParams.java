@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.module.discovery.ui.task.list;
 import android.support.annotation.NonNull;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
+import com.lqwawa.intleducation.base.vo.PagerArgs;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
@@ -35,6 +36,8 @@ public class TaskCommitParams extends BaseVo implements Cloneable{
     // 课程详情的参数
     private CourseDetailParams courseParams;
 
+    private PagerArgs pagerArgs;
+    private int orderByType;
 
 
     public int getOriginalRole() {
@@ -67,6 +70,24 @@ public class TaskCommitParams extends BaseVo implements Cloneable{
 
     public boolean isTeacherVisitor() {
         return teacherVisitor;
+    }
+
+    public PagerArgs getPagerArgs() {
+        return pagerArgs;
+    }
+
+    public TaskCommitParams setPagerArgs(PagerArgs pagerArgs) {
+        this.pagerArgs = pagerArgs;
+        return this;
+    }
+
+    public int getOrderByType() {
+        return orderByType;
+    }
+
+    public TaskCommitParams setOrderByType(int orderByType) {
+        this.orderByType = orderByType;
+        return this;
     }
 
     @Override
