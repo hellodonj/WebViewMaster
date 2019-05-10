@@ -504,5 +504,5 @@
     </string-array>
 
     <string name="user_comment">用户评论</string>
-
+    <string name="to_ask_question">我要\n帮辅</string>
 </resources>

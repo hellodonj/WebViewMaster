@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
@@ -48,13 +49,14 @@ import java.util.Locale;
  * @desc 我的课程的页面
  */
 public class MyCourseFragment extends PresenterFragment<MyCourseContract.Presenter>
-        implements MyCourseContract.View{
+        implements MyCourseContract.View {
 
     private static final String LOGIN_ACTION = "MySchoolSpaceFragment_action_load_data";
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private SlidePagerAdapter mPagerAdapter;
+    private TextView mTextView;
 
     private List<Fragment> mPagerFragments;
     private List<CourseTitle> mPageArray;
@@ -77,6 +79,10 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         super.initWidget();
         mTabLayout = (TabLayout) mRootView.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) mRootView.findViewById(R.id.view_paper);
+        mTextView = (TextView) mRootView.findViewById(R.id.tv_ask_question);
+        mTextView.setOnClickListener(view -> {
+
+        });
     }
 
     @Override
@@ -84,7 +90,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         super.initData();
         // 注册刷新数据的广播
         registerBroadcastReceiver();
-        if(UserHelper.isLogin()){
+        if (UserHelper.isLogin()) {
             mPresenter.requestParentChildData();
         }
     }
@@ -93,30 +99,30 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
     public void updateParentChildrenData(@Nullable List<ChildrenListVo> childrenListVos) {
         mPageArray = new ArrayList<>();
         mPagerFragments = new ArrayList<>();
-        if(EmptyUtil.isNotEmpty(mPagerAdapter)) mPagerAdapter.notifyDataSetChanged();
+        if (EmptyUtil.isNotEmpty(mPagerAdapter)) mPagerAdapter.notifyDataSetChanged();
 
-        if(EmptyUtil.isNotEmpty(childrenListVos)){
+        if (EmptyUtil.isNotEmpty(childrenListVos)) {
             isParent = true;
         }
 
         {
             // 添加我的
-            MyCourseInnerFragment studentFragment = MyCourseInnerFragment.newInstance(UserHelper.getUserId(),null);
+            MyCourseInnerFragment studentFragment = MyCourseInnerFragment.newInstance(UserHelper.getUserId(), null);
             mPagerFragments.add(studentFragment);
 
             // 添加标题
-            CourseTitle studentTitle = new CourseTitle(getString(R.string.label_my),false);
+            CourseTitle studentTitle = new CourseTitle(getString(R.string.label_my), false);
             mPageArray.add(studentTitle);
         }
 
 
-        if(isParent){
+        if (isParent) {
             // 如果是有家长身份
             for (ChildrenListVo vo : childrenListVos) {
                 // 添加标题
-                CourseTitle title = new CourseTitle(vo.getRealName(),true);
+                CourseTitle title = new CourseTitle(vo.getRealName(), true);
                 mPageArray.add(title);
-                MyCourseInnerFragment fragment = MyCourseInnerFragment.newInstance(vo.getMemberId(),vo.getSchoolId());
+                MyCourseInnerFragment fragment = MyCourseInnerFragment.newInstance(vo.getMemberId(), vo.getSchoolId());
                 mPagerFragments.add(fragment);
             }
         }
@@ -124,21 +130,23 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         mPagerAdapter = new SlidePagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
 
-        if(mPagerFragments.size() > 1){
+        if (mPagerFragments.size() > 1) {
             // 如果当前Fragment数目大于1 说明有我孩子的学程
             mTabLayout.setVisibility(View.VISIBLE);
             mViewPager.setOffscreenPageLimit(mPagerFragments.size());
             mTabLayout.setupWithViewPager(mViewPager);
             // 添加滑动事件
-            mTabLayout.addOnTabSelectedListener(new TabSelectedAdapter(){
+            mTabLayout.addOnTabSelectedListener(new TabSelectedAdapter() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     super.onTabSelected(tab);
                     KeyboardUtil.hideSoftInput(getActivity());
+                    mTextView.setVisibility(tab.getPosition() == 0 ? View.VISIBLE : View.GONE);
                 }
             });
-        }else{
+        } else {
             mTabLayout.setVisibility(View.GONE);
+            mTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -199,7 +207,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action.equals(LOGIN_ACTION)){
+            if (action.equals(LOGIN_ACTION)) {
                 // 获取到登录的广播
                 mPresenter.requestParentChildData();
             }
@@ -214,9 +222,10 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
 
     /**
      * 我的课程入口
+     *
      * @return MyCourseFragment
      */
-    public static MyCourseFragment newInstance(){
+    public static MyCourseFragment newInstance() {
         MyCourseFragment fragment = new MyCourseFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
