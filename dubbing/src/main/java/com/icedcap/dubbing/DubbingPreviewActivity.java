@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.icedcap.dubbing.audio.AudioPlayHelper;
+import com.icedcap.dubbing.entity.SRTSubtitleEntity;
 import com.icedcap.dubbing.entity.SrtEntity;
 import com.icedcap.dubbing.listener.OnVideoEventListener;
 import com.icedcap.dubbing.utils.ProcessUtils;
@@ -54,6 +55,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private static long start;
     private int resPropertyValue;
     private long playTime;
+
     public static void launch(Activity who,
                               String videoFile,
                               String backgroundFile,
@@ -66,7 +68,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         intent.putExtra(EXTRA_BACKGROUND_FILE_PATH_KEY, backgroundFile);
         intent.putStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY, (ArrayList<String>) listRecordFile);
         intent.putParcelableArrayListExtra(EXTRA_SRT_SUBTITLE_KEY, (ArrayList) entity);
-        intent.putExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE,resPropertyValue);
+        intent.putExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE, resPropertyValue);
         who.startActivity(intent);
     }
 
@@ -120,7 +122,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     }
 
     private void matchingLrcText() {
-        if (mSRTEntities == null || mSRTEntities.size() == 0){
+        if (mSRTEntities == null || mSRTEntities.size() == 0) {
             return;
         }
         List<LrcEntry> lrcEntries = new ArrayList<>();
@@ -135,7 +137,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             lrcEntry = new LrcEntry(dubbingEntity.getStartTime(), dubbingEntity.getContent());
             lrcEntries.add(lrcEntry);
         }
-        videoTime = mSRTEntities.get(mSRTEntities.size()-1).getEndTime();
+        videoTime = mSRTEntities.get(mSRTEntities.size() - 1).getEndTime();
         lrcView.onLrcLoaded(lrcEntries);
     }
 
@@ -189,6 +191,10 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
                 mTime.setText(MediaUtil.generateTime(0, duration));
                 currentTimeTextView.setText(MediaUtil.generateTime(0));
                 totalTimeTextView.setText(MediaUtil.generateTime(duration));
+                mSRTEntities.get(mSRTEntities.size() - 1).setEndTime((int) duration);
+                if (duration > 0) {
+                    mDubbingVideoView.setEndTime((int) duration);
+                }
             }
 
             @Override
@@ -204,7 +210,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             }
 
             @Override
-            public void onVideoPause(){
+            public void onVideoPause() {
                 //暂停播放
                 if (mAudioHelper.isMediaPlaying()) {
                     mAudioHelper.onPause();
@@ -212,7 +218,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             }
 
             @Override
-            public void onVideoResume(){
+            public void onVideoResume() {
                 mAudioHelper.seekTo((int) playTime);
             }
 
@@ -246,7 +252,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         });
     }
 
-    private void initSeekBarView(){
+    private void initSeekBarView() {
         seekBar.setMax(videoTime);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -265,7 +271,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                lrcView.updateTime(seekBar.getProgress());
+                updateSrtTime(seekBar.getProgress());
                 mAudioHelper.seekTo(seekBar.getProgress());
                 mDubbingVideoView.dubbingSeekTo(seekBar.getProgress());
                 mDubbingVideoView.play();
@@ -281,8 +287,15 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         currentTimeTextView.setText(MediaUtil.generateTime(playTime));
         totalTimeTextView.setText(MediaUtil.generateTime(totalTime));
         seekBar.setProgress((int) playTime);
-        lrcView.updateTime(playTime);
+        updateSrtTime(playTime);
         seekBar.setProgress((int) playTime);
+    }
+
+    private void updateSrtTime(long playTime){
+        int startTime = mSRTEntities.get(0).getStartTime();
+        if (startTime - 1000 < playTime) {
+            lrcView.updateTime(playTime);
+        }
     }
 
     private void resetTime() {
@@ -321,7 +334,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         }
     }
 
-    private void backPress(){
+    private void backPress() {
         if (mDubbingVideoView.isPlaying()) {
             mDubbingVideoView.onPause();
         }
