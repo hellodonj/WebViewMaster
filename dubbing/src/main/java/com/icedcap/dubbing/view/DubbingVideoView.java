@@ -692,6 +692,10 @@ public class DubbingVideoView extends FrameLayout implements
         }
     }
 
+    public void setEndTime(int endTime){
+        this.endTime = endTime;
+    }
+
     class MediaPlayerInfoListener implements IMediaPlayer.OnInfoListener {
         @Override
         public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {

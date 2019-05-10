@@ -25,6 +25,7 @@ public class DubbingItemView extends LinearLayout {
     private TextView timeTextView;
     private ImageView playBtn;
     private ImageView recordBtn;
+    private ImageView downCountTimeView;
 
     private int max;
     private DecimalFormat decimalFormat;
@@ -43,6 +44,7 @@ public class DubbingItemView extends LinearLayout {
         recordBtn = (ImageView) findViewById(R.id.iv_record);
         timeTextView = (TextView) findViewById(R.id.tv_time);
         scoreTextView = (TextView) findViewById(R.id.tv_score);
+        downCountTimeView = (ImageView) findViewById(R.id.iv_down_time);
         // 格式化小数
         decimalFormat = new DecimalFormat("0.0");
     }
@@ -102,5 +104,13 @@ public class DubbingItemView extends LinearLayout {
 
     public ImageView getRecordBtn() {
         return recordBtn;
+    }
+
+    public ImageView getDownCountTimeView(){
+        return downCountTimeView;
+    }
+
+    public TextView getContentTextView(){
+        return contentTextView;
     }
 }

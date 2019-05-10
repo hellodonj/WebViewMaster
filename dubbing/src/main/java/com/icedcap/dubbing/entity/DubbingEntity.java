@@ -1,6 +1,7 @@
 package com.icedcap.dubbing.entity;
 
 import android.os.Parcel;
+import android.text.SpannableString;
 
 /**
  * @desc:
@@ -16,6 +17,7 @@ public class DubbingEntity extends SrtEntity {
     private boolean isSelect;
     private boolean isRecording;
     private boolean isRecordPlaying;
+    private SpannableString evalResult;
 
     public DubbingEntity() {
 
@@ -26,6 +28,14 @@ public class DubbingEntity extends SrtEntity {
         this.startTime = srtEntity.startTime;
         this.endTime = srtEntity.endTime;
         this.role = srtEntity.role;
+    }
+
+    public SpannableString getEvalResult() {
+        return evalResult;
+    }
+
+    public void setEvalResult(SpannableString evalResult) {
+        this.evalResult = evalResult;
     }
 
     public int getScore() {

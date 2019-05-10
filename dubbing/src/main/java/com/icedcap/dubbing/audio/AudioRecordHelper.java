@@ -43,6 +43,7 @@ public class AudioRecordHelper {
     private MediaPlayer mediaPlayer;
     private RawAudioRecorder audioRecorder;
     private CallbackListener listener;
+    private CallbackListener evalResultListener;
     private boolean needEvalAudio = true;
 
     public List<File> getMp3FileList() {
@@ -54,11 +55,14 @@ public class AudioRecordHelper {
     }
 
 
-    public AudioRecordHelper(Context context, CallbackListener listener) {
+    public AudioRecordHelper(Context context,
+                             CallbackListener listener,
+                             CallbackListener evalResultListener) {
         mp3FileList = new ArrayList<>();
         audioRefText = new ArrayList<>();
         this.context = context;
         this.listener = listener;
+        this.evalResultListener = evalResultListener;
     }
 
     public void startRecord(int position) {
@@ -150,13 +154,18 @@ public class AudioRecordHelper {
                 if (result == null || !result.isSuccess()) {
 //                    deleteFile(mp3FilePath);
 //                    TipMsgHelper.ShowMsg(context, context.getString(R.string.str_evaluate_fail));
-                    if (listener != null){
+                    if (listener != null && evalResultListener != null){
+                        evalResultListener.onBack("");
                         listener.onBack(0);
                     }
                     return;
                 }
                 int evalScore = Math.round(result.getScore());
-                if (listener != null) {
+                if (listener != null && evalResultListener != null) {
+                    JSONArray jsonArray = JSONArray.parseArray(result.getResult());
+                    if (jsonArray != null && jsonArray.size() > 0){
+                        evalResultListener.onBack(jsonArray.get(0).toString());
+                    }
                     listener.onBack(evalScore);
                 }
             }
