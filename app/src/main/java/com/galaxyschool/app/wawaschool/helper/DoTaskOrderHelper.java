@@ -1042,7 +1042,8 @@ public class DoTaskOrderHelper {
                                                                                 cardParam.getMarkModel().setTitle(courseData.nickname);
                                                                             }
                                                                             ApplyMarkHelper.enterApplyTeacherMarkActivity(mContext,
-                                                                                    courseData, cardParam.getMarkModel());
+                                                                                    courseData,
+                                                                                    cardParam.getMarkModel(), cardParam.isFromMyAssistantMark());
                                                                         } else {
                                                                             commitStudentCourse(userInfo, courseData);
                                                                         }

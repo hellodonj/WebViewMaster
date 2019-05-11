@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.adapter.TabSelectedAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.module.box.course.inner.MyCourseInnerFragment;
 import com.lqwawa.intleducation.module.box.tutorial.TutorialSpaceContract;
 import com.lqwawa.intleducation.module.box.tutorial.TutorialSpaceFragment;
@@ -33,6 +34,7 @@ import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragme
 import com.lqwawa.intleducation.module.discovery.ui.person.mycourse.CourseTitle;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseListPagerFragment;
 import com.lqwawa.intleducation.module.learn.vo.ChildrenListVo;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
@@ -43,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * @author medici
@@ -81,7 +84,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         mViewPager = (ViewPager) mRootView.findViewById(R.id.view_paper);
         mTextView = (TextView) mRootView.findViewById(R.id.tv_ask_question);
         mTextView.setOnClickListener(view -> {
-
+            enterMyApplyAssistantMarkDetail();
         });
     }
 
@@ -146,8 +149,8 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
             });
         } else {
             mTabLayout.setVisibility(View.GONE);
-            mTextView.setVisibility(View.VISIBLE);
         }
+        mTextView.setVisibility(View.VISIBLE);
     }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -182,6 +185,22 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
         public Parcelable saveState() {
             return null;
         }
+    }
+
+    /**
+     * 进入我要帮辅
+     */
+    private void enterMyApplyAssistantMarkDetail() {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        intent.setClassName(getContext().getPackageName(), "com.galaxyschool.app.wawaschool" +
+                ".OpenCourseHelpActivity");
+        QuestionResourceModel model = new QuestionResourceModel();
+        model.setStuMemberId(UserHelper.getUserId());
+        bundle.putBoolean("fromMyAssistantMark", true);
+        bundle.putSerializable(QuestionResourceModel.class.getSimpleName(), model);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     /**

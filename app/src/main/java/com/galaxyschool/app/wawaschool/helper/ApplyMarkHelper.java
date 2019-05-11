@@ -193,7 +193,8 @@ public class ApplyMarkHelper {
 
     public static void enterApplyTeacherMarkActivity(Context mContext,
                                                      CourseData courseData,
-                                                     QuestionResourceModel markModel) {
+                                                     QuestionResourceModel markModel,
+                                                     boolean isMyAssistantMark) {
         markModel.setResId(courseData.getIdType());
         markModel.setResUrl(courseData.resourceurl);
         TutorChoiceParams choiceParams = new TutorChoiceParams();
@@ -201,6 +202,7 @@ public class ApplyMarkHelper {
         choiceParams.setChapterId(String.valueOf(markModel.getT_ResCourseId()));
         choiceParams.setCourseId(markModel.getT_CourseId());
         choiceParams.setModel(markModel);
+        choiceParams.setMyAssistantMark(isMyAssistantMark);
         TutorChoiceActivity.show(mContext, choiceParams);
         ((Activity) mContext).finish();
     }

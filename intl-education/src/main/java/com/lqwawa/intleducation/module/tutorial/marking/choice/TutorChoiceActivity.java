@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.Presenter>
-    implements TutorChoiceContract.View,View.OnClickListener{
+        implements TutorChoiceContract.View, View.OnClickListener {
 
     private TopBar mTopBar;
     private PullToRefreshView mRefreshLayout;
@@ -46,6 +46,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     private String mChapterId;
     private QuestionResourceModel mResourceModel;
     private int pageIndex;
+    private boolean mIsMyAssistantMark;
 
     @Override
     protected TutorChoiceContract.Presenter initPresenter() {
@@ -60,24 +61,25 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
         mChoiceParams = (TutorChoiceParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-        if(EmptyUtil.isNotEmpty(mChoiceParams)){
+        if (EmptyUtil.isNotEmpty(mChoiceParams)) {
             mCurMemberId = mChoiceParams.getMemberId();
             mCourseId = mChoiceParams.getCourseId();
             mChapterId = mChoiceParams.getChapterId();
             mResourceModel = mChoiceParams.getModel();
+            mIsMyAssistantMark = mChoiceParams.isMyAssistantMark();
 
-            if(EmptyUtil.isEmpty(mCurMemberId) ||
-                    (EmptyUtil.isEmpty(mCourseId) && EmptyUtil.isEmpty(mChapterId))){
+            if (EmptyUtil.isEmpty(mCurMemberId) ||
+                    (EmptyUtil.isEmpty(mCourseId) && EmptyUtil.isEmpty(mChapterId))) {
                 return false;
             }
 
-            if(EmptyUtil.isNotEmpty(mCourseId)
-                    && Integer.parseInt(mCourseId) <= 0){
+            if (EmptyUtil.isNotEmpty(mCourseId)
+                    && Integer.parseInt(mCourseId) <= 0) {
                 mCourseId = "";
             }
 
-            if(EmptyUtil.isNotEmpty(mCourseId) &&
-                    Integer.parseInt(mChapterId) <= 0){
+            if (EmptyUtil.isNotEmpty(mCourseId) &&
+                    Integer.parseInt(mChapterId) <= 0) {
                 mChapterId = "";
             }
         }
@@ -101,7 +103,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
         mRecycler.setLayoutManager(mLayoutManager);
         mAdapter = new TutorChoiceAdapter();
         mRecycler.setAdapter(mAdapter);
-        mRecycler.addItemDecoration(new RecyclerItemDecoration(this,RecyclerItemDecoration.VERTICAL_LIST));
+        mRecycler.addItemDecoration(new RecyclerItemDecoration(this, RecyclerItemDecoration.VERTICAL_LIST));
 
         mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TutorChoiceEntity>() {
             @Override
@@ -109,9 +111,9 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 super.onItemClick(holder, tutorChoiceEntity);
                 List<TutorChoiceEntity> items = mAdapter.getItems();
                 for (TutorChoiceEntity item : items) {
-                    if(tutorChoiceEntity.equals(item)){
+                    if (tutorChoiceEntity.equals(item)) {
                         tutorChoiceEntity.setChecked(!tutorChoiceEntity.isChecked());
-                    }else{
+                    } else {
                         item.setChecked(false);
                     }
                 }
@@ -146,16 +148,21 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
 
     /**
      * 获取帮辅老师列表
+     *
      * @param moreData 是否更多数据
      */
-    private void requestTutorData(boolean moreData){
-        if(!moreData){
+    private void requestTutorData(boolean moreData) {
+        if (!moreData) {
             pageIndex = 0;
-        }else{
-            pageIndex ++;
+        } else {
+            pageIndex++;
         }
 
-        mPresenter.requestChoiceTutorData(mCurMemberId,mCourseId,mChapterId,pageIndex);
+        if (!mIsMyAssistantMark) {
+            mPresenter.requestChoiceTutorData(mCurMemberId, mCourseId, mChapterId, pageIndex);
+        } else {
+            mPresenter.requestChoiceTutorData(mCurMemberId, pageIndex);
+        }
     }
 
     @Override
@@ -166,11 +173,11 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
         filterEntities(entities);
         mAdapter.replace(entities);
 
-        if(EmptyUtil.isEmpty(entities)){
+        if (EmptyUtil.isEmpty(entities)) {
             // 数据为空
             mRecycler.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRecycler.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
@@ -190,14 +197,15 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
 
     /**
      * 过滤数据
+     *
      * @param entities 帮辅老师数据
      */
-    private void filterEntities(@NonNull List<TutorChoiceEntity> entities){
-        if(EmptyUtil.isNotEmpty(entities)){
+    private void filterEntities(@NonNull List<TutorChoiceEntity> entities) {
+        if (EmptyUtil.isNotEmpty(entities)) {
             ListIterator<TutorChoiceEntity> iterator = entities.listIterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 TutorChoiceEntity next = iterator.next();
-                if(TextUtils.equals(next.getMemberId(),UserHelper.getUserId())){
+                if (TextUtils.equals(next.getMemberId(), UserHelper.getUserId())) {
                     iterator.remove();
                 }
             }
@@ -207,11 +215,11 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.btn_confirm){
+        if (viewId == R.id.btn_confirm) {
             List<TutorChoiceEntity> items = mAdapter.getItems();
             boolean trigger = false;
             for (TutorChoiceEntity item : items) {
-                if(item.isChecked()){
+                if (item.isChecked()) {
                     trigger = true;
                     // 发送作业
                     final QuestionResourceModel model = mResourceModel;
@@ -219,12 +227,12 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                     model.setAssMemberId(item.getMemberId());
                     String object = JSON.toJSONString(model);
                     showLoading();
-                    mPresenter.requestAddAssistTask(item,object);
+                    mPresenter.requestAddAssistTask(item, object);
                     break;
                 }
             }
 
-            if(!trigger){
+            if (!trigger) {
                 UIUtil.showToastSafe(R.string.label_choice_tutor_tip);
             }
         }
@@ -234,7 +242,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
     public void updateAddAssistTaskView(@NonNull TutorChoiceEntity entity) {
         hideLoading();
         // 进入下一个页面
-        QuestionResultActivity.show(this,mCurMemberId,entity.getTutorName());
+        QuestionResultActivity.show(this, mCurMemberId, entity.getTutorName());
         finish();
     }
 
@@ -247,13 +255,14 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
 
     /**
      * 申请批阅选择入口
+     *
      * @param context 上下文对象
-     * @param params 参数
+     * @param params  参数
      */
-    public static void show(@NonNull Context context,@NonNull TutorChoiceParams params){
-        Intent intent = new Intent(context,TutorChoiceActivity.class);
+    public static void show(@NonNull Context context, @NonNull TutorChoiceParams params) {
+        Intent intent = new Intent(context, TutorChoiceActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

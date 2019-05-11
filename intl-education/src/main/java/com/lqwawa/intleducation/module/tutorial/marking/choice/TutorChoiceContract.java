@@ -20,6 +20,9 @@ public interface TutorChoiceContract {
                                     @Nullable String chapterId,
                                     int pageIndex);
 
+        void requestChoiceTutorData(@NonNull String memberId,
+                                    int pageIndex);
+
         // 提交提问
         void requestAddAssistTask(@NonNull TutorChoiceEntity entity,
                                   @NonNull String object);

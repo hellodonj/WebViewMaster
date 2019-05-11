@@ -64,4 +64,14 @@ public class TutorChoiceEntity implements Serializable {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
+
+    public static TutorChoiceEntity build(TutorEntity tutorEntity) {
+        TutorChoiceEntity tutorChoiceEntity = new TutorChoiceEntity();
+        if (tutorEntity != null) {
+            tutorChoiceEntity.headPicUrl = tutorEntity.getHeadPicUrl();
+            tutorChoiceEntity.tutorName = tutorEntity.getTutorName();
+            tutorChoiceEntity.memberId = tutorEntity.getTutorMemberId();
+        }
+        return tutorChoiceEntity;
+    }
 }
