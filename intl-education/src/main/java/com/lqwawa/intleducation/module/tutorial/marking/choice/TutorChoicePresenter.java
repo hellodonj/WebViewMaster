@@ -76,7 +76,7 @@ public class TutorChoicePresenter extends BasePresenter<TutorChoiceContract.View
 
     @Override
     public void requestChoiceTutorData(@NonNull String memberId, int pageIndex) {
-        CourseHelper.requestMyTutorData(memberId, "", pageIndex, AppConfig.PAGE_SIZE,
+        TutorialHelper.requestMyTutorData(memberId, "", pageIndex, AppConfig.PAGE_SIZE,
                 new DataSource.Callback<List<TutorEntity>>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {

@@ -622,56 +622,6 @@ public class CourseHelper {
     }
 
     /**
-     * 学生查询关注的助教列表
-     * @param memberId 用户Id
-     * @param tutorName 帮辅老师过滤条件
-     * @param pageIndex 当前页数
-     * @param pageSize 每页加载条数
-     */
-    public static void requestMyTutorData(@NonNull String memberId,
-                                          @Nullable String tutorName,
-                                          int pageIndex, int pageSize,
-                                          @NonNull DataSource.Callback<List<TutorEntity>> callback){
-        // 准备数据
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("memberId", memberId);
-        requestVo.addParams("pageIndex", pageIndex);
-        requestVo.addParams("pageSize",pageSize);
-        try{
-            requestVo.addParams("tutorName", URLEncoder.encode(tutorName, "UTF-8"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestTutorialByStudentId + requestVo.getParams());
-        params.setConnectTimeout(10000);
-        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
-        x.http().get(params, new StringCallback<String>() {
-
-            @Override
-            public void onSuccess(String str) {
-                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo<List<TutorEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorEntity>>>(){};
-                ResponseVo<List<TutorEntity>> responseVo = JSON.parseObject(str, typeReference);
-                if (responseVo.isSucceed()) {
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(responseVo.getData());
-                    }
-                } else {
-                    Factory.decodeRspCode(responseVo.getCode(), callback);
-                }
-            }
-
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
-                if (null != callback) {
-                    callback.onDataNotAvailable(R.string.net_error_tip);
-                }
-            }
-        });
-    }
-
-    /**
      * 查看课程的帮辅列表
      * @param courseId 课程Id
      * @param chapterId 资源Id

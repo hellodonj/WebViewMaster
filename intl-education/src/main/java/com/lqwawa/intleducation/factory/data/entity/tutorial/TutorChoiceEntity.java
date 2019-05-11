@@ -71,6 +71,8 @@ public class TutorChoiceEntity implements Serializable {
             tutorChoiceEntity.headPicUrl = tutorEntity.getHeadPicUrl();
             tutorChoiceEntity.tutorName = tutorEntity.getTutorName();
             tutorChoiceEntity.memberId = tutorEntity.getTutorMemberId();
+            tutorChoiceEntity.markingPrice = tutorEntity.getMarkingPrice();
+            tutorChoiceEntity.taskNum = tutorEntity.getTaskNum();
         }
         return tutorChoiceEntity;
     }

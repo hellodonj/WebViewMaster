@@ -108,6 +108,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 // 显示用户头像
                 String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getStuHeadPicUrl() + "").trim();
                 ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
+                mTvRequire.setVisibility(View.VISIBLE);
                 /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
                 mStudentName.setLayoutParams(layoutParams);*/
@@ -116,6 +117,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 // 显示用户头像
                 String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getAssHeadPicUrl() + "").trim();
                 ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
+                mTvRequire.setVisibility(taskEntity.getT_TaskId() > 0 ? View.VISIBLE : View.GONE);
                 /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),0);
                 mStudentName.setLayoutParams(layoutParams);*/

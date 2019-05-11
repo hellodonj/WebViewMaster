@@ -24,6 +24,8 @@ public class TutorEntity implements Serializable {
     private String tutorMemberId;
     private String tutorName;
     private String HeadPicUrl;
+    private String markingPrice;
+    private int taskNum;
 
     public String getCreateTime() {
         return createTime;
@@ -79,5 +81,23 @@ public class TutorEntity implements Serializable {
 
     public void setHeadPicUrl(String headPicUrl) {
         HeadPicUrl = headPicUrl;
+    }
+
+    public String getMarkingPrice() {
+        return markingPrice;
+    }
+
+    public TutorEntity setMarkingPrice(String markingPrice) {
+        this.markingPrice = markingPrice;
+        return this;
+    }
+
+    public int getTaskNum() {
+        return taskNum;
+    }
+
+    public TutorEntity setTaskNum(int taskNum) {
+        this.taskNum = taskNum;
+        return this;
     }
 }

@@ -493,6 +493,7 @@ public class OpenCourseHelpActivity extends BaseFragmentActivity {
         cardParam.setFromMyAssistantMark(true);
         cardParam.setMarkModel(model);
         ApplyMarkHelper.doApplyMarkTask(OpenCourseHelpActivity.this,cardParam);
+        finish();
     }
 
 }
