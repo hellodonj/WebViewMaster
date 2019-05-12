@@ -213,6 +213,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                 courseDetailTextV.setText(getString(R.string.str_look_origin_question));
             } else if (isAssistanceModel){
                 courseDetailTextV.setText(getString(R.string.str_look_task_require));
+                if (taskEntity != null && taskEntity.getT_TaskId() == 0){
+                    courseDetailTextV.setVisibility(View.INVISIBLE);
+                } else {
+                    courseDetailTextV.setVisibility(View.VISIBLE);
+                }
                 TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
                 if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
                     typeNameTextV.setText("《"+taskEntity.getT_CourseName() + "》");
