@@ -161,9 +161,11 @@ public class MOOCHelper {
         @Override
         public void enterTutorialHomePager(@NonNull Context context,
                                            @NonNull String tutorMemberId,
-                                           @NonNull String tutorName) {
+                                           @NonNull String tutorName,
+                                           String classId) {
             // 进入帮辅主页
             TutorialParams params = new TutorialParams(tutorMemberId,tutorName);
+            params.setClassId(classId);
             TutorialHomePageActivity.show(context, params);
         }
 

@@ -90,6 +90,8 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_CLASS_LESSON = 108;
         // 点评统计
         int TAB_ENTITY_TYPE_COMMENT_STATISTIC = 109;
+        // 班级帮辅
+        int TAB_ENTITY_TYPE_CLASS_TUTOR = 110;
     }
 
     protected String schoolId;

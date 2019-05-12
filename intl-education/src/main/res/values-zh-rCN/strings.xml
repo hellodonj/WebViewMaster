@@ -505,4 +505,8 @@
 
     <string name="user_comment">用户评论</string>
     <string name="to_ask_question">我要\n帮辅</string>
+    <string name="course_subject_colon">授课科目：</string>
+    <string name="delete_class_totur_info">你确定从班级帮辅中移除该辅导老师吗？</string>
+    <string name="class_tutor">班级帮辅</string>
+    <string name="add_class_tutor">+班级帮辅</string>
 </resources>

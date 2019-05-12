@@ -19,9 +19,11 @@ public interface TutorialCourseListContract {
         // 获取该帮辅老师的帮辅课程
         void requestTutorialCourseData(@NonNull String memberId, @Nullable String name,int type,int pageIndex);
         // 查询是否关注过该帮辅老师
-        void requestQueryAddedTutorState(@NonNull String memberId,@NonNull String tutorMemberId);
-        // 对帮辅老师进行关注
-        void requestAddTutorByStudentId(@NonNull String memberId,@NonNull String tutorMemberId,@NonNull String tutorName);
+        void requestQueryAddedTutorState(@NonNull String memberId,@NonNull String tutorMemberId,
+                                         String classId);
+        // 对帮辅(班级帮辅)老师进行关注
+        void requestAddTutor(@NonNull String memberId,@NonNull String tutorMemberId,
+                                        @NonNull String tutorName, String classId);
 
     }
 
@@ -29,7 +31,7 @@ public interface TutorialCourseListContract {
         void updateTutorialCourseView(@Nullable List<CourseVo> courseVos);
         void updateMoreTutorialCourseView(@Nullable List<CourseVo> courseVos);
         void updateQueryAddedTutorStateView(boolean added);
-        void updateAddTutorByStudentIdView(boolean result);
+        void updateAddTutorView(boolean result);
     }
 
 }

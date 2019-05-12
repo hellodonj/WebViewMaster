@@ -63,7 +63,7 @@ import java.util.List;
  * @desc 帮辅模式助教个人主页页面
  */
 public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePageContract.Presenter>
-    implements TutorialHomePageContract.View,View.OnClickListener{
+        implements TutorialHomePageContract.View, View.OnClickListener {
 
     private TopBar mTopBar;
     private ImageButton mIvBack;
@@ -74,6 +74,8 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private ImageView mIvQRCode;
     private ImageView mIvSex;
     private ImageView mIvAvatar;
+    private View mCourseSubjectLayout;
+    private TextView mTvCourseSubject;
 
     private View mIntroduceLayout;
     private TextView mTvContent;
@@ -88,7 +90,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private UserEntity mUserEntity;
     private String mQRCodeImageUrl;
     private String mQRCodeImagePath;
-
+    private String mCourseSubject;
 
     @Override
     protected TutorialHomePageContract.Presenter initPresenter() {
@@ -102,14 +104,14 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
+        if (bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mTutorialParams = (TutorialParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-            if(EmptyUtil.isNotEmpty(mTutorialParams)){
+            if (EmptyUtil.isNotEmpty(mTutorialParams)) {
                 mTutorMemberId = mTutorialParams.getTutorMemberId();
             }
         }
 
-        if(EmptyUtil.isEmpty(mTutorMemberId)){
+        if (EmptyUtil.isEmpty(mTutorMemberId)) {
             return false;
         }
 
@@ -141,6 +143,16 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         mTvContent.setTextColor(UIUtil.getColor(R.color.textPrimary));
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        mCourseSubjectLayout = findViewById(R.id.course_subject_layout);
+        mCourseSubjectLayout.setOnClickListener(view -> {
+            if (!TextUtils.isEmpty(mCourseSubject)) {
+                String title = getString(R.string.course_subject_colon);
+                WebActivity.start(true, this, mCourseSubject, title.substring(0,
+                        title.length() - 1));
+            }
+        });
+        mTvCourseSubject = (TextView) findViewById(R.id.tv_course_subject);
     }
 
     @Override
@@ -153,11 +165,12 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         fragments.add(TutorialCommentFragment.newInstance(mTutorialParams));
 
         mTabLayout.setupWithViewPager(mViewPager);
-        TutorialPagerAdapter adapter = new TutorialPagerAdapter(getSupportFragmentManager(),fragments);
+        TutorialPagerAdapter adapter = new TutorialPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(adapter);
 
         // 请求个人信息
         mPresenter.requestUserInfoWithUserId(mTutorMemberId);
+        mPresenter.requestTutorSubjectList(mTutorMemberId);
     }
 
     @Override
@@ -174,9 +187,9 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }
 
         // 多少人浏览
-        StringUtil.fillSafeTextView(mTvViewerCount,getString(R.string.label_viewer_count,entity.getBrowseNum()));
+        StringUtil.fillSafeTextView(mTvViewerCount, getString(R.string.label_viewer_count, entity.getBrowseNum()));
         // 多少人关注
-        StringUtil.fillSafeTextView(mTvAttentionCount,getString(R.string.label_attention_count,entity.getAttentionNumber()));
+        StringUtil.fillSafeTextView(mTvAttentionCount, getString(R.string.label_attention_count, entity.getAttentionNumber()));
 
         // 加载头像
         thumbnailManager.displayUserIcon(AppSettings.getFileUrl(
@@ -195,6 +208,19 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }
 
         updateSubscribeBar();
+    }
+
+    @Override
+    public void updateTutorSubjectView(List<String> subjectList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (subjectList != null && !subjectList.isEmpty()) {
+            for (int i = 0, size = subjectList.size(); i < size; i++) {
+                stringBuilder.append(subjectList.get(i));
+                stringBuilder.append(i != size - 1 ? "，" : "");
+            }
+        }
+        mCourseSubject = stringBuilder.toString();
+        mTvCourseSubject.setText(mCourseSubject);
     }
 
     private void updateSubscribeBar() {
@@ -225,13 +251,13 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
                 new Listener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(this == null) return;
+                        if (this == null) return;
                         // mIvQRCode.setImageBitmap(BitmapFactory.decodeFile(mQRCodeImagePath));
                     }
 
                     @Override
                     public void onError(NetroidError error) {
-                        if(this == null) return;
+                        if (this == null) return;
                         super.onError(error);
                         TipsHelper.showToast(TutorialHomePageActivity.this,
                                 R.string.picture_download_failed);
@@ -242,20 +268,20 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.iv_back){
+        if (viewId == R.id.iv_back) {
             // 返回
             finish();
-        }else if(viewId == R.id.tv_share){
+        } else if (viewId == R.id.tv_share) {
             // 分享
-            if(EmptyUtil.isEmpty(mUserEntity)) return;
-            if(!UserHelper.isLogin()){
+            if (EmptyUtil.isEmpty(mUserEntity)) return;
+            if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(this);
                 return;
             }
 
             sharePersonal();
-        }else if(viewId == R.id.iv_QR_code){
-            if(EmptyUtil.isEmpty(mUserEntity)) return;
+        } else if (viewId == R.id.iv_QR_code) {
+            if (EmptyUtil.isEmpty(mUserEntity)) return;
             String dialogDesc = mTvName.getText().toString();
             QRCodeDialogFragment.show(getSupportFragmentManager(),
                     getString(R.string.label_personal_qrcode),
@@ -265,19 +291,19 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
                             saveQrCodeImage(mQRCodeImageUrl);
                         }
                     });
-        }else if(viewId == R.id.introduce_layout){
+        } else if (viewId == R.id.introduce_layout) {
             // 个人介绍
             // UIUtil.showToastSafe("个人介绍");
             String introduces = mUserEntity.getPIntroduces();
-            if(EmptyUtil.isEmpty(introduces)){
-                if(TextUtils.equals(mTutorMemberId,UserHelper.getUserId())){
+            if (EmptyUtil.isEmpty(introduces)) {
+                if (TextUtils.equals(mTutorMemberId, UserHelper.getUserId())) {
                     introduces = getString(R.string.label_null_tutorial_introduces);
-                }else{
+                } else {
                     introduces = getString(R.string.label_empty_content);
                 }
-                WebActivity.start(true,this,introduces,getString(R.string.label_personal_introduce));
-            }else{
-                WebActivity.start(this,introduces,getString(R.string.label_personal_introduce),true);
+                WebActivity.start(true, this, introduces, getString(R.string.label_personal_introduce));
+            } else {
+                WebActivity.start(this, introduces, getString(R.string.label_personal_introduce), true);
             }
         }
     }
@@ -285,7 +311,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     /**
      * 分享操作
      */
-    private void sharePersonal(){
+    private void sharePersonal() {
         ShareInfo shareInfo = new ShareInfo();
         shareInfo.setTitle(mUserEntity.getNickName());
         if (!TextUtils.isEmpty(mUserEntity.getRealName())) {
@@ -293,7 +319,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }
 
         shareInfo.setContent(" ");
-        String shareUrl = AppConfig.ServerUrl.TutorialShare.replace("{memberId}",mTutorMemberId);
+        String shareUrl = AppConfig.ServerUrl.TutorialShare.replace("{memberId}", mTutorMemberId);
         shareInfo.setTargetUrl(shareUrl);
 
         UMImage umImage = null;
@@ -305,7 +331,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
 
         shareInfo.setuMediaObject(umImage);
         BaseShareUtils utils = new BaseShareUtils(this);
-        utils.share(this.getWindow().getDecorView(),shareInfo);
+        utils.share(this.getWindow().getDecorView(), shareInfo);
     }
 
     private void saveQrCodeImage(String QRCodeImageUrl) {
@@ -315,7 +341,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }
         String filePath = ImageLoader.saveImage(this, QRCodeImageUrl);
         if (filePath != null) {
-            TipsHelper.showToast(this,getString(R.string.image_saved_to, filePath));
+            TipsHelper.showToast(this, getString(R.string.image_saved_to, filePath));
         } else {
             TipsHelper.showToast(this, getString(R.string.save_failed));
         }
@@ -325,9 +351,9 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LoginHelper.RS_LOGIN) {
-            if(UserHelper.isLogin()) {
+            if (UserHelper.isLogin()) {
                 // 重新进入该页面
-                TutorialHomePageActivity.show(this,mTutorialParams);
+                TutorialHomePageActivity.show(this, mTutorialParams);
                 finish();
             }
         }
@@ -335,16 +361,16 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
 
     /**
      * 申请成为帮辅，注册信息的入口
+     *
      * @param context 上下文对象
      */
-    public static void show(@NonNull final Context context,@NonNull TutorialParams params){
+    public static void show(@NonNull final Context context, @NonNull TutorialParams params) {
         Intent intent = new Intent(context, TutorialHomePageActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
-
 
 
     private class TutorialPagerAdapter extends FragmentPagerAdapter {

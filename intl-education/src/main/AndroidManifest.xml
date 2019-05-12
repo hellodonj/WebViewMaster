@@ -947,11 +947,17 @@
             android:name=".module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
-        
+
         <!--视频馆视频详情页面-->
         <activity
             android:name=".module.discovery.ui.videodetail.VideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+        
+        <!--班级帮辅-->
+        <activity
+            android:name=".module.tutorial.classtutor.ClassTutorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
     </application>

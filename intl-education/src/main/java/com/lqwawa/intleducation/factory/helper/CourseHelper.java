@@ -249,19 +249,19 @@ public class CourseHelper {
                                           @NonNull final DataSource.Callback<NotPurchasedChapterEntity> callback) {
 
         RequestVo requestVo = new RequestVo();
-        if(EmptyUtil.isEmpty(courseId) && EmptyUtil.isEmpty(id)){
+        if (EmptyUtil.isEmpty(courseId) && EmptyUtil.isEmpty(id)) {
             return;
         }
 
         // String memberId = UserHelper.getUserId();
-        requestVo.addParams("memberId",memberId);
+        requestVo.addParams("memberId", memberId);
 
-        if(EmptyUtil.isNotEmpty(courseId)){
-            requestVo.addParams("courseId",courseId);
+        if (EmptyUtil.isNotEmpty(courseId)) {
+            requestVo.addParams("courseId", courseId);
         }
 
-        if(EmptyUtil.isNotEmpty(id)){
-            requestVo.addParams("id",id);
+        if (EmptyUtil.isNotEmpty(id)) {
+            requestVo.addParams("id", id);
         }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetNotPurchasedChapter + requestVo.getParams());
         params.setConnectTimeout(10000);
@@ -269,7 +269,8 @@ public class CourseHelper {
 
             @Override
             public void onSuccess(String str) {
-                NotPurchasedChapterEntity vo = JSON.parseObject(str, new TypeReference<NotPurchasedChapterEntity>() {});
+                NotPurchasedChapterEntity vo = JSON.parseObject(str, new TypeReference<NotPurchasedChapterEntity>() {
+                });
                 if (vo.isSucceed()) {
                     List<CourseVo> voList = vo.getCourse();
                     if (voList != null && voList.size() > 0) {
@@ -299,8 +300,8 @@ public class CourseHelper {
      * @param callback 请求回调对象
      */
     public static void isBindClass(@Nullable String token,
-                                                @NonNull String courseId,
-                                                @NonNull final DataSource.Callback<LQCourseBindClassEntity> callback) {
+                                   @NonNull String courseId,
+                                   @NonNull final DataSource.Callback<LQCourseBindClassEntity> callback) {
 
         RequestVo requestVo = new RequestVo();
         if (!TextUtils.isEmpty(token)) {
@@ -336,13 +337,13 @@ public class CourseHelper {
     /**
      * 获取课程状态
      *
-     * @param memberId    如果是家长，token不为空,家长传孩子的memberId
+     * @param memberId 如果是家长，token不为空,家长传孩子的memberId
      * @param courseId 课程Id
      * @param callback 请求回调对象
      */
     public static void requestCourseStatus(@Nullable String memberId,
-                                   @NonNull String courseId,
-                                   @NonNull final DataSource.Callback<CourseRouteEntity> callback) {
+                                           @NonNull String courseId,
+                                           @NonNull final DataSource.Callback<CourseRouteEntity> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
@@ -357,7 +358,8 @@ public class CourseHelper {
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<ResponseVo<CourseRouteEntity>> typeReference = new TypeReference<ResponseVo<CourseRouteEntity>>(){};
+                TypeReference<ResponseVo<CourseRouteEntity>> typeReference = new TypeReference<ResponseVo<CourseRouteEntity>>() {
+                };
                 ResponseVo<CourseRouteEntity> responseVo = JSON.parseObject(str, typeReference);
                 if (responseVo.isSucceed()) {
                     if (callback != null) {
@@ -379,10 +381,11 @@ public class CourseHelper {
 
     /**
      * 更新全本
+     *
      * @param memberId 如果是家长，token不为空,家长传孩子的memberId
      * @param courseId 课程Id
      * @param schoolId 机构Id
-     * @param classId 班级Id
+     * @param classId  班级Id
      * @param callback 请求回调对象
      */
     public static void requestJoinInCourse(@Nullable String memberId,
@@ -393,8 +396,8 @@ public class CourseHelper {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
-        requestVo.addParams("schoolId",schoolId);
-        requestVo.addParams("classId",classId);
+        requestVo.addParams("schoolId", schoolId);
+        requestVo.addParams("classId", classId);
         if (EmptyUtil.isNotEmpty(memberId)) {
             // 是家长身份,那就传学生 memberId
             requestVo.addParams("token", memberId);
@@ -406,9 +409,10 @@ public class CourseHelper {
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>(){};
+                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>() {
+                };
                 ResponseVo<Boolean> responseVo = JSON.parseObject(str, typeReference);
-                if(EmptyUtil.isNotEmpty(callback)){
+                if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataLoaded(responseVo.isSucceed());
                 }
             }
@@ -422,25 +426,26 @@ public class CourseHelper {
 
     /**
      * 加入课程
-     * @param courseId 课程Id
-     * @param type 类型 精品学程传3
+     *
+     * @param courseId     课程Id
+     * @param type         类型 精品学程传3
      * @param isBackground 是否静默加入
-     * @param schoolId 机构id
-     * @param classId 班级id
-     * @param callback 请求回调对象
+     * @param schoolId     机构id
+     * @param classId      班级id
+     * @param callback     请求回调对象
      */
     public static void requestJoinInCourse(@NonNull String courseId,
                                            int type,
                                            final boolean isBackground,
                                            @Nullable String schoolId,
                                            @NonNull String classId,
-                                           @NonNull final DataSource.SucceedCallback<Boolean> callback){
+                                           @NonNull final DataSource.SucceedCallback<Boolean> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
-        requestVo.addParams("type",type);
-        requestVo.addParams("shcoolId",schoolId);
-        requestVo.addParams("classId",classId);
+        requestVo.addParams("type", type);
+        requestVo.addParams("shcoolId", schoolId);
+        requestVo.addParams("classId", classId);
 
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.joinInCourse + requestVo.getParams());
@@ -448,18 +453,19 @@ public class CourseHelper {
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>(){};
+                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>() {
+                };
                 ResponseVo<Boolean> responseVo = JSON.parseObject(str, typeReference);
 
-                if(!isBackground){
-                    if(responseVo.isSucceed()){
+                if (!isBackground) {
+                    if (responseVo.isSucceed()) {
                         UIUtil.showToastSafe(R.string.join_success);
-                    }else{
+                    } else {
                         UIUtil.showToastSafe(R.string.join_failed);
                     }
                 }
 
-                if(EmptyUtil.isNotEmpty(callback)){
+                if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataLoaded(responseVo.isSucceed());
                 }
             }
@@ -474,9 +480,10 @@ public class CourseHelper {
 
     /**
      * 检查用户是否可以购买某个课堂
+     *
      * @param courseId 课程Id
      * @param memberId 用户Id
-     * @param type 0 课程 3 空中课堂
+     * @param type     0 课程 3 空中课堂
      * @param callback 请求回调对象
      */
     public static void requestCheckCourseBuy(@NonNull int courseId,
@@ -495,12 +502,13 @@ public class CourseHelper {
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>(){};
+                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>() {
+                };
                 ResponseVo<Boolean> responseVo = JSON.parseObject(str, typeReference);
-                if(EmptyUtil.isNotEmpty(callback)){
-                    if(responseVo.isSucceed()){
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    if (responseVo.isSucceed()) {
                         callback.onDataLoaded(true);
-                    }else{
+                    } else {
                         UIUtil.showToastSafe(responseVo.getMessage());
                     }
                 }
@@ -517,27 +525,29 @@ public class CourseHelper {
 
     /**
      * 加入课程
-     * @param courseId 课程Id
-     * @param type 类型 精品学程传3
+     *
+     * @param courseId     课程Id
+     * @param type         类型 精品学程传3
      * @param isBackground 是否静默加入
-     * @param callback 请求回调对象
+     * @param callback     请求回调对象
      */
     public static void requestJoinInCourse(@NonNull String courseId,
                                            int type,
                                            final boolean isBackground,
                                            @NonNull final DataSource.SucceedCallback<Boolean> callback) {
-        requestJoinInCourse(courseId,type,isBackground,null,null,callback);
+        requestJoinInCourse(courseId, type, isBackground, null, null, callback);
     }
 
     /**
      * 加入课程
-     * @param courseId 课程Id
+     *
+     * @param courseId     课程Id
      * @param isBackground 是否静默加入
-     * @param callback 请求回调对象
+     * @param callback     请求回调对象
      */
     public static void requestReJoinInCourse(@NonNull String courseId,
-                                           final boolean isBackground,
-                                           @NonNull final DataSource.SucceedCallback<Boolean> callback) {
+                                             final boolean isBackground,
+                                             @NonNull final DataSource.SucceedCallback<Boolean> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
@@ -548,18 +558,19 @@ public class CourseHelper {
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>(){};
+                TypeReference<ResponseVo<Boolean>> typeReference = new TypeReference<ResponseVo<Boolean>>() {
+                };
                 ResponseVo<Boolean> responseVo = JSON.parseObject(str, typeReference);
 
-                if(!isBackground){
-                    if(responseVo.isSucceed()){
+                if (!isBackground) {
+                    if (responseVo.isSucceed()) {
                         UIUtil.showToastSafe(R.string.join_success);
-                    }else{
+                    } else {
                         UIUtil.showToastSafe(R.string.join_failed);
                     }
                 }
 
-                if(EmptyUtil.isNotEmpty(callback)){
+                if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataLoaded(responseVo.isSucceed());
                 }
             }
@@ -573,20 +584,21 @@ public class CourseHelper {
 
     /**
      * 获取课程助教列表
+     *
      * @param courseId 课程Id
      * @param memberId 用户Id
-     * @type 1 课程 2 课堂
      * @param callback 请求回调对象
+     * @type 1 课程 2 课堂
      */
     public static void requestTutorDataByCourseId(@NonNull String courseId,
                                                   @NonNull String memberId,
                                                   int type,
-                                                  int pageIndex,int pageSize,
+                                                  int pageIndex, int pageSize,
                                                   @NonNull final DataSource.Callback<List<TutorialGroupEntity>> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
-        if(EmptyUtil.isNotEmpty(memberId)) {
+        if (EmptyUtil.isNotEmpty(memberId)) {
             requestVo.addParams("memberId", memberId);
         }
         requestVo.addParams("type", type);
@@ -599,15 +611,16 @@ public class CourseHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>(){};
+                TypeReference<ResponseVo<List<TutorialGroupEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorialGroupEntity>>>() {
+                };
                 ResponseVo<List<TutorialGroupEntity>> responseVo = JSON.parseObject(str, typeReference);
-                if(responseVo.isSucceed()) {
+                if (responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
                     }
-                }else{
+                } else {
                     if (EmptyUtil.isNotEmpty(callback)) {
-                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                        Factory.decodeRspCode(responseVo.getCode(), callback);
                     }
                 }
             }
@@ -621,25 +634,27 @@ public class CourseHelper {
         });
     }
 
+
     /**
      * 查看课程的帮辅列表
-     * @param courseId 课程Id
+     *
+     * @param courseId  课程Id
      * @param chapterId 资源Id
-     * @param memberId 用户Id
-     * @param callback 请求回调对象
+     * @param memberId  用户Id
+     * @param callback  请求回调对象
      */
     public static void requestTutorsByCourseId(@NonNull String memberId,
                                                @Nullable String courseId,
                                                @Nullable String chapterId,
-                                               int pageIndex,int pageSize,
+                                               int pageIndex, int pageSize,
                                                @NonNull final DataSource.Callback<List<TutorChoiceEntity>> callback) {
 
         RequestVo requestVo = new RequestVo();
-        if(EmptyUtil.isNotEmpty(courseId)) {
+        if (EmptyUtil.isNotEmpty(courseId)) {
             requestVo.addParams("courseId", courseId);
         }
 
-        if(EmptyUtil.isNotEmpty(chapterId)){
+        if (EmptyUtil.isNotEmpty(chapterId)) {
             requestVo.addParams("chapterId", chapterId);
         }
         requestVo.addParams("memberId", memberId);
@@ -654,15 +669,16 @@ public class CourseHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo<List<TutorChoiceEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorChoiceEntity>>>(){};
+                TypeReference<ResponseVo<List<TutorChoiceEntity>>> typeReference = new TypeReference<ResponseVo<List<TutorChoiceEntity>>>() {
+                };
                 ResponseVo<List<TutorChoiceEntity>> responseVo = JSON.parseObject(str, typeReference);
-                if(responseVo.isSucceed()) {
+                if (responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
                     }
-                }else{
+                } else {
                     if (EmptyUtil.isNotEmpty(callback)) {
-                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                        Factory.decodeRspCode(responseVo.getCode(), callback);
                     }
                 }
             }
@@ -678,6 +694,7 @@ public class CourseHelper {
 
     /**
      * 查看该用户是否是某课程的帮辅老师
+     *
      * @param courseId 课程Id
      * @param memberId 用户Id
      * @param callback 请求回调对象
@@ -698,9 +715,10 @@ public class CourseHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>() {
+                };
                 CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
-                if(responseVo.isSucceed()) {
+                if (responseVo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         CourseTutorResponseVo.CourseTutorEntity entity = new CourseTutorResponseVo.CourseTutorEntity();
                         entity.setTutorCourse(responseVo.isTutorCourse());
@@ -719,19 +737,20 @@ public class CourseHelper {
 
     /**
      * 申请课程帮辅老师
-     * @param memberId 帮辅Id
-     * @param courseId 课程Id
-     * @param type 1 课程 2 课堂
+     *
+     * @param memberId           帮辅Id
+     * @param courseId           课程Id
+     * @param type               1 课程 2 课堂
      * @param isOrganTutorStatus 是否已经是该机构的帮辅老师  -1 未申请过，0 正在申请当中 1已经是机构的帮辅老师
-     * @param realName 真实姓名,
-     * @param markingPrice 批阅价格
-     * @param provinceId 省份Id
-     * @param provinceName 省份名称
-     * @param cityId 城市Id
-     * @param cityName 城市名称
-     * @param countyId 区Id
-     * @param countyName 区名称
-     * @param isLqOrganTutor 是否已经是机构帮辅
+     * @param realName           真实姓名,
+     * @param markingPrice       批阅价格
+     * @param provinceId         省份Id
+     * @param provinceName       省份名称
+     * @param cityId             城市Id
+     * @param cityName           城市名称
+     * @param countyId           区Id
+     * @param countyName         区名称
+     * @param isLqOrganTutor     是否已经是机构帮辅
      */
     public static void requestApplyForCourseTutor(@NonNull String memberId,
                                                   @NonNull int courseId,
@@ -782,7 +801,8 @@ public class CourseHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(CourseHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>(){};
+                TypeReference<CourseTutorResponseVo> typeReference = new TypeReference<CourseTutorResponseVo>() {
+                };
                 CourseTutorResponseVo responseVo = JSON.parseObject(str, typeReference);
 
                 if (EmptyUtil.isNotEmpty(callback)) {
@@ -790,8 +810,8 @@ public class CourseHelper {
                     callback.onDataLoaded(responseVo.isTutor());
                 }
 
-                if(!responseVo.isSucceed() || !responseVo.isTutor()){
-                    if(EmptyUtil.isNotEmpty(responseVo.getMessage())){
+                if (!responseVo.isSucceed() || !responseVo.isTutor()) {
+                    if (EmptyUtil.isNotEmpty(responseVo.getMessage())) {
                         UIUtil.showToastSafe(responseVo.getMessage());
                     }
                 }

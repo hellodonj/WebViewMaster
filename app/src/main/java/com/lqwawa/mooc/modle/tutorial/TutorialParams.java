@@ -10,6 +10,7 @@ public class TutorialParams implements Serializable {
     private String tutorMemberId;
     private String tutorName;
     private boolean isTutorialMarkedEnter;
+    private String classId;
 
     public TutorialParams(String tutorMemberId) {
         this(tutorMemberId,null);
@@ -34,5 +35,14 @@ public class TutorialParams implements Serializable {
 
     public void setTutorialMarkedEnter(boolean tutorialMarkedEnter) {
         isTutorialMarkedEnter = tutorialMarkedEnter;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public TutorialParams setClassId(String classId) {
+        this.classId = classId;
+        return this;
     }
 }

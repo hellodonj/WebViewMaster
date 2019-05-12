@@ -884,6 +884,17 @@ public final class AppConfig {
         public static final String GetTutorListByCourseId =
                 ServerBase + "api/tutor/getTutorListByCourseId?j=";
 
+        // 添加班级帮辅
+        public static final String PostAddClassTutor =
+                ServerBase + "api/tutor/addClassTutor";
+        // 添加班级帮辅
+        public static final String PostDeleteClassTutor =
+                ServerBase + "api/tutor/deleteClassTutor";
+
+        // 获取班级帮辅列表
+        public static final String PostGetClassTutorList =
+                ServerBase + "api/tutor/getClassTutorList ";
+
         // 申请加入课程的帮辅
         public static final String GetApplyForCourseTutor =
                 ServerBase + "api/tutor/applyCourseTutor?j=";
@@ -927,6 +938,10 @@ public final class AppConfig {
         // 对视频发表评论
         public static final String PostAddVideoComment =
                 ServerBase + "api/tComment/addComment";
+
+        // 获取帮辅科目
+        public static final String PostGetTutorSubjectList =
+                ServerBase + "api/config/getTutorSubjectList";
 
     }
 }

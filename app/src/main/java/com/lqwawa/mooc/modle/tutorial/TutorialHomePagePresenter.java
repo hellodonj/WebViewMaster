@@ -49,4 +49,26 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
             }
         });
     }
+
+    @Override
+    public void requestTutorSubjectList(@NonNull String tutorMemberId) {
+        UserHelper.requestTutorSubjectList(tutorMemberId, new DataSource.Callback<List<String>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<String> subjects) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view) &&
+                        EmptyUtil.isNotEmpty(subjects)){
+                    view.updateTutorSubjectView(subjects);
+                }
+            }
+        });
+    }
 }

@@ -28,6 +28,16 @@ public class TutorialGroupEntity implements Serializable {
         this.taskNum = markingNum;
     }
 
+    // 字段转换 班级帮辅
+    public void buildClassTutor() {
+        this.addedTutor = hasAttention;
+//        this.HeadPicUrl = HeadPicUrl;
+        this.createId = memberId;
+        this.createName = realName;
+//        this.taskNum = taskNum;
+    }
+
+
 
     public boolean isAddedTutor() {
         return addedTutor;
@@ -192,5 +202,21 @@ public class TutorialGroupEntity implements Serializable {
 
     public void setVerifyStatus(int verifyStatus) {
         this.verifyStatus = verifyStatus;
+    }
+
+//    private String headPicUrl;
+//    private String memberId;
+//    private int taskNum;
+    private String realName;
+//    private boolean hasAttention;
+
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public TutorialGroupEntity setRealName(String realName) {
+        this.realName = realName;
+        return this;
     }
 }

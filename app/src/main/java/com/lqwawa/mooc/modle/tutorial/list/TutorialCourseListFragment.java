@@ -18,8 +18,6 @@ import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
@@ -29,8 +27,6 @@ import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 
 import com.galaxyschool.app.wawaschool.R;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +35,7 @@ import java.util.List;
  * 帮辅主页帮辅课程页面
  */
 public class TutorialCourseListFragment extends PresenterFragment<TutorialCourseListContract.Presenter>
-    implements TutorialCourseListContract.View,View.OnClickListener{
+        implements TutorialCourseListContract.View, View.OnClickListener {
 
     private PullToRefreshView mRefreshLayout;
     private ListView mListView;
@@ -51,12 +47,13 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
     private TutorialParams mTutorialParams;
     private String mTutorMemberId;
     private String mTutorName;
-    private int pageIndex;
+    private int mPageIndex;
+    private String mClassId;
 
-    public static Fragment newInstance(@NonNull TutorialParams params){
+    public static Fragment newInstance(@NonNull TutorialParams params) {
         Fragment fragment = new TutorialCourseListFragment();
         Bundle arguments = new Bundle();
-        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT,params);
+        arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -73,15 +70,16 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        if(bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)){
+        if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mTutorialParams = (TutorialParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
-            if(EmptyUtil.isNotEmpty(mTutorialParams)){
+            if (EmptyUtil.isNotEmpty(mTutorialParams)) {
                 mTutorMemberId = mTutorialParams.getTutorMemberId();
                 mTutorName = mTutorialParams.getTutorName();
+                mClassId = mTutorialParams.getClassId();
             }
         }
 
-        if(EmptyUtil.isEmpty(mTutorMemberId)){
+        if (EmptyUtil.isEmpty(mTutorMemberId)) {
             return false;
         }
 
@@ -97,6 +95,8 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         mBottomLayout = (LinearLayout) mRootView.findViewById(R.id.bottom_layout);
         mBtnAddTutorial = (Button) mRootView.findViewById(R.id.btn_add_tutorial);
         mBtnAddTutorial.setOnClickListener(this);
+        mBtnAddTutorial.setText(!TextUtils.isEmpty(mClassId) ? R.string.add_class_tutor :
+                R.string.label_add_tutorial);
 
         // 下拉刷新
         mRefreshLayout.setLastUpdated(new Date().toLocaleString());
@@ -118,7 +118,7 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!UserHelper.isLogin()){
+                if (!UserHelper.isLogin()) {
                     LoginHelper.enterLogin(getActivity());
                     return;
                 }
@@ -135,26 +135,27 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         requestCourseData(false);
         // 如果当前帮辅老师与自己是同一个人，隐藏按钮
         boolean tutorialMode = MainApplication.isTutorialMode();
-        if(UserHelper.getUserId().equals(mTutorMemberId) || tutorialMode){
+        if (UserHelper.getUserId().equals(mTutorMemberId) || tutorialMode) {
             mBottomLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             // 不相等，不是查看自己个人主页
             // 查询是否已经加入该帮辅
-            mPresenter.requestQueryAddedTutorState(UserHelper.getUserId(),mTutorMemberId);
+            mPresenter.requestQueryAddedTutorState(UserHelper.getUserId(), mTutorMemberId, mClassId);
         }
     }
 
     /**
      * 请求列表数据
+     *
      * @param moreData 是否加载更多
      */
-    private void requestCourseData(boolean moreData){
-        if(moreData){
-            pageIndex ++;
-            mPresenter.requestTutorialCourseData(mTutorMemberId,"",1,pageIndex);
-        }else{
-            pageIndex = 0;
-            mPresenter.requestTutorialCourseData(mTutorMemberId,"",1,pageIndex);
+    private void requestCourseData(boolean moreData) {
+        if (moreData) {
+            mPageIndex++;
+            mPresenter.requestTutorialCourseData(mTutorMemberId, "", 1, mPageIndex);
+        } else {
+            mPageIndex = 0;
+            mPresenter.requestTutorialCourseData(mTutorMemberId, "", 1, mPageIndex);
         }
     }
 
@@ -167,11 +168,11 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         mAdapter.setData(courseVos);
         mListView.setAdapter(mAdapter);
 
-        if(EmptyUtil.isEmpty(courseVos)){
+        if (EmptyUtil.isEmpty(courseVos)) {
             // 数据为空
             mListView.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mListView.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
@@ -193,38 +194,40 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         // 广播出去,判断是否显示评论框
         // 需求更改,只有批阅过后的入口显示评论框
         // EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
-        if(added){
-           mBottomLayout.setVisibility(View.GONE);
-        }else{
-           mBottomLayout.setVisibility(View.VISIBLE);
+        if (added) {
+            mBottomLayout.setVisibility(View.GONE);
+        } else {
+            mBottomLayout.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void onClick(View view){
-        int viewId = view.getId();
-        if(viewId == R.id.btn_add_tutorial){
-            // 先判断是否登录
-            if(!UserHelper.isLogin()){
-                LoginHelper.enterLogin(getActivity());
-                return;
-            }
-            // 加帮辅
-            mPresenter.requestAddTutorByStudentId(UserHelper.getUserId(),mTutorMemberId,mTutorName);
-        }
-    }
-
-    @Override
-    public void updateAddTutorByStudentIdView(boolean result) {
-        if(result){
+    public void updateAddTutorView(boolean result) {
+        if (result) {
             // 加帮辅成功
             mBottomLayout.setVisibility(View.GONE);
             // 广播出去,判断是否显示评论框
             // EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
 
             UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
-        }else{
+        } else {
             UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+        if (viewId == R.id.btn_add_tutorial) {
+            // 先判断是否登录
+            if (!UserHelper.isLogin()) {
+                LoginHelper.enterLogin(getActivity());
+                return;
+            }
+
+            // 加帮辅(班级帮辅)
+            mPresenter.requestAddTutor(UserHelper.getUserId(), mTutorMemberId,
+                    mTutorName, mClassId);
         }
     }
 

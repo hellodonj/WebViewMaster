@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codingmaster.slib.S;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -25,9 +26,14 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
     private EntityCallback mCallback;
+    private boolean isClassTutor;
 
     public TutorialGroupAdapter(EntityCallback mCallback) {
         this.mCallback = mCallback;
+    }
+
+    public void setIsClassTutor(boolean isClassTutor) {
+       this.isClassTutor = isClassTutor;
     }
 
     @Override
@@ -83,6 +89,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
             mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            mTvAddTutorial.setText(!isClassTutor ? R.string.label_add_tutorial : R.string.add_class_tutor);
 
             mTvAddTutorial.setOnClickListener(v -> {
                 if(EmptyUtil.isNotEmpty(mCallback)){

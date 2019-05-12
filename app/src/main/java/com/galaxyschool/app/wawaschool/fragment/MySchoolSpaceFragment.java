@@ -78,6 +78,7 @@ import com.lqwawa.intleducation.module.discovery.ui.HQCCourseListActivity;
 import com.lqwawa.intleducation.module.spanceschool.SchoolFunctionStateType;
 import com.lqwawa.intleducation.module.spanceschool.SpaceSchoolHolderFragment;
 import com.lqwawa.intleducation.module.spanceschool.pager.SchoolFunctionPagerNavigator;
+import com.lqwawa.intleducation.module.tutorial.classtutor.ClassTutorActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -625,6 +626,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.resId = R.drawable.banjixiangqing;
         itemList.add(item);
 
+        //班级帮辅
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_TUTOR;
+        item.title = getString(R.string.class_tutor);
+        item.resId = R.drawable.ic_class_tutor;
+        itemList.add(item);
+
         getAdapterViewHelper(this.newlyClassGridViewTag).setData(itemList);
     }
 
@@ -954,6 +962,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_COMMENT_STATISTIC:
                 CommentStatisticActivity.start(getActivity(), classInfo);
                 break;
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_TUTOR:
+                ClassTutorActivity.start(getContext(), getMemeberId(), classInfo.getClassId(),
+                        classInfo.isHeadMaster());
             default:
                 break;
         }

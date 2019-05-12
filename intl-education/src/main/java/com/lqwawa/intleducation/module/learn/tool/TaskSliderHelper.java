@@ -51,34 +51,38 @@ public class TaskSliderHelper {
     public static OnWorkCartListener onWorkCartListener = null;
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
 
-    public interface OnTutorialMarkingListener{
+    public interface OnTutorialMarkingListener {
 
         void enterOnlineSchoolSpaceActivity(@NonNull Context context,
                                             @NonNull String schoolId);
 
         void enterTutorialHomePager(@NonNull Context context,
-                                           @NonNull String tutorMemberId,
-                                           @NonNull String tutorName);
+                                    @NonNull String tutorMemberId,
+                                    @NonNull String tutorName,
+                                    String classId);
 
         void openAssistanceMark(@NonNull Activity activity,
                                 @NonNull TaskEntity entity,
                                 @NonNull @TutorialRoleType.TutorialRoleRes String roleType);
 
-        void openCourseWareDetails(@NonNull Activity activity,boolean isAudition,
-                                          @NonNull String resId, int resType,
-                                          @NonNull String resTitle, int screenType,
-                                          @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl);
+        void openCourseWareDetails(@NonNull Activity activity, boolean isAudition,
+                                   @NonNull String resId, int resType,
+                                   @NonNull String resTitle, int screenType,
+                                   @NonNull String resourceUrl, @Nullable String resourceThumbnailUrl);
 
         void skipMyCourseQuestionWork(@NonNull Activity activity);
     }
 
-    public interface OnWorkCartListener{
+    public interface OnWorkCartListener {
         // 添加到任务库
         void putResourceToCart(@NonNull ArrayList<SectionResListVo> choiceArray, int taskType);
+
         // 清除所有任务库的资源内容
         void clearCartResource();
+
         // 获取任务库的资源数目
         int takeTaskCount();
+
         // 跳转综合任务
         void enterIntroTaskDetailActivity(@NonNull Activity activity,
                                           @NonNull String schoolId,
@@ -87,7 +91,7 @@ public class TaskSliderHelper {
     }
 
     public interface OnTaskSliderListener {
-        void doExamTask(Activity activity, String resId, int sourceType,String name);
+        void doExamTask(Activity activity, String resId, int sourceType, String name);
 
         void viewCourse(Activity activity, String resId, int resType,
                         String schoolId, int sourceType);
@@ -125,7 +129,7 @@ public class TaskSliderHelper {
          * @param isHeadMaster       班主任的角色
          * @param isOnlineHost       小编
          * @param isOnlineReporter   主编
-         * @param studentName         列表提交的学生的姓名
+         * @param studentName        列表提交的学生的姓名
          * @param studentId          列表提交色学生studentId
          * @param commitTaskId       列表item的commitTaskId
          */
@@ -195,7 +199,7 @@ public class TaskSliderHelper {
      * @param isHeadMaster       班主任的角色
      * @param isOnlineHost       小编
      * @param isOnlineReporter   主编
-     * @param studentName         列表提交的学生的姓名
+     * @param studentName        列表提交的学生的姓名
      * @param studentId          列表提交色学生studentId
      * @param commitTaskId       列表item的commitTaskId
      */
@@ -293,10 +297,10 @@ public class TaskSliderHelper {
         }
     }
 
-    public static void doTask(Activity activity, String resId, int sourceType,String name) {
+    public static void doTask(Activity activity, String resId, int sourceType, String name) {
         if (!ButtonUtils.isFastDoubleClick()) {
             if (onTaskSliderListener != null && activity != null) {
-                onTaskSliderListener.doExamTask(activity, resId, sourceType,name);
+                onTaskSliderListener.doExamTask(activity, resId, sourceType, name);
             }
         }
     }

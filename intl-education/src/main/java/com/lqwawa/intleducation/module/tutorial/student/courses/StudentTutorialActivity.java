@@ -40,7 +40,7 @@ import java.util.List;
  * @desc 学生帮辅列表的View
  */
 public class StudentTutorialActivity extends PresenterActivity<StudentTutorialContract.Presenter>
-    implements StudentTutorialContract.View,View.OnClickListener{
+        implements StudentTutorialContract.View, View.OnClickListener {
 
     private TopBar mTopBar;
     // 搜索
@@ -78,17 +78,17 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
+        if (bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mStudentTutorialParams = (StudentTutorialParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-            if(EmptyUtil.isNotEmpty(mStudentTutorialParams)){
+            if (EmptyUtil.isNotEmpty(mStudentTutorialParams)) {
                 mMemberId = mStudentTutorialParams.getMemberId();
                 mConfigValue = mStudentTutorialParams.getConfigValue();
                 isParent = mStudentTutorialParams.isParent();
             }
         }
 
-        if(EmptyUtil.isEmpty(mMemberId) ||
-                EmptyUtil.isEmpty(mConfigValue)){
+        if (EmptyUtil.isEmpty(mMemberId) ||
+                EmptyUtil.isEmpty(mConfigValue)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -134,7 +134,7 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
         mSearchContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     // 搜索，收起软件盘
                     KeyboardUtil.hideSoftInput(StudentTutorialActivity.this);
                     requestTutorData(false);
@@ -148,7 +148,7 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
         mTvAddTutorial = (TextView) findViewById(R.id.tv_add_tutorial);
         mTvAddTutorial.setOnClickListener(this);
 
-        if(isParent){
+        if (isParent) {
             mTvAddTutorial.setVisibility(View.GONE);
         }
 
@@ -158,17 +158,17 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
         mRecycler.setLayoutManager(mLayoutManager);
         mTutorialAdapter = new StudentTutorialAdapter();
         mRecycler.setAdapter(mTutorialAdapter);
-        mRecycler.addItemDecoration(new RecyclerItemDecoration(this,RecyclerItemDecoration.VERTICAL_LIST));
+        mRecycler.addItemDecoration(new RecyclerItemDecoration(this, RecyclerItemDecoration.VERTICAL_LIST));
 
         mTutorialAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<TutorEntity>() {
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorEntity tutorEntity) {
                 super.onItemClick(holder, tutorEntity);
-                TutorialTargetTaskParams params = new TutorialTargetTaskParams(mMemberId,tutorEntity.getTutorMemberId(),getString(R.string.label_committed_works,tutorEntity.getTutorName()));
+                TutorialTargetTaskParams params = new TutorialTargetTaskParams(mMemberId, tutorEntity.getTutorMemberId(), getString(R.string.label_committed_works, tutorEntity.getTutorName()));
                 params.setParent(isParent);
-                params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                params.setRole(isParent ? TutorialRoleType.TUTORIAL_TYPE_PARENT : TutorialRoleType.TUTORIAL_TYPE_STUDENT);
                 // TutorialTargetTaskActivity.show(StudentTutorialActivity.this,params);
-                TutorialStudentTargetTaskActivity.show(StudentTutorialActivity.this,params);
+                TutorialStudentTargetTaskActivity.show(StudentTutorialActivity.this, params);
             }
         });
 
@@ -205,16 +205,17 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
 
     /**
      * 请求课程
+     *
      * @param moreData 是否更多数据
      */
-    private void requestTutorData(boolean moreData){
+    private void requestTutorData(boolean moreData) {
         mSearchKey = mSearchContent.getText().toString().trim();
-        if(moreData){
-            currentPage ++;
-            mPresenter.requestStudentTutorialData(mMemberId,mSearchKey,currentPage);
-        }else{
+        if (moreData) {
+            currentPage++;
+            mPresenter.requestStudentTutorialData(mMemberId, mSearchKey, currentPage);
+        } else {
             currentPage = 0;
-            mPresenter.requestStudentTutorialData(mMemberId,mSearchKey,currentPage);
+            mPresenter.requestStudentTutorialData(mMemberId, mSearchKey, currentPage);
         }
     }
 
@@ -225,11 +226,11 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
         mRefreshLayout.setLoadMoreEnable(entities.size() >= AppConfig.PAGE_SIZE);
         mTutorialAdapter.replace(entities);
 
-        if(EmptyUtil.isEmpty(entities)){
+        if (EmptyUtil.isEmpty(entities)) {
             // 数据为空
             mRecycler.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRecycler.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
@@ -250,19 +251,20 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.tv_filter){
+        if (viewId == R.id.tv_filter) {
             // 搜索 兼容其它平板问题，收起软件盘
             KeyboardUtil.hideSoftInput(this);
             requestTutorData(false);
-        }else if(viewId == R.id.iv_search_clear){
+        } else if (viewId == R.id.iv_search_clear) {
             // 删除关键字
             mSearchContent.getText().clear();
             requestTutorData(false);
-        }else if(viewId == R.id.et_search){
+        } else if (viewId == R.id.et_search) {
             // 点击搜索框
-        }else if(viewId == R.id.tv_add_tutorial){
+        } else if (viewId == R.id.tv_add_tutorial) {
             // 添加帮辅
-            TutorialFiltrateGroupActivity.show(this,mMemberId,getString(R.string.label_add_tutorial_line));
+            TutorialFiltrateGroupActivity.show(this, mMemberId,
+                    null, getString(R.string.label_add_tutorial_line));
         }
     }
 
@@ -275,12 +277,13 @@ public class StudentTutorialActivity extends PresenterActivity<StudentTutorialCo
 
     /**
      * 学生帮辅列表的入口
+     *
      * @param context
      */
-    public static void show(@NonNull final Context context, @NonNull StudentTutorialParams params){
-        Intent intent = new Intent(context,StudentTutorialActivity.class);
+    public static void show(@NonNull final Context context, @NonNull StudentTutorialParams params) {
+        Intent intent = new Intent(context, StudentTutorialActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
