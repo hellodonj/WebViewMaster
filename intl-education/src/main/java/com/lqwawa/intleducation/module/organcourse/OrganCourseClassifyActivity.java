@@ -206,7 +206,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         }
 
         if (!mSelectResource) {
-            mTvMoreCourse.setVisibility(View.VISIBLE);
+            mTvMoreCourse.setVisibility(mLibraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP ?
+                    View.VISIBLE : View.GONE);
             mTvMoreCourse.setOnClickListener(this);
         } else {
             mTvMoreCourse.setVisibility(View.GONE);
@@ -583,7 +584,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
 //         final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-         final String finalOrganId = organId;
+        final String finalOrganId = organId;
         OrganCourseHelper.requestOrganCourseClassifyData(finalOrganId, languageRes, libraryType,
                 new DataSource.Callback<List<LQCourseConfigEntity>>() {
                     @Override

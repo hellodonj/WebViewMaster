@@ -436,7 +436,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 mBottomLayout.setVisibility(View.GONE);
                 if (!isHostEnter && !mSelectResource) {
                     // 如果即不是选择资源,又不是直接从学程馆进来的，二级页面
-                    mCircleMoreCourse.setVisibility(View.VISIBLE);
+                    mCircleMoreCourse.setVisibility(mLibraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP
+                            ? View.VISIBLE : View.GONE);
                     mCircleMoreCourse.setOnClickListener(this);
                 } else {
                     mCircleMoreCourse.setVisibility(View.GONE);
