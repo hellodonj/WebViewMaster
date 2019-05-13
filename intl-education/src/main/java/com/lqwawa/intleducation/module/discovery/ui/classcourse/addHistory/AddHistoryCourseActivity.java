@@ -14,6 +14,7 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterActivity;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
@@ -35,6 +36,8 @@ public class AddHistoryCourseActivity extends PresenterActivity<AddHistoryCourse
     implements AddHistoryCourseContract.View, View.OnClickListener{
 
     public static final String KEY_EXTRA_CHOICE_ENTITIES = "KEY_EXTRA_CHOICE_ENTITIES";
+
+    public static final int MAX_SELECT_NUM = 9;
 
     private TopBar mTopBar;
 
@@ -119,6 +122,15 @@ public class AddHistoryCourseActivity extends PresenterActivity<AddHistoryCourse
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity entity) {
                 super.onItemClick(holder, entity);
+                if (!entity.isChecked()) {
+                    List<ClassCourseEntity> selectList = getSelectData();
+                    if (selectList.size() == MAX_SELECT_NUM) {
+                        ToastUtil.showToast(AddHistoryCourseActivity.this,
+                                getString(R.string.str_select_count_tips,
+                                MAX_SELECT_NUM));
+                        return;
+                    }
+                }
                 // 添加选择,或者取消选择
                 entity.setChecked(!entity.isChecked());
                 mCourseAdapter.notifyDataSetChanged();
@@ -190,14 +202,8 @@ public class AddHistoryCourseActivity extends PresenterActivity<AddHistoryCourse
             finish();
         }else if(viewId == R.id.btn_confirm){
             // 确认选择
-            List<ClassCourseEntity> items = mCourseAdapter.getItems();
-            ArrayList<ClassCourseEntity> entities = new ArrayList<>();
-            for (ClassCourseEntity item : items) {
-                if(item.isChecked()){
-                    entities.add(item);
-                }
-            }
-
+            ArrayList<ClassCourseEntity> entities = getSelectData();
+            
             if(EmptyUtil.isEmpty(entities)){
                 // 提示选择要添加的历史学程
                 UIUtil.showToastSafe(R.string.label_please_choice_add_history_course);
@@ -211,6 +217,19 @@ public class AddHistoryCourseActivity extends PresenterActivity<AddHistoryCourse
             setResult(Activity.RESULT_OK,intent);
             finish();
         }
+    }
+
+    private ArrayList<ClassCourseEntity> getSelectData() {
+        List<ClassCourseEntity> items = mCourseAdapter.getItems();
+        ArrayList<ClassCourseEntity> entities = new ArrayList<>();
+        if (items != null && !items.isEmpty()) {
+            for (ClassCourseEntity item : items) {
+                if (item.isChecked()) {
+                    entities.add(item);
+                }
+            }
+        }
+        return entities;
     }
 
     /**

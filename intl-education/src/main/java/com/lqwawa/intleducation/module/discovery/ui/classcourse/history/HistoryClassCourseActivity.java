@@ -499,6 +499,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+            mHeaderLayout.setVisibility(View.VISIBLE);
         } else {
             // 隐藏HeaderLayout
             mHeaderLayout.setVisibility(View.GONE);
@@ -1044,6 +1045,10 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
                 updateActionStatus(false);
             } else {
+                // 如果是班主任,清除Hold状态
+                if (mClassCourseParams.isHeadMaster()) {
+                    switchHoldState(false);
+                }
                 // UIUtil.showToastSafe(R.string.label_add_in);
                 AddHistoryCourseActivity.show(this, mClassCourseParams, ADD_HISTORY_REQUEST_CODE);
             }
@@ -1063,6 +1068,11 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 mCourseAdapter.setChoiceMode(true);
                 mCourseAdapter.notifyDataSetChanged();
                 updateActionStatus(true);
+
+                // 如果是班主任,清除Hold状态
+                if (mClassCourseParams.isHeadMaster()) {
+                    switchHoldState(false);
+                }
             }
         }
     }
