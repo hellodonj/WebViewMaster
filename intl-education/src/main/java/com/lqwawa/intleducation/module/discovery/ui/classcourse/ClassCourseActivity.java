@@ -525,26 +525,21 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
             ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
-            // 删除
-            deleteCourseFromClass(entity);
-            /*ActionDialogFragment.show(getSupportFragmentManager(),
+            ActionDialogFragment.show(getSupportFragmentManager(),
                     getString(R.string.label_please_choice_action),
-                    R.string.label_remove_out, R.string.label_delete,
-                    new ActionDialogNavigator() {
-                        @Override
-                        public void onAction(@NonNull View button, ActionDialogFragment.Tag tag) {
-                            if (tag == ActionDialogFragment.Tag.LEFT) {
-                                // 移除
-                                List<ClassCourseEntity> entities = new ArrayList<>();
-                                entities.add(entity);
-                                showLoading();
-                                mPresenter.requestAddHistoryCourseFromClass(mSchoolId, mClassId, entities);
-                            } else if (tag == ActionDialogFragment.Tag.RIGHT) {
-                                // 删除
-                                deleteCourseFromClass(entity);
-                            }
+                    R.string.label_add_history_course, R.string.label_delete,
+                    (button, tag) -> {
+                        if (tag == ActionDialogFragment.Tag.LEFT) {
+                            // 加入历史学程
+                            List<ClassCourseEntity> entities = new ArrayList<>();
+                            entities.add(entity);
+                            showLoading();
+                            mPresenter.requestAddHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                        } else if (tag == ActionDialogFragment.Tag.RIGHT) {
+                            // 删除
+                            deleteCourseFromClass(entity);
                         }
-                    });*/
+                    });
         });
 
         // 下拉刷新与加载更多
@@ -790,7 +785,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mFiltrateArray1 = new ArrayList<>();
             mFiltrateArray2 = new ArrayList<>();
             mFiltrateArray3 = new ArrayList<>();
-            
+
             if (EmptyUtil.isEmpty(mConfigEntities)) return;
             recursionConfig(entities);
 

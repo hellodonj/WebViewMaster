@@ -453,6 +453,7 @@
     
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">查看历史学程</string>
+    <string name="label_add_history_course">加入历史学程</string>
     <string name="label_add_in">添加</string>
     <string name="label_remove_out">移除</string>
     <string name="label_delete">删除</string>

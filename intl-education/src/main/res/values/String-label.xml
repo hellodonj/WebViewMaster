@@ -446,6 +446,7 @@
 
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">History</string>
+    <string name="label_add_history_course">加入历史学程</string>
     <string name="label_add_in">Add</string>
     <string name="label_remove_out">Remove</string>
     <string name="label_delete">Delete</string>
