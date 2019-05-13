@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
@@ -38,10 +37,7 @@ import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
-import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
-import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
@@ -52,7 +48,6 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
-import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -94,6 +89,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     private boolean mSelectResource;
     private ShopResourceData mResourceData;
     private int mLibraryType = 0;
+    private boolean mIsAddClassCourse;
     // 授权信息
     private CheckSchoolPermissionEntity mPermissionEntity;
 
@@ -170,6 +166,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         mSelectResource = mParams.isSelectResource();
         mResourceData = mParams.getData();
         mLibraryType = mParams.getLibraryType();
+        mIsAddClassCourse = mParams.isAddClassCourse();
         if(EmptyUtil.isEmpty(mSchoolId)) return false;
         if(mSelectResource && EmptyUtil.isEmpty(mResourceData)) return false;
 
@@ -210,7 +207,8 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
         }
 
         mTopBar.setBack(true);
-        mTopBar.setTitle(R.string.title_course_shop);
+        mTopBar.setTitle(mIsAddClassCourse ? R.string.title_add_course :
+                R.string.title_course_shop);
 
         View.OnClickListener onClickListener = null;
         if(mSelectResource){
@@ -555,22 +553,6 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
 
     public static void show(@NonNull Activity activity,@NonNull CourseShopClassifyParams params){
         show(activity,params,null);
-    }
-
-    /**
-     * 班级学程列表选择的页面
-     * @param context 上下文对象
-     */
-    public static void show(@NonNull Context context,
-                            @NonNull CourseShopClassifyParams params,
-                            @Nullable Bundle extras,
-                            boolean addClassCourse){
-        Intent intent = new Intent(context,CourseShopClassifyActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
-        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
     }
 
     /**

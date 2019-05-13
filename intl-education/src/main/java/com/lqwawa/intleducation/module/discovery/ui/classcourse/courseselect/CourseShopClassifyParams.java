@@ -1,6 +1,5 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
@@ -23,6 +22,9 @@ public class CourseShopClassifyParams extends BaseVo{
     private boolean initiativeTrigger;
 
     private int libraryType;
+
+    //是否添加班级学程
+    private boolean isAddClassCourse;
 
     public CourseShopClassifyParams(String organId, @Nullable String classId) {
         this.organId = organId;
@@ -69,6 +71,15 @@ public class CourseShopClassifyParams extends BaseVo{
 
     public CourseShopClassifyParams setLibraryType(int libraryType) {
         this.libraryType = libraryType;
+        return this;
+    }
+
+    public boolean isAddClassCourse() {
+        return isAddClassCourse;
+    }
+
+    public CourseShopClassifyParams setIsAddCourseClass(boolean isAddCourseClass) {
+        this.isAddClassCourse = isAddCourseClass;
         return this;
     }
 }

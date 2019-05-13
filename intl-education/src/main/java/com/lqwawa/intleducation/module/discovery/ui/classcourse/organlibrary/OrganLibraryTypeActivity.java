@@ -75,10 +75,11 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
                 super.onItemClick(holder, entity);
                 if (mParams != null && entity != null) {
                     mParams.setLibraryType(entity.getLibraryType());
+                    mParams.setIsAddCourseClass(true);
                 }
                 Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                 CourseShopClassifyActivity.show(OrganLibraryTypeActivity.this,  mParams,
-                        extras, true);
+                        extras);
             }
         });
 
