@@ -1101,14 +1101,14 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.resId = R.drawable.xuexiaobanji;
         itemList.add(item);
 
-        if (schoolInfo != null && schoolInfo.isTeacher()) {
-            //新版的精品资源库
-            item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
-            item.title = getString(R.string.choice_books);
-            item.resId = R.drawable.lqyinheguoji;
-            itemList.add(item);
-        }
+//        if (schoolInfo != null && schoolInfo.isTeacher()) {
+//            //新版的精品资源库
+//            item = new TabEntityPOJO();
+//            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
+//            item.title = getString(R.string.choice_books);
+//            item.resId = R.drawable.lqyinheguoji;
+//            itemList.add(item);
+//        }
 
 
         //校园电视台
