@@ -35,6 +35,7 @@ public class TutorialGroupEntity implements Serializable {
         this.createId = memberId;
         this.createName = realName;
 //        this.taskNum = taskNum;
+//        this.markingPrice = markingPrice;
     }
 
 

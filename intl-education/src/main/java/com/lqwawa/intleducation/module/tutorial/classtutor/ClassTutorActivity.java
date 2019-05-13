@@ -127,6 +127,9 @@ public class ClassTutorActivity extends PresenterActivity<ClassTutorContract.Pre
 
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, TutorialGroupEntity data) {
+                if (!mIsHeaderMaster) {
+                    return;
+                }
                 if (data != null && !TextUtils.isEmpty(data.getCreateId())) {
                     ContactsMessageDialog messageDialog = new ContactsMessageDialog(
                             ClassTutorActivity.this,
@@ -195,7 +198,7 @@ public class ClassTutorActivity extends PresenterActivity<ClassTutorContract.Pre
         int viewId = v.getId();
         if (viewId == R.id.tv_add_tutor) {
             TutorialFiltrateGroupActivity.show(this, mCurMemberId, mClassId,
-                    getString(R.string.class_tutor));
+                    getString(R.string.label_add_tutorial_line));
         }
     }
 }

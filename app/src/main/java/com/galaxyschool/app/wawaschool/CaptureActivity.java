@@ -137,6 +137,11 @@ public class CaptureActivity extends ScanActivity {
     }
 
     private void switchTo(String result) {
+        if (!Utils.hasOpenUrlPermission(result)) {
+            TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.invalid_lqwawa_resource);
+            finish();
+            return;
+        }
         if (!TextUtils.isEmpty(result)) {
             if (result.contains("enc=")) {
                 //加密的分享url
@@ -189,8 +194,7 @@ public class CaptureActivity extends ScanActivity {
                     }
                     enterCourseFiltrateView(result);
                 } else {
-//                    gotoBrowser(result);
-                    TipMsgHelper.ShowMsg(CaptureActivity.this, R.string.invalid_lqwawa_resource);
+                    gotoBrowser(result);
                     finish();
                 }
             }

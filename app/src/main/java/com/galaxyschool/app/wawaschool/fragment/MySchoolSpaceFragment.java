@@ -962,6 +962,8 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_COMMENT_STATISTIC:
                 CommentStatisticActivity.start(getActivity(), classInfo);
                 break;
+
+            //班级帮辅
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_CLASS_TUTOR:
                 ClassTutorActivity.start(getContext(), getMemeberId(), classInfo.getClassId(),
                         classInfo.isHeadMaster());

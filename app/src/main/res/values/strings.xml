@@ -1797,5 +1797,5 @@
     <string name="str_apply_mark_line_feed">Consult\nTutor</string>
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
-
+    <string name="class_tutor">班级帮辅</string>
 </resources>

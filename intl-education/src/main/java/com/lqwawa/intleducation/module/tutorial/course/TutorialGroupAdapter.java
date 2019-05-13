@@ -89,6 +89,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
             mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            
             mTvAddTutorial.setText(!isClassTutor ? R.string.label_add_tutorial : R.string.add_class_tutor);
 
             mTvAddTutorial.setOnClickListener(v -> {

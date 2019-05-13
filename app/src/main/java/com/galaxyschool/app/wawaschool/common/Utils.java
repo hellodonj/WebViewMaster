@@ -1380,7 +1380,7 @@ public class Utils {
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
             //看课件
             result = activity.getString(R.string.look_through_courseware);
-        } else if (taskType == StudyTaskType.Q_DUBBING){
+        } else if (taskType == StudyTaskType.Q_DUBBING) {
             //Q配音
             result = activity.getString(R.string.str_q_dubbing);
         }
@@ -1561,7 +1561,7 @@ public class Utils {
                         lookResDto.setSplitInfoList(resourceInfoList);
                     }
                     lookResDto.setResCourseId(tag.getResCourseId());
-                    if (!TextUtils.isEmpty(tag.getPoint())){
+                    if (!TextUtils.isEmpty(tag.getPoint())) {
                         lookResDto.setResPropType(1);
                     }
                     resultList.add(lookResDto);
@@ -1580,7 +1580,7 @@ public class Utils {
                     //资源作者id，非必填。
                     lookResDto.setAuthor(tag.getAuthorId());
                     lookResDto.setResCourseId(tag.getResCourseId());
-                    if (!TextUtils.isEmpty(tag.getPoint())){
+                    if (!TextUtils.isEmpty(tag.getPoint())) {
                         lookResDto.setResPropType(1);
                     }
                     resultList.add(lookResDto);
@@ -1850,14 +1850,14 @@ public class Utils {
         }
     }
 
-    public static void removeSchoolInfoList(List<ContactsSchoolInfo> list,String schoolId) {
+    public static void removeSchoolInfoList(List<ContactsSchoolInfo> list, String schoolId) {
         if (list == null || list.size() == 0 || TextUtils.isEmpty(schoolId)) {
             return;
         }
         Iterator<ContactsSchoolInfo> it = list.iterator();
         while (it.hasNext()) {
             ContactsSchoolInfo schoolInfo = it.next();
-            if (schoolInfo != null && !TextUtils.equals(schoolId,schoolInfo.getSchoolId())) {
+            if (schoolInfo != null && !TextUtils.equals(schoolId, schoolInfo.getSchoolId())) {
                 it.remove();
             }
         }
@@ -1915,7 +1915,7 @@ public class Utils {
             if (!TextUtils.isEmpty(decimal)) {
                 int dataInt = Integer.valueOf(decimal);
                 if (dataInt > 0) {
-                    return data.substring(0,index + 2);
+                    return data.substring(0, index + 2);
                 } else {
                     return integer;
                 }
@@ -1924,8 +1924,8 @@ public class Utils {
         return data;
     }
 
-    public static float getNumberDivData(float a,float b){
-        return (float)(Math.round(a*10 / b)) / 10;
+    public static float getNumberDivData(float a, float b) {
+        return (float) (Math.round(a * 10 / b)) / 10;
     }
 
     public static int dip2px(Context context, float dpValue) {
@@ -1950,19 +1950,20 @@ public class Utils {
 
     /**
      * 在线机构老师身份过滤走次方法
+     *
      * @param roles
      * @return
      */
-    public static String removeOnlineRole(String roles){
-        if (!TextUtils.isEmpty(roles)){
-            if (roles.contains(",")){
-                String [] splitArray = roles.split(",");
+    public static String removeOnlineRole(String roles) {
+        if (!TextUtils.isEmpty(roles)) {
+            if (roles.contains(",")) {
+                String[] splitArray = roles.split(",");
                 StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < splitArray.length; i++){
-                    if (TextUtils.equals(splitArray[i],"0")){
+                for (int i = 0; i < splitArray.length; i++) {
+                    if (TextUtils.equals(splitArray[i], "0")) {
 
                     } else {
-                        if (builder.length() == 0){
+                        if (builder.length() == 0) {
                             builder.append(splitArray[i]);
                         } else {
                             builder.append(",").append(splitArray[i]);
@@ -1975,5 +1976,14 @@ public class Utils {
             }
         }
         return roles;
+    }
+
+    public static boolean hasOpenUrlPermission(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            if (url.toLowerCase().contains("lqwawa.com") || url.toLowerCase().contains("lqmooc.com")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

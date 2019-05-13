@@ -884,14 +884,14 @@ public final class AppConfig {
         public static final String GetTutorListByCourseId =
                 ServerBase + "api/tutor/getTutorListByCourseId?j=";
 
-        // 添加班级帮辅
+        // 添加班级帮辅老师
         public static final String PostAddClassTutor =
                 ServerBase + "api/tutor/addClassTutor";
-        // 添加班级帮辅
+        // 删除班级帮辅老师
         public static final String PostDeleteClassTutor =
                 ServerBase + "api/tutor/deleteClassTutor";
 
-        // 获取班级帮辅列表
+        // 获取班级帮辅老师列表
         public static final String PostGetClassTutorList =
                 ServerBase + "api/tutor/getClassTutorList ";
 
