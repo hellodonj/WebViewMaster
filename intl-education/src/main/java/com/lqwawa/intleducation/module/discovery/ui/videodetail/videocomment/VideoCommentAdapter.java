@@ -57,7 +57,7 @@ public class VideoCommentAdapter extends RecyclerAdapter<CommentVo> {
         @Override
         protected void onBind(CommentVo vo) {
             LQwawaImageUtil.loadCommonIcon(itemView.getContext(), userHeaderImageView,
-                    vo.getThumbnail(), R.drawable.user_header_def);
+                    vo.getHeadPic(), R.drawable.user_header_def);
             nickNameTextView.setText(vo.getCreateName());
             gradeRatingBar.setVisibility(View.GONE);
             timeTextView.setText(vo.getCreateTime());

@@ -125,7 +125,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
             this.chapterId = Long.parseLong(chapterId);
         }
 
-        String courseId = sectionResListVo.getId();
+        String courseId = sectionResListVo.getResId();
         if (!TextUtils.isEmpty(courseId) && TextUtils.isDigitsOnly(courseId)) {
             this.courseId = Long.parseLong(courseId);
         }
@@ -190,7 +190,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
 
         if (sectionResListVo != null) {
             LQwawaImageUtil.loadCourseThumbnail(this, thumbnailImageView, sectionResListVo.getThumbnail());
-            nameTextView.setText(sectionResListVo.getTaskName());
+            nameTextView.setText(sectionResListVo.getName());
             viewCountTextView.setText(getString(R.string.some_study,
                     String.valueOf(sectionResListVo.getViewCount())));
         }
@@ -338,7 +338,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
         }
         if (uiVodVideoView != null) {
             //设置视频全屏播放的标题
-            uiVodVideoView.setTitle(sectionResListVo.getTaskName());
+            uiVodVideoView.setTitle(sectionResListVo.getName());
         }
     }
 
