@@ -725,13 +725,17 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(final View v) {
         if (v.getId() == R.id.tv_preview) {
             //预览
-            if (isRecordAll()) {
+            if (isRecording) {
+                TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
+            } else if (isRecordAll()) {
                 launchDubbingPreview();
             } else {
                 TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_preview_all_dubbing));
             }
         } else if (v.getId() == R.id.tv_confirm) {
-            if (isRecordAll()) {
+            if (isRecording) {
+                TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
+            } else if (isRecordAll()) {
                 //合成
                 List<String> recordFileList = getRecordFilePathList();
                 ProcessUtils processUtils = new ProcessUtils();
