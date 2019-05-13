@@ -195,7 +195,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 holder.mIvNeedCommit.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
             } else {
                 // 听读课,读写单
-                holder.mIvNeedCommit.setVisibility(View.VISIBLE);
+                holder.mIvNeedCommit.setVisibility(!isCourseSelect ? View.VISIBLE : View.GONE);
             }
         } else {
             holder.mIvNeedCommit.setVisibility(View.GONE);
