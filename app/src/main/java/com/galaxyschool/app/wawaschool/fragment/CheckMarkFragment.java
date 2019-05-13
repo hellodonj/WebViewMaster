@@ -284,7 +284,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
                 mTvSore.setOnClickListener(v -> {
                     if (cardParam == null) {
-                        openCourse(commitTask.getStudentResId(), false, true);
+                        openCourse(commitTask.getStudentResId(), false, true,0);
                     } else {
                         //读写单的主观题
                         cardParam.setMarkModel(markModel);
@@ -484,7 +484,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             isOriginal = false;
-                            openCourse(data.getResId(), false, false);
+                            openCourse(data.getResId(), false, false,data.getReviewFlag());
                         }
                     });
 
@@ -528,7 +528,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                     CheckMarkInfo.ModelBean data = (CheckMarkInfo.ModelBean) holder.data;
                     if (data != null) {
-                        openCourse(data.getResId(), false, false);
+                        openCourse(data.getResId(), false, false,data.getReviewFlag());
                     }
                 }
             };
@@ -903,7 +903,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (isAnswerTaskOrderQuestion) {
                 openQuestion();
             } else {
-                openCourse(resId, false, false);
+                openCourse(resId, false, false,0);
             }
         }
     }
@@ -923,7 +923,8 @@ public class CheckMarkFragment extends ContactsListFragment {
      */
     public void openCourse(String resId,
                            boolean isOpenAnswerQuestion,
-                           boolean applyMark) {
+                           boolean applyMark,
+                           int reviewFlag) {
         String tempResId = resId;
         int resType = 0;
         if (resId.contains("-")) {
@@ -951,7 +952,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                         if (courseData != null) {
                             processOpenImageData(courseData,
                                     isOpenAnswerQuestion,
-                                    applyMark);
+                                    applyMark,
+                                    reviewFlag);
                         }
                     }
                 }
@@ -966,7 +968,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                 public void onCourseDetailFinish(CourseData courseData) {
                     processOpenImageData(courseData,
                             isOpenAnswerQuestion,
-                            applyMark);
+                            applyMark,
+                            reviewFlag);
                 }
             });
         }
@@ -979,7 +982,8 @@ public class CheckMarkFragment extends ContactsListFragment {
      */
     private void processOpenImageData(CourseData courseData,
                                       boolean isOpenAnswerQuestion,
-                                      boolean applyMark) {
+                                      boolean applyMark,
+                                      int reviewFlag) {
         if (cardParam != null) {
             //重置model的状态
             cardParam.setMarkModel(null);
@@ -998,6 +1002,22 @@ public class CheckMarkFragment extends ContactsListFragment {
                     if (item != null) {
                         playbackParam.pageIndex = getQuestionIndex(item);
                     }
+                } else if (reviewFlag == 1) {
+                    mTaskMarkParam = new TaskMarkParam(
+                            false,
+                            true,
+                            MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
+                            String.valueOf(commitTask.getId()),
+                            true,
+                            false,
+                            "",
+                            true);
+                    playbackParam.isAssistanceModel = true;
+                    if (exerciseItem != null) {
+                        playbackParam.EQId = Integer.valueOf(exerciseItem.getIndex());
+                    }
+                    playbackParam.taskMarkParam = mTaskMarkParam;
+                    playbackParam.taskEntity = taskEntity;
                 } else if (cardParam.isOnlineReporter()
                         || cardParam.isOnlineHost()
                         || cardParam.getRoleType() == RoleType.ROLE_TYPE_STUDENT) {
@@ -1109,7 +1129,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void enterLookOriginQuestion() {
         if (cardParam != null) {
             //记得传当前pageIndex
-            openCourse(cardParam.getResId(), true, false);
+            openCourse(cardParam.getResId(), true, false,0);
         }
     }
 
