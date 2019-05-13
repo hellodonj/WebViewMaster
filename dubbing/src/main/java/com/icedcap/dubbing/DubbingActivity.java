@@ -170,7 +170,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         loadIntentData();
         setContentView(R.layout.activity_dubbing);
         if (!isOnlineOpen) {
-            audioRecordHelper = new AudioRecordHelper(this, new CallbackListener() {
+            audioRecordHelper = new AudioRecordHelper(this, resPropertyValue,
+                    new CallbackListener() {
                 @Override
                 public void onBack(Object result) {
                     if (result != null) {
@@ -196,17 +197,20 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         return;
                     }
                     if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
-                        return;
-                    }
-                    String evalResult = (String) result;
-                    if (!TextUtils.isEmpty(evalResult)) {
-                        EvaluateItemResult evaluateItemResult =
-                                EvaluateManager.parseItemResult(3, evalResult);
-                        SpannableString spannableString = null;
-                        if (evaluateItemResult != null) {
-                            spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult);
+                        int evalScore = (int) result;
+                        dubbingEntityList.get(curPosition).setScore(evalScore);
+                        processQDubbingVideo();
+                    } else {
+                        String evalResult = (String) result;
+                        if (!TextUtils.isEmpty(evalResult)) {
+                            EvaluateItemResult evaluateItemResult =
+                                    EvaluateManager.parseItemResult(3, evalResult);
+                            SpannableString spannableString = null;
+                            if (evaluateItemResult != null) {
+                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult);
+                            }
+                            dubbingEntityList.get(curPosition).setEvalResult(spannableString);
                         }
-                        dubbingEntityList.get(curPosition).setEvalResult(spannableString);
                     }
                 }
             });
@@ -737,36 +741,13 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
             } else if (isRecordAll()) {
                 //合成
-                List<String> recordFileList = getRecordFilePathList();
-                ProcessUtils processUtils = new ProcessUtils();
-                processUtils.process(DubbingActivity.this, null, recordFileList,
-                        backgroundFilePath, videoFilePath, new ProcessUtils.OnProcessListener() {
-                            @Override
-                            public void onProcessBegin() {
-                                Dialog dialog = showLoadingDialog();
-                                dialog.setCancelable(false);
-                            }
-
-                            @Override
-                            public void onProcessEnd(String videoPath) {
-                                dismissLoadingDialog();
-                                if (!TextUtils.isEmpty(videoPath)) {
-                                    Log.d("TTT", "videPath=" + videoPath);
-                                    Intent intent = new Intent();
-                                    intent.putExtra(Constant.MERGE_VIDEO_PATH, videoPath);
-                                    if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE) {
-                                        //通篇配音
-                                        List<DubbingEntity> entityList = new ArrayList<>();
-                                        entityList.add(dubbingEntityList.get(0));
-                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) entityList);
-                                    } else {
-                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
-                                    }
-                                    setResult(Activity.RESULT_OK, intent);
-                                }
-                                finish();
-                            }
-                        });
+                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                    if (audioRecordHelper != null){
+                        audioRecordHelper.evalWholeDubbingVideo();
+                    }
+                } else {
+                    processQDubbingVideo();
+                }
             } else {
                 TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_finish_all_tips));
             }
@@ -780,6 +761,39 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             dubbingVideoView.onPause();
             enterTeacherReviewActivity();
         }
+    }
+
+    private void processQDubbingVideo(){
+        List<String> recordFileList = getRecordFilePathList();
+        ProcessUtils processUtils = new ProcessUtils();
+        processUtils.process(DubbingActivity.this, null, recordFileList,
+                backgroundFilePath, videoFilePath, new ProcessUtils.OnProcessListener() {
+                    @Override
+                    public void onProcessBegin() {
+                        Dialog dialog = showLoadingDialog();
+                        dialog.setCancelable(false);
+                    }
+
+                    @Override
+                    public void onProcessEnd(String videoPath) {
+                        dismissLoadingDialog();
+                        if (!TextUtils.isEmpty(videoPath)) {
+                            Log.d("TTT", "videPath=" + videoPath);
+                            Intent intent = new Intent();
+                            intent.putExtra(Constant.MERGE_VIDEO_PATH, videoPath);
+                            if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE) {
+                                //通篇配音
+                                List<DubbingEntity> entityList = new ArrayList<>();
+                                entityList.add(dubbingEntityList.get(0));
+                                intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) entityList);
+                            } else {
+                                intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
+                            }
+                            setResult(Activity.RESULT_OK, intent);
+                        }
+                        finish();
+                    }
+                });
     }
 
     protected void enterTeacherReviewActivity() {
