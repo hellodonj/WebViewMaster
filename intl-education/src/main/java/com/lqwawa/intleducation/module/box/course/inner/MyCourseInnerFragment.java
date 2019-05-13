@@ -106,9 +106,9 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
     protected void initData() {
         super.initData();
         List<FunctionEntity> entities = new ArrayList<>();
+        entities.add(new FunctionEntity(R.string.label_student_course, R.drawable.ic_student_course));
         entities.add(new FunctionEntity(R.string.label_student_work, R.drawable.ic_tutorial_work));
         entities.add(new FunctionEntity(R.string.label_student_tutorial, R.drawable.ic_student_tutorial));
-        entities.add(new FunctionEntity(R.string.label_student_course, R.drawable.ic_student_course));
         entities.add(new FunctionEntity(R.string.label_student_live, R.drawable.ic_student_live));
         mAdapter.replace(entities);
 
