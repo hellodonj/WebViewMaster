@@ -31,7 +31,6 @@ import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.OrderHelper;
 import com.lqwawa.intleducation.lqpay.PayStatus;
-import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -78,6 +77,15 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             R.color.com_text_red,
             R.color.com_text_lq_green,
             R.color.text_gray};
+    private final int[] mCourseTypesBgId = new int[]{
+            R.drawable.shape_course_type_read,
+            R.drawable.shape_course_type_learn,
+            R.drawable.shape_course_type_practice,
+            R.drawable.shape_course_type_exam,
+            R.drawable.shape_course_type_video
+    };
+
+    private String[] mCourseTypeNames;
 
     private OnContentChangedListener onContentChangedListener;
 
@@ -112,6 +120,9 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
                 .build();
+
+        mCourseTypeNames =
+                activity.getResources().getStringArray(R.array.course_type_names);
     }
 
     @Override
@@ -157,6 +168,12 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         holder.course_price.setText(new StringBuffer().append("¥").append(vo.getPrice()));
 //        holder.order_create_time_tv.setText(vo.getCreateTime() + "");
 
+        holder.mTvCourseType.setVisibility(vo.getType() == 0 ? View.VISIBLE : View.GONE);
+        int courseType = vo.getAssortment();
+        if (courseType >=0 && courseType < mCourseTypeNames.length) {
+            holder.mTvCourseType.setBackgroundResource(mCourseTypesBgId[courseType]);
+            holder.mTvCourseType.setText(mCourseTypeNames[courseType]);
+        }
         holder.course_name.setTextColor(activity.getResources().getColor(
                 vo.isDeleted() ? R.color.com_text_gray : R.color.com_text_black));
         /*holder.organName.setTextColor(activity.getResources().getColor(
@@ -876,6 +893,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         // 买给谁,谁买给我
         FrameLayout mBuyerLayout;
         TextView mtvBuyer;
+        TextView mTvCourseType;
 
         public ViewHolder(View parentView) {
             coverLay = (RelativeLayout) parentView.findViewById(R.id.cover_lay);
@@ -893,6 +911,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             mTvBuyType = (TextView) parentView.findViewById(R.id.tv_buy_type);
             mBuyerLayout = (FrameLayout) parentView.findViewById(R.id.buyer_layout);
             mtvBuyer = (TextView) parentView.findViewById(R.id.tv_buyer);
+            mTvCourseType = (TextView) parentView.findViewById(R.id.tv_course_type);
         }
     }
 

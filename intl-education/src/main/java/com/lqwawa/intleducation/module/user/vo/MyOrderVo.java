@@ -58,6 +58,9 @@ public class MyOrderVo extends BaseVo{
     // 支付人姓名
     private String payerName;
 
+    // 课程类型
+    private int assortment;
+
     public int getPayType() {
         return payType;
     }
@@ -248,5 +251,14 @@ public class MyOrderVo extends BaseVo{
 
     public void setPayerName(String payerName) {
         this.payerName = payerName;
+    }
+
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public MyOrderVo setAssortment(int assortment) {
+        this.assortment = assortment;
+        return this;
     }
 }
