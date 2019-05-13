@@ -74,10 +74,9 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
 
     @Override
     public void updateTeacherConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+        fillData(entities);
         mAdapter.setData(entities);
 
-        fillData(entities);
-        
         // 展开所有科目
         int groupCount = mAdapter.getGroupCount();
         for (int index = 0;index < groupCount;index++) {
@@ -101,6 +100,7 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
                         || entity.getChildList().isEmpty())) {
                     List<LQCourseConfigEntity> list = new ArrayList<>();
                     LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
                     list.add(newEntity);
                     entity.setChildList(list);
                 }

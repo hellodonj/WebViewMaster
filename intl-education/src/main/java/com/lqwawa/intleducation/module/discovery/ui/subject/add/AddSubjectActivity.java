@@ -124,6 +124,7 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
                         || entity.getChildList().isEmpty())) {
                     List<LQCourseConfigEntity> list = new ArrayList<>();
                     LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
                     list.add(newEntity);
                     entity.setChildList(list);
                 }
