@@ -18,11 +18,17 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoratio
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -155,6 +161,9 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     protected void initData() {
         super.initData();
         requestTutorialData(false);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -217,6 +226,11 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
             UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
             // 刷新UI
             requestTutorialData(false);
+            // 添加班级帮辅成功后，刷新班级帮辅列表
+            if (!TextUtils.isEmpty(mClassId)) {
+                MessageEvent messageEvent = new MessageEvent(EventConstant.TRIGGER_ADD_TUTOR_UPDATE);
+                EventBus.getDefault().post(messageEvent);
+            }
         } else {
             UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
         }
@@ -230,4 +244,19 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        String action = event.getUpdateAction();
+        if(TextUtils.equals(action, EventConstant.TRIGGER_ADD_TUTOR_UPDATE)){
+            requestTutorialData(false);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }

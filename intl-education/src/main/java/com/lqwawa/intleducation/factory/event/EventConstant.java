@@ -65,5 +65,10 @@ public abstract class EventConstant {
 	public static final String TRIGGER_VIDEO_DETAIL_COMMENTS_UPDATE =
 			"TRIGGER_VIDEO_DETAIL_COMMENTS_UPDATE";
 
+	/**
+	 * 加帮辅（班级帮辅）
+	 */
+	public static final String TRIGGER_ADD_TUTOR_UPDATE = "TRIGGER_ADD_TUTOR_UPDATE";
+
 
 }

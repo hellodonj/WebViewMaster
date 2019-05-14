@@ -21,11 +21,17 @@ import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupAdapter;
 import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrateGroupActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -121,7 +127,7 @@ public class ClassTutorActivity extends PresenterActivity<ClassTutorContract.Pre
                 super.onItemClick(holder, entity);
                 if (EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)) {
                     TaskSliderHelper.onTutorialMarkingListener.enterTutorialHomePager(ClassTutorActivity.this,
-                            entity.getCreateId(), entity.getCreateName(), mClassId);
+                            entity.getCreateId(), entity.getCreateName(), null);
                 }
             }
 
@@ -156,6 +162,10 @@ public class ClassTutorActivity extends PresenterActivity<ClassTutorContract.Pre
     protected void initData() {
         super.initData();
         mPresenter.requestClassTutors(mClassId);
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -199,6 +209,22 @@ public class ClassTutorActivity extends PresenterActivity<ClassTutorContract.Pre
         if (viewId == R.id.tv_add_tutor) {
             TutorialFiltrateGroupActivity.show(this, mCurMemberId, mClassId,
                     getString(R.string.label_add_tutorial_line));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        String action = event.getUpdateAction();
+        if(TextUtils.equals(action, EventConstant.TRIGGER_ADD_TUTOR_UPDATE)){
+            mPresenter.requestClassTutors(mClassId);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 }
