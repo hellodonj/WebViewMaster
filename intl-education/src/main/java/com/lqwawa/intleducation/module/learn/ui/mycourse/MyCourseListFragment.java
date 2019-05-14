@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -157,6 +158,8 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }else{
             mExpandableView.setVisibility(View.VISIBLE);
             mTabEmptyLayout.setVisibility(View.GONE);
+            
+            fillData(entities);
             mConfigAdapter.setData(entities);
             // mExpandableView.getCount();
             // 返回并不是正确的groupCount();
@@ -203,6 +206,26 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }
 
         MyCourseConfigDetailActivity.show(getActivity(),configEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
+    }
+
+    /**
+     * 没有二级列表时拿一级数据填充
+     *
+     * @param entities
+     */
+    private void fillData(List<LQCourseConfigEntity> entities) {
+        if (entities != null && !entities.isEmpty()) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity != null && (entity.getChildList() == null
+                        || entity.getChildList().isEmpty())) {
+                    List<LQCourseConfigEntity> list = new ArrayList<>();
+                    LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
+                    list.add(newEntity);
+                    entity.setChildList(list);
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

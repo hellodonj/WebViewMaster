@@ -43,7 +43,7 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
 
     public MyCourseConfigAdapter(@NonNull List<LQCourseConfigEntity> groupData) {
         this.mGroupData = groupData;
-        if(mGroupData == null){
+        if (mGroupData == null) {
             mGroupData = new ArrayList<>();
         }
     }
@@ -69,7 +69,7 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosition) {
         LQCourseConfigEntity groupEntity = mGroupData.get(groupPosition);
         List<LQCourseConfigEntity> childList = groupEntity.getChildList();
-        if(EmptyUtil.isEmpty(childList)) return null;
+        if (EmptyUtil.isEmpty(childList)) return null;
         return childList.get(childPosition);
     }
 
@@ -91,21 +91,21 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupViewHolder groupHolder = null;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = UIUtil.inflate(R.layout.item_course_config_expandable_group);
             groupHolder = new GroupViewHolder(convertView);
             convertView.setTag(groupHolder);
-        }else{
+        } else {
             groupHolder = (GroupViewHolder) convertView.getTag();
         }
 
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
-        groupHolder.bind(groupPosition,group);
+        groupHolder.bind(groupPosition, group, false);
 
-        if(isExpanded){
+        if (isExpanded) {
             // 展开
             groupHolder.mIvArrow.setImageResource(R.drawable.ic_arrow_up);
-        }else{
+        } else {
             // 关闭
             groupHolder.mIvArrow.setImageResource(R.drawable.ic_arrow_down);
         }
@@ -115,21 +115,20 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childHolder = null;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = UIUtil.inflate(R.layout.item_course_config_expandable_child);
             childHolder = new ChildViewHolder(convertView);
             convertView.setTag(childHolder);
-        }else{
+        } else {
             childHolder = (ChildViewHolder) convertView.getTag();
         }
 
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
         LQCourseConfigEntity child = (LQCourseConfigEntity) getChild(groupPosition, childPosition);
-        if(group.getId() == MINORITY_LANGUAGE_ID){
-            childHolder.bind(groupPosition,group);
-        }else{
-            // 不管怎么样，都传Group 位置
-            childHolder.bind(groupPosition,child);
+        if (child.getChildList().isEmpty()) {
+            childHolder.bind(groupPosition, group, true);
+        } else {
+            childHolder.bind(groupPosition, child, false);
         }
         return convertView;
     }
@@ -139,9 +138,9 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void setData(@NonNull List<LQCourseConfigEntity> groupData){
+    public void setData(@NonNull List<LQCourseConfigEntity> groupData) {
         mGroupData.clear();
-        if(EmptyUtil.isNotEmpty(groupData)){
+        if (EmptyUtil.isNotEmpty(groupData)) {
             mGroupData.addAll(groupData);
             notifyDataSetChanged();
         }
@@ -149,18 +148,28 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
 
     /**
      * 获取二级列表的数目
+     *
      * @param entity 一级实体
      * @return count
      */
-    public int getChildrenSize(@NonNull LQCourseConfigEntity entity){
-        int count = 0;
-        if(EmptyUtil.isEmpty(entity.getChildList())) return count;
-        // 如果是小语种课程,其子控件只有一个
-        if(entity.getId() == MINORITY_LANGUAGE_ID) return 1;
+    public int getChildrenSize(@NonNull LQCourseConfigEntity entity) {
+        if (EmptyUtil.isEmpty(entity.getChildList())) return 0;
+        if (!isThirdLevelExist(entity)) return 1;
         return entity.getChildList().size();
     }
 
-    class GroupViewHolder implements Action{
+    public boolean isThirdLevelExist(@NonNull LQCourseConfigEntity lqCourseConfigEntity) {
+        if (lqCourseConfigEntity.getChildList() != null && !lqCourseConfigEntity.getChildList().isEmpty()) {
+            for (LQCourseConfigEntity entity : lqCourseConfigEntity.getChildList()) {
+                if (entity != null && entity.getChildList() != null && !entity.getChildList().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    class GroupViewHolder implements Action {
         ImageView mIvArrow;
         TextView mTvTitle;
 
@@ -170,12 +179,12 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
         }
 
         @Override
-        public void bind(int position,@NonNull LQCourseConfigEntity entity) {
-            StringUtil.fillSafeTextView(mTvTitle,entity.getConfigValue());
+        public void bind(int position, @NonNull LQCourseConfigEntity entity, boolean isGroup) {
+            StringUtil.fillSafeTextView(mTvTitle, entity.getConfigValue());
         }
     }
 
-    class ChildViewHolder implements Action{
+    class ChildViewHolder implements Action {
 
         private TextView mTvConfigTitle;
         private RecyclerView mRecycler;
@@ -188,28 +197,28 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
             mTvConfigTitle = (TextView) convertView.findViewById(R.id.tv_config_title);
             mRecycler = (RecyclerView) convertView.findViewById(R.id.recycler);
             mRecycler.setNestedScrollingEnabled(false);
-            GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(),3){
+            GridLayoutManager layoutManager = new GridLayoutManager(UIUtil.getContext(), 3) {
                 @Override
                 public boolean canScrollVertically() {
                     return false;
                 }
             };
             mRecycler.setLayoutManager(layoutManager);
-            mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3,8));
+            mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(3, 8));
         }
 
         @Override
-        public void bind(int position,@NonNull LQCourseConfigEntity childEntity) {
-            if(childEntity.getId() == MINORITY_LANGUAGE_ID){
+        public void bind(int position, @NonNull LQCourseConfigEntity childEntity, boolean isGroup) {
+            if (isGroup) {
                 // 一级列表是小语种课程
                 mTvConfigTitle.setVisibility(View.GONE);
-            }else{
+            } else {
                 mTvConfigTitle.setVisibility(View.VISIBLE);
-                StringUtil.fillSafeTextView(mTvConfigTitle,childEntity.getConfigValue());
+                StringUtil.fillSafeTextView(mTvConfigTitle, childEntity.getConfigValue());
             }
 
             List<LQCourseConfigEntity> configEntities = childEntity.getChildList();
-            mAdapter = new MyCourseChoiceAdapter(configEntities,UIUtil.getColor(colors[position % 4]));
+            mAdapter = new MyCourseChoiceAdapter(configEntities, UIUtil.getColor(colors[position % 4]));
             mRecycler.setAdapter(mAdapter);
 
             mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
@@ -217,14 +226,14 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
                 public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity configEntity) {
                     super.onItemClick(holder, configEntity);
                     // 点击了某个Item
-                    if(EmptyUtil.isNotEmpty(mNavigator)){
+                    if (EmptyUtil.isNotEmpty(mNavigator)) {
                         LQCourseConfigEntity groupEntity = (LQCourseConfigEntity) getGroup(position);
-                        if(childEntity.getId() == MINORITY_LANGUAGE_ID){
+                        if (childEntity.getId() == MINORITY_LANGUAGE_ID) {
                             // 小语种课程
-                            mNavigator.onChoiceConfig(groupEntity,null,configEntity);
-                        }else{
+                            mNavigator.onChoiceConfig(groupEntity, null, configEntity);
+                        } else {
                             // 其它课程
-                            mNavigator.onChoiceConfig(groupEntity,childEntity,configEntity);
+                            mNavigator.onChoiceConfig(groupEntity, childEntity, configEntity);
                         }
                     }
                 }
@@ -232,19 +241,20 @@ public class MyCourseConfigAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    interface Action{
-        void bind(int position,@NonNull LQCourseConfigEntity entity);
+    interface Action {
+        void bind(int position, @NonNull LQCourseConfigEntity entity, boolean isGroup);
     }
 
     /**
      * 获取data数据
+     *
      * @return List<LQCourseConfigEntity>
      */
-    public List<LQCourseConfigEntity> getItems(){
+    public List<LQCourseConfigEntity> getItems() {
         return mGroupData;
     }
 
-    public void setNavigator(@Nullable MyCourseConfigNavigator navigator){
+    public void setNavigator(@Nullable MyCourseConfigNavigator navigator) {
         this.mNavigator = navigator;
     }
 }
