@@ -384,14 +384,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTvAction.setVisibility(View.GONE);
 
         // 班级学程进入参数
-        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
+//        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
 
         boolean initiativeTrigger = false;
         if (mResourceFlag) {
             initiativeTrigger = mResourceData.isInitiativeTrigger();
         }
 
-        if (isResult && (initiativeTrigger || !mResourceFlag)) {
+        if (/*isResult && */(initiativeTrigger || !mResourceFlag)) {
             mWorkCart.setVisibility(View.VISIBLE);
             // 旧作业库改为查看历史学程
             mWorkCart.setText(R.string.label_watch_history_course);
