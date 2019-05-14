@@ -34,7 +34,7 @@ public class AppSettings {
         if (TextUtils.isEmpty(url)) {
             return "";
         }
-    	if (!TextUtils.isEmpty(url) && url.startsWith("http:")) {
+    	if (!TextUtils.isEmpty(url) && (url.startsWith("http:") || url.contains("https:"))) {
 			return url;
 		}
         if (!TextUtils.isEmpty(url) && url.contains("\\")) {
