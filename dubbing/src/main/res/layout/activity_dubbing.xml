@@ -262,10 +262,10 @@
                     app:lrcDividerHeight="25dp"
                     app:lrcLabel=""
                     app:lrcNormalTextColor="#000000"
-                    app:lrcPadding="5dp"
+                    app:lrcPadding="10dp"
                     app:lrcTextGravity="center"
                     app:lrcTextSize="18sp"
-                    app:lrcCurrentTextSize = "22sp"
+                    app:lrcCurrentTextSize = "19sp"
                     app:lrcTimeTextColor="#BDBDBD"
                     app:lrcTimelineColor="#80BDBDBD"
                     app:lrcTimelineTextColor="#9FA8DA"/>
