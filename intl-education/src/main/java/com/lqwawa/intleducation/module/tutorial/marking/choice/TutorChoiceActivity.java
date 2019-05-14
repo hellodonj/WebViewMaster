@@ -68,6 +68,13 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
             mResourceModel = mChoiceParams.getModel();
             mIsMyAssistantMark = mChoiceParams.isMyAssistantMark();
 
+            if (!TextUtils.isEmpty(mCourseId) && !mCourseId.equals("0")
+                    && !TextUtils.isEmpty(mChapterId) && !mChapterId.equals("0")) {
+                mIsMyAssistantMark = false;
+            } else {
+                mIsMyAssistantMark = true;
+            }
+
             if (EmptyUtil.isEmpty(mCurMemberId) ||
                     (EmptyUtil.isEmpty(mCourseId) && EmptyUtil.isEmpty(mChapterId))) {
                 return false;
