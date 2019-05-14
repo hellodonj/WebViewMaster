@@ -178,10 +178,10 @@ public class CourseResListAdapter extends MyBaseAdapter {
                 holder.mTvAutoMask.setVisibility(View.VISIBLE);
                 holder.mTvAutoMask.setText(R.string.label_auto_mark);
             } else {
-                holder.mTvAutoMask.setVisibility(View.GONE);
+                holder.mTvAutoMask.setVisibility(View.INVISIBLE);
             }
         } else {
-            holder.mTvAutoMask.setVisibility(View.GONE);
+            holder.mTvAutoMask.setVisibility(View.INVISIBLE);
         }
 
         int color = UIUtil.getColor(R.color.alertImportant);

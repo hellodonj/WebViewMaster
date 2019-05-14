@@ -115,7 +115,6 @@
                 android:background="@drawable/com_checkbox_ll"
                 android:button="@null"
                 android:clickable="false"
-                android:padding="10dp"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
