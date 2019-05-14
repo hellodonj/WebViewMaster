@@ -201,6 +201,11 @@ public class CourseDetailParams extends BaseVo{
         return isAuthorized;
     }
 
+    public CourseDetailParams setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
+        return this;
+    }
+
     /**
      * 是否要作辅导老师身份处理
      * @return true

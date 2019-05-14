@@ -276,6 +276,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             .putExtra("isAuthorized", isAuth)
                             .putExtra("isMyCourse", isMyCourse);
                     if (courseDetailParams != null) {
+                        courseDetailParams.setIsAuthorized(isAuth);
                         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                     }
                     if (tabIndex >= 0) {

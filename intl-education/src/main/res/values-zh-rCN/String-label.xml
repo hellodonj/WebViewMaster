@@ -233,7 +233,7 @@
     <string name="label_this_class_give_finish">该班级已完成授课</string>
 
     <!--V5.10.X版本字符串-->
-    <string name="label_join_course">+我的学程</string>
+    <string name="label_join_course">+ 习学程</string>
 
     <!--V5.11版本字符串-->
     <string name="label_share_online_class_title">【两栖空中课堂】</string>
