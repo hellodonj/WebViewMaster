@@ -1784,7 +1784,12 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
         if (videoView == null) return;
         //直播
         if (currentPlayStatus == PlayMode.ONLINEPLAYING) {
-            String mActionId = onlineRes.getLiveId();
+            String mActionId = "";
+            if (isSchoolResVideo){
+                //校本的视频
+            } else {
+                mActionId = onlineRes.getLiveId();
+            }
             boolean mUseHls = false;
             String mCustomerId = "7f96c8e118ddb0a1746a2d3c30dffa1c";
             String p = "";
