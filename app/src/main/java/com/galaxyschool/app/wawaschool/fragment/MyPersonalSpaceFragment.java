@@ -1121,7 +1121,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         entryMap.put(item.type, item);
 
         //科目设置
-        if (isRealTeacher()) {
+        //线下机构老师或者有帮辅身份都显示
+        if (isRealTeacher() || MyApplication.isTutorialMode()) {
             item = new TabEntityPOJO();
             item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBJECT_SETTING;
             item.title = getString(R.string.str_subject_setting);
