@@ -396,8 +396,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             clearConfigArrayStatus(mConfigEntities);
         }
 
-        mCourseAdapter.setChoiceMode(false);
-        updateActionStatus(false);
+//        mCourseAdapter.setChoiceMode(false);
+//        updateActionStatus(false);
         requestClassCourse(false);
     }
 
@@ -1043,6 +1043,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
                 showLoading();
                 mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                mCourseAdapter.setChoiceMode(false);
                 updateActionStatus(false);
             } else {
                 // 如果是班主任,清除Hold状态
