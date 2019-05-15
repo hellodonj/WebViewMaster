@@ -60,6 +60,7 @@ import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqresviewlib.LqResViewHelper;
 import com.oosic.apps.iemaker.base.slide_audio.AudioRecorder;
@@ -159,7 +160,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
         if (mSourceParams != null && mSourceParams.getCourseParams() != null) {
             CourseDetailParams courseDetailParams = mSourceParams.getCourseParams();
-            isVideoLibrary = courseDetailParams != null && courseDetailParams.isVideoLibrary();
+            isVideoLibrary =
+                    courseDetailParams != null && courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
         }
 
         if (EmptyUtil.isEmpty(courseId) ||

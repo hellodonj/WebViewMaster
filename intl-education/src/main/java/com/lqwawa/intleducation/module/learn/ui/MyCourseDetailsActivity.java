@@ -76,6 +76,7 @@ import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.ui.course.notice.CourseNoticeListActivity;
@@ -457,13 +458,14 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             }
         });
 
-        // 视频馆课程隐藏空中课堂和帮辅群
-        boolean isVideoLibrary =
-                mCourseDetailParams != null && mCourseDetailParams.isVideoLibrary();
-        findViewById(R.id.rb_live).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_tutorial_group).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_tutorial_group_f).setVisibility(isVideoLibrary ? View.GONE :
+        // 视频馆/图书馆课程隐藏空中课堂和帮辅群
+        boolean isHide =
+                mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
 
         initData();

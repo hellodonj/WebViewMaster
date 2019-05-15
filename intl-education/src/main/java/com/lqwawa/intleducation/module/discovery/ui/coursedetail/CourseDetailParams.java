@@ -36,8 +36,9 @@ public class CourseDetailParams extends BaseVo{
     // v5.14新添加的字段
     private String courseId;
     private String courseName;
-    // 是否视频馆
-    private boolean isVideoLibrary;
+    
+    // 学程馆类型
+    private int libraryType;
 
     public CourseDetailParams() {
         // 默认的进入方式
@@ -164,12 +165,12 @@ public class CourseDetailParams extends BaseVo{
         this.courseName = courseName;
     }
 
-    public boolean isVideoLibrary() {
-        return isVideoLibrary;
+    public int getLibraryType() {
+        return libraryType;
     }
 
-    public CourseDetailParams setIsVideoLibrary(boolean isVideoLibrary) {
-        this.isVideoLibrary = isVideoLibrary;
+    public CourseDetailParams setLibraryType(int libraryType) {
+        this.libraryType = libraryType;
         return this;
     }
 

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 /**
  * @author mrmedici
@@ -29,6 +30,7 @@ public class CourseRouteEntity extends BaseVo {
     private boolean isExpire;
     private boolean isJoin;
     private int type;
+    private int assortment;
     private boolean isLabelAuthorized;
 
     public int getBuyType() {
@@ -109,6 +111,15 @@ public class CourseRouteEntity extends BaseVo {
 
     public CourseRouteEntity setType(int type) {
         this.type = type;
+        return this;
+    }
+
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public CourseRouteEntity setAssortment(int assortment) {
+        this.assortment = assortment;
         return this;
     }
 
@@ -193,5 +204,20 @@ public class CourseRouteEntity extends BaseVo {
         }
 
         return  false;
+    }
+
+    public int getLibraryType() {
+        if (type == 0) {
+            if (assortment == 0 || assortment == 1) {
+                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
+            } else if (assortment == 2 || assortment == 3) {
+                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            }
+        } else if (type == 1) {
+            return OrganLibraryType.TYPE_LIBRARY;
+        } else if (type == 2) {
+            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        }
+        return -1;
     }
 }

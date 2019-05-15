@@ -50,7 +50,9 @@ import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+
 import org.xutils.common.util.DensityUtil;
 
 import java.util.ArrayList;
@@ -125,7 +127,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 .putExtra(KEY_ROLE_FREE_USER, isFreeUser)
                 .putExtra(CourseVo.class.getSimpleName(), courseVo)
                 .putExtra(ACTIVITY_BUNDLE_OBJECT, params)
-                .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras));
+                .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras));
     }
 
     private TopBar topBar;
@@ -225,8 +227,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mBottomLayout.setVisibility(View.GONE);
         }
 
-        mTopLayout.setVisibility(courseParams != null && courseParams.isVideoLibrary() ?
-                View.GONE : View.VISIBLE);
+        boolean isVideoLibrary =
+                courseParams != null && courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        mTopLayout.setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
 
         isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
         if (isContainAssistantWork) {
@@ -324,9 +327,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
 
-            if(mTabLayout.getTabCount() > 4){
+            if (mTabLayout.getTabCount() > 4) {
                 mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            }else{
+            } else {
                 mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             }
 
@@ -350,7 +353,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 handleSubjectSettingData(this, UserHelper.getUserId(), false);
             }
         } else if (viewId == R.id.action_container) {
-            if(mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()){
+            if (mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()) {
                 // 直接添加到作业库
 
                 // 获取指定Tab所有的选中的作业库资源
@@ -362,16 +365,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                     return;
                 }
 
-                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                     int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                    if(count >= 6){
+                    if (count >= 6) {
                         UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                         return;
                     }
                 }
 
                 int count = confirmResourceCart(false);
-            }else{
+            } else {
                 boolean originalActivated = mBottomLayout.isActivated();
                 if (!originalActivated) {
                     // 点击添加到作业库,或者确定
@@ -398,7 +401,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 initBottomLayout();
                 refreshCartPoint();
             }
-        } else if(viewId == R.id.new_cart_container){
+        } else if (viewId == R.id.new_cart_container) {
             handleSubjectSettingData(this, UserHelper.getUserId(), false);
         }
     }
@@ -473,7 +476,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             CourseDetailParams courseParams = mChapterParams.getCourseParams();
             if (EmptyUtil.isNotEmpty(courseParams)) {
                 Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId(),extras);
+                TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(this, courseParams.getSchoolId(), courseParams.getClassId(), extras);
             }
         }
     }
@@ -491,7 +494,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         refreshCartPoint();
     }
 
-    private int confirmResourceCart(){
+    private int confirmResourceCart() {
         return confirmResourceCart(true);
     }
 
@@ -524,7 +527,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             } else if (moocTaskType == 4) {
                 // 多出来的看课本类型
                 lqwawaTaskType = 9;
-            } else if(moocTaskType == 5){
+            } else if (moocTaskType == 5) {
                 // 讲解课类型
                 lqwawaTaskType = 5;
             }
@@ -536,7 +539,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         // 清楚所有的作业库资源选中状态
         clearAllResource();
 
-        if(clearStatus){
+        if (clearStatus) {
             switchAdapterMode(false);
         }
 
@@ -569,7 +572,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mTvCartPoint.setText(Integer.toString(count));
             if (count == 0 || mBottomLayout.isActivated()) {
                 mTvPoint.setVisibility(View.GONE);
-                if(count == 0) {
+                if (count == 0) {
                     mTvCartPoint.setVisibility(View.GONE);
                 }
             } else {

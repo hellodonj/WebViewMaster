@@ -81,6 +81,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
@@ -255,7 +256,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         courseDetailParams = new CourseDetailParams();
                     }
                     if (entity != null) {
-                        courseDetailParams.setIsVideoLibrary(entity.getType() == 2);
+                        courseDetailParams.setLibraryType(entity.getLibraryType());
                     }
                     final boolean isOnlineCounselor = route.isOnlineCounselor();
                     MyCourseDetailsActivity.start(activity, courseId, false,
@@ -594,13 +595,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             }
         });
 
-        // 视频馆课程隐藏空中课堂和帮辅群
-        boolean isVideoLibrary =
-                mCourseDetailParams != null && mCourseDetailParams.isVideoLibrary();
-        findViewById(R.id.rb_live).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_tutorial_group).setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_tutorial_group_f).setVisibility(isVideoLibrary ? View.GONE :
+        // 视频馆/图书馆课程隐藏空中课堂和帮辅群
+        boolean isHide =
+                mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
     }
 
