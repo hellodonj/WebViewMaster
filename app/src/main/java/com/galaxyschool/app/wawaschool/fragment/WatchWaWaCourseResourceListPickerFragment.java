@@ -104,10 +104,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         }
         initViews();
         if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
-            chooseClassLessonCourse();
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
+            chooseClassLessonCourse(true);
         } else {
             loadGetStudyTaskResControl();
         }
@@ -258,7 +255,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             }
         } else if (data.type == TAB_CLASS_LESSON) {
             //班级学程
-            chooseClassLessonCourse();
+            chooseClassLessonCourse(false);
         }
     }
 
@@ -384,7 +381,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         }
     }
 
-    private void chooseClassLessonCourse() {
+    private void chooseClassLessonCourse(boolean isDirectToClassCourse) {
         int type = getTaskTypeOrSelectCount(true);
         int count = getTaskTypeOrSelectCount(false);
         if (isOnlineClass || TextUtils.isEmpty(classId)) {
@@ -410,6 +407,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 data = new ClassResourceData(type,count,new ArrayList<Integer>(),
                         LQCourseCourseListActivity.RC_SelectCourseRes);
             }
+            data.setIsDirectToClassCourse(isDirectToClassCourse);
             ClassCourseActivity.show(getActivity(),classCourseParams,data);
         }
     }
@@ -713,11 +711,12 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                         //处理LQ学程选取的数据
                         WatchWawaCourseResourceSplicingUtils.splicingLQProgramResources
                                 (getActivity(), selectedList);
+                    } else {
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
                     }
                 }
-            } else {
-                getActivity().setResult(Activity.RESULT_OK, data);
-                getActivity().finish();
             }
         }
     }

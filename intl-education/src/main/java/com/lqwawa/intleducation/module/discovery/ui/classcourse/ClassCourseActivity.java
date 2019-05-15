@@ -166,6 +166,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private String mClassName;
     private String mRoles;
     private boolean isTeacher;
+    private boolean mIsDirectToClassCourse;
 
     // 全部文本
     private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
@@ -229,6 +230,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mClassId = mClassCourseParams.getClassId();
         mClassName = mClassCourseParams.getClassName();
         mRoles = mClassCourseParams.getRoles();
+        if (mResourceData != null) {
+            mIsDirectToClassCourse = mResourceData.isDirectToClassCourse();
+        }
         if (EmptyUtil.isEmpty(mSchoolId) ||
                 EmptyUtil.isEmpty(mClassId) ||
                 EmptyUtil.isEmpty(mRoles)) {
@@ -260,6 +264,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                         finish();
                     }
                 } else {
+                    if (mIsDirectToClassCourse) {
+                        setResult(Activity.RESULT_OK, new Intent());
+                    }
                     finish();
                 }
             }
@@ -1548,6 +1555,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 }
             }
         } else {
+            if (mIsDirectToClassCourse) {
+                setResult(Activity.RESULT_OK, new Intent());
+            }
             finish();
         }
     }

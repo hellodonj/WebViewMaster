@@ -21,6 +21,8 @@ public class ClassResourceData implements Serializable {
     // 是否主动选择作业库资源
     private boolean initiativeTrigger;
     private int requestCode;
+    // 是否直接进入班级学程
+    private boolean isDirectToClassCourse;
 
     public ClassResourceData(){
 
@@ -74,5 +76,14 @@ public class ClassResourceData implements Serializable {
 
     public void setRequestCode(int requestCode) {
         this.requestCode = requestCode;
+    }
+
+    public boolean isDirectToClassCourse() {
+        return isDirectToClassCourse;
+    }
+
+    public ClassResourceData setIsDirectToClassCourse(boolean isDirectToClassCourse) {
+        this.isDirectToClassCourse = isDirectToClassCourse;
+        return this;
     }
 }
