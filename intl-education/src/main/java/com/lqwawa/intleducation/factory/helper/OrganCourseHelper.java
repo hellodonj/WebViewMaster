@@ -245,6 +245,7 @@ public class OrganCourseHelper {
                                            @NonNull String level,
                                            int paramOneId, int paramTwoId,
                                            int paramThreeId, int libraryType,
+                                           int sort,
                                            @NonNull final DataSource.Callback<List<CourseVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
@@ -281,6 +282,10 @@ public class OrganCourseHelper {
 
         if (libraryType >= 0) {
             requestVo.addParams("type", libraryType);
+        }
+
+        if (sort > 0) {
+            requestVo.addParams("sort", sort);
         }
 
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseListUrl + requestVo.getParams());
