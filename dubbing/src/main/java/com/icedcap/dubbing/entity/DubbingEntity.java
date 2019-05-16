@@ -18,6 +18,7 @@ public class DubbingEntity extends SrtEntity {
     private boolean isRecording;
     private boolean isRecordPlaying;
     private SpannableString evalResult;
+    private boolean itemVideoPlaying;
 
     public DubbingEntity() {
 
@@ -28,6 +29,14 @@ public class DubbingEntity extends SrtEntity {
         this.startTime = srtEntity.startTime;
         this.endTime = srtEntity.endTime;
         this.role = srtEntity.role;
+    }
+
+    public boolean isItemVideoPlaying() {
+        return itemVideoPlaying;
+    }
+
+    public void setItemVideoPlaying(boolean itemVideoPlaying) {
+        this.itemVideoPlaying = itemVideoPlaying;
     }
 
     public SpannableString getEvalResult() {
