@@ -291,6 +291,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             }
         });
     }
+
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
@@ -645,7 +646,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         courseCommentFragment = new CourseDetailsItemFragment();
         mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
         mTutorialGroupFragment = TutorialGroupFragment.newInstance(courseId, mCurMemberId);
-        
+
         studyPlanFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         courseCommentFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
@@ -1238,6 +1239,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                             MyCourseDetailsActivity.start(activity, courseId, false,
                                                     true, mCurMemberId, isSchoolEnter,
                                                     false, false, isAuthorized, mCourseDetailParams, null);
+                                            ToastUtil.showToast(CourseDetailsActivity.this,
+                                                    R.string.add_course_success);
                                             finish();
                                         }
                                     }

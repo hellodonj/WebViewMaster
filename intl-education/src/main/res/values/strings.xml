@@ -533,4 +533,5 @@
     <string name="delete_class_totur_info">你确定从班级帮辅中移除该辅导老师吗？</string>
     <string name="class_tutor">班级帮辅</string>
     <string name="add_class_tutor">+班级帮辅</string>
+    <string name="add_course_success">课程参加成功</string>
 </resources>
