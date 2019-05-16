@@ -1229,7 +1229,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddAssistTask);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -1239,9 +1239,6 @@ public class TutorialHelper {
                 TypeReference<LQwawaBaseResponse> typeReference = new TypeReference<LQwawaBaseResponse>() {
                 };
                 LQwawaBaseResponse response = JSON.parseObject(str, typeReference);
-                if (EmptyUtil.isNotEmpty(callback)) {
-                    callback.onDataLoaded(response.isSucceed());
-                }
 
                 if (!response.isSucceed()) {
                     String ErrorMessage = (String) response.getErrorMessage();
@@ -1249,6 +1246,10 @@ public class TutorialHelper {
                     if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
                             && errorHashMap.containsKey(ErrorMessage)) {
                         UIUtil.showToastSafe(errorHashMap.get(ErrorMessage));
+                    }
+                } else {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(response.isSucceed());
                     }
                 }
             }
