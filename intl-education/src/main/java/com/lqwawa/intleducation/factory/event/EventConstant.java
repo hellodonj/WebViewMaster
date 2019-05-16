@@ -70,5 +70,8 @@ public abstract class EventConstant {
 	 */
 	public static final String TRIGGER_ADD_TUTOR_UPDATE = "TRIGGER_ADD_TUTOR_UPDATE";
 
-
+	/**
+	 * 学程馆二级页面课程的选择状态更新
+	 */
+	public static final String TRIGGER_COURSE_SELECT_UPDATE = "TRIGGER_COURSE_SELECT_UPDATE";
 }
