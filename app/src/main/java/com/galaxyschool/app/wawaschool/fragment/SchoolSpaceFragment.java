@@ -157,14 +157,14 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item.resId = R.drawable.icon_school_class;
         itemList.add(item);
 
-        if (schoolInfo != null && schoolInfo.isTeacher()) {
-            //精品资源库
-            item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
-            item.title = getString(R.string.choice_books);
-            item.resId = R.drawable.ic_lq_galaxy_intl;
-            itemList.add(item);
-        }
+//        if (schoolInfo != null && schoolInfo.isTeacher()) {
+//            //精品资源库
+//            item = new TabEntityPOJO();
+//            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
+//            item.title = getString(R.string.choice_books);
+//            item.resId = R.drawable.ic_lq_galaxy_intl;
+//            itemList.add(item);
+//        }
 
         //校园直播台
         item = new TabEntityPOJO();
