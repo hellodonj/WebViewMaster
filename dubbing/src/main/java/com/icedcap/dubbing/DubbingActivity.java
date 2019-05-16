@@ -926,7 +926,13 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         dubbingItemView.getContentTextView().setText(item.getContent());
                         dubbingItemView.getContentTextView().setTextColor(ContextCompat.getColor(DubbingActivity.this, R.color.color_orange));
                     } else {
-                        if (item.isRecord() && !isOnlineOpen && item.getEvalResult() != null) {
+                        if (!isOnlineOpen
+                                && item.isSelect()
+                                && (item.isRecordPlaying() || item.isRecording() || item.isItemVideoPlaying())) {
+                            //播放的时候重置字体的颜色
+                            dubbingItemView.getContentTextView().setText(item.getContent());
+                            dubbingItemView.getContentTextView().setTextColor(ContextCompat.getColor(DubbingActivity.this, R.color.text_black));
+                        } else if (item.isRecord() && !isOnlineOpen && item.getEvalResult() != null) {
                             //录制完成
                             dubbingItemView.getContentTextView().setText(item.getEvalResult());
                         } else {
@@ -980,6 +986,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             isSupportPause = false;
             dubbingVideoView.setIsSupportPause(false);
             if (onItemClick) {
+                dubbingEntityList.get(position).setItemVideoPlaying(true);
                 switchDubbingVideo(position, false);
             } else if (!isOnlineOpen) {
                 //不是在线状态
@@ -1236,6 +1243,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             }
             showDownTimeFlag = false;
             isStopShow = true;
+            dubbingEntityList.get(curPosition).setItemVideoPlaying(false);
             commonAdapter.notifyDataSetChanged();
         }
     }
