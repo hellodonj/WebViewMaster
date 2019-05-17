@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.codingmaster.slib.S;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.Common;
@@ -93,6 +94,9 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvAddTutorial.setText(!isClassTutor ? R.string.label_add_tutorial : R.string.add_class_tutor);
 
             mTvAddTutorial.setOnClickListener(v -> {
+                if (ButtonUtils.isFastDoubleClick()) {
+                    return;
+                }
                 if(EmptyUtil.isNotEmpty(mCallback)){
                     int position = getAdapterPosition();
                     mCallback.onAddTutorial(position,entity);
