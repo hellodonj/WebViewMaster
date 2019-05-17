@@ -287,6 +287,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             courseParams.setSchoolId(mSchoolId);
                             courseParams.setClassId(mClassId);
                             courseParams.setCourseEnterType(mEnterType);
+                            courseParams.setLibraryType(courseVo.getLibraryType());
                         }
 
                         int role = UserHelper.MoocRoleType.TEACHER;
