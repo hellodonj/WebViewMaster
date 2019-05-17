@@ -162,7 +162,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             }
         }
 
-        if (isCourseSelect || mChoiceMode) {
+//        if (isCourseSelect || mChoiceMode) {
             // 是课件选取,添加自动批阅
             // v5.10 LQ学程浏览的时候也要添加语音评测,还有一个直播课前课后的调用
             // v5.10 LQ学程浏览的时候不需要添加语音评测
@@ -180,9 +180,9 @@ public class CourseResListAdapter extends MyBaseAdapter {
             } else {
                 holder.mTvAutoMask.setVisibility(View.INVISIBLE);
             }
-        } else {
-            holder.mTvAutoMask.setVisibility(View.INVISIBLE);
-        }
+//        } else {
+//            holder.mTvAutoMask.setVisibility(View.INVISIBLE);
+//        }
 
         int color = UIUtil.getColor(R.color.alertImportant);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 10);
