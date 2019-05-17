@@ -5,24 +5,22 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.icedcap.dubbing.audio.AudioPlayHelper;
-import com.icedcap.dubbing.entity.SRTSubtitleEntity;
 import com.icedcap.dubbing.entity.SrtEntity;
 import com.icedcap.dubbing.listener.OnVideoEventListener;
+import com.icedcap.dubbing.utils.AudioMedia;
 import com.icedcap.dubbing.utils.ProcessUtils;
 import com.icedcap.dubbing.utils.MediaUtil;
 import com.icedcap.dubbing.view.DubbingVideoView;
 import com.lqwawa.apps.views.lrcview.LrcEntry;
 import com.lqwawa.apps.views.lrcview.LrcView;
 import com.lqwawa.client.pojo.StudyResPropType;
-
+import com.osastudio.common.utils.FileUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +33,13 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private static final String EXTRA_BACKGROUND_FILE_PATH_KEY = "extra-background-file-path-key";
     private static final String EXTRA_SRT_SUBTITLE_KEY = "extra-srt-subtitle-key";
     private static final String EXTRA_RECORD_LIST_FILE_PATH_KEY = "extra-record-list-file-path-key";
-
+    private static final String EXTRA_RECORD_AUDIO_PATH = "extra_record_audio_path";
     private String mVideoFilePath;
     private String mBackgroundFilePath;
     private List<SrtEntity> mSRTEntities;
     private long mDuration;
     private float mPersonalVolume = 0.5f;
     private float mBackgroundVolume = 0.5f;
-    private AudioPlayHelper mAudioHelper;
     private DubbingVideoView mDubbingVideoView;
     private TextView mTime;
     private TextView currentTimeTextView;
@@ -55,12 +52,15 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     private static long start;
     private int resPropertyValue;
     private long playTime;
+    private String recordAudioPath;
+    private AudioMedia recordAudioMedia;
 
     public static void launch(Activity who,
                               String videoFile,
                               String backgroundFile,
                               List<SrtEntity> entity,
                               List<String> listRecordFile,
+                              String recordAudioPath,
                               int resPropertyValue) {
         start = System.currentTimeMillis();
         Intent intent = new Intent(who, DubbingPreviewActivity.class);
@@ -69,6 +69,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         intent.putStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY, (ArrayList<String>) listRecordFile);
         intent.putParcelableArrayListExtra(EXTRA_SRT_SUBTITLE_KEY, (ArrayList) entity);
         intent.putExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE, resPropertyValue);
+        intent.putExtra(EXTRA_RECORD_AUDIO_PATH,recordAudioPath);
         who.startActivity(intent);
     }
 
@@ -81,6 +82,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         init();
         initData();
         matchingLrcText();
+        initAudioMedia();
         initVideoView();
         initSeekBarView();
     }
@@ -117,8 +119,8 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             mRecordListPath = extraData.getStringArrayListExtra(EXTRA_RECORD_LIST_FILE_PATH_KEY);
             resPropertyValue =
                     extraData.getIntExtra(DubbingActivity.Constant.VIDEO_RES_PROPERTIES_VALUE, StudyResPropType.DUBBING_BY_SENTENCE);
+            recordAudioPath = extraData.getStringExtra(EXTRA_RECORD_AUDIO_PATH);
         }
-        mAudioHelper = new AudioPlayHelper(this);
     }
 
     private void matchingLrcText() {
@@ -162,8 +164,8 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         if (mDubbingVideoView.isPlaying()) {
             mDubbingVideoView.onPause();
         }
-        if (mAudioHelper.isMediaPlaying()) {
-            mAudioHelper.onPause();
+        if (recordAudioMedia != null){
+            recordAudioMedia.pause();
         }
     }
 
@@ -172,7 +174,11 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         super.onStop();
         mArtProcess.setVisibility(View.GONE);
         mDubbingVideoView.stop();
-        mAudioHelper.onStop();
+        recordAudioMedia.stop();
+    }
+
+    private void initAudioMedia(){
+        recordAudioMedia = new AudioMedia(recordAudioPath);
     }
 
     private void initVideoView() {
@@ -205,34 +211,28 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
 
             @Override
             public void onFinalReviewComplete() {
-                mAudioHelper.stopCombineAudio();
+                recordAudioMedia.stop();
+                mDubbingVideoView.stop();
                 resetTime();
             }
 
             @Override
             public void onVideoPause() {
                 //暂停播放
-                if (mAudioHelper.isMediaPlaying()) {
-                    mAudioHelper.onPause();
+                if (recordAudioMedia.isPlaying()){
+                    recordAudioMedia.pause();
                 }
             }
 
             @Override
             public void onVideoResume() {
-                mAudioHelper.seekTo((int) playTime);
+                recordAudioMedia.seekTo((int) playTime);
+                recordAudioMedia.start();
             }
 
             @Override
             public void onWhiteVideoPlay() {
-                mAudioHelper.playCombineAudio(mBackgroundFilePath,
-                        mPersonalVolume,
-                        mBackgroundVolume, mRecordListPath);
-            }
-
-            @Override
-            public void onWhiteVideoStop() {
-                mAudioHelper.stopCombineAudio();
-                resetTime();
+               recordAudioMedia.start();
             }
 
             @Override
@@ -264,18 +264,18 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
                 if (mDubbingVideoView.isPlaying()) {
                     mDubbingVideoView.onPause();
                 }
-                if (mAudioHelper.isMediaPlaying()) {
-                    mAudioHelper.onPause();
+                if (recordAudioMedia.isPlaying()){
+                    recordAudioMedia.pause();
                 }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 updateSrtTime(seekBar.getProgress());
-                mAudioHelper.seekTo(seekBar.getProgress());
+                recordAudioMedia.seekTo(seekBar.getProgress());
+                recordAudioMedia.start();
                 mDubbingVideoView.dubbingSeekTo(seekBar.getProgress());
-                mDubbingVideoView.play();
-
+                mDubbingVideoView.continuePlay();
             }
         });
     }
@@ -314,7 +314,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
             backPress();
         } else if (i == R.id.complete) {
             mDubbingVideoView.onPause();
-            mAudioHelper.onStop();
+            recordAudioMedia.pause();
 
             ProcessUtils processUtils = new ProcessUtils();
             processUtils.process(DubbingPreviewActivity.this, mRecordListPath, null,
@@ -335,14 +335,9 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
     }
 
     private void backPress() {
-        if (mDubbingVideoView.isPlaying()) {
-            mDubbingVideoView.onPause();
-        }
-        if (mAudioHelper.isMediaPlaying()) {
-            mAudioHelper.onPause();
-        }
         mDubbingVideoView.stop();
-        mAudioHelper.onStop();
+        recordAudioMedia.release();
+        FileUtils.deleteFile(recordAudioPath);
         finish();
     }
 

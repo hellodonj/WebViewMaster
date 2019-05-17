@@ -225,12 +225,25 @@ public class DubbingVideoView extends FrameLayout implements
 
 
     public void dubbingSeekTo(long time) {
-        if (null != mIjkVideoView) {
+        if (mIjkVideoView != null) {
             mIjkVideoView.seekTo((int) time);
         }
-        if (null != audioMedia) {
+        if (audioMedia != null) {
             audioMedia.seekTo((int) time);
         }
+    }
+
+    public void continuePlay(){
+        if (mIjkVideoView != null) {
+            mIjkVideoView.start();
+        }
+        if (audioMedia != null) {
+            audioMedia.start();
+        }
+        mPlayButton.setVisibility(GONE);
+        mThumb.setVisibility(GONE);
+        mIsPlaying = true;
+        mHandler.sendEmptyMessage(SHOW_PROGRESS);
     }
 
     public int getCurrentPosition() {
@@ -364,7 +377,9 @@ public class DubbingVideoView extends FrameLayout implements
             isPlaySourceAudio = false;
             boolean isPausing = false;
             if (mode == MODE_FINALLY_REVIEW) {
-                if (supportPause && mIjkVideoView.isPausing() && mIjkVideoView.getCurrentPosition() > 0){
+                if (supportPause
+                        && mIjkVideoView.isPausing()
+                        && lasttime > 0){
                     isPausing = true;
                 } else {
                     mIjkVideoView.seekTo(0);
@@ -426,7 +441,7 @@ public class DubbingVideoView extends FrameLayout implements
     public void resetAV() {
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(0);
-        if (null != audioMedia) {
+        if (audioMedia != null) {
             audioMedia.seekTo(0);
         }
     }
@@ -633,6 +648,7 @@ public class DubbingVideoView extends FrameLayout implements
                         onEventListener.onDubbingComplete();
                     } else if (mode == MODE_FINALLY_REVIEW){
                         onEventListener.onFinalReviewComplete();
+                        lasttime = 0;
                     } else if (mode == MODE_ALLPLAY) {
                         lasttime = 0;
                     }
