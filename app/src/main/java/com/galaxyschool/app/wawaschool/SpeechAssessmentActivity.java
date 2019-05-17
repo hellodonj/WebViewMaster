@@ -1445,7 +1445,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                 int startPosition = indexArray.get(playRefIndexPosition);
                 if (startPosition <= lastPosition && startPosition != 0) {
                     audioMessageTextV.setTextColor(ContextCompat.getColor(this, R.color.text_white));
-                    refText.setSpan(new ForegroundColorSpan(Color.GREEN)
+                    refText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_orange))
                             , 0, startPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     audioMessageTextV.setText(refText);
                 }
@@ -1455,7 +1455,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         } else {
             if (playRefIndexPosition <= refText.length() && playRefIndexPosition != 0) {
                 audioMessageTextV.setTextColor(ContextCompat.getColor(this, R.color.text_white));
-                refText.setSpan(new ForegroundColorSpan(Color.GREEN)
+                refText.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_orange))
                         , 0, playRefIndexPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 audioMessageTextV.setText(refText);
             }
