@@ -38,20 +38,35 @@ public class WatchCourseResourceListAdapter extends RecyclerAdapter<String> {
     public static final class CourseHolder extends ViewHolder<String> {
 
         private ImageView mCourseIcon;
-        private TextView mCourseName,mCourseTeachers;
+        private TextView mCourseName;
+        private TextView mCourseTeachers;
+        private TextView mCourseType;
+
+        private final int[] courseTypesBgId = new int[]{
+                R.drawable.shape_course_type_read,
+                R.drawable.shape_course_type_learn,
+                R.drawable.shape_course_type_practice,
+                R.drawable.shape_course_type_exam,
+                R.drawable.shape_course_type_video
+        };
+
+        private String[] courseTypeNames;
 
         public CourseHolder(View itemView) {
             super(itemView);
             mCourseIcon = (ImageView) itemView.findViewById(R.id.iv_course_icon);
             mCourseName = (TextView) itemView.findViewById(R.id.tv_course_name);
             mCourseTeachers = (TextView) itemView.findViewById(R.id.tv_course_teacher);
+            mCourseType = (TextView) itemView.findViewById(R.id.tv_course_type);
+
+            courseTypeNames =
+                    itemView.getContext().getResources().getStringArray(R.array.course_type_names);
         }
 
         @Override
         protected void onBind(String courseId) {
             // 发生网络请求
             String token = UserHelper.getUserId();
-            int intCourseId = Integer.parseInt(courseId);
             LQCourseHelper.requestCourseDetailByCourseId(token, courseId, null, 1, 0, 0, new DataSource.Callback<CourseDetailsVo>() {
                 @Override
                 public void onDataNotAvailable(int strRes) {
@@ -67,6 +82,13 @@ public class WatchCourseResourceListAdapter extends RecyclerAdapter<String> {
                         mCourseTeachers.setVisibility(View.GONE);
                         String courseUrl = courseVo.getThumbnailUrl().trim();
                         ImageUtil.fillCourseIcon(mCourseIcon,courseUrl);
+
+                        int courseType = courseVo.getAssortment();
+                        if (courseType >= 0 && courseType < courseTypesBgId.length) {
+                            mCourseType.setText(courseTypeNames[courseType]);
+                            mCourseType.setBackgroundResource(courseTypesBgId[courseType]);
+                            mCourseType.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             });
