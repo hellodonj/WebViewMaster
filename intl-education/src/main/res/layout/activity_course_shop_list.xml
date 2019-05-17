@@ -35,6 +35,8 @@
                 app:tabIndicatorHeight="3dp"
                 app:tabIndicatorColor="@color/colorAccent"
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:tabGravity="fill"
+                app:tabMaxWidth="0dp"
                 app:tabMode="fixed"/>
 
         </FrameLayout>

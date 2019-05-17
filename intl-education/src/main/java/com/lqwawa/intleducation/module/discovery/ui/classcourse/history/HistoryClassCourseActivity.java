@@ -307,7 +307,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity classCourseEntity) {
                 super.onItemLongClick(holder, classCourseEntity);
-                if (mClassCourseParams.isHeadMaster()) {
+                if (mClassCourseParams.isHeadMaster() && !mCourseAdapter.isChoiceMode()) {
                     switchHoldState(true, classCourseEntity);
                 }
             }

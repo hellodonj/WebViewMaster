@@ -197,6 +197,7 @@ public class MyCourseFragment extends PresenterFragment<MyCourseContract.Present
                 ".OpenCourseHelpActivity");
         QuestionResourceModel model = new QuestionResourceModel();
         model.setStuMemberId(UserHelper.getUserId());
+        model.setT_TaskType(5);
         bundle.putBoolean("fromMyAssistantMark", true);
         bundle.putSerializable(QuestionResourceModel.class.getSimpleName(), model);
         intent.putExtras(bundle);

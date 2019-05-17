@@ -505,7 +505,7 @@ public class LQCourseHelper {
                                            int paramTwoId, int paramThreeId,
                                            @NonNull final DataSource.Callback<List<CourseVo>> callback) {
         requestLQCourseData(organId, pageIndex, pageSize, level, sort, keyString, payType,
-                paramOneId, paramTwoId, paramThreeId, -1, callback);
+                paramOneId, paramTwoId, paramThreeId, 0, callback);
     }
 
     /**

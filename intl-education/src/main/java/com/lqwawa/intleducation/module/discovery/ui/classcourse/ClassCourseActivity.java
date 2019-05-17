@@ -391,7 +391,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mTvAction.setVisibility(View.GONE);
 
         // 班级学程进入参数
-//        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
+        boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
 
         boolean initiativeTrigger = false;
         if (mResourceFlag) {
@@ -404,7 +404,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             mWorkCart.setText(R.string.label_watch_history_course);
             mCartContainer.setVisibility(View.VISIBLE);
             // 显示作业库
-            mNewCartContainer.setVisibility(View.VISIBLE);
+            mNewCartContainer.setVisibility(isResult ? View.VISIBLE : View.GONE);
         } else {
             mWorkCart.setVisibility(View.GONE);
             // 旧作业库改为查看历史学程

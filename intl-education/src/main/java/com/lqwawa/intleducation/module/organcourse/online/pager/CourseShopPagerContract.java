@@ -24,7 +24,9 @@ public interface CourseShopPagerContract {
          * @param payType 加载课程收费类型
          * @param keyString 搜索关键词
          */
-        void requestCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString);
+        void requestCourseData(@Nullable String organId, int pageIndex, int pageSize,
+                               @NonNull String sort, int payType, String keyString,
+                               int dataType);
 
         /**
          * 获取符合筛选条件的课程数据 加载更多
@@ -35,7 +37,8 @@ public interface CourseShopPagerContract {
          * @param payType 加载课程收费类型
          * @param keyString 搜索关键词
          */
-        void requestMoreCourseData(@Nullable String organId, int pageIndex, int pageSize, @NonNull String sort, int payType, String keyString);
+        void requestMoreCourseData(@Nullable String organId, int pageIndex, int pageSize,
+                                   @NonNull String sort, int payType, String keyString, int dataType);
     }
 
     interface View extends BaseContract.View<Presenter>{

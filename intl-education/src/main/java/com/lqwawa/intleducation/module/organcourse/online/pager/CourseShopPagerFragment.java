@@ -215,13 +215,16 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
         EditText searchEt = (EditText) getActivity().findViewById(R.id.search_et);
         String searchKey = searchEt.getText().toString();
 
+        int dataType = mSelectResource ? 1 : 0;
         if (isMoreLoaded) {
             currentPage++;
-            mPresenter.requestMoreCourseData(mSchoolId, currentPage, 0, mSortType, payType, searchKey);
+            mPresenter.requestMoreCourseData(mSchoolId, currentPage, 0, mSortType, payType,
+                    searchKey, dataType);
         } else {
             currentPage = 0;
             mRefreshLayout.showRefresh();
-            mPresenter.requestCourseData(mSchoolId, currentPage, 0, mSortType, payType, searchKey);
+            mPresenter.requestCourseData(mSchoolId, currentPage, 0, mSortType, payType, searchKey
+                    , dataType);
         }
     }
 
