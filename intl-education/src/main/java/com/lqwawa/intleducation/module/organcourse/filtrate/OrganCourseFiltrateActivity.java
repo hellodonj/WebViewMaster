@@ -414,6 +414,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         TabPagerAdapter mAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
         mSortTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(fragments.size() - 1);
 
         // 设置TabLayout最后一个节点有upDown
         TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
