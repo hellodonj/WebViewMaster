@@ -29,10 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.icedcap.dubbing.audio.AudioRecordHelper;
 import com.icedcap.dubbing.entity.DubbingEntity;
 import com.icedcap.dubbing.entity.SrtEntity;
@@ -53,6 +51,7 @@ import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
 import com.oosic.apps.iemaker.base.evaluate.EvaluateItemResult;
 import com.oosic.apps.iemaker.base.evaluate.EvaluateManager;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
+import com.osastudio.common.utils.FileUtils;
 import com.osastudio.common.utils.LogUtils;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.zhy.adapter.abslistview.CommonAdapter;
@@ -834,14 +833,19 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         commitFl.setVisibility(View.VISIBLE);
     }
 
-
     private void launchDubbingPreview() {
         List<String> recordFileList = getRecordFilePathList();
-        DubbingPreviewActivity.launch(DubbingActivity.this,
-                videoFilePath,
-                backgroundFilePath,
-                srtEntityList, recordFileList,
-                resPropertyValue);
+        File audioPath = new File(getExternalCacheDir(),"recordAudio.mp3");
+        FileUtils.uniteAMRFile(recordFileList,audioPath.getAbsolutePath());
+        if (!TextUtils.isEmpty(FileUtils.getFileSize(audioPath))){
+            DubbingPreviewActivity.launch(DubbingActivity.this,
+                    videoFilePath,
+                    backgroundFilePath,
+                    srtEntityList,
+                    recordFileList,
+                    audioPath.getAbsolutePath(),
+                    resPropertyValue);
+        }
     }
 
     private List<String> getRecordFilePathList() {

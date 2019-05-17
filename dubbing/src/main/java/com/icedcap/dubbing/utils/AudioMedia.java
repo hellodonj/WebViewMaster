@@ -143,7 +143,6 @@ public class AudioMedia implements MediaPlayer.OnCompletionListener, MediaPlayer
         try {
             mediaPlayer.prepare();
             mediaPlayer.seekTo(0);
-            return;
         } catch (Exception e) {
             e.printStackTrace();
         }
