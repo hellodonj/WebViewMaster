@@ -264,7 +264,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             isAuthorized, courseDetailParams, vo);
                 } else {
                     // 去未加入页面
-                    boolean isAuth = isAuthorized;
+                    boolean isAuth = false;
                     if (entity != null && entity.isLabelAuthorized()) {
                         isAuth = true;
                     }
@@ -274,7 +274,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             .putExtra("memberId", memberId)
                             .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
                             .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
-                            .putExtra("isAuthorized", isAuth)
+                            .putExtra("isAuthorized", isAuthorized)
                             .putExtra("isMyCourse", isMyCourse);
                     if (courseDetailParams != null) {
                         courseDetailParams.setIsAuthorized(isAuth);
