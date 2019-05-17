@@ -427,8 +427,8 @@ public class DubbingVideoView extends FrameLayout implements
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(0);
         mPlayButton.setVisibility(VISIBLE);
-        if (null != audioMedia) {
-            audioMedia.seekTo(0);
+        if (audioMedia != null) {
+            audioMedia.stop();
         }
         if (!keepStatus) {
             dubbing_status = STATUS_NORMAL;
@@ -442,7 +442,7 @@ public class DubbingVideoView extends FrameLayout implements
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(0);
         if (audioMedia != null) {
-            audioMedia.seekTo(0);
+            audioMedia.stop();
         }
     }
 
