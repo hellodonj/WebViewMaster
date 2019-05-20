@@ -16,7 +16,7 @@ import java.util.List;
 public interface TutorialFiltrateGroupContract {
 
     interface Presenter extends BaseContract.Presenter{
-        void requestTutorialConfigData();
+        void requestTutorialConfigData(@NonNull String memberId);
     }
 
     interface View extends BaseContract.View<Presenter>{

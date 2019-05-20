@@ -56,9 +56,8 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
     // 基础课程
     private static final int COUNTRY_COURSE_ID = 2003;
 
-    // IGCSE A-LEVEL
-    private static final int ENGLISH_INTERNATIONAL_CHILDREN_IGCSE_ID = 2013;
-    private static final int ENGLISH_INTERNATIONAL_CHILDREN_A_LEVEL_ID = 2012;
+    // LQEnglishPrimary
+    private static final int ENGLISH_INTERNATIONAL_COURSE_PRIMARYID = 2011;
 
     private static final int CONFIG_TYPE_1 = 1;
     private static final int CONFIG_TYPE_2 = 2;
@@ -138,7 +137,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
     protected void initData() {
         super.initData();
         // 获取标签
-        mPresenter.requestTutorialConfigData();
+        mPresenter.requestTutorialConfigData(UserHelper.getUserId());
     }
 
     @Override
@@ -257,10 +256,10 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                     mFiltrateArray3.add(Tab.build(entity));
                 }
                 // 第三个筛选容器,加全部
-                Tab allTab3 = Tab.buildAll(mAllText, null);
-                if (!mFiltrateArray3.contains(allTab3)) {
-                    mFiltrateArray3.add(0, allTab3);
-                }
+//                Tab allTab3 = Tab.buildAll(mAllText, null);
+//                if (!mFiltrateArray3.contains(allTab3)) {
+//                    mFiltrateArray3.add(0, allTab3);
+//                }
             }
             // 递归调用
             List<LQCourseConfigEntity> childList = entity.getChildList();
@@ -294,16 +293,10 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
         } else if (rootId == CHARACTERISTIC_COURSE_ID || rootId == COUNTRY_COURSE_ID) {
             // 三级页面
             mTabVector3.setVisibility(View.GONE);
-
-            if (rootId == CHARACTERISTIC_COURSE_ID) {
-                // 类型 科目
-                mTabLabel1.setText(getString(R.string.label_colon_type));
-                mTabLabel2.setText(getString(R.string.label_colon_subject));
-            } else if (rootId == COUNTRY_COURSE_ID) {
-                // 类型 学段
-                mTabLabel1.setText(getString(R.string.label_colon_type));
-                mTabLabel2.setText(getString(R.string.label_colon_period));
-            }
+            // 类型 学段
+            mTabLabel1.setText(getString(R.string.label_colon_type));
+            mTabLabel2.setText(getString(R.string.label_colon_period));
+            mTabLabel3.setText(getString(R.string.label_colon_subject));
         }
     }
 
@@ -357,9 +350,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                 }
 
                 Tab parentTab = (Tab) tabAt.getTag();
-                if (tabData.getId() == ENGLISH_INTERNATIONAL_CHILDREN_IGCSE_ID ||
-                        tabData.getId() == ENGLISH_INTERNATIONAL_CHILDREN_A_LEVEL_ID ||
-                        parentTab.getId() == ENGLISH_INTERNATIONAL_COURSE_ID) {
+                if (parentTab.getId() != MINORITY_LANGUAGE_COURSE_ID) {
                     // 设置第三个显示
                     mTabVector3.setVisibility(View.VISIBLE);
                     // 重新配置3数据的联动效果
@@ -367,7 +358,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                     recursionConfigArray(tabData.getChildList());
                     initTabControl3();
                     // 英语国际第二级标签，选择“全部”第三级隐藏，选择其他若第三级没数据也隐藏
-                    if (parentTab.getId() == ENGLISH_INTERNATIONAL_COURSE_ID && (tabData.isAll() || mFiltrateArray3.isEmpty())) {
+                    if ((tabData.isAll() || mFiltrateArray3.isEmpty())) {
                         mTabVector3.setVisibility(View.GONE);
                     }
                 } else {
@@ -559,13 +550,15 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                         EmptyUtil.isNotEmpty(mFiltrateArray3)) {
                     outer:
                     for (Tab tab : mFiltrateArray2) {
-                        if (tab.isChecked() &&
-                                (tab.getId() == ENGLISH_INTERNATIONAL_CHILDREN_A_LEVEL_ID ||
-                                        tab.getId() == ENGLISH_INTERNATIONAL_CHILDREN_IGCSE_ID)) {
+                        if (tab.isChecked()) {
                             inner:
                             for (Tab tab3 : mFiltrateArray3) {
                                 if (tab3.isChecked()) {
-                                    params[0] = tab3.getLabelId();
+                                    if (tab.getId() == ENGLISH_INTERNATIONAL_COURSE_PRIMARYID) {
+                                        params[0] = tab3.getLabelId();
+                                    } else {
+                                        params[1] = tab3.getLabelId();
+                                    }
                                     break outer;
                                 }
                             }
@@ -575,8 +568,8 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                 }
             } else if (rootId == CHARACTERISTIC_COURSE_ID) {
                 // 特色课程
-                if (EmptyUtil.isNotEmpty(mFiltrateArray2)) {
-                    for (Tab tab : mFiltrateArray2) {
+                if (EmptyUtil.isNotEmpty(mFiltrateArray3)) {
+                    for (Tab tab : mFiltrateArray3) {
                         if (tab.isChecked()) {
                             params[1] = tab.getLabelId();
                             break;
@@ -588,8 +581,7 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                 if (EmptyUtil.isNotEmpty(mFiltrateArray3)) {
                     for (Tab tab : mFiltrateArray3) {
                         if (tab.isChecked()) {
-                            params[1] = tab.getParamTwoId();
-                            params[2] = tab.getParamThreeId();
+                            params[1] = tab.getLabelId();
                             break;
                         }
                     }
