@@ -52,6 +52,7 @@ import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.history.HistoryClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.courselist.LQCourseListActivity;
@@ -78,10 +79,10 @@ import java.util.List;
 import static com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment.RESULT_LIST;
 
 /**
- * @desc 在线课堂的学程馆
  * @author medici
+ * @desc 在线课堂的学程馆
  */
-public class CourseShopListActivity extends ToolbarActivity implements View.OnClickListener{
+public class CourseShopListActivity extends ToolbarActivity implements View.OnClickListener {
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
@@ -142,7 +143,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         isOnlineClassEnter = bundle.getBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER);
 
         mParams = (CourseShopClassifyParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-        if(EmptyUtil.isNotEmpty(mParams)) {
+        if (EmptyUtil.isNotEmpty(mParams)) {
             mSchoolId = mParams.getOrganId();
             mClassId = mParams.getClassId();
             mSelectResource = mParams.isSelectResource();
@@ -158,7 +159,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
             }
         }
 
-        if(EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)){
+        if (EmptyUtil.isEmpty(mTitle) || EmptyUtil.isEmpty(mSortType)) {
             return false;
         }
         return super.initArgs(bundle);
@@ -170,8 +171,15 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         mTopBar.setTitle(mTitle);
+        View.OnClickListener onClickListener = null;
+        if (mSelectResource) {
+            onClickListener = v -> {
+                AddSubjectActivity.show(this, true, SUBJECT_SETTING_REQUEST_CODE);
+            };
+        }
+        mTopBar.setRightFunctionText1(R.string.title_subject_setting, onClickListener);
 
-        mSearchEt = (EditText)findViewById(R.id.search_et);
+        mSearchEt = (EditText) findViewById(R.id.search_et);
         mSearchFilter = (TextView) findViewById(R.id.filter_tv);
         mSearchClear = (ImageView) findViewById(R.id.search_clear_iv);
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -181,7 +189,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
 
-        if(mSelectResource && mResourceData.isInitiativeTrigger()) {
+        if (mSelectResource && mResourceData.isInitiativeTrigger()) {
             mNewCartContainer.setVisibility(View.VISIBLE);
             mNewCartContainer.setOnClickListener(this);
         }
@@ -219,13 +227,13 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String searchKey = mSearchEt.getText().toString();
-                    if (EmptyUtil.isEmpty(searchKey)){
+                    if (EmptyUtil.isEmpty(searchKey)) {
                         return false;
                     }
 
-                    for (SearchNavigator navigator:mNavigatorList) {
+                    for (SearchNavigator navigator : mNavigatorList) {
                         boolean isVisible = navigator.search(searchKey);
-                        if(isVisible) break;
+                        if (isVisible) break;
                     }
                     KeyboardUtil.hideSoftInput(CourseShopListActivity.this);
                     return true;
@@ -234,14 +242,14 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
             }
         });
 
-        mTabLayout.addOnTabSelectedListener(new TabSelectedAdapter(){
+        mTabLayout.addOnTabSelectedListener(new TabSelectedAdapter() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-                if(tab.getPosition() == mTabLayout.getTabCount() -1){
+                if (tab.getPosition() == mTabLayout.getTabCount() - 1) {
                     priceTabVisiale = true;
                     // 价格被选中
-                    if(EmptyUtil.isNotEmpty(mPriceArrowView)){
+                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
                         int state = mPriceArrowView.triggerSwitch();
                         triggerPriceSwitch(state);
                     }
@@ -251,10 +259,10 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 super.onTabUnselected(tab);
-                if(tab.getPosition() == mTabLayout.getTabCount() -1){
+                if (tab.getPosition() == mTabLayout.getTabCount() - 1) {
                     priceTabVisiale = false;
                     // 价格被选中
-                    if(EmptyUtil.isNotEmpty(mPriceArrowView)){
+                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
                         // 状态重置
                         mPriceArrowView.reset();
                     }
@@ -287,33 +295,33 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     @Override
     protected void initData() {
         super.initData();
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
         mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
         Bundle extra = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
         CourseShopPagerFragment recentUpdateFragment = null;
-        if(mSelectResource){
-            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,mParams,extra);
-        }else{
-            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        if (mSelectResource) {
+            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE, mParams, extra);
+        } else {
+            recentUpdateFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_RECENT_UPDATE, mSchoolId, isSchoolEnter, isOnlineClassEnter);
         }
 
 
         CourseShopPagerFragment hotFragment = null;
-        if(mSelectResource){
-            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND,mParams,extra);
-        }else{
-            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        if (mSelectResource) {
+            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND, mParams, extra);
+        } else {
+            hotFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_HOT_RECOMMEND, mSchoolId, isSchoolEnter, isOnlineClassEnter);
         }
 
 
         CourseShopPagerFragment priceFragment = null;
-        if(mSelectResource){
-            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,mParams,extra);
-        }else{
-            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN,mSchoolId,isSchoolEnter,isOnlineClassEnter);
+        if (mSelectResource) {
+            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN, mParams, extra);
+        } else {
+            priceFragment = CourseShopPagerFragment.newInstance(HideSortType.TYPE_SORT_ONLINE_SHOP_PRICE_DOWN, mSchoolId, isSchoolEnter, isOnlineClassEnter);
         }
 
         List<Fragment> fragments = new ArrayList<>();
@@ -326,7 +334,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mNavigatorList.add(hotFragment);
         mNavigatorList.add(priceFragment);
 
-        TabPagerAdapter mAdapter = new TabPagerAdapter(getSupportFragmentManager(),fragments);
+        TabPagerAdapter mAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
@@ -340,7 +348,7 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         mPriceArrowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(priceTabVisiale && event.getAction() == MotionEvent.ACTION_DOWN){
+                if (priceTabVisiale && event.getAction() == MotionEvent.ACTION_DOWN) {
                     int state = mPriceArrowView.triggerSwitch();
                     triggerPriceSwitch(state);
                     return true;
@@ -352,20 +360,21 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
 
     /**
      * 发生价格排序变化
+     *
      * @param state 状态  1 UP 2 Down
      */
-    private void triggerPriceSwitch(int state){
-        if(state == PriceArrowView.STATE_UP){
+    private void triggerPriceSwitch(int state) {
+        if (state == PriceArrowView.STATE_UP) {
             // 升序
-            for (SearchNavigator navigator:mNavigatorList) {
+            for (SearchNavigator navigator : mNavigatorList) {
                 boolean isVisible = navigator.triggerPriceSwitch(true);
-                if(isVisible) break;
+                if (isVisible) break;
             }
-        }else if(state == PriceArrowView.STATE_DOWN){
+        } else if (state == PriceArrowView.STATE_DOWN) {
             // 降序
-            for (SearchNavigator navigator:mNavigatorList) {
+            for (SearchNavigator navigator : mNavigatorList) {
                 boolean isVisible = navigator.triggerPriceSwitch(false);
-                if(isVisible) break;
+                if (isVisible) break;
             }
         }
     }
@@ -373,18 +382,18 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.filter_tv){
+        if (viewId == R.id.filter_tv) {
             String searchKey = mSearchEt.getText().toString();
 
             /*if (EmptyUtil.isEmpty(searchKey)){
                 return;
             }*/
 
-            for (SearchNavigator navigator:mNavigatorList) {
+            for (SearchNavigator navigator : mNavigatorList) {
                 boolean isVisible = navigator.search(searchKey);
-                if(isVisible) break;
+                if (isVisible) break;
             }
-        }else if(viewId == R.id.search_clear_iv) {
+        } else if (viewId == R.id.search_clear_iv) {
             mSearchEt.getText().clear();
 
             String searchKey = mSearchEt.getText().toString();
@@ -393,13 +402,13 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                 return;
             }*/
 
-            for (SearchNavigator navigator:mNavigatorList) {
+            for (SearchNavigator navigator : mNavigatorList) {
                 boolean isVisible = navigator.search(searchKey);
-                if(isVisible) break;
+                if (isVisible) break;
             }
-        }else if(viewId == R.id.new_cart_container){
+        } else if (viewId == R.id.new_cart_container) {
             // 点击作业库
-            handleSubjectSettingData(this,UserHelper.getUserId());
+            handleSubjectSettingData(this, UserHelper.getUserId());
         }
     }
 
@@ -420,9 +429,9 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                     popChooseSubjectDialog(context);
                 } else {
                     //有数据
-                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                         Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(CourseShopListActivity.this,mSchoolId,mClassId,extras);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(CourseShopListActivity.this, mSchoolId, mClassId, extras);
                     }
                 }
             }
@@ -452,11 +461,11 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
         messageDialog.show();
     }
 
-    private class TabPagerAdapter extends FragmentPagerAdapter{
+    private class TabPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments;
 
-        public TabPagerAdapter(FragmentManager fm,List<Fragment> fragments) {
+        public TabPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }
@@ -478,9 +487,9 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventWrapper event){
-        if(EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)){
-            if(EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()) {
+    public void onEvent(EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)) {
+            if (EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()) {
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
                 finish();
@@ -491,20 +500,41 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
+                // 科目设置成功的回调
+                Bundle extras = data.getExtras();
+                if (EmptyUtil.isNotEmpty(extras)) {
+                    boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
+                    if (completed) {
+                        for (SearchNavigator navigator : mNavigatorList) {
+                            boolean isVisible = navigator.search("");
+                            if (isVisible) break;
+                        }
+                    }
+                }
+            }
         }
     }
 
     /**
      * 课程列表显示入口
+     *
      * @param context 上下文对象
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
+     * @param sort    热门列表或者其它
+     * @param title   标题文本
      */
     public static void show(@NonNull Context context,
                             @NonNull @HideSortType.SortRes String sort,
-                            @NonNull String title){
+                            @NonNull String title) {
         Intent intent = new Intent(context, LQCourseListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
@@ -515,50 +545,52 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
 
     /**
      * 课程列表显示入口 在线课堂机构信息进来的
-     * @param context 上下文对象
-     * @param sort 热门列表或者其它
-     * @param title 标题文本
-     * @param schoolId 机构Id
-     * @param isSchoolEnter 是否从在线机构主页进来的
+     *
+     * @param context            上下文对象
+     * @param sort               热门列表或者其它
+     * @param title              标题文本
+     * @param schoolId           机构Id
+     * @param isSchoolEnter      是否从在线机构主页进来的
      * @param isOnlineClassEnter 是否是在线课堂班级过来的，如果是，需要隐藏在线课堂Tab
      */
     public static void show(@NonNull Context context,
                             @NonNull @HideSortType.SortRes String sort,
-                            @NonNull String title,@NonNull String schoolId,
-                            boolean isSchoolEnter,boolean isOnlineClassEnter){
+                            @NonNull String title, @NonNull String schoolId,
+                            boolean isSchoolEnter, boolean isOnlineClassEnter) {
         Intent intent = new Intent(context, CourseShopListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
-        bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
-        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER,isSchoolEnter);
-        bundle.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER,isOnlineClassEnter);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
+        bundle.putBoolean(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter);
+        bundle.putBoolean(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     /**
      * 学程馆学程学习任务选择的入口
+     *
      * @param activity 上下文对象
      */
     public static void show(@NonNull Activity activity,
                             @NonNull String title,
                             @NonNull @HideSortType.SortRes String sort,
                             @NonNull CourseShopClassifyParams params,
-                            @Nullable Bundle extras){
-        Intent intent = new Intent(activity,CourseShopListActivity.class);
+                            @Nullable Bundle extras) {
+        Intent intent = new Intent(activity, CourseShopListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(KEY_EXTRA_TITLE_TEXT, title);
         bundle.putString(KEY_EXTRA_SORT_TYPE, sort);
-        bundle.putString(KEY_EXTRA_SCHOOL_ID,params.getOrganId());
-        bundle.putString(KEY_EXTRA_CLASS_ID,params.getClassId());
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
-        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID, params.getOrganId());
+        bundle.putString(KEY_EXTRA_CLASS_ID, params.getClassId());
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
+        bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras);
         intent.putExtras(bundle);
-        if(params.isSelectResource()){
+        if (params.isSelectResource()) {
             ShopResourceData data = params.getData();
-            activity.startActivityForResult(intent,data.getRequestCode());
-        }else{
+            activity.startActivityForResult(intent, data.getRequestCode());
+        } else {
             activity.startActivity(intent);
         }
     }
