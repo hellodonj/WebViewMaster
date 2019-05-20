@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
@@ -51,14 +52,16 @@ public class VideoCommentListFragment extends PresenterFragment<VideoCommentCont
     private CommentDialog.CommentData commentData;
 
     private Long courseId;
+    private LessonSourceParams lessonSourceParams;
 
     private int pageIndex = 0;
     private int pageSize = AppConfig.PAGE_SIZE;
 
-    public static VideoCommentListFragment newInstance(Long courseId) {
+    public static VideoCommentListFragment newInstance(Long courseId, LessonSourceParams lessonSourceParams) {
 
         Bundle args = new Bundle();
         args.putLong("courseId", courseId);
+        args.putSerializable(LessonSourceParams.class.getSimpleName(), lessonSourceParams);
         VideoCommentListFragment fragment = new VideoCommentListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +80,7 @@ public class VideoCommentListFragment extends PresenterFragment<VideoCommentCont
     @Override
     protected boolean initArgs(Bundle bundle) {
         courseId = bundle.getLong("courseId");
+        lessonSourceParams = (LessonSourceParams) bundle.getSerializable(LessonSourceParams.class.getSimpleName());
         return super.initArgs(bundle);
     }
 
@@ -91,6 +95,7 @@ public class VideoCommentListFragment extends PresenterFragment<VideoCommentCont
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         videoCommentAdapter = new VideoCommentAdapter();
+        videoCommentAdapter.setLessonSourceParams(lessonSourceParams);
         recyclerView.setAdapter(videoCommentAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL);

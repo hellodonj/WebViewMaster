@@ -42,6 +42,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.VideoResourceEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.videodetail.videocomment.VideoCommentAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.videodetail.videocomment.VideoCommentListFragment;
@@ -89,6 +90,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
     private ReadWeikeHelper readWeikeHelper;
 
     private SectionResListVo sectionResListVo;
+    private LessonSourceParams lessonSourceParams;
     private Long chapterId;
     private Long courseId;
     private boolean isMp4;
@@ -97,9 +99,11 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
     private int pageIndex = 0;
     private int pageSize = 3;
 
-    public static void start(Context context, SectionResListVo sectionResListVo) {
+    public static void start(Context context, SectionResListVo sectionResListVo,
+                             LessonSourceParams lessonSourceParams) {
         Intent starter = new Intent(context, VideoDetailActivity.class);
         starter.putExtra(SectionResListVo.class.getSimpleName(), sectionResListVo);
+        starter.putExtra(LessonSourceParams.class.getSimpleName(), lessonSourceParams);
         context.startActivity(starter);
     }
 
@@ -117,6 +121,8 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
     protected boolean initArgs(@NonNull Bundle bundle) {
         sectionResListVo =
                 (SectionResListVo) bundle.getSerializable(SectionResListVo.class.getSimpleName());
+        lessonSourceParams =
+                (LessonSourceParams) bundle.get(LessonSourceParams.class.getSimpleName());
         if (sectionResListVo == null) {
             return false;
         }
@@ -233,6 +239,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         commentRecyclerView.setLayoutManager(mLayoutManager);
         videoCommentAdapter = new VideoCommentAdapter();
+        videoCommentAdapter.setLessonSourceParams(lessonSourceParams);
         commentRecyclerView.setAdapter(videoCommentAdapter);
 
         commentContentEditText = (EditText) findViewById(R.id.et_comment_content);
@@ -252,6 +259,7 @@ public class VideoDetailActivity extends PresenterActivity<VideoDetailContract.P
         commentTitleLayout.setOnClickListener(view -> {
             Bundle args = new Bundle();
             args.putLong("courseId", courseId);
+            args.putSerializable(LessonSourceParams.class.getSimpleName(), lessonSourceParams);
             CommonContainerActivity.show(this, getString(R.string.user_comment),
                     VideoCommentListFragment.class, args);
         });

@@ -224,7 +224,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
                     if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
                         if (isVideoLibrary) {
-                            VideoDetailActivity.start(getActivity(), resVo);
+                            VideoDetailActivity.start(getActivity(), resVo, mSourceParams);
                         } else {
                             // 看课件
                             // V5.14 换成看课本,视频课

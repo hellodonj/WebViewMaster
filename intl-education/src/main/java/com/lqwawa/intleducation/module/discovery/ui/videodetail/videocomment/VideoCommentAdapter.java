@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.videodetail.videocomment;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -7,7 +8,9 @@ import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 
 /**
@@ -17,8 +20,14 @@ import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
  */
 public class VideoCommentAdapter extends RecyclerAdapter<CommentVo> {
 
+    private LessonSourceParams lessonSourceParams;
+    
     public VideoCommentAdapter() {
         
+    }
+
+    public void setLessonSourceParams(LessonSourceParams lessonSourceParams) {
+        this.lessonSourceParams = lessonSourceParams;
     }
 
     @Override
@@ -58,7 +67,20 @@ public class VideoCommentAdapter extends RecyclerAdapter<CommentVo> {
         protected void onBind(CommentVo vo) {
             LQwawaImageUtil.loadCommonIcon(itemView.getContext(), userHeaderImageView,
                     vo.getHeadPic(), R.drawable.user_header_def);
-            nickNameTextView.setText(vo.getCreateName());
+
+            String createName = vo.getCreateName();
+            boolean isTeacherTutor =
+                    lessonSourceParams != null && (lessonSourceParams.isLecturer() || lessonSourceParams.isAutor());
+            boolean isMySelf =
+                    !TextUtils.isEmpty(lessonSourceParams.getMemberId()) && !TextUtils.isEmpty(vo.getCreateId())
+                            && (vo.getCreateId().equals(lessonSourceParams.getMemberId()));
+            boolean isVisible =  isTeacherTutor || isMySelf;
+            if (!isVisible && !TextUtils.isEmpty(createName)) {
+                createName =
+                        createName.substring(0, 1) +  UIUtil.getString(R.string.label_course_comment_encryption_name);
+            }
+            nickNameTextView.setText(createName);
+            
             gradeRatingBar.setVisibility(View.GONE);
             timeTextView.setText(vo.getCreateTime());
             praiseTextView.setVisibility(View.GONE);
