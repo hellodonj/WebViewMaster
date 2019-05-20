@@ -3,6 +3,7 @@ package com.lqwawa.lqresviewlib.office365;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -51,6 +52,7 @@ public class WebActivity extends BaseActivity{
         webView = (WebView)findViewById(R.id.web_view);
         mTvContent = (TextView) findViewById(R.id.tv_content);
         mTvContent.setText(R.string.label_null_tutorial_introduces);
+        mTvContent.setMovementMethod(new ScrollingMovementMethod());
 
         WebSettings webSettings =   webView.getSettings();
         webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
