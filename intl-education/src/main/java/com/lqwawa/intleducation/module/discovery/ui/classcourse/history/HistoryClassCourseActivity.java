@@ -308,31 +308,28 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity classCourseEntity) {
                 super.onItemLongClick(holder, classCourseEntity);
                 if (mClassCourseParams.isHeadMaster() && !mCourseAdapter.isChoiceMode()) {
-                    switchHoldState(true, classCourseEntity);
+//                    switchHoldState(true, classCourseEntity);
+                    ClassCourseEntity entity = classCourseEntity;
+                    ActionDialogFragment.show(getSupportFragmentManager(),
+                            R.string.label_remove_out, R.string.label_delete,
+                            (button, tag) -> {
+                                if (tag == ActionDialogFragment.Tag.UP) {
+                                    // 移除
+                                    List<ClassCourseEntity> entities = new ArrayList<>();
+                                    entities.add(entity);
+                                    mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                                } else if (tag == ActionDialogFragment.Tag.DOWN) {
+                                    // 删除
+                                    deleteCourseFromClass(entity);
+                                }
+                            });
                 }
             }
         });
 
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
-            ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
-            ActionDialogFragment.show(getSupportFragmentManager(),
-                    getString(R.string.label_please_choice_action),
-                    R.string.label_remove_out, R.string.label_delete,
-                    new ActionDialogNavigator() {
-                        @Override
-                        public void onAction(@NonNull View button, ActionDialogFragment.Tag tag) {
-                            if (tag == ActionDialogFragment.Tag.LEFT) {
-                                // 移除
-                                List<ClassCourseEntity> entities = new ArrayList<>();
-                                entities.add(entity);
-                                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
-                            } else if (tag == ActionDialogFragment.Tag.RIGHT) {
-                                // 删除
-                                deleteCourseFromClass(entity);
-                            }
-                        }
-                    });
+
         });
 
         // 下拉刷新与加载更多
