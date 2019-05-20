@@ -74,7 +74,11 @@ public class VideoCommentAdapter extends RecyclerAdapter<CommentVo> {
             boolean isMySelf =
                     !TextUtils.isEmpty(lessonSourceParams.getMemberId()) && !TextUtils.isEmpty(vo.getCreateId())
                             && (vo.getCreateId().equals(lessonSourceParams.getMemberId()));
-            boolean isVisible =  isTeacherTutor || isMySelf;
+            boolean isFromTeacherTutor =
+                    !TextUtils.isEmpty(lessonSourceParams.getTeacherTutorIds())
+                            && !TextUtils.isEmpty(vo.getCreateId())
+                            && (lessonSourceParams.getTeacherTutorIds().contains(vo.getCreateId()));
+            boolean isVisible =  isTeacherTutor || isMySelf || isFromTeacherTutor;
             if (!isVisible && !TextUtils.isEmpty(createName)) {
                 createName =
                         createName.substring(0, 1) +  UIUtil.getString(R.string.label_course_comment_encryption_name);

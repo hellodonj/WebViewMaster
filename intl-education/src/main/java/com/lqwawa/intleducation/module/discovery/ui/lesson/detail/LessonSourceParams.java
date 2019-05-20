@@ -29,6 +29,8 @@ public class LessonSourceParams extends BaseVo{
     private boolean choiceMode;
     // 是否是主动触发
     private boolean initiativeTrigger;
+    // 讲师助教ID拼接
+    private String teacherTutorIds;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
@@ -116,6 +118,15 @@ public class LessonSourceParams extends BaseVo{
 
     public boolean isInitiativeTrigger() {
         return initiativeTrigger;
+    }
+
+    public String getTeacherTutorIds() {
+        return teacherTutorIds;
+    }
+
+    public LessonSourceParams setTeacherTutorIds(String teacherTutorIds) {
+        this.teacherTutorIds = teacherTutorIds;
+        return this;
     }
 
     /**

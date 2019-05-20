@@ -1137,6 +1137,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
         params.fillVisitorInfo(mTeacherVisitor, realRole);
         params.setCourseParams(courseParams);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!TextUtils.isEmpty(courseVo.getTeachersId())) {
+            stringBuilder.append(courseVo.getTeachersId());
+        }
+        if (!TextUtils.isEmpty(courseVo.getTutorId())) {
+            stringBuilder.append(",");
+            stringBuilder.append(courseVo.getTutorId());
+        }
+        params.setTeacherTutorIds(stringBuilder.toString());
 
         boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false);
         LessonDetailsActivity.start(activity, courseId, chapterId,
