@@ -34,7 +34,7 @@ public class TutorialFiltrateGroupPresenter extends BasePresenter<TutorialFiltra
     @Override
     public void requestTutorialConfigData(@NonNull String memberId) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER,languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestAssignConfigData(memberId, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialFiltrateGroupContract.View view = getView();
