@@ -56,6 +56,7 @@ import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
@@ -229,13 +230,32 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private RadioButton mRbLive, mRbLiveF;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
-        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
-                .putExtra("id", id)
-                .putExtra("canEdit", canEdit)
-                .putExtra("memberId", memberId)
-                .putExtra("SchoolId", schoolId)
-                .putExtra(KEY_IS_FROM_MY_COURSE, true)
-                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
+        // 通过课程详情接口获知课程所在学程馆类型
+        CourseHelper.requestCourseStatus(memberId, id,
+                new DataSource.Callback<CourseRouteEntity>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        // 网络请求失败 不发生跳转
+                        UIUtil.showToastSafe(strRes);
+                    }
+
+                    @Override
+                    public void onDataLoaded(CourseRouteEntity routeEntity) {
+                        if (EmptyUtil.isEmpty(routeEntity)) {
+                            return;
+                        }
+                        if (params != null) {
+                            params.setLibraryType(routeEntity.getLibraryType());
+                        }
+                        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
+                                .putExtra("id", id)
+                                .putExtra("canEdit", canEdit)
+                                .putExtra("memberId", memberId)
+                                .putExtra("SchoolId", schoolId)
+                                .putExtra(KEY_IS_FROM_MY_COURSE, true)
+                                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
+                    }
+                });
     }
 
     /**
