@@ -193,7 +193,7 @@ public class PickMediasFragment extends LBaseGridFragment implements
 	}
 
 	private void onConfrimBtnClick() {
-		if (mSelectImageInfos.size() > 0) {
+		if (mSelectImageInfos.size() >= 0) {
 			if (mPickImageListener != null) {
 				mPickImageListener.onPickFinished(mSelectImageInfos);
 			}
