@@ -542,6 +542,11 @@ public class LrcView extends View {
         invalidate();
     }
 
+    public void resetLineColor(){
+        mCurrentLine = -1;
+        invalidate();
+    }
+
     /**
      * 滚动到某一行
      */
