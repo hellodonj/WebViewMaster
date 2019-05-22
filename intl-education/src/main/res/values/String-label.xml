@@ -459,6 +459,7 @@
     </string-array>
 
     <string-array name="label_tutorial_page_tabs">
+        <item>Introduction</item>
         <item>Tutorial Course</item>
         <item>Student Comment</item>
     </string-array>
