@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.learn.vo;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class MyCourseVo extends BaseVo {
     // 是否指定到班级
     private boolean inClass;
     private int assortment;
+    private int type;
 
     public boolean isShowMoreWeek() {
         return showMoreWeek;
@@ -211,6 +213,15 @@ public class MyCourseVo extends BaseVo {
         return this;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public MyCourseVo setType(int type) {
+        this.type = type;
+        return this;
+    }
+
     /**
      * 返回是否是收费的课程
      *
@@ -218,5 +229,20 @@ public class MyCourseVo extends BaseVo {
      */
     public boolean isCharge() {
         return this.payType == PAY_TYPE_CHARGE;
+    }
+
+    public int getLibraryType() {
+        if (type == 0) {
+            if (assortment == 0 || assortment == 1) {
+                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
+            } else if (assortment == 2 || assortment == 3) {
+                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            }
+        } else if (type == 1) {
+            return OrganLibraryType.TYPE_LIBRARY;
+        } else if (type == 2) {
+            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        }
+        return -1;
     }
 }

@@ -238,6 +238,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                     if (isTeacher) {
                         // 如果是老师,直接进入已加入详情
                         CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER);
+                        params.setLibraryType(vo.getLibraryType());
                         MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
                                 , curMemberId, curSchoolId, params);
