@@ -104,7 +104,12 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             });
 
             boolean tutorialMode = MainApplication.isTutorialMode();
-            if(tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId())){
+            boolean isHide =
+                    tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId());
+            if (isClassTutor) {
+                isHide = entity.isAddedTutor();
+            }
+            if(isHide){
                 mTvAddTutorial.setVisibility(View.GONE);
             }else{
                 mTvAddTutorial.setVisibility(View.VISIBLE);
