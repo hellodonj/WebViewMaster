@@ -143,6 +143,7 @@ public class LessonSourceParams extends BaseVo{
         newParams.teacherVisitor = params.isTeacherVisitor();
         newParams.realRole = params.getRealRole();
         newParams.setChoiceMode(params.isChoiceMode(),params.isInitiativeTrigger());
+        newParams.setTeacherTutorIds(params.getTeacherTutorIds());
         return newParams;
     }
 
