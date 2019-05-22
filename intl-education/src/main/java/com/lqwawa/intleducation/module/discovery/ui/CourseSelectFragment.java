@@ -305,11 +305,13 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     } else {
                         Bundle arguments = getArguments();
 
+                        CourseVo courseVo = flagCourseData;
                         CourseDetailParams courseParams = new CourseDetailParams();
                         // 填充参数
                         courseParams.setSchoolId(mSchoolId);
                         courseParams.setClassId(mClassId);
                         courseParams.setCourseEnterType(mEnterType);
+                        courseParams.setLibraryType(courseVo.getLibraryType());
 
 
                         int taskType = arguments.getInt("tasktype", 1);

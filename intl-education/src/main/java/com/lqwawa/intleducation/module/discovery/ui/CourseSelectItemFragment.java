@@ -39,6 +39,7 @@ import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
@@ -185,7 +186,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        courseResListAdapter = new CourseResListAdapter(activity, false, false);
+        boolean isVideoLibrary =
+                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoLibrary);
         courseResListAdapter.setCourseSelect(true, mTaskType);
         courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
