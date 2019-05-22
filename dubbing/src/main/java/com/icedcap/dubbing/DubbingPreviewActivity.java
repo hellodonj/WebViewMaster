@@ -214,6 +214,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
                 recordAudioMedia.stop();
                 mDubbingVideoView.stop();
                 resetTime();
+                lrcView.resetLineColor();
             }
 
             @Override

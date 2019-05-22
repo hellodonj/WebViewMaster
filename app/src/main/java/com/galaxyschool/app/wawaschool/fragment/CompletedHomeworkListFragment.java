@@ -561,7 +561,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         //语音评测点评按钮的显示
                         if (data.isEvalType() || data.isVideoType()) {
                             //立即点评老师点评
-                            if (data.isHasVoiceReview()) {
+                            if (data.isHasVoiceReview() || data.isHasCommitTaskReview()) {
                                 //已经评测
                                 tvCheckMark.setVisibility(View.VISIBLE);
                                 if (data.isVideoType()){
@@ -2085,7 +2085,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
     }
 
     private void enterTeacherReviewDetailActivity(CommitTask commitTask, boolean isTeacherEval) {
-        if (commitTask.isHasVoiceReview()) {
+        if (commitTask.isHasVoiceReview() || commitTask.isHasCommitTaskReview()) {
             if (commitTask.isVideoType()){
                 enterQDubbingDetailActivity(commitTask);
             } else {

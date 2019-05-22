@@ -186,6 +186,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE) {
                             isSupportPause = true;
                             dubbingVideoView.setIsSupportPause(true);
+                            if (lrcView != null) {
+                                lrcView.resetLineColor();
+                            }
                         }
                     }
                 }
@@ -1166,6 +1169,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onVideoCompletion() {
             stopPlayRecordingAudio();
+            if (isOnlineOpen && !checkDubbingBySentence){
+                lrcView.resetLineColor();
+            }
         }
     }
 

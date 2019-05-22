@@ -106,7 +106,7 @@ public class QDubbingActivity extends DubbingActivity {
                 systemScore = systemScore + Integer.valueOf(pageScoreArray.get(i).toString());
             }
             systemScore = systemScore / pageScoreArray.size();
-            hasVideoReview = data.isHasVoiceReview();
+            hasVideoReview = data.isHasCommitTaskReview() || data.isHasVoiceReview();
             if (hasVideoReview) {
                 reviewComment = data.getTaskScoreRemark();
             }
