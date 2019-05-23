@@ -1136,8 +1136,9 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
             // 数据请求
             for (Tab tab1 : mFiltrateArray1) {
-                if (tab1.getId() == MINORITY_LANGUAGE_COURSE_ID) {
-                    // 选中的是小语种的Id
+                if (tab1.getId() == MINORITY_LANGUAGE_COURSE_ID
+                        || tab1.getId() == CLASSIFIED_READING_ID) {
+                    // 小语种和分类阅读
                     triggerUpdateData();
                 }
             }
