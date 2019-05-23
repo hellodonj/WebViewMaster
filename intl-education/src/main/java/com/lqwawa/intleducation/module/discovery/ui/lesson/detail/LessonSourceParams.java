@@ -35,6 +35,9 @@ public class LessonSourceParams extends BaseVo{
     // 课程详情的参数
     private CourseDetailParams courseParams;
 
+    // 是否添加到作业库状态
+    private boolean isAddMode;
+
     private LessonSourceParams(){}
 
     public LessonSourceParams(String memberId, int role, boolean isAudition) {
@@ -126,6 +129,15 @@ public class LessonSourceParams extends BaseVo{
 
     public LessonSourceParams setTeacherTutorIds(String teacherTutorIds) {
         this.teacherTutorIds = teacherTutorIds;
+        return this;
+    }
+
+    public boolean isAddMode() {
+        return isAddMode;
+    }
+
+    public LessonSourceParams setAddMode(boolean addMode) {
+        isAddMode = addMode;
         return this;
     }
 

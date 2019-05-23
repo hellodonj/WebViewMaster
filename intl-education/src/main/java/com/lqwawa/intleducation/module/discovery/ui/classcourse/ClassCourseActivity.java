@@ -534,7 +534,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                                     entities.add(classCourseEntity);
                                     showLoading();
                                     mPresenter.requestAddHistoryCourseFromClass(mSchoolId, mClassId, entities);
-                                } else if (tag == ActionDialogFragment.Tag.UP) {
+                                } else if (tag == ActionDialogFragment.Tag.DOWN) {
                                     // 删除
                                     deleteCourseFromClass(classCourseEntity);
                                 }

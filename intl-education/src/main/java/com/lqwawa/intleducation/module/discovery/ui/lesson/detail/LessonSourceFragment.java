@@ -310,6 +310,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     public void triggerChoice(boolean open) {
         if (EmptyUtil.isNotEmpty(mCourseResListAdapter)) {
             mCourseResListAdapter.triggerChoiceMode(open);
+            mSourceParams.setAddMode(open);
         }
     }
 
@@ -348,7 +349,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                 vo.setActivated(false);
             }
         }
-
+        
+        mSourceParams.setAddMode(false);
         mCourseResListAdapter.notifyDataSetChanged();
     }
 
@@ -411,6 +413,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             }
                         }
 
+                        mCourseResListAdapter.triggerChoiceMode(mSourceParams.isAddMode());
                         mCourseResListAdapter.addData(data);
                         mCourseResListAdapter.notifyDataSetChanged();
                         break;
