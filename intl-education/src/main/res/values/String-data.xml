@@ -7,6 +7,7 @@
     <string name="tip_order_expire">Some/All products in this order were purchased already</string>
     <string name="tip_attention_succeed">Followed</string>
     <string name="tip_cancel_attention_succeed">Unfollowed</string>
+    <string name="tip_bind_class_success">Bind successfully</string>
     <string name="tip_appoint_class_not_course">Course not available in this class</string>
     <string name="tip_delete_succeed">Deleted successfully</string>
     <string name="tip_subject_setting_succeed">Subject setting succeeded</string>

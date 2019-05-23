@@ -42,6 +42,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.discovery.ui.WebFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.Netroid;
 import com.lqwawa.lqresviewlib.office365.WebActivity;
@@ -77,8 +78,6 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private View mCourseSubjectLayout;
     private TextView mTvCourseSubject;
 
-    private View mIntroduceLayout;
-    private TextView mTvContent;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private String[] pageTitles = UIUtil.getStringArray(R.array.label_tutorial_page_tabs);
@@ -136,11 +135,6 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         mIvSex = (ImageView) findViewById(R.id.iv_sex);
         mIvQRCode.setOnClickListener(this);
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
-        mIntroduceLayout = findViewById(R.id.introduce_layout);
-        mIntroduceLayout.setOnClickListener(this);
-        mTvContent = (TextView) findViewById(R.id.tv_content);
-        mTvContent.setText(R.string.label_personal_introduce);
-        mTvContent.setTextColor(UIUtil.getColor(R.color.textPrimary));
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
@@ -160,22 +154,37 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         super.initData();
         thumbnailManager = MyApplication.getThumbnailManager(this);
 
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(TutorialCourseListFragment.newInstance(mTutorialParams));
-        fragments.add(TutorialCommentFragment.newInstance(mTutorialParams));
-
-        mTabLayout.setupWithViewPager(mViewPager);
-        TutorialPagerAdapter adapter = new TutorialPagerAdapter(getSupportFragmentManager(), fragments);
-        mViewPager.setAdapter(adapter);
 
         // 请求个人信息
         mPresenter.requestUserInfoWithUserId(mTutorMemberId);
         mPresenter.requestTutorSubjectList(mTutorMemberId);
     }
 
+    private void initFragments() {
+        List<Fragment> fragments = new ArrayList<>();
+        WebFragment webFragment = null;
+        String introduces = mUserEntity.getPIntroduces();
+        if (EmptyUtil.isEmpty(introduces)) {
+            if (TextUtils.equals(mTutorMemberId, UserHelper.getUserId())) {
+                introduces = getString(R.string.label_null_tutorial_introduces);
+            }
+        }
+        webFragment = WebFragment.newInstance("", "", introduces);
+        fragments.add(webFragment);
+        fragments.add(TutorialCourseListFragment.newInstance(mTutorialParams));
+        fragments.add(TutorialCommentFragment.newInstance(mTutorialParams));
+
+        mTabLayout.setupWithViewPager(mViewPager);
+        TutorialPagerAdapter adapter = new TutorialPagerAdapter(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(adapter);
+    }
+
     @Override
     public void updateUserInfoView(@NonNull UserEntity entity) {
         this.mUserEntity = entity;
+        
+        initFragments();
+
         //设置用户名
         String realName = entity.getRealName();
         String userName = entity.getNickName();
@@ -291,20 +300,6 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
                             saveQrCodeImage(mQRCodeImageUrl);
                         }
                     });
-        } else if (viewId == R.id.introduce_layout) {
-            // 个人介绍
-            // UIUtil.showToastSafe("个人介绍");
-            String introduces = mUserEntity.getPIntroduces();
-            if (EmptyUtil.isEmpty(introduces)) {
-                if (TextUtils.equals(mTutorMemberId, UserHelper.getUserId())) {
-                    introduces = getString(R.string.label_null_tutorial_introduces);
-                } else {
-                    introduces = getString(R.string.label_empty_content);
-                }
-                WebActivity.start(true, this, introduces, getString(R.string.label_personal_introduce));
-            } else {
-                WebActivity.start(this, introduces, getString(R.string.label_personal_introduce), true);
-            }
         }
     }
 

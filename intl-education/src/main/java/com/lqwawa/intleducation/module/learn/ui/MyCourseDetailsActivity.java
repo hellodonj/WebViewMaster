@@ -230,47 +230,27 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private RadioButton mRbLive, mRbLiveF;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
-        // 通过课程详情接口获知课程所在学程馆类型
-        CourseHelper.requestCourseStatus(memberId, id,
-                new DataSource.Callback<CourseRouteEntity>() {
-                    @Override
-                    public void onDataNotAvailable(int strRes) {
-                        // 网络请求失败 不发生跳转
-                        UIUtil.showToastSafe(strRes);
-                    }
-
-                    @Override
-                    public void onDataLoaded(CourseRouteEntity routeEntity) {
-                        if (EmptyUtil.isEmpty(routeEntity)) {
-                            return;
-                        }
-                        if (params != null) {
-                            params.setLibraryType(routeEntity.getLibraryType());
-                        }
-                        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
-                                .putExtra("id", id)
-                                .putExtra("canEdit", canEdit)
-                                .putExtra("memberId", memberId)
-                                .putExtra("SchoolId", schoolId)
-                                .putExtra(KEY_IS_FROM_MY_COURSE, true)
-                                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
-                    }
-                });
+        activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
+                .putExtra("id", id)
+                .putExtra("canEdit", canEdit)
+                .putExtra("memberId", memberId)
+                .putExtra("SchoolId", schoolId)
+                .putExtra(KEY_IS_FROM_MY_COURSE, true)
+                .putExtra(ACTIVITY_BUNDLE_OBJECT, params));
     }
 
     /**
-     *
      * @param activity
      * @param id
      * @param isComeFromDetail
      * @param canEdit
      * @param memberId
-     * @param isSchoolEnter 是否是从空中学校过来
+     * @param isSchoolEnter      是否是从空中学校过来
      * @param isOnlineClassEnter 是否是在线课堂班级过来的
-     * @param isOnlineTeacher 是否是在线课堂的老师
-     * @param isAuthorized 是否授权
-     * @param params 课程详情参数
-     * @param vo 课程信息
+     * @param isOnlineTeacher    是否是在线课堂的老师
+     * @param isAuthorized       是否授权
+     * @param params             课程详情参数
+     * @param vo                 课程信息
      */
     public static void start(Activity activity, String id, boolean isComeFromDetail,
                              boolean canEdit, String memberId, boolean isSchoolEnter, boolean isOnlineClassEnter,
