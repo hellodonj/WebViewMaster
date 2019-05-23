@@ -550,7 +550,7 @@ public class LrcView extends View {
     /**
      * 滚动到某一行
      */
-    private void scrollTo(int line) {
+    public void scrollTo(int line) {
         scrollTo(line, mAnimationDuration);
     }
 
