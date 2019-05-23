@@ -590,6 +590,7 @@ public class SchoolClassSelectFragment extends AdapterFragment
                     // 通过EventBus通知
                     EventBus.getDefault().post(new EventWrapper(null, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT));
                     // 绑定成功
+                    UIUtil.showToastSafe(R.string.tip_bind_class_success);
                     getActivity().finish();
                 } else {
                     // 绑定失败
