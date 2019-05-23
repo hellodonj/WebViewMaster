@@ -42,6 +42,7 @@ import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -259,6 +260,9 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             mEmptyLayout.setEnabled(true);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }
+        boolean isVideoLibrary =
+                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        mTabLayout.setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
     }
 
     /**
