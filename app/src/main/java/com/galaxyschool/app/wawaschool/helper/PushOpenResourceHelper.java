@@ -382,16 +382,16 @@ public class PushOpenResourceHelper {
     private void openAssistantModel(){
         if (ActivityStack.getInstance().getCount() == 0) {
             Intent intent = new Intent(context, HomeActivity.class);
-            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+//            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
             intent.putExtra(HomeActivity.EXTRA_PUSH_ASSISTANT_APPLY_ADOPT, true);
             context.startActivity(intent);
         } else {
             // 结束除了HomeActivity之外的所有页面
             ActivityUtil.finishToActivity(HomeActivity.class,false);
             ActivityStack.getInstance().finishUtil(HomeActivity.class);
-            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
-            EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
-                    EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+//            SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE, true);
+//            EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
+//                    EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
             context.sendBroadcast(new Intent().setAction(HomeActivity.EXTRA_PUSH_ASSISTANT_APPLY_ADOPT));
             Intent intent = new Intent(context, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
