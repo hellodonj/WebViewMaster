@@ -428,6 +428,7 @@
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
     <string name="label_please_apply_to_be_tutorial">请先申请成为帮辅</string>
     <string name="label_course_tutor_apply_for">申请成功，请等待机构管理员审核！</string>
+    <string name="label_apply_success">申请成功</string>
     <string name="label_input_province_tip">请选择省份</string>
     <string name="label_input_city_tip">请选择城市</string>
     <string name="label_input_district_tip">请选择区域</string>
