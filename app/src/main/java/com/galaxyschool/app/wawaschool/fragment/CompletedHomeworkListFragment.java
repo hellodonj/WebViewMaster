@@ -91,6 +91,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -966,13 +967,15 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 //                            super.onSuccess(jsonString);
                 CheckMarkInfo result = JSONObject.parseObject(jsonString,
                         CheckMarkInfo.class);
-                if (result.getModel() == null || result.getModel().size() == 0) {
+                if (result.getErrorCode() != 0 || result.getModel() == null) {
+                    return;
+                }
+                List<CheckMarkInfo.ModelBean> list = result.getModel();
+                removeAssistanceData(list,data);
+                if (result.getModel() == null || list.size() == 0) {
                     needShow = true;
                 } else {
                     needShow = false;
-                }
-                if (result.getErrorCode() != 0 || result.getModel() == null) {
-                    return;
                 }
 
                 if (((roleType == RoleType.ROLE_TYPE_TEACHER) && (task.getCreateId().equalsIgnoreCase(getMemeberId())))
@@ -986,10 +989,10 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                     }
 
                     if (isPic) {//点击图片
-                        if (result.getModel().size() > 0) {
+                        if (list.size() > 0) {
                             openCourse(data,
                                     isNeedMark,
-                                    result.getModel().get(0).getResId(),
+                                    list.get(0).getResId(),
                                     isHistoryClass ? true : false);
                         } else {
                             openCourse(data,
@@ -1012,8 +1015,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
                     //游客身份
                     if (isPic) {//点击图片
-                        if (result.getModel().size() > 0) {
-                            openCourse(data, false, result.getModel().get(0).getResId(), true);
+                        if (list.size() > 0) {
+                            openCourse(data, false, list.get(0).getResId(), true);
                         } else {
                             openCourse(data, false, null, true);
                         }
@@ -1022,8 +1025,8 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                     }
 
                 }
-                if (result.getModel().size() > 0) {
-                    myTask.setResId(result.getModel().get(0).getResId());
+                if (list.size() > 0) {
+                    myTask.setResId(list.get(0).getResId());
                 }
                 CourseOpenUtils.openCourseDetailsDirectly(getActivity(),
                         myTask, roleType, getMemeberId(), studentId, null,
@@ -1045,7 +1048,23 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_LOADCOMMITTASKREVIEWLIST, params, listener);
+    }
 
+    private void removeAssistanceData(List<CheckMarkInfo.ModelBean> list,CommitTask data) {
+        if (list != null && list.size() > 0) {
+            Iterator<CheckMarkInfo.ModelBean> iterable = list.iterator();
+            while (iterable.hasNext()) {
+                CheckMarkInfo.ModelBean modelBean = iterable.next();
+                if (modelBean != null && modelBean.getReviewFlag() == 1) {
+                    if (data != null && TextUtils.equals(getMemeberId(),
+                            data.getStudentId())) {
+
+                    } else {
+                        iterable.remove();
+                    }
+                }
+            }
+        }
     }
 
 

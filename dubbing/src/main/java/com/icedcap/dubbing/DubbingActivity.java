@@ -420,6 +420,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                     if (loadVideoComplete) {
                         isSupportPause = false;
                         dubbingVideoView.setIsSupportPause(false);
+                        lrcView.resetLineColor();
+                        lrcView.scrollTo(0);
                         onAudioRecord();
                     }
                 }
