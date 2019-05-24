@@ -276,13 +276,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
                             .putExtra("isAuthorized", isAuth)
                             .putExtra("isMyCourse", isMyCourse);
-                    if (courseDetailParams != null) {
-                        courseDetailParams.setIsAuthorized(isAuth);
-                        if (entity != null) {
-                            courseDetailParams.setLibraryType(entity.getLibraryType());
-                        }
-                        intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
+                    if (courseDetailParams == null) {
+                        courseDetailParams = new CourseDetailParams();
                     }
+                    courseDetailParams.setIsAuthorized(isAuth);
+                    if (entity != null) {
+                        courseDetailParams.setLibraryType(entity.getLibraryType());
+                    }
+                    intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                     if (tabIndex >= 0) {
                         intent.putExtra("tabIndex", tabIndex);
                     }
