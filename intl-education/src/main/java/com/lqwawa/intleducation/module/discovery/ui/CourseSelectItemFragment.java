@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
+import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
@@ -240,8 +242,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
         requestVo.addParams("role", 1);
-        if(EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()){
-            if(EmptyUtil.isNotEmpty(mParams.getClassId())){
+        if (EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()) {
+            if (EmptyUtil.isNotEmpty(mParams.getClassId())) {
                 String classId = mParams.getClassId();
                 requestVo.addParams("classId", classId);
             }
@@ -301,9 +303,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                             updateData(i);
                         } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
                             updateData(i);
-                        } else if(mTaskType == KEY_TEXT_BOOK && taskType == 4){
+                        } else if (mTaskType == KEY_TEXT_BOOK && taskType == 4) {
                             updateData(i);
-                        } else if(mTaskType == KEY_LECTURE_COURSE && taskType == 5){
+                        } else if (mTaskType == KEY_LECTURE_COURSE && taskType == 5) {
                             updateData(i);
                         }
                     }
@@ -315,7 +317,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
     private void updateData(int i) {
         List<SectionResListVo> voList = sectionDetailsVo.getTaskList().get(i).getData();
-        RefreshUtil.getInstance().refresh(voList);
+        restoreCheckState(voList);
         for (SectionResListVo vo : voList) {
             vo.setTaskName(getTaskName(i));
             vo.setTaskType(sectionDetailsVo.getTaskList().get(i).getTaskType());
@@ -350,8 +352,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                 }
             }
 
-            if(mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
-                    && mTaskType == KEY_LECTURE_COURSE){
+            if (mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
+                    && mTaskType == KEY_LECTURE_COURSE) {
                 // 选择复述课件，讲解课的显示
                 // sectionResListVo.setResProperties("");
             }
@@ -379,6 +381,18 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             // 没有数据
             mEmptyView.setVisibility(View.VISIBLE);
             pullToRefresh.setVisibility(View.GONE);
+        }
+    }
+
+    private void restoreCheckState(List<SectionResListVo> voList) {
+        if (voList != null && voList.size() > 0) {
+            for (SectionResListVo vo : voList) {
+                if (vo != null && !TextUtils.isEmpty(vo.getId())) {
+                    if (RefreshUtil.getInstance().contains(vo.getId())) {
+                        vo.setChecked(true);
+                    }
+                }
+            }
         }
     }
 

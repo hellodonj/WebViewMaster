@@ -27,6 +27,7 @@ import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
@@ -172,7 +173,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
             }
-
+            RefreshUtil.getInstance().clear();
             finish();
         });
 
@@ -183,6 +184,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     HideSortType.TYPE_SORT_CLASS_HISTORY_COURSE,
                     UIUtil.getString(R.string.title_history_course),
                     SEARCH_REQUEST_CODE);
+            RefreshUtil.getInstance().clear();
         });
 
         mSearchContent = (EditText) findViewById(R.id.et_search);
@@ -280,6 +282,11 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     // 添加选择,或者取消选择
                     entity.setChecked(!entity.isChecked());
                     mCourseAdapter.notifyDataSetChanged();
+                    if (entity.isChecked()) {
+                        RefreshUtil.getInstance().addId(entity.getId());
+                    } else {
+                        RefreshUtil.getInstance().removeId(entity.getId());
+                    }
                 } else {
                     // 班级学程的详情入口
                     String courseId = entity.getCourseId();
@@ -792,7 +799,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             }
             // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
             // initTabControl3();
-            
+
             // 数据请求
             // triggerUpdateData();
             if (tabData.getChildList() == null || tabData.getChildList().isEmpty()) {
@@ -936,6 +943,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     @Override
     public void updateHistoryClassCourseView(List<ClassCourseEntity> entities) {
+        restoreCheckState(entities);
+
         mCourseAdapter.replace(entities);
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
@@ -953,6 +962,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     @Override
     public void updateMoreHistoryClassCourseView(List<ClassCourseEntity> entities) {
+        restoreCheckState(entities);
+        
         mCourseAdapter.add(entities);
         mRefreshLayout.onFooterRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
@@ -965,6 +976,18 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void restoreCheckState(List<ClassCourseEntity> entities) {
+        if (entities != null && entities.size() > 0) {
+            for (ClassCourseEntity entity : entities) {
+                if (entity != null && entity.getId() > 0) {
+                    if (RefreshUtil.getInstance().contains(entity.getId())) {
+                        entity.setChecked(true);
+                    }
+                }
+            }
         }
     }
 
