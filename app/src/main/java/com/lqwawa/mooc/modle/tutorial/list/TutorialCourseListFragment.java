@@ -139,7 +139,12 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         requestCourseData(false);
         // 如果当前帮辅老师与自己是同一个人，隐藏按钮
         boolean tutorialMode = MainApplication.isTutorialMode();
-        if (UserHelper.getUserId().equals(mTutorMemberId) || tutorialMode) {
+        boolean isHide =
+                tutorialMode  || TextUtils.equals(mTutorMemberId,UserHelper.getUserId());
+        if (!TextUtils.isEmpty(mClassId)) {
+            isHide = false;
+        }
+        if (isHide) {
             mBottomLayout.setVisibility(View.GONE);
         } else {
             // 不相等，不是查看自己个人主页
