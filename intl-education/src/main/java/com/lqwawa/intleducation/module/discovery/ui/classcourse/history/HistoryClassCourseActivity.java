@@ -1009,6 +1009,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         this.hideLoading();
         // 刷新UI
         // 刷新标签和课程
+        RefreshUtil.getInstance().clear();
         mPresenter.requestHistoryClassConfigData(mClassId);
     }
 
@@ -1017,6 +1018,15 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         this.hideLoading();
         // 刷新UI
         // 刷新标签和课程
+        mPresenter.requestHistoryClassConfigData(mClassId);
+    }
+
+    @Override
+    public void updateRemoveCourseFromClassView(Boolean aBoolean) {
+        this.hideLoading();
+        // 刷新UI
+        // 刷新标签和课程
+        RefreshUtil.getInstance().clear();
         mPresenter.requestHistoryClassConfigData(mClassId);
     }
 
@@ -1146,7 +1156,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
             }
-
+            RefreshUtil.getInstance().clear();
             finish();
         }
     }
