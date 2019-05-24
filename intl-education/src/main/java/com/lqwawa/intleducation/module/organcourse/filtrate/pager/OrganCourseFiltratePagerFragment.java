@@ -141,9 +141,6 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
                 // 班级学程的入口进来的，控制选择
                 vo.setTag(!vo.isTag());
                 mCourseListAdapter.notifyDataSetChanged();
-
-                EventBus.getDefault().post(new EventWrapper("",
-                        EventConstant.TRIGGER_COURSE_SELECT_UPDATE));
             }
         });
 

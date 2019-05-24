@@ -58,6 +58,7 @@ import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.pager.OrganCourseFiltratePagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.TipMsgHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -527,9 +528,6 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         }
 
         if (EmptyUtil.isEmpty(mKeyString)) mKeyString = "";
-        // 重新加载数据
-        // 重新设置状态
-        mBtnConfirmAdd.setEnabled(false);
 
         if (mSelectResource) {
             level = mEntity.getLevel();
@@ -1182,6 +1180,10 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 if (vo.isTag())
                     selectArray.add(vo);
             }
+            if (selectArray.isEmpty()) {
+                TipMsgHelper.ShowLMsg(this, R.string.label_please_choice_add_course);
+                return;
+            }
             // 发送事件
             EventBus.getDefault().post(new EventWrapper(selectArray, EventConstant.CLASS_COURSE_ADD_COURSE_EVENT));
         }  else if(viewId == R.id.btn_add_subject){
@@ -1281,17 +1283,6 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
                 ActivityUtil.finishActivity(SearchActivity.class);
                 finish();
-            }
-        } else if (EventWrapper.isMatch(event, EventConstant.TRIGGER_COURSE_SELECT_UPDATE)) {
-            // 查看有无学程选择,没有学程选择，按钮不许点击
-            List<CourseVo> items = mNavigatorList.get(mPosition).getCourseVoList();
-            for (CourseVo courseVo : items) {
-                mBtnConfirmAdd.setEnabled(false);
-                if (courseVo.isTag()) {
-                    // 有选中的,设置enable
-                    mBtnConfirmAdd.setEnabled(true);
-                    break;
-                }
             }
         }
     }

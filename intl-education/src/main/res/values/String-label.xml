@@ -452,6 +452,7 @@
     <string name="label_delete">Delete</string>
     <string name="label_please_choice_add_history_course">Please select historical course</string>
     <string name="label_please_choice_remove_history_course">Please select course to remove</string>
+    <string name="label_please_choice_add_course">Please select course to add</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>

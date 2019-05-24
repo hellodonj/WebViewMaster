@@ -459,6 +459,7 @@
     <string name="label_delete">删除</string>
     <string name="label_please_choice_add_history_course">请选择需要添加的历史学程</string>
     <string name="label_please_choice_remove_history_course">请选择需要移除的历史学程</string>
+    <string name="label_please_choice_add_course">请选择需要添加的学程</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>

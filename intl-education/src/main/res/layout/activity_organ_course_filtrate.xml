@@ -167,7 +167,6 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_action_selector"
-                android:enabled="false"
                 android:gravity="center"
                 android:text="@string/label_confirm_add"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
