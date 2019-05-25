@@ -31,7 +31,7 @@
             android:text="@string/course_subject_colon"
             android:gravity="top"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/textPrimary"
+            android:textColor="@color/textSecond"
             android:textSize="16sp" />
 
         <TextView
