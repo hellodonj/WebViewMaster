@@ -94,15 +94,6 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
         @Override
         protected void onBind(TaskEntity taskEntity) {
-            mRequireLayout.setOnClickListener(v->{
-                // 点击查看任务要求
-                if(EmptyUtil.isNotEmpty(mCallback)){
-                    int position = getAdapterPosition();
-                    final TaskEntity entity = taskEntity;
-                    mCallback.onRequireClick(v,position,entity);
-                }
-            });
-
             if(tutorialMode){
                 mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像
@@ -206,6 +197,19 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 mCheckMark.setTextColor(UIUtil.getColor(android.R.color.holo_red_light));
                 mCheckMark.setText(R.string.label_un_mark);
             }
+
+            mRequireLayout.setOnClickListener(v->{
+                // 点击查看任务要求
+                if(EmptyUtil.isNotEmpty(mCallback)){
+                    int position = getAdapterPosition();
+                    final TaskEntity entity = taskEntity;
+                    if (entity.getT_TaskId() > 0) {
+                        mCallback.onRequireClick(v, position, entity);
+                    } else {
+                        mCallback.onEntityClick(v,position,entity,taskEntity.getReviewState());
+                    }
+                }
+            });
 
             mCheckMark.setOnClickListener(v->{
                 // 点击已批阅未批阅
