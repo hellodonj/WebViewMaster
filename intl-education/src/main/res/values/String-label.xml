@@ -421,7 +421,7 @@
     <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
     <string name="label_please_apply_to_be_tutorial">Please apply to be tutor first</string>
     <string name="label_course_tutor_apply_for">Apply successfully, waiting approval!</string>
-    <string name="label_apply_success">Apply successfully</string>
+    <string name="label_apply_for_tutor_success">已成功加入我的帮辅课程</string>
     <string name="label_input_province_tip">Please select province</string>
     <string name="label_input_city_tip">Please select city</string>
     <string name="label_input_district_tip">Please select district</string>
