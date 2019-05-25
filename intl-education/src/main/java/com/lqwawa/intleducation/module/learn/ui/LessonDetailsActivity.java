@@ -307,7 +307,13 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             if (EmptyUtil.isNotEmpty(taskList)) {
 
                 LessonSourceParams params = LessonSourceParams.buildParams(mChapterParams);
-                params.setAddMode(mBottomLayout.isActivated());
+                boolean isDirect =
+                        mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger();
+                if (!isDirect) {
+                    params.setAddMode(mBottomLayout.isActivated());
+                } else {
+                    params.setAddMode(true);
+                }
                 for (int index = 0; index < taskList.size(); index++) {
                     SectionTaskListVo listVo = taskList.get(index);
                     if (EmptyUtil.isNotEmpty(listVo.getData())) {
