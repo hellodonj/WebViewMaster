@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -156,7 +157,10 @@ public class TutorialStudentActivity extends PresenterActivity<TutorialStudentsC
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, AssistStudentEntity assistStudentEntity) {
                 super.onItemClick(holder, assistStudentEntity);
-                TutorialTargetTaskParams params = new TutorialTargetTaskParams(assistStudentEntity.getStuMemberId(),mMemberId,getString(R.string.label_user_works,assistStudentEntity.getStuRealName()));
+                String userName = !TextUtils.isEmpty(assistStudentEntity.getStuRealName()) ?
+                        assistStudentEntity.getStuRealName() : assistStudentEntity.getStuNickName();
+                TutorialTargetTaskParams params =
+                        new TutorialTargetTaskParams(assistStudentEntity.getStuMemberId(),mMemberId,getString(R.string.label_user_works, userName));
                 params.setParent(false);
                 params.setRole(TutorialRoleType.TUTORIAL_TYPE_TUTOR);
                 TutorialTargetTaskActivity.show(TutorialStudentActivity.this,params);
