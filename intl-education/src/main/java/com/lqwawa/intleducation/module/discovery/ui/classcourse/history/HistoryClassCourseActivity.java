@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -130,6 +131,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private boolean isUpdate;
 
     private boolean isAuthorized;
+
+    // 暂存上个标签参数，当前标签参数与上个不一致，清空所保存的选择Id
+    private String lastTagParams;
 
 
     @Override
@@ -474,8 +478,22 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             }
         }
 
+        String tagParams = getTagParams(name, level, paramOneId, paramTwoId);
+        if (!TextUtils.equals(tagParams, lastTagParams)) {
+            lastTagParams = tagParams;
+            RefreshUtil.getInstance().clear();
+        }
 
         mPresenter.requestHistoryClassCourseData(mClassId, role, name, level, paramOneId, paramTwoId, pageIndex);
+    }
+
+    private String getTagParams(String name, String level, int paramOneId, int paramTwoId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(name);
+        stringBuilder.append(level);
+        stringBuilder.append(paramOneId);
+        stringBuilder.append(paramTwoId);
+        return stringBuilder.toString();
     }
 
     @Override
