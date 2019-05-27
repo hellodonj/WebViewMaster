@@ -530,7 +530,7 @@
     <string name="user_comment">Comment</string>
     <string name="to_ask_question">Consult\nTutor</string>
     <string name="course_subject_colon">Subject:</string>
-    <string name="delete_class_totur_info">Delete tutor from class?</string>
+    <string name="delete_class_totur_info">Remove tutor from class?</string>
     <string name="class_tutor">Class Tutor</string>
     <string name="add_class_tutor">+Class Tutor</string>
     <string name="add_course_success">Attended</string>
