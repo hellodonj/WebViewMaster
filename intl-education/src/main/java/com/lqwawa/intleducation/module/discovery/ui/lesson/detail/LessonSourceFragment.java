@@ -348,10 +348,10 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             for (SectionResListVo vo : data) {
                 vo.setActivated(false);
             }
+
+            mSourceParams.setAddMode(false);
+            mCourseResListAdapter.notifyDataSetChanged();
         }
-        
-        mSourceParams.setAddMode(false);
-        mCourseResListAdapter.notifyDataSetChanged();
     }
 
     private void getData() {
