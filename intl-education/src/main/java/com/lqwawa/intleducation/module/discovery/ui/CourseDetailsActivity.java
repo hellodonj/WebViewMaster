@@ -1136,7 +1136,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 }
             }
 
-            textViewPay.setVisibility(View.VISIBLE);
+            if (tutorialMode && initTabIndex == 0) {
+                textViewPay.setVisibility(View.GONE);
+            } else {
+                textViewPay.setVisibility(View.VISIBLE);
+            }
             // mBtnEnterPay.setVisibility(View.VISIBLE);
             if (initTabIndex == 1) {
                 rg_tab.check(R.id.rb_study_plan);

@@ -92,7 +92,7 @@ public final class AppConfig {
         //测试服务器
         public static final String URL_HOST_TEST = "http://resop.lqwawa.com";
         //正式服务器
-        public static final String URL_HOST_RELEASE = "http://www.lqmooc.com";
+        public static final String URL_HOST_RELEASE = "https://api.lqmooc.com";
 
         /**
          * ===========================================================================
@@ -434,7 +434,8 @@ public final class AppConfig {
                 PayBase + "api/order/payUseActivationCode?j=";
 
 
-        public static final String CHARGE_BASE = ReleaseSever ? "http://www.lqmooc.com" : "http://resop.lqwawa.com/interCourse";
+        public static final String CHARGE_BASE = ReleaseSever ? "https://api.lqmooc.com"
+                : "http://resop.lqwawa.com/interCourse";
 
 
         //蛙蛙币余额

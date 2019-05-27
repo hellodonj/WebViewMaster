@@ -64,7 +64,7 @@ public class ServerUrl {
             ORIGNAL_SHOW_SERVER = "http://wwcx.lqwawa.com/";
             SHARE_BASE_SERVER = "http://mcourse.lqwawa.com";
             NOC_BASE_SERVER = "http://noc.lqwawa.com/";
-            LQMOOC_BASE_SERVER = "http://www.lqmooc.com/";
+            LQMOOC_BASE_SERVER = "https://api.lqmooc.com/";
             //正式
             PRINCIPAL_ASSISTANT_BASE_URL = "http://schoolmaster.lqwawa.com/";
             //正式（营养膳食）

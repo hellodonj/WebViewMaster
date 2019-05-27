@@ -169,7 +169,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
                 introduces = getString(R.string.label_null_tutorial_introduces);
             }
         }
-        if (introduces.contains("<p>")) {
+        if (!TextUtils.isEmpty(introduces) && introduces.contains("<p>")) {
             webFragment = WebFragment.newInstance("", introduces, "");
         } else {
             webFragment = WebFragment.newInstance("", "", introduces);
