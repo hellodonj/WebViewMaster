@@ -421,7 +421,7 @@
     <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
     <string name="label_please_apply_to_be_tutorial">Please apply to be tutor first</string>
     <string name="label_course_tutor_apply_for">Apply successfully, waiting approval!</string>
-    <string name="label_apply_for_tutor_success">已成功加入我的帮辅课程</string>
+    <string name="label_apply_for_tutor_success">Added to my tutorial course</string>
     <string name="label_input_province_tip">Please select province</string>
     <string name="label_input_city_tip">Please select city</string>
     <string name="label_input_district_tip">Please select district</string>
@@ -447,7 +447,7 @@
 
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">History</string>
-    <string name="label_add_history_course">加入历史学程</string>
+    <string name="label_add_history_course">Add to History</string>
     <string name="label_add_in">Add</string>
     <string name="label_remove_out">Remove</string>
     <string name="label_delete">Delete</string>
