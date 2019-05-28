@@ -211,6 +211,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private SchoolInfoEntity mSchoolEntity;
     // 是否是学程馆进来的，并且获取到授权
     private boolean isAuthorized;
+    private boolean isFromScan;
+    
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
@@ -243,7 +245,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final CourseVo vo,
                              final CourseDetailParams params) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
-        route.navigation(activity, courseId, memberId, params, new CourseRoute.NavigationListener() {
+        route.navigation(activity, courseId, memberId, params,
+                tabIndex == -2, new CourseRoute.NavigationListener() {
             @Override
             public void route(boolean needToLearn, CourseRouteEntity entity) {
                 super.route(needToLearn, entity);
@@ -284,9 +287,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         courseDetailParams.setLibraryType(entity.getLibraryType());
                     }
                     intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
-                    if (tabIndex >= 0) {
-                        intent.putExtra("tabIndex", tabIndex);
-                    }
+                    intent.putExtra("tabIndex", tabIndex);
                     if (vo != null) {
                         intent.putExtra("CourseVo", vo);
                     }
@@ -432,6 +433,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isMyCourse = getIntent().getBooleanExtra("isMyCourse", false);
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
+        isFromScan = initTabIndex == -2;
         initViews();
         initData(false);
     }
@@ -1073,7 +1075,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             if (courseVo.getPrice() == 0 || isLqExcellent) {//免费
                 if (courseDetailsVo.isIsJoin()) {
-                    if (!tutorialMode) {
+                    if (!tutorialMode || isFromScan) {
                         textViewPay.setText(getResources().getString(R.string.to_learn));
                     } else {
                         textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
@@ -1081,7 +1083,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    if (!tutorialMode) {
+                    if (!tutorialMode || isFromScan) {
                         textViewPay.setText(getResources().getString(R.string.to_join));
                     } else {
                         textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
@@ -1092,14 +1094,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             } else {
                 if (courseDetailsVo.isIsBuy() && !courseDetailsVo.isIsExpire()) {
                     if (courseDetailsVo.isIsJoin()) {
-                        if (!tutorialMode) {
+                        if (!tutorialMode || isFromScan) {
                             textViewPay.setText(getResources().getString(R.string.to_learn));
                         } else {
                             textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
                         }
                         mBtnEnterPay.setText(UIUtil.getString(R.string.to_learn));
                     } else {
-                        if (!tutorialMode) {
+                        if (!tutorialMode || isFromScan) {
                             textViewPay.setText(getResources().getString(R.string.to_join));
                         } else {
                             textViewPay.setText(getResources().getString(R.string.label_apply_to_be_tutorial));
@@ -1108,7 +1110,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     }
                     textViewPay.setCompoundDrawables(null, null, null, null);
                 } else {
-                    if (!tutorialMode) {
+                    if (!tutorialMode || isFromScan) {
                         textViewPay.setText(getResources().getString(R.string.buy_immediately));
                         textViewPay.setCompoundDrawables(null,
                                 getResources().getDrawable(R.drawable.ic_pay), null, null);
@@ -1136,11 +1138,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 }
             }
 
-            if (tutorialMode && initTabIndex == 0) {
-                textViewPay.setVisibility(View.GONE);
-            } else {
-                textViewPay.setVisibility(View.VISIBLE);
-            }
+            textViewPay.setVisibility(View.VISIBLE);
             // mBtnEnterPay.setVisibility(View.VISIBLE);
             if (initTabIndex == 1) {
                 rg_tab.check(R.id.rb_study_plan);
@@ -1212,7 +1210,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 boolean tutorialMode = MainApplication.isTutorialMode();
                 tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
 
-                if (tutorialMode) {
+                if (tutorialMode && !isFromScan) {
                     // TODO 申请成为课程的帮辅老师
                     TutorialCourseApplyForFragment.show(
                             getSupportFragmentManager(),

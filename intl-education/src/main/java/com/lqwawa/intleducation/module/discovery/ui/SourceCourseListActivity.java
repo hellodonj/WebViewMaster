@@ -54,7 +54,7 @@ public class SourceCourseListActivity extends MyBaseActivity implements View.OnC
         }
         if (courseList.size() == 1) {
             CourseDetailsActivity.start(activity, courseList.get(0).getCourseId(), true,
-                    UserHelper.getUserId(), 0, courseList.get(0));
+                    UserHelper.getUserId(), -2, courseList.get(0));
             activity.finish();
         } else {
             activity.startActivity(new Intent(activity, SourceCourseListActivity.class)
@@ -83,7 +83,7 @@ public class SourceCourseListActivity extends MyBaseActivity implements View.OnC
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
                 CourseDetailsActivity.start(activity, vo.getCourseId(), true,
-                        UserHelper.getUserId(), 0, vo);
+                        UserHelper.getUserId(), -2, vo);
                 if (scanActivity != null) {
                     scanActivity.finish();
                 }

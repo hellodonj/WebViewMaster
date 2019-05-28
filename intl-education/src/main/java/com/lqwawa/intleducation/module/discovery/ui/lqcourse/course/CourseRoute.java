@@ -60,6 +60,7 @@ public class CourseRoute {
                            final String courseId,
                            final String memberId,
                            final CourseDetailParams courseParams,
+                           final boolean isFromScan,
                            final INavigationListener listener) {
 
         if (!UserHelper.isLogin()) {
@@ -90,20 +91,26 @@ public class CourseRoute {
                 }
 
                 // 再网络请求，是否是帮辅模式,并且是老师
-                final boolean tutorialMode = MainApplication.isTutorialMode() &&
+                boolean tutorialMode = MainApplication.isTutorialMode() &&
                         (EmptyUtil.isEmpty(courseParams) ||
                                 courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER);
 
-                if (tutorialMode) {
-                    CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
-                        @Override
-                        public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
-                            boolean isTutorCourse = entity.isTutorCourse();
-                            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, isTutorCourse);
-                        }
-                    });
-                } else {
+                if (isFromScan) {
+                    tutorialMode = false;
                     navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                } else {
+                    if (tutorialMode) {
+                        final boolean fTutorialMode = tutorialMode;
+                        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
+                            @Override
+                            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                                boolean isTutorCourse = entity.isTutorCourse();
+                                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
+                            }
+                        });
+                    } else {
+                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                    }
                 }
             }
         });
