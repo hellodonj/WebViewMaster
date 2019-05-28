@@ -156,7 +156,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
 
             //学程馆
             item = new HomeTypeEntry();
-            item.icon = R.drawable.icon_lqcourse_circle;
+            item.icon = R.drawable.ic_lqcourse_circle;
             item.typeName = getString(R.string.common_course_library);
             item.type = 1;
             list.add(item);

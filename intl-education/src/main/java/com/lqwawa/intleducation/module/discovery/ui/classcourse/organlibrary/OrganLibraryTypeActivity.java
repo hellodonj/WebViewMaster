@@ -97,8 +97,8 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
     private void initEntityList() {
         LQCourseConfigEntity entity = new LQCourseConfigEntity();
         entity.setLibraryType(OrganLibraryType.TYPE_LQCOURSE_SHOP);
-        entity.setThumbnail("ic_lqcourse_shop_circle");
-        entity.setConfigValue(getString(R.string.common_course_shop));
+        entity.setThumbnail("ic_lqcourse_circle");
+        entity.setConfigValue(getString(R.string.common_course_library));
         mEntityList.add(entity);
 
         entity = new LQCourseConfigEntity();

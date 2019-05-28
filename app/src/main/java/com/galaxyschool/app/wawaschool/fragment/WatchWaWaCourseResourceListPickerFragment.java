@@ -1,6 +1,5 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,19 +44,13 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortTy
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
-import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
 import com.osastudio.common.utils.LogUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -636,7 +629,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             
             // 线上学程馆
             item = new HomeTypeEntry();
-            item.icon = R.drawable.icon_lqcourse_circle;
+            item.icon = R.drawable.ic_lqcourse_circle;
             item.typeName = R.string.common_course_library;
             item.type = TAB_LQCOURSE_SHOP;
             list.add(item);

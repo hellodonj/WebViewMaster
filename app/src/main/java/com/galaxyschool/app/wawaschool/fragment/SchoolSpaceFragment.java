@@ -122,11 +122,11 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             itemList.add(item);
         }
 
-        //习课程馆
+        //学程馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP;
-        item.title = getString(R.string.common_course_shop);
-        item.resId = R.drawable.ic_lqcourse_shop_rect;
+        item.title = getString(R.string.common_course_library);
+        item.resId = R.drawable.icon_lqcourse_shcool_space;
         itemList.add(item);
 
         //视频馆
