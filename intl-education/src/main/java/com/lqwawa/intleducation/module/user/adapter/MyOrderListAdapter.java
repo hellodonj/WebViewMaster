@@ -654,14 +654,15 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
         if (vo.getType() == 1 || vo.getType() == 0) {
             // 课程和直播
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.course_iv.getLayoutParams();
+            FrameLayout.LayoutParams layoutParams =
+                    (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
             layoutParams.width = img_width;
             layoutParams.height = img_height;
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
         } else {
             // 空中课堂
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.course_iv.getLayoutParams();
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
             layoutParams.width = img_height;
             layoutParams.height = img_width;
             holder.course_iv.setLayoutParams(layoutParams);
