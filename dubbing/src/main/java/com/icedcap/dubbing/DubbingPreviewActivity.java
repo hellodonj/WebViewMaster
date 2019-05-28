@@ -187,6 +187,7 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         mDubbingVideoView.setMode(MODE_FINALLY_REVIEW);
         mDubbingVideoView.setType(1);
         mDubbingVideoView.setIsSupportPause(true);
+        mDubbingVideoView.play();
 //        mDubbingVideoView.onResume();
         mDubbingVideoView.setOnEventListener(new OnVideoEventListener() {
             @Override
