@@ -460,7 +460,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
 
-        mCourseAdapter = new ClassCourseAdapter(isHeadMasterOrTeacher, mRoles);
+        mCourseAdapter = new ClassCourseAdapter(mClassCourseParams.isHeadMaster(), mRoles);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3) {
             @Override

@@ -50,6 +50,12 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     private static final int CHARACTERISTIC_COURSE_ID = 2005;
     // 基础课程
     private static final int COUNTRY_COURSE_ID = 2003;
+    // 分类阅读
+    public static final int CLASSIFIED_READING_ID = 1001;
+    // 绘本
+    public static final int PICTURE_BOOK_ID = 1002;
+    // Q配音
+    public static final int Q_DUBBING_ID = 1003;
 
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
@@ -183,14 +189,14 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         String level = "";
         int rootId = groupEntity.getId();
         if(EmptyUtil.isNotEmpty(childEntity)) level = childEntity.getLevel();
-        if(rootId == MINORITY_LANGUAGE_COURSE_ID){
+        if(rootId == MINORITY_LANGUAGE_COURSE_ID || rootId == CLASSIFIED_READING_ID){
             level = configEntity.getLevel();
         }
 
         int paramOneId = 0;
         int paramTwoId = 0;
 
-        if(rootId != MINORITY_LANGUAGE_COURSE_ID){
+        if(rootId != MINORITY_LANGUAGE_COURSE_ID && rootId != CLASSIFIED_READING_ID){
 
             int rootTypeId = 0;
             if(EmptyUtil.isNotEmpty(childEntity)) rootTypeId = childEntity.getId();
