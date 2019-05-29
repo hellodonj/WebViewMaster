@@ -425,7 +425,7 @@ public class CourseFiltrateActivity extends PresenterActivity<CourseFiltrateCont
             mThirdTabs.clear();
         }
 
-        if((mFirstTabs.size() > 1 || triggerFiltrate) && !mFirstTabs.contains(allTab)){
+        if((mFirstTabs.size() > 0 || triggerFiltrate) && !mFirstTabs.contains(allTab)){
             // 添加全部
             mFirstTabs.add(0,allTab);
             mCbSort1.setVisibility(View.VISIBLE);
