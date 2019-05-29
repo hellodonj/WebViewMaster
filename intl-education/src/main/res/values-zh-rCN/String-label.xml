@@ -169,7 +169,7 @@
     <string name="label_voice_evaluating">语音评测</string>
     <!--学程馆改成自习课程-->
     <string name="label_organ_shop_permission_description">该机构暂无更多学程馆课程，敬请期待！</string>
-    <!--<string name="label_organ_shop_permission_description">该机构暂无更多自习课程，敬请期待！</string>-->
+    <string name="label_organ_course_permission_description">该机构暂无更多%s课程，敬请期待！</string>
 
     <string name="label_new_create">新建</string>
     <string name="label_new_class">新开课</string>

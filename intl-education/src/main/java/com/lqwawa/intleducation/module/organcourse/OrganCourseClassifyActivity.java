@@ -215,7 +215,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
         if (EmptyUtil.isEmpty(mConfigEntities)) {
             // 没有任何权限数据 显示空页面
-            mEmptyView.setDescription(UIUtil.getString(R.string.label_organ_shop_permission_description));
+            mEmptyView.setDescription(getString(R.string.label_organ_course_permission_description, mLibraryNames[mLibraryType]));
             mEmptyView.setVisibility(View.VISIBLE);
             mContentLayout.setVisibility(View.GONE);
         } else {

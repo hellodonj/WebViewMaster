@@ -167,6 +167,8 @@
     <string name="label_auto_mark">Auto Mark</string>
     <string name="label_voice_evaluating">Oral Test</string>
     <string name="label_organ_shop_permission_description">No course available now, please wait!</string>
+    <string name="label_organ_course_permission_description">No %s course available now, please
+        wait!</string>
 
     <string name="label_new_create">New</string>
     <string name="label_new_class">New Lesson</string>
