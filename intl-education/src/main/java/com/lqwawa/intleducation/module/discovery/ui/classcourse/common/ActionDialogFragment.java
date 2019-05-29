@@ -48,8 +48,14 @@ public class ActionDialogFragment extends DialogFragment implements View.OnClick
         Bundle arguments = getArguments();
         int actionResUp = arguments.getInt(KEY_EXTRA_ACTION_TEXT_RESOURCE_UP);
         int actionResDown = arguments.getInt(KEY_EXTRA_ACTION_TEXT_RESOURCE_DOWN);
-        mBtnActionUp.setText(actionResUp);
-        mBtnActionDown.setText(actionResDown);
+        if (actionResUp > 0) {
+            mBtnActionUp.setText(actionResUp);
+        }
+        if (actionResDown > 0) {
+            mBtnActionDown.setText(actionResDown);
+        }
+        mBtnActionUp.setVisibility(actionResUp == 0 ? View.GONE : View.VISIBLE);
+        mBtnActionDown.setVisibility(actionResDown == 0 ? View.GONE : View.VISIBLE);
         mBtnActionUp.setOnClickListener(this);
         mBtnActionDown.setOnClickListener(this);
     }

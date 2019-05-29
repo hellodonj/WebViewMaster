@@ -33,13 +33,11 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
@@ -111,6 +109,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private String mClassName;
     private String mRoles;
     private boolean isTeacher;
+    // 或者是班主任或者老师
+    private boolean isHeadMasterOrTeacher;
 
     // 全部文本
     private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
@@ -155,6 +155,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         mClassId = mClassCourseParams.getClassId();
         mClassName = mClassCourseParams.getClassName();
         mRoles = mClassCourseParams.getRoles();
+        isHeadMasterOrTeacher = mClassCourseParams.isHeadMaster() | mClassCourseParams.isTeacher();
         if (EmptyUtil.isEmpty(mSchoolId) ||
                 EmptyUtil.isEmpty(mClassId) ||
                 EmptyUtil.isEmpty(mRoles)) {
@@ -258,7 +259,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
         // 班级学程进入参数
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
-        if (mClassCourseParams.isHeadMaster()) {
+        if (isHeadMasterOrTeacher) {
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnAdd.setOnClickListener(this);
             mBtnRemove.setOnClickListener(this);
@@ -318,11 +319,12 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity classCourseEntity) {
                 super.onItemLongClick(holder, classCourseEntity);
-                if (mClassCourseParams.isHeadMaster() && !mCourseAdapter.isChoiceMode()) {
+                if (isHeadMasterOrTeacher && !mCourseAdapter.isChoiceMode()) {
 //                    switchHoldState(true, classCourseEntity);
+                    int resId = mClassCourseParams.isHeadMaster() ? R.string.label_delete : 0;
                     ClassCourseEntity entity = classCourseEntity;
                     ActionDialogFragment.show(getSupportFragmentManager(),
-                            R.string.label_remove_out, R.string.label_delete,
+                            R.string.label_remove_out, resId,
                             (button, tag) -> {
                                 if (tag == ActionDialogFragment.Tag.UP) {
                                     // 移除

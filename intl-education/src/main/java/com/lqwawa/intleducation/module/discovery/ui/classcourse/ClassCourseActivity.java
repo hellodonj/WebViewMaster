@@ -166,6 +166,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private String mClassName;
     private String mRoles;
     private boolean isTeacher;
+    // 或者是班主任或者老师
+    private boolean isHeadMasterOrTeacher;
     private boolean mIsDirectToClassCourse;
 
     // 全部文本
@@ -230,6 +232,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mClassId = mClassCourseParams.getClassId();
         mClassName = mClassCourseParams.getClassName();
         mRoles = mClassCourseParams.getRoles();
+        isHeadMasterOrTeacher = mClassCourseParams.isHeadMaster() | mClassCourseParams.isTeacher();
         if (mResourceData != null) {
             mIsDirectToClassCourse = mResourceData.isDirectToClassCourse();
         }
@@ -457,7 +460,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
 
-        mCourseAdapter = new ClassCourseAdapter(mClassCourseParams.isHeadMaster(), mRoles);
+        mCourseAdapter = new ClassCourseAdapter(isHeadMasterOrTeacher, mRoles);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3) {
             @Override
@@ -523,10 +526,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity classCourseEntity) {
                 super.onItemLongClick(holder, classCourseEntity);
-                if (!mResourceFlag && mClassCourseParams.isHeadMaster()) {
+                if (!mResourceFlag && isHeadMasterOrTeacher) {
 //                    switchHoldState(true, classCourseEntity);
+                    int resId = mClassCourseParams.isHeadMaster() ? R.string.label_delete : 0;
                     ActionDialogFragment.show(getSupportFragmentManager(),
-                            R.string.label_add_history_course, R.string.label_delete,
+                            R.string.label_add_history_course, resId,
                             (button, tag) -> {
                                 if (tag == ActionDialogFragment.Tag.UP) {
                                     // 加入历史学程

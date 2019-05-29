@@ -17,6 +17,8 @@ public class ClassCourseParams extends BaseVo{
     private String className;
     // 角色信息
     private String roles;
+    // 是否老师
+    private boolean isTeacher;
 
     public ClassCourseParams(boolean isHeadMaster,String schoolId, String classId,String className) {
         this.isHeadMaster = isHeadMaster;
@@ -57,5 +59,14 @@ public class ClassCourseParams extends BaseVo{
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public boolean isTeacher() {
+        return isTeacher;
+    }
+
+    public ClassCourseParams setTeacher(boolean teacher) {
+        isTeacher = teacher;
+        return this;
     }
 }
