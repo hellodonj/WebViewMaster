@@ -85,6 +85,18 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         initAudioMedia();
         initVideoView();
         initSeekBarView();
+        startPlay();
+    }
+
+    private void startPlay(){
+        if (mDubbingVideoView != null) {
+            mDubbingVideoView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDubbingVideoView.play(MODE_FINALLY_REVIEW);
+                }
+            }, 300);
+        }
     }
 
     private void init() {
@@ -187,7 +199,6 @@ public class DubbingPreviewActivity extends Activity implements View.OnClickList
         mDubbingVideoView.setMode(MODE_FINALLY_REVIEW);
         mDubbingVideoView.setType(1);
         mDubbingVideoView.setIsSupportPause(true);
-        mDubbingVideoView.play();
 //        mDubbingVideoView.onResume();
         mDubbingVideoView.setOnEventListener(new OnVideoEventListener() {
             @Override

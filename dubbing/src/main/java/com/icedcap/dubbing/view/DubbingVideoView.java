@@ -341,7 +341,7 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
 
-    private void play(int mode) {
+    public void play(int mode) {
         mPlayButton.setVisibility(GONE);
         mThumb.setVisibility(GONE);
         mIsPlaying = true;
