@@ -114,6 +114,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     private boolean mTeacherVisitor;
 
+    private boolean isFromScan;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
@@ -137,6 +139,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         Bundle arguments = getArguments();
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER,false);
+        isFromScan = getArguments().getBoolean("isFromScan", false);
 
         if(arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)){
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
@@ -328,6 +331,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             mCourseChapterAdapter = new CourseChapterAdapter(activity, mCourseId, mNeedReadFlag,isOnlineTeacher,()->getData(false));
             // 已经加入的学程
             mCourseChapterAdapter.setJoinCourse(isJoin);
+            mCourseChapterAdapter.setIsFromScan(isFromScan);
             mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);
             mCourseChapterArray = new ArrayList();
             listView.setAdapter(mCourseChapterAdapter);

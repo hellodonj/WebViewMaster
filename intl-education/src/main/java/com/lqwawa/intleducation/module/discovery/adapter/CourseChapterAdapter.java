@@ -86,6 +86,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     //是否从班级学程进入
     private boolean isClassCourseEnter;
+    private boolean isFromScan;
 
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -899,6 +900,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     public void setJoinCourse(@NonNull boolean joinCourse) {
         this.isJoinCourse = joinCourse;
+    }
+
+    public void setIsFromScan(@NonNull boolean isFromScan) {
+        this.isFromScan = isFromScan;
+        if (isFromScan) {
+            tutorialMode = false;
+        }
     }
 
     public void setTeacherVisitor(boolean visitor) {

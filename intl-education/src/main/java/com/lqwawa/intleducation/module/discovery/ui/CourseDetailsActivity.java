@@ -686,6 +686,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
         params2.setCourseParams(mCourseDetailParams);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
+        bundle2.putBoolean("isFromScan", isFromScan);
 
         studyPlanFragment.setArguments(bundle2);
         // @date   :2018/6/8 0008 上午 12:20
