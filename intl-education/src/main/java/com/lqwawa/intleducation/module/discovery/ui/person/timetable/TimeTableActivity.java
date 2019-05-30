@@ -1,8 +1,10 @@
 package com.lqwawa.intleducation.module.discovery.ui.person.timetable;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -226,6 +228,7 @@ public class TimeTableActivity extends PresenterActivity<TimeTableContract.Prese
 
         initDatetimeBar();
         initCalendarBar();
+        registerBroadcastReceiver();
     }
 
     /**
@@ -550,6 +553,34 @@ public class TimeTableActivity extends PresenterActivity<TimeTableContract.Prese
                     , calendar.get(Calendar.MONTH)
                     , calendar.get(Calendar.DAY_OF_MONTH));
         }
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+    /**
+     * BroadcastReceiver
+     ************************************************/
+    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("LIVE_STATUS_CHANGED")) {
+                DateTime startDate = new DateTime(mSelectYear, mSelectMonth + 1, 1, 0, 0);
+                DateTime endDate = new DateTime(mSelectYear, mSelectMonth + 1,CalendarUtils.getMonthDays(mSelectYear,mSelectMonth), 0, 0);
+                getTimetableFlags(startDate,endDate);
+                loadData(false);
+            }
+        }
+    };
+
+    /**
+     * 注册广播事件
+     */
+    protected void registerBroadcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        //要接收的类型
+        myIntentFilter.addAction("LIVE_STATUS_CHANGED");
+        //注册广播
+        registerReceiver(mBroadcastReceiver, myIntentFilter);
     }
 
     /**
