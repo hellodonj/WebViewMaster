@@ -671,6 +671,10 @@ public class DubbingVideoView extends FrameLayout implements
 //        }
     }
 
+    public void setLastTime(int lasttime){
+        this.lasttime = 0;
+    }
+
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
         return false;

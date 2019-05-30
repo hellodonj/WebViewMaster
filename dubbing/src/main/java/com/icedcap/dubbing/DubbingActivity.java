@@ -808,7 +808,12 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
      * 播放原音
      */
     private void listenToTheSoundVideo() {
+        if (isOnlineOpen && lrcView != null){
+            lrcView.resetLineColor();
+            lrcView.scrollTo(0);
+        }
         isSupportPause = true;
+        dubbingVideoView.setLastTime(0);
         dubbingVideoView.setIsSupportPause(true);
         if (listenType == 0) {
             //配音
