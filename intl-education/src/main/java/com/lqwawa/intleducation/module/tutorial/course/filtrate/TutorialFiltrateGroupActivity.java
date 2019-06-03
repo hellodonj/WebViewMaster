@@ -256,10 +256,10 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
                     mFiltrateArray3.add(Tab.build(entity));
                 }
                 // 第三个筛选容器,加全部
-//                Tab allTab3 = Tab.buildAll(mAllText, null);
-//                if (!mFiltrateArray3.contains(allTab3)) {
-//                    mFiltrateArray3.add(0, allTab3);
-//                }
+                Tab allTab3 = Tab.buildAll(mAllText, null);
+                if (!mFiltrateArray3.contains(allTab3)) {
+                    mFiltrateArray3.add(0, allTab3);
+                }
             }
             // 递归调用
             List<LQCourseConfigEntity> childList = entity.getChildList();
