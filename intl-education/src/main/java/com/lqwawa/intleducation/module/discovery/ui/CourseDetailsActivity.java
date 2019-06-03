@@ -258,6 +258,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     } else {
                         courseDetailParams = new CourseDetailParams();
                     }
+                    courseDetailParams.setFromScan(tabIndex == -2);
                     if (entity != null) {
                         courseDetailParams.setLibraryType(entity.getLibraryType());
                     }
@@ -282,6 +283,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     if (courseDetailParams == null) {
                         courseDetailParams = new CourseDetailParams();
                     }
+                    courseDetailParams.setFromScan(tabIndex == -2);
                     courseDetailParams.setIsAuthorized(isAuth);
                     if (entity != null) {
                         courseDetailParams.setLibraryType(entity.getLibraryType());
@@ -433,7 +435,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isMyCourse = getIntent().getBooleanExtra("isMyCourse", false);
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
-        isFromScan = initTabIndex == -2;
+        isFromScan = mCourseDetailParams.isFromScan();
         initViews();
         initData(false);
     }

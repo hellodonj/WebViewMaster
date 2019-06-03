@@ -40,6 +40,9 @@ public class CourseDetailParams extends BaseVo{
     // 学程馆类型
     private int libraryType;
 
+    // 是否来自扫码识任务
+    private boolean isFromScan;
+
     public CourseDetailParams() {
         // 默认的进入方式
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
@@ -171,6 +174,15 @@ public class CourseDetailParams extends BaseVo{
 
     public CourseDetailParams setLibraryType(int libraryType) {
         this.libraryType = libraryType;
+        return this;
+    }
+
+    public boolean isFromScan() {
+        return isFromScan;
+    }
+
+    public CourseDetailParams setFromScan(boolean fromScan) {
+        isFromScan = fromScan;
         return this;
     }
 

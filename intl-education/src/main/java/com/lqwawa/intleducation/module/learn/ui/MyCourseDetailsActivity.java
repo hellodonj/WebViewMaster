@@ -225,6 +225,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private CourseDetailParams mCourseDetailParams;
     private boolean isOnlineTeacher;
     private SchoolInfoEntity mSchoolEntity;
+    private boolean isFromScan;
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
@@ -356,6 +357,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         isComeFromDetail = getIntent().getBooleanExtra("isComeFromDetail", false);
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         initTabIndex = getIntent().getIntExtra("tabIndex", 0);
+        isFromScan = mCourseDetailParams.isFromScan();
         if (id == null) {
             ToastUtil.showToast(activity, getResources().getString(R.string.data_is_empty));
             finish();
@@ -614,6 +616,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             CourseVo vo = (CourseVo) getIntent().getSerializableExtra("CourseVo");
             bundle2.putSerializable(CourseVo.class.getSimpleName(), vo);
         }
+        bundle2.putBoolean("isFromScan", isFromScan);
 
         // 传入课程Item详情参数
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
@@ -879,6 +882,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
                 boolean tutorialMode = MainApplication.isTutorialMode();
                 tutorialMode = tutorialMode && mCourseDetailParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
+
+                if (isFromScan) {
+                    tutorialMode = false;
+                }
 
                 MyCourseDetailsActivity.this.courseDetailsVo = courseDetailsVo;
                 collected = courseDetailsVo.isIsCollect();
