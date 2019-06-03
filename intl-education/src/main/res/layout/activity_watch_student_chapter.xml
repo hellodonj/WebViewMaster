@@ -11,11 +11,15 @@
 
     </com.lqwawa.intleducation.base.widgets.TopBar>
 
-    <FrameLayout
-        android:id="@+id/lay_content"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/lay_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ScrollView>
 
 </LinearLayout>
