@@ -267,7 +267,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             mBottomLayout.setVisibility(View.GONE);
         }
 
-        mCourseAdapter = new ClassCourseAdapter(mClassCourseParams.isHeadMaster(), mRoles);
+        mCourseAdapter = new ClassCourseAdapter(isHeadMasterOrTeacher, mRoles);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3) {
             @Override
