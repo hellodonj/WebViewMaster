@@ -65,6 +65,7 @@ public class WebFragment extends MyBaseFragment {
         contentTextView.setMovementMethod(new ScrollingMovementMethod());
 
         WebSettings webSettings = webView.getSettings();
+        webSettings.setDefaultFontSize(40);
         webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setJavaScriptEnabled(true);
