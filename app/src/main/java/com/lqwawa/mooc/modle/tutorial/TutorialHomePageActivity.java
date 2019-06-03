@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -12,15 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.duowan.mobile.netroid.Listener;
@@ -29,11 +25,10 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.bitmapmanager.ThumbnailManager;
 import com.galaxyschool.app.wawaschool.common.ImageLoader;
-import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
-import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.ui.QRCodeDialogFragment;
@@ -41,22 +36,23 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.WebFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.Netroid;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.modle.tutorial.comment.TutorialCommentFragment;
-import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListContract;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListFragment;
 import com.oosic.apps.share.BaseShareUtils;
 import com.oosic.apps.share.ShareInfo;
-import com.oosic.apps.share.SharedResource;
 import com.umeng.socialize.media.UMImage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -77,6 +73,8 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private ImageView mIvAvatar;
     private View mCourseSubjectLayout;
     private TextView mTvCourseSubject;
+    private LinearLayout mBottomLayout;
+    private Button mBtnAddTutorial;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -84,12 +82,15 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
 
     private TutorialParams mTutorialParams;
     private String mTutorMemberId;
+    private String mTutorName;
 
     private ThumbnailManager thumbnailManager;
     private UserEntity mUserEntity;
     private String mQRCodeImageUrl;
     private String mQRCodeImagePath;
     private String mCourseSubject;
+    private String mClassId;
+    private boolean mIsHideAddTutorial;
 
     @Override
     protected TutorialHomePageContract.Presenter initPresenter() {
@@ -107,6 +108,8 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             mTutorialParams = (TutorialParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
             if (EmptyUtil.isNotEmpty(mTutorialParams)) {
                 mTutorMemberId = mTutorialParams.getTutorMemberId();
+                mTutorName = mTutorialParams.getTutorName();
+                mClassId = mTutorialParams.getClassId();
             }
         }
 
@@ -123,7 +126,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setTitle(R.string.title_personal_page);
         mTopBar.setBack(true);
-        mTopBar.setVisibility(ViewPager.GONE);
+        mTopBar.setVisibility(View.GONE);
         mIvBack = (ImageButton) findViewById(R.id.iv_back);
         mTvShare = (TextView) findViewById(R.id.tv_share);
         mIvBack.setOnClickListener(this);
@@ -147,6 +150,35 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             }
         });
         mTvCourseSubject = (TextView) findViewById(R.id.tv_course_subject);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab != null) {
+                    int position = tab.getPosition();
+                    if (position == 2) {
+                        mBottomLayout.setVisibility(View.GONE);
+                    } else {
+                        mBottomLayout.setVisibility(mIsHideAddTutorial ? View.GONE : View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
+        mBtnAddTutorial = (Button) findViewById(R.id.btn_add_tutorial);
+        mBtnAddTutorial.setOnClickListener(this);
+        mBtnAddTutorial.setText(!TextUtils.isEmpty(mClassId) ? R.string.add_class_tutor :
+                R.string.label_add_tutorial);
     }
 
     @Override
@@ -158,6 +190,22 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         // 请求个人信息
         mPresenter.requestUserInfoWithUserId(mTutorMemberId);
         mPresenter.requestTutorSubjectList(mTutorMemberId);
+
+        // 如果当前帮辅老师与自己是同一个人，隐藏按钮
+        boolean tutorialMode = MainApplication.isTutorialMode();
+        boolean isHide =
+                tutorialMode  || TextUtils.equals(mTutorMemberId,UserHelper.getUserId());
+        if (!TextUtils.isEmpty(mClassId)) {
+            isHide = false;
+        }
+        mIsHideAddTutorial = isHide;
+        if (isHide) {
+            mBottomLayout.setVisibility(View.GONE);
+        } else {
+            // 不相等，不是查看自己个人主页
+            // 查询是否已经加入该帮辅
+            mPresenter.requestQueryAddedTutorState(UserHelper.getUserId(), mTutorMemberId, mClassId);
+        }
     }
 
     private void initFragments() {
@@ -237,6 +285,38 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         mTvCourseSubject.setText(mCourseSubject);
     }
 
+    @Override
+    public void updateQueryAddedTutorStateView(boolean added) {
+        // 广播出去,判断是否显示评论框
+        // 需求更改,只有批阅过后的入口显示评论框
+        // EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
+        mIsHideAddTutorial = added;
+        if (added) {
+            mBottomLayout.setVisibility(View.GONE);
+        } else {
+            mBottomLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void updateAddTutorView(boolean result) {
+        mIsHideAddTutorial = result;
+        if (result) {
+            // 加帮辅成功
+            mBottomLayout.setVisibility(View.GONE);
+            // 广播出去,判断是否显示评论框
+            // EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
+
+            // 添加帮辅（班级帮辅）成功后，刷新班级帮辅列表
+            MessageEvent messageEvent = new MessageEvent(EventConstant.TRIGGER_ADD_TUTOR_UPDATE);
+            EventBus.getDefault().post(messageEvent);
+
+            UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
+        } else {
+            UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
+        }
+    }
+
     private void updateSubscribeBar() {
         //更新二维码
         mQRCodeImageUrl = AppSettings.getFileUrl(mUserEntity.getQRCode());
@@ -299,12 +379,17 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
             String dialogDesc = mTvName.getText().toString();
             QRCodeDialogFragment.show(getSupportFragmentManager(),
                     getString(R.string.label_personal_qrcode),
-                    dialogDesc, mQRCodeImageUrl, new QRCodeDialogFragment.OnSaveListener() {
-                        @Override
-                        public void onSave() {
-                            saveQrCodeImage(mQRCodeImageUrl);
-                        }
-                    });
+                    dialogDesc, mQRCodeImageUrl, () -> saveQrCodeImage(mQRCodeImageUrl));
+        } else if (viewId == R.id.btn_add_tutorial) {
+            // 先判断是否登录
+            if (!UserHelper.isLogin()) {
+                LoginHelper.enterLogin(this);
+                return;
+            }
+
+            // 加帮辅(班级帮辅)
+            mPresenter.requestAddTutor(UserHelper.getUserId(), mTutorMemberId,
+                    mTutorName, mClassId);
         }
     }
 

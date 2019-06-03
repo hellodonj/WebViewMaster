@@ -49,49 +49,5 @@ public class TutorialCourseListPresenter extends BasePresenter<TutorialCourseLis
         });
     }
 
-    @Override
-    public void requestQueryAddedTutorState(@NonNull String memberId,
-                                            @NonNull String tutorMemberId, String classId) {
-        TutorialHelper.requestQueryAddedTutorByTutorId(memberId, tutorMemberId,
-                classId, new DataSource.Callback<Boolean>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final TutorialCourseListContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
 
-            @Override
-            public void onDataLoaded(Boolean aBoolean) {
-                final TutorialCourseListContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.updateQueryAddedTutorStateView(aBoolean);
-                }
-            }
-        });
-    }
-
-
-    @Override
-    public void requestAddTutor(@NonNull String memberId, @NonNull String tutorMemberId, @NonNull String tutorName, @NonNull String classId) {
-        TutorialHelper.requestAddTutor(memberId, tutorMemberId, tutorName,
-                classId, new DataSource.Callback<Boolean>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final TutorialCourseListContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
-
-            @Override
-            public void onDataLoaded(Boolean aBoolean) {
-                final TutorialCourseListContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.updateAddTutorView(aBoolean);
-                }
-            }
-        });
-    }
 }

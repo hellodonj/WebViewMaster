@@ -4,32 +4,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.intleducation.AppConfig;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
-
-import com.galaxyschool.app.wawaschool.R;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.List;
@@ -39,20 +29,16 @@ import java.util.List;
  * 帮辅主页帮辅课程页面
  */
 public class TutorialCourseListFragment extends PresenterFragment<TutorialCourseListContract.Presenter>
-        implements TutorialCourseListContract.View, View.OnClickListener {
+        implements TutorialCourseListContract.View {
 
     private PullToRefreshView mRefreshLayout;
     private ListView mListView;
     private CourseListAdapter mAdapter;
     private CourseEmptyView mEmptyLayout;
-    private LinearLayout mBottomLayout;
-    private Button mBtnAddTutorial;
 
     private TutorialParams mTutorialParams;
     private String mTutorMemberId;
-    private String mTutorName;
     private int mPageIndex;
-    private String mClassId;
 
     public static Fragment newInstance(@NonNull TutorialParams params) {
         Fragment fragment = new TutorialCourseListFragment();
@@ -78,8 +64,6 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
             mTutorialParams = (TutorialParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
             if (EmptyUtil.isNotEmpty(mTutorialParams)) {
                 mTutorMemberId = mTutorialParams.getTutorMemberId();
-                mTutorName = mTutorialParams.getTutorName();
-                mClassId = mTutorialParams.getClassId();
             }
         }
 
@@ -96,11 +80,6 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mListView = (ListView) mRootView.findViewById(R.id.list_view);
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
-        mBottomLayout = (LinearLayout) mRootView.findViewById(R.id.bottom_layout);
-        mBtnAddTutorial = (Button) mRootView.findViewById(R.id.btn_add_tutorial);
-        mBtnAddTutorial.setOnClickListener(this);
-        mBtnAddTutorial.setText(!TextUtils.isEmpty(mClassId) ? R.string.add_class_tutor :
-                R.string.label_add_tutorial);
 
         // 下拉刷新
         mRefreshLayout.setLastUpdated(new Date().toLocaleString());
@@ -137,20 +116,6 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
     protected void initData() {
         super.initData();
         requestCourseData(false);
-        // 如果当前帮辅老师与自己是同一个人，隐藏按钮
-        boolean tutorialMode = MainApplication.isTutorialMode();
-        boolean isHide =
-                tutorialMode  || TextUtils.equals(mTutorMemberId,UserHelper.getUserId());
-        if (!TextUtils.isEmpty(mClassId)) {
-            isHide = false;
-        }
-        if (isHide) {
-            mBottomLayout.setVisibility(View.GONE);
-        } else {
-            // 不相等，不是查看自己个人主页
-            // 查询是否已经加入该帮辅
-            mPresenter.requestQueryAddedTutorState(UserHelper.getUserId(), mTutorMemberId, mClassId);
-        }
     }
 
     /**
@@ -196,52 +161,6 @@ public class TutorialCourseListFragment extends PresenterFragment<TutorialCourse
         // 设置数据
         mAdapter.addData(courseVos);
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void updateQueryAddedTutorStateView(boolean added) {
-        // 广播出去,判断是否显示评论框
-        // 需求更改,只有批阅过后的入口显示评论框
-        // EventBus.getDefault().post(new EventWrapper(added,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
-        if (added) {
-            mBottomLayout.setVisibility(View.GONE);
-        } else {
-            mBottomLayout.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void updateAddTutorView(boolean result) {
-        if (result) {
-            // 加帮辅成功
-            mBottomLayout.setVisibility(View.GONE);
-            // 广播出去,判断是否显示评论框
-            // EventBus.getDefault().post(new EventWrapper(result,EventConstant.TRIGGER_ATTENTION_TUTORIAL_UPDATE));
-
-            // 添加帮辅（班级帮辅）成功后，刷新班级帮辅列表
-            MessageEvent messageEvent = new MessageEvent(EventConstant.TRIGGER_ADD_TUTOR_UPDATE);
-            EventBus.getDefault().post(messageEvent);
-
-            UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
-        } else {
-            UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        int viewId = view.getId();
-        if (viewId == R.id.btn_add_tutorial) {
-            // 先判断是否登录
-            if (!UserHelper.isLogin()) {
-                LoginHelper.enterLogin(getActivity());
-                return;
-            }
-
-            // 加帮辅(班级帮辅)
-            mPresenter.requestAddTutor(UserHelper.getUserId(), mTutorMemberId,
-                    mTutorName, mClassId);
-        }
     }
 
     @Override
