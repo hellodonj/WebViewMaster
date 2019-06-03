@@ -13,31 +13,90 @@
 
     </com.lqwawa.intleducation.base.widgets.TopBar>
 
+
     <include layout="@layout/include_tutorial_header_layout"></include>
 
-    <include
-        android:id="@+id/introduce_layout"
-        layout="@layout/item_student_tutorial_layout"></include>
+    <LinearLayout
+        android:id="@+id/course_subject_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:singleLine="true"
+            android:text="@string/course_subject_colon"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/textSecond"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_course_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@drawable/ic_right_arrow_plus"
+            android:drawablePadding="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/textPrimary"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/textPrimary"
-        app:tabSelectedTextColor="@color/textAccent"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@color/colorAccent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabMode="fixed"
-        app:tabGravity="fill"
+        android:layout_marginTop="5dp"
         android:background="@color/colorLight"
-        android:layout_marginTop="4dp"/>
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorHeight="2dp"
+        app:tabMaxWidth="0dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/textAccent"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/textPrimary" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
 
-    </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLight"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:weightSum="2">
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_add_tutorial"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_add_tutorial"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+    </LinearLayout>
 
 </LinearLayout>

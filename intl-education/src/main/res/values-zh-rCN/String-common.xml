@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="common_course_shop">学程馆</string>
+    <string name="common_course_library">学程馆</string>
+    <string name="common_course_shop">习课程馆</string>
+    <string name="common_practice_library">练测馆</string>
+    <string name="common_library">图书馆</string>
+    <string name="common_video_library">视频馆</string>
+
+    <string-array name="organ_library_names">
+        <item>学程馆</item>
+        <item>练测馆</item>
+        <item>图书馆</item>
+        <item>视频馆</item>
+    </string-array>
 </resources>

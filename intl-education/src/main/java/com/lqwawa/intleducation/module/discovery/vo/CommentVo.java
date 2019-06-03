@@ -26,6 +26,7 @@ public class CommentVo extends BaseVo {
     private String deleteTime;// "",
     private String courseName;// "化学实验",
     private String createId;// 8
+    private String headPic;
 
     public List<CommentVo> getChildren() {
         return children;
@@ -153,5 +154,14 @@ public class CommentVo extends BaseVo {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public CommentVo setHeadPic(String headPic) {
+        this.headPic = headPic;
+        return this;
     }
 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,17 +14,21 @@ import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.oosic.apps.iemaker.base.exercisenode.ExerciseNode;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -35,10 +38,11 @@ import java.util.List;
  * @desc 帮辅筛选片段页面
  */
 public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<TutorialFiltrateGroupPagerContract.Presenter>
-    implements TutorialFiltrateGroupPagerContract.View,PagerNavigator{
+        implements TutorialFiltrateGroupPagerContract.View, PagerNavigator {
 
     private static final String KEY_EXTRA_SORT = "KEY_EXTRA_SORT";
     private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
+    private static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
 
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
@@ -46,24 +50,27 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     private TutorialGroupAdapter mGroupAdapter;
     // 未登录可能为空
     private String mCurMemberId;
+    private String mClassId;
     private String mSort;
 
     private ActivityNavigator mNavigator;
     private int pageIndex;
 
     public static TutorialFiltrateGroupPagerFragment newInstance(@Nullable String memberId,
+                                                                 String classId,
                                                                  @HideSortType.SortRes String sort,
-                                                                 @NonNull ActivityNavigator navigator){
+                                                                 @NonNull ActivityNavigator navigator) {
         TutorialFiltrateGroupPagerFragment fragment = new TutorialFiltrateGroupPagerFragment();
         Bundle arguments = new Bundle();
-        arguments.putString(KEY_EXTRA_MEMBER_ID,memberId);
-        arguments.putString(KEY_EXTRA_SORT,sort);
+        arguments.putString(KEY_EXTRA_MEMBER_ID, memberId);
+        arguments.putString(KEY_EXTRA_CLASS_ID, classId);
+        arguments.putString(KEY_EXTRA_SORT, sort);
         fragment.setArguments(arguments);
         fragment.setNavigator(navigator);
         return fragment;
     }
 
-    private void setNavigator(@NonNull ActivityNavigator navigator){
+    private void setNavigator(@NonNull ActivityNavigator navigator) {
         this.mNavigator = navigator;
     }
 
@@ -80,8 +87,9 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     @Override
     protected boolean initArgs(Bundle bundle) {
         mCurMemberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
+        mClassId = bundle.getString(KEY_EXTRA_CLASS_ID);
         mSort = bundle.getString(KEY_EXTRA_SORT);
-        if(EmptyUtil.isEmpty(mSort)) return false;
+        if (EmptyUtil.isEmpty(mSort)) return false;
         return super.initArgs(bundle);
     }
 
@@ -92,15 +100,16 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
         mEmptyView = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2){
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
         mRecycler.setLayoutManager(mLayoutManager);
-        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2,8));
+        mRecycler.addItemDecoration(new RecyclerSpaceItemDecoration(2, 8));
         mGroupAdapter = new TutorialGroupAdapter(null);
+        mGroupAdapter.setIsClassTutor(!TextUtils.isEmpty(mClassId));
         mRecycler.setAdapter(mGroupAdapter);
 
 
@@ -108,14 +117,14 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
             @Override
             public void onAddTutorial(int position, @NonNull TutorialGroupEntity entity) {
                 // 先判断是否登录
-                if(!UserHelper.isLogin()){
+                if (!UserHelper.isLogin()) {
                     LoginHelper.enterLogin(getActivity());
                     return;
                 }
 
-                // 添加帮辅,只添加自己的
-                String memberId = UserHelper.getUserId();
-                mPresenter.requestAddTutorByStudentId(memberId,entity.getCreateId(),entity.getCreateName());
+                // 加帮辅(班级帮辅)
+                mPresenter.requestAddTutor(UserHelper.getUserId(), entity.getCreateId(),
+                        entity.getCreateName(), mClassId);
             }
         });
 
@@ -123,8 +132,8 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, TutorialGroupEntity entity) {
                 super.onItemClick(holder, entity);
-                if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)){
-                    TaskSliderHelper.onTutorialMarkingListener.enterTutorialHomePager(getActivity(),entity.getCreateId(),entity.getCreateName());
+                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onTutorialMarkingListener)) {
+                    TaskSliderHelper.onTutorialMarkingListener.enterTutorialHomePager(getActivity(), entity.getCreateId(), entity.getCreateName(), mClassId);
                 }
             }
         });
@@ -152,6 +161,9 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     protected void initData() {
         super.initData();
         requestTutorialData(false);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -163,20 +175,21 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
     /**
      * 请求帮辅群数据
      */
-    private void requestTutorialData(boolean moreData){
-        if(!moreData){
+    private void requestTutorialData(boolean moreData) {
+        if (!moreData) {
             pageIndex = 0;
-        }else{
-            pageIndex ++;
+        } else {
+            pageIndex++;
         }
 
-        if(EmptyUtil.isNotEmpty(mNavigator)){
+        if (EmptyUtil.isNotEmpty(mNavigator)) {
             String level = mNavigator.getLevel();
             int[] params = mNavigator.getFiltrateParams();
             int paramOneId = params[0];
             int paramTwoId = params[1];
             int paramThereId = params[2];
-            mPresenter.requestTutorDataByParams(level,paramOneId,paramTwoId,paramThereId,mSort,pageIndex);
+            mPresenter.requestTutorDataByParams(level, paramOneId, paramTwoId, paramThereId,
+                    mSort, pageIndex, mClassId);
         }
 
 
@@ -189,10 +202,10 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
         handleEntities(entities);
         mGroupAdapter.replace(entities);
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
-        if(EmptyUtil.isEmpty(entities)){
+        if (EmptyUtil.isEmpty(entities)) {
             mEmptyView.setVisibility(View.VISIBLE);
             mRecycler.setVisibility(View.GONE);
-        }else{
+        } else {
             mEmptyView.setVisibility(View.GONE);
             mRecycler.setVisibility(View.VISIBLE);
         }
@@ -207,22 +220,43 @@ public class TutorialFiltrateGroupPagerFragment extends PresenterFragment<Tutori
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
     }
 
-    private void handleEntities(@NonNull List<TutorialGroupEntity> entities){
-        if(EmptyUtil.isNotEmpty(entities)){
+    @Override
+    public void updateAddTutorView(boolean result) {
+        if (result) {
+            UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
+            // 刷新UI
+            requestTutorialData(false);
+            // 添加班级帮辅成功后，刷新班级帮辅列表
+            if (!TextUtils.isEmpty(mClassId)) {
+                MessageEvent messageEvent = new MessageEvent(EventConstant.TRIGGER_ADD_TUTOR_UPDATE);
+                EventBus.getDefault().post(messageEvent);
+            }
+        } else {
+            UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
+        }
+    }
+
+    private void handleEntities(@NonNull List<TutorialGroupEntity> entities) {
+        if (EmptyUtil.isNotEmpty(entities)) {
             for (TutorialGroupEntity entity : entities) {
                 entity.buildEntity();
             }
         }
     }
 
-    @Override
-    public void updateAddTutorByStudentIdView(boolean result) {
-        if(result){
-            UIUtil.showToastSafe(R.string.label_added_tutorial_succeed);
-            // 刷新UI
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull MessageEvent event){
+        String action = event.getUpdateAction();
+        if(TextUtils.equals(action, EventConstant.TRIGGER_ADD_TUTOR_UPDATE)){
             requestTutorialData(false);
-        }else{
-            UIUtil.showToastSafe(R.string.label_added_tutorial_failed);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 }

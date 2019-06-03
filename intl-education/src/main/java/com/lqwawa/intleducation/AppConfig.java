@@ -92,7 +92,7 @@ public final class AppConfig {
         //测试服务器
         public static final String URL_HOST_TEST = "http://resop.lqwawa.com";
         //正式服务器
-        public static final String URL_HOST_RELEASE = "http://www.lqmooc.com";
+        public static final String URL_HOST_RELEASE = "https://api.lqmooc.com";
 
         /**
          * ===========================================================================
@@ -434,7 +434,8 @@ public final class AppConfig {
                 PayBase + "api/order/payUseActivationCode?j=";
 
 
-        public static final String CHARGE_BASE = ReleaseSever ? "http://www.lqmooc.com" : "http://resop.lqwawa.com/interCourse";
+        public static final String CHARGE_BASE = ReleaseSever ? "https://api.lqmooc.com"
+                : "http://resop.lqwawa.com/interCourse";
 
 
         //蛙蛙币余额
@@ -884,6 +885,17 @@ public final class AppConfig {
         public static final String GetTutorListByCourseId =
                 ServerBase + "api/tutor/getTutorListByCourseId?j=";
 
+        // 添加班级帮辅老师
+        public static final String PostAddClassTutor =
+                ServerBase + "api/tutor/addClassTutor";
+        // 删除班级帮辅老师
+        public static final String PostDeleteClassTutor =
+                ServerBase + "api/tutor/deleteClassTutor";
+
+        // 获取班级帮辅老师列表
+        public static final String PostGetClassTutorList =
+                ServerBase + "api/tutor/getClassTutorList ";
+
         // 申请加入课程的帮辅
         public static final String GetApplyForCourseTutor =
                 ServerBase + "api/tutor/applyCourseTutor?j=";
@@ -915,6 +927,22 @@ public final class AppConfig {
         // 删除历史学程
         public static final String PostRemoveClassHistoryCourse =
                 ServerBase + "api/class/removeClassHistoryCourse";
+
+        // 获取视频下配套教材
+        public static final String  PostGetSRListByChapterId =
+                ServerBase + "api/chapter/getSRListByChapterId";
+
+        // 获取视频下评论列表
+        public static final String PostGetVideoCommentList =
+                ServerBase + "api/tComment/getCommentList";
+
+        // 对视频发表评论
+        public static final String PostAddVideoComment =
+                ServerBase + "api/tComment/addComment";
+
+        // 获取帮辅科目
+        public static final String PostGetTutorSubjectList =
+                ServerBase + "api/config/getTutorSubjectList";
 
     }
 }

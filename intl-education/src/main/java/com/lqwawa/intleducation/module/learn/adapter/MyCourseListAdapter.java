@@ -61,10 +61,11 @@ public class MyCourseListAdapter extends MyBaseAdapter {
 
     /**
      * 传入身份信息，孩子的学程加载课程进度信息需要
+     *
      * @param canEdit
      * @param curMemberId
      */
-    public void setRoleInfo(boolean canEdit, @NonNull String curMemberId){
+    public void setRoleInfo(boolean canEdit, @NonNull String curMemberId) {
         this.canEdit = canEdit;
         this.curMemberId = curMemberId;
     }
@@ -74,7 +75,17 @@ public class MyCourseListAdapter extends MyBaseAdapter {
             R.string.course_status_1,
             R.string.course_status_2};
 
-    public MyCourseListAdapter(Activity activity,boolean isTeacher){
+    private final int[] courseTypesBgId = new int[]{
+            R.drawable.shape_course_type_read,
+            R.drawable.shape_course_type_learn,
+            R.drawable.shape_course_type_practice,
+            R.drawable.shape_course_type_exam,
+            R.drawable.shape_course_type_video
+    };
+
+    private String[] courseTypeNames;
+
+    public MyCourseListAdapter(Activity activity, boolean isTeacher) {
         this(activity);
         this.isTeacher = isTeacher;
     }
@@ -95,6 +106,10 @@ public class MyCourseListAdapter extends MyBaseAdapter {
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
                 .build();
+
+        courseTypeNames =
+                activity.getResources().getStringArray(R.array.course_type_names);
+
     }
 
     @Override
@@ -129,18 +144,18 @@ public class MyCourseListAdapter extends MyBaseAdapter {
         holder.organ_name.setText(vo.getOrganName());
         holder.teacher_name.setText(vo.getTeachersName());
         holder.mTvInClass.setActivated(vo.isInClass());
-        if(!isTeacher && canEdit){
+        if (!isTeacher && canEdit) {
             // 学生身份才显示
             holder.mTvInClass.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.mTvInClass.setVisibility(View.GONE);
         }
 
-        if(vo.isInClass()){
+        if (vo.isInClass()) {
             // 已经指定到班级
             holder.mTvInClass.setText(UIUtil.getString(R.string.label_old_in_class));
             holder.mTvInClass.setEnabled(false);
-        }else{
+        } else {
             // 未指定到班级
             holder.mTvInClass.setText(UIUtil.getString(R.string.label_course_in_class));
             holder.mTvInClass.setEnabled(true);
@@ -149,9 +164,9 @@ public class MyCourseListAdapter extends MyBaseAdapter {
                 public void onClick(View v) {
                     // 去指定到班级
                     Intent intent = new Intent();
-                    intent.setClassName(activity.getPackageName(),"com.lqwawa.mooc.select.SchoolClassSelectActivity");
+                    intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.SchoolClassSelectActivity");
                     Bundle bundle = new Bundle();
-                    bundle.putString("courseId",vo.getCourseId());
+                    bundle.putString("courseId", vo.getCourseId());
                     intent.putExtras(bundle);
                     activity.startActivity(intent);
                 }
@@ -176,41 +191,48 @@ public class MyCourseListAdapter extends MyBaseAdapter {
                 imageOptions);
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
 
-        if(!isTeacher /*&& canEdit*/ && vo.isCharge()){
+        if (!isTeacher /*&& canEdit*/ && vo.isCharge()) {
             // 学生 家长
             holder.mBuyType.setVisibility(View.VISIBLE);
-            if(vo.isBuyAll()){
+            if (vo.isBuyAll()) {
                 // 全部购买
                 holder.mBuyType.setText(R.string.label_buy_all);
-            }else{
-                holder.mBuyType.setText(String.format(UIUtil.getString(R.string.label_buy_number_chapter),vo.getBuyChapterNum()));
+            } else {
+                holder.mBuyType.setText(String.format(UIUtil.getString(R.string.label_buy_number_chapter), vo.getBuyChapterNum()));
             }
-        }else{
+        } else {
             holder.mBuyType.setVisibility(View.GONE);
         }
 
         int courseStatus = vo.getProgressStatus();
         String statusString;
-        if (courseStatus >= 0 && courseStatus < 3){
+        if (courseStatus >= 0 && courseStatus < 3) {
             statusString = activity.getString(courseStatusResId[courseStatus]);
-            if(courseStatus == 0){
+            if (courseStatus == 0) {
                 holder.mTvState.setBackgroundResource(R.drawable.radio_bg_pink);
-            }else if(courseStatus == 1){
+            } else if (courseStatus == 1) {
                 holder.mTvState.setBackgroundResource(R.drawable.radio_bg_flag_red);
-            }else{
+            } else {
                 holder.mTvState.setBackgroundResource(R.drawable.radio_bg_sky_blue);
             }
-        }else{
+        } else {
             statusString = activity.getString(R.string.value_error) + ":" + courseStatus;
         }
         holder.mTvState.setText(statusString);
 
         // 设置状态显示与隐藏
-        if(isTeacher || true){
+        if (isTeacher || true) {
             // 所有角色都显示状态
             holder.mTvState.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.mTvState.setVisibility(View.GONE);
+        }
+
+        holder.mTvState.setVisibility(View.GONE);
+        int courseType = vo.getAssortment();
+        if (courseType >= 0 && courseType < courseTypesBgId.length) {
+            holder.mCourseType.setText(courseTypeNames[courseType]);
+            holder.mCourseType.setBackgroundResource(courseTypesBgId[courseType]);
         }
 
         String chapterName = vo.getChapterName();
@@ -273,10 +295,10 @@ public class MyCourseListAdapter extends MyBaseAdapter {
                 int learnRate = courseRateEntity.getLearnRate();
                 tempHolder.mProgressBar.setProgress(learnRate);
                 tempHolder.mProgressPercent.setText(String.format(UIUtil.getString(R.string.label_course_progress_percent).toString(), learnRate));
-                if(!isTeacher){
+                if (!isTeacher) {
                     // 不是老师身份
                     tempHolder.mProgressLayout.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     tempHolder.mProgressLayout.setVisibility(View.GONE);
                 }
             }
@@ -291,6 +313,7 @@ public class MyCourseListAdapter extends MyBaseAdapter {
         ImageView course_iv;
         // 状态
         TextView mTvState;
+        TextView mCourseType;
         TextView course_name;
         TextView organ_name;
         TextView teacher_name;
@@ -312,6 +335,7 @@ public class MyCourseListAdapter extends MyBaseAdapter {
             course_date_tv = (TextView) parentView.findViewById(R.id.course_date_tv);
             course_iv = (ImageView) parentView.findViewById(R.id.course_iv);
             mTvState = (TextView) parentView.findViewById(R.id.tv_course_state);
+            mCourseType = (TextView) parentView.findViewById(R.id.tv_course_type);
             course_name = (TextView) parentView.findViewById(R.id.course_name);
             organ_name = (TextView) parentView.findViewById(R.id.organ_name);
             teacher_name = (TextView) parentView.findViewById(R.id.teacher_name);

@@ -16,10 +16,6 @@ import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
-import com.lqwawa.intleducation.module.user.adapter.ClassMemberAdapter;
-import com.lqwawa.intleducation.module.user.vo.ContactVo;
-
-import org.xutils.x;
 
 import java.util.List;
 

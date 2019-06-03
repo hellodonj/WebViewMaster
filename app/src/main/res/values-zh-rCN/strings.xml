@@ -1698,8 +1698,9 @@
     <string name="str_exit_assistant_model">退出帮辅模式，进入学习空间</string>
     <string name="str_open_assistant_model">打开帮辅模式，进入帮辅空间</string>
     <string name="str_assistant_model_title">打开帮辅模式</string>
-    <string name="str_assistant_dialog_tips">在【多语种】课程和【国家课程】中选取您擅长的课程，同步跟进帮辅。\n\n进入【帮辅空间】，为学生答题解惑。</string>
+    <string name="str_assistant_dialog_tips">请在“我的“-“科目设置”中，选择擅长的科目，或者在【多语种】课程和【国家课程】中选取您擅长的课程，同步跟进帮辅。\n\n进入【帮辅空间】，为学生答题解惑。</string>
     <string name="str_no_longer_prompt">不再提示</string>
     <string name="str_my_courses">学习空间</string>
     <string name="invalid_lqwawa_resource">非两栖蛙蛙资源，不能访问</string>
+    <string name="class_tutor">班级帮辅</string>
 </resources>

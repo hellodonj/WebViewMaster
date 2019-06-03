@@ -38,7 +38,7 @@ import java.util.List;
  * @desc 关联课程
  */
 public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseListContract.Presenter>
-    implements RelatedCourseListContract.View{
+        implements RelatedCourseListContract.View {
 
     private TopBar mTopBar;
     private PullToRefreshView mRefreshLayout;
@@ -63,13 +63,13 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
+        if (bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mRelatedParams = (RelatedCourseParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
             mParam = mRelatedParams.getParam();
             mCourseVos = mRelatedParams.getRelatedCourse();
         }
 
-        if(EmptyUtil.isEmpty(mParam) || EmptyUtil.isEmpty(mCourseVos)) return false;
+        if (EmptyUtil.isEmpty(mParam) || EmptyUtil.isEmpty(mCourseVos)) return false;
         return super.initArgs(bundle);
     }
 
@@ -84,7 +84,7 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
         mListView = (ListView) findViewById(R.id.listView);
         mEmptyLayout = (CourseEmptyView) findViewById(R.id.empty_layout);
         mBtnMoreCourse = (Button) findViewById(R.id.btn_more_course);
-        mBtnMoreCourse.setOnClickListener(view->{
+        mBtnMoreCourse.setOnClickListener(view -> {
             watchMoreCourse();
         });
 
@@ -92,11 +92,11 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
         mCourseListAdapter.setData(mCourseVos);
         mListView.setAdapter(mCourseListAdapter);
 
-        if(EmptyUtil.isEmpty(mCourseVos)){
+        if (EmptyUtil.isEmpty(mCourseVos)) {
             // 数据为空
             mRefreshLayout.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
@@ -106,7 +106,8 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CourseVo vo = (CourseVo) mCourseListAdapter.getItem(position);
-                CourseDetailsActivity.start(RelatedCourseListActivity.this,false,false, vo.getId(), true, UserHelper.getUserId());
+                CourseDetailsActivity.start(RelatedCourseListActivity.this, vo.getId(), true,
+                        UserHelper.getUserId(), false, false, false);
             }
         });
 
@@ -124,22 +125,22 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
     /**
      * 查看更多课程
      */
-    private void watchMoreCourse(){
+    private void watchMoreCourse() {
         showLoading();
         mPresenter.requestConfigWithParam(mParam);
     }
 
     @Override
     public void updateConfigView(@NonNull int parentId, @NonNull ClassDetailEntity.ParamBean param, @NonNull List<LQCourseConfigEntity> entities) {
-        if(EmptyUtil.isNotEmpty(entities)){
-            for (LQCourseConfigEntity entity:entities) {
-                if(entity.getId() == parentId){
+        if (EmptyUtil.isNotEmpty(entities)) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity.getId() == parentId) {
                     // 找到该实体
                     GroupFiltrateState state = new GroupFiltrateState(entity);
                     entity.setParamTwoId(Integer.parseInt(param.getParamTwoId()));
                     entity.setParamThreeId(Integer.parseInt(param.getParamThreeId()));
                     // 如果基础课程可能会，标题错误
-                    CourseFiltrateActivity.show(this,entity,state);
+                    CourseFiltrateActivity.show(this, entity, state);
                     break;
                 }
             }
@@ -148,13 +149,14 @@ public class RelatedCourseListActivity extends PresenterActivity<RelatedCourseLi
 
     /**
      * 关联课程列表的入口
+     *
      * @param context 上下文对象
-     * @param params 核心参数
+     * @param params  核心参数
      */
-    public static void show(@NonNull Context context,@NonNull RelatedCourseParams params){
-        Intent intent = new Intent(context,RelatedCourseListActivity.class);
+    public static void show(@NonNull Context context, @NonNull RelatedCourseParams params) {
+        Intent intent = new Intent(context, RelatedCourseListActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

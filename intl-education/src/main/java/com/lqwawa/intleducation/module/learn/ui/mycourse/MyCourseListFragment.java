@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,13 +50,19 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
     private static final int CHARACTERISTIC_COURSE_ID = 2005;
     // 基础课程
     private static final int COUNTRY_COURSE_ID = 2003;
+    // 分类阅读
+    public static final int CLASSIFIED_READING_ID = 1001;
+    // 绘本
+    public static final int PICTURE_BOOK_ID = 1002;
+    // Q配音
+    public static final int Q_DUBBING_ID = 1003;
 
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
 
-    private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
-    private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
-    private static final String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
+    public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
+    public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
+    public static final String KEY_EXTRA_BOOLEAN_TEACHER = "KEY_EXTRA_BOOLEAN_TEACHER";
 
 
     private PullToRefreshView mRefreshLayout;
@@ -157,6 +164,8 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }else{
             mExpandableView.setVisibility(View.VISIBLE);
             mTabEmptyLayout.setVisibility(View.GONE);
+            
+            fillData(entities);
             mConfigAdapter.setData(entities);
             // mExpandableView.getCount();
             // 返回并不是正确的groupCount();
@@ -180,14 +189,14 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         String level = "";
         int rootId = groupEntity.getId();
         if(EmptyUtil.isNotEmpty(childEntity)) level = childEntity.getLevel();
-        if(rootId == MINORITY_LANGUAGE_COURSE_ID){
+        if(rootId == MINORITY_LANGUAGE_COURSE_ID || rootId == CLASSIFIED_READING_ID){
             level = configEntity.getLevel();
         }
 
         int paramOneId = 0;
         int paramTwoId = 0;
 
-        if(rootId != MINORITY_LANGUAGE_COURSE_ID){
+        if(rootId != MINORITY_LANGUAGE_COURSE_ID && rootId != CLASSIFIED_READING_ID){
 
             int rootTypeId = 0;
             if(EmptyUtil.isNotEmpty(childEntity)) rootTypeId = childEntity.getId();
@@ -203,6 +212,26 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }
 
         MyCourseConfigDetailActivity.show(getActivity(),configEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
+    }
+
+    /**
+     * 没有二级列表时拿一级数据填充
+     *
+     * @param entities
+     */
+    private void fillData(List<LQCourseConfigEntity> entities) {
+        if (entities != null && !entities.isEmpty()) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity != null && (entity.getChildList() == null
+                        || entity.getChildList().isEmpty())) {
+                    List<LQCourseConfigEntity> list = new ArrayList<>();
+                    LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
+                    list.add(newEntity);
+                    entity.setChildList(list);
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

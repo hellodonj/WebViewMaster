@@ -36,6 +36,12 @@ public class CourseDetailParams extends BaseVo{
     // v5.14新添加的字段
     private String courseId;
     private String courseName;
+    
+    // 学程馆类型
+    private int libraryType;
+
+    // 是否来自扫码识任务
+    private boolean isFromScan;
 
     public CourseDetailParams() {
         // 默认的进入方式
@@ -162,6 +168,24 @@ public class CourseDetailParams extends BaseVo{
         this.courseName = courseName;
     }
 
+    public int getLibraryType() {
+        return libraryType;
+    }
+
+    public CourseDetailParams setLibraryType(int libraryType) {
+        this.libraryType = libraryType;
+        return this;
+    }
+
+    public boolean isFromScan() {
+        return isFromScan;
+    }
+
+    public CourseDetailParams setFromScan(boolean fromScan) {
+        isFromScan = fromScan;
+        return this;
+    }
+
     /**
      * 是否是班级学程入口
      * @return true 是
@@ -188,6 +212,11 @@ public class CourseDetailParams extends BaseVo{
 
     public boolean isAuthorized() {
         return isAuthorized;
+    }
+
+    public CourseDetailParams setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
+        return this;
     }
 
     /**

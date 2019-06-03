@@ -1,28 +1,35 @@
 package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.app.Activity;
+import android.media.Image;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.base.utils.ResIconUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.ResourceSelectListener;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-
-import org.xutils.image.ImageOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,54 +40,39 @@ import java.util.List;
  */
 
 public class CourseResListAdapter extends MyBaseAdapter {
+
     private Activity activity;
     private List<SectionResListVo> list;
     private List<SectionResListVo> selectList = new ArrayList<>();
     private LayoutInflater inflater;
-    private int img_width;
-    private int img_height;
-    ImageOptions imageOptions;
+    // 是否显示已读标识
     boolean needFlagRead;
+    boolean isVideoLibrary;
     private int lessonStatus;
     private OnItemClickListener onItemClickListener = null;
     private ResourceSelectListener mSelectListener;
     private boolean isCourseSelect;
-    private int selectCount = 0;
     private int maxSelect = 1;
     private int mTaskType = 9;
 
-    private boolean isLQCourse;
-    private boolean lessonDetail;
     private boolean mChoiceMode;
     private boolean mClassTeacher;
 
-    public CourseResListAdapter(Activity activity, boolean needFlagRead,boolean lessonDetail){
-        this(activity,needFlagRead);
-        this.lessonDetail = lessonDetail;
-    }
+    private SparseArray<ResIconUtils.ResIcon> resIconSparseArray = new SparseArray<>();
 
-    public CourseResListAdapter(Activity activity, boolean needFlagRead) {
+
+    public CourseResListAdapter(Activity activity, boolean needFlagRead, boolean isVideoLibrary) {
         this.activity = activity;
         this.needFlagRead = needFlagRead;
+        this.isVideoLibrary = isVideoLibrary;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<SectionResListVo>();
         lessonStatus = activity.getIntent().getIntExtra("status", 0);
-        int p_width = Math.min(activity.getWindowManager().getDefaultDisplay().getWidth()
-                ,activity.getWindowManager().getDefaultDisplay().getHeight());
-
-        img_width = (p_width  - DisplayUtil.dip2px(activity, 16)) / 7;
-        img_height = img_width;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        resIconSparseArray = ResIconUtils.resIconSparseArray;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 
@@ -99,347 +91,189 @@ public class CourseResListAdapter extends MyBaseAdapter {
         return 0;
     }
 
-    public void setNeedFlagRead(boolean needFlagRead){
+    public void setNeedFlagRead(boolean needFlagRead) {
         this.needFlagRead = needFlagRead;
         notifyDataSetChanged();
     }
 
     @Override
-    public View getView(final int position,View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         final SectionResListVo vo = list.get(position);
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
-        }else {
-            // convertView = inflater.inflate(R.layout.mod_discovery_course_res_list_item, null);
+        } else {
             convertView = inflater.inflate(R.layout.item_course_lesson_detail_source_layout, null);
             holder = new ViewHolder(convertView);
-            holder.resIconIv.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
             convertView.setTag(holder);
         }
 
-        final View _convertView = convertView;
-        if (vo.isIsShow()) {
-            holder.itemRootLay.setVisibility(View.VISIBLE);
-            int resType = vo.getResType();
-            if(resType > 10000){
-                resType -= 10000;
-            }
-            switch (resType) {
-                case 1:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_pic_shield));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pic_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pic_new));
-                        } else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pic));
-                        }
-                    }
-                    break;
-                case 2:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_audio_shield));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_audio_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_audio_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_audio));
-                        }
-                    }
-                    break;
-                case 3:
-                case 30:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_video_shiled));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_video_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_video_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_video));
-                        }
-                    }
-                    break;
-                case 6:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_pdf_shield));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pdf_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pdf_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_pdf));
-                        }
-                    }
-                    break;
-                case 20:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_ppt_shield));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_ppt_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_ppt_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_ppt));
-                        }
-                    }
-                    break;
-                case 24:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_word_shield));
-                    }else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_word_read));
-                        } else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_word));
-                        }
-                    }
-                    break;
-                case 25:
-                    if (vo.isIsShield()) {
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_txt_shield));
-                    } else {
+        holder.itemRootLay.setVisibility(View.VISIBLE);
+        int resType = vo.getResType();
+        if (resType > 10000) {
+            resType -= 10000;
+        }
+        if (isVideoLibrary) {
+            holder.resIconIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), holder.resIconIv, vo.getThumbnail());
+        } else {
+            holder.resIconIv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            setResIcon(holder.resIconIv, vo, resType);
 
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_txt_read));
-                        } else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_txt));
-                        }
-                    }
-                    break;
-                case 5:
-                case 16:
-                case 17:
-                case 18:
-                case 19:
-                    if (vo.isIsShield()) {
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_lqc_shield));
-                    } else {
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_lqc_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_lqc_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_lqc));
-                        }
-                    }
-                    break;
-                case 23:
-                    if(vo.isIsShield()){
-                        holder.resIconIv.setImageDrawable(
-                                activity.getResources().getDrawable(R.drawable.ic_task_shield));
-                    } else {
+        }
+        setResIconLayout(holder.resIconIv, isVideoLibrary);
 
-                        if (needFlagRead && vo.isIsRead()) {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_task_read));
-                        } else if(needFlagRead && !vo.isIsRead() && lessonStatus == 1){
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_task_new));
-                        }else {
-                            holder.resIconIv.setImageDrawable(
-                                    activity.getResources().getDrawable(R.drawable.ic_task_not_flag));
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
+        holder.mIvPlayIcon.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
 
+        if (needFlagRead && vo.isIsRead()) {
+            holder.mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
+        } else {
+            int resId = isVideoLibrary ? 0 : R.drawable.ic_need_to_commit;
+            holder.mIvNeedCommit.setImageResource(resId);
+        }
 
-            if(needFlagRead && vo.isIsRead()){
-                holder.mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
-            }else{
-                holder.mIvNeedCommit.setImageResource(R.drawable.ic_need_to_commit);
-            }
-
+        String assigned = activity.getString(R.string.label_assigned);
+        if (mClassTeacher && vo.isAssigned()) {
+            SpannableString spannableString = new SpannableString(assigned + vo.getName().trim());
+            ForegroundColorSpan colorSpan =
+                    new ForegroundColorSpan(activity.getResources().getColor(R.color.textAccent));
+            spannableString.setSpan(colorSpan, 0, assigned.length(),
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            holder.resNameTv.setText(spannableString);
+        } else {
             holder.resNameTv.setText(("" + vo.getName()).trim());
-            if(mChoiceMode){
-                holder.checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
-                holder.checkbox.setActivated(vo.isActivated());
-                holder.checkbox.setChecked(false);
-            }else{
-                holder.checkbox.setVisibility(isCourseSelect? View.VISIBLE : View.GONE);
-                holder.checkbox.setChecked(vo.isChecked());
-            }
-
-            if(isCourseSelect){
-                holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
-            }else{
-                holder.itemRootLay.setOnClickListener(new ItemClickListener(position,_convertView,vo));
-                if(mChoiceMode){
-                    holder.checkbox.setOnClickListener(new ItemClickListener(position,_convertView,vo));
-                }
-            }
-
-
-        }else{
-            holder.itemRootLay.setVisibility(View.GONE);
-        }
-        if (vo.isIsTitle()){
-            if(lessonDetail){
-                holder.titleLay.setVisibility(View.GONE);
-            }else{
-                holder.titleLay.setVisibility(View.VISIBLE);
-            }
-            if (list.get(position).isIsShow()){
-                holder.arrowIv.setImageDrawable(
-                        activity.getResources().getDrawable(R.drawable.arrow_up_gray_ico));
-                holder.splitView.setVisibility(View.GONE);
-            }else{
-                holder.arrowIv.setImageDrawable(
-                        activity.getResources().getDrawable(R.drawable.arrow_down_gray_ico));
-                holder.splitView.setVisibility(View.VISIBLE);
-            }
-            holder.titleLay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    boolean isShow = !list.get(position).isIsShow();
-                    list.get(position).setIsShow(isShow);
-                    for(int i = position + 1; i < getCount(); i++){
-                        if (list.get(i).isIsTitle()){
-                            break;
-                        }else {
-                            list.get(i).setIsShow(isShow);
-                        }
-                    }
-                    notifyDataSetChanged();
-                }
-            });
-            holder.titleNameTv.setText(vo.getTaskName());
-        }else{
-            holder.titleLay.setVisibility(View.GONE);
         }
 
-        if(isCourseSelect /*|| lessonDetail*/ || mChoiceMode){
+        if (mChoiceMode) {
+            holder.checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
+            holder.checkbox.setActivated(vo.isActivated());
+            holder.checkbox.setChecked(false);
+        } else {
+            holder.checkbox.setVisibility(isCourseSelect ? View.VISIBLE : View.GONE);
+            holder.checkbox.setChecked(vo.isChecked());
+        }
+
+        if (isCourseSelect) {
+            holder.checkbox.setOnClickListener(new ItemClickListener(position, convertView, vo));
+        } else {
+            holder.itemRootLay.setOnClickListener(new ItemClickListener(position, convertView, vo));
+            if (mChoiceMode) {
+                holder.checkbox.setOnClickListener(new ItemClickListener(position, convertView, vo));
+            }
+        }
+
+//        if (isCourseSelect || mChoiceMode) {
             // 是课件选取,添加自动批阅
             // v5.10 LQ学程浏览的时候也要添加语音评测,还有一个直播课前课后的调用
             // v5.10 LQ学程浏览的时候不需要添加语音评测
-            if(((mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || vo.getTaskType() == 2) ||
-                    (mTaskType == CourseSelectItemFragment.KEY_LECTURE_COURSE || vo.getTaskType() == 5)) &&
-                    SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(vo.getResProperties())){
+            if (((mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || vo.getTaskType() == 2) ||
+                    (mTaskType == CourseSelectItemFragment.KEY_LECTURE_COURSE
+                            || vo.getTaskType() == 5 && (isCourseSelect || mChoiceMode))) &&
+                    SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(vo.getResProperties())) {
                 // 只有听说课,才显示语音评测
                 holder.mTvAutoMask.setVisibility(View.VISIBLE);
                 holder.mTvAutoMask.setText(R.string.label_voice_evaluating);
-                // 如果是语音评测类型，设置最大宽度
-                int dpValue = 160;
-                if(mClassTeacher && vo.isAssigned()) dpValue = 100;
-                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),dpValue));
-            }else if((mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER || vo.getTaskType() == 3) &&
-                    EmptyUtil.isNotEmpty(vo.getPoint())){
+            } else if ((mTaskType == CourseSelectItemFragment.KEY_TASK_ORDER || vo.getTaskType() == 3) &&
+                    EmptyUtil.isNotEmpty(vo.getPoint())) {
                 // 只有读写单,才显示自动批阅
                 holder.mTvAutoMask.setVisibility(View.VISIBLE);
-                // 自动批阅
                 holder.mTvAutoMask.setText(R.string.label_auto_mark);
-                // 如果是自动批阅类型，设置最大宽度
-                int dpValue = 160;
-                if(mClassTeacher && vo.isAssigned()) dpValue = 100;
-                holder.resNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(),dpValue));
-            }else{
-                // 如果不是自动批阅类型，取消设置最大宽度
-                holder.resNameTv.setMaxWidth(Integer.MAX_VALUE);
-                holder.mTvAutoMask.setVisibility(View.GONE);
+            } else {
+                holder.mTvAutoMask.setVisibility(View.INVISIBLE);
             }
-        }else{
-            // 不是课件选取,隐藏自动批阅
-            // 取消设置最大宽度
-            holder.resNameTv.setMaxWidth(Integer.MAX_VALUE);
-            holder.mTvAutoMask.setVisibility(View.GONE);
-        }
+//        } else {
+//            holder.mTvAutoMask.setVisibility(View.INVISIBLE);
+//        }
 
-        if(lessonDetail && !mChoiceMode){
+        int color = UIUtil.getColor(R.color.alertImportant);
+        int radius = DisplayUtil.dip2px(UIUtil.getContext(), 10);
+        holder.mTvAutoMask.setBackground(DrawableUtil.createDrawable(color, color, radius));
+
+        if (!mChoiceMode) {
             int taskType = vo.getTaskType();
-            if(taskType == 1 || taskType == 4){
-                // 看课件
-                holder.mIvNeedCommit.setVisibility(View.GONE);
-            }else {
+            if (taskType == 1 || taskType == 4) {
+                // 看课件 视频课
+                holder.mIvNeedCommit.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
+            } else {
                 // 听读课,读写单
-                holder.mIvNeedCommit.setVisibility(View.VISIBLE);
+                holder.mIvNeedCommit.setVisibility(!isCourseSelect ? View.VISIBLE : View.GONE);
             }
-        }else{
+        } else {
             holder.mIvNeedCommit.setVisibility(View.GONE);
         }
 
-        if(mClassTeacher && vo.isAssigned()){
-            holder.mTvAssgined.setVisibility(View.VISIBLE);
-        }else{
-            holder.mTvAssgined.setVisibility(View.GONE);
-        }
+        holder.mViewCount.setText(activity.getString(R.string.some_study,
+                String.valueOf(vo.getViewCount())));
 
-        return  convertView;
+        return convertView;
+    }
+
+    private void setResIconLayout(ImageView resIconIv, boolean isVideoLibrary) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) resIconIv.getLayoutParams();
+        int iconWidth = DisplayUtil.dip2px(UIUtil.getContext(), 48);
+        int iconHeight = iconWidth;
+        if (isVideoLibrary) {
+            iconHeight = DisplayUtil.dip2px(UIUtil.getContext(), 72);
+            iconWidth = iconHeight * 16 / 9;
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        } else {
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+
+        }
+        layoutParams.width = iconWidth;
+        layoutParams.height = iconHeight;
+        resIconIv.setLayoutParams(layoutParams);
+    }
+
+    private void setResIcon(ImageView imageView, SectionResListVo vo, int resType) {
+        if (vo.isIsShield()) {
+            imageView.setImageResource(resIconSparseArray.get(resType).shieldResId);
+        } else {
+            if (needFlagRead && vo.isIsRead()) {
+                imageView.setImageResource(resIconSparseArray.get(resType).readResId);
+            } else if (needFlagRead && !vo.isIsRead() && lessonStatus == 1 && (resType != 24
+                    || resType != 25)) {
+                // txt word 不设置
+                imageView.setImageResource(resIconSparseArray.get(resType).newResId);
+            } else {
+                imageView.setImageResource(resIconSparseArray.get(resType).resId);
+            }
+        }
     }
 
     class ItemClickListener implements View.OnClickListener {
 
         private int position;
-        private View _convertView;
+        private View convertView;
         private SectionResListVo vo;
 
-        ItemClickListener(int position,View convertView,SectionResListVo vo){
+        ItemClickListener(int position, View convertView, SectionResListVo vo) {
             this.position = position;
-            this._convertView = convertView;
+            this.convertView = convertView;
             this.vo = vo;
         }
 
         @Override
         public void onClick(View view) {
-            if(mChoiceMode){
+            if (mChoiceMode) {
                 // 回调出去
-                if (onItemClickListener != null){
-                    if(view.getId() == R.id.checkbox){
-                        onItemClickListener.onItemChoice(position,_convertView);
-                    }else{
-                        onItemClickListener.onItemClick(position,_convertView);
+                if (onItemClickListener != null) {
+                    if (view.getId() == R.id.checkbox) {
+                        onItemClickListener.onItemChoice(position, convertView);
+                    } else {
+                        onItemClickListener.onItemClick(position, convertView);
                     }
                 }
-            }else{
-                if (onItemClickListener != null){
-                    onItemClickListener.onItemClick(position,_convertView);
+            } else {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position, convertView);
                 }
                 //课件选取
                 if (isCourseSelect) {
                     if (maxSelect == 1) {//单选模式
-                        if(EmptyUtil.isNotEmpty(mSelectListener)){
+                        if (EmptyUtil.isNotEmpty(mSelectListener)) {
                             boolean onSelect = mSelectListener.onSelect(vo);
-                            if(!onSelect){
+                            if (!onSelect) {
                                 vo.setChecked(!vo.isChecked());
                                 notifyDataSetChanged();
                                 if (vo.isChecked()) {
@@ -449,96 +283,49 @@ public class CourseResListAdapter extends MyBaseAdapter {
                                 }
                             }
                         }
-                            /*for (int i = 0; i < list.size(); i++) {
-                                SectionResListVo sectionResListVo = list.get(i);
-                                if (sectionResListVo.isChecked() && !TextUtils.equals(vo.getId(),sectionResListVo.getId())) {
-                                   sectionResListVo.setChecked(false);
-                                    RefreshUtil.getInstance().removeId(sectionResListVo.getId());
-                                }
-                            }
-                            vo.setChecked(!vo.isChecked());
-                            notifyDataSetChanged();
-                            if (vo.isChecked()) {
-                                RefreshUtil.getInstance().addId(vo.getId());
-                            } else {
-                                RefreshUtil.getInstance().removeId(vo.getId());
-                            }*/
-
-
                     } else {//多选模式
-                        if(EmptyUtil.isNotEmpty(mSelectListener)){
+                        if (EmptyUtil.isNotEmpty(mSelectListener)) {
                             boolean onSelect = mSelectListener.onSelect(vo);
-                            if(!onSelect){
+                            if (!onSelect) {
                                 vo.setChecked(!vo.isChecked());
                                 notifyDataSetChanged();
                                 if (vo.isChecked()) {
-                                    selectCount++;
                                     RefreshUtil.getInstance().addId(vo.getId());
                                 } else {
-                                    selectCount--;
                                     RefreshUtil.getInstance().removeId(vo.getId());
                                 }
-                            }else{
-                                ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
+                            } else {
+                                ToastUtil.showToast(activity, activity.getString(R.string.str_select_count_tips, maxSelect));
                                 notifyDataSetChanged();
                             }
                         }
-                            /*if (selectCount < maxSelect || RefreshUtil.getInstance().contains(vo.getId())) {
-                                vo.setChecked(!vo.isChecked());
-                                notifyDataSetChanged();
-                                if (vo.isChecked()) {
-                                    selectCount++;
-                                    RefreshUtil.getInstance().addId(vo.getId());
-                                } else {
-                                    selectCount--;
-                                    RefreshUtil.getInstance().removeId(vo.getId());
-                                }
-
-                            } else {
-                                ToastUtil.showToast(activity,activity.getString(R.string.str_select_count_tips,maxSelect));
-                            }*/
                     }
 
                 }
             }
-
         }
     }
 
-/*    private boolean isContains(String id) {
-        for (int i = 0; i < selectList.size(); i++) {
-            if (TextUtils.equals(selectList.get(i).getId(), id)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 
     protected class ViewHolder {
         private CheckBox checkbox;
-        private LinearLayout titleLay;
-        private TextView mTvAssgined;
-        private TextView titleNameTv;
-        private ImageView arrowIv;
         private LinearLayout itemRootLay;
         private ImageView resIconIv;
         private TextView resNameTv;
         private TextView mTvAutoMask;
-        private View splitView;
+        private TextView mViewCount;
         private ImageView mIvNeedCommit;
+        private ImageView mIvPlayIcon;
 
         public ViewHolder(View view) {
-            titleLay = (LinearLayout) view.findViewById(R.id.title_lay);
-            titleNameTv = (TextView) view.findViewById(R.id.title_name_tv);
-            mTvAssgined = (TextView) view.findViewById(R.id.tv_assigned);
-            arrowIv = (ImageView) view.findViewById(R.id.arrow_iv);
-            splitView = (View) view.findViewById(R.id.split_view);
             itemRootLay = (LinearLayout) view.findViewById(R.id.item_root_lay);
-            resIconIv = (ImageView) view.findViewById(R.id.res_icon_iv);
-            resNameTv = (TextView) view.findViewById(R.id.res_name_tv);
+            resIconIv = (ImageView) view.findViewById(R.id.iv_res_icon);
+            resNameTv = (TextView) view.findViewById(R.id.tv_res_name);
             checkbox = (CheckBox) view.findViewById(R.id.checkbox);
             mIvNeedCommit = (ImageView) view.findViewById(R.id.iv_need_commit);
             mTvAutoMask = (TextView) view.findViewById(R.id.tv_auto_mark);
+            mViewCount = (TextView) view.findViewById(R.id.tv_view_count);
+            mIvPlayIcon = (ImageView) view.findViewById(R.id.iv_res_play);
         }
     }
 
@@ -567,16 +354,18 @@ public class CourseResListAdapter extends MyBaseAdapter {
         this.list.addAll(list);
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position, View convertView);
-        void onItemChoice(int position,View convertView);
+
+        void onItemChoice(int position, View convertView);
     }
 
     /**
      * 课件选取
+     *
      * @param b
      */
-    public void setCourseSelect(boolean b,int tasktype) {
+    public void setCourseSelect(boolean b, int tasktype) {
         isCourseSelect = b;
         mTaskType = tasktype;
         if (mTaskType == 9) {
@@ -586,48 +375,46 @@ public class CourseResListAdapter extends MyBaseAdapter {
         }
     }
 
-    public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener){
+    public void setOnResourceSelectListener(@NonNull ResourceSelectListener listener) {
         this.mSelectListener = listener;
     }
 
 
-
     /**
-     * @author 是否是班级学程的老师
      * @param isClassTeacher true 班级学程的老师
+     * @author 是否是班级学程的老师
      */
-    public void setClassTeacher(@NonNull boolean isClassTeacher){
+    public void setClassTeacher(@NonNull boolean isClassTeacher) {
         this.mClassTeacher = isClassTeacher;
     }
 
     /**
      * 打开
      */
-    public void triggerChoiceMode(boolean open){
+    public void triggerChoiceMode(boolean open) {
         mChoiceMode = open;
         notifyDataSetChanged();
     }
 
     /**
-     * @author mrmedici
      * @return 返回当前选择状态
+     * @author mrmedici
      */
-    public boolean getChoiceMode(){
+    public boolean getChoiceMode() {
         return mChoiceMode;
     }
 
     /**
      * 设置多选条目
-     * @param isLQCourse 是否是LQwawa调用，关联学程调用
+     *
      * @param multipleChoiceCount 条目个数
-     * <p>需要在{@link CourseResListAdapter#setCourseSelect}后调用</p>
+     *                            <p>需要在{@link CourseResListAdapter#setCourseSelect}后调用</p>
      */
-    public void setMultipleChoiceCount(boolean isLQCourse,int multipleChoiceCount){
-        this.isLQCourse = isLQCourse;
+    public void setMultipleChoiceCount(int multipleChoiceCount) {
         maxSelect = multipleChoiceCount;
     }
 
-    public List<SectionResListVo> getData(){
+    public List<SectionResListVo> getData() {
         return list;
     }
 

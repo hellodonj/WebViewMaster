@@ -31,6 +31,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.LqResponseDataVo;
+import com.lqwawa.intleducation.base.vo.PagerArgs;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
@@ -122,6 +123,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     protected boolean isAudition;
     protected SectionTaskParams mTaskParams;
     protected CourseDetailParams mCourseParams;
+    protected PagerArgs pagerArgs = null;
+    private int orderByType = 0;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -231,7 +234,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             isAudition = mTaskParams.isAudition();
         }
 
-        if(mTaskParams.isTeacherVisitor()){
+        if (mTaskParams.isTeacherVisitor()) {
             isAudition = false;
         }
 
@@ -327,7 +330,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare) {
+        public void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType, boolean taskCourseWare) {
             if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(vo)) {
                 return;
             }
@@ -338,7 +341,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             } else {
                 checkMarkTaskDetail(SectionTaskDetailsActivity.this,
                         mHandleRole, sectionResListVo, vo,
-                        isCheckMark, sourceType,taskCourseWare);
+                        isCheckMark, sourceType, taskCourseWare);
             }
         }
 
@@ -364,8 +367,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     /**
      * 请求最新数据做成绩统计
      */
-    private void requestDataWithStatisticalScores(){
-        if(EmptyUtil.isNotEmpty(sectionResListVo)) {
+    private void requestDataWithStatisticalScores() {
+        if (EmptyUtil.isNotEmpty(sectionResListVo)) {
             String studentId = getStudentId();
             // Mooc大厅的入口，拉取列表，不需要传 机构Id和ClassId,因为要拉所有的已经提交的学习任务
             // 但是提交是需要的
@@ -392,11 +395,12 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 }
             }
 
+            // 只有班级学程有成绩统计，pager为null， 拉取全部，commitType传0拉取所有提交列表
             LessonHelper.getNewCommittedTaskByTaskId(sectionResListVo.getTaskId(),
                     studentId,
                     classId,
-                    schoolId,null,TaskCommitParams.TYPE_ALL,
-                    new DataSource.Callback<LqTaskCommitListVo>() {
+                    schoolId, null, TaskCommitParams.TYPE_ALL,
+                    pagerArgs, orderByType, new DataSource.Callback<LqTaskCommitListVo>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
                         }
@@ -457,7 +461,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                                          int commitTaskId) {
     }
 
-    protected void openSpeechEvaluationCourseWareDetails(@NonNull LqTaskCommitVo vo){
+    protected void openSpeechEvaluationCourseWareDetails(@NonNull LqTaskCommitVo vo) {
 
     }
 
@@ -514,9 +518,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             }*/
             if (sectionResListVo.getTaskType() == 3) {
                 topBar.setTitle(getResources().getString(R.string.do_task));
-            } else if(sectionResListVo.getTaskType() == 2){
+            } else if (sectionResListVo.getTaskType() == 2) {
                 topBar.setTitle(getResources().getString(R.string.retell_course));
-            } else if(sectionResListVo.getTaskType() == 5){
+            } else if (sectionResListVo.getTaskType() == 5) {
                 topBar.setTitle(getResources().getString(R.string.label_lecture_course));
             }
             // 加载Tab资源
@@ -528,7 +532,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 // 做读写单
                 String[] titles = UIUtil.getStringArray(R.array.label_lesson_task_tab_array);
                 mTabTexts = new ArrayList<>(Arrays.asList(titles));
-            } else if(sectionResListVo.getTaskType() == 5){
+            } else if (sectionResListVo.getTaskType() == 5) {
                 // 试讲
                 String[] titles = UIUtil.getStringArray(R.array.label_lecture_lesson_task_tab_array);
                 mTabTexts = new ArrayList<>(Arrays.asList(titles));
@@ -566,10 +570,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         // @date   :2018/4/26 0026 下午 1:59
         // @func   :V5.5版本,显示有问题
         // mResName.setText("" + originVo.getName());
-        if(sectionResListVo.isAutoMark()){
+        if (sectionResListVo.isAutoMark()) {
             mTvTotalGrade.setVisibility(View.VISIBLE);
-            StringUtil.fillSafeTextView(mTvTotalGrade,String.format(UIUtil.getString(R.string.label_total_gradle),sectionResListVo.getPoint()));
-        }else{
+            StringUtil.fillSafeTextView(mTvTotalGrade, String.format(UIUtil.getString(R.string.label_total_gradle), sectionResListVo.getPoint()));
+        } else {
             mTvTotalGrade.setVisibility(View.GONE);
         }
         mResName.setText(sectionResListVo.getName());
@@ -580,31 +584,37 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             String schoolId = mCourseParams.getSchoolId();
             String classId = mCourseParams.getClassId();
 
-            if(mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER){
+            if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER) {
                 schoolId = null;
                 classId = null;
-            }else if(mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER){
+            } else if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER) {
                 // 学程馆学习任务入口
                 // 课程发生了绑定
                 // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
                 // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
-                if(mCourseParams.isBindClass()){
-                    if(TextUtils.equals(mCourseParams.getSchoolId(),mCourseParams.getBindSchoolId())){
+                if (mCourseParams.isBindClass()) {
+                    if (TextUtils.equals(mCourseParams.getSchoolId(), mCourseParams.getBindSchoolId())) {
                         // 学程馆Id和绑定的Id,相等
                         schoolId = mCourseParams.getBindSchoolId();
                         classId = null;
                     }
-                }else{
+                } else {
                     schoolId = mCourseParams.getSchoolId();
                     classId = null;
                 }
+            }
+
+            if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_CLASS_ENTER) {
+                pagerArgs = new PagerArgs(0, 10000);
+            } else {
+                pagerArgs = new PagerArgs(0, AppConfig.PAGE_SIZE);
             }
 
             // 使用新接口,拉数据
             LessonHelper.getNewCommittedTaskByTaskId(sectionResListVo.getTaskId(),
                     studentId,
                     classId,
-                    schoolId, null, TaskCommitParams.TYPE_ALL,
+                    schoolId, null, TaskCommitParams.TYPE_ALL, pagerArgs, 0,
                     new DataSource.Callback<LqTaskCommitListVo>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
@@ -629,6 +639,11 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                                 mFragments.add(MissionRequireFragment.getInstance(null));
                             }
 
+                            orderByType = 0;
+                            if ((mOriginalRole == UserHelper.MoocRoleType.EDITOR || mOriginalRole == UserHelper.MoocRoleType.TEACHER)
+                                    && !isEvalutedCourse()) {
+                                orderByType = 1;
+                            }
 
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("SectionResListVo", sectionResListVo);
@@ -643,6 +658,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                             } else if (sectionResListVo.getTaskType() == 3) {
                                 params.setCommitType(TaskCommitParams.TYPE_ALL);
                             }
+                            params.setOrderByType(orderByType);
+                            params.setPagerArgs(pagerArgs);
 
                             bundle.putSerializable(TaskCommitListFragment.FRAGMENT_BUNDLE_OBJECT, params);
 
@@ -653,6 +670,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                             // 复述列表
                             mFragments.add(retellFragment);
 
+
                             // 评测列表
                             if (sectionResListVo.getTaskType() == 2 &&
                                     SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())) {
@@ -662,14 +680,13 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                                 TaskCommitParams _params = (TaskCommitParams) params.clone();
                                 _params.setCommitType(TaskCommitParams.TYPE_SPEECH_EVALUATION);
                                 _bundle.putSerializable(TaskCommitListFragment.FRAGMENT_BUNDLE_OBJECT, _params);
-                                params.setCommitType(TaskCommitParams.TYPE_RETELL_COMMIT);
 
                                 speechFragment.setArguments(_bundle);
                                 speechFragment.setDoWorkListener(doWorkListener);
 
                                 mFragment1 = speechFragment;
                                 mFragments.add(speechFragment);
-                            }else if(sectionResListVo.getTaskType() == 2){
+                            } else if (sectionResListVo.getTaskType() == 2) {
                                 // 没有评测列表
                                 if (!EmptyUtil.isEmpty(lqTaskCommitListVo)
                                         && !EmptyUtil.isEmpty(lqTaskCommitListVo.getTaskInfo())
@@ -678,12 +695,12 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                                     mTabTexts.remove(1);
                                     // 第一个Tab改标题文本  复述列表改为提交列表
                                     mTabTexts.remove(0);
-                                    mTabTexts.add(0,UIUtil.getString(R.string.label_committed_list));
-                                }else{
+                                    mTabTexts.add(0, UIUtil.getString(R.string.label_committed_list));
+                                } else {
                                     mTabTexts.remove(2);
                                     // 第二个Tab改标题文本  复述列表改为提交列表
                                     mTabTexts.remove(1);
-                                    mTabTexts.add(1,UIUtil.getString(R.string.label_committed_list));
+                                    mTabTexts.add(1, UIUtil.getString(R.string.label_committed_list));
                                 }
                             }
 
@@ -745,7 +762,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                                         _fragment.fillBtnResource(sectionResListVo);
                                     }
 
-                                    if(fragment instanceof TaskCommentListFragment) {
+                                    if (fragment instanceof TaskCommentListFragment) {
                                         TaskCommentListFragment _fragment = (TaskCommentListFragment) fragment;
                                         _fragment.updateData(sectionResListVo);
                                     }
@@ -767,9 +784,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         if (mOriginalRole == UserHelper.MoocRoleType.TEACHER ||
                 mOriginalRole == UserHelper.MoocRoleType.EDITOR ||
                 mTaskParams.isAudition()) {
-            if(mTaskParams.isTeacherVisitor()){
+            if (mTaskParams.isTeacherVisitor()) {
                 memberId = activity.getIntent().getStringExtra("memberId");
-            }else{
+            } else {
                 // 如果是主编和小编,或者是试听,就不传
                 memberId = "";
             }
@@ -781,6 +798,13 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             memberId = activity.getIntent().getStringExtra("memberId");
         }
         return memberId;
+    }
+
+    private boolean isEvalutedCourse() {
+        if (sectionResListVo != null) {
+            return SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties());
+        }
+        return false;
     }
 
     protected void getData() {
@@ -1077,7 +1101,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                         for (Fragment fragment : mFragments) {
                             if (fragment instanceof TaskCommitListFragment) {
                                 TaskCommitListFragment _fragment = (TaskCommitListFragment) fragment;
-                                _fragment.updateData();
+                                _fragment.updateData(false);
                             }
                         }
                     }
@@ -1107,16 +1131,16 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * @param activity      上下文
-     * @param roleType      角色信息
-     *                      roleType == ROLE_TYPE_TEACHER [小编 或者 任务的创建着]
-     *                      roleType == ROLE_TYPE_EDITOR [主编]
-     *                      roleType == ROLE_TYPE_STUDENT [学生身份]
-     *                      roleType == ROLE_TYPE_VISITOR [无权限对该任务进行操作 俗称 游客]
-     * @param task          任务对象
-     * @param studentCommit 学生提交的任务
-     * @param isCheckMark   是不是查看批阅 （查看批阅[true] 查看item进入提问和批阅的详情[false]）
-     * @param sourceType    资源type
+     * @param activity       上下文
+     * @param roleType       角色信息
+     *                       roleType == ROLE_TYPE_TEACHER [小编 或者 任务的创建着]
+     *                       roleType == ROLE_TYPE_EDITOR [主编]
+     *                       roleType == ROLE_TYPE_STUDENT [学生身份]
+     *                       roleType == ROLE_TYPE_VISITOR [无权限对该任务进行操作 俗称 游客]
+     * @param task           任务对象
+     * @param studentCommit  学生提交的任务
+     * @param isCheckMark    是不是查看批阅 （查看批阅[true] 查看item进入提问和批阅的详情[false]）
+     * @param sourceType     资源type
      * @param taskCourseWare 是否是读写单课件
      */
     protected void checkMarkTaskDetail(Activity activity,

@@ -511,4 +511,28 @@
     <string name="buy_online_school">Buy class: %s</string>
     <string name="my_coins">My Account</string>
 
+    <string name="reward_vouchers">Gift Voucher</string>
+    <string name="n_buy_first_chapter">Buy [%s] Chapter 1</string>
+    <string-array name="video_resource_types">
+        <item>Courseware</item>
+        <item>Teaching Plan</item>
+        <item>Exercise</item>
+    </string-array>
+
+    <string-array name="course_type_names">
+        <item>Reader</item>
+        <item>Study</item>
+        <item>Exercise</item>
+        <item>Test</item>
+        <item>Video</item>
+    </string-array>
+
+    <string name="user_comment">Comment</string>
+    <string name="to_ask_question">Consult\nTutor</string>
+    <string name="course_subject_colon">Subject:</string>
+    <string name="delete_class_totur_info">Remove tutor from class?</string>
+    <string name="class_tutor">Class Tutor</string>
+    <string name="add_class_tutor">+Class Tutor</string>
+    <string name="add_course_success">Attended</string>
+
 </resources>

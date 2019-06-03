@@ -15,6 +15,7 @@ import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.icedcap.dubbing.audio.AudioRecordHelper;
@@ -47,7 +47,11 @@ import com.lqwawa.apps.views.switchbutton.SwitchButton;
 import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.tools.DensityUtils;
 import com.lqwawa.tools.DialogHelper;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateHelper;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateItemResult;
+import com.oosic.apps.iemaker.base.evaluate.EvaluateManager;
 import com.oosic.apps.iemaker.base.onlineedit.CallbackListener;
+import com.osastudio.common.utils.FileUtils;
 import com.osastudio.common.utils.LogUtils;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.zhy.adapter.abslistview.CommonAdapter;
@@ -134,6 +138,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     private boolean isCheckGridViewItem;
     private boolean isSupportPause = true;
     private boolean loadVideoComplete;
+    private boolean showDownTimeFlag = false;//显示倒计时
+    private boolean isStopShow = true;//正在进行中
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -162,7 +169,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         loadIntentData();
         setContentView(R.layout.activity_dubbing);
         if (!isOnlineOpen) {
-            audioRecordHelper = new AudioRecordHelper(this, new CallbackListener() {
+            audioRecordHelper = new AudioRecordHelper(this, resPropertyValue,
+                    new CallbackListener() {
                 @Override
                 public void onBack(Object result) {
                     if (result != null) {
@@ -172,10 +180,38 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                         dubbingEntityList.get(curPosition).setIsRecording(false);
                         isRecording = false;
                         isDubbing = false;
+                        showDownTimeFlag = false;
+                        isStopShow = true;
                         commonAdapter.notifyDataSetChanged();
-                        if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                        if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE) {
                             isSupportPause = true;
                             dubbingVideoView.setIsSupportPause(true);
+                            if (lrcView != null) {
+                                lrcView.resetLineColor();
+                            }
+                        }
+                    }
+                }
+            }, new CallbackListener() {
+                @Override
+                public void onBack(Object result) {
+                    if (result == null) {
+                        return;
+                    }
+                    if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                        int evalScore = (int) result;
+                        dubbingEntityList.get(curPosition).setScore(evalScore);
+                        processQDubbingVideo();
+                    } else {
+                        String evalResult = (String) result;
+                        if (!TextUtils.isEmpty(evalResult)) {
+                            EvaluateItemResult evaluateItemResult =
+                                    EvaluateManager.parseItemResult(3, evalResult);
+                            SpannableString spannableString = null;
+                            if (evaluateItemResult != null) {
+                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult);
+                            }
+                            dubbingEntityList.get(curPosition).setEvalResult(spannableString);
                         }
                     }
                 }
@@ -225,7 +261,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             dubbingVideoView.onResume();
         }
         if (!MediaUtil.isHasEnoughSdcardSpace(MediaUtil.getAvailableExternalMemorySize())) {
-            TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_save_space_small);
+            TipMsgHelper.ShowMsg(DubbingActivity.this, R.string.str_save_space_small);
             dubbingVideoView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -283,7 +319,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             case PERMISSION_REQUEST_CODE: {
                 for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
-                        TipMsgHelper.ShowMsg(this,R.string.str_refuse_permission);
+                        TipMsgHelper.ShowMsg(this, R.string.str_refuse_permission);
                         finish();
                         return;
                     }
@@ -370,8 +406,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         }.execute();
     }
 
-    private void configOnClick(){
-        if (wholeRecordImageV == null){
+    private void configOnClick() {
+        if (wholeRecordImageV == null) {
             return;
         }
         wholeRecordImageV.setOnClickListener(new View.OnClickListener() {
@@ -384,6 +420,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                     if (loadVideoComplete) {
                         isSupportPause = false;
                         dubbingVideoView.setIsSupportPause(false);
+                        lrcView.resetLineColor();
+                        lrcView.scrollTo(0);
                         onAudioRecord();
                     }
                 }
@@ -445,7 +483,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (lrcView != null) {
-                    lrcView.updateTime(seekBar.getProgress());
+                    updateSrtTime(seekBar.getProgress());
                 }
                 if (dubbingVideoView != null) {
                     dubbingVideoView.seekTo(seekBar.getProgress());
@@ -556,6 +594,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                     dubbingEntityList.get(0).setSelect(true);
                     commonAdapter.notifyDataSetChanged();
                     curPosition = 0;
+                    isStopShow = false;
                     switchDubbingVideo(0, false);
                 }
             } else {
@@ -694,48 +733,26 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(final View v) {
         if (v.getId() == R.id.tv_preview) {
             //预览
-            if (isRecording){
-                TipMsgHelper.ShowMsg(this,R.string.str_dubbing_recording);
+
+            if (isRecording) {
+                TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
             } else if (isRecordAll()) {
                 launchDubbingPreview();
             } else {
                 TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_preview_all_dubbing));
             }
         } else if (v.getId() == R.id.tv_confirm) {
-            if (isRecording){
-                TipMsgHelper.ShowMsg(this,R.string.str_dubbing_recording);
+            if (isRecording) {
+                TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
             } else if (isRecordAll()) {
                 //合成
-                List<String> recordFileList = getRecordFilePathList();
-                ProcessUtils processUtils = new ProcessUtils();
-                processUtils.process(DubbingActivity.this, null, recordFileList,
-                        backgroundFilePath, videoFilePath, new ProcessUtils.OnProcessListener() {
-                            @Override
-                            public void onProcessBegin() {
-                                Dialog dialog = showLoadingDialog();
-                                dialog.setCancelable(false);
-                            }
-
-                            @Override
-                            public void onProcessEnd(String videoPath) {
-                                dismissLoadingDialog();
-                                if (!TextUtils.isEmpty(videoPath)) {
-                                    Log.d("TTT", "videPath=" + videoPath);
-                                    Intent intent = new Intent();
-                                    intent.putExtra(Constant.MERGE_VIDEO_PATH, videoPath);
-                                    if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
-                                        //通篇配音
-                                        List<DubbingEntity> entityList = new ArrayList<>();
-                                        entityList.add(dubbingEntityList.get(0));
-                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) entityList);
-                                    } else {
-                                        intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
-                                    }
-                                    setResult(Activity.RESULT_OK, intent);
-                                }
-                                finish();
-                            }
-                        });
+                if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE){
+                    if (audioRecordHelper != null){
+                        audioRecordHelper.evalWholeDubbingVideo();
+                    }
+                } else {
+                    processQDubbingVideo();
+                }
             } else {
                 TipMsgHelper.ShowMsg(DubbingActivity.this, getString(R.string.str_dubbing_finish_all_tips));
             }
@@ -751,6 +768,39 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private void processQDubbingVideo(){
+        List<String> recordFileList = getRecordFilePathList();
+        ProcessUtils processUtils = new ProcessUtils();
+        processUtils.process(DubbingActivity.this, null, recordFileList,
+                backgroundFilePath, videoFilePath, new ProcessUtils.OnProcessListener() {
+                    @Override
+                    public void onProcessBegin() {
+                        Dialog dialog = showLoadingDialog();
+                        dialog.setCancelable(false);
+                    }
+
+                    @Override
+                    public void onProcessEnd(String videoPath) {
+                        dismissLoadingDialog();
+                        if (!TextUtils.isEmpty(videoPath)) {
+                            Log.d("TTT", "videPath=" + videoPath);
+                            Intent intent = new Intent();
+                            intent.putExtra(Constant.MERGE_VIDEO_PATH, videoPath);
+                            if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE) {
+                                //通篇配音
+                                List<DubbingEntity> entityList = new ArrayList<>();
+                                entityList.add(dubbingEntityList.get(0));
+                                intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) entityList);
+                            } else {
+                                intent.putExtra(Constant.DUBBING_ENTITY_LIST_DATA, (Serializable) dubbingEntityList);
+                            }
+                            setResult(Activity.RESULT_OK, intent);
+                        }
+                        finish();
+                    }
+                });
+    }
+
     protected void enterTeacherReviewActivity() {
 
     }
@@ -759,7 +809,12 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
      * 播放原音
      */
     private void listenToTheSoundVideo() {
+        if (isOnlineOpen && lrcView != null){
+            lrcView.resetLineColor();
+            lrcView.scrollTo(0);
+        }
         isSupportPause = true;
+        dubbingVideoView.setLastTime(0);
         dubbingVideoView.setIsSupportPause(true);
         if (listenType == 0) {
             //配音
@@ -789,14 +844,19 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         commitFl.setVisibility(View.VISIBLE);
     }
 
-
     private void launchDubbingPreview() {
         List<String> recordFileList = getRecordFilePathList();
-        DubbingPreviewActivity.launch(DubbingActivity.this,
-                videoFilePath,
-                backgroundFilePath,
-                srtEntityList, recordFileList,
-                resPropertyValue);
+        File audioPath = new File(getExternalCacheDir(),"recordAudio.mp3");
+        FileUtils.uniteAMRFile(recordFileList,audioPath.getAbsolutePath());
+        if (!TextUtils.isEmpty(FileUtils.getFileSize(audioPath))){
+            DubbingPreviewActivity.launch(DubbingActivity.this,
+                    videoFilePath,
+                    backgroundFilePath,
+                    srtEntityList,
+                    recordFileList,
+                    audioPath.getAbsolutePath(),
+                    resPropertyValue);
+        }
     }
 
     private List<String> getRecordFilePathList() {
@@ -856,7 +916,6 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                 if (dubbingItemView != null && item != null) {
                     dubbingItemView.setBackgroundHighLight(item.isSelect());
                     dubbingItemView.setIndex(position, dubbingEntityList.size());
-                    dubbingItemView.setContent(item.getContent());
                     dubbingItemView.setProgressMax(item.getProgressMax());
                     dubbingItemView.setProgress(item.getProgress());
                     dubbingItemView.setTime(item.getVideoTime());
@@ -875,17 +934,40 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                                 R.drawable.icon_record_pause : R.drawable.icon_record);
                     }
                     dubbingItemView.setScore(item.getScore(), item.isRecord());
+
+                    //显示播放中字体的颜色
+                    if (showDownTimeFlag && position == curPosition) {
+                        dubbingItemView.getDownCountTimeView().setVisibility(View.VISIBLE);
+                        dubbingItemView.getContentTextView().setText(item.getContent());
+                        dubbingItemView.getContentTextView().setTextColor(ContextCompat.getColor(DubbingActivity.this, R.color.color_orange));
+                    } else {
+                        if (!isOnlineOpen
+                                && item.isSelect()
+                                && (item.isRecordPlaying() || item.isRecording() || item.isItemVideoPlaying())) {
+                            //播放的时候重置字体的颜色
+                            dubbingItemView.getContentTextView().setText(item.getContent());
+                            dubbingItemView.getContentTextView().setTextColor(ContextCompat.getColor(DubbingActivity.this, R.color.text_black));
+                        } else if (item.isRecord() && !isOnlineOpen && item.getEvalResult() != null) {
+                            //录制完成
+                            dubbingItemView.getContentTextView().setText(item.getEvalResult());
+                        } else {
+                            //没有录制
+                            dubbingItemView.getContentTextView().setText(item.getContent());
+                            dubbingItemView.getContentTextView().setTextColor(ContextCompat.getColor(DubbingActivity.this, R.color.text_black));
+                        }
+                        dubbingItemView.getDownCountTimeView().setVisibility(View.GONE);
+                    }
                     dubbingItemView.getPlayBtn().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onViewClick(position,false,false,true);
+                            onViewClick(position, false, false, true);
                         }
                     });
 
                     dubbingItemView.getRecordBtn().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onViewClick(position,false,true,false);
+                            onViewClick(position, false, true, false);
                         }
                     });
                 }
@@ -895,7 +977,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onViewClick(position,true,false,false);
+                onViewClick(position, true, false, false);
             }
         });
     }
@@ -903,37 +985,37 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     private void onViewClick(int position,
                              boolean onItemClick,
                              boolean audioRecord,
-                             boolean audioPlay){
+                             boolean audioPlay) {
         if (isRecording) {
             TipMsgHelper.ShowMsg(DubbingActivity.this, R.string.str_dubbing_recording);
             return;
         }
         stopPlayRecordingAudio();
+        isStopShow = false;
         if (dubbingEntityList != null && position < dubbingEntityList.size()) {
-            if (curPosition != position || !isCheckGridViewItem) {
-                dubbingEntityList.get(curPosition).setSelect(false);
-                dubbingEntityList.get(position).setSelect(true);
-                commonAdapter.notifyDataSetChanged();
-                curPosition = position;
-                isCheckGridViewItem = true;
-                isSupportPause = false;
-                dubbingVideoView.setIsSupportPause(false);
-                if (onItemClick) {
-                    switchDubbingVideo(position, false);
-                } else if (!isOnlineOpen){
-                    //不是在线状态
-                    updatePlayAndRecordTime(position);
-                }
+            dubbingEntityList.get(curPosition).setSelect(false);
+            dubbingEntityList.get(position).setSelect(true);
+            commonAdapter.notifyDataSetChanged();
+            curPosition = position;
+            isCheckGridViewItem = true;
+            isSupportPause = false;
+            dubbingVideoView.setIsSupportPause(false);
+            if (onItemClick) {
+                dubbingEntityList.get(position).setItemVideoPlaying(true);
+                switchDubbingVideo(position, false);
+            } else if (!isOnlineOpen) {
+                //不是在线状态
+                updatePlayAndRecordTime(position);
             }
         }
-        if (audioRecord){
+        if (audioRecord) {
             onAudioRecord();
-        } else if (audioPlay){
+        } else if (audioPlay) {
             onAudioPlay();
         }
     }
 
-    private void updatePlayAndRecordTime(int position){
+    private void updatePlayAndRecordTime(int position) {
         DubbingEntity dubbingEntity = dubbingEntityList.get(position);
         int currentStart = dubbingEntity.getStartTime();
         int currentEnd = dubbingEntity.getEndTime();
@@ -954,7 +1036,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             newPlayTime = frontEnd + (currentStart - frontEnd) / 2;
             newPlayEndTime = dubbingEntity.getEndTime() + (backStart - currentEnd) / 2;
         }
-        dubbingVideoView.setSeekPlay(newPlayTime,newPlayEndTime);
+        dubbingVideoView.setSeekPlay(newPlayTime, newPlayEndTime);
     }
 
     /**
@@ -1007,8 +1089,8 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         currentTimeTextView.setText(MediaUtil.generateTime(playTime));
         totalTimeTextView.setText(MediaUtil.generateTime(totalTime));
         seekBar.setProgress((int) playTime);
+        updateDownTimeView(playTime);
     }
-
 
     public void onAudioRecord() {
         if (isOnlineOpen) {
@@ -1053,6 +1135,10 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
             }
             seekBar.setProgress(0);
             seekBar.setMax((int) duration);
+            dubbingEntityList.get(dubbingEntityList.size()-1).setEndTime((int) duration);
+            if (duration > 0 && isSupportPause){
+                dubbingVideoView.setEndTime((int) duration);
+            }
         }
 
 
@@ -1082,7 +1168,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public boolean onPlayTimeChanged(long playTime, long totalTime, int videoMode) {
-            LogUtils.log("TTT","playTime=" + playTime + " totalTime=" + totalTime);
+            LogUtils.log("TTT", "playTime=" + playTime + " totalTime=" + totalTime);
             duration = totalTime;
             refreshTime(playTime, totalTime, videoMode);
             return true;
@@ -1091,6 +1177,9 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onVideoCompletion() {
             stopPlayRecordingAudio();
+            if (isOnlineOpen && !checkDubbingBySentence){
+                lrcView.resetLineColor();
+            }
         }
     }
 
@@ -1167,10 +1256,25 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
         if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
             if (dubbingEntityList.get(curPosition).isRecordPlaying()) {
                 dubbingEntityList.get(curPosition).setIsRecordPlaying(false);
-                commonAdapter.notifyDataSetChanged();
             } else if (dubbingEntityList.get(curPosition).isRecording()) {
                 dubbingEntityList.get(curPosition).setIsRecording(false);
-                commonAdapter.notifyDataSetChanged();
+            }
+            showDownTimeFlag = false;
+            isStopShow = true;
+            dubbingEntityList.get(curPosition).setItemVideoPlaying(false);
+            commonAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void updateDownTimeView(long playTime) {
+        if (resPropertyValue == StudyResPropType.DUBBING_BY_SENTENCE) {
+            DubbingEntity entity = dubbingEntityList.get(curPosition);
+            long startTime = entity.getStartTime();
+            if (!showDownTimeFlag) {
+                if (startTime - 1000 < playTime && !isStopShow) {
+                    showDownTimeFlag = true;
+                    commonAdapter.notifyDataSetChanged();
+                }
             }
         }
     }
@@ -1186,6 +1290,13 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     private void refreshLrcLineText(long playTime) {
         if (resPropertyValue == StudyResPropType.DUBBING_BY_WHOLE
                 || (isOnlineOpen && !checkDubbingBySentence)) {
+            updateSrtTime(playTime);
+        }
+    }
+
+    private void updateSrtTime(long playTime){
+        int startTime = dubbingEntityList.get(0).getStartTime();
+        if (startTime - 1000 < playTime) {
             lrcView.updateTime(playTime);
         }
     }

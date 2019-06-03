@@ -10,6 +10,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.vo.PagerArgs;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -43,17 +44,18 @@ public class LessonHelper {
 
     /**
      * 根据任务Id,获取到相应的已经提交的任务
-     * @param taskId 任务Id
+     *
+     * @param taskId    任务Id
      * @param studentId userId,如果是家长身份,就不传;
-     * @param callback 回调对象
+     * @param callback  回调对象
      */
     public static void getCommittedTaskByTaskId(@NonNull String taskId,
-                                             @Nullable String studentId,
-                                             @NonNull final DataSource.Callback<LqTaskCommitListVo> callback) {
+                                                @Nullable String studentId,
+                                                @NonNull final DataSource.Callback<LqTaskCommitListVo> callback) {
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("TaskId",taskId);
-        jsonObject.put("StudentId",studentId);
+        jsonObject.put("TaskId", taskId);
+        jsonObject.put("StudentId", studentId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetCommittedTask);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
@@ -61,16 +63,17 @@ public class LessonHelper {
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<Map<String,Object>> mapTypeReference = new TypeReference<Map<String,Object>>(){};
-                Map<String,Object> result = JSON.parseObject(str, mapTypeReference);
-                if((int)result.get("ErrorCode") == 0){
-                    Map<String,Object> model = (Map<String, Object>) result.get("Model");
+                TypeReference<Map<String, Object>> mapTypeReference = new TypeReference<Map<String, Object>>() {
+                };
+                Map<String, Object> result = JSON.parseObject(str, mapTypeReference);
+                if ((int) result.get("ErrorCode") == 0) {
+                    Map<String, Object> model = (Map<String, Object>) result.get("Model");
                     String dataStr = JSONObject.toJSONString(model.get("Data"));
-                    LqTaskCommitListVo taskCommitListVo = JSONObject.parseObject(dataStr,LqTaskCommitListVo.class);
-                    if(callback != null){
+                    LqTaskCommitListVo taskCommitListVo = JSONObject.parseObject(dataStr, LqTaskCommitListVo.class);
+                    if (callback != null) {
                         callback.onDataLoaded(taskCommitListVo);
                     }
-                }else{
+                } else {
                     String ErrorMessage = (String) result.get("ErrorMessage");
                     Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
                     if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
@@ -99,7 +102,7 @@ public class LessonHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                if(null != callback){
+                if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }
@@ -109,33 +112,40 @@ public class LessonHelper {
 
     /**
      * 根据任务Id,获取到相应的已经提交的任务,新接口
-     * @param taskId 任务Id
-     * @param studentId userId,如果是家长身份,就不传;
-     * @param classId 班级学程传参
-     * @param schoolId 机构学程传参
+     *
+     * @param taskId        任务Id
+     * @param studentId     userId,如果是家长身份,就不传;
+     * @param classId       班级学程传参
+     * @param schoolId      机构学程传参
      * @param sortStudentId 如果填写就把该学生对应的任务排在前面,支持多个ID排序,多个ID时用逗号分隔传值
-     * @param commitType 提交类型 1 复述提交列表 5 语音评测列表
-     * @param callback 回调对象
+     * @param commitType    提交类型 1 复述提交列表 5 语音评测列表
+     * @param callback      回调对象
      */
     public static void getNewCommittedTaskByTaskId(@NonNull String taskId,
-                                                @Nullable String studentId,
-                                                @NonNull String classId,
-                                                @NonNull String schoolId,
-                                                @NonNull String sortStudentId,
-                                                int commitType,
-                                                @NonNull final DataSource.Callback<LqTaskCommitListVo> callback) {
+                                                   @Nullable String studentId,
+                                                   @NonNull String classId,
+                                                   @NonNull String schoolId,
+                                                   @NonNull String sortStudentId,
+                                                   int commitType,
+                                                   PagerArgs pagerArgs,
+                                                   int orderByType,
+                                                   @NonNull final DataSource.Callback<LqTaskCommitListVo> callback) {
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("TaskId",taskId);
-        jsonObject.put("StudentId",studentId);
-        if(EmptyUtil.isNotEmpty(classId))
-        jsonObject.put("ClassId",classId);
-        if(EmptyUtil.isNotEmpty(schoolId))
-        jsonObject.put("SchoolId",schoolId);
-        if(EmptyUtil.isNotEmpty(sortStudentId))
-        jsonObject.put("SortStudentId",sortStudentId);
+        jsonObject.put("TaskId", taskId);
+        jsonObject.put("StudentId", studentId);
+        if (EmptyUtil.isNotEmpty(classId))
+            jsonObject.put("ClassId", classId);
+        if (EmptyUtil.isNotEmpty(schoolId))
+            jsonObject.put("SchoolId", schoolId);
+        if (EmptyUtil.isNotEmpty(sortStudentId))
+            jsonObject.put("SortStudentId", sortStudentId);
 
-        jsonObject.put("CommitType",commitType);
+        jsonObject.put("CommitType", commitType);
+        if (pagerArgs != null) {
+            jsonObject.put("Pager", pagerArgs);
+        }
+        jsonObject.put("OrderByType", orderByType);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetNewCommittedTask);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
@@ -143,16 +153,17 @@ public class LessonHelper {
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                TypeReference<Map<String,Object>> mapTypeReference = new TypeReference<Map<String,Object>>(){};
-                Map<String,Object> result = JSON.parseObject(str, mapTypeReference);
-                if((int)result.get("ErrorCode") == 0){
-                    Map<String,Object> model = (Map<String, Object>) result.get("Model");
+                TypeReference<Map<String, Object>> mapTypeReference = new TypeReference<Map<String, Object>>() {
+                };
+                Map<String, Object> result = JSON.parseObject(str, mapTypeReference);
+                if ((int) result.get("ErrorCode") == 0) {
+                    Map<String, Object> model = (Map<String, Object>) result.get("Model");
                     String dataStr = JSONObject.toJSONString(model.get("Data"));
-                    LqTaskCommitListVo taskCommitListVo = JSONObject.parseObject(dataStr,LqTaskCommitListVo.class);
-                    if(callback != null){
+                    LqTaskCommitListVo taskCommitListVo = JSONObject.parseObject(dataStr, LqTaskCommitListVo.class);
+                    if (callback != null) {
                         callback.onDataLoaded(taskCommitListVo);
                     }
-                }else{
+                } else {
                     String ErrorMessage = (String) result.get("ErrorMessage");
                     Map<String, String> errorHashMap = ErrorCodeUtil.getInstance().getErrorCodeMap();
                     if (errorHashMap != null && errorHashMap.size() > 0 && !TextUtils.isEmpty(ErrorMessage)
@@ -181,7 +192,7 @@ public class LessonHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                if(null != callback){
+                if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }
@@ -190,11 +201,12 @@ public class LessonHelper {
 
     /**
      * 获取章小节的学习任务列表
-     * @param token 家长传孩子的token
-     * @param classId 如果是班级学程入口,并且是老师身份
-     * @param courseId 课程Id
+     *
+     * @param token     家长传孩子的token
+     * @param classId   如果是班级学程入口,并且是老师身份
+     * @param courseId  课程Id
      * @param sectionId 小节Id
-     * @param role 1老师 2学生
+     * @param role      1老师 2学生
      */
     public static void requestChapterStudyTask(@LanguageType.LanguageRes int isZh,
                                                @NonNull String token,
@@ -202,42 +214,43 @@ public class LessonHelper {
                                                @NonNull String courseId,
                                                @NonNull String sectionId,
                                                int role,
-                                               @NonNull DataSource.Callback<SectionDetailsVo> callback){
+                                               @NonNull DataSource.Callback<SectionDetailsVo> callback) {
         RequestVo requestVo = new RequestVo();
         // 是否是中文字体,根据参数,后台返回相应语言
-        requestVo.addParams("language",isZh);
-        if(EmptyUtil.isNotEmpty(token)){
-            requestVo.addParams("token",token);
+        requestVo.addParams("language", isZh);
+        if (EmptyUtil.isNotEmpty(token)) {
+            requestVo.addParams("token", token);
         }
 
-        requestVo.addParams("courseId",courseId);
-        requestVo.addParams("sectionId",sectionId);
-        requestVo.addParams("role",role);
-        if(role == 1 && EmptyUtil.isNotEmpty(classId)){
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("sectionId", sectionId);
+        requestVo.addParams("role", role);
+        if (role == 1 && EmptyUtil.isNotEmpty(classId)) {
             requestVo.addParams("classId", classId);
         }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.courseSectionDetail + requestVo.getParams());
         params.setConnectTimeout(10000);
 
-        LogUtil.i(LessonHelper.class,"send request ==== " +params.getUri());
+        LogUtil.i(LessonHelper.class, "send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                LogUtil.i(LessonHelper.class,"request "+ params.getUri() + " result :"+str);
-                ResponseVo<SectionDetailsVo> responseVo = JSON.parseObject(str,new TypeReference<ResponseVo<SectionDetailsVo>>() {});
+                LogUtil.i(LessonHelper.class, "request " + params.getUri() + " result :" + str);
+                ResponseVo<SectionDetailsVo> responseVo = JSON.parseObject(str, new TypeReference<ResponseVo<SectionDetailsVo>>() {
+                });
                 if (responseVo.isSucceed()) {
-                    if(EmptyUtil.isNotEmpty(callback)){
+                    if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
                     }
-                }else{
-                    Factory.decodeRspCode(responseVo.getCode(),callback);
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
                 }
             }
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(LessonHelper.class,"request "+params.getUri()+" failed");
-                if(!EmptyUtil.isEmpty(callback)){
+                LogUtil.w(LessonHelper.class, "request " + params.getUri() + " failed");
+                if (!EmptyUtil.isEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }
@@ -247,41 +260,43 @@ public class LessonHelper {
 
     /**
      * 看课件，听说课，读写单已读
+     *
      * @param taskType 1 看课件
-     * @param cwareId 课件Id
-     * @param resId 除了看课件,其它都需要传资源Id
+     * @param cwareId  课件Id
+     * @param resId    除了看课件,其它都需要传资源Id
      */
     public static void requestAddSourceFlag(int taskType,
-                                               @NonNull String cwareId,
-                                               @NonNull String resId,
-                                               @NonNull DataSource.SucceedCallback<Void> callback){
+                                            @NonNull String cwareId,
+                                            @NonNull String resId,
+                                            @NonNull DataSource.SucceedCallback<Void> callback) {
         RequestVo requestVo = new RequestVo();
-        requestVo.addParams("cwareId",cwareId);
-        if(taskType != 1){
-            requestVo.addParams("resId",resId);
+        requestVo.addParams("cwareId", cwareId);
+        if (taskType != 1) {
+            requestVo.addParams("resId", resId);
         }
         RequestParams params = new RequestParams(AppConfig.ServerUrl.setReaded + requestVo.getParams());
         params.setConnectTimeout(10000);
 
-        LogUtil.i(LessonHelper.class,"send request ==== " +params.getUri());
+        LogUtil.i(LessonHelper.class, "send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                LogUtil.i(LessonHelper.class,"request "+ params.getUri() + " result :"+str);
-                ResponseVo<Void> responseVo = JSON.parseObject(str,new TypeReference<ResponseVo<Void>>() {});
+                LogUtil.i(LessonHelper.class, "request " + params.getUri() + " result :" + str);
+                ResponseVo<Void> responseVo = JSON.parseObject(str, new TypeReference<ResponseVo<Void>>() {
+                });
                 if (responseVo.isSucceed()) {
-                    if(EmptyUtil.isNotEmpty(callback)){
+                    if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(responseVo.getData());
                     }
-                }else{
+                } else {
                     UIUtil.showToastSafe(R.string.net_error_tip);
                 }
             }
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(LessonHelper.class,"request "+params.getUri()+" failed");
-                if(!EmptyUtil.isEmpty(callback)){
+                LogUtil.w(LessonHelper.class, "request " + params.getUri() + " failed");
+                if (!EmptyUtil.isEmpty(callback)) {
                     UIUtil.showToastSafe(R.string.net_error_tip);
                 }
             }
@@ -290,17 +305,18 @@ public class LessonHelper {
 
     /**
      * 点击听说课,读写单 分发任务
-     * @param taskId 任务Id
+     *
+     * @param taskId    任务Id
      * @param studentId 学生Id memberId 其它身份不传
-     * @param callback 回调对象
+     * @param callback  回调对象
      */
     public static void DispatchTask(@NonNull String taskId,
-                                   String studentId,
+                                    String studentId,
 
-                                   final @NonNull DataSource.Callback<Void> callback){
+                                    final @NonNull DataSource.Callback<Void> callback) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("TaskId",taskId);
-        jsonObject.put("StudentId",studentId);
+        jsonObject.put("TaskId", taskId);
+        jsonObject.put("StudentId", studentId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.DispatchStudentTask);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
@@ -309,14 +325,14 @@ public class LessonHelper {
             @Override
             public void onSuccess(String str) {
                 // 分发任务,不关成功与否,都是跳转
-                if(null != callback){
+                if (null != callback) {
                     callback.onDataLoaded(null);
                 }
             }
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                if(null != callback){
+                if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
             }

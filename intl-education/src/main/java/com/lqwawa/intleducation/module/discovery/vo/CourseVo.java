@@ -5,6 +5,7 @@ import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.learn.vo.ExamVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import java.util.List;
 
@@ -78,6 +79,11 @@ public class CourseVo extends BaseVo {
 
     // V5.15新添加的字段
     private int joinCount;
+
+    // 课程类型
+    private int assortment;
+    // 学程馆类型
+    private int type;
 
     public boolean isTag() {
         return tag;
@@ -516,5 +522,38 @@ public class CourseVo extends BaseVo {
 
     public void setJoinCount(int joinCount) {
         this.joinCount = joinCount;
+    }
+
+    public int getAssortment() {
+        return assortment;
+    }
+
+    public CourseVo setAssortment(int assortment) {
+        this.assortment = assortment;
+        return this;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public CourseVo setType(int type) {
+        this.type = type;
+        return this;
+    }
+
+    public int getLibraryType() {
+        if (type == 0) {
+            if (assortment == 0 || assortment == 1) {
+                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
+            } else if (assortment == 2 || assortment == 3) {
+                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            }
+        } else if (type == 1) {
+            return OrganLibraryType.TYPE_LIBRARY;
+        } else if (type == 2) {
+            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        }
+        return -1;
     }
 }

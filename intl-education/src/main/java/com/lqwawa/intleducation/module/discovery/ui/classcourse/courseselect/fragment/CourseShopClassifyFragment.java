@@ -170,12 +170,12 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
                             OrganCourseFiltrateActivity.show(
                                     getActivity(),
                                     entity,mSelectResource,false,
-                                    mResourceData,isAuthorized,isReallyAuthorized,false,roles);
+                                    mResourceData,isAuthorized,isReallyAuthorized,false,roles, 0);
                         }else{
                             OrganCourseFiltrateActivity.show(
                                     getActivity(),
                                     entity,false,true,
-                                    null,isAuthorized,isReallyAuthorized,false,roles);
+                                    null,isAuthorized,isReallyAuthorized,false,roles, 0);
                         }
                     }
                 });
@@ -194,9 +194,9 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
 
         String organId = mParams.getOrganId();
         if(mSelectResource){
-            mPresenter.requestCourseShopClassifyResourceData(organId);
+            mPresenter.requestCourseShopClassifyResourceData(organId, -1);
         }else{
-            mPresenter.requestCourseShopClassifyData(organId);
+            mPresenter.requestCourseShopClassifyData(organId, -1);
         }
     }
 

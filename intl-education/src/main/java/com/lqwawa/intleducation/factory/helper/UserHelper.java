@@ -175,4 +175,49 @@ public class UserHelper {
         });
     }
 
+    /**
+     * 获取帮辅科目
+     * @param tutorMemberId
+     */
+    public static void requestTutorSubjectList(@NonNull String tutorMemberId,
+                                               @NonNull DataSource.Callback<List<String>> callback) {
+        // 准备数据
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("tutorMemberId",tutorMemberId);
+
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetTutorSubjectList);
+        params.setAsJsonContent(true);
+        params.setBodyContent(jsonObject.toJSONString());
+        params.setConnectTimeout(10000);
+
+        LogUtil.i(UserHelper.class,"send request ==== " +params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(LiveHelper.class,"request "+params.getUri()+" result :"+str);
+                TypeReference<ResponseVo<List<String>>> typeReference =
+                        new TypeReference<ResponseVo<List<String>>>(){};
+                ResponseVo<List<String>> responseVo = JSON.parseObject(str, typeReference);
+                if(responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                }else{
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        Factory.decodeRspCode(responseVo.getCode(),callback);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(UserHelper.class,"request "+params.getUri()+" failed");
+                if(!EmptyUtil.isEmpty(callback)){
+                    callback.onDataNotAvailable(com.lqwawa.intleducation.R.string.net_error_tip);
+                }
+            }
+        });
+
+    }
+
 }

@@ -1,13 +1,11 @@
 package com.lqwawa.intleducation.module.onclass.detail.base.comment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -15,35 +13,23 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
-import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
-import com.lqwawa.intleducation.base.utils.LogUtil;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
-import com.lqwawa.intleducation.base.vo.RequestVo;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
-import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
-import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
-import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
-import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
 import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailNavigator;
@@ -54,13 +40,6 @@ import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivit
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailNavigator;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

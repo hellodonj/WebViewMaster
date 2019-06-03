@@ -1,200 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/toolbarSize"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-        <include layout="@layout/include_organ_course_list_filtrate_layout"
-            android:visibility="gone"/>
+        <include layout="@layout/include_organ_course_filtrate_tabs" />
 
-        <LinearLayout
-            android:id="@+id/header_layout"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout_sort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/colorLight">
-
-            <LinearLayout
-                android:id="@+id/tab_vector_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tab_label_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/textAccent"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMode="scrollable"
-                    app:tabPaddingStart="4dp"
-                    app:tabPaddingEnd="4dp">
-
-                </android.support.design.widget.TabLayout>
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:id="@+id/tab_vector_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tab_label_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/textAccent"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMode="scrollable"
-                    app:tabPaddingStart="4dp"
-                    app:tabPaddingEnd="4dp">
-
-                </android.support.design.widget.TabLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tab_vector_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tab_label_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/textAccent"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMode="scrollable"
-                    app:tabPaddingStart="4dp"
-                    app:tabPaddingEnd="4dp">
-
-                </android.support.design.widget.TabLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tab_vector_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tab_label_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/textAccent"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabIndicatorColor="@android:color/transparent"
-                    app:tabMode="scrollable"
-                    app:tabPaddingStart="4dp"
-                    app:tabPaddingEnd="4dp">
-
-                </android.support.design.widget.TabLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/horizontalDividerHeight"
-                android:background="@color/divider_color"/>
-        </LinearLayout>
-
-        <include layout="@layout/holder_top_search_layout"
-            android:visibility="gone"></include>
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorHeight="3dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
+            android:background="@color/white"
+            app:tabSelectedTextColor="@color/textPrimary"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabTextColor="@color/textSecond" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
-                android:id="@+id/refresh_layout"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="none"/>
-            </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
-
-            <com.lqwawa.intleducation.base.CourseEmptyView
-                android:id="@+id/empty_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:empty_text_remind="@string/label_empty_content"
-                app:empty_text_remind_visible="true"
-                app:empty_text_loading="@string/label_course_empty_info_2"
-                app:empty_text_loading_visible="false"
-                app:empty_icon_drawable="@drawable/ic_course_empty"
-                app:call_show="false"
-                android:visibility="gone">
-
-            </com.lqwawa.intleducation.base.CourseEmptyView>
+                android:layout_height="match_parent" />
 
             <!--作业库功能-->
             <FrameLayout
@@ -202,36 +42,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:background="@drawable/ic_work_cart_shadow"
                 android:layout_marginBottom="40dp"
+                android:background="@drawable/ic_work_cart_shadow"
                 android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_work_cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:ellipsize="end"
                     android:gravity="center"
+                    android:singleLine="true"
                     android:text="@string/label_work_cart"
                     android:textColor="@color/textLight"
-                    android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"/>
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_cart_point"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/textLight"
-                    android:singleLine="true"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_red_circle_point"
                     android:ellipsize="end"
                     android:gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:layout_gravity="top|center_horizontal"
+                    android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:background="@drawable/bg_red_circle_point"/>
+                    android:textColor="@color/textLight"
+                    android:textSize="12sp" />
 
             </FrameLayout>
 
@@ -241,11 +81,11 @@
             android:id="@+id/subject_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_horizontal"
-            android:weightSum="2"
+            android:orientation="horizontal"
             android:padding="10dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:weightSum="2">
 
             <net.qiujuer.genius.ui.widget.Button
                 android:id="@+id/btn_add_subject"
@@ -273,70 +113,69 @@
                 android:id="@+id/bottom_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
                 <net.qiujuer.genius.ui.widget.Button
                     android:id="@+id/btn_request_authorized"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/textLight"
-                    android:textSize="16sp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                     android:layout_width="0dp"
                     android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:background="@drawable/btn_accent_radius_19"
                     android:gravity="center"
                     android:text="@string/label_request_authorization"
-                    app:gTouchCornerRadius="19dp"
-                    app:gTouchEffect="ripple"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/textLight"
+                    android:textSize="16sp"
                     app:gTouchColor="@color/touch_color"
-                    android:background="@drawable/btn_accent_radius_19"
-                    android:layout_marginRight="10dp"/>
+                    app:gTouchCornerRadius="19dp"
+                    app:gTouchEffect="ripple" />
 
                 <net.qiujuer.genius.ui.widget.Button
                     android:id="@+id/btn_more_course"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/textLight"
-                    android:textSize="16sp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                     android:layout_width="0dp"
                     android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:background="@drawable/btn_accent_radius_19"
                     android:gravity="center"
                     android:text="@string/label_more_course_line"
-                    app:gTouchCornerRadius="19dp"
-                    app:gTouchEffect="ripple"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/textLight"
+                    android:textSize="16sp"
                     app:gTouchColor="@color/touch_color"
-                    android:background="@drawable/btn_accent_radius_19"
-                    android:layout_marginRight="10dp"/>
+                    app:gTouchCornerRadius="19dp"
+                    app:gTouchEffect="ripple" />
 
 
             </LinearLayout>
 
             <net.qiujuer.genius.ui.widget.Button
                 android:id="@+id/btn_confirm"
-                android:layout_gravity="center"
-                android:textColor="@color/textLight"
-                android:textSize="16sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_action_selector"
                 android:gravity="center"
                 android:text="@string/label_confirm_add"
-                app:gTouchCornerRadius="19dp"
-                app:gTouchEffect="ripple"
-                app:gTouchColor="@color/touch_color"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
                 android:visibility="gone"
-                android:enabled="false"
-                android:background="@drawable/bg_action_selector"/>
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="19dp"
+                app:gTouchEffect="ripple" />
 
 
         </FrameLayout>
@@ -346,7 +185,7 @@
     <com.lqwawa.intleducation.base.widgets.TopBar
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tv_more_course"

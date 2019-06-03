@@ -35,11 +35,10 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.lqwawa.intleducation.base.widgets.SuperListView
+            <com.lqwawa.intleducation.base.widgets.SuperGridView
                 android:id="@+id/course_select_listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@null"
                 android:scrollbars="none"/>
         </ScrollView>
 

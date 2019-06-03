@@ -14,6 +14,8 @@ public class TutorChoiceParams implements Serializable {
     private String courseId;
     private String chapterId;
     private QuestionResourceModel model;
+    // 是否我的帮辅
+    private boolean isMyAssistantMark;
 
     public TutorChoiceParams() {
     }
@@ -58,5 +60,14 @@ public class TutorChoiceParams implements Serializable {
 
     public void setModel(QuestionResourceModel model) {
         this.model = model;
+    }
+
+    public boolean isMyAssistantMark() {
+        return isMyAssistantMark;
+    }
+
+    public TutorChoiceParams setMyAssistantMark(boolean myAssistantMark) {
+        isMyAssistantMark = myAssistantMark;
+        return this;
     }
 }

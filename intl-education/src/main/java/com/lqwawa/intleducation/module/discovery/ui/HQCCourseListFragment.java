@@ -225,7 +225,7 @@ public class HQCCourseListFragment extends MyBaseFragment  implements View.OnCli
                     }
                 }else {
                     CourseDetailsActivity.start(activity, vo.getId(), true,
-                            UserHelper.getUserId(), activity.getIntent().getStringExtra("SchoolId"), true);
+                            UserHelper.getUserId());
                 }
             }
         });

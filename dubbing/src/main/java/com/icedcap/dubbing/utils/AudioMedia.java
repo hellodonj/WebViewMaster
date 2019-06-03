@@ -85,7 +85,10 @@ public class AudioMedia implements MediaPlayer.OnCompletionListener, MediaPlayer
     }
 
     public boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        if (mediaPlayer != null){
+            return mediaPlayer.isPlaying();
+        }
+        return false;
     }
 
     public void pause() {
@@ -141,9 +144,10 @@ public class AudioMedia implements MediaPlayer.OnCompletionListener, MediaPlayer
             mediaPlayer.stop();
         }
         try {
-            mediaPlayer.prepare();
-            mediaPlayer.seekTo(0);
-            return;
+            if (mediaPlayer != null){
+                mediaPlayer.prepare();
+                mediaPlayer.seekTo(0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -94,20 +94,12 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
         @Override
         protected void onBind(TaskEntity taskEntity) {
-            mRequireLayout.setOnClickListener(v->{
-                // 点击查看任务要求
-                if(EmptyUtil.isNotEmpty(mCallback)){
-                    int position = getAdapterPosition();
-                    final TaskEntity entity = taskEntity;
-                    mCallback.onRequireClick(v,position,entity);
-                }
-            });
-
             if(tutorialMode){
                 mAvatarLayout.setVisibility(View.VISIBLE);
                 // 显示用户头像
                 String studentUrl = LqServerHelper.getFullImgUrl(taskEntity.getStuHeadPicUrl() + "").trim();
                 ImageUtil.fillUserAvatar(mStudentAvatar,studentUrl,R.drawable.user_header_def);
+                mTvRequire.setVisibility(View.VISIBLE);
                 /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mStudentName.getLayoutParams();
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),40);
                 mStudentName.setLayoutParams(layoutParams);*/
@@ -120,6 +112,8 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 layoutParams.leftMargin = DisplayUtil.dip2px(UIUtil.getContext(),0);
                 mStudentName.setLayoutParams(layoutParams);*/
             }
+            
+            mTvRequire.setVisibility(taskEntity.getT_TaskId() > 0 ? View.VISIBLE : View.GONE);
 
             if(tutorialMode){
                 // 显示用户姓名
@@ -203,6 +197,19 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                 mCheckMark.setTextColor(UIUtil.getColor(android.R.color.holo_red_light));
                 mCheckMark.setText(R.string.label_un_mark);
             }
+
+            mRequireLayout.setOnClickListener(v->{
+                // 点击查看任务要求
+                if(EmptyUtil.isNotEmpty(mCallback)){
+                    int position = getAdapterPosition();
+                    final TaskEntity entity = taskEntity;
+                    if (entity.getT_TaskId() > 0) {
+                        mCallback.onRequireClick(v, position, entity);
+                    } else {
+                        mCallback.onEntityClick(v,position,entity,taskEntity.getReviewState());
+                    }
+                }
+            });
 
             mCheckMark.setOnClickListener(v->{
                 // 点击已批阅未批阅

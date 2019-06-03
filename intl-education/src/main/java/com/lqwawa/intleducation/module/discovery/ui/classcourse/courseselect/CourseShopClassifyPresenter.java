@@ -12,7 +12,6 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.OrganCourseHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
-import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 
@@ -31,11 +30,12 @@ public class CourseShopClassifyPresenter extends SchoolPermissionPresenter<Cours
     }
 
     @Override
-    public void requestCourseShopClassifyData(@NonNull String organId) {
+    public void requestCourseShopClassifyData(@NonNull String organId, int libraryType) {
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        OrganCourseHelper.requestOrganCourseClassifyData(organId, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        OrganCourseHelper.requestOrganCourseClassifyData(organId, languageRes,
+                libraryType, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final CourseShopClassifyContract.View view = getView();
@@ -56,11 +56,12 @@ public class CourseShopClassifyPresenter extends SchoolPermissionPresenter<Cours
     }
 
     @Override
-    public void requestCourseShopClassifyResourceData(@NonNull String organId) {
+    public void requestCourseShopClassifyResourceData(@NonNull String organId, int libraryType) {
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        OrganCourseHelper.requestOrganCourseClassifyResourceData(organId, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        OrganCourseHelper.requestOrganCourseClassifyResourceData(organId, languageRes,
+                libraryType, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final CourseShopClassifyContract.View view = getView();

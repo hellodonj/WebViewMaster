@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codingmaster.slib.S;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.Common;
@@ -25,9 +27,14 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
     private EntityCallback mCallback;
+    private boolean isClassTutor;
 
     public TutorialGroupAdapter(EntityCallback mCallback) {
         this.mCallback = mCallback;
+    }
+
+    public void setIsClassTutor(boolean isClassTutor) {
+       this.isClassTutor = isClassTutor;
     }
 
     @Override
@@ -83,8 +90,13 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
             mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            
+            mTvAddTutorial.setText(!isClassTutor ? R.string.label_add_tutorial : R.string.add_class_tutor);
 
             mTvAddTutorial.setOnClickListener(v -> {
+                if (ButtonUtils.isFastDoubleClick()) {
+                    return;
+                }
                 if(EmptyUtil.isNotEmpty(mCallback)){
                     int position = getAdapterPosition();
                     mCallback.onAddTutorial(position,entity);
@@ -92,7 +104,12 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             });
 
             boolean tutorialMode = MainApplication.isTutorialMode();
-            if(tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId())){
+            boolean isHide =
+                    tutorialMode || entity.isAddedTutor() || TextUtils.equals(entity.getCreateId(),UserHelper.getUserId());
+            if (isClassTutor) {
+                isHide = entity.isAddedTutor();
+            }
+            if(isHide){
                 mTvAddTutorial.setVisibility(View.GONE);
             }else{
                 mTvAddTutorial.setVisibility(View.VISIBLE);

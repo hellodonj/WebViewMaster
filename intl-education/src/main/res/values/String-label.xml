@@ -167,6 +167,8 @@
     <string name="label_auto_mark">Auto Mark</string>
     <string name="label_voice_evaluating">Oral Test</string>
     <string name="label_organ_shop_permission_description">No course available now, please wait!</string>
+    <string name="label_organ_course_permission_description">No %s course available now, please
+        wait!</string>
 
     <string name="label_new_create">New</string>
     <string name="label_new_class">New Lesson</string>
@@ -226,7 +228,7 @@
     <string name="label_this_class_give_finish">Class ended</string>
 
     <!--V5.10.X版本字符串-->
-    <string name="label_join_course">+My Courses</string>
+    <string name="label_join_course">+ My Courses</string>
 
     <!--V5.11版本字符串-->
     <string name="label_share_online_class_title">【LQ Class Live】</string>
@@ -265,6 +267,8 @@
     <string name="label_colon_language">Language:</string>
     <string name="label_colon_level">Level:</string>
     <string name="label_colon_book_concern">Book Concern:</string>
+    <string name="label_colon_age">Age:</string>
+    <string name="label_colon_topic">Topic:</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">Authorized</string>
@@ -419,6 +423,7 @@
     <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
     <string name="label_please_apply_to_be_tutorial">Please apply to be tutor first</string>
     <string name="label_course_tutor_apply_for">Apply successfully, waiting approval!</string>
+    <string name="label_apply_for_tutor_success">Added to my tutorial course</string>
     <string name="label_input_province_tip">Please select province</string>
     <string name="label_input_city_tip">Please select city</string>
     <string name="label_input_district_tip">Please select district</string>
@@ -444,12 +449,13 @@
 
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">History</string>
+    <string name="label_add_history_course">Add to History</string>
     <string name="label_add_in">Add</string>
     <string name="label_remove_out">Remove</string>
     <string name="label_delete">Delete</string>
-    <string name="label_please_choice_action">Please select option!</string>
     <string name="label_please_choice_add_history_course">Please select historical course</string>
     <string name="label_please_choice_remove_history_course">Please select course to remove</string>
+    <string name="label_please_choice_add_course">Please select course to add</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>Latest</item>
@@ -457,6 +463,7 @@
     </string-array>
 
     <string-array name="label_tutorial_page_tabs">
+        <item>Introduction</item>
         <item>Tutorial Course</item>
         <item>Student Comment</item>
     </string-array>

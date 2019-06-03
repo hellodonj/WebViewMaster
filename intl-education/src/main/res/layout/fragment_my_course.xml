@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/textSecond"
-        app:tabSelectedTextColor="@color/textPrimary"
-        app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@color/colorAccent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabMode="fixed"
-        app:tabGravity="fill"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorLight"
         android:visibility="gone"
-        android:background="@color/colorLight"/>
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/textPrimary"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/textSecond" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_paper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab_layout"
+        android:paddingBottom="70dp"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_ask_question"
+        style="@style/text_white_l"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/com_bg_circle_green_btn"
+        android:gravity="center"
+        android:text="@string/to_ask_question"
+        android:visibility="gone" />
+
+</RelativeLayout>

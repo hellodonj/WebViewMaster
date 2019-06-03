@@ -18,6 +18,7 @@ import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -27,6 +28,7 @@ import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
@@ -161,9 +163,11 @@ public class MOOCHelper {
         @Override
         public void enterTutorialHomePager(@NonNull Context context,
                                            @NonNull String tutorMemberId,
-                                           @NonNull String tutorName) {
+                                           @NonNull String tutorName,
+                                           String classId) {
             // 进入帮辅主页
             TutorialParams params = new TutorialParams(tutorMemberId,tutorName);
+            params.setClassId(classId);
             TutorialHomePageActivity.show(context, params);
         }
 
@@ -764,6 +768,7 @@ public class MOOCHelper {
                     return;
                 }
                 if (TextUtils.isEmpty(jsonString)) {
+                    TipMsgHelper.ShowLMsg(activity, R.string.ppt_pdf_not_have_pic);
                     return;
                 }
                 PPTAndPDFCourseInfoCode result = com.alibaba.fastjson.JSONObject.parseObject
@@ -772,10 +777,12 @@ public class MOOCHelper {
                     List<NewResourceInfo> resourceInfoList = new ArrayList<>();
                     List<PPTAndPDFCourseInfo> splitCourseInfo = result.getData();
                     if (splitCourseInfo == null || splitCourseInfo.size() == 0) {
+                        TipMsgHelper.ShowLMsg(activity, R.string.ppt_pdf_not_have_pic);
                         return;
                     }
                     List<SplitCourseInfo> splitList = splitCourseInfo.get(0).getSplitList();
                     if (splitList == null || splitList.size() == 0) {
+                        TipMsgHelper.ShowLMsg(activity, R.string.ppt_pdf_not_have_pic);
                         return;
                     }
                     int resTypeNew = resType;

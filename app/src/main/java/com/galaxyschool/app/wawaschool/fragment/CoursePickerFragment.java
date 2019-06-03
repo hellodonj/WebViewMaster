@@ -402,8 +402,8 @@ public class CoursePickerFragment extends AdapterFragment {
 
         //学程馆
         item = new HomeTypeEntry();
-        item.icon = R.drawable.icon_lqcourse_circle;
-        item.typeName = R.string.common_course_shop;
+        item.icon = R.drawable.ic_lqcourse_circle;
+        item.typeName = R.string.common_course_library;
         item.type = TAB_LQCOURSE_SHOP;
         list.add(item);
 

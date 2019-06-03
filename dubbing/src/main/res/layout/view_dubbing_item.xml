@@ -6,9 +6,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/dubbing_item_bg"
+                android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp">
+                android:paddingRight="10dp">
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -18,20 +18,34 @@
 
         <TextView
             android:id="@+id/tv_index"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/iv_down_time"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_dubbing_count_time"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tv_score"
             android:layout_width="30dp"
             android:layout_height="35dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/icon_q_dubbing_score"
             android:gravity="center|top"
             android:paddingTop="3dp"
-            android:layout_marginRight="10dp"
             android:text="14"
             android:textColor="@color/possible_result_points"
             android:textSize="16sp"/>

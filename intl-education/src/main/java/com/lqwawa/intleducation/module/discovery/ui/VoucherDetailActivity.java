@@ -86,7 +86,10 @@ public class VoucherDetailActivity extends BaseFragmentActivity {
                         }
                         filterData.add(info);
                     }
-                    listView.setAdapter(new VoucherDetailAdapter(filterData, VoucherDetailActivity.this, R.layout.item_coins_detail));
+                    VoucherDetailAdapter voucherDetailAdapter =
+                            new VoucherDetailAdapter(VoucherDetailActivity.this);
+                    listView.setAdapter(voucherDetailAdapter);
+                    voucherDetailAdapter.replace(filterData);
                 }
 
 

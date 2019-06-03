@@ -29,9 +29,14 @@ public class LessonSourceParams extends BaseVo{
     private boolean choiceMode;
     // 是否是主动触发
     private boolean initiativeTrigger;
+    // 讲师助教ID拼接
+    private String teacherTutorIds;
 
     // 课程详情的参数
     private CourseDetailParams courseParams;
+
+    // 是否添加到作业库状态
+    private boolean isAddMode;
 
     private LessonSourceParams(){}
 
@@ -118,6 +123,24 @@ public class LessonSourceParams extends BaseVo{
         return initiativeTrigger;
     }
 
+    public String getTeacherTutorIds() {
+        return teacherTutorIds;
+    }
+
+    public LessonSourceParams setTeacherTutorIds(String teacherTutorIds) {
+        this.teacherTutorIds = teacherTutorIds;
+        return this;
+    }
+
+    public boolean isAddMode() {
+        return isAddMode;
+    }
+
+    public LessonSourceParams setAddMode(boolean addMode) {
+        isAddMode = addMode;
+        return this;
+    }
+
     /**
      * 通过课程大纲传到节详情的参数来build出节资源详情列表数据的参数
      * @param params 节详情的参数
@@ -132,6 +155,7 @@ public class LessonSourceParams extends BaseVo{
         newParams.teacherVisitor = params.isTeacherVisitor();
         newParams.realRole = params.getRealRole();
         newParams.setChoiceMode(params.isChoiceMode(),params.isInitiativeTrigger());
+        newParams.setTeacherTutorIds(params.getTeacherTutorIds());
         return newParams;
     }
 

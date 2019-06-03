@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:divider="@drawable/divider_line"
+            android:divider="@drawable/divider_line_h_1dp"
             android:listSelector="@android:color/transparent"
             android:numColumns="1"/>
 

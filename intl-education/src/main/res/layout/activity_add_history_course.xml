@@ -96,6 +96,7 @@
             android:textSize="16sp"
             app:gTouchColor="@color/touch_color"
             app:gTouchCornerRadius="19dp"
+            android:visibility="gone"
             app:gTouchEffect="ripple" />
 
         <net.qiujuer.genius.ui.widget.Button

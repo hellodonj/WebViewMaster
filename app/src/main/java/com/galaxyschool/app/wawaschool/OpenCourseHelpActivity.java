@@ -22,11 +22,14 @@ import com.galaxyschool.app.wawaschool.fragment.CampusPatrolPickerFragment;
 import com.galaxyschool.app.wawaschool.fragment.ClassContactsDetailsFragment;
 import com.galaxyschool.app.wawaschool.fragment.GroupExpandListFragment;
 import com.galaxyschool.app.wawaschool.fragment.LiveTimetableFragment;
+import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.NoteOpenParams;
 import com.lqwawa.intleducation.factory.data.entity.ClassNotificationEntity;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.libs.mediapaper.MediaPaper;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
@@ -70,6 +73,8 @@ public class OpenCourseHelpActivity extends BaseFragmentActivity {
     private boolean isEnterClassDetail;
     //成绩统计
     private boolean isScoreStatics;
+    //来自我要帮辅
+    private boolean fromMyAssistantMark;
 
     public static void startActivity(Activity activity,
                                      String mCourseId,
@@ -114,6 +119,9 @@ public class OpenCourseHelpActivity extends BaseFragmentActivity {
         } else if (isScoreStatics){
           //成绩统计
           enterScoreStaticActivity();
+        } else if (fromMyAssistantMark){
+          //我要帮辅
+          enterMyApplyAssistantMarkDetail();
         } else {
             //打开资源
             loadCourseData();
@@ -143,6 +151,8 @@ public class OpenCourseHelpActivity extends BaseFragmentActivity {
             isEnterClassDetail = intent.getBooleanExtra("isEnterClassDetail",false);
             //成绩统计
             isScoreStatics = intent.getBooleanExtra("isScoreStatics,",false);
+            //来自我要帮辅
+            fromMyAssistantMark = intent.getBooleanExtra("fromMyAssistantMark",false);
         }
     }
 
@@ -466,6 +476,24 @@ public class OpenCourseHelpActivity extends BaseFragmentActivity {
      */
     private void enterScoreStaticActivity(){
 
+    }
+
+    /**
+     * 进入我要申请帮辅界面
+     */
+    private void enterMyApplyAssistantMarkDetail(){
+        Bundle args = getIntent().getExtras();
+        if (args == null){
+            return;
+        }
+        int screenType = args.getInt("screenType",1);
+        QuestionResourceModel model = (QuestionResourceModel) args.getSerializable(QuestionResourceModel.class.getSimpleName());
+        ExerciseAnswerCardParam cardParam = new ExerciseAnswerCardParam();
+        cardParam.setScreenType(screenType);
+        cardParam.setFromMyAssistantMark(true);
+        cardParam.setMarkModel(model);
+        ApplyMarkHelper.doApplyMarkTask(OpenCourseHelpActivity.this,cardParam);
+        finish();
     }
 
 }

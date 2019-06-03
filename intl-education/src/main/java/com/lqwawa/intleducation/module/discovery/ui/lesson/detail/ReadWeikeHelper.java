@@ -73,6 +73,7 @@ public class ReadWeikeHelper {
                 break;
             case 6:
             case 20:
+            case 24:
                 if (TaskSliderHelper.onTaskSliderListener != null) {
                     TaskSliderHelper.onTaskSliderListener
                             .viewPdfOrPPT(mActivity, "" + resVo.getResId(), resVo.getResType(),
@@ -82,7 +83,6 @@ public class ReadWeikeHelper {
                                             ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
                 }
                 break;
-            case 24:
             case 25:
                 LqResViewHelper.playBaseRes(resVo.getResType(), mActivity,
                         resVo.getResourceUrl().trim(), resVo.getName());

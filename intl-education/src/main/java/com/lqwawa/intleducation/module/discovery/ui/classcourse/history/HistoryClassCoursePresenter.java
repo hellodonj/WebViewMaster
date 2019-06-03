@@ -147,7 +147,7 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
             public void onDataLoaded(Boolean aBoolean) {
                 final HistoryClassCourseContract.View view = getView();
                 if(EmptyUtil.isNotEmpty(view)){
-                    view.updateHistoryCourseFromClassView(aBoolean);
+                    view.updateRemoveCourseFromClassView(aBoolean);
                 }
             }
         });

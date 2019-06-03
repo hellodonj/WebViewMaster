@@ -72,7 +72,7 @@ public class ClassDetailsFragment extends ContactsListFragment
 
     public static final String TAG = ClassDetailsFragment.class.getSimpleName();
     public static final int COLUMN_NUM = 4;
-    private HashMap<String,EntryInfo> entryInfoHashMap=new HashMap<String, EntryInfo>();
+    private HashMap<String, EntryInfo> entryInfoHashMap = new HashMap<String, EntryInfo>();
     private boolean isOnlineSchool;
 
     public interface Constants {
@@ -92,9 +92,9 @@ public class ClassDetailsFragment extends ContactsListFragment
         int ENTRY_TYPE_CLASS_INFO = 3;
         int ENTRY_TYPE_NOTICE = 4;
         int ENTRY_TYPE_SHOW = 5;
-        int TAB_ENTITY_TYPE_AIR_CLASSROOM=6;
-        int TAB_ENTITY_TYPE_ACT_CLASSROOM=7;
-        int ENTRY_TYPE_RELEVANCE_COURSE=8;
+        int TAB_ENTITY_TYPE_AIR_CLASSROOM = 6;
+        int TAB_ENTITY_TYPE_ACT_CLASSROOM = 7;
+        int ENTRY_TYPE_RELEVANCE_COURSE = 8;
         int ENTRY_TYPE_CLASS_LESSON = 9;
     }
 
@@ -114,7 +114,7 @@ public class ClassDetailsFragment extends ContactsListFragment
     private String className;
     private String schoolName;
     private String qrCode;
-    private int classState= ContactsClassManagementActivity.CLASS_STATUS_PRESENT;
+    private int classState = ContactsClassManagementActivity.CLASS_STATUS_PRESENT;
     public static final int REQUEST_CODE_CLASS_DETAILS = 908;
     private static boolean hasContentChanged;
     private SchoolInfo schoolInfo;
@@ -209,7 +209,7 @@ public class ClassDetailsFragment extends ContactsListFragment
     }
 
     private void loadClassInfo() {
-        if (getUserInfo() == null){
+        if (getUserInfo() == null) {
             return;
         }
         Map<String, Object> params = new HashMap();
@@ -236,7 +236,7 @@ public class ClassDetailsFragment extends ContactsListFragment
                             schoolName = classInfo.getSchoolName();
                             qrCode = classInfo.getClassQRCode();
                             hasJoinedClass = classInfo.isInClass();
-                            classState=classInfo.getIsHistory();
+                            classState = classInfo.getIsHistory();
 
                             String userId = UserHelper.getUserId();
                             SchoolHelper.requestSchoolInfo(userId, classInfo.getSchoolId(), new DataSource.Callback<SchoolInfoEntity>() {
@@ -247,7 +247,7 @@ public class ClassDetailsFragment extends ContactsListFragment
 
                                 @Override
                                 public void onDataLoaded(SchoolInfoEntity entity) {
-                                    if(entity.isOnlineSchool()){
+                                    if (entity.isOnlineSchool()) {
                                         EntryInfo item = new EntryInfo();
                                         item.type = Constants.ENTRY_TYPE_RELEVANCE_COURSE;
                                         item.title = R.string.label_space_school_relevance_course;
@@ -255,14 +255,14 @@ public class ClassDetailsFragment extends ContactsListFragment
 
                                         List<EntryInfo> data = getCurrAdapterViewHelper().getData();
                                         data.add(item);
-                                        entryInfoHashMap.put(item.type+"",item);
+                                        entryInfoHashMap.put(item.type + "", item);
 
                                         EntryInfo info = data.get(1);
                                         info.title = R.string.str_online_class_message;
                                         info.icon = R.drawable.icon_online_class_detail;
                                         getCurrAdapterViewHelper().setData(data);
 
-                                        if (schoolInfo == null){
+                                        if (schoolInfo == null) {
                                             createSchoolInfoObject();
                                         }
                                         schoolInfo.setIsOnlineSchool(entity.isOnlineSchool());
@@ -279,8 +279,8 @@ public class ClassDetailsFragment extends ContactsListFragment
                 ServerUrl.CONTACTS_CLASS_INFO_URL, params, listener);
     }
 
-    private void createSchoolInfoObject(){
-        if (schoolInfo == null){
+    private void createSchoolInfoObject() {
+        if (schoolInfo == null) {
             schoolInfo = new SchoolInfo();
             schoolInfo.setSchoolId(classInfo.getSchoolId());
             schoolInfo.setSchoolName(classInfo.getSchoolName());
@@ -288,10 +288,10 @@ public class ClassDetailsFragment extends ContactsListFragment
     }
 
     private void loadClassMessageStatistics() {
-        if(classInfo==null){
+        if (classInfo == null) {
             return;
         }
-        if (getUserInfo() == null){
+        if (getUserInfo() == null) {
             return;
         }
         Map<String, Object> params = new HashMap();
@@ -302,7 +302,7 @@ public class ClassDetailsFragment extends ContactsListFragment
                         ClassMessageStatisticsListResult.class) {
                     @Override
                     public void onSuccess(String jsonString) {
-                        if(getActivity() == null) {
+                        if (getActivity() == null) {
                             return;
                         }
                         super.onSuccess(jsonString);
@@ -326,23 +326,23 @@ public class ClassDetailsFragment extends ContactsListFragment
         for (ClassMessageStatistics msg : list) {
             switch (msg.getTypeCode()) {
                 case ClassMessageStatistics.CLASS_MESSAGE_TYPE_STUDY_TASK:
-                    EntryInfo entryInfo=  entryInfoHashMap.
-                            get(Constants.ENTRY_TYPE_STUDY_TASK+"");
-                    entryInfo.count=msg.getUnReadNumber();
+                    EntryInfo entryInfo = entryInfoHashMap.
+                            get(Constants.ENTRY_TYPE_STUDY_TASK + "");
+                    entryInfo.count = msg.getUnReadNumber();
                     break;
                 case ClassMessageStatistics.CLASS_MESSAGE_TYPE_NOTICE:
-                    entryInfo=  entryInfoHashMap.
-                            get(Constants.ENTRY_TYPE_NOTICE+"");
-                    entryInfo.count=msg.getUnReadNumber();
+                    entryInfo = entryInfoHashMap.
+                            get(Constants.ENTRY_TYPE_NOTICE + "");
+                    entryInfo.count = msg.getUnReadNumber();
                     break;
                 case ClassMessageStatistics.CLASS_MESSAGE_TYPE_SHOW:
-                    entryInfo=  entryInfoHashMap.
-                            get(Constants.ENTRY_TYPE_SHOW+"");
-                    entryInfo.count=msg.getUnReadNumber();
+                    entryInfo = entryInfoHashMap.
+                            get(Constants.ENTRY_TYPE_SHOW + "");
+                    entryInfo.count = msg.getUnReadNumber();
                 case ClassMessageStatistics.CLASS_MESSAGE_TYPE_LECTURE:
-                    entryInfo=  entryInfoHashMap.
-                            get(Constants.ENTRY_TYPE_LECTURES+"");
-                    entryInfo.count=msg.getUnReadNumber();
+                    entryInfo = entryInfoHashMap.
+                            get(Constants.ENTRY_TYPE_LECTURES + "");
+                    entryInfo.count = msg.getUnReadNumber();
                     break;
             }
         }
@@ -355,7 +355,7 @@ public class ClassDetailsFragment extends ContactsListFragment
         super.onResume();
     }
 
-    private void refreshData(){
+    private void refreshData() {
         if (fromType == Constants.FROM_TYPE_CLASS_HEAD_PIC) {
             loadClassInfo();
         } else {
@@ -363,6 +363,7 @@ public class ClassDetailsFragment extends ContactsListFragment
             loadSchoolInfo();
         }
     }
+
     @Override
     public void finish() {
         super.finish();
@@ -416,9 +417,9 @@ public class ClassDetailsFragment extends ContactsListFragment
         if (fromType == Constants.FROM_TYPE_CLASS_HEAD_PIC) {
             if (hasJoinedClass) {
                 attendClassBtn.setVisibility(View.GONE);
-                if(classState== ContactsClassManagementActivity.CLASS_STATUS_PRESENT){
+                if (classState == ContactsClassManagementActivity.CLASS_STATUS_PRESENT) {
                     gridView.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     gridView.setVisibility(View.GONE);
                 }
             } else {
@@ -456,7 +457,7 @@ public class ClassDetailsFragment extends ContactsListFragment
                 new Listener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        if(getActivity() == null) {
+                        if (getActivity() == null) {
                             return;
                         }
                         qrCodeView.setImageBitmap(BitmapFactory.decodeFile(qrCodeImagePath));
@@ -464,7 +465,7 @@ public class ClassDetailsFragment extends ContactsListFragment
 
                     @Override
                     public void onError(NetroidError error) {
-                        if(getActivity() == null) {
+                        if (getActivity() == null) {
                             return;
                         }
                         super.onError(error);
@@ -475,7 +476,7 @@ public class ClassDetailsFragment extends ContactsListFragment
     }
 
     private void loadSchoolInfo() {
-        if (TextUtils.isEmpty(schoolId) || TextUtils.isEmpty(getMemeberId())){
+        if (TextUtils.isEmpty(schoolId) || TextUtils.isEmpty(getMemeberId())) {
             return;
         }
         Map<String, Object> params = new HashMap();
@@ -497,9 +498,9 @@ public class ClassDetailsFragment extends ContactsListFragment
                         schoolInfo = getResult().getModel();
                         if (schoolInfo != null) {
                             //开放校园巡查功能
-                            if(schoolInfo.isSchoolInspector()) {
+                            if (schoolInfo.isSchoolInspector()) {
                                 hasInspectAuth = true;
-                            }else {
+                            } else {
                                 hasInspectAuth = false;
                             }
                         }
@@ -515,7 +516,6 @@ public class ClassDetailsFragment extends ContactsListFragment
         public boolean hasHeader;
         public int count;
     }
-
 
 
     private void enterClassInfoEvent() {
@@ -534,7 +534,7 @@ public class ClassDetailsFragment extends ContactsListFragment
         args.putString(ContactsActivity.EXTRA_CONTACTS_CLASS_NAME, classInfo.getClassName());
         args.putString(ContactsActivity.EXTRA_CONTACTS_HXGROUP_ID, classInfo.getGroupId());
         args.putString("from", ClassDetailsFragment.TAG);
-        if (isOnlineSchool){
+        if (isOnlineSchool) {
             args.putBoolean(ClassContactsDetailsFragment.Constants.IS_ONLINE_SCHOOL, true);
         }
         if (classInfo.isClass()) {
@@ -554,10 +554,10 @@ public class ClassDetailsFragment extends ContactsListFragment
     /**
      * 进入空中课堂的详情界面
      */
-    private void enterAirClassroom(){
-        if (classInfo==null) return;
-        Intent intent=new Intent(getActivity(), AirClassroomActivity.class);
-        Bundle args=new Bundle();
+    private void enterAirClassroom() {
+        if (classInfo == null) return;
+        Intent intent = new Intent(getActivity(), AirClassroomActivity.class);
+        Bundle args = new Bundle();
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_ID, classInfo.getClassMailListId());
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_NAME, classInfo.getClassName());
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_SCHOOL_ID, classInfo.getSchoolId());
@@ -566,13 +566,13 @@ public class ClassDetailsFragment extends ContactsListFragment
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_GRADE_NAME, classInfo.getGradeName());
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_CLASS_ID, classInfo.getClassId());
         args.putBoolean(AirClassroomActivity.EXTRA_IS_TEACHER, classInfo.isTeacherByRoles());
-        args.putBoolean(AirClassroomActivity.EXTRA_IS_HEADMASTER,classInfo.isHeadMaster());
+        args.putBoolean(AirClassroomActivity.EXTRA_IS_HEADMASTER, classInfo.isHeadMaster());
         args.putString(AirClassroomActivity.EXTRA_CONTACTS_CLASS_NAME, classInfo.getClassName());
-        args.putSerializable(AirClassroomActivity.EXTRA_IS_SCHOOLINFO,schoolInfo);
+        args.putSerializable(AirClassroomActivity.EXTRA_IS_SCHOOLINFO, schoolInfo);
         args.putSerializable(AirClassroomActivity.ExTRA_CLASS_INFO, classInfo);
         args.putInt(AirClassroomActivity.EXTRA_ROLE_TYPE, classInfo.getRoleType());
-        if (schoolInfo != null){
-            args.putBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS,schoolInfo.isOnlineSchool());
+        if (schoolInfo != null) {
+            args.putBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS, schoolInfo.isOnlineSchool());
         }
         intent.putExtras(args);
         startActivity(intent);
@@ -581,10 +581,10 @@ public class ClassDetailsFragment extends ContactsListFragment
     /**
      * 进入表演课堂的列表详情
      */
-    private void enterActClassroom(){
-        if (classInfo==null) return;
-        Intent intent=new Intent(getActivity(), ActClassroomActivity.class);
-        Bundle args=new Bundle();
+    private void enterActClassroom() {
+        if (classInfo == null) return;
+        Intent intent = new Intent(getActivity(), ActClassroomActivity.class);
+        Bundle args = new Bundle();
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_ID, classInfo.getClassMailListId());
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_NAME, classInfo.getClassName());
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_SCHOOL_ID, classInfo.getSchoolId());
@@ -593,18 +593,19 @@ public class ClassDetailsFragment extends ContactsListFragment
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_GRADE_NAME, classInfo.getGradeName());
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_CLASS_ID, classInfo.getClassId());
         args.putBoolean(ActClassroomActivity.EXTRA_IS_TEACHER, classInfo.isTeacherByRoles());
-        args.putBoolean(ActClassroomActivity.EXTRA_IS_HEADMASTER,classInfo.isHeadMaster());
+        args.putBoolean(ActClassroomActivity.EXTRA_IS_HEADMASTER, classInfo.isHeadMaster());
         args.putString(ActClassroomActivity.EXTRA_CONTACTS_CLASS_NAME, classInfo.getClassName());
-        args.putSerializable(ActClassroomActivity.EXTRA_IS_SCHOOLINFO,schoolInfo);
+        args.putSerializable(ActClassroomActivity.EXTRA_IS_SCHOOLINFO, schoolInfo);
         intent.putExtras(args);
         startActivity(intent);
 
     }
+
     private void enterClassResourceByChannel(int channelType) {
         if (classInfo == null) {
             return;
         }
-        if (channelType == ClassResourceListActivity.CHANNEL_TYPE_SHOW){
+        if (channelType == ClassResourceListActivity.CHANNEL_TYPE_SHOW) {
             classInfo.setIsTempData(true);
         } else {
             classInfo.setIsTempData(false);
@@ -615,15 +616,16 @@ public class ClassDetailsFragment extends ContactsListFragment
         args.putInt(ClassResourceListActivity.EXTRA_CHANNEL_TYPE, channelType);
         args.putBoolean(ClassResourceListActivity.EXTRA_IS_TEACHER, classInfo.isTeacherByRoles());
         args.putInt(ClassResourceListActivity.EXTRA_ROLE_TYPE, classInfo.getRoleType());
-        args.putBoolean(ClassResourceListActivity.EXTRA_IS_HEAD_MASTER,classInfo.isHeadMaster());
+        args.putBoolean(ClassResourceListActivity.EXTRA_IS_HEAD_MASTER, classInfo.isHeadMaster());
         args.putBoolean(ClassResourceListActivity.EXTRA_IS_HISTORY, classInfo.isHistory());
-        if (schoolInfo != null){
+        if (schoolInfo != null) {
             args.putBoolean(ClassResourceListActivity.EXTRA_IS_ONLINE_SCHOOL_CLASS, schoolInfo.isOnlineSchool());
         }
         Intent intent = new Intent(getActivity(), ClassResourceListActivity.class);
         intent.putExtras(args);
         startActivity(intent);
     }
+
     private void enterEntry(EntryInfo info) {
         if (info == null) {
             return;
@@ -634,7 +636,7 @@ public class ClassDetailsFragment extends ContactsListFragment
                 break;
             case Constants.ENTRY_TYPE_CLASS_LESSON:
                 //班级学程
-                ActivityUtils.enterClassCourseDetailActivity(getActivity(),schoolInfo,classInfo);
+                ActivityUtils.enterClassCourseDetailActivity(getActivity(), schoolInfo, classInfo);
                 break;
             case Constants.ENTRY_TYPE_LECTURES:
                 enterClassResourceByChannel(ClassResourceListActivity.CHANNEL_TYPE_LECTURE);
@@ -658,7 +660,7 @@ public class ClassDetailsFragment extends ContactsListFragment
                 enterActClassroom();
                 break;
             case Constants.ENTRY_TYPE_RELEVANCE_COURSE:
-                if(EmptyUtil.isEmpty(classInfo)) return;
+                if (EmptyUtil.isEmpty(classInfo)) return;
                 // WatchCourseResourceActivity.show(this,"420", WatchResourceType.TYPE_TASK_ORDER,2,0);
                 OnlineCourseHelper.requestOnlineCourseWithClassId(classInfo.getClassId(), new DataSource.Callback<String>() {
                     @Override
@@ -671,7 +673,8 @@ public class ClassDetailsFragment extends ContactsListFragment
                         // 进入课程详情
                         String roles = classInfo.getRoles();
                         boolean isTeacher = UserHelper.isTeacher(roles);
-                        CourseDetailsActivity.start(getActivity(),courseId, true, UserHelper.getUserId(),isTeacher);
+                        CourseDetailsActivity.start(getActivity(), courseId, true,
+                                UserHelper.getUserId(), false, false, isTeacher);
                     }
                 });
                 break;
@@ -686,7 +689,7 @@ public class ClassDetailsFragment extends ContactsListFragment
         item.title = R.string.notices;
         item.icon = R.drawable.icon_class_notice;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
         item = new EntryInfo();
         item.type = Constants.ENTRY_TYPE_SHOW;
@@ -694,14 +697,14 @@ public class ClassDetailsFragment extends ContactsListFragment
         item.title = R.string.shows;
         item.icon = R.drawable.icon_class_show;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
         item = new EntryInfo();
         item.type = Constants.ENTRY_TYPE_STUDY_TASK;
         item.title = R.string.learning_tasks;
         item.icon = R.drawable.icon_learning_tasks;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
         //班级学程
         item = new EntryInfo();
@@ -709,7 +712,7 @@ public class ClassDetailsFragment extends ContactsListFragment
         item.title = R.string.str_class_lesson;
         item.icon = R.drawable.icon_class_lesson;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
 
         item = new EntryInfo();
@@ -717,29 +720,29 @@ public class ClassDetailsFragment extends ContactsListFragment
         item.title = R.string.lectures;
         item.icon = R.drawable.icon_gen_e_school;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
-        item=new EntryInfo();
-        item.type= Constants.TAB_ENTITY_TYPE_AIR_CLASSROOM;
-        item.title=R.string.air_classroom;
-        item.icon=R.drawable.airclass_icon;
+        item = new EntryInfo();
+        item.type = Constants.TAB_ENTITY_TYPE_AIR_CLASSROOM;
+        item.title = R.string.air_classroom;
+        item.icon = R.drawable.airclass_icon;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
         //表演课堂
-        item=new EntryInfo();
-        item.type=Constants.TAB_ENTITY_TYPE_ACT_CLASSROOM;
-        item.title=R.string.act_classroom;
-        item.icon=R.drawable.act_classroom_icon;
+        item = new EntryInfo();
+        item.type = Constants.TAB_ENTITY_TYPE_ACT_CLASSROOM;
+        item.title = R.string.act_classroom;
+        item.icon = R.drawable.act_classroom_icon;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
 
         item = new EntryInfo();
         item.type = Constants.ENTRY_TYPE_CLASS_INFO;
         item.title = R.string.class_detail;
         item.icon = R.drawable.icon_class_information;
         itemList.add(item);
-        entryInfoHashMap.put(item.type+"",item);
+        entryInfoHashMap.put(item.type + "", item);
         getCurrAdapterViewHelper().setData(itemList);
     }
 
@@ -768,7 +771,7 @@ public class ClassDetailsFragment extends ContactsListFragment
             }
             holder.data = data;
 
-            int itemWidth = ScreenUtils.getScreenWidth(getActivity()) / COLUMN_NUM ;
+            int itemWidth = ScreenUtils.getScreenWidth(getActivity()) / COLUMN_NUM;
             int iconSize = getResources().getDimensionPixelSize(R.dimen.thumb_size);
 
             view.setLayoutParams(new AbsListView.LayoutParams(itemWidth, AbsListView
@@ -794,7 +797,7 @@ public class ClassDetailsFragment extends ContactsListFragment
 //                } else {
 //                    textView.setText(String.valueOf(data.count));
 //                }
-                imageView.setVisibility(data.count> 0 ?
+                imageView.setVisibility(data.count > 0 ?
                         View.VISIBLE : View.GONE);
 
             }
@@ -911,8 +914,8 @@ public class ClassDetailsFragment extends ContactsListFragment
 
     private void share() {
         String shareAddress;
-        shareAddress = String.format(ServerUrl.SUBSCRIBE_SHARE_QRCODE_URL,contactId )
-                    + "&Type=" + 0;//班级
+        shareAddress = String.format(ServerUrl.SUBSCRIBE_SHARE_QRCODE_URL, contactId)
+                + "&Type=" + 0;//班级
         ShareInfo shareInfo = new ShareInfo();
         shareInfo.setTitle(className);
         if (!TextUtils.isEmpty(schoolName)) {
@@ -947,22 +950,22 @@ public class ClassDetailsFragment extends ContactsListFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null){
-            if (requestCode == ClassContactsDetailsFragment.Constants.REQUEST_CODE_CLASS_DETAILS){
-                if (data!=null){
-                    boolean back=data.getBooleanExtra("back",false);
-                    if (back){
-                        Intent intent=new Intent();
-                        Bundle bundle=new Bundle();
-                        bundle.putBoolean("back",true);
+        if (data != null) {
+            if (requestCode == ClassContactsDetailsFragment.Constants.REQUEST_CODE_CLASS_DETAILS) {
+                if (data != null) {
+                    boolean back = data.getBooleanExtra("back", false);
+                    if (back) {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("back", true);
                         intent.putExtras(bundle);
-                        getActivity().setResult(Activity.RESULT_OK,intent);
+                        getActivity().setResult(Activity.RESULT_OK, intent);
                         getActivity().finish();
                         return;
                     }
                 }
                 //班级信息改变
-                if (ClassContactsDetailsFragment.hasClassContentChanged()){
+                if (ClassContactsDetailsFragment.hasClassContentChanged()) {
                     ClassContactsDetailsFragment.setHasClassContentChanged(false);
                     //设置本页面标志位
                     ClassDetailsFragment.setHasContentChanged(true);

@@ -487,4 +487,27 @@
 
     <string name="buy_online_school">购买%s空中课堂</string>
 
+    <string name="reward_vouchers">奖励代金券</string>
+    <string name="n_buy_first_chapter">购买【%s】第一章</string>
+    <string-array name="video_resource_types">
+        <item>配套课件</item>
+        <item>配套教案</item>
+        <item>配套习题</item>
+    </string-array>
+
+    <string-array name="course_type_names">
+        <item>读本</item>
+        <item>学本</item>
+        <item>练本</item>
+        <item>测本</item>
+        <item>视频</item>
+    </string-array>
+
+    <string name="user_comment">用户评论</string>
+    <string name="to_ask_question">我要\n帮辅</string>
+    <string name="course_subject_colon">授课科目：</string>
+    <string name="delete_class_totur_info">你确定从班级帮辅中移除该辅导老师吗？</string>
+    <string name="class_tutor">班级帮辅</string>
+    <string name="add_class_tutor">+班级帮辅</string>
+    <string name="add_course_success">课程参加成功</string>
 </resources>

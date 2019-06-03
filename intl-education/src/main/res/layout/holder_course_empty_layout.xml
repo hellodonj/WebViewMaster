@@ -6,66 +6,65 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:layout_gravity="center">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_course_empty"
-            />
+            android:src="@drawable/ic_course_empty" />
 
         <TextView
             android:id="@+id/remind_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/textSecond"
-            android:textSize="14sp"
             android:layout_marginTop="10dp"
-            android:text="@string/label_course_empty_info_1"/>
+            android:singleLine="true"
+            android:text="@string/label_course_empty_info_1"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/textSecond"
-            android:textSize="14sp"
             android:layout_marginTop="10dp"
-            android:text="@string/label_course_empty_info_2"/>
+            android:singleLine="true"
+            android:text="@string/label_course_empty_info_2"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/call_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/textSecond"
-            android:textSize="14sp"
             android:padding="0dp"
-            android:text="@string/label_course_empty_remind_text1"/>
+            android:singleLine="true"
+            android:text="@string/label_course_empty_remind_text1"
+            android:textColor="@color/textSecond"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/textAccent"
-            android:textSize="14sp"
-            android:padding="0dp"
             android:layout_marginLeft="4dp"
-            android:text="@string/label_course_empty_remind_text2"/>
+            android:padding="0dp"
+            android:singleLine="true"
+            android:text="@string/label_course_empty_remind_text2"
+            android:textColor="@color/textAccent"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

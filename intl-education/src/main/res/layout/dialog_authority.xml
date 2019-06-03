@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:background="@drawable/com_white_radio_bt_normal"
               android:showDividers="middle"
-              android:divider="@drawable/divider_line"
+              android:divider="@drawable/divider_line_h_1dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
         <TextView

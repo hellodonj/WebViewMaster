@@ -225,12 +225,25 @@ public class DubbingVideoView extends FrameLayout implements
 
 
     public void dubbingSeekTo(long time) {
-        if (null != mIjkVideoView) {
+        if (mIjkVideoView != null) {
             mIjkVideoView.seekTo((int) time);
         }
-        if (null != audioMedia) {
+        if (audioMedia != null) {
             audioMedia.seekTo((int) time);
         }
+    }
+
+    public void continuePlay(){
+        if (mIjkVideoView != null) {
+            mIjkVideoView.start();
+        }
+        if (audioMedia != null) {
+            audioMedia.start();
+        }
+        mPlayButton.setVisibility(GONE);
+        mThumb.setVisibility(GONE);
+        mIsPlaying = true;
+        mHandler.sendEmptyMessage(SHOW_PROGRESS);
     }
 
     public int getCurrentPosition() {
@@ -328,7 +341,7 @@ public class DubbingVideoView extends FrameLayout implements
     }
 
 
-    private void play(int mode) {
+    public void play(int mode) {
         mPlayButton.setVisibility(GONE);
         mThumb.setVisibility(GONE);
         mIsPlaying = true;
@@ -364,7 +377,9 @@ public class DubbingVideoView extends FrameLayout implements
             isPlaySourceAudio = false;
             boolean isPausing = false;
             if (mode == MODE_FINALLY_REVIEW) {
-                if (supportPause && mIjkVideoView.isPausing() && mIjkVideoView.getCurrentPosition() > 0){
+                if (supportPause
+                        && mIjkVideoView.isPausing()
+                        && lasttime > 0){
                     isPausing = true;
                 } else {
                     mIjkVideoView.seekTo(0);
@@ -412,8 +427,8 @@ public class DubbingVideoView extends FrameLayout implements
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(0);
         mPlayButton.setVisibility(VISIBLE);
-        if (null != audioMedia) {
-            audioMedia.seekTo(0);
+        if (audioMedia != null) {
+            audioMedia.stop();
         }
         if (!keepStatus) {
             dubbing_status = STATUS_NORMAL;
@@ -426,8 +441,8 @@ public class DubbingVideoView extends FrameLayout implements
     public void resetAV() {
         mIjkVideoView.pause();
         mIjkVideoView.seekTo(0);
-        if (null != audioMedia) {
-            audioMedia.seekTo(0);
+        if (audioMedia != null) {
+            audioMedia.stop();
         }
     }
 
@@ -633,6 +648,7 @@ public class DubbingVideoView extends FrameLayout implements
                         onEventListener.onDubbingComplete();
                     } else if (mode == MODE_FINALLY_REVIEW){
                         onEventListener.onFinalReviewComplete();
+                        lasttime = 0;
                     } else if (mode == MODE_ALLPLAY) {
                         lasttime = 0;
                     }
@@ -653,6 +669,10 @@ public class DubbingVideoView extends FrameLayout implements
 //            resetAV();
 //            lasttime = 0;
 //        }
+    }
+
+    public void setLastTime(int lasttime){
+        this.lasttime = 0;
     }
 
     @Override
@@ -690,6 +710,10 @@ public class DubbingVideoView extends FrameLayout implements
                 play(mode);
             }
         }
+    }
+
+    public void setEndTime(int endTime){
+        this.endTime = endTime;
     }
 
     class MediaPlayerInfoListener implements IMediaPlayer.OnInfoListener {

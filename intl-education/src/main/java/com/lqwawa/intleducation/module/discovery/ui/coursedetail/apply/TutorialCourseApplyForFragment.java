@@ -552,6 +552,7 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                                     @Override
                                     public void onDataLoaded(Boolean aBoolean) {
                                         if(aBoolean){
+                                            UIUtil.showToastSafe(R.string.label_apply_for_tutor_success);
                                             // 申请成功
                                             if(EmptyUtil.isNotEmpty(navigator)){
                                                 navigator.onCourseTutorEnter(true);

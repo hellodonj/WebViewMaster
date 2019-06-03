@@ -1788,8 +1788,7 @@
     <string name="str_look_task_require">View Task Requirement</string>
     <string name="str_open_assistant_model">Enable tutorial mode, enter Tutor Space</string>
     <string name="str_assistant_model_title">Enable tutorial mode</string>
-    <string name="str_assistant_dialog_tips">Select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor.\n
-        Enter Tutor Space to solve puzzles for students.</string>
+    <string name="str_assistant_dialog_tips">Please select subject in Me > Subject Setting or select courses you are good at in Multilanguage and Domestic Course modules to act as a tutor. Enter Tutor Space to solve puzzles for students.</string>
     <string name="str_no_longer_prompt">Do not show</string>
     <string name="str_my_courses">Learning</string>
     <string name="str_exit_assistant_model">Exit tutorial mode, enter Learning Space</string>
@@ -1797,4 +1796,5 @@
     <string name="str_apply_mark_line_feed">Consult\nTutor</string>
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
+    <string name="class_tutor">Class Tutor</string>
 </resources>

@@ -10,11 +10,9 @@ import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.LogUtil;
-import com.lqwawa.intleducation.common.slide.CourseType;
 import com.osastudio.common.utils.TipMsgHelper;
 
 import java.io.BufferedOutputStream;
@@ -104,43 +102,6 @@ public class Utils {
         }
     }
 
-    public static String getUserCourseRootPath(String memberId, int courseType, boolean isFolder) {
-        if (TextUtils.isEmpty(memberId) || courseType < 0) {
-            return null;
-        }
-        String rootPath;
-        if (courseType == CourseType.COURSE_TYPE_IMPORT) {
-            rootPath = Utils.IMPORTED_FOLDER;
-        } else {
-            rootPath = Utils.RECORD_FOLDER;
-        }
-
-//		File rootFile = new File(rootPath);
-//		if(rootFile == null || !rootFile.exists()) {
-//			rootFile.mkdirs();
-//		}
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(rootPath);
-        if (!rootPath.endsWith(File.separator)) {
-            builder.append(File.separator);
-        }
-        builder.append(memberId);
-        builder.append(File.separator);
-        if (isFolder) {
-            builder.append(FOLDER);
-        } else {
-            builder.append(FILE);
-        }
-
-        String path = builder.toString();
-        File file = new File(path);
-        if(!file.exists()) {
-            file.mkdirs();
-        }
-
-        return builder.toString();
-    }
     public static boolean safeDeleteDirectory(String dir) {
         File dirFile = new File(dir);
         if (!dirFile.exists() || !dirFile.isDirectory()) {

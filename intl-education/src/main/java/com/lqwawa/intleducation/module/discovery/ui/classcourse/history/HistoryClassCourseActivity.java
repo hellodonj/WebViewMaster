@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -27,17 +28,16 @@ import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
+import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogFragment;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.common.ActionDialogNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
@@ -67,6 +67,13 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private static final int CHARACTERISTIC_COURSE_ID = 2005;
     // 基础课程
     private static final int COUNTRY_COURSE_ID = 2003;
+
+    // 分类阅读
+    public static final int CLASSIFIED_READING_ID = 1001;
+    // 绘本
+    public static final int PICTURE_BOOK_ID = 1002;
+    // Q配音
+    public static final int Q_DUBBING_ID = 1003;
 
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
@@ -102,6 +109,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private String mClassName;
     private String mRoles;
     private boolean isTeacher;
+    // 或者是班主任或者老师
+    private boolean isHeadMasterOrTeacher;
 
     // 全部文本
     private String mAllText = UIUtil.getString(R.string.label_course_filtrate_all);
@@ -123,6 +132,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     private boolean isAuthorized;
 
+    // 暂存上个标签参数，当前标签参数与上个不一致，清空所保存的选择Id
+    private String lastTagParams;
+
 
     @Override
     protected HistoryClassCourseContract.Presenter initPresenter() {
@@ -143,6 +155,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         mClassId = mClassCourseParams.getClassId();
         mClassName = mClassCourseParams.getClassName();
         mRoles = mClassCourseParams.getRoles();
+        isHeadMasterOrTeacher = mClassCourseParams.isHeadMaster() | mClassCourseParams.isTeacher();
         if (EmptyUtil.isEmpty(mSchoolId) ||
                 EmptyUtil.isEmpty(mClassId) ||
                 EmptyUtil.isEmpty(mRoles)) {
@@ -165,7 +178,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
             }
-
+            RefreshUtil.getInstance().clear();
             finish();
         });
 
@@ -176,6 +189,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     HideSortType.TYPE_SORT_CLASS_HISTORY_COURSE,
                     UIUtil.getString(R.string.title_history_course),
                     SEARCH_REQUEST_CODE);
+            RefreshUtil.getInstance().clear();
         });
 
         mSearchContent = (EditText) findViewById(R.id.et_search);
@@ -245,7 +259,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
         // 班级学程进入参数
         boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
-        if (mClassCourseParams.isHeadMaster()) {
+        if (isHeadMasterOrTeacher) {
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnAdd.setOnClickListener(this);
             mBtnRemove.setOnClickListener(this);
@@ -253,7 +267,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             mBottomLayout.setVisibility(View.GONE);
         }
 
-        mCourseAdapter = new ClassCourseAdapter(mClassCourseParams.isHeadMaster(), mRoles);
+        mCourseAdapter = new ClassCourseAdapter(isHeadMasterOrTeacher, mRoles);
         mRecycler.setNestedScrollingEnabled(false);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 3) {
             @Override
@@ -269,11 +283,16 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity entity) {
                 super.onItemClick(holder, entity);
-                if(mCourseAdapter.isChoiceMode()) {
+                if (mCourseAdapter.isChoiceMode()) {
                     // 添加选择,或者取消选择
                     entity.setChecked(!entity.isChecked());
                     mCourseAdapter.notifyDataSetChanged();
-                }else{
+                    if (entity.isChecked()) {
+                        RefreshUtil.getInstance().addId(entity.getId());
+                    } else {
+                        RefreshUtil.getInstance().removeId(entity.getId());
+                    }
+                } else {
                     // 班级学程的详情入口
                     String courseId = entity.getCourseId();
                     // 班级学程进入参数
@@ -281,16 +300,17 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
 
-                    CourseDetailParams params = new CourseDetailParams(mSchoolId,mClassId,mClassName,isAuthorized);
+                    CourseDetailParams params = new CourseDetailParams(mSchoolId, mClassId, mClassName, isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
                     params.setClassParent(!isResult && isParent);
 
                     // CourseDetailsActivity.start(ClassCourseActivity.this , courseId, true, UserHelper.getUserId(),params);
 
-                    CourseDetailsActivity.start(isAuthorized,params,false,HistoryClassCourseActivity.this,courseId, true, UserHelper.getUserId());
+                    CourseDetailsActivity.start(HistoryClassCourseActivity.this, courseId, true,
+                            UserHelper.getUserId(), isAuthorized, params, false);
                     // 如果是班主任,清除Hold状态
-                    if(mClassCourseParams.isHeadMaster()){
+                    if (mClassCourseParams.isHeadMaster()) {
                         switchHoldState(false);
                     }
                 }
@@ -299,32 +319,30 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             @Override
             public void onItemLongClick(RecyclerAdapter.ViewHolder holder, ClassCourseEntity classCourseEntity) {
                 super.onItemLongClick(holder, classCourseEntity);
-                if (mClassCourseParams.isHeadMaster()) {
-                    switchHoldState(true, classCourseEntity);
+                if (isHeadMasterOrTeacher && !mCourseAdapter.isChoiceMode()) {
+//                    switchHoldState(true, classCourseEntity);
+                    int resId = mClassCourseParams.isHeadMaster() ? R.string.label_delete : 0;
+                    ClassCourseEntity entity = classCourseEntity;
+                    ActionDialogFragment.show(getSupportFragmentManager(),
+                            R.string.label_remove_out, resId,
+                            (button, tag) -> {
+                                if (tag == ActionDialogFragment.Tag.UP) {
+                                    // 移除
+                                    List<ClassCourseEntity> entities = new ArrayList<>();
+                                    entities.add(entity);
+                                    mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                                } else if (tag == ActionDialogFragment.Tag.DOWN) {
+                                    // 删除
+                                    deleteCourseFromClass(entity);
+                                }
+                            });
                 }
             }
         });
 
         // 添加cell的删除事件
         mCourseAdapter.setNavigator(position -> {
-            ClassCourseEntity entity = mCourseAdapter.getItems().get(position);
-            ActionDialogFragment.show(getSupportFragmentManager(),
-                    getString(R.string.label_please_choice_action),
-                    R.string.label_remove_out, R.string.label_delete,
-                    new ActionDialogNavigator() {
-                        @Override
-                        public void onAction(@NonNull View button, ActionDialogFragment.Tag tag) {
-                            if (tag == ActionDialogFragment.Tag.LEFT) {
-                                // 移除
-                                List<ClassCourseEntity> entities = new ArrayList<>();
-                                entities.add(entity);
-                                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
-                            } else if (tag == ActionDialogFragment.Tag.RIGHT) {
-                                // 删除
-                                deleteCourseFromClass(entity);
-                            }
-                        }
-                    });
+
         });
 
         // 下拉刷新与加载更多
@@ -388,8 +406,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             clearConfigArrayStatus(mConfigEntities);
         }
 
-        mCourseAdapter.setChoiceMode(false);
-        updateActionStatus(false);
+//        mCourseAdapter.setChoiceMode(false);
+//        updateActionStatus(false);
         requestClassCourse(false);
     }
 
@@ -462,8 +480,22 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             }
         }
 
+        String tagParams = getTagParams(name, level, paramOneId, paramTwoId);
+        if (!TextUtils.equals(tagParams, lastTagParams)) {
+            lastTagParams = tagParams;
+            RefreshUtil.getInstance().clear();
+        }
 
         mPresenter.requestHistoryClassCourseData(mClassId, role, name, level, paramOneId, paramTwoId, pageIndex);
+    }
+
+    private String getTagParams(String name, String level, int paramOneId, int paramTwoId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(name);
+        stringBuilder.append(level);
+        stringBuilder.append(paramOneId);
+        stringBuilder.append(paramTwoId);
+        return stringBuilder.toString();
     }
 
     @Override
@@ -491,6 +523,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
+            mHeaderLayout.setVisibility(View.VISIBLE);
         } else {
             // 隐藏HeaderLayout
             mHeaderLayout.setVisibility(View.GONE);
@@ -502,31 +535,45 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
      * 组装Label数据
      */
     private void configLabel(@NonNull int rootId) {
-        // 是否配置全部
+        // 类型固定
+        mTabLabel1.setText(getString(R.string.label_colon_type));
         mTabVector2.setVisibility(View.VISIBLE);
-
         if (rootId == MINORITY_LANGUAGE_COURSE_ID) {
             // 小语种课程 二级页面
             mTabVector3.setVisibility(View.GONE);
 
-            // 类型语言
-            mTabLabel1.setText(getString(R.string.label_colon_type));
+            // 语言
             mTabLabel2.setText(getString(R.string.label_colon_language));
         } else if (rootId == ENGLISH_INTERNATIONAL_COURSE_ID) {
             // 英语国际课程 三级页面
-            // 三级页面
+            // 类型 科目
+
             mTabVector3.setVisibility(View.VISIBLE);
 
-            // 类型 类型 科目
-            mTabLabel1.setText(getString(R.string.label_colon_type));
             mTabLabel2.setText(getString(R.string.label_colon_type));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
+        } else if (rootId == CLASSIFIED_READING_ID) {
+            //分类阅读
+            mTabVector3.setVisibility(View.GONE);
+
+            // 科目, 级别
+            mTabLabel2.setText(getString(R.string.label_colon_subject));
+            mTabLabel3.setText(getString(R.string.label_colon_level));
+        } else if (rootId == PICTURE_BOOK_ID) {
+            //绘本  三级页面
+            mTabVector3.setVisibility(View.VISIBLE);
+
+            // 年龄段 语言
+            mTabLabel2.setText(getString(R.string.label_colon_age));
+            mTabLabel3.setText(getString(R.string.label_colon_language));
+        } else if (rootId == Q_DUBBING_ID) {
+            mTabVector2.setVisibility(View.GONE);
+            mTabVector3.setVisibility(View.GONE);
         } else {
             // 三级页面
             mTabVector3.setVisibility(View.VISIBLE);
 
-            // 类型 学段 科目
-            mTabLabel1.setText(getString(R.string.label_colon_type));
+            // 学段 科目
             mTabLabel2.setText(getString(R.string.label_colon_period));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
 
@@ -765,11 +812,19 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             recursionConfigArray(tabData.getChildList());
             configLabel(tabData.getId());
             initTabControl2();
+            if (tabData.getId() == PICTURE_BOOK_ID) {
+                clearArray(CONFIG_TYPE_3);
+                recursionConfigArray(tabData.getChildList());
+                initTabControl3();
+            }
             // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
             // initTabControl3();
 
             // 数据请求
             // triggerUpdateData();
+            if (tabData.getChildList() == null || tabData.getChildList().isEmpty()) {
+                triggerUpdateData();
+            }
         }
     };
 
@@ -800,8 +855,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
             // 数据请求
             for (Tab tab1 : mFiltrateArray1) {
-                if (tab1.getId() == MINORITY_LANGUAGE_COURSE_ID) {
-                    // 选中的是小语种的Id
+                if (tab1.getId() == MINORITY_LANGUAGE_COURSE_ID
+                        || tab1.getId() == CLASSIFIED_READING_ID) {
+                    // 小语种和分类阅读
                     triggerUpdateData();
                 }
             }
@@ -907,6 +963,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     @Override
     public void updateHistoryClassCourseView(List<ClassCourseEntity> entities) {
+        restoreCheckState(entities);
+
         mCourseAdapter.replace(entities);
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
@@ -924,6 +982,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     @Override
     public void updateMoreHistoryClassCourseView(List<ClassCourseEntity> entities) {
+        restoreCheckState(entities);
+        
         mCourseAdapter.add(entities);
         mRefreshLayout.onFooterRefreshComplete();
         mRefreshLayout.setLoadMoreEnable(EmptyUtil.isNotEmpty(entities) && entities.size() >= AppConfig.PAGE_SIZE);
@@ -936,6 +996,18 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             // 数据不为空
             mRefreshLayout.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void restoreCheckState(List<ClassCourseEntity> entities) {
+        if (entities != null && entities.size() > 0) {
+            for (ClassCourseEntity entity : entities) {
+                if (entity != null && entity.getId() > 0) {
+                    if (RefreshUtil.getInstance().contains(entity.getId())) {
+                        entity.setChecked(true);
+                    }
+                }
+            }
         }
     }
 
@@ -957,6 +1029,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         this.hideLoading();
         // 刷新UI
         // 刷新标签和课程
+        RefreshUtil.getInstance().clear();
         mPresenter.requestHistoryClassConfigData(mClassId);
     }
 
@@ -965,6 +1038,15 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         this.hideLoading();
         // 刷新UI
         // 刷新标签和课程
+        mPresenter.requestHistoryClassConfigData(mClassId);
+    }
+
+    @Override
+    public void updateRemoveCourseFromClassView(Boolean aBoolean) {
+        this.hideLoading();
+        // 刷新UI
+        // 刷新标签和课程
+        RefreshUtil.getInstance().clear();
         mPresenter.requestHistoryClassConfigData(mClassId);
     }
 
@@ -998,22 +1080,27 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 List<ClassCourseEntity> items = mCourseAdapter.getItems();
                 ArrayList<ClassCourseEntity> entities = new ArrayList<>();
                 for (ClassCourseEntity item : items) {
-                    if(item.isChecked()){
+                    if (item.isChecked()) {
                         item.setChecked(false);
                         entities.add(item);
                     }
                 }
 
-                if(EmptyUtil.isEmpty(entities)){
+                if (EmptyUtil.isEmpty(entities)) {
                     // 提示选择要移除的历史学程
                     UIUtil.showToastSafe(R.string.label_please_choice_remove_history_course);
                     return;
                 }
 
                 showLoading();
-                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId,mClassId,entities);
+                mPresenter.requestRemoveHistoryCourseFromClass(mSchoolId, mClassId, entities);
+                mCourseAdapter.setChoiceMode(false);
                 updateActionStatus(false);
             } else {
+                // 如果是班主任,清除Hold状态
+                if (mClassCourseParams.isHeadMaster()) {
+                    switchHoldState(false);
+                }
                 // UIUtil.showToastSafe(R.string.label_add_in);
                 AddHistoryCourseActivity.show(this, mClassCourseParams, ADD_HISTORY_REQUEST_CODE);
             }
@@ -1028,22 +1115,27 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 }
                 mCourseAdapter.notifyDataSetChanged();
                 updateActionStatus(false);
-            }else{
+            } else {
                 // 触发选择
                 mCourseAdapter.setChoiceMode(true);
                 mCourseAdapter.notifyDataSetChanged();
                 updateActionStatus(true);
+
+                // 如果是班主任,清除Hold状态
+                if (mClassCourseParams.isHeadMaster()) {
+                    switchHoldState(false);
+                }
             }
         }
     }
 
-    private void updateActionStatus(boolean checking){
-        if(checking){
+    private void updateActionStatus(boolean checking) {
+        if (checking) {
             mBtnAdd.setActivated(true);
             mBtnRemove.setActivated(true);
             mBtnRemove.setText(R.string.label_cancel);
             mBtnAdd.setText(R.string.label_confirm_authorization);
-        }else{
+        } else {
             mBtnAdd.setActivated(false);
             mBtnRemove.setActivated(false);
             mBtnRemove.setText(R.string.label_remove_out);
@@ -1084,7 +1176,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 intent.putExtras(bundle);
                 setResult(Activity.RESULT_OK, intent);
             }
-
+            RefreshUtil.getInstance().clear();
             finish();
         }
     }
@@ -1092,8 +1184,8 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     /**
      * 班级历史学程页面的入口
      *
-     * @param activity 上下文对象
-     * @param params   核心参数
+     * @param activity     上下文对象
+     * @param params       核心参数
      * @param isAuthorized 是否授权
      */
     public static void show(@NonNull Activity activity,

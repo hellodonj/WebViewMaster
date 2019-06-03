@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="common_course_shop">Course Library</string>
+    <string name="common_course_library">Course Library</string>
+    <string name="common_course_shop">Course</string>
+    <string name="common_practice_library">Exercise</string>
+    <string name="common_library">Library</string>
+    <string name="common_video_library">Video</string>
+
+    <string-array name="organ_library_names">
+        <item>Course</item>
+        <item>Exercise</item>
+        <item>Library</item>
+        <item>Video</item>
+    </string-array>
+
 </resources>

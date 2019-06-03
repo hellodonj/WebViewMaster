@@ -20,8 +20,6 @@ import com.lqwawa.intleducation.module.box.common.CommonMarkingListFragment;
 import com.lqwawa.intleducation.module.box.common.CommonMarkingParams;
 import com.lqwawa.intleducation.module.discovery.ui.myonline.MyOnlinePagerFragment;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.MyCourseListFragment;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialActivity;
 import com.lqwawa.intleducation.module.tutorial.student.courses.StudentTutorialParams;
@@ -37,7 +35,7 @@ import java.util.List;
  * @desc 个人课程的页面
  */
 public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContract.Presenter>
-        implements MyCourseInnerContract.View{
+        implements MyCourseInnerContract.View {
 
     private static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
     private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
@@ -62,7 +60,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
     protected boolean initArgs(Bundle bundle) {
         mCurMemberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
         mSchoolId = bundle.getString(KEY_EXTRA_SCHOOL_ID);
-        if(EmptyUtil.isEmpty(mCurMemberId)) return false;
+        if (EmptyUtil.isEmpty(mCurMemberId)) return false;
         return super.initArgs(bundle);
     }
 
@@ -71,7 +69,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
         super.initWidget();
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(),4){
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 4) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -91,13 +89,13 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
             public void onItemClick(RecyclerAdapter.ViewHolder holder, FunctionEntity functionEntity) {
                 super.onItemClick(holder, functionEntity);
                 int titleId = functionEntity.getTitleId();
-                if(titleId == R.string.label_student_work){
+                if (titleId == R.string.label_student_work) {
                     skipStudentWork();
-                }else if(titleId == R.string.label_student_tutorial){
+                } else if (titleId == R.string.label_student_tutorial) {
                     skipStudentTutorial();
-                }else if(titleId == R.string.label_student_course){
+                } else if (titleId == R.string.label_student_course) {
                     skipStudentCourse();
-                }else if(titleId == R.string.label_student_live){
+                } else if (titleId == R.string.label_student_live) {
                     skipStudentLive();
                 }
             }
@@ -108,68 +106,67 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
     protected void initData() {
         super.initData();
         List<FunctionEntity> entities = new ArrayList<>();
-        entities.add(new FunctionEntity(R.string.label_student_work,R.drawable.ic_tutorial_work));
-        entities.add(new FunctionEntity(R.string.label_student_tutorial,R.drawable.ic_student_tutorial));
-        entities.add(new FunctionEntity(R.string.label_student_course,R.drawable.ic_student_course));
-        entities.add(new FunctionEntity(R.string.label_student_live,R.drawable.ic_student_live));
+        entities.add(new FunctionEntity(R.string.label_student_course, R.drawable.ic_student_course));
+        entities.add(new FunctionEntity(R.string.label_student_work, R.drawable.ic_tutorial_work));
+        entities.add(new FunctionEntity(R.string.label_student_tutorial, R.drawable.ic_student_tutorial));
+        entities.add(new FunctionEntity(R.string.label_student_live, R.drawable.ic_student_live));
         mAdapter.replace(entities);
 
-        CommonMarkingParams params = new CommonMarkingParams(false,mCurMemberId);
+        CommonMarkingParams params = new CommonMarkingParams(false, mCurMemberId);
         Fragment fragment = CommonMarkingListFragment.newInstance(params);
         FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.lay_content,fragment)
+                .replace(R.id.lay_content, fragment)
                 .commit();
     }
 
-    private void skipStudentWork(){
+    private void skipStudentWork() {
         /*boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
         TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
         TutorialMarkingListActivity.show(getActivity(),params);*/
 
-        boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
-        TutorialTargetTaskParams params = new TutorialTargetTaskParams(mCurMemberId,null,getString(R.string.label_committed_works));
+        boolean isParent = !TextUtils.equals(UserHelper.getUserId(), mCurMemberId);
+        TutorialTargetTaskParams params = new TutorialTargetTaskParams(mCurMemberId, null, getString(R.string.label_committed_works));
         params.setParent(isParent);
-        params.setRole(isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-        TutorialStudentTargetTaskActivity.show(getActivity(),params);
+        params.setRole(isParent ? TutorialRoleType.TUTORIAL_TYPE_PARENT : TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+        TutorialStudentTargetTaskActivity.show(getActivity(), params);
     }
 
-    private void skipStudentTutorial(){
-        boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
+    private void skipStudentTutorial() {
+        boolean isParent = !TextUtils.equals(UserHelper.getUserId(), mCurMemberId);
         String configValue = getString(R.string.label_student_tutorial);
-        StudentTutorialParams params = new StudentTutorialParams(isParent,mCurMemberId,configValue);
-        StudentTutorialActivity.show(getActivity(),params);
+        StudentTutorialParams params = new StudentTutorialParams(isParent, mCurMemberId, configValue);
+        StudentTutorialActivity.show(getActivity(), params);
     }
 
-    private void skipStudentCourse(){
+    private void skipStudentCourse() {
         Bundle bundle = new Bundle();
-        bundle.putString(CommonContainerActivity.CourseFragmentConstance.KEY_EXTRA_MEMBER_ID,mCurMemberId);
-        bundle.putString(CommonContainerActivity.CourseFragmentConstance.KEY_EXTRA_SCHOOL_ID,mSchoolId);
-        bundle.putBoolean(CommonContainerActivity.CourseFragmentConstance.KEY_EXTRA_BOOLEAN_TEACHER,false);
-        CommonContainerActivity.show(getActivity(),true,
-                getString(R.string.label_student_course),
-                MyCourseListFragment.class.getName(),bundle);
+        bundle.putString(MyCourseListFragment.KEY_EXTRA_MEMBER_ID, mCurMemberId);
+        bundle.putString(MyCourseListFragment.KEY_EXTRA_SCHOOL_ID, mSchoolId);
+        bundle.putBoolean(MyCourseListFragment.KEY_EXTRA_BOOLEAN_TEACHER, false);
+        CommonContainerActivity.show(getActivity(), getString(R.string.label_student_course),
+                MyCourseListFragment.class, bundle);
     }
 
-    private void skipStudentLive(){
+    private void skipStudentLive() {
         Bundle bundle = new Bundle();
-        bundle.putString(CommonContainerActivity.OnlineLiveFragmentConstance.KEY_EXTRA_MEMBER_ID,mCurMemberId);
-        bundle.putBoolean(CommonContainerActivity.OnlineLiveFragmentConstance.KEY_EXTRA_HIDE_SEARCH,false);
-        CommonContainerActivity.show(getActivity(),true,
-                getString(R.string.label_student_live),
-                MyOnlinePagerFragment.class.getName(),bundle);
+        bundle.putString(MyOnlinePagerFragment.KEY_EXTRA_CURRENT_MEMBER_ID, mCurMemberId);
+        bundle.putBoolean(MyOnlinePagerFragment.KEY_EXTRA_HIDE_TOP_SEARCH, false);
+        CommonContainerActivity.show(getActivity(), getString(R.string.label_student_live),
+                MyOnlinePagerFragment.class, bundle);
     }
 
     /**
      * 个人帮辅空间入口
+     *
      * @return TutorialSpaceInnerFragment
      */
     public static MyCourseInnerFragment newInstance(@NonNull String memberId,
-                                                    @Nullable String schoolId){
+                                                    @Nullable String schoolId) {
         MyCourseInnerFragment fragment = new MyCourseInnerFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_EXTRA_MEMBER_ID,memberId);
-        bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
+        bundle.putString(KEY_EXTRA_MEMBER_ID, memberId);
+        bundle.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
         fragment.setArguments(bundle);
         return fragment;
     }

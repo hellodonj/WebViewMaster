@@ -1,12 +1,6 @@
 package com.lqwawa.intleducation.common.utils;
 
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
-
-import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ================================================
@@ -20,7 +14,7 @@ import java.util.List;
 
 public class RefreshUtil {
 
-    private ArrayList<String> IdList;
+    private ArrayList<Object> idList;
 
 
     private RefreshUtil() {
@@ -32,7 +26,6 @@ public class RefreshUtil {
     }
 
     public static RefreshUtil getInstance() {
-
         return HolderClass.instance;
     }
 
@@ -41,15 +34,11 @@ public class RefreshUtil {
      *
      * @param id 传入资源id
      */
-    public boolean contains(String id) {
-        if (IdList == null) {
-            return false;
+    public boolean contains(Object id) {
+        if (idList != null && idList.size() > 0) {
+            return idList.contains(id);
         }
-        for (int i = 0; i < IdList.size(); i++) {
-            if (TextUtils.equals(id, IdList.get(i))) {
-                return true;
-            }
-        }
+
         return false;
     }
 
@@ -59,14 +48,12 @@ public class RefreshUtil {
      *
      * @param id 传入资源id
      */
-    public void addId(String id) {
-
-        if (IdList == null) {
-            IdList = new ArrayList<>();
+    public void addId(Object id) {
+        if (idList == null) {
+            idList = new ArrayList<>();
         }
-        if (!IdList.contains(id)) {
-
-            IdList.add(id);
+        if (!idList.contains(id)) {
+            idList.add(id);
         }
     }
 
@@ -75,13 +62,12 @@ public class RefreshUtil {
      *
      * @param id 传入资源id
      */
-    public void removeId(String id) {
-        if (IdList == null) {
-            IdList = new ArrayList<>();
+    public void removeId(Object id) {
+        if (idList == null) {
+            idList = new ArrayList<>();
         }
-        if (IdList.contains(id)) {
-
-            IdList.remove(id);
+        if (idList.contains(id)) {
+            idList.remove(id);
         }
     }
 
@@ -89,35 +75,10 @@ public class RefreshUtil {
      * 清空数据
      */
     public void clear() {
-        if (IdList != null) {
-            IdList.clear();
-            IdList = null;
+        if (idList != null) {
+            idList.clear();
+            idList = null;
         }
     }
-
-    /**
-     * 刷新后重置选中状态
-     *
-     * @param list
-     */
-    public <T>  void refresh( @NonNull List<T> list) {
-        if (list == null || list.size() <= 0) {
-            return;
-        }
-        if (IdList == null || IdList.size() <= 0) {
-            return;
-        }
-        for (T t : list) {
-            for (String s : IdList) {
-                if (t instanceof SectionResListVo) {
-                    if (TextUtils.equals(((SectionResListVo) t).getId(), s)) {
-                        ((SectionResListVo) t).setChecked(true);
-                    }
-                }
-            }
-
-        }
-    }
-
 }
 

@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,7 +74,9 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
 
     @Override
     public void updateTeacherConfigView(@NonNull List<LQCourseConfigEntity> entities) {
+        fillData(entities);
         mAdapter.setData(entities);
+
         // 展开所有科目
         int groupCount = mAdapter.getGroupCount();
         for (int index = 0;index < groupCount;index++) {
@@ -87,6 +90,21 @@ public class SubjectActivity extends PresenterActivity<SubjectContract.Presenter
         if(viewId == R.id.btn_add_subject){
             // 点击确定
             AddSubjectActivity.show(this,mAdapter.getGroupCount() != 0,SUBJECT_SETTING_REQUEST_CODE);
+        }
+    }
+
+    private void fillData(List<LQCourseConfigEntity> entities) {
+        if (entities != null && !entities.isEmpty()) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity != null && (entity.getChildList() == null
+                        || entity.getChildList().isEmpty())) {
+                    List<LQCourseConfigEntity> list = new ArrayList<>();
+                    LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
+                    list.add(newEntity);
+                    entity.setChildList(list);
+                }
+            }
         }
     }
 

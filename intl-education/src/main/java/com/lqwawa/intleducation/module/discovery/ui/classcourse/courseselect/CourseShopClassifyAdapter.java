@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 /**
  * @author mrmedici
@@ -75,7 +76,9 @@ public class CourseShopClassifyAdapter extends RecyclerAdapter<LQCourseConfigEnt
             if(!entity.isAuthorized()){
                 // 未授权
                 String configValue = entity.getConfigValue();
-                String unAuthorized = UIUtil.getString(R.string.label_unauthorized_container);
+                String unAuthorized =
+                        entity.getLibraryType() == OrganLibraryType.TYPE_LQCOURSE_SHOP ?
+                                UIUtil.getString(R.string.label_unauthorized_container) : "";
                 String showStr = configValue + unAuthorized;
                 SpannableString spannableString = new SpannableString(configValue+unAuthorized);
                 ForegroundColorSpan span = new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond));

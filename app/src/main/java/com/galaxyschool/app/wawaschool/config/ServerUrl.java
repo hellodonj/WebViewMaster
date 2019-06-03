@@ -64,7 +64,7 @@ public class ServerUrl {
             ORIGNAL_SHOW_SERVER = "http://wwcx.lqwawa.com/";
             SHARE_BASE_SERVER = "http://mcourse.lqwawa.com";
             NOC_BASE_SERVER = "http://noc.lqwawa.com/";
-            LQMOOC_BASE_SERVER = "http://www.lqmooc.com/";
+            LQMOOC_BASE_SERVER = "https://api.lqmooc.com/";
             //正式
             PRINCIPAL_ASSISTANT_BASE_URL = "http://schoolmaster.lqwawa.com/";
             //正式（营养膳食）
@@ -77,7 +77,7 @@ public class ServerUrl {
     public static String SERVER = BASE_SERVER + "api/mobile/";
     public static String NEW_SERVER = BASE_SERVER + "API/AmWaWa/";
     public static String UPLOAD_BASE_URL = FILE_SERVER + "Files/Upload/Upload.aspx?";
-    public static String WEB_VIEW_NEW_URL = BASE_SERVER + "mobileHtml/DetailView.aspx";
+    public static String WEB_VIEW_NEW_URL = BASE_SHARE_URL + "mobileHtml/DetailView.aspx";
     public static String IMG_ROOT_URL = FILE_SERVER + "UploadFiles/";
 
     // recommend app
@@ -335,7 +335,7 @@ public class ServerUrl {
             + "JoinModule/SearchAttention/SearchAttention/SearchList";
     public static String SUBSCRIBE_SCHOOL_INFO_URL = SERVER
             + "SubscribeNo/School/School/LoadSchool";
-    public static String SUBSCRIBE_SCHOOL_INTRODUCTION = BASE_SERVER
+    public static String SUBSCRIBE_SCHOOL_INTRODUCTION = BASE_SHARE_URL
             + "mobileHtml/SchoolIntroduction.aspx";
     public static String SUBSCRIBE_ADD_SCHOOL_URL = SERVER
             + "SubscribeNo/SubscribeNo/SubscribeNo/SaveSubscribeNo";
@@ -349,7 +349,7 @@ public class ServerUrl {
             + "SubscribeNo/School/School/GetAdvisoryMessageList";
     public static String SUBSCRIBE_COMMIT_SCHOOL_ADVISORY_COMMENT_URL = SERVER
             + "SubscribeNo/School/School/SaveAdvisoryMessage";
-    public static String SUBSCRIBE_SHARE_QRCODE_URL = BASE_SERVER
+    public static String SUBSCRIBE_SHARE_QRCODE_URL = BASE_SHARE_URL
             + "mobileHtml/ORCodeInformation.aspx?Id=%s";
 
     public static String WAWASHOW_RECOMMEND_LIST_URL = BASE_SERVER
@@ -388,11 +388,11 @@ public class ServerUrl {
     public static String GET_QQ_CUSTOMER_LIST_URL = NEW_SERVER
             + "JoinModule/Carousel/QQCustomer/QQCustomerList";
 
-    public static String SHARE_PERSONAL_SPACE_URL = BASE_SERVER + "mobileHtml/UserInfo.aspx";
+    public static String SHARE_PERSONAL_SPACE_URL = BASE_SHARE_URL + "mobileHtml/UserInfo.aspx";
     public static String SHARE_PERSONAL_SPACE_PARAMS = "?Id=%s";
-    public static String SHARE_SCHOOL_SPACE_URL = BASE_SERVER + "mobileHtml/ShareSchoolInfo.aspx";
+    public static String SHARE_SCHOOL_SPACE_URL = BASE_SHARE_URL + "mobileHtml/ShareSchoolInfo.aspx";
     public static String SHARE_SCHOOL_SPACE_PARAMS = "?Id=%s";
-    public static String SHARE_CLASS_INVITATION_URL = BASE_SERVER + "mobileHtml/Invitation_Apply.aspx";
+    public static String SHARE_CLASS_INVITATION_URL = BASE_SHARE_URL + "mobileHtml/Invitation_Apply.aspx";
     public static String SHARE_CLASS_INVITATION_PARAMS = "?FromUserId=%s&ClassPrimaryKey=%s";
     public static String SHARE_BOOK_URL = BASE_SERVER + "mobileHtml/LQ_BookShare.aspx";
     public static String SHARE_PLATFORM_BOOK_PARAMS = "?Type=%s&OutlineId=%s";

@@ -60,13 +60,14 @@ public class CourseRoute {
                            final String courseId,
                            final String memberId,
                            final CourseDetailParams courseParams,
+                           final boolean isFromScan,
                            final INavigationListener listener) {
 
         if (!UserHelper.isLogin()) {
             // 未登录
             if (EmptyUtil.isNotEmpty(listener)) {
                 // 进入未登录页面
-                listener.route(false);
+                listener.route(false, null);
                 return;
             }
         }
@@ -90,20 +91,26 @@ public class CourseRoute {
                 }
 
                 // 再网络请求，是否是帮辅模式,并且是老师
-                final boolean tutorialMode = MainApplication.isTutorialMode() &&
+                boolean tutorialMode = MainApplication.isTutorialMode() &&
                         (EmptyUtil.isEmpty(courseParams) ||
                                 courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER);
 
-                if (tutorialMode) {
-                    CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
-                        @Override
-                        public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
-                            boolean isTutorCourse = entity.isTutorCourse();
-                            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, isTutorCourse);
-                        }
-                    });
-                } else {
+                if (isFromScan) {
+                    tutorialMode = false;
                     navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                } else {
+                    if (tutorialMode) {
+                        final boolean fTutorialMode = tutorialMode;
+                        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
+                            @Override
+                            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                                boolean isTutorCourse = entity.isTutorCourse();
+                                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
+                            }
+                        });
+                    } else {
+                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                    }
                 }
             }
         });
@@ -151,7 +158,7 @@ public class CourseRoute {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
                 return;
             }
         }
@@ -160,10 +167,10 @@ public class CourseRoute {
             // 免费的
             if (entity.isJoin()) {
                 // 免费的已加入
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
             } else {
                 // 免费的未加入
-                listener.route(false, tutorialMode, tutorialTeacher);
+                listener.route(false, tutorialMode, tutorialTeacher, entity);
             }
         } else {
             // 收费的
@@ -174,29 +181,29 @@ public class CourseRoute {
                     // 娃娃币购买全本或者章节
                     if (entity.isJoin()) {
                         // 已加入
-                        listener.route(true, tutorialMode, tutorialTeacher);
+                        listener.route(true, tutorialMode, tutorialTeacher, entity);
                     } else {
                         // 未加入
-                        listener.route(false, tutorialMode, tutorialTeacher);
+                        listener.route(false, tutorialMode, tutorialTeacher, entity);
                     }
                 } else if (entity.getBuyType() == CourseRouteEntity.BUY_TYPE_AUTHORIZATION_ALL ||
                         entity.getBuyType() == CourseRouteEntity.BUY_TYPE_MONEY_CHAPTER_AUTHORIZATION_ALL) {
                     // 激活码授权码全本 || 章节购买后授权全本
                     if (entity.isExpire()) {
                         // 过期进入未加入
-                        listener.route(false, tutorialMode, tutorialTeacher);
+                        listener.route(false, tutorialMode, tutorialTeacher, entity);
                     } else {
                         if (entity.isJoin()) {
                             // 已经加入
-                            listener.route(true, tutorialMode, tutorialTeacher);
+                            listener.route(true, tutorialMode, tutorialTeacher, entity);
                         } else {
-                            listener.route(false, tutorialMode, tutorialTeacher);
+                            listener.route(false, tutorialMode, tutorialTeacher, entity);
                         }
                     }
                 }
             } else {
                 // 未购买
-                listener.route(false, tutorialMode, tutorialTeacher);
+                listener.route(false, tutorialMode, tutorialTeacher, entity);
             }
         }
     }
@@ -231,7 +238,7 @@ public class CourseRoute {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
                 return;
             }
         }
@@ -240,10 +247,10 @@ public class CourseRoute {
             // 免费的
             if (entity.isJoin()) {
                 // 免费的已加入
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
             } else {
                 // 免费的未加入
-                listener.route(false, tutorialMode, tutorialTeacher);
+                listener.route(false, tutorialMode, tutorialTeacher, entity);
             }
         } else {
             // 收费的课程
@@ -258,9 +265,9 @@ public class CourseRoute {
                             @Override
                             public void onDataLoaded(Boolean aBoolean) {
                                 if (aBoolean) {
-                                    listener.route(true, tutorialMode, tutorialTeacher);
+                                    listener.route(true, tutorialMode, tutorialTeacher, entity);
                                 } else {
-                                    listener.route(false, tutorialMode, tutorialTeacher);
+                                    listener.route(false, tutorialMode, tutorialTeacher, entity);
                                 }
                             }
                         });
@@ -268,10 +275,10 @@ public class CourseRoute {
                         // 娃娃币购买全本或者章节
                         if (entity.isJoin()) {
                             // 已加入
-                            listener.route(true, tutorialMode, tutorialTeacher);
+                            listener.route(true, tutorialMode, tutorialTeacher, entity);
                         } else {
                             // 未加入
-                            listener.route(false, tutorialMode, tutorialTeacher);
+                            listener.route(false, tutorialMode, tutorialTeacher, entity);
                         }
                     }
                 } else if (entity.getBuyType() == CourseRouteEntity.BUY_TYPE_AUTHORIZATION_ALL ||
@@ -279,19 +286,19 @@ public class CourseRoute {
                     // 激活码授权码全本 || 章节购买后授权全本
                     if (entity.isExpire()) {
                         // 过期进入未加入
-                        listener.route(false, tutorialMode, tutorialTeacher);
+                        listener.route(false, tutorialMode, tutorialTeacher, entity);
                     } else {
                         if (entity.isJoin()) {
                             // 已经加入
-                            listener.route(true, tutorialMode, tutorialTeacher);
+                            listener.route(true, tutorialMode, tutorialTeacher, entity);
                         } else {
-                            listener.route(false, tutorialMode, tutorialTeacher);
+                            listener.route(false, tutorialMode, tutorialTeacher, entity);
                         }
                     }
                 }
             } else {
                 // 未购买
-                listener.route(false, tutorialMode, tutorialTeacher);
+                listener.route(false, tutorialMode, tutorialTeacher, entity);
             }
         }
     }
@@ -328,7 +335,7 @@ public class CourseRoute {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
                 return;
             }
         }
@@ -344,11 +351,11 @@ public class CourseRoute {
                             @Override
                             public void onDataLoaded(Boolean aBoolean) {
                                 // 可能静默加入失败
-                                listener.route(aBoolean, tutorialMode, tutorialTeacher);
+                                listener.route(aBoolean, tutorialMode, tutorialTeacher, entity);
                             }
                         });
             } else {
-                listener.route(true, tutorialMode, tutorialTeacher);
+                listener.route(true, tutorialMode, tutorialTeacher, entity);
             }
         } else {
             // 收费的课程
@@ -356,13 +363,13 @@ public class CourseRoute {
                 if (entity.isBuyAll() && !entity.isExpire()) {
                     // 全部购买且未过期
                     if (entity.isJoin()) {
-                        listener.route(true, tutorialMode, tutorialTeacher);
+                        listener.route(true, tutorialMode, tutorialTeacher, entity);
                     } else {
                         CourseHelper.requestReJoinInCourse(courseId, true, new DataSource.SucceedCallback<Boolean>() {
                             @Override
                             public void onDataLoaded(Boolean aBoolean) {
                                 // 可能静默重新加入失败
-                                listener.route(aBoolean, tutorialMode, tutorialTeacher);
+                                listener.route(aBoolean, tutorialMode, tutorialTeacher, entity);
                             }
                         });
                     }
@@ -372,9 +379,9 @@ public class CourseRoute {
                         @Override
                         public void onDataLoaded(Boolean aBoolean) {
                             if (aBoolean) {
-                                listener.route(true, tutorialMode, tutorialTeacher);
+                                listener.route(true, tutorialMode, tutorialTeacher, entity);
                             } else {
-                                listener.route(false, tutorialMode, tutorialTeacher);
+                                listener.route(false, tutorialMode, tutorialTeacher, entity);
                             }
                         }
                     });
@@ -384,13 +391,13 @@ public class CourseRoute {
                 if (entity.isBuyAll() && !entity.isExpire()) {
                     // 全部购买并且未过期
                     if (entity.isJoin()) {
-                        listener.route(true, tutorialMode, tutorialTeacher);
+                        listener.route(true, tutorialMode, tutorialTeacher, entity);
                     } else {
                         CourseHelper.requestReJoinInCourse(courseId, true, new DataSource.SucceedCallback<Boolean>() {
                             @Override
                             public void onDataLoaded(Boolean aBoolean) {
                                 // 可能静默重新加入失败
-                                listener.route(aBoolean, tutorialMode, tutorialTeacher);
+                                listener.route(aBoolean, tutorialMode, tutorialTeacher, entity);
                             }
                         });
                     }
@@ -400,9 +407,9 @@ public class CourseRoute {
                         @Override
                         public void onDataLoaded(Boolean aBoolean) {
                             if (aBoolean) {
-                                listener.route(true, tutorialMode, tutorialTeacher);
+                                listener.route(true, tutorialMode, tutorialTeacher, entity);
                             } else {
-                                listener.route(false, tutorialMode, tutorialTeacher);
+                                listener.route(false, tutorialMode, tutorialTeacher, entity);
                             }
                         }
                     });
@@ -476,7 +483,7 @@ public class CourseRoute {
     public static class NavigationListener implements INavigationListener {
         // 路由跳转，true，进入已加入详情页
         @Override
-        public void route(boolean needToLearn) {
+        public void route(boolean needToLearn, CourseRouteEntity entity) {
             if (needToLearn) {
                 // 发送通知
                 EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_COURSE));
@@ -485,11 +492,11 @@ public class CourseRoute {
         }
 
         @Override
-        public void route(boolean needToLearn, boolean tutorialMode, boolean isTutorialTeacher) {
+        public void route(boolean needToLearn, boolean tutorialMode, boolean isTutorialTeacher, CourseRouteEntity entity) {
             if (tutorialMode) {
-                route(isTutorialTeacher);
+                route(isTutorialTeacher, entity);
             } else {
-                route(needToLearn);
+                route(needToLearn, entity);
             }
         }
     }
@@ -499,9 +506,9 @@ public class CourseRoute {
      */
     public interface INavigationListener {
         // 路由跳转，true，进入已加入详情页
-        void route(boolean needToLearn);
+        void route(boolean needToLearn, CourseRouteEntity entity);
 
-        void route(boolean needToLearn, boolean tutorialMode, boolean isTutorialTeacher);
+        void route(boolean needToLearn, boolean tutorialMode, boolean isTutorialTeacher, CourseRouteEntity entity);
     }
 
 }

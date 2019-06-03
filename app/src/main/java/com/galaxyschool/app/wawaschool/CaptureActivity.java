@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -90,6 +91,11 @@ public class CaptureActivity extends ScanActivity {
     private boolean isScanTask;
     private String courseSectionDataString;
     private boolean isPublicRes = true;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, CaptureActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle state) {

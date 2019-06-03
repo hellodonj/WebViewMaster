@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
@@ -30,8 +31,10 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
 import java.util.Date;
 import java.util.List;
+
 @Deprecated
 public class MyCredentialCourseListActivity extends MyBaseActivity implements View.OnClickListener {
     private static final String TAG = "MyCredentialCourseListActivity";
@@ -93,9 +96,10 @@ public class MyCredentialCourseListActivity extends MyBaseActivity implements Vi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyCredentialCourseListVo vo = (MyCredentialCourseListVo) courseListAdapter.getItem(position);
                 if (vo.isIsAdd() || vo.isIsBuy()) {
-                    MyCourseDetailsActivity.start(activity, vo.getCourse().getId(), true, UserHelper.getUserId());
-                }else {
-                    CourseDetailsActivity.start(activity, vo.getCourse().getId(),true, UserHelper.getUserId());
+                    MyCourseDetailsActivity.start(activity, vo.getCourse().getId(), false, true,
+                            UserHelper.getUserId(), false, false, false, false, null, null);
+                } else {
+                    CourseDetailsActivity.start(activity, vo.getCourse().getId(), true, UserHelper.getUserId());
                 }
             }
         });
@@ -133,7 +137,7 @@ public class MyCredentialCourseListActivity extends MyBaseActivity implements Vi
                         });
                 if (result.getCode() == 0) {
                     loadFailedLayout.setVisibility(View.GONE);
-                    List<MyCredentialCourseListVo>courseList = result.getData();
+                    List<MyCredentialCourseListVo> courseList = result.getData();
                     courseListAdapter.setData(courseList);
                     courseListAdapter.notifyDataSetChanged();
                 }
@@ -202,13 +206,16 @@ public class MyCredentialCourseListActivity extends MyBaseActivity implements Vi
             }
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         activity.unregisterReceiver(mBroadcastReceiver);
     }
 
-    /**BroadcastReceiver************************************************/
+    /**
+     * BroadcastReceiver
+     ************************************************/
     protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

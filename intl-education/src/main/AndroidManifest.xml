@@ -72,14 +72,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
-        <!-- 主界面 -->
-        <activity
-            android:name=".module.home.ui.HomeActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
         <!-- 机构列表 -->
         <activity
             android:name=".module.discovery.ui.OrganListActivity"
@@ -101,7 +93,7 @@
         <activity
             android:name=".module.discovery.ui.order.LQCourseOrderActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
         <!-- 证书详情 -->
         <activity
             android:name=".module.discovery.ui.CredentialDetailsActivity"
@@ -141,66 +133,9 @@
             android:name=".module.learn.ui.MyCourseDetailsActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
-        <!-- 我的页面 -->
-        <activity
-            android:name=".module.user.ui.MyActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的个人信息 -->
-        <activity
-            android:name=".module.user.ui.PersonalInfoActivity"
-            android:screenOrientation="portrait" />
-        <!-- 选择城市 -->
-        <activity
-            android:name=".module.user.ui.AreaSelectActivity"
-            android:screenOrientation="portrait" />
-        <!-- 消息列表 -->
-        <activity
-            android:name=".module.user.ui.MessageListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 设置 -->
-        <activity
-            android:name=".module.user.ui.SettingActivity"
-            android:screenOrientation="portrait" />
-        <!-- 个人通讯录 -->
-        <activity
-            android:name=".module.user.ui.PersonalContactsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 名片详情 -->
-        <activity
-            android:name=".module.user.ui.ContactDetailsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 新朋友列表 -->
-        <activity
-            android:name=".module.user.ui.NewFriendListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的班级列表 -->
-        <activity
-            android:name=".module.user.ui.ClassContactsActivity"
-            android:screenOrientation="portrait" />
-        <!-- 关注的学校 -->
-        <activity
-            android:name=".module.user.ui.MyAttentionOrganListActivity"
-            android:screenOrientation="portrait" />
         <!-- 我的订单列表 -->
         <activity
             android:name=".module.user.ui.MyOrderListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 我的收藏列表 -->
-        <activity
-            android:name=".module.user.ui.MyCollectionListActivity"
-            android:screenOrientation="portrait" />
-        <!-- 意见反馈 -->
-        <activity
-            android:name=".module.user.ui.FeedbackActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible|stateUnchanged" />
-        <!-- 添加朋友 -->
-        <activity
-            android:name=".module.user.ui.AddFriendActivity"
-            android:screenOrientation="portrait" />
-        <!-- 发送好友请求 -->
-        <activity
-            android:name=".module.user.ui.SendFriendRequestActivity"
             android:screenOrientation="portrait" />
         <!-- 更多老师 -->
         <activity
@@ -215,13 +150,7 @@
             android:name=".module.discovery.ui.PayActivity"
             android:screenOrientation="portrait" />
         <!-- 班级成员列表 -->
-        <activity
-            android:name=".module.user.ui.ClassMembersActivity"
-            android:screenOrientation="portrait" />
         <!-- 添加关注机构 -->
-        <activity
-            android:name=".module.user.ui.AddAttentionOrganActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 通用图片全屏预览 -->
         <activity
@@ -557,9 +486,6 @@
             android:name=".module.learn.ui.MyCredentialCourseListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".module.user.ui.AboutActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.lqwawa.libs.appupdater.UpdateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -583,7 +509,7 @@
         <activity
             android:name=".module.learn.ui.LessonDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
         <activity
             android:name=".module.discovery.ui.ClassifyIndexActivity"
             android:screenOrientation="portrait" />
@@ -760,220 +686,280 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
         <!--学习任务选取资源列表-->
-        <activity android:name=".module.watchcourse.WatchCourseResourceActivity"
+        <activity
+            android:name=".module.watchcourse.WatchCourseResourceActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
         <!--学程馆一级页面-->
-        <activity android:name=".module.organcourse.OrganCourseClassifyActivity"
+        <activity
+            android:name=".module.organcourse.OrganCourseClassifyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
         <!--学程馆二级页面-->
-        <activity android:name=".module.organcourse.filtrate.OrganCourseFiltrateActivity"
+        <activity
+            android:name=".module.organcourse.filtrate.OrganCourseFiltrateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--在线学习二级页面-->
-        <activity android:name=".module.discovery.ui.study.filtratelist.OnlineStudyFiltrateActivity"
+        <activity
+            android:name=".module.discovery.ui.study.filtratelist.OnlineStudyFiltrateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--在线学习分类课堂-->
-        <activity android:name=".module.discovery.ui.study.classifyclass.OnlineClassClassifyActivity"
+        <activity
+            android:name=".module.discovery.ui.study.classifyclass.OnlineClassClassifyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--首页我的课程-->
-        <activity android:name=".module.discovery.ui.mycourse.TabCourseActivity"
+        <activity
+            android:name=".module.discovery.ui.mycourse.TabCourseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--课程简介的页面-->
-        <activity android:name=".module.discovery.ui.lqcourse.course.intro.CourseIntroductionActivity"
+        <activity
+            android:name=".module.discovery.ui.lqcourse.course.intro.CourseIntroductionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--空中课堂历史班页面-->
-        <activity android:name=".module.discovery.ui.person.myhistory.HistoryClassActivity"
+        <activity
+            android:name=".module.discovery.ui.person.myhistory.HistoryClassActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-        
+            android:theme="@style/AppTheme.Common" />
+
         <!--入驻机构列表页面-->
-        <activity android:name=".module.discovery.ui.study.joinorgan.JoinOrganListActivity"
+        <activity
+            android:name=".module.discovery.ui.study.joinorgan.JoinOrganListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--班级学程页面-->
-        <activity android:name=".module.discovery.ui.classcourse.ClassCourseActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".module.discovery.ui.classcourse.ClassCourseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.Common"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <!--班级学程选择列表页面-->
-        <activity android:name=".module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity"
+        <activity
+            android:name=".module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
+
+        <!--班级学程选择学程馆类型列表页面-->
+        <activity
+            android:name=".module.discovery.ui.classcourse.organlibrary.OrganLibraryTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <!--在线班级课堂简介关联课程-->
-        <activity android:name=".module.onclass.related.RelatedCourseListActivity"
+        <activity
+            android:name=".module.onclass.related.RelatedCourseListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--在线班级通知列表-->
-        <activity android:name=".module.onclass.detail.base.notification.ClassNotificationActivity"
+        <activity
+            android:name=".module.onclass.detail.base.notification.ClassNotificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--基础课程列表-->
-        <activity android:name=".module.discovery.ui.lqcourse.basics.BasicsCourseActivity"
+        <activity
+            android:name=".module.discovery.ui.lqcourse.basics.BasicsCourseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--关联学程列表-->
-        <activity android:name=".module.watchcourse.list.WatchCourseResourceListActivity"
+        <activity
+            android:name=".module.watchcourse.list.WatchCourseResourceListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--我的课程表-->
-        <activity android:name=".module.discovery.ui.person.timetable.TimeTableActivity"
+        <activity
+            android:name=".module.discovery.ui.person.timetable.TimeTableActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--新讲授课堂筛选列表-->
-        <activity android:name=".module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".module.discovery.ui.study.filtrate.NewOnlineStudyFiltrateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.Common"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <!--科目设置页面-->
-        <activity android:name=".module.discovery.ui.subject.SubjectActivity"
+        <activity
+            android:name=".module.discovery.ui.subject.SubjectActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--添加设置页面-->
-        <activity android:name=".module.discovery.ui.subject.add.AddSubjectActivity"
+        <activity
+            android:name=".module.discovery.ui.subject.add.AddSubjectActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--转赠他人的页面-->
-        <activity android:name=".module.discovery.ui.coin.donation.DonationCoinActivity"
+        <activity
+            android:name=".module.discovery.ui.coin.donation.DonationCoinActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--我的习课程标签详情课程列表-->
-        <activity android:name=".module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity"
+        <activity
+            android:name=".module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--国家课程的测试类-->
-        <activity android:name=".module.discovery.ui.lqbasic.LQBasicActivity"
+        <activity
+            android:name=".module.discovery.ui.lqbasic.LQBasicActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--国家课程二级列表筛选页面-->
-        <activity android:name=".module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".module.discovery.ui.lqcourse.basics.home.LQBasicFiltrateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.Common"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <!--小语种国际国家课程更多页面-->
-        <activity android:name=".module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".module.discovery.ui.study.newfiltrate.NewOnlineClassifyFiltrateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/AppTheme.Common"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <!--课程统计页面-->
-        <activity android:name=".module.discovery.ui.classcourse.statistics.course.CourseStatisticsActivity"
+        <activity
+            android:name=".module.discovery.ui.classcourse.statistics.course.CourseStatisticsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--学习统计页面-->
-        <activity android:name=".module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity"
+        <activity
+            android:name=".module.discovery.ui.classcourse.statistics.learn.LearningStatisticsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--老师查看学生章节购买详情-->
-        <activity android:name=".module.discovery.ui.lqcourse.coursedetails.WatchStudentChapterActivity"
+        <activity
+            android:name=".module.discovery.ui.lqcourse.coursedetails.WatchStudentChapterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--我的帮辅课程列表-->
-        <activity android:name=".module.tutorial.teacher.courses.TutorialCoursesActivity"
+        <activity
+            android:name=".module.tutorial.teacher.courses.TutorialCoursesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--我的帮辅学生列表-->
-        <activity android:name=".module.tutorial.teacher.students.TutorialStudentActivity"
+        <activity
+            android:name=".module.tutorial.teacher.students.TutorialStudentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--我的帮辅机构列表-->
-        <activity android:name=".module.tutorial.teacher.schools.TutorialSchoolsActivity"
+        <activity
+            android:name=".module.tutorial.teacher.schools.TutorialSchoolsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--学生帮辅列表页面-->
-        <activity android:name=".module.tutorial.student.courses.StudentTutorialActivity"
+        <activity
+            android:name=".module.tutorial.student.courses.StudentTutorialActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--帮辅批阅列表页面-->
-        <activity android:name=".module.tutorial.marking.list.TutorialMarkingListActivity"
+        <activity
+            android:name=".module.tutorial.marking.list.TutorialMarkingListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--Fragment公共容器的入口-->
-        <activity android:name=".base.widgets.ui.CommonContainerActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--帮辅群筛选页面入口-->
-        <activity android:name=".module.tutorial.course.filtrate.TutorialFiltrateGroupActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--申请批阅帮辅老师选择页面入口-->
-        <activity android:name=".module.tutorial.marking.choice.TutorChoiceActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--申请批阅帮辅老师选择提交完成入口-->
-        <activity android:name=".module.tutorial.marking.result.QuestionResultActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--帮辅空间查看任务要求入口-->
-        <activity android:name=".module.tutorial.marking.require.TaskRequirementActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
-        <activity android:name=".module.tutorial.target.TutorialTargetTaskActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
-        <activity android:name=".module.tutorial.target.container.TutorialStudentTargetTaskActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
-
-        <!--帮辅审核记录页面-->
-        <activity android:name=".module.tutorial.teacher.courses.record.AuditRecordActivity"
+        <activity
+            android:name=".base.widgets.ui.CommonContainerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+        <!--帮辅群筛选页面入口-->
+        <activity
+            android:name=".module.tutorial.course.filtrate.TutorialFiltrateGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--申请批阅帮辅老师选择页面入口-->
+        <activity
+            android:name=".module.tutorial.marking.choice.TutorChoiceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--申请批阅帮辅老师选择提交完成入口-->
+        <activity
+            android:name=".module.tutorial.marking.result.QuestionResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--帮辅空间查看任务要求入口-->
+        <activity
+            android:name=".module.tutorial.marking.require.TaskRequirementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
+        <activity
+            android:name=".module.tutorial.target.TutorialTargetTaskActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--查看我的帮辅和我帮辅的学生提交问题跳转-->
+        <activity
+            android:name=".module.tutorial.target.container.TutorialStudentTargetTaskActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+        <!--帮辅审核记录页面-->
+        <activity
+            android:name=".module.tutorial.teacher.courses.record.AuditRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--班级历史学程页面的入口-->
-        <activity android:name=".module.discovery.ui.classcourse.history.HistoryClassCourseActivity"
+        <activity
+            android:name=".module.discovery.ui.classcourse.history.HistoryClassCourseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
         <!--历史学程添加页面的入口-->
-        <activity android:name=".module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity"
+        <activity
+            android:name=".module.discovery.ui.classcourse.addHistory.AddHistoryCourseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common"/>
+            android:theme="@style/AppTheme.Common" />
 
+        <!--视频馆视频详情页面-->
+        <activity
+            android:name=".module.discovery.ui.videodetail.VideoDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+        
+        <!--班级帮辅-->
+        <activity
+            android:name=".module.tutorial.classtutor.ClassTutorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
     </application>
 
 </manifest>

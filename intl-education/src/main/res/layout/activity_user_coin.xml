@@ -72,6 +72,7 @@
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="@color/textPrimary"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/textSecond" />

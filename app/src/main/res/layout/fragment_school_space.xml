@@ -116,7 +116,7 @@
                         android:cacheColorHint="@android:color/transparent"
                         android:horizontalSpacing="0dp"
                         android:listSelector="@android:color/transparent"
-                        android:numColumns="4"
+                        android:numColumns="5"
                         android:verticalSpacing="0dp"/>
 
                 </LinearLayout>

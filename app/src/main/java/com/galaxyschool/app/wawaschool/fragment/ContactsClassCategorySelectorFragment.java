@@ -173,6 +173,11 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
                 schoolInfo = iterator.next();
                 if (!schoolInfo.isTeacher() || schoolInfo.isOnlineSchool()) {
                     iterator.remove();
+                } else if (!TextUtils.isEmpty(schoolId) && !TextUtils.isEmpty(schoolInfo.getSchoolId())){
+                    //从机构里面进来的
+                    if (!TextUtils.equals(schoolId.toLowerCase(),schoolInfo.getSchoolId().toLowerCase())){
+                        iterator.remove();
+                    }
                 }
             }
 

@@ -172,7 +172,11 @@ public class SlideManagerHornForPhone extends SlideManagerForHorn
                 } else if (fromType == FromWhereData.FROM_LQCLOUD_COURSE && mIsShare) {
                     mHandler.sendEmptyMessage(MSG_SAVE_FINISH);
                 } else if (fromType == FromWhereData.FROM_STUDY_TASK_COURSE) {
-                    if (cardParam != null && taskOrderHelper != null) {
+                    if (cardParam != null && (taskOrderHelper != null || (cardParam.isFromMyAssistantMark() && mIsShare))) {
+                        if (taskOrderHelper == null){
+                            taskOrderHelper = new DoTaskOrderHelper(mContext);
+                            taskOrderHelper.setExerciseAnswerCardParam(cardParam);
+                        }
                         taskOrderHelper.setSlidePath(savePath);
                         taskOrderHelper.commitCheckMarkData();
                     } else {
@@ -332,7 +336,7 @@ public class SlideManagerHornForPhone extends SlideManagerForHorn
         if (TextUtils.isEmpty(saveName)) {
             saveName = DateUtils.millSecToDateStr(System.currentTimeMillis());
         }
-        if (cardParam != null) {
+        if (cardParam != null && !cardParam.isFromMyAssistantMark()) {
             //任务单答题卡的弹框
             if (taskOrderHelper == null) {
                 taskOrderHelper = new DoTaskOrderHelper(this.mContext);

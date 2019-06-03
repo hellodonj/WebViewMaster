@@ -14,6 +14,7 @@ import com.lqwawa.intleducation.factory.helper.UserHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
+import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListContract;
 
 import java.util.List;
 
@@ -48,5 +49,73 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
                 }
             }
         });
+    }
+
+    @Override
+    public void requestTutorSubjectList(@NonNull String tutorMemberId) {
+        UserHelper.requestTutorSubjectList(tutorMemberId, new DataSource.Callback<List<String>>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(List<String> subjects) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view) &&
+                        EmptyUtil.isNotEmpty(subjects)){
+                    view.updateTutorSubjectView(subjects);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestQueryAddedTutorState(@NonNull String memberId,
+                                            @NonNull String tutorMemberId, String classId) {
+        TutorialHelper.requestQueryAddedTutorByTutorId(memberId, tutorMemberId,
+                classId, new DataSource.Callback<Boolean>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        final TutorialHomePageContract.View view = getView();
+                        if(EmptyUtil.isNotEmpty(view)){
+                            view.showError(strRes);
+                        }
+                    }
+
+                    @Override
+                    public void onDataLoaded(Boolean aBoolean) {
+                        final TutorialHomePageContract.View view = getView();
+                        if(EmptyUtil.isNotEmpty(view)){
+                            view.updateQueryAddedTutorStateView(aBoolean);
+                        }
+                    }
+                });
+    }
+
+
+    @Override
+    public void requestAddTutor(@NonNull String memberId, @NonNull String tutorMemberId, @NonNull String tutorName, @NonNull String classId) {
+        TutorialHelper.requestAddTutor(memberId, tutorMemberId, tutorName,
+                classId, new DataSource.Callback<Boolean>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                        final TutorialHomePageContract.View view = getView();
+                        if(EmptyUtil.isNotEmpty(view)){
+                            view.showError(strRes);
+                        }
+                    }
+
+                    @Override
+                    public void onDataLoaded(Boolean aBoolean) {
+                        final TutorialHomePageContract.View view = getView();
+                        if(EmptyUtil.isNotEmpty(view)){
+                            view.updateAddTutorView(aBoolean);
+                        }
+                    }
+                });
     }
 }

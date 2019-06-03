@@ -86,6 +86,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
     //是否从班级学程进入
     private boolean isClassCourseEnter;
+    private boolean isFromScan;
 
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -901,6 +902,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.isJoinCourse = joinCourse;
     }
 
+    public void setIsFromScan(@NonNull boolean isFromScan) {
+        this.isFromScan = isFromScan;
+        if (isFromScan) {
+            tutorialMode = false;
+        }
+    }
+
     public void setTeacherVisitor(boolean visitor) {
         this.mTeacherVisitor = visitor;
     }
@@ -1137,6 +1145,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
         params.fillVisitorInfo(mTeacherVisitor, realRole);
         params.setCourseParams(courseParams);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (!TextUtils.isEmpty(courseVo.getTeachersId())) {
+            stringBuilder.append(courseVo.getTeachersId());
+        }
+        if (!TextUtils.isEmpty(courseVo.getTutorId())) {
+            stringBuilder.append(",");
+            stringBuilder.append(courseVo.getTutorId());
+        }
+        params.setTeacherTutorIds(stringBuilder.toString());
 
         boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false);
         LessonDetailsActivity.start(activity, courseId, chapterId,

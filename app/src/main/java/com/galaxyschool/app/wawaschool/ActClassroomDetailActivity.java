@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.galaxyschool.app.wawaschool.fragment.ActClassroomDetailFragment;
 import com.galaxyschool.app.wawaschool.fragment.ActClassroomFragment;
-import com.galaxyschool.app.wawaschool.fragment.AirClassroomDetailFragment;
 
 public class ActClassroomDetailActivity extends BaseFragmentActivity implements
         ActClassroomFragment.Constants{

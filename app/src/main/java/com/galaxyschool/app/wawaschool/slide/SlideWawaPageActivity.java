@@ -159,6 +159,10 @@ public class SlideWawaPageActivity extends PenServiceActivity implements OnClick
 					//学生申请批阅
 					setUserType(RoleType.ROLE_TYPE_STUDENT);
 				}
+				if (mSlideManager != null && cardParam.isFromMyAssistantMark()){
+					//来自我要帮辅
+					mSlideManager.showCourseEntry(true);
+				}
 			} else if (isTeacherMark) {
 				setUserType(RoleType.ROLE_TYPE_TEACHER);
 			} else {

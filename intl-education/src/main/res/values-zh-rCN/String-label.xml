@@ -169,7 +169,7 @@
     <string name="label_voice_evaluating">语音评测</string>
     <!--学程馆改成自习课程-->
     <string name="label_organ_shop_permission_description">该机构暂无更多学程馆课程，敬请期待！</string>
-    <!--<string name="label_organ_shop_permission_description">该机构暂无更多自习课程，敬请期待！</string>-->
+    <string name="label_organ_course_permission_description">该机构暂无更多%s课程，敬请期待！</string>
 
     <string name="label_new_create">新建</string>
     <string name="label_new_class">新开课</string>
@@ -233,7 +233,7 @@
     <string name="label_this_class_give_finish">该班级已完成授课</string>
 
     <!--V5.10.X版本字符串-->
-    <string name="label_join_course">+我的学程</string>
+    <string name="label_join_course">+习课程</string>
 
     <!--V5.11版本字符串-->
     <string name="label_share_online_class_title">【两栖空中课堂】</string>
@@ -272,6 +272,8 @@
     <string name="label_colon_language">语言：</string>
     <string name="label_colon_level">级别：</string>
     <string name="label_colon_book_concern">出版社：</string>
+    <string name="label_colon_age">年龄段：</string>
+    <string name="label_colon_topic">主题：</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">已授权</string>
@@ -426,6 +428,7 @@
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
     <string name="label_please_apply_to_be_tutorial">请先申请成为帮辅</string>
     <string name="label_course_tutor_apply_for">申请成功，请等待机构管理员审核！</string>
+    <string name="label_apply_for_tutor_success">已成功加入我的帮辅课程</string>
     <string name="label_input_province_tip">请选择省份</string>
     <string name="label_input_city_tip">请选择城市</string>
     <string name="label_input_district_tip">请选择区域</string>
@@ -451,12 +454,13 @@
     
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">查看历史学程</string>
+    <string name="label_add_history_course">加入历史学程</string>
     <string name="label_add_in">添加</string>
     <string name="label_remove_out">移除</string>
     <string name="label_delete">删除</string>
-    <string name="label_please_choice_action">请选择您要进行的操作！</string>
     <string name="label_please_choice_add_history_course">请选择需要添加的历史学程</string>
     <string name="label_please_choice_remove_history_course">请选择需要移除的历史学程</string>
+    <string name="label_please_choice_add_course">请选择需要添加的学程</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
@@ -464,6 +468,7 @@
     </string-array>
 
     <string-array name="label_tutorial_page_tabs">
+        <item>个人简介</item>
         <item>帮辅的课程</item>
         <item>学员评价</item>
     </string-array>
@@ -510,4 +515,5 @@
     </string-array>
 
     <string name="voice_evaluating">语音评测</string>
+
 </resources>

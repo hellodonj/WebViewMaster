@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.galaxyschool.app.wawaschool.AccountActivity;
 import com.galaxyschool.app.wawaschool.BasicUserInfoActivity;
@@ -54,7 +53,6 @@ import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.jpush.PushUtils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
-import com.galaxyschool.app.wawaschool.pojo.ContactsSchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
@@ -79,13 +77,9 @@ import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.box.TutorialSpaceBoxFragment;
-import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
-import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.intleducation.module.watchcourse.WatchResourceType;
 import com.oosic.apps.aidl.CollectParams;
 import com.oosic.apps.iemaker.base.BaseSlideManager;
 import com.oosic.apps.iemaker.base.PlaybackActivity;
@@ -1217,17 +1211,6 @@ public class ActivityUtils {
         activity.startActivity(intent);
     }
 
-    /**
-     * 进入学程馆界面
-     *
-     * @param schoolInfo
-     */
-    public static void enterLqCourseShopActivity(Activity activity, SchoolInfo schoolInfo) {
-        if (schoolInfo == null || activity == null) {
-            return;
-        }
-        OrganCourseClassifyActivity.show(activity, schoolInfo.getSchoolId(),schoolInfo.getRoles());
-    }
 
     /**
      * 进入创建直播的界面
@@ -1256,6 +1239,7 @@ public class ActivityUtils {
                 schoolInfo.getSchoolId(),
                 classInfo.getClassId(),
                 classInfo.getClassName());
+        params.setTeacher(classInfo.isTeacherByRoles());
         params.setRoles(roles);
 
         /*ClassCourseParams params = new ClassCourseParams(schoolInfo.getSchoolId(),classInfo.getClassId());

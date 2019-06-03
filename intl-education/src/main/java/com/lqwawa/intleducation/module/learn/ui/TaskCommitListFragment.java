@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
 import com.lqwawa.intleducation.base.utils.LogUtil;
+import com.lqwawa.intleducation.base.vo.PagerArgs;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -28,6 +29,7 @@ import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQResourceDetailVo;
 import com.lqwawa.intleducation.factory.helper.LearningTaskHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
+import com.lqwawa.intleducation.module.discovery.ui.MoreCredentialActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.task.list.TaskCommitParams;
@@ -84,6 +86,9 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     private boolean isAudition;
     private int mCommitType;
     private TaskCommitParams mCommitParams;
+    private PagerArgs pagerArgs;
+    private int orderByType;
+    private List<LqTaskCommitVo> lqTaskCommitVoList = new ArrayList<>();
 
     // 当前的删除状态
     private boolean isHoldTag;
@@ -100,6 +105,8 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         mRoleType = mCommitParams.getOriginalRole();
         isAudition = mCommitParams.isAudition();
         mCommitType = mCommitParams.getCommitType();
+        pagerArgs = mCommitParams.getPagerArgs();
+        orderByType = mCommitParams.getOrderByType();
     }
 
     @Override
@@ -192,11 +199,17 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     }
 
     public void initViews(){
-        pullToRefreshView.setLoadMoreEnable(false);
+        pullToRefreshView.setLoadMoreEnable(pagerArgs.getPageSize() <= AppConfig.PAGE_SIZE);
         pullToRefreshView.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
             @Override
             public void onHeaderRefresh(PullToRefreshView view) {
-                getAnswerData();
+                updateData(false);
+            }
+        });
+        pullToRefreshView.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
+            @Override
+            public void onFooterRefresh(PullToRefreshView view) {
+                updateData(true);
             }
         });
         pullToRefreshView.setLastUpdated(new Date().toLocaleString());
@@ -204,8 +217,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.reload_bt) {
-                    pullToRefreshView.showRefresh();
-                    getAnswerData();
+                    updateData(false);
                 }
             }
         });
@@ -282,11 +294,11 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 public void onDataLoaded(LQResourceDetailVo vo) {
                     // 可能没有答题卡信息的回调
                     mAnswerData = vo;
-                    updateData();
+                    updateData(false);
                 }
             });
         }else{
-            updateData();
+            updateData(false);
         }
     }
 
@@ -304,7 +316,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             public void onDataLoaded(Boolean aBoolean) {
                 if(true){
                     // 刷新UI
-                    getAnswerData();
+                    updateData(false);
                     // 删除成功
                     UIUtil.showToastSafe(R.string.tip_delete_succeed);
                 }
@@ -312,19 +324,15 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         });
     }
 
-    private LqTaskCommitListVo mLqTaskCommitListVo;
 
-    public void updateData() {
-        loadFailedLayout.setVisibility(View.GONE);
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("token", activity.getIntent().getStringExtra("memberId"));
-        requestVo.addParams("cwareId", sectionResListVo.getId());
-        requestVo.addParams("type", isHost ? 1 : 0);
-        LogUtil.d(TAG, requestVo.getParams());
-        RequestParams params =
-                new RequestParams((isLive ? AppConfig.ServerUrl.GetLiveResCommitList
-                        : AppConfig.ServerUrl.cwareCommitList) + requestVo.getParams());
-        params.setConnectTimeout(10000);
+
+    public void updateData(boolean isLoadMore) {
+        int pageIndex = isLoadMore ? pagerArgs.getPageIndex() + 1 : 0;
+        pagerArgs.setPageIndex(pageIndex);
+        if (!isLoadMore) {
+            lqTaskCommitVoList.clear();
+        }
+        pullToRefreshView.showRefresh();
         // 学生穿StudentId,老师,主编,小编不传,家长穿memberId;
         String studentId = getStudentId();
         CourseDetailParams courseParams = mCommitParams.getCourseParams();
@@ -357,20 +365,24 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         LessonHelper.getNewCommittedTaskByTaskId(sectionResListVo.getTaskId(),
                 studentId,
                 classId,
-                schoolId,null,mCommitType,
+                schoolId,null,mCommitType, pagerArgs, orderByType,
                 new DataSource.Callback<LqTaskCommitListVo>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
-                        UIUtil.showToastSafe(strRes);
+//                        UIUtil.showToastSafe(strRes);
                         pullToRefreshView.onHeaderRefreshComplete();
+                        pullToRefreshView.onFooterRefreshComplete();
                     }
 
                     @Override
                     public void onDataLoaded(LqTaskCommitListVo lqTaskCommitListVo) {
                         pullToRefreshView.onHeaderRefreshComplete();
-                        mLqTaskCommitListVo = lqTaskCommitListVo;
-                        // filterAutoMark(mLqTaskCommitListVo.getListCommitTaskOnline());
-                        committedTasksAdapter.setData(getCommitTaskList(mLqTaskCommitListVo.getListCommitTaskOnline()));
+                        pullToRefreshView.onFooterRefreshComplete();
+
+                        if (lqTaskCommitListVo != null) {
+                            lqTaskCommitVoList.addAll(lqTaskCommitListVo.getListCommitTaskOnline());
+                        }
+                        committedTasksAdapter.setData(lqTaskCommitVoList);
                         committedTasksAdapter.setDoWorkListener(doWorkListener);
                         committedTasksAdapter.setAnswerData(mAnswerData);
                         committedTasksAdapter.notifyDataSetChanged();

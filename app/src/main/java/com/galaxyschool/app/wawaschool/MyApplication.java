@@ -102,7 +102,7 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
     private static float mSR;
 
     private static float mDensity = 1.0f;
-    private static boolean cdeInitSuccess;
+
 
     private static ThumbnailManager mThumbnailManager;
     private PrefsManager prefsManager;
@@ -211,7 +211,7 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
             LqInit.initLetvSdk(this, new InitResultListener() {
                 @Override
                 public void onInitResult(boolean result) {
-                    cdeInitSuccess=result;
+                    setCdeInitSuccess(result);
                 }
             });
         }
@@ -479,11 +479,4 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         return stopService(new Intent(getApplicationContext(), DefaultUpdateService.class));
     }
 
-
-    public static boolean getCdeInitSuccess(){
-        return cdeInitSuccess;
-    }
-    public void setCdeInitSuccess(boolean cdeInitSuccess){
-        this.cdeInitSuccess=cdeInitSuccess;
-    }
 }

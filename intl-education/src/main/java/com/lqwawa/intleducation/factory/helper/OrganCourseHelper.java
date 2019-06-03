@@ -36,9 +36,11 @@ public class OrganCourseHelper {
      * 获取实体机构学程馆一级标签及课程
      * @param organId 机构Id
      * @param isZh 语言 0 中文版， 1 英文版
+     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     public static void requestOrganCourseClassifyData(@NonNull String organId,
                                                       @NonNull @LanguageType.LanguageRes int isZh,
+                                                      int libraryType,
                                                       @NonNull DataSource.Callback<List<LQCourseConfigEntity>> callback){
 
         RequestVo requestVo = new RequestVo();
@@ -47,6 +49,9 @@ public class OrganCourseHelper {
         requestVo.addParams("language",isZh);
         // 特色英语课程，添加参数
         requestVo.addParams("version",1);
+        if (libraryType >= 0) {
+            requestVo.addParams("type", libraryType);
+        }
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseClassifyUrl+requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
@@ -81,15 +86,20 @@ public class OrganCourseHelper {
      * 获取实体机构学程馆一级标签,返回老师已经设置的标签
      * @param organId 机构Id
      * @param isZh 语言 0 中文版， 1 英文版
+     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     public static void requestOrganCourseClassifyResourceData(@NonNull String organId,
                                                       @NonNull @LanguageType.LanguageRes int isZh,
+                                                      int libraryType,
                                                       @NonNull DataSource.Callback<List<LQCourseConfigEntity>> callback){
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("organId",organId);
         // 是否是中文字体,根据参数,后台返回相应语言
         requestVo.addParams("language",isZh);
+        if (libraryType >= 0) {
+            requestVo.addParams("type", libraryType);
+        }
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseClassifyResourceUrl+requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
@@ -124,11 +134,13 @@ public class OrganCourseHelper {
      * 获取实体机构学程馆一级标签及课程
      * @param organId 机构Id
      * @param isZh 语言 0 中文版， 1 英文版
+     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     public static void requestOrganClassifyLabelData(@NonNull String organId,
                                                       @NonNull @LanguageType.LanguageRes int isZh,
                                                       int parentId,
                                                       @NonNull String level,
+                                                      int libraryType,
                                                       @NonNull DataSource.Callback<List<LQCourseConfigEntity>> callback){
 
         RequestVo requestVo = new RequestVo();
@@ -136,7 +148,10 @@ public class OrganCourseHelper {
         // 是否是中文字体,根据参数,后台返回相应语言
         requestVo.addParams("language",isZh);
         requestVo.addParams("parentId",parentId);
-        requestVo.addParams("level",level);
+        requestVo.addParams("level", level);
+        if (libraryType >= 0) {
+            requestVo.addParams("type", libraryType);
+        }
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseClassifyLabelUrl+requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class,"send request ==== " +params.getUri());
@@ -229,7 +244,8 @@ public class OrganCourseHelper {
                                            @Nullable String keyString,
                                            @NonNull String level,
                                            int paramOneId, int paramTwoId,
-                                           int paramThreeId,
+                                           int paramThreeId, int libraryType,
+                                           int sort,
                                            @NonNull final DataSource.Callback<List<CourseVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
@@ -262,6 +278,14 @@ public class OrganCourseHelper {
 
         if(paramThreeId != 0){
             requestVo.addParams("paramThreeId", paramThreeId);
+        }
+
+        if (libraryType >= 0) {
+            requestVo.addParams("type", libraryType);
+        }
+
+        if (sort > 0) {
+            requestVo.addParams("sort", sort);
         }
 
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseListUrl + requestVo.getParams());

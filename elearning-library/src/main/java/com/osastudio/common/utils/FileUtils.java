@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -834,6 +835,29 @@ public final class FileUtils {
                 return false;
             }
         });
+    }
+
+    public static void uniteAMRFile(List<String> partsPaths, String unitedFilePath) {
+        try {
+            File unitedFile = new File(unitedFilePath);
+            FileOutputStream fos = new FileOutputStream(unitedFile);
+            RandomAccessFile ra = null;
+            for (int i = 0; i < partsPaths.size(); i++) {
+                ra = new RandomAccessFile(partsPaths.get(i), "r");
+                if (i != 0) {
+                    ra.seek(4);
+                }
+                byte[] buffer = new byte[1024 * 8];
+                int len = 0;
+                while ((len = ra.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+            }
+            ra.close();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

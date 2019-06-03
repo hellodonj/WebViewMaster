@@ -61,12 +61,16 @@ public class LrcView extends View {
     private GestureDetector mGestureDetector;
     private Scroller mScroller;
     private float mOffset;
-    private int mCurrentLine;
+    private int mCurrentLine = -1;
     private Object mFlag;
     private boolean isShowTimeline;
     private boolean isTouching;
     private boolean isFling;
     private int mTextGravity;//歌词显示位置，靠左/居中/靠右
+    private float currentTextSize;
+    private float timeTextSize;
+    private float lrcTextSize;
+
 
     /**
      * 播放按钮点击监听器，点击后应该跳转到指定播放位置
@@ -95,7 +99,7 @@ public class LrcView extends View {
 
     private void init(AttributeSet attrs) {
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.LrcView);
-        float lrcTextSize = ta.getDimension(R.styleable.LrcView_lrcTextSize, getResources().getDimension(R.dimen.lrc_text_size));
+        lrcTextSize = ta.getDimension(R.styleable.LrcView_lrcTextSize, getResources().getDimension(R.dimen.lrc_text_size));
         mDividerHeight = ta.getDimension(R.styleable.LrcView_lrcDividerHeight, getResources().getDimension(R.dimen.lrc_divider_height));
         int defDuration = getResources().getInteger(R.integer.lrc_animation_duration);
         mAnimationDuration = ta.getInt(R.styleable.LrcView_lrcAnimationDuration, defDuration);
@@ -113,7 +117,8 @@ public class LrcView extends View {
         mPlayDrawable = (mPlayDrawable == null) ? getResources().getDrawable(R.drawable.uvv_itv_player_play) :
                 mPlayDrawable;
         mTimeTextColor = ta.getColor(R.styleable.LrcView_lrcTimeTextColor, getResources().getColor(R.color.lrc_time_text_color));
-        float timeTextSize = ta.getDimension(R.styleable.LrcView_lrcTimeTextSize, getResources().getDimension(R.dimen.lrc_time_text_size));
+        timeTextSize = ta.getDimension(R.styleable.LrcView_lrcTimeTextSize, getResources().getDimension(R.dimen.lrc_time_text_size));
+        currentTextSize = ta.getDimension(R.styleable.LrcView_lrcCurrentTextSize, getResources().getDimension(R.dimen.lrc_time_text_size));
         mTextGravity = ta.getInteger(R.styleable.LrcView_lrcTextGravity, LrcEntry.GRAVITY_CENTER);
 
         ta.recycle();
@@ -304,7 +309,6 @@ public class LrcView extends View {
                 if (!hasLrc()) {
                     return;
                 }
-
                 int line = findShowLine(time);
                 if (line != mCurrentLine) {
                     mCurrentLine = line;
@@ -381,10 +385,13 @@ public class LrcView extends View {
             }
             if (i == mCurrentLine) {
                 mLrcPaint.setColor(mCurrentTextColor);
+                mLrcPaint.setTextSize(currentTextSize);
             } else if (isShowTimeline && i == centerLine) {
                 mLrcPaint.setColor(mTimelineTextColor);
+                mLrcPaint.setTextSize(lrcTextSize);
             } else {
                 mLrcPaint.setColor(mNormalTextColor);
+                mLrcPaint.setTextSize(lrcTextSize);
             }
             drawText(canvas, mLrcEntryList.get(i).getStaticLayout(), y);
         }
@@ -531,14 +538,19 @@ public class LrcView extends View {
         removeCallbacks(hideTimelineRunnable);
         mLrcEntryList.clear();
         mOffset = 0;
-        mCurrentLine = 0;
+        mCurrentLine = -1;
+        invalidate();
+    }
+
+    public void resetLineColor(){
+        mCurrentLine = -1;
         invalidate();
     }
 
     /**
      * 滚动到某一行
      */
-    private void scrollTo(int line) {
+    public void scrollTo(int line) {
         scrollTo(line, mAnimationDuration);
     }
 

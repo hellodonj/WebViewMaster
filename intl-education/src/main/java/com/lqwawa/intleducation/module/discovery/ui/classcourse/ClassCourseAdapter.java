@@ -72,18 +72,34 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
     private class CommonCourseViewHolder extends ViewHolder<ClassCourseEntity>{
 
         private ImageView mCourseIcon;
+        private TextView mCourseType;
         private TextView mCourseName;
         private ImageView mIvDelete;
         private ImageView mIvChoice;
         private TextView mBuyType;
 
+        private final int[] courseTypesBgId = new int[] {
+                R.drawable.shape_course_type_read,
+                R.drawable.shape_course_type_learn,
+                R.drawable.shape_course_type_practice,
+                R.drawable.shape_course_type_exam,
+                R.drawable.shape_course_type_video
+        };
+
+        private String[] courseTypeNames;
+
+
         public CommonCourseViewHolder(View itemView) {
             super(itemView);
             mCourseIcon = (ImageView) itemView.findViewById(R.id.iv_course_icon);
+            mCourseType = (TextView) itemView.findViewById(R.id.tv_course_type);
             mCourseName = (TextView) itemView.findViewById(R.id.tv_course_name);
             mIvDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
             mIvChoice = (ImageView) itemView.findViewById(R.id.iv_choice);
             mBuyType = (TextView) itemView.findViewById(R.id.tv_buy_type);
+
+            courseTypeNames =
+                    itemView.getContext().getResources().getStringArray(R.array.course_type_names);
         }
 
         @Override
@@ -131,6 +147,13 @@ public class ClassCourseAdapter extends RecyclerAdapter<ClassCourseEntity> {
                 mIvChoice.setActivated(entity.isChecked());
             }else{
                 mIvChoice.setVisibility(View.GONE);
+            }
+
+            int courseType = entity.getAssortment();
+            if (courseType >= 0 && courseType < courseTypesBgId.length) {
+                mCourseType.setText(courseTypeNames[courseType]);
+                mCourseType.setBackgroundResource(courseTypesBgId[courseType]);
+                mCourseType.setVisibility(View.VISIBLE);
             }
         }
     }

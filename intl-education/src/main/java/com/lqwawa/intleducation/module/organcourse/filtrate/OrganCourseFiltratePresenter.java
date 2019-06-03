@@ -9,7 +9,6 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.OrganCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
-import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
@@ -19,18 +18,20 @@ import java.util.List;
  * @author medici
  */
 public class OrganCourseFiltratePresenter extends SchoolPermissionPresenter<OrganCourseFiltrateContract.View>
-    implements OrganCourseFiltrateContract.Presenter{
+        implements OrganCourseFiltrateContract.Presenter{
 
     public OrganCourseFiltratePresenter(OrganCourseFiltrateContract.View view) {
         super(view);
     }
 
     @Override
-    public void requestOrganCourseLabelData(@NonNull String organId, @NonNull int parentId, @NonNull String level) {
+    public void requestOrganCourseLabelData(@NonNull String organId, @NonNull int parentId,
+                                            @NonNull String level, int libraryType) {
         // 获取中英文数据
         // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        OrganCourseHelper.requestOrganClassifyLabelData(organId, languageRes, parentId, level, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        OrganCourseHelper.requestOrganClassifyLabelData(organId, languageRes, parentId, level,
+                libraryType, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
@@ -49,54 +50,4 @@ public class OrganCourseFiltratePresenter extends SchoolPermissionPresenter<Orga
         });
     }
 
-    @Override
-    public void requestCourseData(final boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString,@NonNull String level, int paramOneId, int paramTwoId, int paramThreeId) {
-        // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        OrganCourseHelper.requestOrganCourseData(organId,pageIndex, pageSize,keyString, level,paramOneId, paramTwoId, paramThreeId, new DataSource.Callback<List<CourseVo>>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
-
-            @Override
-            public void onDataLoaded(List<CourseVo> courseVos) {
-                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    if(more){
-                        view.onMoreCourseLoaded(courseVos);
-                    }else{
-                        view.onCourseLoaded(courseVos);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void requestCourseResourceData(boolean more, @NonNull String organId, int pageIndex, int pageSize, String keyString, @NonNull String level) {
-        OrganCourseHelper.requestOrganCourseResourceData(organId,pageIndex, pageSize,keyString, level, new DataSource.Callback<List<CourseVo>>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
-
-            @Override
-            public void onDataLoaded(List<CourseVo> courseVos) {
-                final OrganCourseFiltrateContract.View view = (OrganCourseFiltrateContract.View) getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    if(more){
-                        view.onMoreCourseResourceLoaded(courseVos);
-                    }else{
-                        view.onCourseResourceLoaded(courseVos);
-                    }
-                }
-            }
-        });
-    }
 }

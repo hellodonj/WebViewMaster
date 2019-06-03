@@ -40,13 +40,13 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     private boolean mViewer;
 
     public SubjectExpandableAdapter(boolean viewer) {
-        this(viewer,null);
+        this(viewer, null);
     }
 
-    public SubjectExpandableAdapter(boolean viewer,@NonNull List<LQCourseConfigEntity> groupData) {
+    public SubjectExpandableAdapter(boolean viewer, @NonNull List<LQCourseConfigEntity> groupData) {
         this.mViewer = viewer;
         this.mGroupData = groupData;
-        if(mGroupData == null){
+        if (mGroupData == null) {
             mGroupData = new ArrayList<>();
         }
     }
@@ -72,7 +72,7 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosition) {
         LQCourseConfigEntity groupEntity = mGroupData.get(groupPosition);
         List<LQCourseConfigEntity> childList = groupEntity.getChildList();
-        if(EmptyUtil.isEmpty(childList)) return null;
+        if (EmptyUtil.isEmpty(childList)) return null;
         return childList.get(childPosition);
     }
 
@@ -94,21 +94,21 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupViewHolder groupHolder = null;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = UIUtil.inflate(R.layout.item_subject_expandable_group);
             groupHolder = new GroupViewHolder(convertView);
             convertView.setTag(groupHolder);
-        }else{
+        } else {
             groupHolder = (GroupViewHolder) convertView.getTag();
         }
 
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
-        groupHolder.bind(group);
+        groupHolder.bind(group, false);
 
-        if(isExpanded){
+        if (isExpanded) {
             // 展开
             groupHolder.mIvArrow.setImageResource(R.drawable.ic_arrow_up);
-        }else{
+        } else {
             // 关闭
             groupHolder.mIvArrow.setImageResource(R.drawable.ic_arrow_down);
         }
@@ -118,20 +118,20 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildViewHolder childHolder = null;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = UIUtil.inflate(R.layout.item_subject_expandable_child);
             childHolder = new ChildViewHolder(convertView);
             convertView.setTag(childHolder);
-        }else{
+        } else {
             childHolder = (ChildViewHolder) convertView.getTag();
         }
 
         LQCourseConfigEntity group = (LQCourseConfigEntity) getGroup(groupPosition);
         LQCourseConfigEntity child = (LQCourseConfigEntity) getChild(groupPosition, childPosition);
-        if(group.getId() == MINORITY_LANGUAGE_ID){
-            childHolder.bind(group);
-        }else{
-            childHolder.bind(child);
+        if (child.getChildList().isEmpty()) {
+            childHolder.bind(group, true);
+        } else {
+            childHolder.bind(child, false);
         }
         return convertView;
     }
@@ -141,9 +141,9 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void setData(@NonNull List<LQCourseConfigEntity> groupData){
+    public void setData(@NonNull List<LQCourseConfigEntity> groupData) {
         mGroupData.clear();
-        if(EmptyUtil.isNotEmpty(groupData)){
+        if (EmptyUtil.isNotEmpty(groupData)) {
             mGroupData.addAll(groupData);
         }
 
@@ -152,18 +152,28 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
 
     /**
      * 获取二级列表的数目
+     *
      * @param entity 一级实体
      * @return count
      */
-    public int getChildrenSize(@NonNull LQCourseConfigEntity entity){
-        int count = 0;
-        if(EmptyUtil.isEmpty(entity.getChildList())) return count;
-        // 如果是小语种课程,其子控件只有一个
-        if(entity.getId() == MINORITY_LANGUAGE_ID) return 1;
+    public int getChildrenSize(@NonNull LQCourseConfigEntity entity) {
+        if (EmptyUtil.isEmpty(entity.getChildList())) return 0;
+        if (!isThirdLevelExist(entity)) return 1;
         return entity.getChildList().size();
     }
 
-    class GroupViewHolder implements Action{
+    public boolean isThirdLevelExist(@NonNull LQCourseConfigEntity lqCourseConfigEntity) {
+        if (lqCourseConfigEntity.getChildList() != null && !lqCourseConfigEntity.getChildList().isEmpty()) {
+            for (LQCourseConfigEntity entity : lqCourseConfigEntity.getChildList()) {
+                if (entity != null && entity.getChildList() != null && !entity.getChildList().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    class GroupViewHolder implements Action {
         ImageView mIvArrow;
         TextView mTvTitle;
 
@@ -173,12 +183,12 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         @Override
-        public void bind(@NonNull LQCourseConfigEntity entity) {
-            StringUtil.fillSafeTextView(mTvTitle,entity.getConfigValue());
+        public void bind(@NonNull LQCourseConfigEntity entity, boolean isGroup) {
+            StringUtil.fillSafeTextView(mTvTitle, entity.getConfigValue());
         }
     }
 
-    class ChildViewHolder implements Action{
+    class ChildViewHolder implements Action {
 
         private TextView mTvConfigTitle;
         private TagFlowLayout mFlowLayout;
@@ -204,20 +214,19 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         @Override
-        public void bind(@NonNull LQCourseConfigEntity entity) {
-            if(entity.getId() == MINORITY_LANGUAGE_ID){
-                // 一级列表是小语种课程
+        public void bind(@NonNull LQCourseConfigEntity entity, boolean isGroup) {
+            if (isGroup) {
                 mTvConfigTitle.setVisibility(View.GONE);
-            }else{
+            } else {
                 mTvConfigTitle.setVisibility(View.VISIBLE);
-                StringUtil.fillSafeTextView(mTvConfigTitle,entity.getConfigValue());
+                StringUtil.fillSafeTextView(mTvConfigTitle, entity.getConfigValue());
             }
 
             List<LQCourseConfigEntity> configEntities = entity.getChildList();
-            mAdapter = new SubjectTagAdapter(mViewer,configEntities);
+            mAdapter = new SubjectTagAdapter(mViewer, configEntities);
             mFlowLayout.setAdapter(mAdapter);
 
-            if(!mViewer){
+            if (!mViewer) {
                 // 不是观看模式
                 mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
@@ -232,15 +241,16 @@ public class SubjectExpandableAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    interface Action{
-        void bind(@NonNull LQCourseConfigEntity entity);
+    interface Action {
+        void bind(@NonNull LQCourseConfigEntity entity, boolean isGroup);
     }
 
     /**
      * 获取data数据
+     *
      * @return List<LQCourseConfigEntity>
      */
-    public List<LQCourseConfigEntity> getItems(){
+    public List<LQCourseConfigEntity> getItems() {
         return mGroupData;
     }
 }

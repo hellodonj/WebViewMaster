@@ -16,13 +16,14 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectExpandableAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 添加科目页面
  */
 public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Presenter>
-        implements AddSubjectContract.View{
+        implements AddSubjectContract.View {
 
     // 配置结果
     public static final String KEY_EXTRA_RESULT = "KEY_EXTRA_RESULT";
@@ -58,7 +59,7 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         mTopBar.setTitle(R.string.title_subject_setting);
-        mTopBar.setRightFunctionText1(R.string.label_confirm,view->{
+        mTopBar.setRightFunctionText1(R.string.label_confirm, view -> {
             // 点击确定
             List<LQCourseConfigEntity> items = mAdapter.getItems();
             String selectedIds = mPresenter.getSelectedIds(items);
@@ -67,7 +68,7 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
 
             // 发生请求
             String memberId = UserHelper.getUserId();
-            mPresenter.requestSaveTeacherConfig(memberId,selectedIds);
+            mPresenter.requestSaveTeacherConfig(memberId, selectedIds);
         });
 
         mExpandableView = (ExpandableListView) findViewById(R.id.expandable_view);
@@ -86,19 +87,21 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
     @Override
     public void updateAssignConfigView(@NonNull List<LQCourseConfigEntity> entities) {
         hideLoading();
+        fillData(entities);
         mAdapter.setData(entities);
 
         // 展开所有科目
         int groupCount = mAdapter.getGroupCount();
-        for (int index = 0;index < groupCount;index++) {
+        for (int index = 0; index < groupCount; index++) {
             mExpandableView.expandGroup(index);
         }
     }
 
+
     @Override
     public void updateSaveTeacherConfigView(boolean completed) {
         // 保存标签的回调
-        if(mHaveConfig || mConfigSize != 0) {
+        if (mHaveConfig || mConfigSize != 0) {
             if (completed) {
                 UIUtil.showToastSafe(R.string.tip_subject_setting_succeed);
             } else {
@@ -108,22 +111,38 @@ public class AddSubjectActivity extends PresenterActivity<AddSubjectContract.Pre
 
         Intent intent = new Intent();
         Bundle extras = new Bundle();
-        extras.putBoolean(KEY_EXTRA_RESULT,completed);
+        extras.putBoolean(KEY_EXTRA_RESULT, completed);
         intent.putExtras(extras);
-        setResult(Activity.RESULT_OK,intent);
+        setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    private void fillData(List<LQCourseConfigEntity> entities) {
+        if (entities != null && !entities.isEmpty()) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity != null && (entity.getChildList() == null
+                        || entity.getChildList().isEmpty())) {
+                    List<LQCourseConfigEntity> list = new ArrayList<>();
+                    LQCourseConfigEntity newEntity = entity.clone();
+                    entity.setSelected(false);
+                    list.add(newEntity);
+                    entity.setChildList(list);
+                }
+            }
+        }
     }
 
     /**
      * 添加科目页面的入口
+     *
      * @param activity 上下文对象
      */
     public static void show(@NonNull Activity activity,
-                            boolean haveConfig,int requestCode){
-        Intent intent = new Intent(activity,AddSubjectActivity.class);
+                            boolean haveConfig, int requestCode) {
+        Intent intent = new Intent(activity, AddSubjectActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putBoolean(KEY_EXTRA_HAVE_CONFIG,haveConfig);
+        bundle.putBoolean(KEY_EXTRA_HAVE_CONFIG, haveConfig);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent,requestCode);
+        activity.startActivityForResult(intent, requestCode);
     }
 }

@@ -130,7 +130,7 @@ public class HQCCourseListSimpleActivity extends MyBaseActivity implements View.
         final CourseVo vo = (CourseVo) courseListAdapter.getItem(position);
         if (vo != null) {
             CourseDetailsActivity.start(activity, vo.getId(), false,
-                    UserHelper.getUserId(), activity.getIntent().getStringExtra("schoolId"), true);
+                    UserHelper.getUserId());
         }
     }
 

@@ -163,7 +163,7 @@ public class DoCourseHelper {
         }
     }
 
-    public void setTeacherMark(boolean isTeacherMark){
+    public void setTeacherMark(boolean isTeacherMark) {
         this.isTeacherMark = isTeacherMark;
     }
 
@@ -234,7 +234,7 @@ public class DoCourseHelper {
 
     public void doRemoteLqCourse(final NewResourceInfo newResourceInfo, final int fromType, boolean
             isFromMoocModel) {
-        doRemoteLqCourse(newResourceInfo,fromType,isFromMoocModel,false);
+        doRemoteLqCourse(newResourceInfo, fromType, isFromMoocModel, false);
     }
 
 
@@ -333,6 +333,7 @@ public class DoCourseHelper {
 
     /**
      * 任务单答题卡的批阅
+     *
      * @param savePath
      * @param paths
      * @param title
@@ -342,11 +343,11 @@ public class DoCourseHelper {
                                               List<String> paths,
                                               String title,
                                               int screenType,
-                                              int fromType){
-        if (TextUtils.isEmpty(savePath)){
+                                              int fromType) {
+        if (TextUtils.isEmpty(savePath)) {
             return;
         }
-        if (paths == null || paths.size() == 0){
+        if (paths == null || paths.size() == 0) {
             return;
         }
         this.cardParam = cardParam;
@@ -354,6 +355,16 @@ public class DoCourseHelper {
         this.screenType = screenType;
         this.fromType = fromType;
         downloadCourseImages(savePath, paths, title);
+    }
+
+    public void doAnswerQuestionCheckMarkData(ExerciseAnswerCardParam cardParam,
+                                              int fromType) {
+        if (cardParam == null){
+            return;
+        }
+        this.fromType = fromType;
+        this.cardParam = cardParam;
+        createNewDoSlideCourse(cardParam.getScreenType());
     }
 
     /**
@@ -373,7 +384,12 @@ public class DoCourseHelper {
                 param.mMemberId = userInfo.getMemberId();
             }
             param.mSlideSaveBtnParam = new CreateSlideHelper.SlideSaveBtnParam(true, true, true);
-            param.fromType = SlideManagerHornForPhone.FromWhereData.FROM_LQCLOUD_COURSE;
+            if (fromType == DoCourseHelper.FromType.Do_Answer_Card_Check_Course){
+                param.fromType = SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_COURSE;
+                param.cardParam = cardParam;
+            } else {
+                param.fromType = SlideManagerHornForPhone.FromWhereData.FROM_LQCLOUD_COURSE;
+            }
             param.mOrientation = orientation;
             CreateSlideHelper.createSlide(param);
         }
@@ -516,7 +532,7 @@ public class DoCourseHelper {
                 .RES_TYPE_PDF || newResourceInfo.getResourceType() == ResType.RES_TYPE_PPT)) {
             mCreateSlideParam.mTitle = studyTaskTitle;
         }
-        if (fromType == FromType.Do_Answer_Card_Check_Course){
+        if (fromType == FromType.Do_Answer_Card_Check_Course) {
             mCreateSlideParam.cardParam = cardParam;
             mCreateSlideParam.mTitle = studyTaskTitle;
             mCreateSlideParam.fromType = SlideManagerHornForPhone.FromWhereData.FROM_STUDY_TASK_COURSE;
@@ -602,7 +618,7 @@ public class DoCourseHelper {
                             //我要加点读
                             importDoSlideCourseImage(imagePaths);
                         } else if (fromType == FromType.Do_Answer_Card_Check_Course
-                                || fromType == FromType.DO_SLIDE_COURSE_TASK){
+                                || fromType == FromType.DO_SLIDE_COURSE_TASK) {
                             //任务单批阅
                             importDoSlideCourseImage(imagePaths);
                         } else {
@@ -621,7 +637,7 @@ public class DoCourseHelper {
             it.putExtra(SlideActivityNew.LOAD_FILE_TITLE, studyTaskTitle);
             it.putExtra(SlideActivityNew.COURSETYPEFROM, SlideActivityNew.CourseTypeFrom.FROMSTUDYTASK);
             it.putExtra(SlideActivityNew.MODEL_SOURCE_FROM, isFromMoocModel);
-            it.putExtra(SlideActivityNew.IS_FROM_TEACHER_MARK,isTeacherMark);
+            it.putExtra(SlideActivityNew.IS_FROM_TEACHER_MARK, isTeacherMark);
         } else {
             it.putExtra(SlideActivityNew.COURSETYPEFROM, SlideActivityNew.CourseTypeFrom.FROMLQCOURSE);
         }
@@ -1141,11 +1157,11 @@ public class DoCourseHelper {
             it.putExtra(SlideActivityNew.ISNEEDDIRECTORY, true);
             it.putExtra(SlideActivityNew.COURSETYPEFROM, SlideActivityNew.CourseTypeFrom.FROMSTUDYTASK);
             it.putExtra(SlideActivityNew.MODEL_SOURCE_FROM, isFromMoocModel);
-            it.putExtra(SlideActivityNew.IS_FROM_TEACHER_MARK,isTeacherMark);
-            if (autoMark){
+            it.putExtra(SlideActivityNew.IS_FROM_TEACHER_MARK, isTeacherMark);
+            if (autoMark) {
                 //复述课件评字标识
-                it.putExtra(SlideActivityNew.COURSE_ID,courseId);
-                it.putExtra(SlideActivityNew.AUTO_MARK,autoMark);
+                it.putExtra(SlideActivityNew.COURSE_ID, courseId);
+                it.putExtra(SlideActivityNew.AUTO_MARK, autoMark);
             }
         } else {
             if (newResourceInfo != null && (newResourceInfo.getResourceType() == ResType

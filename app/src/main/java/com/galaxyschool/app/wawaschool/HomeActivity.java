@@ -77,6 +77,8 @@ public class HomeActivity extends BaseCompatActivity
     public static final String ACTION_CHANGE_LQCOURSE_TAB = "action_change_lqCourse_tab";
     public static final String EXTRA_THIRD_LOGIN_TIP_MESSAGE = "third_login_tip_message";
     public static final String EXTRA_PUSH_ASSISTANT_ENTER = "entra_push_assistant_enter";
+    public static final String EXTRA_PUSH_ASSISTANT_APPLY_ADOPT =
+            "extra_push_assistant_apply_adopt";
     private static final int TAB_LQ_COURSE = 0;//lq学程、学程馆
     private static final int TAB_ONLINE_STUDY = 1;//在线学习
     private static final int TAB_MY_COURSE = 2;//我的课程
@@ -226,8 +228,11 @@ public class HomeActivity extends BaseCompatActivity
         Bundle args = getIntent().getExtras();
         if (args != null) {
             boolean isAssistantEnter = args.getBoolean(EXTRA_PUSH_ASSISTANT_ENTER,false);
+            boolean isAssistantApplyAdopt = args.getBoolean(EXTRA_PUSH_ASSISTANT_APPLY_ADOPT,false);
             if (isAssistantEnter) {
                 setCurrPage(TAB_MY_COURSE);
+            } else if (isAssistantApplyAdopt){
+                setCurrPage(TAB_PERSONAL_SPACE);
             }
         }
     }
@@ -600,6 +605,7 @@ public class HomeActivity extends BaseCompatActivity
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction(EXTRA_THIRD_LOGIN_TIP_MESSAGE);
         filter.addAction(EXTRA_PUSH_ASSISTANT_ENTER);
+        filter.addAction(EXTRA_PUSH_ASSISTANT_APPLY_ADOPT);
         registerReceiver(homeReceiver, filter);
     }
 
@@ -657,6 +663,9 @@ public class HomeActivity extends BaseCompatActivity
                 //切换到帮辅空间
                 updateBottomViewText();
                 setCurrPage(TAB_MY_COURSE);
+            } else if (TextUtils.equals(intent.getAction(),EXTRA_PUSH_ASSISTANT_APPLY_ADOPT)){
+                updateBottomViewText();
+                setCurrPage(TAB_PERSONAL_SPACE);
             }
         }
     }

@@ -2,164 +2,125 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/com_item_selector"
+    android:gravity="center_vertical"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/title_lay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/com_bg_white"
-        android:clickable="true"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="6dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/com_item_space"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:src="@drawable/title"/>
-
-            <TextView
-                android:id="@+id/title_name_tv"
-                style="@style/text_black_l"
-                android:layout_width="312dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10.0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/arrow_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/com_item_space_xl"
-                android:src="@drawable/arrow_up_gray_ico"/>
-        </LinearLayout>
-        <View
-            android:id="@+id/split_view"
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/com_line_gray"/>
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/item_root_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/com_item_selector"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/com_line_gray"/>
+        android:orientation="horizontal"
+        android:padding="5dp">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="6dp">
-            <ImageView
-                android:id="@+id/res_icon_iv"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/com_item_space_xxs"
-                android:scaleType="fitCenter"/>
+                android:layout_gravity="top">
+
+                <ImageView
+                    android:id="@+id/iv_res_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:padding="@dimen/com_item_space_xxs" />
+
+                <ImageView
+                    android:id="@+id/iv_res_play"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_lqwawa_play"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:layout_weight="1.0"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
 
                 <TextView
-                    android:id="@+id/tv_assigned"
-                    android:textSize="14sp"
-                    android:textColor="@color/textAccent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="@string/label_assigned"
-                    android:layout_gravity="left|center_vertical"
-                    android:layout_marginRight="4dp"/>
-
-                <TextView
-                    android:id="@+id/res_name_tv"
+                    android:id="@+id/tv_res_name"
                     style="@style/text_gray_l"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
-                    android:maxWidth="180dp"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
-
-                <TextView
-                    android:id="@+id/tv_auto_mark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/textLight"
-                    android:background="@color/alertImportant"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:singleLine="true"
                     android:ellipsize="end"
-                    android:layout_marginLeft="4dp"
-                    android:text="@string/label_voice_evaluating"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                    android:lines="2" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
 
+                    <TextView
+                        android:id="@+id/tv_view_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="0000"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/textDarkGray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_auto_mark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/alertImportant"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="@string/label_voice_evaluating"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/textLight"
+                        android:textSize="14sp" />
+                </RelativeLayout>
             </LinearLayout>
 
 
-            <!--<TextView
-                android:id="@+id/res_name_tv"
-                style="@style/text_gray_l"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/com_item_space"/>-->
+        </LinearLayout>
 
-            <TextView
-                style="@style/text_gray_l"
-                android:id="@+id/res_action_tv"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="middle"
-                android:padding="5dp"
-                android:gravity="center"
-                android:paddingLeft="@dimen/com_item_space"
-                android:visibility="gone"/>
+        <RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/iv_need_commit"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:scaleType="fitXY"
+                android:layout_centerInParent="true"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_need_to_commit"
-                android:visibility="gone"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="right|center_vertical"/>
+                android:visibility="gone" />
 
             <CheckBox
                 android:id="@+id/checkbox"
-                android:visibility="gone"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/com_checkbox_ll"
+                android:button="@null"
                 android:clickable="false"
-                android:button="@drawable/com_checkbox_ll"
-                android:layout_gravity="right|center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"/>
-
-        </LinearLayout>
+                android:visibility="gone" />
+        </RelativeLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/com_line_gray" />
 </LinearLayout>

@@ -1220,7 +1220,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                 if (mParam != null && mParam.applyMarkdata != null) {
                                                                                     if (uploadResult.code == 0) {
                                                                                         ApplyMarkHelper.enterApplyTeacherMarkActivity(PlaybackActivityPhone.this,
-                                                                                                uploadResult.data.get(0), mParam.applyMarkdata);
+                                                                                                uploadResult.data.get(0), mParam.applyMarkdata, false);
                                                                                     }
                                                                                 }
                                                                             } else if (mParam != null && mParam.isAssistanceModel) {

@@ -10,9 +10,11 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupContract;
 
 import java.util.List;
@@ -30,9 +32,9 @@ public class TutorialFiltrateGroupPresenter extends BasePresenter<TutorialFiltra
 
 
     @Override
-    public void requestTutorialConfigData() {
+    public void requestTutorialConfigData(@NonNull String memberId) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        TutorialHelper.requestTutorialConfigData(languageRes, 1, 0, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestAssignConfigData(memberId, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialFiltrateGroupContract.View view = getView();

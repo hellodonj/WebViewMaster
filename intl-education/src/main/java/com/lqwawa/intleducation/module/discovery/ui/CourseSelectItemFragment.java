@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
@@ -21,11 +24,13 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.SuperGridView;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
+import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
@@ -36,6 +41,7 @@ import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
@@ -67,7 +73,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     // 真实的选择类型
     public static final String KEY_EXTRA_REAL_TASK_TYPE = "KEY_EXTRA_REAL_TASK_TYPE";
 
-    private SuperListView listView;
+    private SuperGridView listView;
     private FrameLayout mEmptyView;
     OnLoadStatusChangeListener onLoadStatusChangeListener;
     private ResourceSelectListener mListener;
@@ -99,7 +105,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         topBar = (TopBar) view.findViewById(R.id.select_top_bar);
         pullToRefresh = (PullToRefreshView) view.findViewById(R.id.select_pull_to_refresh);
         mEmptyView = (FrameLayout) view.findViewById(R.id.empty_layout);
-        listView = (SuperListView) view.findViewById(R.id.course_select_listView);
+        listView = (SuperGridView) view.findViewById(R.id.course_select_listView);
         return view;
     }
 
@@ -182,17 +188,20 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        courseResListAdapter = new CourseResListAdapter(activity, false);
+        boolean isVideoLibrary =
+                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoLibrary);
         courseResListAdapter.setCourseSelect(true, mTaskType);
-        courseResListAdapter.setMultipleChoiceCount(true, mMultipleChoiceCount);
+        courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
         courseResListAdapter.setClassTeacher(
                 EmptyUtil.isNotEmpty(mParams) &&
                         mParams.isClassCourseEnter() &&
                         EmptyUtil.isNotEmpty(mParams.getClassId()));
         listView.setAdapter(courseResListAdapter);
+        listView.setNumColumns(1);
 
-        listView.setOnItemClickListener(new SuperListView.OnItemClickListener() {
+        listView.setOnItemClickListener(new SuperGridView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
@@ -233,8 +242,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
         requestVo.addParams("role", 1);
-        if(EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()){
-            if(EmptyUtil.isNotEmpty(mParams.getClassId())){
+        if (EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()) {
+            if (EmptyUtil.isNotEmpty(mParams.getClassId())) {
                 String classId = mParams.getClassId();
                 requestVo.addParams("classId", classId);
             }
@@ -294,9 +303,9 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                             updateData(i);
                         } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
                             updateData(i);
-                        } else if(mTaskType == KEY_TEXT_BOOK && taskType == 4){
+                        } else if (mTaskType == KEY_TEXT_BOOK && taskType == 4) {
                             updateData(i);
-                        } else if(mTaskType == KEY_LECTURE_COURSE && taskType == 5){
+                        } else if (mTaskType == KEY_LECTURE_COURSE && taskType == 5) {
                             updateData(i);
                         }
                     }
@@ -308,11 +317,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
 
     private void updateData(int i) {
         List<SectionResListVo> voList = sectionDetailsVo.getTaskList().get(i).getData();
-        RefreshUtil.getInstance().refresh(voList);
-        if (voList.size() > 0) {
-            // V5.11版本 取消标题的显示
-            voList.get(0).setIsTitle(false);
-        }
+        restoreCheckState(voList);
         for (SectionResListVo vo : voList) {
             vo.setTaskName(getTaskName(i));
             vo.setTaskType(sectionDetailsVo.getTaskList().get(i).getTaskType());
@@ -347,8 +352,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                 }
             }
 
-            if(mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
-                    && mTaskType == KEY_LECTURE_COURSE){
+            if (mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE
+                    && mTaskType == KEY_LECTURE_COURSE) {
                 // 选择复述课件，讲解课的显示
                 // sectionResListVo.setResProperties("");
             }
@@ -379,6 +384,18 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         }
     }
 
+    private void restoreCheckState(List<SectionResListVo> voList) {
+        if (voList != null && voList.size() > 0) {
+            for (SectionResListVo vo : voList) {
+                if (vo != null && !TextUtils.isEmpty(vo.getId())) {
+                    if (RefreshUtil.getInstance().contains(vo.getId())) {
+                        vo.setChecked(true);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -390,14 +407,6 @@ public class CourseSelectItemFragment extends MyBaseFragment {
     @NonNull
     private String getTaskName(int i) {
         String taskName = sectionDetailsVo.getTaskList().get(i).getTaskName();
-        /*int taskType = sectionDetailsVo.getTaskList().get(i).getTaskType();
-        if (taskType == 1) {//看课件
-            taskName = getString(R.string.lq_watch_course);
-        } else if (taskType == 2) {//复述课件
-            taskName = getResources().getString(R.string.retell_course);
-        }else if (taskType == 3) {//任务单
-            taskName = getResources().getString(R.string.coursetask);
-        }*/
         return taskName;
     }
 
