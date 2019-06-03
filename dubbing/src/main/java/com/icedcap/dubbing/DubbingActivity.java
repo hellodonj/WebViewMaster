@@ -733,6 +733,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(final View v) {
         if (v.getId() == R.id.tv_preview) {
             //预览
+
             if (isRecording) {
                 TipMsgHelper.ShowMsg(DubbingActivity.this,R.string.str_dubbing_recording);
             } else if (isRecordAll()) {
