@@ -1,14 +1,13 @@
 package com.lqwawa.intleducation.module.tutorial.course;
 
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.codingmaster.slib.S;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
@@ -59,6 +58,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
         private TextView mTvTaskCount;
         private TextView mTvTutorialFree;
         private TextView mTvPrice;
+        private RatingBar mRatingBar;
 
         public GroupHolder(View itemView) {
             super(itemView);
@@ -73,6 +73,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             mTvTaskCount = (TextView) itemView.findViewById(R.id.tv_task_count);
             mTvTutorialFree = (TextView) itemView.findViewById(R.id.tv_free);
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
+            mRatingBar = (RatingBar) itemView.findViewById(R.id.group_rating_bar);
         }
 
         @Override
@@ -89,7 +90,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             }
             mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
-            mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            //mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             
             mTvAddTutorial.setText(!isClassTutor ? R.string.label_add_tutorial : R.string.add_class_tutor);
 
@@ -114,6 +115,8 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
             }else{
                 mTvAddTutorial.setVisibility(View.VISIBLE);
             }
+            //帮辅群界面老师添加星级评价
+            mRatingBar.setRating(1.5f);
         }
     }
 
