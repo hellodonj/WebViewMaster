@@ -56,7 +56,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
         private TextView mTvAddTutorial;
         private TextView mTvTutorName;
         private TextView mTvTaskCount;
-        private TextView mTvTutorialFree;
+        //private TextView mTvTutorialFree;
         private TextView mTvPrice;
         private RatingBar mRatingBar;
 
@@ -71,7 +71,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
 
             mTvTutorName = (TextView) itemView.findViewById(R.id.tv_tutor_name);
             mTvTaskCount = (TextView) itemView.findViewById(R.id.tv_task_count);
-            mTvTutorialFree = (TextView) itemView.findViewById(R.id.tv_free);
+            //mTvTutorialFree = (TextView) itemView.findViewById(R.id.tv_free);
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mRatingBar = (RatingBar) itemView.findViewById(R.id.group_rating_bar);
         }
@@ -116,7 +116,7 @@ public class TutorialGroupAdapter extends RecyclerAdapter<TutorialGroupEntity> {
                 mTvAddTutorial.setVisibility(View.VISIBLE);
             }
             //帮辅群界面老师添加星级评价
-            mRatingBar.setRating(1.5f);
+            mRatingBar.setRating(entity.getStarLevel());
         }
     }
 
