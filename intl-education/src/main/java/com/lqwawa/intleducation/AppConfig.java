@@ -944,5 +944,9 @@ public final class AppConfig {
         public static final String PostGetTutorSubjectList =
                 ServerBase + "api/config/getTutorSubjectList";
 
+        // 获取帮辅老师星级等级
+        public static final String PostGetTutorStarLevel =
+                ServerBase + "/api/tutor/getTutorStarLevel";
+
     }
 }

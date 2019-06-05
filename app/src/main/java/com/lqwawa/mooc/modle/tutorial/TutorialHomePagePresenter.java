@@ -1,20 +1,14 @@
 package com.lqwawa.mooc.modle.tutorial;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
+import com.lqwawa.intleducation.factory.data.DataSource.Callback;
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
-import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.factory.helper.UserHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
-import com.lqwawa.intleducation.module.tutorial.regist.IDType;
-import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
-import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListContract;
+import com.lqwawa.intleducation.factory.data.entity.TutorStarLevelEntity;
 
 import java.util.List;
 
@@ -31,7 +25,7 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
 
     @Override
     public void requestUserInfoWithUserId(@NonNull String userId) {
-        UserHelper.requestUserInfoWithUserId(userId, new DataSource.Callback<UserEntity>() {
+        UserHelper.requestUserInfoWithUserId(userId, new Callback<UserEntity>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialHomePageContract.View view = getView();
@@ -53,7 +47,7 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
 
     @Override
     public void requestTutorSubjectList(@NonNull String tutorMemberId) {
-        UserHelper.requestTutorSubjectList(tutorMemberId, new DataSource.Callback<List<String>>() {
+        UserHelper.requestTutorSubjectList(tutorMemberId, new Callback<List<String>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialHomePageContract.View view = getView();
@@ -77,7 +71,7 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
     public void requestQueryAddedTutorState(@NonNull String memberId,
                                             @NonNull String tutorMemberId, String classId) {
         TutorialHelper.requestQueryAddedTutorByTutorId(memberId, tutorMemberId,
-                classId, new DataSource.Callback<Boolean>() {
+                classId, new Callback<Boolean>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
                         final TutorialHomePageContract.View view = getView();
@@ -100,7 +94,7 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
     @Override
     public void requestAddTutor(@NonNull String memberId, @NonNull String tutorMemberId, @NonNull String tutorName, @NonNull String classId) {
         TutorialHelper.requestAddTutor(memberId, tutorMemberId, tutorName,
-                classId, new DataSource.Callback<Boolean>() {
+                classId, new Callback<Boolean>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
                         final TutorialHomePageContract.View view = getView();
@@ -117,5 +111,27 @@ public class TutorialHomePagePresenter extends BasePresenter<TutorialHomePageCon
                         }
                     }
                 });
+    }
+
+    @Override
+    public void requestTutorStarLevel(@NonNull String tutorMemberId) {
+        UserHelper.requestTutorStarLevel(tutorMemberId, new Callback<TutorStarLevelEntity>() {
+            @Override
+            public void onDataLoaded(TutorStarLevelEntity starLevelEntities) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view) &&
+                        EmptyUtil.isNotEmpty(starLevelEntities)){
+                    view.updateTutorStarLevel(starLevelEntities);
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final TutorialHomePageContract.View view = getView();
+                if(EmptyUtil.isNotEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+        });
     }
 }

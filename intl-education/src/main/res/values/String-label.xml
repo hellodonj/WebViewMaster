@@ -401,7 +401,9 @@
     <string name="label_student_live">Class</string>
     <string name="label_my">My</string>
     <string name="label_tutorial_student_review_count">%d unmarked</string>
-    <string name="label_viewer_count">%d viewers</string>
+    <string name="label_course_count">%d \n courses</string>
+    <string name="label_student_count">%d \n students</string>
+    <string name="label_viewer_count">%d \n viewers</string>
     <string name="label_attention_count">%d followers</string>
     <string name="label_personal_introduce">Introduction</string>
     <string name="label_showing">Show</string>

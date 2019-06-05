@@ -406,7 +406,9 @@
     <string name="label_student_live">空中课堂</string>
     <string name="label_my">我的</string>
     <string name="label_tutorial_student_review_count">%d未批</string>
-    <string name="label_viewer_count">%d人浏览</string>
+    <string name="label_course_count">%d\n帮辅的课程</string>
+    <string name="label_student_count">%d\n学生数</string>
+    <string name="label_viewer_count">%d\n浏览数</string>
     <string name="label_attention_count">%d人关注</string>
     <string name="label_personal_introduce">个人介绍</string>
     <string name="label_showing">显示</string>

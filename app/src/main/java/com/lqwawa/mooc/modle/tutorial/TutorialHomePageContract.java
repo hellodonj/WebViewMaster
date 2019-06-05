@@ -1,10 +1,10 @@
 package com.lqwawa.mooc.modle.tutorial;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.lqwawa.intleducation.factory.data.entity.user.UserEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
+import com.lqwawa.intleducation.factory.data.entity.TutorStarLevelEntity;
 
 import java.util.List;
 
@@ -27,6 +27,9 @@ public interface TutorialHomePageContract {
         // 对帮辅(班级帮辅)老师进行关注
         void requestAddTutor(@NonNull String memberId, @NonNull String tutorMemberId,
                              @NonNull String tutorName, String classId);
+
+        //获取帮辅老师星级
+        void requestTutorStarLevel(@NonNull String tutorMemberId);
     }
 
     interface View extends BaseContract.View<Presenter> {
@@ -37,5 +40,7 @@ public interface TutorialHomePageContract {
         void updateQueryAddedTutorStateView(boolean added);
 
         void updateAddTutorView(boolean result);
+
+        void updateTutorStarLevel(TutorStarLevelEntity entity);
     }
 }
