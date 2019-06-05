@@ -1,9 +1,9 @@
 package com.lqwawa.mooc.modle.tutorial.comment;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
@@ -12,7 +12,6 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 /**
  * @author mrmedici
@@ -51,11 +50,13 @@ public class TutorialCommentAdapter extends RecyclerAdapter<TutorCommentEntity> 
         private TextView mTvContent;
         private TextView mTvDate;
         private TextView mTvStatus;
+        private RatingBar mCommentRatingBar;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
             mIvAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
+            mCommentRatingBar = (RatingBar) itemView.findViewById(R.id.comment_rating_bar);
             mTvZan = (TextView) itemView.findViewById(R.id.tv_zan);
             mTvContent = (TextView) itemView.findViewById(R.id.tv_content);
             mTvDate = (TextView) itemView.findViewById(R.id.tv_date);
@@ -69,6 +70,7 @@ public class TutorialCommentAdapter extends RecyclerAdapter<TutorCommentEntity> 
             StringUtil.fillSafeTextView(mTvZan,Integer.toString(entity.getPraiseNum()));
             StringUtil.fillSafeTextView(mTvContent,entity.getContent());
             StringUtil.fillSafeTextView(mTvDate,entity.getCreateTime());
+            mCommentRatingBar.setRating(entity.getStarLevel());
             // 恢复可用
             mTvZan.setEnabled(true);
             mTvStatus.setEnabled(true);
