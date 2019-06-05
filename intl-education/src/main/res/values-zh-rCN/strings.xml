@@ -510,4 +510,9 @@
     <string name="class_tutor">班级帮辅</string>
     <string name="add_class_tutor">+班级帮辅</string>
     <string name="add_course_success">课程参加成功</string>
+
+    <!--5.16-->
+    <string name="str_frog_coin">娃娃币</string>
+    <string name="review_price_dialog_title">设置批阅价格</string>
+
 </resources>

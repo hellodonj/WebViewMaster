@@ -1,27 +1,28 @@
-package com.galaxyschool.app.wawaschool.views;
+package com.lqwawa.intleducation.common.ui;
 
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.widget.EditText;
-import com.galaxyschool.app.wawaschool.R;
 
-public class ContactsInputBoxDialog extends ContactsDialog {
+import com.lqwawa.intleducation.R;
 
-    public ContactsInputBoxDialog(Context context, String title,
-            String inputBoxDefaultText, String inputBoxHintText,
-            String leftButtonText, OnClickListener leftButtonClickListener,
-            String rightButtonText, OnClickListener rightButtonClickListener) {
+public class ContactsInputDialog extends ContactsDialog{
+
+    public ContactsInputDialog(Context context, String title,
+                               String inputBoxDefaultText, String inputBoxHintText,
+                               String leftButtonText, OnClickListener leftButtonClickListener,
+                               String rightButtonText, OnClickListener rightButtonClickListener) {
         this(context, R.style.Theme_ContactsDialog, title,
                 inputBoxDefaultText, inputBoxHintText,
                 leftButtonText, leftButtonClickListener,
                 rightButtonText, rightButtonClickListener);
     }
 
-    public ContactsInputBoxDialog(Context context, int theme, String title,
-            String inputBoxDefaultText, String inputBoxHintText,
-            String leftButtonText, OnClickListener leftButtonClickListener,
-            String rightButtonText, OnClickListener rightButtonClickListener) {
+    public ContactsInputDialog(Context context, int theme, String title,
+                               String inputBoxDefaultText, String inputBoxHintText,
+                               String leftButtonText, OnClickListener leftButtonClickListener,
+                               String rightButtonText, OnClickListener rightButtonClickListener) {
         super(context, theme, title, R.layout.contacts_dialog_inputbox,
                 leftButtonText, leftButtonClickListener,
                 rightButtonText, rightButtonClickListener);

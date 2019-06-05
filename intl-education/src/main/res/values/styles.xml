@@ -132,4 +132,10 @@
     </style>
 
     <style name="Theme.ContactsDialog" parent="@android:style/Theme.Dialog"></style>
+
+    <style name="review_price_dialog_text">
+        <item name="android:textSize">18dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#009BE5</item>
+    </style>
 </resources>

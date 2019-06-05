@@ -390,6 +390,7 @@
     <string name="label_apply_for_have_commit">Application submitted</string>
     <string name="label_applying_for">Waiting approval</string>
     <string name="label_tutorial_space">Tutor Space</string>
+    <string name="label_review_price">Review Price</string>
     <string name="label_course_box">My Course</string>
     <string name="label_tutorial_work">Homework</string>
     <string name="label_tutorial_student">Student</string>

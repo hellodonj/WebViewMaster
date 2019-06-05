@@ -155,6 +155,18 @@
                     app:strokeWideth="2dp"
                     android:visibility="gone"/>
 
+                <TextView
+                    android:id="@+id/tv_expired_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:textSize="10sp"
+                    android:background="@drawable/expired_time_style_1"
+                    android:padding="5dp"
+                    android:layout_margin="3dp"
+                    android:text="1h后过期"
+                    android:textColor="@color/white" />
+
             </FrameLayout>
 
             <LinearLayout

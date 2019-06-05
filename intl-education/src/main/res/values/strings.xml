@@ -535,4 +535,8 @@
     <string name="add_class_tutor">+Class Tutor</string>
     <string name="add_course_success">Attended</string>
 
+    <!--5.16-->
+    <string name="str_frog_coin">Frog Coin</string>
+    <string name="review_price_dialog_title">Set the review price</string>
+
 </resources>

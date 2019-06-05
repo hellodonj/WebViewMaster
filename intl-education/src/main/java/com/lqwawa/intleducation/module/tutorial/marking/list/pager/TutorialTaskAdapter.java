@@ -1,16 +1,13 @@
 package com.lqwawa.intleducation.module.tutorial.marking.list.pager;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
@@ -19,8 +16,6 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
-
-import org.xutils.x;
 
 /**
  * @author mrmedici
@@ -73,6 +68,8 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
         private TextView mTaskTime;
         private TextView mCheckMark;
+        //过期时长
+        private TextView mExpiredTime;
 
         public TaskHolder(View itemView) {
             super(itemView);
@@ -90,6 +87,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             mTaskChapter = (TextView) itemView.findViewById(R.id.tv_task_chapter);
             mTaskTime = (TextView) itemView.findViewById(R.id.tv_task_time);
             mCheckMark = (TextView) itemView.findViewById(R.id.tv_check_mark);
+            mExpiredTime = (TextView) itemView.findViewById(R.id.tv_expired_time);
         }
 
         @Override
@@ -229,6 +227,14 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     mCallback.onEntityClick(v,position,entity,taskEntity.getReviewState());
                 }
             });
+            //过期时长
+            // 有效期为24h，过期时间规则：
+            //1、到12h，提示“12h后过期”
+            //2、到6h，提示“6h后过期”
+            //3、到2h以后，每个小时都提示，提示“2h后过期”、“1h后过期”
+            //4、1h的时候，需要给帮辅推送信息
+            mExpiredTime.setText("0.5h后过期");
+            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
         }
     }
 
