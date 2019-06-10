@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONArray;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
@@ -14,6 +15,7 @@ import com.icedcap.dubbing.DubbingActivity;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.lqbaselib.net.FileApi;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -34,6 +36,23 @@ public class QDubbingActivity extends DubbingActivity {
     public static int COMMIT_Q_DUBBING_TASK_SUCCESS = 0x1000;
     private CommitTask commitTask;
 
+    /**
+     * 打开学生详情 commitTask 不能传null  学生做作业(开始配音) commitTask 传null
+     *
+     * @param context
+     * @param resourceUrl         mp4Url
+     * @param level               level==3 表示有背景音乐
+     * @param commitTask          (mooc过来对象转化一下->
+     *                            需要转化的字段 （
+     *                            studentResUrl,
+     *                            AutoEvalContent,
+     *                            commitTaskId(id),
+     *                            HasVoiceReview,
+     *                            TaskScore,
+     *                            TaskScoreRemark））
+     * @param hasReviewPermission 点评的权限
+     * @param resPropertyValue    配音的类型 按句配音(2) 通篇配音(3)
+     */
     public static void start(Activity context,
                              String resourceUrl,
                              String level,
