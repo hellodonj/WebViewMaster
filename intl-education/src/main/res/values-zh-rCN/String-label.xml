@@ -105,12 +105,12 @@
     <string name="label_online_course">空中课堂</string>
     <string name="label_course">课程</string>
     <!--学程馆改成自习课程-->
-    <string name="label_course_shop">学程馆</string>
+    <string name="label_course_shop">课本馆</string>
     <!--<string name="label_course_shop">自习课程</string>-->
     <string name="label_space_school_function_class">开课班</string>
     <string name="label_space_school_function_course">精品课程</string>
     <!--学程馆改成自习课程-->
-    <string name="label_space_school_function_shop">学程馆</string>
+    <string name="label_space_school_function_shop">课本馆</string>
     <!--<string name="label_space_school_function_shop">自习课程</string>-->
     <string name="label_space_school_function_teacher">名师堂</string>
     <string name="label_space_school_function_choice_books">精品资源库</string>
@@ -168,7 +168,7 @@
     <string name="label_auto_mark">自动批阅</string>
     <string name="label_voice_evaluating">语音评测</string>
     <!--学程馆改成自习课程-->
-    <string name="label_organ_shop_permission_description">该机构暂无更多学程馆课程，敬请期待！</string>
+    <string name="label_organ_shop_permission_description">该机构暂无更多课本馆课程，敬请期待！</string>
     <string name="label_organ_course_permission_description">该机构暂无更多%s课程，敬请期待！</string>
 
     <string name="label_new_create">新建</string>
@@ -199,7 +199,7 @@
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
     <!--<string name="label_go_course_shop">去自习课程</string>-->
-    <string name="label_go_course_shop">去学程馆</string>
+    <string name="label_go_course_shop">去课本馆</string>
     <string name="label_go_online_study">去空中课堂</string>
 
     <string name="label_update_time">最后更新：</string>
@@ -344,7 +344,7 @@
     <string name="label_work_cart_max_count_tip">任务添加不能超过6个!</string>
     <string name="label_dialog_cart_left">不发布,清空</string>
     <string name="label_dialog_cart_right">现在去发布</string>
-    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级学程，将清空作业库，现在去发布吗？</string>
+    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级课程，将清空作业库，现在去发布吗？</string>
     <string name="label_learning_progress">学习进度：</string>
     <string name="label_many_people">%d人</string>
     <string name="label_assigned">【已布置】</string>

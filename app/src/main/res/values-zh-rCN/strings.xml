@@ -1507,7 +1507,7 @@
     <string name="max_score">最高分</string>
     <string name="min_score">最低分</string>
     <string name="commit_and_all_person">提交人数/班级人数: %s人</string>
-    <string name="str_class_lesson">班级学程</string>
+    <string name="str_class_lesson">班级课程</string>
     <string name="str_show_text">显示文本</string>
     <string name="str_fundamental_tone">原音</string>
     <string name="str_record_err">录制异常，请重新录制</string>
