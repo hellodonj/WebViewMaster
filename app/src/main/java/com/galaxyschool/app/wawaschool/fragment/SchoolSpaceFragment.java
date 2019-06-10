@@ -150,6 +150,13 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item.resId = R.drawable.ic_practice_library_rect;
         itemList.add(item);
 
+        //全脑馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
+        item.title = getString(R.string.common_brain_library);
+        item.resId = R.drawable.ic_brain_library_rect;
+        itemList.add(item);
+
         //学校班级
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CLASS;
@@ -450,6 +457,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             default:

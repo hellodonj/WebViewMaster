@@ -581,10 +581,21 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             @NonNull final ShopResourceData data,
                             @NonNull final String roles,
                             int libraryType) {
+
+//        final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+        final String finalOrganId = organId;
+        if (libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
+            LQCourseConfigEntity lqCourseConfigEntity = new LQCourseConfigEntity();
+            lqCourseConfigEntity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
+            lqCourseConfigEntity.setLevel(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL);
+            lqCourseConfigEntity.setEntityOrganId(finalOrganId);
+            lqCourseConfigEntity.setConfigValue(activity.getString(R.string.common_brain_library));
+            enterOrganCourseFiltrate(activity, lqCourseConfigEntity, libraryType,
+                    selectResource, data, roles);
+            return;
+        }
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-//         final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        final String finalOrganId = organId;
         OrganCourseHelper.requestOrganCourseClassifyData(finalOrganId, languageRes, libraryType,
                 new DataSource.Callback<List<LQCourseConfigEntity>>() {
                     @Override
@@ -616,17 +627,22 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                                 activity.startActivity(intent);
                             }
                         } else {
-                            // 只有一个分类
-                            //习学程馆保留原先授权，其他馆去掉授权相关
-                            boolean isAuthorized = libraryType != OrganLibraryType.TYPE_LQCOURSE_SHOP;
-                            boolean isReallyAuthorized = libraryType != OrganLibraryType.TYPE_LQCOURSE_SHOP;
-                            boolean isHostEnter = libraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP;
-                            LQCourseConfigEntity entity = lqCourseConfigEntities.get(0);
-                            OrganCourseFiltrateActivity.show(activity, entity, selectResource, false, data,
-                                    isAuthorized, isReallyAuthorized, isHostEnter, roles, libraryType);
+                            enterOrganCourseFiltrate(activity, lqCourseConfigEntities.get(0), libraryType,
+                                    selectResource, data, roles);
                         }
                     }
                 });
+    }
+
+    private static void enterOrganCourseFiltrate(@NonNull Activity activity, LQCourseConfigEntity lqCourseConfigEntity, int libraryType,
+                                                 boolean selectResource, @NonNull ShopResourceData data, @NonNull String roles) {
+        // 只有一个分类
+        //习学程馆保留原先授权，其他馆去掉授权相关
+        boolean isAuthorized = libraryType != OrganLibraryType.TYPE_LQCOURSE_SHOP;
+        boolean isReallyAuthorized = libraryType != OrganLibraryType.TYPE_LQCOURSE_SHOP;
+        boolean isHostEnter = libraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP;
+        OrganCourseFiltrateActivity.show(activity, lqCourseConfigEntity, selectResource, false, data,
+                isAuthorized, isReallyAuthorized, isHostEnter, roles, libraryType);
     }
 
     @Override

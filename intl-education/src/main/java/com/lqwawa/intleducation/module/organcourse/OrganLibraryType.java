@@ -15,4 +15,7 @@ public interface OrganLibraryType {
     int TYPE_LIBRARY = 2;
     // 视频馆
     int TYPE_VIDEO_LIBRARY = 3;
+
+    // 全脑馆
+    int TYPE_BRAIN_LIBRARY = 4;
 }

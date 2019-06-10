@@ -1,8 +1,11 @@
 package com.lqwawa.intleducation.module.learn.vo;
 
+import android.text.TextUtils;
+
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 
 import java.util.List;
 
@@ -43,6 +46,7 @@ public class MyCourseVo extends BaseVo {
     private boolean inClass;
     private int assortment;
     private int type;
+    private String level;
 
     public boolean isShowMoreWeek() {
         return showMoreWeek;
@@ -222,6 +226,15 @@ public class MyCourseVo extends BaseVo {
         return this;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public MyCourseVo setLevel(String level) {
+        this.level = level;
+        return this;
+    }
+
     /**
      * 返回是否是收费的课程
      *
@@ -232,6 +245,9 @@ public class MyCourseVo extends BaseVo {
     }
 
     public int getLibraryType() {
+        if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
+            return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+        }
         if (type == 0) {
             if (assortment == 0 || assortment == 1) {
                 return OrganLibraryType.TYPE_LQCOURSE_SHOP;

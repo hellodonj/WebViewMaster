@@ -1,11 +1,14 @@
 package com.lqwawa.intleducation.module.discovery.vo;
 
+import android.text.TextUtils;
+
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.module.learn.vo.ExamVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 
 import java.util.List;
 
@@ -543,6 +546,9 @@ public class CourseVo extends BaseVo {
     }
 
     public int getLibraryType() {
+        if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
+            return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+        }
         if (type == 0) {
             if (assortment == 0 || assortment == 1) {
                 return OrganLibraryType.TYPE_LQCOURSE_SHOP;

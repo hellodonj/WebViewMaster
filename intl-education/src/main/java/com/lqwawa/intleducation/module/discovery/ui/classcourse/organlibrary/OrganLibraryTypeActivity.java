@@ -16,10 +16,16 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
+import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,9 +83,34 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
                     mParams.setLibraryType(entity.getLibraryType());
                     mParams.setIsAddCourseClass(true);
                 }
-                Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-                CourseShopClassifyActivity.show(OrganLibraryTypeActivity.this,  mParams,
-                        extras);
+                if (entity.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
+                    Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                    SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), mParams.getOrganId(),
+                            new DataSource.Callback<SchoolInfoEntity>() {
+                                @Override
+                                public void onDataNotAvailable(int strRes) {
+                                    showError(strRes);
+                                }
+
+                                @Override
+                                public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                                    String roles = schoolInfoEntity.getRoles();
+                                    entity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
+                                    entity.setLevel(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL);
+                                    entity.setEntityOrganId(mParams.getOrganId());
+                                    OrganCourseFiltrateActivity.show(
+                                            OrganLibraryTypeActivity.this,
+                                            entity, false, true,
+                                            null, true, true, false, roles,
+                                            mParams.getLibraryType());
+                                }
+                            });
+
+                } else {
+                    Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+                    CourseShopClassifyActivity.show(OrganLibraryTypeActivity.this, mParams,
+                            extras);
+                }
             }
         });
 
@@ -89,7 +120,7 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
     @Override
     protected void initData() {
         super.initData();
-        
+
         initEntityList();
         mAdapter.replace(mEntityList);
     }
@@ -117,6 +148,12 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
         entity.setLibraryType(OrganLibraryType.TYPE_PRACTICE_LIBRARY);
         entity.setThumbnail("ic_practice_library_circle");
         entity.setConfigValue(getString(R.string.common_practice_library));
+        mEntityList.add(entity);
+
+        entity = new LQCourseConfigEntity();
+        entity.setLibraryType(OrganLibraryType.TYPE_BRAIN_LIBRARY);
+        entity.setThumbnail("ic_brain_library_circle");
+        entity.setConfigValue(getString(R.string.common_brain_library));
         mEntityList.add(entity);
     }
 
