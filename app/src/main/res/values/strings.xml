@@ -1798,4 +1798,5 @@
         belongings.</string>
     <string name="class_tutor">Class Tutor</string>
     <string name="str_whole_class_grade">全班成绩</string>
+    <string name="str_subject_total_score">(总分: %s分)</string>
 </resources>

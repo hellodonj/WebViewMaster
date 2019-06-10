@@ -1086,7 +1086,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 exit(true);
             }
         },
-                true);
+                getTotalScore());
         mMarkScoreDialog.show();
         mMarkScoreDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -1094,6 +1094,17 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 hideSoftKeyboard(PlaybackActivityPhone.this);
             }
         });
+    }
+
+    private String getTotalScore(){
+        String totalScore = null;
+        if (taskMarkParam.cardParam != null) {
+            ExerciseItem item = taskMarkParam.cardParam.getExerciseItem();
+            if (item != null){
+                totalScore = item.getScore();
+            }
+        }
+        return totalScore;
     }
 
     public void hideSoftKeyboard(Activity activity) {

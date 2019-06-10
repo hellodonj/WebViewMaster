@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
  */
 public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
     boolean isPercentageSystem = true;//百分制
-    boolean isExerciseMark = false;
+    private String totalScore;
     private AdapterViewHelper adapterViewHelper;
     private final String[] DEFAULT_LETTER_LIST = {
             "A+","A","A-","B+","B","B-","C+","C","C-","D "
@@ -47,7 +48,7 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
                            String rightButtonText, OnClickListener rightButtonClickListener) {
 
         this(context, isPercentageSystem, title, inputBoxDefaultText, inputBoxHintText, leftButtonText, leftButtonClickListener
-                , rightButtonText, rightButtonClickListener,null,null,false);
+                , rightButtonText, rightButtonClickListener,null,null,null);
 
     }
 
@@ -74,7 +75,7 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
                            OnClickListener rightButtonClickListener,
                            String middleButtonText,
                            DialogInterface.OnClickListener middleButtonClickListener,
-                           boolean isExerciseMark) {
+                           String totalScore) {
 
         super(context, R.style.Theme_ContactsDialog, title, isPercentageSystem ?
                         R.layout.contacts_dialog_mark_score : R.layout.contacts_dialog_gride_list,
@@ -82,17 +83,14 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
                 rightButtonText, rightButtonClickListener,middleButtonText,middleButtonClickListener);
         this.isPercentageSystem = isPercentageSystem;
         this.context = context;
-        this.isExerciseMark = isExerciseMark;
         if (isPercentageSystem) {
             //百分制
             mEditText = (EditText) getContentView().findViewById(
                     R.id.contacts_dialog_content_text);
             if (mEditText != null) {
-                if (isExerciseMark) {
-                    //只能输入数字和小数点
-                    mEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
-                }
+                //只能输入数字和小数点
+                mEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
                 if (!TextUtils.isEmpty(inputBoxDefaultText)) {
                     mEditText.setText(inputBoxDefaultText);
                 }
@@ -101,6 +99,11 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
                 mEditText.setHint(inputBoxHintText);
                 mEditText.setTextColor(context.getResources().getColor(R.color.black));
                 mEditText.addTextChangedListener(this);
+            }
+            TextView totalScoreView = (TextView) getContentView().findViewById(R.id.tv_total_score);
+            if (!TextUtils.isEmpty(totalScore) && totalScoreView != null){
+                totalScoreView.setText(context.getString(R.string.str_subject_total_score,totalScore));
+                totalScoreView.setVisibility(View.VISIBLE);
             }
         } else {
             mList = new ArrayList<>();
@@ -122,8 +125,6 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
             MyGridView gridView = (MyGridView) getContentView().findViewById(R.id.list_gridview);
             final Myadapter myadapter = new Myadapter();
             gridView.setAdapter(myadapter);
-
-
         }
 
         setIsAutoDismiss(false);
@@ -176,7 +177,7 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         //在afterTextChanged中，调用setText()方法会循环递归触发监听器，必须合理退出递归，不然会产生异常
-        if (isExerciseMark) {
+//        if (isExerciseMark) {
             //可以输入小数点但是只能输入一位
             String text = s.toString();
             if (text.length() == 1 && text.contains(".")){
@@ -192,14 +193,14 @@ public class MarkScoreDialog extends ContactsDialogNew implements TextWatcher {
                 }
             }
             Selection.setSelection(mEditText.getText(), mEditText.getText().length());
-        } else {
-            if (s.length() > 1 && s.charAt(0) == '0') {
-                Integer integer = Integer.valueOf(s.toString());
-                mEditText.setText(integer.toString());
-                //设置新光标所在的位置
-                Selection.setSelection(mEditText.getText(), mEditText.getText().length());
-            }
-        }
+//        } else {
+//            if (s.length() > 1 && s.charAt(0) == '0') {
+//                Integer integer = Integer.valueOf(s.toString());
+//                mEditText.setText(integer.toString());
+//                //设置新光标所在的位置
+//                Selection.setSelection(mEditText.getText(), mEditText.getText().length());
+//            }
+//        }
     }
 
     class Item {

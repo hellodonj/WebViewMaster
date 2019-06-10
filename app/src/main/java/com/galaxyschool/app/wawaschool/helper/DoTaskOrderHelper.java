@@ -958,7 +958,7 @@ public class DoTaskOrderHelper {
                         dialog.dismiss();
                         handler.discard();
                     }
-                }, true);
+                }, itemData.getScore());
         mMarkScoreDialog.show();
     }
 
