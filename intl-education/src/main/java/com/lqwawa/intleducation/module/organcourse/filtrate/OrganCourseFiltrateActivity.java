@@ -133,6 +133,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     // iTEP
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID = 2244;
 
+    // RA BRAIN
+    private static final int RA_BRAIN_ID = 2351;
+
     private TopBar mTopBar;
 
     private LinearLayout mHeaderLayout;
@@ -747,6 +750,14 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mTabLabel1.setText(getString(R.string.label_colon_age));
             mTabLabel2.setText(getString(R.string.label_colon_language));
             mTabLabel3.setText(getString(R.string.label_colon_topic));
+        } else if (rootId == RA_BRAIN_ID) {
+            // 全脑馆
+            mTabVector3.setVisibility(View.GONE);
+            mTabVector4.setVisibility(View.GONE);
+
+            // 科目, 级别
+            mTabLabel1.setText(getString(R.string.label_colon_type));
+            mTabLabel2.setText(getString(R.string.label_colon_age));
         }
     }
 
@@ -971,6 +982,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                                     (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID ||
                                             firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID)) {
                         // 选中的是小语种的Id
+                        triggerUpdateData();
+                    } else if (rootId == RA_BRAIN_ID) {
                         triggerUpdateData();
                     }
                 }

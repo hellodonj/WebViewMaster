@@ -68,6 +68,8 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_LIBRARY = 9;
         // 练测馆
         int TAB_ENTITY_TYPE_PRACTICE_LIBRARY = 10;
+        // 全脑馆
+        int TAB_ENTITY_TYPE_BRAIN_LIBRARY = 11;
 
 
         // 学习任务
@@ -313,7 +315,7 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
      * 进入学程馆界面
      *
      * @param schoolInfo
-     * @param type 学程馆类型
+     * @param type       学程馆类型
      */
     public static void enterLqCourseShop(Activity activity, SchoolInfo schoolInfo,
                                          int type) {
@@ -326,8 +328,7 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
     }
 
     /**
-     *
-     * @param type  
+     * @param type
      * @return 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     private static int getLibraryType(int type) {
@@ -340,6 +341,8 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
                 return OrganLibraryType.TYPE_LIBRARY;
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
                 return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
+                return OrganLibraryType.TYPE_BRAIN_LIBRARY;
         }
         return -1;
     }
