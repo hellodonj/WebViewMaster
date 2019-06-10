@@ -1,6 +1,5 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -83,11 +82,10 @@ import com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity;
 import com.lqwawa.intleducation.module.discovery.ui.person.mygive.MyGiveInstructionActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyLiveListActivity;
-import com.lqwawa.intleducation.module.user.ui.MyOrderListActivity;
+import com.lqwawa.intleducation.module.user.ui.OrderListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
@@ -628,7 +626,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             //我的订单
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_MY_ORDER:
                 MOOCHelper.init(getUserInfo());
-                MyOrderListActivity.newInstance(getActivity());
+//                MyOrderListActivity.newInstance(getActivity());
+                OrderListActivity.newInstance(getActivity());
                 break;
 
             //关注

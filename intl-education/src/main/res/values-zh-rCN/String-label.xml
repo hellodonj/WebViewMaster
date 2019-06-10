@@ -519,4 +519,12 @@
 
     <string name="voice_evaluating">语音评测</string>
 
+    <string-array name="label_order_list_tabs">
+        <item>全部</item>
+        <item>待付款</item>
+        <item>待批阅</item>
+        <item>已完成</item>
+        <item>已失效</item>
+    </string-array>
+
 </resources>

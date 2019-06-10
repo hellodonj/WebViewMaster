@@ -512,4 +512,12 @@
 
     <string name="voice_evaluating">Oral Test</string>
 
+    <string-array name="label_order_list_tabs">
+        <item>AlL</item>
+        <item>Pending Payment</item>
+        <item>Pending Review</item>
+        <item>Completed</item>
+        <item>Expired</item>
+    </string-array>
+
 </resources>

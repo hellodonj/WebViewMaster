@@ -920,7 +920,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         }
     }
 
-    /*private class SlidePagerAdapter extends FragmentPagerAdapter {
+    /*private class SlidePagerAdapter extends OrderPagerAdapter {
         public SlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }

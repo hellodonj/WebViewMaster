@@ -187,6 +187,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         holder.course_price.setTextColor(activity.getResources().getColor(
                 vo.isDeleted() ? R.color.com_text_gray : R.color.com_text_red));
         holder.status_tv.setText("");
+        //0等待付款 1交易成功 2交易关闭
         if (vo.getStatus() >= 0 && vo.getStatus() < 3) {
             holder.status_tv.setText(
                     activity.getResources().getString(orderStatusResId[vo.getStatus()])
