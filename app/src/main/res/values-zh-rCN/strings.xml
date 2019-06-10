@@ -1703,4 +1703,5 @@
     <string name="str_my_courses">学习空间</string>
     <string name="invalid_lqwawa_resource">非两栖蛙蛙资源，不能访问</string>
     <string name="class_tutor">班级帮辅</string>
+    <string name="str_whole_class_grade">全班成绩</string>
 </resources>

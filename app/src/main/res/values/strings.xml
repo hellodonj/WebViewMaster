@@ -1797,4 +1797,5 @@
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
     <string name="class_tutor">Class Tutor</string>
+    <string name="str_whole_class_grade">全班成绩</string>
 </resources>
