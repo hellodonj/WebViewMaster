@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.TopBar;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.user.ui.all.OrderAllFragment;
 import com.lqwawa.intleducation.module.user.ui.completed.OrderCompletedFragment;
 import com.lqwawa.intleducation.module.user.ui.expired.OrderExpiredFragment;
@@ -32,7 +31,6 @@ public class OrderListActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private List<Fragment> fragments = new ArrayList<>();
-    private String[] mTabTitles = UIUtil.getStringArray(R.array.label_order_list_tabs);
     private OrderPagerAdapter mAdapter;
 
     @Override
@@ -55,12 +53,6 @@ public class OrderListActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTabTitles[0]));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTabTitles[1]));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTabTitles[2]));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTabTitles[3]));
-        mTabLayout.addTab(mTabLayout.newTab().setText(mTabTitles[4]));
-
         fragments.add(new OrderAllFragment());
         fragments.add(new PendingPayFragment());
         fragments.add(new PendingReviewFragment());

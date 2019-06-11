@@ -1,6 +1,5 @@
 package com.lqwawa.intleducation.module.user.ui.all;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 描述: 全部
+ * 描述: 全部的fragment
  * 作者|时间: djj on 2019/6/10 0010 上午 9:32
  */
 public class OrderAllFragment extends PresenterFragment<OrderAllContract.Presenter>
@@ -35,12 +34,6 @@ public class OrderAllFragment extends PresenterFragment<OrderAllContract.Present
 
     private int mPageIndex = 0;
     private String mMemberId = UserHelper.getUserId();
-
-
-    @Override
-    protected boolean initArgs(Bundle bundle) {
-        return super.initArgs(bundle);
-    }
 
     @Override
     protected OrderAllContract.Presenter initPresenter() {
@@ -75,8 +68,12 @@ public class OrderAllFragment extends PresenterFragment<OrderAllContract.Present
                 requestOrderListData(true);
             }
         });
+    }
 
-
+    @Override
+    protected void initData() {
+        super.initData();
+        requestOrderListData(false);
     }
 
     /**
@@ -92,12 +89,6 @@ public class OrderAllFragment extends PresenterFragment<OrderAllContract.Present
             mPageIndex = 0;
             mPresenter.requestOrderList(mPageIndex, AppConfig.PAGE_SIZE, mMemberId);
         }
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        requestOrderListData(false);
     }
 
     @Override
