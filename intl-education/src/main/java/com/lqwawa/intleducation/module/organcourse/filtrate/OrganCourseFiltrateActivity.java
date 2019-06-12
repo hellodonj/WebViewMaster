@@ -743,13 +743,13 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mTabLabel1.setText(getString(R.string.label_colon_subject));
             mTabLabel2.setText(getString(R.string.label_colon_level));
         } else if (rootId == PICTURE_BOOK_ID) {
-            //绘本 三级页面
+            //绘本 二级页面
+            mTabVector3.setVisibility(View.GONE);
             mTabVector4.setVisibility(View.GONE);
 
             // 年龄段 语言 主题
             mTabLabel1.setText(getString(R.string.label_colon_age));
             mTabLabel2.setText(getString(R.string.label_colon_language));
-            mTabLabel3.setText(getString(R.string.label_colon_topic));
         } else if (rootId == RA_BRAIN_ID) {
             // 全脑馆
             mTabVector3.setVisibility(View.GONE);
