@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tip_not_find_ware_course_source">未找到课件资源</string>
-    <!--<string name="tip_class_not_relevance_course">本开课班未关联学程</string>-->
+    <!--<string name="tip_class_not_relevance_course">本开课班未关联课程</string>-->
     <string name="tip_class_not_relevance_course">本开课班未关联习课程</string>
     <string name="tip_join_or_by_course">请参加或购买课程</string>
     <string name="tip_order_expire">该订单中的部分/全部商品已经购买了</string>
     <string name="tip_attention_succeed">关注成功</string>
     <string name="tip_cancel_attention_succeed">取消关注成功</string>
     <string name="tip_bind_class_success">绑定成功</string>
-    <string name="tip_appoint_class_not_course">指定班级课程中无此学程</string>
+    <string name="tip_appoint_class_not_course">指定班级课程中无此课程</string>
     <string name="tip_delete_succeed">删除成功</string>
     <string name="tip_subject_setting_succeed">科目设置成功</string>
     <string name="tip_subject_setting_failed">科目设置失败</string>

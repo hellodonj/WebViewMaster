@@ -1262,7 +1262,7 @@
     <string name="max_input_character_length">最多允许输入%d个字符！</string>
     <string name="nutrition_recipes">营养膳食</string>
 
-    <string name="lq_excellent_program">LQ精品学程</string>
+    <string name="lq_excellent_program">LQ精品课程</string>
     <string name="select_institution">选择机构</string>
 
     <string name="send_comment_failed">评论失败</string>
@@ -1530,7 +1530,7 @@
     <string name="str_system_eval_page_score">系统评测-单页得分</string>
     <string name="str_eval_no_comment">暂无评语</string>
     <string name="hand_write_input">手写\n输入</string>
-    <string name="str_show_select_lqcourse_mark_score_tip">您引用了学程的课件，评分标准固定为百分制</string>
+    <string name="str_show_select_lqcourse_mark_score_tip">您引用了课程的课件，评分标准固定为百分制</string>
     <string name="lesson_book">课本</string>
     <string name="voice_evaluating">语音评测</string>
     <string name="str_retell_list">复述列表</string>

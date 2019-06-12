@@ -472,7 +472,7 @@
     <string name="voucher_explain">Instructions</string>
     <string name="voucher_explain_1">1.Voucher can only be used to purchase the first chapter of each course on LQWaWa Mini Program in WeChat.\n\n2.Mixed purchase with other chapters are not allowed.\n\n3.Balance can be used in next purchase.\n\n4.No-withdraw，no-transferable.\n\n5.All rights reserved by LQWaWa Information Technology Co. Ltd.</string>
 
-    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买课程的第一章节；混合购买其他章节时不可使用。</string>
     <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="charge_account">Top up</string>
