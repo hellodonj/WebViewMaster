@@ -1657,10 +1657,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                 if (getResult() != null && getResult().isSuccess()) {
                     //自动批阅分数上传成功
                     TipMsgHelper.ShowLMsg(SectionTaskDetailsActivityEx.this, getString(R.string.commit_success));
-                    // 刷新UI
-                    if (!EmptyUtil.isEmpty(mFragment0)) {
-                        mFragment0.updateData(false);
-                    }
+                    flagRead(null, sectionResListVo.getId(), sectionResListVo.getResId());
                 }
             }
         };

@@ -1079,9 +1079,11 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("cwareId", id);
         requestVo.addParams("resId", resId);
-        requestVo.addParams("resType", (sectionResListVo.getResType() == 18
-                || sectionResListVo.getResType() == 23)
-                ? 18 : 19);
+        int resType = sectionResListVo.getResType();
+        if (resType == 23) {
+            resType = 18;
+        }
+        requestVo.addParams("resType", resType);
         RequestParams params =
                 new RequestParams((isLive ? AppConfig.ServerUrl.CommitLiveRes
                         : AppConfig.ServerUrl.setReaded) + requestVo.getParams());
