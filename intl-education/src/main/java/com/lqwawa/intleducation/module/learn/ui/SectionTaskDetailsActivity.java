@@ -522,6 +522,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 topBar.setTitle(getResources().getString(R.string.retell_course));
             } else if (sectionResListVo.getTaskType() == 5) {
                 topBar.setTitle(getResources().getString(R.string.label_lecture_course));
+            } else if (sectionResListVo.getTaskType() == 6) {
+                topBar.setTitle(getResources().getString(R.string.dubbing));
             }
             // 加载Tab资源
             if (sectionResListVo.getTaskType() == 2) {
@@ -535,6 +537,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             } else if (sectionResListVo.getTaskType() == 5) {
                 // 试讲
                 String[] titles = UIUtil.getStringArray(R.array.label_lecture_lesson_task_tab_array);
+                mTabTexts = new ArrayList<>(Arrays.asList(titles));
+            } else if (sectionResListVo.getTaskType() == 6) {
+                // Q配音
+                String[] titles = UIUtil.getStringArray(R.array.dubbing_task_tab_array);
                 mTabTexts = new ArrayList<>(Arrays.asList(titles));
             }
         }
@@ -655,7 +661,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                             TaskCommitParams params = TaskCommitParams.build(mTaskParams);
                             if (sectionResListVo.getTaskType() == 2 || sectionResListVo.getTaskType() == 5) {
                                 params.setCommitType(TaskCommitParams.TYPE_RETELL_COMMIT);
-                            } else if (sectionResListVo.getTaskType() == 3) {
+                            } else if (sectionResListVo.getTaskType() == 3 || sectionResListVo.getTaskType() == 6) {
                                 params.setCommitType(TaskCommitParams.TYPE_ALL);
                             }
                             params.setOrderByType(orderByType);
@@ -779,7 +785,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
      *
      * @return
      */
-    private String getStudentId() {
+    protected String getStudentId() {
         String memberId = null;
         if (mOriginalRole == UserHelper.MoocRoleType.TEACHER ||
                 mOriginalRole == UserHelper.MoocRoleType.EDITOR ||

@@ -221,6 +221,7 @@
     <string name="label_voice_scores_format">%s分</string>
     <string name="label_teacher_mark">老师点评</string>
     <string name="label_immediate_review">立即点评</string>
+    <string name="label_look_review">查看点评</string>
     <string name="label_course_in_class">指定学程所在班级</string>
     <string name="label_old_in_class">已指定班级</string>
     <string name="label_picker_class">选择班级</string>

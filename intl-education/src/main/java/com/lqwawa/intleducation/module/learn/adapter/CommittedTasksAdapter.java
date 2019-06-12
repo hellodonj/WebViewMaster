@@ -164,7 +164,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             convertView.setTag(holder);
         }
 
-        if (vo.isSpeechEvaluation()) {
+        if (vo.isSpeechEvaluation() || vo.isVideoType()) {
             // 26是语音评测
             // 语音评测
             // 加载语音评测缩略图和显示分数
@@ -209,7 +209,12 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             if (vo.isHasVoiceReview()) {
                 // 老师点评
                 holder.mCheckMark.setTextColor(UIUtil.getColor(R.color.colorAccent));
-                holder.mCheckMark.setText(UIUtil.getString(R.string.label_teacher_mark));
+                if (vo.isVideoType()){
+                    //q配音显示查看点评
+                    holder.mCheckMark.setText(UIUtil.getString(R.string.label_look_review));
+                } else {
+                    holder.mCheckMark.setText(UIUtil.getString(R.string.label_teacher_mark));
+                }
                 holder.mCheckMark.setVisibility(View.VISIBLE);
             } else {
                 // 立即点评
@@ -369,7 +374,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             }
         });
 
-        if(vo.isAutoMark()){
+        if(vo.isAutoMark() || vo.isVideoType()){
             holder.mTvResDetail.setVisibility(View.GONE);
             holder.mCourseWareDetailsLayout.setOnClickListener(null);
             if(EmptyUtil.isNotEmpty(vo.getStudentResId())) {

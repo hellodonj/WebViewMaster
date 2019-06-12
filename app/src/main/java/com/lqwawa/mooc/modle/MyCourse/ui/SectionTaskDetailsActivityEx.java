@@ -29,6 +29,7 @@ import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.QDubbingActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ScoreStatisticsActivity;
 import com.galaxyschool.app.wawaschool.SpeechAssessmentActivity;
@@ -40,14 +41,18 @@ import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
+import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
+import com.galaxyschool.app.wawaschool.db.MediaDao;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
+import com.galaxyschool.app.wawaschool.db.dto.MediaDTO;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
@@ -55,6 +60,7 @@ import com.galaxyschool.app.wawaschool.pojo.CheckMarkResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.CommitTaskResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfo;
@@ -62,15 +68,22 @@ import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfoCode;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
+import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseType;
 import com.galaxyschool.app.wawaschool.pojo.weike.LocalCourseInfo;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaUploadList;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.DoTaskOrderTipsDialog;
 import com.galaxyschool.app.wawaschool.views.OrientationSelectDialog;
+import com.icedcap.dubbing.DubbingActivity;
+import com.icedcap.dubbing.entity.DubbingEntity;
 import com.libs.gallery.ImageInfo;
+import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
@@ -81,10 +94,13 @@ import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.response.LQResourceDetailVo;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.LearningTaskHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
@@ -100,6 +116,7 @@ import com.lqwawa.libs.filedownloader.DownloadService;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.share.ShareInfo;
@@ -107,6 +124,7 @@ import com.oosic.apps.share.SharedResource;
 import com.osastudio.common.utils.TimerUtils;
 import com.umeng.socialize.media.UMImage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -137,6 +155,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
     private String score = "0";
     private int schemeId;
     private String resultContent;
+    private ReadWeikeHelper readWeikeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +172,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             }
         });*/
         //查阅详情
+        readWeikeHelper = new ReadWeikeHelper(this);
         accessDetails = (TextView) findViewById(R.id.tv_access_details);
         updateAccessDetails();
 
@@ -323,6 +343,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                         || sectionResListVo.getResType() == ResType.RES_TYPE_IMG
                                         || sectionResListVo.getResType() == ResType.RES_TYPE_DOC) {
                                     openPptAndPdf();
+                                } else if (sectionResListVo.getResType() == ResType.RES_TYPE_Q_DUBBING) {
+                                    readWeikeHelper.readWeike(sectionResListVo);
                                 }
                             }
                         }
@@ -393,6 +415,35 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         }
     }
 
+    public void getVideoInfo(CommitTask commitTask, boolean isHasReviewPermission) {
+        String resIdType = String.format("%s-%d", sectionResListVo.getResId(),
+                sectionResListVo.getResType());
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("resId", resIdType);
+        RequestParams params =
+                new RequestParams(AppConfig.ServerUrl.WAWATV_COURSE_DETAIL_URL + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                ResponseVo<List<CourseData>> result = JSON.parseObject(s,
+                        new TypeReference<ResponseVo<List<CourseData>>>() {
+                        });
+                if (result.getCode() == 0) {
+                    if (result.getData() != null && result.getData().size() > 0) {
+                        CourseData courseData = result.getData().get(0);
+                        if (courseData != null) {
+                            QDubbingActivity.start(SectionTaskDetailsActivityEx.this,
+                                    courseData.resourceurl, courseData.level, commitTask,
+                                    isHasReviewPermission, 3);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
     public void getTaskInfo(String vid) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("resId", vid);
@@ -440,6 +491,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType, taskCourseWare);
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo) || EmptyUtil.isEmpty(sectionResListVo)) return;
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
+        if (studentCommit.isVideoType()) {
+            openDubbingTask(studentCommit);
+            return;
+        }
         // V5.14列表兼容两种数据
         // if (sectionResListVo.isAutoMark()) {
         if (studentCommit.isAutoMark() && !taskCourseWare) {
@@ -555,7 +610,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                 null,
                                 studentCommit.getStudentName(),
                                 commitTaskId, false,
-                                courseId,courseName,
+                                courseId, courseName,
                                 isTutorialPermission);
 
                     }
@@ -566,19 +621,19 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             return;
         }
 
-        if(taskCourseWare && EmptyUtil.isNotEmpty(studentCommit.getStudentResId())){
+        if (taskCourseWare && EmptyUtil.isNotEmpty(studentCommit.getStudentResId())) {
             if (TaskSliderHelper.onTaskSliderListener != null) {
-                try{
+                try {
                     String resId = studentCommit.getStudentResId();
                     if (resId != null && resId.contains("-")) {
                         String id = resId.split("-")[0];
                         int type = Integer.parseInt(resId.split("-")[1]);
                         TaskSliderHelper.onTaskSliderListener.viewCourse(
-                                activity, id,type,
+                                activity, id, type,
                                 activity.getIntent().getStringExtra("schoolId"),
                                 getSourceType());
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -633,6 +688,22 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
                     task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
         }
+    }
+
+    private void openDubbingTask(LqTaskCommitVo studentCommit) {
+        CommitTask commitTask = new CommitTask();
+        commitTask.setStudentResUrl(studentCommit.getStudentResUrl());
+        commitTask.setAutoEvalContent(studentCommit.getAutoEvalContent());
+        commitTask.setCommitTaskId(studentCommit.getId());
+        commitTask.setHasVoiceReview(studentCommit.isHasVoiceReview());
+        commitTask.setTaskScore(studentCommit.getTaskScore());
+        commitTask.setTaskScoreRemark(studentCommit.getTaskScoreRemark());
+        int roleType = transferRoleType(mHandleRole);
+        boolean isHasReviewPermission =
+                mHandleRole == UserHelper.MoocRoleType.TEACHER
+                        || mHandleRole == UserHelper.MoocRoleType.EDITOR
+                        || TextUtils.equals(sectionResListVo.getCreateId(),UserHelper.getUserId());
+        getVideoInfo(commitTask, isHasReviewPermission);
     }
 
     private void share(TaskInfoVo vo) {
@@ -716,7 +787,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
                     String name = sectionResListVo.getName();
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(), name);
                 } else if (resType == ResType.RES_TYPE_PDF
                         || resType == ResType.RES_TYPE_PPT
                         || resType == ResType.RES_TYPE_IMG
@@ -764,8 +835,11 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     // retellOnePageCourse(sectionResListVo.getResId() + "-" + sectionResListVo.getResType());
                     activity.getIntent().putExtra("orientation", sectionResListVo.getScreenType());
                     String name = sectionResListVo.getName();
-                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(),name);
+                    TaskSliderHelper.doTask(activity, "" + sectionResListVo.getResId(), getSourceType(), name);
                 }
+            } else if (sectionResListVo.getTaskType() == 6) {
+                //Q配音，开始配音
+                getVideoInfo(null, false);
             }
         }
     }
@@ -829,7 +903,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         classId,
                         null,
                         null, 0, true,
-                        courseId,courseName,
+                        courseId, courseName,
                         isTutorialPermission);
             }
         });
@@ -1405,7 +1479,193 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
             }
+        } else if (requestCode == QDubbingActivity.COMMIT_Q_DUBBING_TASK_SUCCESS) {
+            if (data != null) {
+                String videoPath = data.getStringExtra(DubbingActivity.Constant.MERGE_VIDEO_PATH);
+                List<DubbingEntity> dubbingEntityList = (List<DubbingEntity>) data.getSerializableExtra(
+                        DubbingActivity.Constant.DUBBING_ENTITY_LIST_DATA);
+                if (TextUtils.isEmpty(videoPath) || dubbingEntityList == null || dubbingEntityList.size() == 0) {
+                    return;
+                }
+                File file = new File(videoPath);
+                if (file.exists()) {
+                    MediaDTO mediaDTO = new MediaDTO();
+                    mediaDTO.setPath(videoPath);
+                    if (sectionResListVo != null) {
+                        mediaDTO.setTitle(sectionResListVo.getTaskName());
+                    } else {
+                        mediaDTO.setTitle(Utils.getFileNameFromPath(videoPath));
+                    }
+                    mediaDTO.setMediaType(MediaType.VIDEO);
+                    mediaDTO.setCreateTime(System.currentTimeMillis());
+                    MediaDao mediaDao = new MediaDao(SectionTaskDetailsActivityEx.this);
+                    mediaDao.addOrUpdateMediaDTO(mediaDTO);
+                    MediaInfo mediaInfo = mediaDTO.toMediaInfo();
+                    if (mediaInfo != null) {
+                        UserInfo userInfo = DemoApplication.getInstance().getUserInfo();
+                        if (userInfo != null) {
+                            uploadCourseToServer(userInfo, mediaInfo, dubbingEntityList);
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private void uploadCourseToServer(final UserInfo userInfo,
+                                      final MediaInfo mediaInfo,
+                                      List<DubbingEntity> dubbingEntityList) {
+        UploadParameter uploadParameter = UploadUtils.getUploadParameter(userInfo, MediaType.VIDEO, 1);
+        List<String> paths = new ArrayList<String>();
+        StringBuilder builder = new StringBuilder();
+        if (mediaInfo != null) {
+            paths.add(mediaInfo.getPath());
+            builder.append(Utils.removeFileNameSuffix(mediaInfo.getTitle()) + ";");
+        }
+        String fileName = builder.toString();
+        if (!TextUtils.isEmpty(fileName) && fileName.endsWith(";")) {
+            fileName = fileName.substring(0, fileName.length() - 1);
+        }
+        if (!TextUtils.isEmpty(fileName)) {
+            uploadParameter.setFileName(fileName);
+        }
+        uploadParameter.setPaths(paths);
+        showProgressDialog(getText(R.string.label_uploading_course_files).toString());
+        UploadUtils.uploadMedia(SectionTaskDetailsActivityEx.this, uploadParameter,
+                new CallbackListener() {
+                    @Override
+                    public void onBack(Object result) {
+                        closeProgressDialog();
+                        if (result != null) {
+                            MediaUploadList uploadResult = (MediaUploadList) result;
+                            if (uploadResult.getCode() == 0) {
+                                List<MediaData> datas = uploadResult.getData();
+                                if (datas != null && datas.size() > 0) {
+                                    MediaData mediaData = datas.get(0);
+                                    if (mediaData != null) {
+                                        CourseData courseData = new CourseData();
+                                        courseData.id = mediaData.id;
+                                        courseData.type = ResType.RES_TYPE_VIDEO;
+                                        courseData.nickname = sectionResListVo.getTaskName();
+                                        courseData.resourceurl = mediaData.resourceurl;
+                                        commitStudentCourse(userInfo, courseData, null, dubbingEntityList);
+                                    }
+                                }
+                            } else {
+                                TipMsgHelper.ShowLMsg(SectionTaskDetailsActivityEx.this, R.string.upload_file_failed);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void commitStudentCourse(final UserInfo userInfo,
+                                     final CourseData courseData,
+                                     final String slidePath,
+                                     List<DubbingEntity> dubbingEntityList) {
+        if (sectionResListVo == null) {
+            return;
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("TaskId", sectionResListVo.getTaskId());
+        params.put("StudentId", getStudentId());
+        if (courseData != null) {
+            params.put("StudentResId", courseData.getIdType());
+            params.put("StudentResUrl", courseData.resourceurl);
+            params.put("StudentResTitle", courseData.nickname);
+        }
+        String schoolId = mCourseParams.getSchoolId();
+        String classId = mCourseParams.getClassId();
+
+        // 如果从大厅进来，提交的时候需要传绑定的机构班级
+        if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER) {
+            schoolId = mCourseParams.getBindSchoolId();
+            classId = mCourseParams.getBindClassId();
+        } else if (mCourseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER) {
+            // 学程馆学习任务入口
+            // 课程发生了绑定
+            // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
+            // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
+            if (mCourseParams.isBindClass()) {
+                if (TextUtils.equals(mCourseParams.getSchoolId(), mCourseParams.getBindSchoolId())) {
+                    // 学程馆Id和绑定的Id,相等
+                    schoolId = mCourseParams.getBindSchoolId();
+                    classId = mCourseParams.getBindClassId();
+                }
+            } else {
+                schoolId = mCourseParams.getSchoolId();
+                classId = null;
+            }
+        }
+
+        if (EmptyUtil.isNotEmpty(schoolId)) {
+            params.put("SchoolId", schoolId);
+        }
+
+        if (EmptyUtil.isNotEmpty(classId)) {
+            params.put("ClassId", classId);
+        }
+
+        // 是否是语音评测
+        params.put("IsVoiceReview", false);
+
+        RequestHelper.RequestDataResultListener listener = new RequestHelper
+                .RequestDataResultListener(SectionTaskDetailsActivityEx.this, DataResult.class) {
+            @Override
+            public void onSuccess(String json) {
+                try {
+                    DataResult result = JSON.parseObject(json, DataResult.class);
+                    CommitTaskResult taskResult = JSON.parseObject(json, CommitTaskResult.class);
+                    if (result != null && result.isSuccess()) {
+                        SetCommitTaskScore(taskResult.Model.CommitTaskId, courseData, dubbingEntityList);
+                    } else {
+                        String errorMessage = getString(R.string.publish_course_error);
+                        if (result != null && !TextUtils.isEmpty(result.getErrorMessage())) {
+                            errorMessage = result.getErrorMessage();
+                        }
+                        TipMsgHelper.ShowLMsg(SectionTaskDetailsActivityEx.this, errorMessage);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        RequestHelper.sendPostRequest(SectionTaskDetailsActivityEx.this,
+                ServerUrl.NEW_PUBLISH_STUDENT_HOMEWORK_URL, params,
+                listener);
+    }
+
+    /**
+     * 上传自动批阅分数
+     */
+    private void SetCommitTaskScore(int taskId,
+                                    CourseData courseData,
+                                    List<DubbingEntity> dubbingEntityList) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("CommitTaskId", taskId);
+        params.put("TaskScore", StudyTaskUtils.getTotalScore(dubbingEntityList));
+        if (courseData != null) {
+            params.put("ResId", courseData.getIdType());
+            params.put("ResUrl", courseData.resourceurl);
+        }
+        params.put("AutoEvalCompanyType", 4);
+        params.put("AutoEvalContent", StudyTaskUtils.getScoreArrayList(dubbingEntityList));
+        RequestHelper.RequestListener<DataResult> listener = new RequestHelper.RequestListener<DataResult>(SectionTaskDetailsActivityEx.this, DataResult.class) {
+            @Override
+            public void onSuccess(String jsonString) {
+                super.onSuccess(jsonString);
+                if (getResult() != null && getResult().isSuccess()) {
+                    //自动批阅分数上传成功
+                    TipMsgHelper.ShowLMsg(SectionTaskDetailsActivityEx.this, getString(R.string.commit_success));
+                    // 刷新UI
+                    if (!EmptyUtil.isEmpty(mFragment0)) {
+                        mFragment0.updateData(false);
+                    }
+                }
+            }
+        };
+        RequestHelper.sendPostRequest(SectionTaskDetailsActivityEx.this, ServerUrl.COMMIT_AUTO_MARK_SCORE,
+                params, listener);
     }
 
     private void uploadCourse(final LocalCourseInfo info, final String title) {
@@ -1807,10 +2067,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         public void onReceive(Context context, Intent intent) {
             if (EmptyUtil.isEmpty(intent)) return;
             if (ACTION_MARK_SCORE.equals(intent.getAction())) {
-                if(sectionResListVo.isAutoMark() &&
-                        mOriginalRole == UserHelper.MoocRoleType.STUDENT){
+                if (sectionResListVo.isAutoMark() &&
+                        mOriginalRole == UserHelper.MoocRoleType.STUDENT) {
                     // 学生身份, 自动批阅读写单的提交,批阅都广播的这个
-                    flagRead(null,sectionResListVo.getId(),sectionResListVo.getResId());
+                    flagRead(null, sectionResListVo.getId(), sectionResListVo.getResId());
                 }
 
                 if (!EmptyUtil.isEmpty(mFragment0)) {

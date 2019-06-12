@@ -510,4 +510,12 @@
     <string name="class_tutor">班级帮辅</string>
     <string name="add_class_tutor">+班级帮辅</string>
     <string name="add_course_success">课程参加成功</string>
+
+    <string name="dubbing">Q配音</string>
+    <string-array name="dubbing_task_tab_array">
+        <item>任务要求</item>
+        <item>提交列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+    <string name="start_dubbing">开始配音</string>
 </resources>

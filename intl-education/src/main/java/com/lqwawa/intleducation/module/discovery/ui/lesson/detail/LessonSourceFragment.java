@@ -250,7 +250,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             // 其它情况，只能看微课
                             mReadWeikeHelper.readWeike(resVo);
                         }
-                    } else if (resVo.getTaskType() == 3) {
+                    } else if (resVo.getTaskType() == 3 || resVo.getTaskType() == 6) {
+                        // 6 Q配音
                         if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
                             // 或者是试听身份

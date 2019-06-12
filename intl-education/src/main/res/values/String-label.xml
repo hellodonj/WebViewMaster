@@ -216,6 +216,7 @@
     <string name="label_voice_scores_format">%s points</string>
     <string name="label_teacher_mark">Remark</string>
     <string name="label_immediate_review">Remark</string>
+    <string name="label_look_review">View Remark</string>
     <string name="label_course_in_class">Assign Course to Class</string>
     <string name="label_old_in_class">Assigned already</string>
     <string name="label_picker_class">Select Class</string>
