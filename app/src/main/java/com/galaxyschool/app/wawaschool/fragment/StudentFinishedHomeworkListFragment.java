@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.galaxyschool.app.wawaschool.TeacherReviewDetailActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.ShareCommitUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -260,15 +262,15 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                         }
                     }
 
-                    View courseDetails = view.findViewById(R.id.tv_access_details);
+                    LinearLayout courseDetailLayout = (LinearLayout) view.findViewById(R.id.ll_course_detail);
                     if (taskType == StudyTaskType.ENGLISH_WRITING
                             || data.isMarkCard()
                             || data.isVideoType()) {
-                        courseDetails.setVisibility(View.GONE);
+                        courseDetailLayout.setVisibility(View.GONE);
                     } else {
-                        courseDetails.setVisibility(View.VISIBLE);
+                        courseDetailLayout.setVisibility(View.VISIBLE);
                     }
-
+                    View courseDetails = view.findViewById(R.id.tv_access_details);
                     //课件详情
                     courseDetails.setOnClickListener(new View.OnClickListener() {
 
@@ -303,6 +305,12 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
                             }
                         }
                     });
+
+                    ImageView shareImageView = (ImageView) view.findViewById(R.id.iv_share);
+                    if (shareImageView != null){
+                        shareImageView.setVisibility(View.VISIBLE);
+                        shareImageView.setOnClickListener(v -> ShareCommitUtils.shareCommitData(getActivity(),data.getStudentResId()));
+                    }
 
                     view.setTag(holder);
                     return view;
