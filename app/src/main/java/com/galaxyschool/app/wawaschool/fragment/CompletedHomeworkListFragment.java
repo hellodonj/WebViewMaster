@@ -25,6 +25,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.ShareCommitUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -605,9 +607,9 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             }
                         });
 
-                        View courseDetails = view.findViewById(R.id.tv_access_details);
+                        LinearLayout courseDetailLayout = (LinearLayout) view.findViewById(R.id.ll_course_detail);
                         if (taskType == StudyTaskType.ENGLISH_WRITING) {
-                            courseDetails.setVisibility(View.GONE);
+                            courseDetailLayout.setVisibility(View.GONE);
                             TextView commitTimeTextV = (TextView) view.findViewById(R.id.tv_commit_time);
                             if (commitTimeTextV != null) {
                                 String commitTime = data.getUpdateTime();
@@ -623,12 +625,13 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 }
                             }
                         } else if (data.isMarkCard() || data.isVideoType()) {
-                            courseDetails.setVisibility(View.GONE);
+                            courseDetailLayout.setVisibility(View.GONE);
                         } else {
-                            courseDetails.setVisibility(View.VISIBLE);
+                            courseDetailLayout.setVisibility(View.VISIBLE);
                         }
 
                         //课件详情
+                        View courseDetails = view.findViewById(R.id.tv_access_details);
                         courseDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -665,6 +668,11 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                             }
                         });
 
+                        ImageView shareImageView = (ImageView) view.findViewById(R.id.iv_share);
+                        if (shareImageView != null){
+                            shareImageView.setVisibility(View.VISIBLE);
+                            shareImageView.setOnClickListener(v -> ShareCommitUtils.shareCommitData(getActivity(),data.getStudentResId()));
+                        }
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
