@@ -145,7 +145,7 @@ public class AudioRecordHelper {
             });
         }
         deleteFile(savePath);
-        audioRecorder.start(savePath);
+        audioRecorder.start(savePath, true);
     }
 
     private void evaluateRecordData(int position,
