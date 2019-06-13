@@ -562,6 +562,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         if (EmptyUtil.isNotEmpty(entities)) {
 
             mHeaderLayout.setVisibility(View.VISIBLE);
+            mSortTabLayout.setVisibility(View.VISIBLE);
 
             recursionConfig(entities);
 
@@ -576,11 +577,15 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         } else{
             // 数据为空
             mHeaderLayout.setVisibility(View.GONE);
+            if (mLibraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
+                mSortTabLayout.setVisibility(View.GONE);
+            } else {
+                mSortTabLayout.setVisibility(View.VISIBLE);
+            }
 //            mRefreshLayout.setVisibility(View.GONE);
 //            mEmptyLayout.setVisibility(View.VISIBLE);
             triggerUpdateData();
         }
-        mSortTabLayout.setVisibility(View.VISIBLE);
     }
 
 

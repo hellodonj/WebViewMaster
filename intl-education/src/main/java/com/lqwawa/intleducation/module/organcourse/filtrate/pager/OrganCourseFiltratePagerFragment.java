@@ -10,6 +10,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
@@ -23,6 +24,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateNavigator;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateParams;
@@ -45,6 +47,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
     private PullToRefreshView mRefreshLayout;
     // 空布局
     private CourseEmptyView mEmptyView;
+    private NoPermissionView mNoPermissionView;
     // 列表布局
     private GridView mGridView;
     private CourseListAdapter mCourseListAdapter;
@@ -53,6 +56,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
     private OrganCourseFiltrateParams mParams;
     private ShopResourceData mResourceData;
     private int mPageIndex;
+    private String[] mLibraryNames;
 
     public static OrganCourseFiltratePagerFragment newInstance(OrganCourseFiltrateParams params) {
         OrganCourseFiltratePagerFragment fragment = new OrganCourseFiltratePagerFragment();
@@ -79,6 +83,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
         if (EmptyUtil.isEmpty(mParams)) {
             return false;
         }
+        mLibraryNames = getResources().getStringArray(R.array.organ_library_names);
         return super.initArgs(bundle);
     }
 
@@ -88,6 +93,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
         mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
         mGridView = (GridView) mRootView.findViewById(R.id.gridView);
         mEmptyView = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
+        mNoPermissionView = (NoPermissionView) mRootView.findViewById(R.id.no_permission_view);
         mGridView.setNumColumns(1);
         mGridView.setHorizontalSpacing(0);
         mGridView.setVerticalSpacing(DisplayUtil.dip2px(getContext(), 1));
@@ -197,11 +203,12 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
             if (EmptyUtil.isEmpty(courseVos)) {
                 // 数据为空
                 mRefreshLayout.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
+                updateEmptyView(mParams.getLibraryType());
             } else {
                 // 数据不为空
                 mRefreshLayout.setVisibility(View.VISIBLE);
                 mEmptyView.setVisibility(View.GONE);
+                mNoPermissionView.setVisibility(View.GONE);
             }
         } else {
             // 关闭加载更多
@@ -211,6 +218,13 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
             mCourseListAdapter.addData(courseVos);
             mCourseListAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void updateEmptyView(int libraryType) {
+        boolean isBrainLibrary = libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY;
+        mEmptyView.setVisibility(!isBrainLibrary ? View.VISIBLE : View.GONE);
+        mNoPermissionView.setVisibility(!isBrainLibrary ? View.GONE : View.VISIBLE);
+        mNoPermissionView.setDescription(getString(R.string.label_organ_course_permission_description, mLibraryNames[libraryType]));
     }
 
     @Override
