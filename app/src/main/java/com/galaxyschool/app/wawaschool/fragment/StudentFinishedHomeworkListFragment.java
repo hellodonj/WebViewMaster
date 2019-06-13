@@ -264,7 +264,7 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
 
                     LinearLayout courseDetailLayout = (LinearLayout) view.findViewById(R.id.ll_course_detail);
                     if (taskType == StudyTaskType.ENGLISH_WRITING
-                            || data.isMarkCard()
+                            || (data.isMarkCard() && !data.isCourseType())
                             || data.isVideoType()) {
                         courseDetailLayout.setVisibility(View.GONE);
                     } else {
