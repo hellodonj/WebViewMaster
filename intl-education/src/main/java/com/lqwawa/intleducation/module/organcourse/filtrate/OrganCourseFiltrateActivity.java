@@ -347,6 +347,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         if(mSelectResource){
             mSubjectLayout.setVisibility(View.GONE);
         }
+        mHeaderLayout.setVisibility(View.GONE);
+        mSortTabLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -558,7 +560,9 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mFiltrateArray4 = new ArrayList<>();
 
         if (EmptyUtil.isNotEmpty(entities)) {
-            if (EmptyUtil.isEmpty(entities)) return;
+
+            mHeaderLayout.setVisibility(View.VISIBLE);
+
             recursionConfig(entities);
 
             configLabel();
@@ -576,6 +580,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 //            mEmptyLayout.setVisibility(View.VISIBLE);
             triggerUpdateData();
         }
+        mSortTabLayout.setVisibility(View.VISIBLE);
     }
 
 
