@@ -1084,7 +1084,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                 });
             }
             deleteFile(savePath);
-            audioRecorder.start(savePath);
+            audioRecorder.start(savePath, true);
         }
     }
 
