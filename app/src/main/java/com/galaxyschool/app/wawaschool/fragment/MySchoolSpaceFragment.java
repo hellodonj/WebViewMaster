@@ -1054,14 +1054,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 //        item.resId = R.drawable.icon_school_introduction;
 //        itemList.add(item);
 //        if(schoolInfo != null && (schoolInfo.isTeacher() ||  VipConfig.isVip(getActivity()))){
-        if (schoolInfo != null && schoolInfo.isTeacher()) {
-            //校本资源库
-            item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
-            item.title = getString(R.string.public_course);
-            item.resId = R.drawable.xiaobenziyuanku;
-            itemList.add(item);
-        }
 
         //学程馆
         item = new TabEntityPOJO();
@@ -1097,6 +1089,16 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.title = getString(R.string.common_brain_library);
         item.resId = R.drawable.ic_brain_library;
         itemList.add(item);
+
+        if (schoolInfo != null && schoolInfo.isTeacher()) {
+            //校本资源库
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
+            item.title = getString(R.string.public_course);
+            item.resId = R.drawable.xiaobenziyuanku;
+            itemList.add(item);
+        }
+
 
         //学校班级
         item = new TabEntityPOJO();
