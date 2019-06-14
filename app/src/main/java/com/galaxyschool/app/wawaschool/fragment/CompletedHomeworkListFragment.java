@@ -624,7 +624,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                     commitTimeTextV.setText(commitTime);
                                 }
                             }
-                        } else if (data.isMarkCard() || data.isVideoType()) {
+                        } else if ((data.isMarkCard() && !data.isCourseType()) || data.isVideoType()) {
                             courseDetailLayout.setVisibility(View.GONE);
                         } else {
                             courseDetailLayout.setVisibility(View.VISIBLE);
@@ -635,10 +635,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         courseDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (data.isMarkCard()) {
-                                    //任务单答题卡
-                                    enterStudentAnswerDetailActivity(data, false);
-                                } else if (data.isEvalType()) {
+                                if (data.isEvalType()) {
                                     updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                     //语音评测资源
                                     enterSpeechAssessmentActivity(data);
