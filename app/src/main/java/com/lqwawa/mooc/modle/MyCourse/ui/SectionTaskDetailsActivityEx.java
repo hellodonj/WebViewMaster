@@ -1492,7 +1492,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     MediaDTO mediaDTO = new MediaDTO();
                     mediaDTO.setPath(videoPath);
                     if (sectionResListVo != null) {
-                        mediaDTO.setTitle(sectionResListVo.getTaskName());
+                        mediaDTO.setTitle(sectionResListVo.getName());
                     } else {
                         mediaDTO.setTitle(Utils.getFileNameFromPath(videoPath));
                     }
@@ -1546,7 +1546,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                         CourseData courseData = new CourseData();
                                         courseData.id = mediaData.id;
                                         courseData.type = ResType.RES_TYPE_VIDEO;
-                                        courseData.nickname = sectionResListVo.getTaskName();
+                                        courseData.nickname = sectionResListVo.getName();
                                         courseData.resourceurl = mediaData.resourceurl;
                                         commitStudentCourse(userInfo, courseData, null, dubbingEntityList);
                                     }
