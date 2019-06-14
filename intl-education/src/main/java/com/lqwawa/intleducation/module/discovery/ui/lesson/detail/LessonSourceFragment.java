@@ -153,7 +153,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
 
-        if (mTaskType == 1 || mTaskType == 4 || mTaskType == 2) {
+        if (mTaskType == 1 || mTaskType == 4 || mTaskType == 2 || mTaskType == 6) {
             // 看课件  或者是  复述课件(没有复述课件权限的)
             mReadWeikeHelper = new ReadWeikeHelper(getActivity());
         }
@@ -201,7 +201,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                     }
 
                     if (mCourseResListAdapter.getChoiceMode()) {
-                        if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
+                        if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4
+                                || resVo.getTaskType() == 6) {
                             // 看课件类型
                             if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                                 mReadWeikeHelper.readWeike(resVo);
