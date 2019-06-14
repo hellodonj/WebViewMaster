@@ -1,6 +1,5 @@
 package com.lqwawa.intleducation.module.learn.ui.mycourse;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,11 +13,9 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.Tab;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
 import com.lqwawa.intleducation.module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
@@ -59,6 +56,9 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
 
     // LQ English Primary
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
+
+    // RA BRAIN
+    private static final int RA_BRAIN_ID = 2351;
 
     public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
     public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
@@ -164,7 +164,8 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }else{
             mExpandableView.setVisibility(View.VISIBLE);
             mTabEmptyLayout.setVisibility(View.GONE);
-            
+
+            filterData(entities);
             fillData(entities);
             mConfigAdapter.setData(entities);
             // mExpandableView.getCount();
@@ -181,6 +182,7 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }
     }
 
+
     @Override
     public void onChoiceConfig(@NonNull LQCourseConfigEntity groupEntity,
                                @NonNull LQCourseConfigEntity childEntity,
@@ -189,14 +191,14 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         String level = "";
         int rootId = groupEntity.getId();
         if(EmptyUtil.isNotEmpty(childEntity)) level = childEntity.getLevel();
-        if(rootId == MINORITY_LANGUAGE_COURSE_ID || rootId == CLASSIFIED_READING_ID){
+        if(rootId == MINORITY_LANGUAGE_COURSE_ID || rootId == CLASSIFIED_READING_ID || rootId == RA_BRAIN_ID){
             level = configEntity.getLevel();
         }
 
         int paramOneId = 0;
         int paramTwoId = 0;
 
-        if(rootId != MINORITY_LANGUAGE_COURSE_ID && rootId != CLASSIFIED_READING_ID){
+        if(rootId != MINORITY_LANGUAGE_COURSE_ID && rootId != CLASSIFIED_READING_ID && rootId != RA_BRAIN_ID){
 
             int rootTypeId = 0;
             if(EmptyUtil.isNotEmpty(childEntity)) rootTypeId = childEntity.getId();
@@ -212,6 +214,28 @@ public class MyCourseListFragment extends PresenterFragment<MyCourseListContract
         }
 
         MyCourseConfigDetailActivity.show(getActivity(),configEntity,mCurSchoolId,mCurMemberId,isTeacher,level,paramOneId,paramTwoId);
+    }
+
+    /**
+     * 过滤专注力训练第三极数据
+     * @param entities
+     */
+    private void filterData(List<LQCourseConfigEntity> entities) {
+        if (entities != null && !entities.isEmpty()) {
+            for (LQCourseConfigEntity entity : entities) {
+                if (entity != null && entity.getId() == RA_BRAIN_ID) {
+                    List<LQCourseConfigEntity> childList = entity.getChildList();
+                    if (childList != null && !childList.isEmpty()) {
+                        for (LQCourseConfigEntity configEntity : childList) {
+                            if (configEntity != null) {
+                                List<LQCourseConfigEntity> list = new ArrayList<>();
+                                configEntity.setChildList(list);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
