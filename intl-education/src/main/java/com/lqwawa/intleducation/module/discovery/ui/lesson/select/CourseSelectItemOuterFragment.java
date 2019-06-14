@@ -146,6 +146,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         typeTable.append(4, CourseSelectItemFragment.KEY_TEXT_BOOK);
         // 讲解课类型
         typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
+        typeTable.append(6, CourseSelectItemFragment.KEY_TEXT_BOOK);
 
         initView();
     }
@@ -290,7 +291,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             }
         }else if(realTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
             // 视频课类型
-            if(taskType == 1){
+            if(taskType == 1 || taskType == 6){
                 return true;
             }
         }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){

@@ -416,14 +416,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
     }
 
     public void getVideoInfo(CommitTask commitTask, boolean isHasReviewPermission) {
-        String resIdType = String.format("%s-%d", sectionResListVo.getResId(),
-                sectionResListVo.getResType());
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("resId", resIdType);
-        RequestParams params =
-                new RequestParams(AppConfig.ServerUrl.WAWATV_COURSE_DETAIL_URL + requestVo.getParams());
-        params.setConnectTimeout(10000);
-        x.http().get(params, new StringCallback<String>() {
+        getVideoInfo(new StringCallback<String>() {
             @Override
             public void onSuccess(String s) {
                 ResponseVo<List<CourseData>> result = JSON.parseObject(s,
@@ -441,6 +434,18 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                 }
             }
         });
+    }
+
+    public void getVideoInfo(StringCallback callback) {
+        String resIdType = String.format("%s-%d", sectionResListVo.getResId(),
+                sectionResListVo.getResType());
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("resId", resIdType);
+        RequestParams params =
+                new RequestParams(AppConfig.ServerUrl.WAWATV_COURSE_DETAIL_URL + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().get(params, callback);
+
     }
 
 
@@ -702,7 +707,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         boolean isHasReviewPermission =
                 mHandleRole == UserHelper.MoocRoleType.TEACHER
                         || mHandleRole == UserHelper.MoocRoleType.EDITOR
-                        || TextUtils.equals(sectionResListVo.getCreateId(),UserHelper.getUserId());
+                        || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
         getVideoInfo(commitTask, isHasReviewPermission);
     }
 
@@ -1079,6 +1084,30 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         super.doStatisticalScores(data);
         if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(mLqTaskCommitListVo)) return;
         // 用未拆分的数据进行统计
+        if (sectionResListVo.getTaskType() == 6) {
+            getVideoInfo(new StringCallback<String>() {
+                @Override
+                public void onSuccess(String s) {
+                    ResponseVo<List<CourseData>> result = JSON.parseObject(s,
+                            new TypeReference<ResponseVo<List<CourseData>>>() {
+                            });
+                    if (result.getCode() == 0) {
+                        if (result.getData() != null && result.getData().size() > 0) {
+                            CourseData courseData = result.getData().get(0);
+                            if (courseData != null) {
+                                processScoreStatistics(courseData);
+                            }
+                        }
+                    }
+                }
+            });
+            return;
+        }
+        processScoreStatistics(null);
+    }
+
+    private void processScoreStatistics(CourseData courseData) {
+        List<LqTaskCommitVo> data;
         data = mLqTaskCommitListVo.getListCommitTaskOnline();
 
         // 复述课件用来过滤到最高分的提交记录的Map集合 Key = studentId
@@ -1097,7 +1126,9 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
                 CommitTask commitTask = CommitTask.buildVo(vo);
                 commitTask.setCommitTaskId(commitTask.getId());
-                if (EmptyUtil.isEmpty(commitTask.getTaskScore())) continue;
+                if (EmptyUtil.isEmpty(commitTask.getTaskScore())) {
+                    commitTask.setTaskScore("0");
+                }
                 String studentId = vo.getStudentId();
                 if (vo.isSpeechEvaluation()) {
                     CommitTask maxCommit = evalFilterMap.get(studentId);
@@ -1121,8 +1152,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     CommitTask maxCommit = retellFilterMap.get(studentId);
                     if (EmptyUtil.isEmpty(maxCommit)) {
                         // 第一次提交，put
-                        if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                        if (vo.isAutoMark() || vo.isVideoType() || vo.isHasCommitTaskReview()) {
                             // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
+                            if (courseData != null) {
+                                commitTask.setParentResourceUrl(courseData.resourceurl);
+                                commitTask.setLevel(courseData.level);
+                            }
                             retellFilterMap.put(studentId, commitTask);
                         }
                     } else {
@@ -1134,8 +1169,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         if ((Double.parseDouble(commitTask.getTaskScore()) >
                                 Double.parseDouble(maxCommit.getTaskScore()))) {
                             // 如果遍历到的提交记录分数大于之前保存的，覆盖保存
-                            if (vo.isAutoMark() || vo.isHasCommitTaskReview()) {
+                            if (vo.isAutoMark() || vo.isVideoType() || vo.isHasCommitTaskReview()) {
                                 // 有批阅 自动批阅的读写单，或者正常的读写单但已经是批阅过后的
+                                if (courseData != null) {
+                                    commitTask.setParentResourceUrl(courseData.resourceurl);
+                                    commitTask.setLevel(courseData.level);
+                                }
                                 retellFilterMap.put(studentId, commitTask);
                             }
                         }
@@ -1492,7 +1531,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     MediaDTO mediaDTO = new MediaDTO();
                     mediaDTO.setPath(videoPath);
                     if (sectionResListVo != null) {
-                        mediaDTO.setTitle(sectionResListVo.getTaskName());
+                        mediaDTO.setTitle(sectionResListVo.getName());
                     } else {
                         mediaDTO.setTitle(Utils.getFileNameFromPath(videoPath));
                     }
@@ -1546,7 +1585,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                         CourseData courseData = new CourseData();
                                         courseData.id = mediaData.id;
                                         courseData.type = ResType.RES_TYPE_VIDEO;
-                                        courseData.nickname = sectionResListVo.getTaskName();
+                                        courseData.nickname = sectionResListVo.getName();
                                         courseData.resourceurl = mediaData.resourceurl;
                                         commitStudentCourse(userInfo, courseData, null, dubbingEntityList);
                                     }

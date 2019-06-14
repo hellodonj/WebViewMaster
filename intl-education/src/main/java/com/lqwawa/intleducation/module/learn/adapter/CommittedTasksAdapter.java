@@ -173,6 +173,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             holder.mVoiceScores.setVisibility(View.VISIBLE);
             holder.mVoiceScores.setVisibility(View.VISIBLE);
             if(EmptyUtil.isEmpty(vo.getTaskScore())){
+                vo.setTaskScore("0");
                 holder.mVoiceScores.setText(String.format(UIUtil.getString(R.string.label_voice_scores_format), "0"));
             }else{
                 holder.mVoiceScores.setText(String.format(UIUtil.getString(R.string.label_voice_scores_format), vo.getTaskScore()));

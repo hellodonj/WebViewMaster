@@ -555,6 +555,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                             } else if (vo.getType() == 0) {
                                 // 0是课程
                                 CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
+                                params.setLibraryType(vo.getLibraryType());
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                         false, true, UserHelper.getUserId(), false, false, false,
                                         false, params, null);

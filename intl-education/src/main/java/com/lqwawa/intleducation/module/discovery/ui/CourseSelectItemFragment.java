@@ -205,7 +205,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
-                if (sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4) {
+                if (sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4
+                        || sectionResListVo.getTaskType() == 6) {
                     // 看课件类型
                     if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                         mReadWeikeHelper.readWeike(sectionResListVo);
@@ -303,7 +304,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                             updateData(i);
                         } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
                             updateData(i);
-                        } else if (mTaskType == KEY_TEXT_BOOK && taskType == 4) {
+                        } else if (mTaskType == KEY_TEXT_BOOK && (taskType == 4 || taskType == 6)) {
                             updateData(i);
                         } else if (mTaskType == KEY_LECTURE_COURSE && taskType == 5) {
                             updateData(i);

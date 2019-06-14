@@ -536,6 +536,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             } else if (moocTaskType == 5) {
                 // 讲解课类型
                 lqwawaTaskType = 5;
+            } else if (moocTaskType == 6) {
+                // Q配音
+                lqwawaTaskType = 14;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray, lqwawaTaskType);
             // 刷新数目
