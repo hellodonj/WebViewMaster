@@ -40,6 +40,7 @@ import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
+import com.galaxyschool.app.wawaschool.common.ShareCommitUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
@@ -2211,6 +2212,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         // 课程发生了绑定
         // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
         // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
+    }
+
+    @Override
+    protected void shareCourseWare(@NonNull LqTaskCommitVo vo) {
+        super.shareCourseWare(vo);
+        ShareCommitUtils.shareCommitData(SectionTaskDetailsActivityEx.this, vo.getStudentResId());
     }
 
     private class MyBroadCastReceiver extends BroadcastReceiver {

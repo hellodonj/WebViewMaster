@@ -362,6 +362,11 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         public void openCourseWareDetails(@NonNull LqTaskCommitVo vo) {
             openSpeechEvaluationCourseWareDetails(vo);
         }
+
+        @Override
+        public void onShareCourseWare(@NonNull LqTaskCommitVo vo) {
+            shareCourseWare(vo);
+        }
     };
 
     /**
@@ -462,6 +467,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     }
 
     protected void openSpeechEvaluationCourseWareDetails(@NonNull LqTaskCommitVo vo) {
+
+    }
+
+    protected void shareCourseWare(@NonNull LqTaskCommitVo vo) {
 
     }
 

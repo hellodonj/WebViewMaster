@@ -626,6 +626,9 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
         // 语音评测,打开课件
         void openCourseWareDetails(@NonNull LqTaskCommitVo vo);
+
+        //  分享
+        void onShareCourseWare(@NonNull LqTaskCommitVo vo);
     }
 
     private int getSourceType() {
