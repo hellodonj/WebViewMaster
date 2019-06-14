@@ -496,10 +496,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         super.checkMarkTaskDetail(activity, roleType, task, studentCommit, isCheckMark, sourceType, taskCourseWare);
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo) || EmptyUtil.isEmpty(sectionResListVo)) return;
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
-        if (studentCommit.isVideoType()) {
-            openDubbingTask(studentCommit);
-            return;
-        }
+
         // V5.14列表兼容两种数据
         // if (sectionResListVo.isAutoMark()) {
         if (studentCommit.isAutoMark() && !taskCourseWare) {
@@ -695,19 +692,24 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         }
     }
 
-    private void openDubbingTask(LqTaskCommitVo studentCommit) {
+    private void openDubbingTask(LqTaskCommitVo studentCommit, boolean isCheckImmediate) {
         CommitTask commitTask = new CommitTask();
         commitTask.setStudentResUrl(studentCommit.getStudentResUrl());
         commitTask.setAutoEvalContent(studentCommit.getAutoEvalContent());
-        commitTask.setCommitTaskId(studentCommit.getId());
+        commitTask.setCommitTaskOnlineId(studentCommit.getId());
         commitTask.setHasVoiceReview(studentCommit.isHasVoiceReview());
         commitTask.setTaskScore(studentCommit.getTaskScore());
         commitTask.setTaskScoreRemark(studentCommit.getTaskScoreRemark());
-        int roleType = transferRoleType(mHandleRole);
         boolean isHasReviewPermission =
                 mHandleRole == UserHelper.MoocRoleType.TEACHER
                         || mHandleRole == UserHelper.MoocRoleType.EDITOR
                         || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
+        if (isHasReviewPermission) {
+            if (!studentCommit.isHasVoiceReview() && isCheckImmediate) {
+                openTeacherReview(studentCommit);
+                return;
+            }
+        }
         getVideoInfo(commitTask, isHasReviewPermission);
     }
 
@@ -1031,6 +1033,11 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
     @Override
     protected void checkSpeechTaskDetail(@NonNull LqTaskCommitVo vo, boolean isCheckImmediate) {
         super.checkSpeechTaskDetail(vo, isCheckImmediate);
+
+        if (vo.isVideoType()) {
+            openDubbingTask(vo, isCheckImmediate);
+            return;
+        }
         // 处理过的角色
         int resultRoleType = transferRoleType(mHandleRole);
         if (isAudition) {
@@ -2122,6 +2129,14 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
             } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
+                if (!EmptyUtil.isEmpty(mFragment0)) {
+                    // 复述列表刷新UI
+                    // 刷新UI
+                    if (!EmptyUtil.isEmpty(mFragment0)) {
+                        mFragment0.updateData(false);
+
+                    }
+                }
                 // 语音评测刷新
                 if (!EmptyUtil.isEmpty(mFragment1)) {
                     mFragment1.updateData(false);

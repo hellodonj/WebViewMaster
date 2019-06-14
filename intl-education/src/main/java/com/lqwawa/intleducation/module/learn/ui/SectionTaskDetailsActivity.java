@@ -335,7 +335,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 return;
             }
 
-            if (vo.isSpeechEvaluation()) {
+            if (vo.isSpeechEvaluation() || vo.isVideoType()) {
                 // 点击的是语音评测的cell
                 checkSpeechTaskDetail(vo, isCheckMark);
             } else {
