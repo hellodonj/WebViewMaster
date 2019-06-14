@@ -137,10 +137,18 @@ public class QDubbingActivity extends DubbingActivity {
 
     @Override
     protected void enterTeacherReviewActivity() {
+        String commitTaskOnlineId = null;
+        String commitTaskId = null;
+        if (commitTask.getCommitTaskId() > 0){
+            commitTaskId = String.valueOf(commitTask.getCommitTaskId());
+        }
+        if (commitTask.getCommitTaskOnlineId() > 0){
+            commitTaskOnlineId = String.valueOf(commitTask.getCommitTaskOnlineId());
+        }
         TeacherReviewDetailActivity.start(
                 this,
-                String.valueOf(commitTask.getCommitTaskOnlineId()),
-                String.valueOf(commitTask.getCommitTaskId()),
+                commitTaskOnlineId,
+                commitTaskId,
                 2,
                 commitTask.getTaskScore());
     }
