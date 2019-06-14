@@ -206,6 +206,10 @@ public class CourseShopPagerFragment extends PresenterFragment<CourseShopPagerCo
      * 查询课程 isMoreLoaded=true 加载更多数据
      */
     public void requestCourseData(boolean isMoreLoaded) {
+        if (getActivity() == null) {
+            return;
+        }
+        
         int payType = Integer.MAX_VALUE;
         if (!AppConfig.BaseConfig.needShowPay()) {
             //只显示免费课程

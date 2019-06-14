@@ -254,6 +254,14 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                         triggerPriceSwitch(state);
                     }
                 }
+
+                // 解决在线机构在线班级列表，搜索不联动的问题
+                if(EmptyUtil.isEmpty(mNavigatorList)) return;
+                String searchKey = mSearchEt.getText().toString().trim();
+                for (SearchNavigator navigator : mNavigatorList) {
+                    boolean isVisible = navigator.search(searchKey);
+                    if (isVisible) break;
+                }
             }
 
             @Override
