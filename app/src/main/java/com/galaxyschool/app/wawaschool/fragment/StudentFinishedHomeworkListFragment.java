@@ -308,7 +308,12 @@ public class StudentFinishedHomeworkListFragment extends ContactsListFragment {
 
                     ImageView shareImageView = (ImageView) view.findViewById(R.id.iv_share);
                     if (shareImageView != null){
-                        shareImageView.setVisibility(View.VISIBLE);
+                        if (data.isEvalType()) {
+                            //语音评测类型隐藏分享按钮
+                            shareImageView.setVisibility(View.GONE);
+                        } else {
+                            shareImageView.setVisibility(View.VISIBLE);
+                        }
                         shareImageView.setOnClickListener(v -> ShareCommitUtils.shareCommitData(getActivity(),data.getStudentResId()));
                     }
 
