@@ -113,15 +113,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         List<TabEntityPOJO> itemList = new ArrayList<TabEntityPOJO>();
         TabEntityPOJO item = null;
 
-        if (schoolInfo != null && schoolInfo.isTeacher()) {
-            //校本资源库
-            item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
-            item.title = getString(R.string.school_class_book);
-            item.resId = R.drawable.icon_school_based_curriculum;
-            itemList.add(item);
-        }
-
         //学程馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP;
@@ -156,6 +147,15 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item.title = getString(R.string.common_brain_library);
         item.resId = R.drawable.ic_brain_library_rect;
         itemList.add(item);
+
+        if (schoolInfo != null && schoolInfo.isTeacher()) {
+            //校本资源库
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
+            item.title = getString(R.string.school_class_book);
+            item.resId = R.drawable.icon_school_based_curriculum;
+            itemList.add(item);
+        }
 
         //学校班级
         item = new TabEntityPOJO();
