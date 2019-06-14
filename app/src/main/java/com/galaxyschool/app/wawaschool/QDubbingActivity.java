@@ -139,7 +139,7 @@ public class QDubbingActivity extends DubbingActivity {
     protected void enterTeacherReviewActivity() {
         TeacherReviewDetailActivity.start(
                 this,
-                "",
+                String.valueOf(commitTask.getCommitTaskOnlineId()),
                 String.valueOf(commitTask.getCommitTaskId()),
                 2,
                 commitTask.getTaskScore());
