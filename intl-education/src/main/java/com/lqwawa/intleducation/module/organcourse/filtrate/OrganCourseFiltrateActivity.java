@@ -758,7 +758,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mTabVector4.setVisibility(View.GONE);
 
             // 年龄段 语言 主题
-            mTabLabel1.setText(getString(R.string.label_colon_age));
+            mTabLabel1.setText(getString(R.string.label_colon_level));
             mTabLabel2.setText(getString(R.string.label_colon_language));
         } else if (rootId == RA_BRAIN_ID) {
             // 全脑馆
@@ -993,7 +993,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                                             firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID)) {
                         // 选中的是小语种的Id
                         triggerUpdateData();
-                    } else if (rootId == RA_BRAIN_ID) {
+                    } else if (rootId == RA_BRAIN_ID || rootId == PICTURE_BOOK_ID) {
                         triggerUpdateData();
                     }
                 }
