@@ -13,6 +13,7 @@ import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
 import java.util.ArrayList;
@@ -163,6 +164,10 @@ public class LqIntroTaskHelper {
                 lookResDto.setResPropertyMode(1);
             }
             lookResDto.setCompletionMode(info.getCompletionMode());
+            if (taskType == StudyTaskType.Q_DUBBING){
+                //默认按句配音
+                lookResDto.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
+            }
             lookResDtoList.add(lookResDto);
         }
         return lookResDtoList;
