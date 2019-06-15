@@ -161,7 +161,9 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         if (mSourceParams != null && mSourceParams.getCourseParams() != null) {
             CourseDetailParams courseDetailParams = mSourceParams.getCourseParams();
             isVideoLibrary =
-                    courseDetailParams != null && courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+                    courseDetailParams != null
+                            && (courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                            || courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
         }
 
         if (EmptyUtil.isEmpty(courseId) ||
