@@ -301,6 +301,11 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             setNewPageAsSubpage(false);
         }
         userInfo = ((MyApplication) getApplication()).getUserInfo();
+        if (isAnswerCardQuestion && cardParam != null){
+            if (cardParam.getUserInfo() != null){
+                userInfo = cardParam.getUserInfo();
+            }
+        }
         boolean isMySelf = isMySelf();
         if (mParam == null) {
             mParam = new PlaybackParam();

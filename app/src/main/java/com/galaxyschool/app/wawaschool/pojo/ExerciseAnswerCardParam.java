@@ -66,6 +66,15 @@ public class ExerciseAnswerCardParam implements Serializable {
     private String pageListString;
     private boolean subjectAssistant;//自动批阅主观题申请批阅
     private boolean fromMyAssistantMark;//来自我要帮辅
+    private UserInfo userInfo;
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 
     public boolean isFromMyAssistantMark() {
         return fromMyAssistantMark;
