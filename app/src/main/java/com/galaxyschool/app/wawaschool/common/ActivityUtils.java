@@ -363,7 +363,7 @@ public class ActivityUtils {
                         createName = createName.substring(0, 10);
                         createName = createName + "...";
                     }
-                    createName = createName + "\n" + context.getString(R.string
+                    createName = createName + "  \n" + context.getString(R.string
                             .Str_view_people, String.valueOf(courseInfo.getViewcount()));
                     shareData.setAuthor(createName);
                 }
