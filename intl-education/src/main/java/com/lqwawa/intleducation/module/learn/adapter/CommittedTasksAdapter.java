@@ -437,7 +437,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                         }
                     }
                 });
-            }else{
+            } else{
                 holder.mCourseIconLayout.setEnabled(false);
                 holder.mCourseIconLayout.setClickable(false);
                 holder.mCourseIconLayout.setOnClickListener(null);
@@ -447,6 +447,8 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             holder.mCourseIconLayout.setOnClickListener(null);
             holder.mCourseIconLayout.setEnabled(false);
             holder.mCourseIconLayout.setClickable(false);
+            // 评测列表不显示分享
+            holder.mIvShare.setVisibility(vo.getCommitType() == 5 ? View.GONE : View.VISIBLE);
         }
 
 
