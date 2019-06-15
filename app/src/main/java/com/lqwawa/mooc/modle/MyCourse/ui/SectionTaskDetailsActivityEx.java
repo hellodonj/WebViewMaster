@@ -1689,7 +1689,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                                     CourseData courseData,
                                     List<DubbingEntity> dubbingEntityList) {
         Map<String, Object> params = new HashMap<>();
-        params.put("CommitTaskId", taskId);
+        params.put("CommitTaskOnlineId", taskId);
         params.put("TaskScore", StudyTaskUtils.getTotalScore(dubbingEntityList));
         if (courseData != null) {
             params.put("ResId", courseData.getIdType());
