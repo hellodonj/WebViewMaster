@@ -247,7 +247,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         // 学生或家长，需要更新状态
                         CourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, true);
+                                , curMemberId, true, false);
                     }
                 }
             }

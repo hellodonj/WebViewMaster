@@ -243,10 +243,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isMyCourse,
                              final int tabIndex,
                              final CourseVo vo,
-                             final CourseDetailParams params) {
+                             final CourseDetailParams params,
+                             final boolean isFromScan) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
         route.navigation(activity, courseId, memberId, params,
-                tabIndex == -2, new CourseRoute.NavigationListener() {
+                isFromScan, new CourseRoute.NavigationListener() {
                     @Override
                     public void route(boolean needToLearn, CourseRouteEntity entity) {
                         super.route(needToLearn, entity);
@@ -258,7 +259,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             } else {
                                 courseDetailParams = new CourseDetailParams();
                             }
-                            courseDetailParams.setFromScan(tabIndex == -2);
+                            courseDetailParams.setFromScan(isFromScan);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
                                 courseDetailParams.setIsVideoCourse(entity.getType() == 2);
@@ -284,7 +285,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             if (courseDetailParams == null) {
                                 courseDetailParams = new CourseDetailParams();
                             }
-                            courseDetailParams.setFromScan(tabIndex == -2);
+                            courseDetailParams.setFromScan(isFromScan);
                             courseDetailParams.setIsAuthorized(isAuth);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
@@ -309,7 +310,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final @NonNull CourseDetailParams params,
                              final boolean isSchoolEnter) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, false,
-                false, isAuthorized, false, -1, null, params);
+                false, isAuthorized, false, -1, null, params, false);
 
     }
 
@@ -317,16 +318,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final String courseId,
                              final boolean canEdit,
                              final String memberId,
-                             final boolean isMyCourse) {
+                             final boolean isMyCourse,
+                             final boolean isFromScan) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, isMyCourse, -1, null, null);
+                false, false, isMyCourse, -1, null, null, isFromScan);
     }
 
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        start(activity, courseId, canEdit, memberId, false);
+        start(activity, courseId, canEdit, memberId, false, false);
     }
 
     public static void start(final Activity activity,
@@ -337,7 +339,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isOnlineClassEnter,
                              boolean isOnlineTeacher) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, isOnlineClassEnter,
-                isOnlineTeacher, false, false, -1, null, null);
+                isOnlineTeacher, false, false, -1, null, null, false);
     }
 
     public static void start(final Activity activity,
@@ -347,7 +349,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final int tabIndex,
                              final CourseVo vo) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, false, tabIndex, vo, null);
+                false, false, false, tabIndex, vo, null, tabIndex == -2);
 
     }
 
