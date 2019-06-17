@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.organcourse.filtrate.pager;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 
@@ -225,6 +226,15 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
         mEmptyView.setVisibility(!isBrainLibrary ? View.VISIBLE : View.GONE);
         mNoPermissionView.setVisibility(!isBrainLibrary ? View.GONE : View.VISIBLE);
         mNoPermissionView.setDescription(getString(R.string.label_organ_course_permission_description, mLibraryNames[libraryType]));
+        if (isBrainLibrary) {
+            if (!TextUtils.isEmpty(mParams.getKeyString())) {
+                mEmptyView.setVisibility(View.VISIBLE);
+                mNoPermissionView.setVisibility(View.GONE);
+            } else {
+                mEmptyView.setVisibility(View.GONE);
+                mNoPermissionView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
