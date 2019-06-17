@@ -261,9 +261,10 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             mEmptyLayout.setEnabled(true);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }
-        boolean isVideoLibrary =
-                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        mTabLayout.setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        boolean isVideoCourse =
+                mParams != null && (mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || (mParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && mParams.isVideoCourse()));
+        mTabLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
     }
 
     /**

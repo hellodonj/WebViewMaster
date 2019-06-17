@@ -556,6 +556,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 // 0是课程
                                 CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
                                 params.setLibraryType(vo.getLibraryType());
+                                params.setIsVideoCourse(vo.getType() == 2);
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                         false, true, UserHelper.getUserId(), false, false, false,
                                         false, params, null);

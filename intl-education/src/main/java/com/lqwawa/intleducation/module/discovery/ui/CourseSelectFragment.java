@@ -288,6 +288,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             courseParams.setClassId(mClassId);
                             courseParams.setCourseEnterType(mEnterType);
                             courseParams.setLibraryType(courseVo.getLibraryType());
+                            courseParams.setIsVideoCourse(courseVo.getType() == 2);
                         }
 
                         int role = UserHelper.MoocRoleType.TEACHER;
@@ -312,6 +313,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         courseParams.setClassId(mClassId);
                         courseParams.setCourseEnterType(mEnterType);
                         courseParams.setLibraryType(courseVo.getLibraryType());
+                        courseParams.setIsVideoCourse(chapterVo.getType() == 2);
 
 
                         int taskType = arguments.getInt("tasktype", 1);

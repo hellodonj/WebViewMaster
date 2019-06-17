@@ -188,9 +188,10 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        boolean isVideoLibrary =
-                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoLibrary);
+        boolean isVideoCourse =
+                mParams != null && (mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || (mParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && mParams.isVideoCourse()));
+        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoCourse);
         courseResListAdapter.setCourseSelect(true, mTaskType);
         courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);

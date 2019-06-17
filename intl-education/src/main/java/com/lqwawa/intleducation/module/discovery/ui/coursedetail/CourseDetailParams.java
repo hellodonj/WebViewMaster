@@ -40,6 +40,9 @@ public class CourseDetailParams extends BaseVo{
     // 学程馆类型
     private int libraryType;
 
+    // 区分视频课
+    private boolean isVideoCourse;
+
     // 是否来自扫码识任务
     private boolean isFromScan;
 
@@ -174,6 +177,15 @@ public class CourseDetailParams extends BaseVo{
 
     public CourseDetailParams setLibraryType(int libraryType) {
         this.libraryType = libraryType;
+        return this;
+    }
+
+    public boolean isVideoCourse() {
+        return isVideoCourse;
+    }
+
+    public CourseDetailParams setIsVideoCourse(boolean isVideoCourse) {
+        this.isVideoCourse = isVideoCourse;
         return this;
     }
 

@@ -261,6 +261,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             courseDetailParams.setFromScan(tabIndex == -2);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
                             }
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
@@ -287,6 +288,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             courseDetailParams.setIsAuthorized(isAuth);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
                             }
                             intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                             intent.putExtra("tabIndex", tabIndex);
