@@ -1705,4 +1705,13 @@
     <string name="class_tutor">班级帮辅</string>
     <string name="str_whole_class_grade">全班成绩</string>
     <string name="str_subject_total_score">(总分: %s分)</string>
+
+    <string name="str_guidance_study_home_work">导学作业</string>
+    <string name="str_student_answer_question_way">学生答题方式:</string>
+    <string name="str_cross_picture">图片</string>
+    <string name="str_cross_video">视频</string>
+    <string name="str_cross_audio">音频</string>
+    <string name="str_submit_mode_not_null">学生答题方式不能为空</string>
+    <string name="str_guidance_task_hint">(听读课/读写单/音频/图片/视频/PPT/PDF/DOC)</string>
+    <string name="str_do_home_work">做作业</string>
 </resources>
