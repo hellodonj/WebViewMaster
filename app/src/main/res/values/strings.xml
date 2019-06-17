@@ -1797,4 +1797,6 @@
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
     <string name="class_tutor">Class Tutor</string>
+    <string name="str_click_ratingbar">Click on the star</string>
+    <string name="str_tutorial_evaluayion">Your valuable evaluation is very important to us, limited to 200 words</string>
 </resources>

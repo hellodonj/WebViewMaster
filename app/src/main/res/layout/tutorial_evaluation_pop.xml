@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c"
+    android:orientation="vertical">
+
+    <RatingBar
+        android:id="@+id/evaluation_rating_bar"
+        style="@style/RatingStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:max="5"
+        android:numStars="5"
+        android:rating="5"
+        android:stepSize="0.05" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/str_click_ratingbar"
+        android:textColor="@color/textSecond"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/et_evaluation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/review_price_input_style"
+        android:gravity="left|top"
+        android:hint="@string/str_tutorial_evaluayion"
+        android:inputType="textMultiLine"
+        android:maxLength="200"
+        android:minLines="6"
+        android:textColor="@color/black"
+        android:textColorHint="@color/textSecond"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_green_selector"
+        android:padding="5dp"
+        android:text="@string/button_send"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>

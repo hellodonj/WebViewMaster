@@ -1703,5 +1703,6 @@
     <string name="str_my_courses">学习空间</string>
     <string name="invalid_lqwawa_resource">非两栖蛙蛙资源，不能访问</string>
     <string name="class_tutor">班级帮辅</string>
-
+    <string name="str_click_ratingbar">点击评星</string>
+    <string name="str_tutorial_evaluayion">您的宝贵评价，对我们至关重要，限200字</string>
 </resources>
