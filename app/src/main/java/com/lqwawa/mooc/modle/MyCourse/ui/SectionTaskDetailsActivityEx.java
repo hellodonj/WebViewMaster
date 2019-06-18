@@ -2130,9 +2130,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                     }
                 }
             } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
-                if (!EmptyUtil.isEmpty(mFragment0)) {
-                    // 复述列表刷新UI
-                    // 刷新UI
+                // Q配音提交列表刷新
+                if(sectionResListVo.getTaskType() == 6) {
                     if (!EmptyUtil.isEmpty(mFragment0)) {
                         mFragment0.updateData(false);
 
