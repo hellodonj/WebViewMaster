@@ -177,6 +177,12 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
 
         initEntityList();
         mAdapter.replace(mEntityList);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // 获取授权状态
         mPresenter.requestCheckSchoolPermission(mParams.getOrganId(), 0,
                 false);
