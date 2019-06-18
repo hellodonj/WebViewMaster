@@ -384,6 +384,7 @@
     <string name="label_person_academic_certificate">Academic certificate:</string>
     <string name="label_business_certificate">Professional certificate:</string>
     <string name="label_upload">Upload</string>
+    <string name="label_agreed">I have read and agreed</string>
     <string name="label_submit_apply">Apply</string>
     <string name="label_upload_completed">Uploaded successfully</string>
     <string name="label_telephone_hot_line">Hot-line: %s</string>

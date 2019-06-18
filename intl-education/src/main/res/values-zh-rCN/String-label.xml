@@ -389,6 +389,7 @@
     <string name="label_person_academic_certificate">个人学历证书：</string>
     <string name="label_business_certificate">行业资历认证证书：</string>
     <string name="label_upload">上传</string>
+    <string name="label_agreed">我已阅并同意</string>
     <string name="label_submit_apply">提交申请</string>
     <string name="label_upload_completed">上传成功</string>
     <string name="label_telephone_hot_line">垂询热线：%s</string>

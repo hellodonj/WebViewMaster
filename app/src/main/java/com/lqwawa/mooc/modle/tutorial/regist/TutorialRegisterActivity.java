@@ -2,13 +2,17 @@ package com.lqwawa.mooc.modle.tutorial.regist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -16,11 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -35,14 +41,13 @@ import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.filter.MoneyValueFilter;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
@@ -124,6 +129,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     // 记录提交的文件地址
     private SparseArray<String> mUrlArray = new SparseArray<>();
+    private TextView mTvPact;
+    private CheckBox mCheckBox;
 
     @Override
     protected TutorialRegisterContract.Presenter initPresenter() {
@@ -148,12 +155,12 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mTvLabelAddress = (TextView) findViewById(R.id.tv_label_address);
         // mTvLabelChoiceOrgan = (TextView) findViewById(R.id.tv_label_choice_organ);
         mTvLabelMarkingPrice = (TextView) findViewById(R.id.tv_label_marking_price);
-        fillLabelWarning(mTvLabelName,"*",UIUtil.getColor(R.color.colorDarkRed));
-        fillLabelWarning(mTvLabelIdenitifier,"*",UIUtil.getColor(R.color.colorDarkRed));
-        fillLabelWarning(mTvLabelIdenitifierNumber,"*",UIUtil.getColor(R.color.colorDarkRed));
-        fillLabelWarning(mTvLabelAddress,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelName, "*", UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelIdenitifier, "*", UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelIdenitifierNumber, "*", UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelAddress, "*", UIUtil.getColor(R.color.colorDarkRed));
         // fillLabelWarning(mTvLabelChoiceOrgan,"*",UIUtil.getColor(R.color.colorDarkRed));
-        fillLabelWarning(mTvLabelMarkingPrice,"*",UIUtil.getColor(R.color.colorDarkRed));
+        fillLabelWarning(mTvLabelMarkingPrice, "*", UIUtil.getColor(R.color.colorDarkRed));
 
         mEtName = (EditText) findViewById(R.id.et_nick_name);
         mEtPhoneNumber = (EditText) findViewById(R.id.et_phone_number);
@@ -190,19 +197,51 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mBtnCertificateUpload.setOnClickListener(this);
         mBtnBusinessUpload.setOnClickListener(this);
         mBtnSubmit.setOnClickListener(this);
+
+        mCheckBox = (CheckBox) findViewById(R.id.check_box);
+        mTvPact = (TextView) findViewById(R.id.tv_pact);
+        SpannableString str = new SpannableString("《帮辅服务协议》");
+        str.setSpan(new MyCheckTextView(this), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mTvPact.setText(str);
+        mTvPact.setMovementMethod(LinkMovementMethod.getInstance());//不设置 没有点击事件
+        mTvPact.setHighlightColor(Color.TRANSPARENT); //设置点击后的颜色为透明
+    }
+
+    public class MyCheckTextView extends ClickableSpan {
+        private Context context;
+
+        public MyCheckTextView(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            //设置文本的颜色
+            ds.setColor(Color.parseColor("#009039"));
+            //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线,其实默认也是true，如果要下划线的话可以不设置
+            ds.setUnderlineText(false);
+        }
+
+        //点击事件，自由操作
+        @Override
+        public void onClick(View widget) {
+            Toast.makeText(TutorialRegisterActivity.this, "跳转url", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
      * 设置必填项
-     * @param view 标签
+     *
+     * @param view         标签
      * @param charSequence *
-     * @param color 颜色值
+     * @param color        颜色值
      */
-    private void fillLabelWarning(@NonNull TextView view, CharSequence charSequence,@ColorInt int color){
+    private void fillLabelWarning(@NonNull TextView view, CharSequence charSequence, @ColorInt int color) {
         String text = view.getText().toString();
         SpannableString spannableString = new SpannableString(text);
         ForegroundColorSpan span = new ForegroundColorSpan(color);
-        spannableString.setSpan(span,text.indexOf(charSequence.toString()),text.length() - 1,Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(span, text.indexOf(charSequence.toString()), text.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         view.setText(spannableString);
     }
 
@@ -269,7 +308,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateCityWithProvince(@NonNull List<LocationEntity.LocationBean> cities) {
-        if(EmptyUtil.isNotEmpty(cities)){
+        if (EmptyUtil.isNotEmpty(cities)) {
             mCitySpinner.setEnabled(true);
             mDistrictSpinner.setEnabled(true);
             mCitySpinner.attachDataSource(cities);
@@ -290,7 +329,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 mCurrentCityBean = bean;
                 mPresenter.requestLocationWithParams(LocationType.LOCATION_TYPE_DISTRICT, bean.getValue());
             }
-        }else{
+        } else {
             mCitySpinner.setEnabled(false);
             mCitySpinner.setText("");
             mCurrentCityBean = null;
@@ -302,7 +341,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
     @Override
     public void updateDistrictWithCity(@NonNull List<LocationEntity.LocationBean> districts) {
-        if(EmptyUtil.isNotEmpty(districts)){
+        if (EmptyUtil.isNotEmpty(districts)) {
             mDistrictSpinner.setEnabled(true);
             mDistrictSpinner.attachDataSource(districts);
             mDistrictSpinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -319,7 +358,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                 LocationEntity.LocationBean bean = districts.get(position);
                 mCurrentDistrictBean = bean;
             }
-        }else{
+        } else {
             mDistrictSpinner.setEnabled(false);
             mDistrictSpinner.setText("");
             mCurrentDistrictBean = null;
@@ -440,14 +479,21 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId(), "");
 
         showLoading();
-        mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
-                idType, identifyNumber,
-                UserHelper.getUserId(), UserHelper.getUserName(),
-                organId, organName, markPrice,
-                provinceId, provinceName,
-                cityId, cityName,
-                districtId, districtName,
-                workLife, certificateUrl, businessUrl);
+
+        //选中
+        if (mCheckBox.isChecked()){
+            mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
+                    idType, identifyNumber,
+                    UserHelper.getUserId(), UserHelper.getUserName(),
+                    organId, organName, markPrice,
+                    provinceId, provinceName,
+                    cityId, cityName,
+                    districtId, districtName,
+                    workLife, certificateUrl, businessUrl);
+        }else {
+            ToastUtil.showToast(this,"未选择复选框协议!");
+        }
+
     }
 
     private void showImagePopupView() {
@@ -538,11 +584,11 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                         String resourceUrl = entity.getResourceurl();
                         runOnUiThread(new UploadImageCallback(resourceUrl));
                     }
-                }else{
+                } else {
                     // 上传失败
-                    if(mBtnBusinessUpload.isActivated()){
+                    if (mBtnBusinessUpload.isActivated()) {
                         mIvThumbnailImage2.setVisibility(View.GONE);
-                    }else if (mBtnCertificateUpload.isActivated()) {
+                    } else if (mBtnCertificateUpload.isActivated()) {
                         mIvThumbnailImage1.setVisibility(View.GONE);
                     }
                 }
@@ -566,13 +612,13 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                     mBtnBusinessUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnBusinessUpload.getId();
                     mIvThumbnailImage2.setVisibility(View.VISIBLE);
-                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this,mIvThumbnailImage2,url);
+                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this, mIvThumbnailImage2, url);
                     mUrlArray.put(viewId, url);
                 } else if (mBtnCertificateUpload.isActivated()) {
                     mBtnCertificateUpload.setText(R.string.label_upload_again);
                     int viewId = mBtnCertificateUpload.getId();
                     mIvThumbnailImage1.setVisibility(View.VISIBLE);
-                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this,mIvThumbnailImage1,url);
+                    LQwawaImageUtil.loadCommonIcon(TutorialRegisterActivity.this, mIvThumbnailImage1, url);
                     mUrlArray.put(viewId, url);
                 }
             }
@@ -601,10 +647,10 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
             @Override
             public void onDataLoaded(Boolean applied) {
-                if(applied){
+                if (applied) {
                     // 已经申请过
-                    TutorialAuditActivity.show(context,applied);
-                }else{
+                    TutorialAuditActivity.show(context, applied);
+                } else {
                     Intent intent = new Intent(context, TutorialRegisterActivity.class);
                     Bundle bundle = new Bundle();
                     intent.putExtras(bundle);
