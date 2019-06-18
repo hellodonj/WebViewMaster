@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 
@@ -37,6 +38,7 @@ public class CourseRouteEntity extends BaseVo {
     private int assortment;
     private boolean isLabelAuthorized;
     private String level;
+    private SchoolInfoEntity schoolInfoEntity;
 
     public int getBuyType() {
         return buyType;
@@ -143,6 +145,15 @@ public class CourseRouteEntity extends BaseVo {
 
     public CourseRouteEntity setLevel(String level) {
         this.level = level;
+        return this;
+    }
+
+    public SchoolInfoEntity getSchoolInfoEntity() {
+        return schoolInfoEntity;
+    }
+
+    public CourseRouteEntity setSchoolInfoEntity(SchoolInfoEntity schoolInfoEntity) {
+        this.schoolInfoEntity = schoolInfoEntity;
         return this;
     }
 

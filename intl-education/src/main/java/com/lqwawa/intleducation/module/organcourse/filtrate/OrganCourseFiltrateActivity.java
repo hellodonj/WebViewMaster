@@ -205,7 +205,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private int mPosition = 0;
     private OrganCourseFiltrateParams mParams;
     private List<OrganCourseFiltrateNavigator> mNavigatorList;
-    
+
     private ImputAuthorizationCodeDialog imputAuthorizationCodeDialog;
 
     private static HashMap<String, String> authorizationErrorMapZh =
@@ -278,7 +278,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
 
-        if(mSelectResource && mResourceData.isInitiativeTrigger()) {
+        if (mSelectResource && mResourceData.isInitiativeTrigger()) {
             mNewCartContainer.setVisibility(View.VISIBLE);
             mNewCartContainer.setOnClickListener(this);
         }
@@ -344,7 +344,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mCircleMoreCourse.setVisibility(View.GONE);
         }
 
-        if(mSelectResource){
+        if (mSelectResource) {
             mSubjectLayout.setVisibility(View.GONE);
         }
         mHeaderLayout.setVisibility(View.GONE);
@@ -382,14 +382,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
 
         if (!isClassCourseEnter) {
-            if (mLibraryType == OrganLibraryType.TYPE_LQCOURSE_SHOP) {
-                if (mSelectResource) {
-                    // 选择资源检查授权 自动申请
-                    mPresenter.requestCheckSchoolPermission(organId, 0, true);
-                } else {
-                    // 手动授权,检查授权
-                    mPresenter.requestCheckSchoolPermission(organId, 0, false);
-                }
+            if (mSelectResource) {
+                // 选择资源检查授权 自动申请
+                mPresenter.requestCheckSchoolPermission(organId, 0, true);
+            } else {
+                // 手动授权,检查授权
+                mPresenter.requestCheckSchoolPermission(organId, 0, false);
             }
         }
 
@@ -574,7 +572,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             // 设置第一个选中
             // mTabLayout1.getTabAt(0).select();
             // mTabLayout1.getTabAt(0).getCustomView().setSelected(true);
-        } else{
+        } else {
             // 数据为空
             mHeaderLayout.setVisibility(View.GONE);
             if (mLibraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
@@ -982,7 +980,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 // 数据请求
                 int rootId = mEntity.getId();
                 TabLayout.Tab tabAt = mTabLayout1.getTabAt(mTabLayout1.getSelectedTabPosition());
-                if(EmptyUtil.isNotEmpty(tabAt)){
+                if (EmptyUtil.isNotEmpty(tabAt)) {
                     Tab firstTab = (Tab) tabAt.getTag();
                     int firstId = firstTab.getId();
                     if (rootId == MINORITY_LANGUAGE_COURSE ||
@@ -1209,12 +1207,12 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             }
             // 发送事件
             EventBus.getDefault().post(new EventWrapper(selectArray, EventConstant.CLASS_COURSE_ADD_COURSE_EVENT));
-        }  else if(viewId == R.id.btn_add_subject){
+        } else if (viewId == R.id.btn_add_subject) {
             // 点击确定
-            AddSubjectActivity.show(this,true,SUBJECT_SETTING_REQUEST_CODE);
-        }else if(viewId == R.id.new_cart_container){
+            AddSubjectActivity.show(this, true, SUBJECT_SETTING_REQUEST_CODE);
+        } else if (viewId == R.id.new_cart_container) {
             // 点击作业库
-            handleSubjectSettingData(this,UserHelper.getUserId());
+            handleSubjectSettingData(this, UserHelper.getUserId());
         }
     }
 
@@ -1234,11 +1232,11 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                     popChooseSubjectDialog(context);
                 } else {
                     //有数据
-                    if(EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)){
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                         Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
                         String schoolId = mResourceData.getSchoolId();
                         String classId = mResourceData.getClassId();
-                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(OrganCourseFiltrateActivity.this,schoolId,classId,extras);
+                        TaskSliderHelper.onWorkCartListener.enterIntroTaskDetailActivity(OrganCourseFiltrateActivity.this, schoolId, classId, extras);
                     }
                 }
             }
@@ -1279,17 +1277,17 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 mKeyString = data.getStringExtra(SearchActivity.KEY_EXTRA_SEARCH_KEYWORD);
                 // 刷新数据
                 triggerUpdateData();
-            }else if(requestCode == SUBJECT_SETTING_REQUEST_CODE){
+            } else if (requestCode == SUBJECT_SETTING_REQUEST_CODE) {
                 // 科目设置成功的回调
                 Bundle extras = data.getExtras();
-                if(EmptyUtil.isNotEmpty(extras)){
+                if (EmptyUtil.isNotEmpty(extras)) {
                     boolean completed = extras.getBoolean(AddSubjectActivity.KEY_EXTRA_RESULT);
-                    if(completed){
+                    if (completed) {
                         // 刷新标签和课程
                         String organId = mEntity.getEntityOrganId();
                         int parentId = mEntity.getId();
                         String level = mEntity.getLevel();
-                        mPresenter.requestOrganCourseLabelData(organId,parentId,level, mLibraryType);
+                        mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
                     }
                 }
             }
@@ -1299,7 +1297,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event) {
         if (EventWrapper.isMatch(event, EventConstant.COURSE_SELECT_RESOURCE_EVENT)) {
-            if(EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()){
+            if (EmptyUtil.isNotEmpty(mResourceData) && !mResourceData.isInitiativeTrigger()) {
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
                 // 杀掉所有可能的UI
@@ -1353,8 +1351,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
      * @param isAuthorized       是否已经获取到授权
      * @param isReallyAuthorized 该分类是否获取到授权了
      * @param isHostEnter        是否直接从学程馆入口进来的
-     * @param roles 用户角色
-     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
+     * @param roles              用户角色
+     * @param libraryType        学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
      */
     public static void show(@NonNull Activity activity,
                             @NonNull LQCourseConfigEntity entity,
@@ -1366,8 +1364,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                             boolean isHostEnter,
                             String roles,
                             int libraryType) {
-        show(activity,entity,selectResource,isClassCourseEnter,data,null,isAuthorized,
-                isReallyAuthorized,isHostEnter,roles, libraryType);
+        show(activity, entity, selectResource, isClassCourseEnter, data, null, isAuthorized,
+                isReallyAuthorized, isHostEnter, roles, libraryType);
     }
 
     /**
@@ -1378,7 +1376,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
      * @param selectResource     是否是选择资源
      * @param isClassCourseEnter 是否是班级学程入口
      * @param data               选择学程馆资源的data
-     * @param extras 布置任务直播参数
+     * @param extras             布置任务直播参数
      * @param isAuthorized       是否已经获取到授权
      * @param isReallyAuthorized 该分类是否获取到授权了
      * @param isHostEnter        是否直接从学程馆入口进来的
@@ -1402,11 +1400,11 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         bundle.putBoolean(KEY_EXTRA_IS_REALLY_AUTHORIZED, isReallyAuthorized);
         bundle.putBoolean(KEY_EXTRA_HOST_ENTER, isHostEnter);
         bundle.putBoolean(KEY_EXTRA_CLASS_COURSE_ENTER, isClassCourseEnter);
-        bundle.putString(KEY_EXTRA_ROLES,roles);
+        bundle.putString(KEY_EXTRA_ROLES, roles);
         bundle.putInt(KEY_EXTRA_LIBRARY_TYPE, libraryType);
         if (selectResource) {
             bundle.putSerializable(KEY_EXTRA_RESOURCE_DATA, data);
-            bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK,extras);
+            bundle.putBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras);
         }
         intent.putExtras(bundle);
         if (selectResource) {

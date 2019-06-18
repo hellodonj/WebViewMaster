@@ -81,6 +81,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -102,6 +103,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
+import static com.lqwawa.intleducation.base.utils.StringUtils.getSectionNumString;
 import static com.lqwawa.intleducation.base.utils.StringUtils.languageIsEnglish;
 
 /**
@@ -290,6 +292,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
                                 courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
                             }
                             intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                             intent.putExtra("tabIndex", tabIndex);
@@ -1283,6 +1286,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.join_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 join(false);
                             }
                         }
@@ -1308,14 +1316,19 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.buy_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 // 购买课程
                                 int intCourseId = Integer.parseInt(courseId);
                                 if (!mCanEdit) {
                                     // 家长身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 } else {
                                     // 普通身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 }
 
                                 // ConfirmOrderActivity.start(activity, courseVo);

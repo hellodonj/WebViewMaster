@@ -419,6 +419,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                             return;
                                         }
 
+                                        if (courseDetailParams != null && courseDetailParams.getSchoolInfoEntity() != null
+                                                && !courseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                            UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                            return;
+                                        }
+
                                         if (role == UserHelper.MoocRoleType.PARENT) {
                                             if (activity instanceof FragmentActivity) {
                                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
@@ -478,6 +484,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     }
                                 }
 
+                                if (isFreeUser) {
+                                    if (courseDetailParams != null && courseDetailParams.getSchoolInfoEntity() != null
+                                            && !courseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                        UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                        return;
+                                    }
+                                }
 
                                 toLessonDetailsActivity(vo, isFreeUser);
                                 /*LessonDetailsActivity.start(activity, courseId, vo.getId(),

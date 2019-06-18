@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -13,9 +14,11 @@ import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
@@ -94,26 +97,48 @@ public class CourseRoute {
                 boolean tutorialMode = MainApplication.isTutorialMode() &&
                         (EmptyUtil.isEmpty(courseParams) ||
                                 courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER);
+                if (courseParams != null && !TextUtils.isEmpty(courseParams.getSchoolId())) {
+                    SchoolHelper.requestSchoolInfo(UserHelper.getUserId(),
+                            courseParams.getSchoolId(),
+                            new DataSource.Callback<SchoolInfoEntity>() {
 
-                if (isFromScan) {
-                    tutorialMode = false;
-                    navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                                @Override
+                                public void onDataNotAvailable(int strRes) {
+
+                                }
+
+                                @Override
+                                public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                                    routeEntity.setSchoolInfoEntity(schoolInfoEntity);
+                                    navigationDispatch(routeEntity, tutorialMode, isFromScan, enterType, memberId, courseId, courseParams, listener);
+
+                                }
+                            });
                 } else {
-                    if (tutorialMode) {
-                        final boolean fTutorialMode = tutorialMode;
-                        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
-                            @Override
-                            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
-                                boolean isTutorCourse = entity.isTutorCourse();
-                                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
-                            }
-                        });
-                    } else {
-                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
-                    }
+                    navigationDispatch(routeEntity, tutorialMode, isFromScan, enterType, memberId, courseId, courseParams, listener);
                 }
             }
         });
+    }
+
+    private void navigationDispatch(CourseRouteEntity routeEntity, boolean tutorialMode, boolean isFromScan, int enterType, String memberId, String courseId, CourseDetailParams courseParams, INavigationListener listener) {
+        if (isFromScan) {
+            tutorialMode = false;
+            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+        } else {
+            if (tutorialMode) {
+                final boolean fTutorialMode = tutorialMode;
+                CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
+                    @Override
+                    public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                        boolean isTutorCourse = entity.isTutorCourse();
+                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
+                    }
+                });
+            } else {
+                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+            }
+        }
     }
 
     /***
