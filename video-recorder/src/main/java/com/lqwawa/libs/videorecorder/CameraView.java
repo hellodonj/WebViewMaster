@@ -263,10 +263,10 @@ public class CameraView extends FrameLayout implements Callback, OnErrorListener
 
         try {
             camera.setPreviewDisplay(cameraSurfaceHolder);
-        } catch (IOException e) {
+            camera.startPreview();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        camera.startPreview();
     }
 
     private void setCameraParams() {
@@ -559,7 +559,7 @@ public class CameraView extends FrameLayout implements Callback, OnErrorListener
             try {
                 camera.setPreviewDisplay(cameraSurfaceHolder);
                 camera.startPreview();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {

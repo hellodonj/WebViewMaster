@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -209,7 +210,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                                     EvaluateManager.parseItemResult(3, evalResult);
                             SpannableString spannableString = null;
                             if (evaluateItemResult != null) {
-                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult);
+                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult, Color.BLACK);
                             }
                             dubbingEntityList.get(curPosition).setEvalResult(spannableString);
                         }
