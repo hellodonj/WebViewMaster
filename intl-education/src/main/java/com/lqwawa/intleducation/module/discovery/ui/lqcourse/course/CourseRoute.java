@@ -66,14 +66,14 @@ public class CourseRoute {
                            final boolean isFromScan,
                            final INavigationListener listener) {
 
-        if (!UserHelper.isLogin()) {
-            // 未登录
-            if (EmptyUtil.isNotEmpty(listener)) {
-                // 进入未登录页面
-                listener.route(false, null);
-                return;
-            }
-        }
+//        if (!UserHelper.isLogin()) {
+//            // 未登录
+//            if (EmptyUtil.isNotEmpty(listener)) {
+//                // 进入未登录页面
+//                listener.route(false, null);
+//                return;
+//            }
+//        }
 
         showLoadingDialog(activity);
         // 获取到入口类型

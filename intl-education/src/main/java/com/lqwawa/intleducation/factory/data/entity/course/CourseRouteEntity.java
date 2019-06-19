@@ -164,6 +164,9 @@ public class CourseRouteEntity extends BaseVo {
      * @return
      */
     public boolean isCourseTeacher(@NonNull String memberId) {
+        if (EmptyUtil.isEmpty(memberId)) {
+            return false;
+        }
         if (EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)) {
             return true;
         }
