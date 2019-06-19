@@ -446,11 +446,13 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             });
         } else {
             mBottomLayout.setVisibility(View.GONE);
+            mBottomActionLayout.setVisibility(View.VISIBLE);
+            mCartContainer.setVisibility(View.VISIBLE);
             if (!isTeacher && UserHelper.isParent(mRoles)) {
                 // 家长身份没有添加学程，申请授权，作业库等功能
-                mBottomActionLayout.setVisibility(View.GONE);
+                mActionContainer.setVisibility(View.GONE);
             } else {
-                mBottomActionLayout.setVisibility(View.VISIBLE);
+                mActionContainer.setVisibility(View.VISIBLE);
             }
         }
 
