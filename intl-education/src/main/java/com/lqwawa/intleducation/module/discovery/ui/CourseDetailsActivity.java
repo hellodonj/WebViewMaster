@@ -1244,6 +1244,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         int tag = (int) view.getTag();
                         if (tag == 1) {
                             if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
+
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
+                                
                                 String schoolId = mCourseDetailParams.getSchoolId();
                                 String classId = mCourseDetailParams.getClassId();
                                 CourseHelper.requestJoinInCourse(mCurMemberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {

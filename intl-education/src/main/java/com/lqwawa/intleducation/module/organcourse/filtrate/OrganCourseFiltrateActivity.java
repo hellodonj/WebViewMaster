@@ -743,7 +743,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             mTabLabel1.setText(getString(R.string.label_colon_period));
             mTabLabel2.setText(getString(R.string.label_colon_grade));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
-            mTabLabel4.setText(getString(R.string.book_concern));
+            mTabLabel4.setText(getString(R.string.label_colon_book_concern));
         } else if (rootId == CLASSIFIED_READING_ID) {
             //分类阅读
             mTabVector3.setVisibility(View.GONE);
