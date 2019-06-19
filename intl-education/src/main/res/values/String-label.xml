@@ -270,6 +270,7 @@
     <string name="label_colon_book_concern">Book Concern:</string>
     <string name="label_colon_age">Age:</string>
     <string name="label_colon_topic">Topic:</string>
+    <string name="label_colon_category">Category:</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">Authorized</string>

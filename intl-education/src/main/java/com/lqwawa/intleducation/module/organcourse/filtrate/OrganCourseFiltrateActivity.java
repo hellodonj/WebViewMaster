@@ -129,6 +129,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID = 2011;
     // Think
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_THINK_ID = 2245;
+    // LQ Phonics
+    private static final int ENGLISH_INTERNATIONAL_ENGLISH_PHONICS_ID = 2311;
 
     // iTEP
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID = 2244;
@@ -765,7 +767,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
 
             // 科目, 级别
             mTabLabel1.setText(getString(R.string.label_colon_type));
-            mTabLabel2.setText(getString(R.string.label_colon_age));
+            mTabLabel2.setText(getString(R.string.label_colon_category));
         }
     }
 
@@ -953,13 +955,14 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
                 int firstId = tabData.getId();
 
                 if (rootId == ENGLISH_INTERNATIONAL_COURSE) {
-                    if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID ||
-                            firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID) {
+                    if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_PRIMARY_ID
+                            || firstId == ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID) {
                         // 选中了英语国际课程的 LQ English Primary Or ITEP
                         mTabVector3.setVisibility(View.VISIBLE);
                         mTabLabel2.setText(getString(R.string.label_colon_grade));
-                    } else if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_THINK_ID ||
-                            firstId == ENGLISH_INTERNATIONAL_ENGLISH_KIDS_ID) {
+                    } else if (firstId == ENGLISH_INTERNATIONAL_ENGLISH_THINK_ID
+                            || firstId == ENGLISH_INTERNATIONAL_ENGLISH_KIDS_ID
+                            || firstId == ENGLISH_INTERNATIONAL_ENGLISH_PHONICS_ID) {
                         mTabLabel2.setText(getString(R.string.label_colon_grade));
                         mTabVector3.setVisibility(View.GONE);
                     } else {
