@@ -2131,20 +2131,22 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                 }
             } else if (ACTION_MARK_EVAL_SCORE.equals(intent.getAction())) {
                 // Q配音提交列表刷新
-                if(sectionResListVo.getTaskType() == 6) {
+                if (sectionResListVo.getTaskType() == 6) {
                     if (!EmptyUtil.isEmpty(mFragment0)) {
                         mFragment0.updateData(false);
 
                     }
                 }
-                // 语音评测刷新
-                if (!EmptyUtil.isEmpty(mFragment1)) {
-                    mFragment1.updateData(false);
-                    Bundle extras = intent.getExtras();
-                    if (EmptyUtil.isNotEmpty(extras) && extras.containsKey("commit_resId")) {
-                        int resId = intent.getExtras().getInt("commit_resId");
-                        String resIdStr = Integer.toString(resId);
-                        flagRead(null, sectionResListVo.getId(), resIdStr);
+
+                Bundle extras = intent.getExtras();
+                if (EmptyUtil.isNotEmpty(extras) && extras.containsKey("commit_resId")) {
+                    int resId = intent.getExtras().getInt("commit_resId");
+                    String resIdStr = Integer.toString(resId);
+                    flagRead(null, sectionResListVo.getId(), resIdStr);
+                } else {
+                    // 语音评测刷新
+                    if (!EmptyUtil.isEmpty(mFragment1)) {
+                        mFragment1.updateData(false);
                     }
                 }
             }
