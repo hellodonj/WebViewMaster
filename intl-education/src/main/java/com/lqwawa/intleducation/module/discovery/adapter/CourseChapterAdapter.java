@@ -661,6 +661,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
                         CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
+                        if (courseDetailParams != null && courseDetailParams.getSchoolInfoEntity() != null
+                                && !courseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                            UIUtil.showToastSafe(R.string.join_school_to_learn);
+                            return;
+                        }
+
                         if (role == UserHelper.MoocRoleType.PARENT) {
                             if (activity instanceof FragmentActivity) {
                                 FragmentActivity fragmentActivity = (FragmentActivity) activity;
