@@ -459,16 +459,19 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 @Override
                                 public void onDataLoaded(ResponseVo<Object> responseVo) {
                                     if (responseVo.isSucceed()) {
+                                        CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
+                                        params.setLibraryType(vo.getLibraryType());
+                                        params.setIsVideoCourse(vo.getType() == 2);
                                         if (getPayDirection(vo) != PayDirection.SELF_TO_OTHER) {
                                             // 自己买给自己，传自己的Id
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), params, activity,
                                                     UserHelper.getUserId());
                                         } else {
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), params, activity,
                                                     vo.getMemberId());
                                         }
                                         /*PayActivity.newInstance(result,
