@@ -286,6 +286,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
     public void updateReallyAuthorizeState(boolean isReallyAuthorized) {
         if (mParams != null) {
             mParams.setReallyAuthorized(isReallyAuthorized);
+            mParams.setAuthorized(isReallyAuthorized);
         }
     }
 }

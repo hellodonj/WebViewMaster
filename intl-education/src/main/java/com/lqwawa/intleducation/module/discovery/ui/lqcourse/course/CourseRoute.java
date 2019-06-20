@@ -93,9 +93,9 @@ public class CourseRoute {
                     return;
                 }
 
-                if (EmptyUtil.isNotEmpty(courseParams)) {
-                    courseParams.setIsAuthorized(routeEntity.isLabelAuthorized());
-                }
+//                if(routeEntity != null && routeEntity.isLabelAuthorized()) {
+//                    courseParams.setIsAuthorized(true);
+//                }
 
                 // 再网络请求，是否是帮辅模式,并且是老师
                 boolean tutorialMode = MainApplication.isTutorialMode() &&

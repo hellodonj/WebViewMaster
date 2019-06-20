@@ -1117,7 +1117,6 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
             refreshAuthorizedInfo(entity);
 
             isAuthorized = true;
-            mParams.setAuthorized(isAuthorized);
             isExist = false;
             if (imputAuthorizationCodeDialog != null) {
                 imputAuthorizationCodeDialog.setCommited(true);

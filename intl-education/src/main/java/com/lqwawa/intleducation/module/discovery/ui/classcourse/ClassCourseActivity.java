@@ -186,6 +186,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     // 是否是Hold状态
     private boolean holdState;
 
+    private boolean isAuthorized;
+
     private String rightValue;
     // 授权码是否过期
     private boolean isExist;
@@ -1257,6 +1259,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             if (entity.isAuthorized()) {
                 // 已经获取授权,并且没有失效
                 rightValue = entity.getRightValue();
+                isAuthorized = true;
                 // 授权码过期
                 isExist = entity.isExist();
                 // UIUtil.showToastSafe(R.string.label_old_request_authorization);
@@ -1320,6 +1323,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
 
             rightValue = responseVo.getRightValue();
+
+            isAuthorized = true;
             isExist = false;
             if (imputAuthorizationCodeDialog != null) {
                 imputAuthorizationCodeDialog.setCommited(true);
@@ -1383,6 +1388,12 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             }
 
             if (UserHelper.isStudent(mRoles)) {
+                // 点击获取授权
+                if(isAuthorized){
+                    // 已经获取到授权
+                    UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+                    return;
+                }
                 requestAuthorizedPermission(isExist);
             }
         } else if (viewId == R.id.btn_work_cart) {
