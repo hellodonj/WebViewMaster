@@ -522,7 +522,8 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                         courseVo.setName(vo.getCourseName());
                                         courseVo.setOrganName(vo.getOrganId());
                                         String memberId = UserHelper.getUserId();
-                                        LQCourseOrderActivity.show(activity, courseVo, vo.getOrganId(), memberId);
+                                        LQCourseOrderActivity.show(activity, courseVo,
+                                                vo.getOrganId(), memberId, null);
                                         // ConfirmOrderActivity.start(activity, vo.getCourseId());
                                     }
                                 });

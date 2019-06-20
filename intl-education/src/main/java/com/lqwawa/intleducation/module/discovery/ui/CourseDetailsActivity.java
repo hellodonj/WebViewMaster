@@ -1400,7 +1400,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             UIUtil.showToastSafe(R.string.label_course_buy_warning);
             return;
         }
-        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId);
+        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId, mCourseDetailParams);
     }
 
     /**
