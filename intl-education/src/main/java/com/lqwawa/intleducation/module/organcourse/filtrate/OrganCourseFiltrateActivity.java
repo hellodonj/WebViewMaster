@@ -1107,6 +1107,8 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo<Void> responseVo) {
         if (EmptyUtil.isEmpty(responseVo)) return;
         if (responseVo.isSucceed()) {
+            UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+            
             // 刷新权限信息
             String rightValue = responseVo.getRightValue();
             CheckSchoolPermissionEntity entity = new CheckSchoolPermissionEntity();

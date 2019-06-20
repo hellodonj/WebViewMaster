@@ -1317,6 +1317,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo<Void> responseVo) {
         if (EmptyUtil.isEmpty(responseVo)) return;
         if (responseVo.isSucceed()) {
+            UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+
             rightValue = responseVo.getRightValue();
             isExist = false;
             if (imputAuthorizationCodeDialog != null) {
