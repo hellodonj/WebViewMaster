@@ -1142,16 +1142,26 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
         if (EmptyUtil.isEmpty(rightValue)) return;
         if (TextUtils.equals(rightValue, "0")) {
             isReallyAuthorized = true;
-            mParams.setReallyAuthorized(isReallyAuthorized);
         }
         String[] values = rightValue.split(",");
         if (EmptyUtil.isNotEmpty(values)) {
             List<String> strings = Arrays.asList(values);
             if (strings.contains(Integer.toString(mEntity.getId()))) {
                 isReallyAuthorized = true;
-                mParams.setReallyAuthorized(isReallyAuthorized);
             }
         }
+
+        mParams.setReallyAuthorized(isReallyAuthorized);
+
+        if(mNavigatorList != null && !mNavigatorList.isEmpty()) {
+            for (OrganCourseFiltrateNavigator navigator : mNavigatorList) {
+                if (navigator != null) {
+                    navigator.updateReallyAuthorizeState(isReallyAuthorized);
+                }
+            }
+        }
+
+        
     }
 
     @Override
