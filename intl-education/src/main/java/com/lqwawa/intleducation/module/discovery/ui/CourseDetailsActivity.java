@@ -1551,6 +1551,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_success)));
                     // initData();
                     // courseCommentFragment.updateData();
+                    if (mCourseDetailParams != null) {
+                        mCourseDetailParams.buildOrganJoinState(true);
+                    }
                     toJoinCourseDetailsActivity();
                 } else {
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_failed))
