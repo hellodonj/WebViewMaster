@@ -394,6 +394,8 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
     public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo responseVo) {
         if (EmptyUtil.isEmpty(responseVo)) return;
         if (responseVo.isSucceed()) {
+            UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+            
             // 刷新权限信息
             String rightValue = responseVo.getRightValue();
             CheckSchoolPermissionEntity entity = new CheckSchoolPermissionEntity();
