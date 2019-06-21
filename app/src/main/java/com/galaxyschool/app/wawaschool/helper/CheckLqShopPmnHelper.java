@@ -128,6 +128,7 @@ public class CheckLqShopPmnHelper {
             } else {
                 jsonObject.put("token", memberId);
             }
+            jsonObject.put("version", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -42,6 +42,7 @@ public class LqCourseHelper {
                 jsonObject.put("schoolId", schoolId);
             }
             jsonObject.put("token", studentId);
+            jsonObject.put("version", 1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
