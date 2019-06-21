@@ -616,8 +616,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                         || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
                         || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
-        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
