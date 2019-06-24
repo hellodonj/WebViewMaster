@@ -1380,6 +1380,12 @@
                   android:screenOrientation="portrait"
                   android:hardwareAccelerated="true"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name="com.galaxyschool.app.wawaschool.SaveStatisticActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+                  android:screenOrientation="portrait"
+                  android:hardwareAccelerated="true"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!--帮辅个人主页入口-->
         <activity
             android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"

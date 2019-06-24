@@ -1808,4 +1808,8 @@
     <string name="str_submit_mode_not_null">学生答题方式不能为空</string>
     <string name="str_guidance_task_hint">(听读课/读写单/音频/图片/视频/PPT/PDF/DOC)</string>
     <string name="str_do_home_work">做作业</string>
+
+    <string name="str_save_statistic">存储统计</string>
+    <string name="str_save_total_size">总计: %s</string>
+    <string name="str_load_save_statistic_default">正在统计存储空间\n请稍等...</string>
 </resources>
