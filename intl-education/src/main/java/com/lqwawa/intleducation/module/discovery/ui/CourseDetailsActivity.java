@@ -265,6 +265,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
                                 courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
                             }
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
