@@ -33,7 +33,7 @@
         android:padding="6dp"
         android:background="@drawable/com_gray_edge_bg"
         android:gravity="left|top"
-        android:hint="@string/str_tutorial_evaluayion"
+        android:hint="@string/str_tutorial_evaluation"
         android:inputType="textMultiLine"
         android:maxLength="200"
         android:minLines="8"
