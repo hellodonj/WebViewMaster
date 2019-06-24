@@ -244,6 +244,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
         requestVo.addParams("role", 1);
+        requestVo.addParams("version", 1);
         if (EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()) {
             if (EmptyUtil.isNotEmpty(mParams.getClassId())) {
                 String classId = mParams.getClassId();
