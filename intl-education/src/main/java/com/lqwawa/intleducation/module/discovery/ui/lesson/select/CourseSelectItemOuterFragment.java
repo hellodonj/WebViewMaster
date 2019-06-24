@@ -297,9 +297,9 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             }
         }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
             // 看课本类型
-            if (taskType == 1
-                    || taskType == 4) {
+            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5) {
                 // 看课件 视频课
+                // 新增选择讲解课 听说作业
                 return true;
             }
         }
