@@ -362,7 +362,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             }
 
             if (!sectionResListVo.isIsShield()) {
-                if (isOnlineRelevance && mTaskType == KEY_RELL_COURSE) {
+                if (isOnlineRelevance && mTaskType == KEY_RELL_COURSE && mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
                     // int resType = sectionResListVo.getResType();
                     if (EmptyUtil.isNotEmpty(mFilterArray) && mFilterArray.contains(resType)) {
                         voListNew.add(sectionResListVo);
