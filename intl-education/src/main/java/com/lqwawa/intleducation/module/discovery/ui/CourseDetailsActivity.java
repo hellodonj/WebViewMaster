@@ -1151,6 +1151,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             }
 
             textViewPay.setVisibility(View.VISIBLE);
+            boolean isHide =
+                    mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+            if (tutorialMode && isHide) {
+                textViewPay.setVisibility(View.GONE);
+            }
             // mBtnEnterPay.setVisibility(View.VISIBLE);
             if (initTabIndex == 1) {
                 rg_tab.check(R.id.rb_study_plan);
