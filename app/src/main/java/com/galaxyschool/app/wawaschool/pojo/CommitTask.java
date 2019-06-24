@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 
 import java.io.Serializable;
@@ -75,6 +74,7 @@ public class CommitTask implements Serializable, Parcelable {
     private int commitTaskOnlineId;
     private String assistantRoleType;
     private boolean hasTutorialPermission;
+    private int scoreColor;
     /**
      * @return 是否是语音评测类型
      */
@@ -126,6 +126,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getScoreColor() {
+        return scoreColor;
+    }
+
+    public void setScoreColor(int scoreColor) {
+        this.scoreColor = scoreColor;
     }
 
     public boolean isHasTutorialPermission() {

@@ -120,6 +120,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
                 .commit();
     }
 
+    //帮辅答疑
     private void skipStudentWork() {
         /*boolean isParent = !TextUtils.equals(UserHelper.getUserId(),mCurMemberId);
         TutorialMarkingParams params = new TutorialMarkingParams(mCurMemberId,isParent?TutorialRoleType.TUTORIAL_TYPE_PARENT:TutorialRoleType.TUTORIAL_TYPE_STUDENT);
@@ -132,6 +133,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
         TutorialStudentTargetTaskActivity.show(getActivity(), params);
     }
 
+    //帮辅老师
     private void skipStudentTutorial() {
         boolean isParent = !TextUtils.equals(UserHelper.getUserId(), mCurMemberId);
         String configValue = getString(R.string.label_student_tutorial);
@@ -139,6 +141,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
         StudentTutorialActivity.show(getActivity(), params);
     }
 
+    //习课程
     private void skipStudentCourse() {
         Bundle bundle = new Bundle();
         bundle.putString(MyCourseListFragment.KEY_EXTRA_MEMBER_ID, mCurMemberId);
@@ -148,6 +151,7 @@ public class MyCourseInnerFragment extends PresenterFragment<MyCourseInnerContra
                 MyCourseListFragment.class, bundle);
     }
 
+    //空中课堂
     private void skipStudentLive() {
         Bundle bundle = new Bundle();
         bundle.putString(MyOnlinePagerFragment.KEY_EXTRA_CURRENT_MEMBER_ID, mCurMemberId);

@@ -41,7 +41,7 @@ public class PieHelper {
     /**
      * @param percent from 0 to 100
      */
-    PieHelper(float percent, String title, int color) {
+    public PieHelper(float percent, String title, int color) {
         this.sweepDegree = percent * 360 / 100;
         this.title = title;
         this.color = color;

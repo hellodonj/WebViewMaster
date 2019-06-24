@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -202,7 +203,12 @@ public class PieView extends View {
                     + sth * Math.abs(Math.sin(Math.toRadians(-angel))) * pieRadius / 2);
         }
 
-        canvas.drawText(pieHelper.getPercentStr(), x, y, textPaint);
+        String title = pieHelper.getTitle();
+        if (TextUtils.isEmpty(title)) {
+            canvas.drawText(pieHelper.getPercentStr(), x, y, textPaint);
+        } else {
+            canvas.drawText(pieHelper.getTitle(), x, y, textPaint);
+        }
     }
 
     private void drawText(Canvas canvas, PieHelper pieHelper) {

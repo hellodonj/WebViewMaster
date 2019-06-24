@@ -34,6 +34,7 @@ import com.galaxyschool.app.wawaschool.PersonalContactsActivity;
 import com.galaxyschool.app.wawaschool.PersonalPostBarListActivity;
 import com.galaxyschool.app.wawaschool.PersonalSpaceActivity;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.SaveStatisticActivity;
 import com.galaxyschool.app.wawaschool.ShareScreenActivity;
 import com.galaxyschool.app.wawaschool.SubscribeMainActivity;
 import com.galaxyschool.app.wawaschool.TalentCipherActivity;
@@ -183,6 +184,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_MY_PERFORMANCE = 109;
         //科目设置
         int TAB_ENTITY_TYPE_SUBJECT_SETTING = 110;
+        //存储统计
+        int TAB_ENTITY_TYPE_SAVE_STATISTIC = 111;
 
     }
 
@@ -665,6 +668,9 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 enterSubjectSettingDetail();
                 break;
 
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC:
+                enterSaveStatisticDetail();
+                break;
             default:
                 break;
         }
@@ -675,6 +681,13 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
      */
     private void enterSubjectSettingDetail(){
         SubjectActivity.show(getActivity());
+    }
+
+    /**
+     * 存储统计详情
+     */
+    private void enterSaveStatisticDetail(){
+        SaveStatisticActivity.start(getActivity());
     }
 
     private void loadChildInfo() {
@@ -1053,6 +1066,14 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         List<TabEntityPOJO> itemList = new ArrayList<TabEntityPOJO>();
 
         TabEntityPOJO item;
+
+        //存储统计
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC;
+        item.title = getString(R.string.str_save_statistic);
+        item.resId = R.drawable.icon_save_statistic;
+        itemList.add(item);
+        entryMap.put(item.type, item);
 
         //我的余额
         item = new TabEntityPOJO();

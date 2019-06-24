@@ -1116,4 +1116,9 @@ public class ServerUrl {
      * 助教批阅或学生提问
      */
     public static final String GET_ADD_ASSIST_REVIEW_BASE_URL = BASE_SERVER + "Api/Mobile/ST/Assist/AddAssistReview";
+
+    /**
+     * 拉取个人空间存储统计
+     */
+    public static final String GET_MEMBER_STORAGE__BASE_URL = BASE_SERVER + "NewApi/LqMember/GetMemberStorageInfo";
 }
