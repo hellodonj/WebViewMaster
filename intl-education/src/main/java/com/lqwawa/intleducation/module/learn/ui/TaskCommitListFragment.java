@@ -373,7 +373,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                         pullToRefreshView.onHeaderRefreshComplete();
                         pullToRefreshView.onFooterRefreshComplete();
 
-                        if (lqTaskCommitListVo != null) {
+                        if (lqTaskCommitListVo.getListCommitTaskOnline() != null) {
                             lqTaskCommitVoList.addAll(lqTaskCommitListVo.getListCommitTaskOnline());
                         }
                         committedTasksAdapter.setData(lqTaskCommitVoList);
