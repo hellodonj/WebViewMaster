@@ -42,7 +42,6 @@ import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.AnimationUtil;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
-import com.galaxyschool.app.wawaschool.common.ResourcesPlayUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.SwitchButton;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -688,8 +687,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
      * 存储统计详情
      */
     private void enterSaveStatisticDetail(){
-//        SaveStatisticActivity.start(getActivity());
-        ResourcesPlayUtils.getInstance().setActivity(getActivity()).startPlay();
+        SaveStatisticActivity.start(getActivity());
     }
 
     private void loadChildInfo() {
