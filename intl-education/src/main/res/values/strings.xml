@@ -535,12 +535,12 @@
     <string name="add_class_tutor">+Class Tutor</string>
     <string name="add_course_success">Attended</string>
 
-    <string name="dubbing">Q配音</string>
+    <string name="dubbing">Q Dubbing</string>
     <string-array name="dubbing_task_tab_array">
-        <item>任务要求</item>
-        <item>提交列表</item>
-        <item>&#8195;讨论&#8195;</item>
+        <item>Task Requirements</item>
+        <item>Submittal list</item>
+        <item>&#8195;Discuss&#8195;</item>
     </string-array>
-    <string name="start_dubbing">开始配音</string>
-    <string name="join_school_to_learn">加入该机构才可以学习此课程</string>
+    <string name="start_dubbing">Dub</string>
+    <string name="join_school_to_learn">Please join school before learning course</string>
 </resources>

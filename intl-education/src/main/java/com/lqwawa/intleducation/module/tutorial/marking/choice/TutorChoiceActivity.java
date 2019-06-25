@@ -85,7 +85,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 mCourseId = "";
             }
 
-            if (EmptyUtil.isNotEmpty(mCourseId) &&
+            if (EmptyUtil.isNotEmpty(mChapterId) &&
                     Integer.parseInt(mChapterId) <= 0) {
                 mChapterId = "";
             }
