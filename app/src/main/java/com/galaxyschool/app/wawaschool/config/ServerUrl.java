@@ -1121,4 +1121,10 @@ public class ServerUrl {
      * 拉取个人空间存储统计
      */
     public static final String GET_MEMBER_STORAGE__BASE_URL = BASE_SERVER + "NewApi/LqMember/GetMemberStorageInfo";
+
+    /**
+     * 获取多个资源的详情数据
+     */
+    public static final String GET_RESOURSE_LIST_BYIDS_BASE_URL = WEIKE_SERVER + "account" +
+            "/getResourseListByIds";
 }

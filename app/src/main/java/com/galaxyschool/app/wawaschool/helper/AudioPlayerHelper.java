@@ -91,13 +91,13 @@ public class AudioPlayerHelper {
 
             public void onCompletion(MediaPlayer mp) {
                 //延迟200ms，确保播放结束进度条更新到最右端
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
                 if (callbackListener != null){
                     callbackListener.onBack(true);
                 }
-               if (mediaPlayer != null) {
-                   mediaPlayer.release();
-                   mediaPlayer = null;
-               }
             }
         });
     }

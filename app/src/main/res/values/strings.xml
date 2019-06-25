@@ -1814,4 +1814,5 @@
     <string name="str_save_statistic">存储统计</string>
     <string name="str_save_total_size">总计: %s</string>
     <string name="str_load_save_statistic_default">正在统计存储空间\n请稍等...</string>
+    <string name="str_retract">收起</string>
 </resources>
