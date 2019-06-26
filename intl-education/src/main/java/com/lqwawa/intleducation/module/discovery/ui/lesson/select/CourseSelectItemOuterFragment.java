@@ -175,10 +175,6 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
                     ToastUtil.showToast(activity, getString(R.string.str_select_tips));
                 } else {
                     for (SectionResListVo vo : resultData) {
-                        //布置看课件任务选取讲解课和听说作业时id置0
-                        if (mTaskType == 9 && (vo.getTaskType() == 2 || vo.getTaskType() == 5)) {
-                            vo.setId("0");
-                        }
                         vo.setChapterId(vo.getId());
                     }
 
