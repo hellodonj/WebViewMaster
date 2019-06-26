@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <com.lqwawa.mooc.view.CustomExpandableListView
+                android:id="@+id/expandable_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:childIndicator="@null"
+                android:groupIndicator="@null" />
+        </ScrollView>
+    </com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView>
+
+</LinearLayout>

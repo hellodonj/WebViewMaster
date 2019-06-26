@@ -218,6 +218,8 @@
     <string name="label_immediate_review">Remark</string>
     <string name="label_course_in_class">Assign Course to Class</string>
     <string name="label_old_in_class">Assigned already</string>
+    <string name="label_play_list">创建播放列表</string>
+    <string name="label_picker_chapter">选择章节</string>
     <string name="label_picker_class">Select Class</string>
     <string name="label_cancel_order">Cancel Order</string>
     <string name="label_watch_more_course">View More Tutorials</string>

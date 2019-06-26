@@ -50,13 +50,10 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
-import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
@@ -495,11 +492,17 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                         // 没有这个inClass字段,用接口拉取
                         PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
                                 R.string.label_old_in_class);
+                        PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                                R.string.label_play_list);
                         items.add(data);
+                        items.add(data_play);
                     } else {
                         PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
                                 R.string.label_course_in_class);
+                        PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                                R.string.label_play_list);
                         items.add(data);
+                        items.add(data_play);
                     }
 
                     AdapterView.OnItemClickListener itemClickListener =
@@ -537,8 +540,22 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                                                 }
                                             }
                                         });
-                                    } else {
-
+                                    } else if (data.getId() == R.string.label_play_list){
+                                        String ids = mCourseId;
+                                        if (courseVo != null) {
+                                            ids = courseVo.getId();
+                                        }
+                                        // 生成参数
+                                        CourseDetailItemParams params1 = new CourseDetailItemParams(false, mCurMemberId, !mCanEdit, ids);
+                                        params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
+                                        // 设置课程详情参数
+                                        params1.setCourseParams(mCourseDetailParams);
+                                        Intent intent = new Intent();
+                                        intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
+                                        studyPlanFragment.setArguments(bundle);
+                                        activity.startActivity(intent);
                                     }
                                 }
                             };
