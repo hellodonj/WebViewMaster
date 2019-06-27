@@ -44,6 +44,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseIntroduceVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -133,6 +134,16 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mBtnPlayList.setOnClickListener(this);
 
         mNoCommentTip = view.findViewById(R.id.no_comment_tip);
+
+        List<String> list = new ArrayList<String>();
+        list.add("712577-19");
+        list.add("715481-19");
+        TaskSliderHelper.onPlayListListener.setResIds(list);
+        if (TaskSliderHelper.onPlayListListener.getPlayResourceSize() > 0) {
+            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
+                mBtnPlayList.setVisibility(View.VISIBLE);
+            }
+        }
         return view;
     }
 
@@ -214,8 +225,10 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             CourseStatisticsActivity.show(getActivity(), params);
         } else if (viewId == R.id.btn_play_list) {
             //播放列表
-            ToastUtil.showToast(getActivity(),"播放列表");
-
+            ToastUtil.showToast(getActivity(), "播放列表");
+            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
+                TaskSliderHelper.onPlayListListener.showPlayListDialog(getActivity());
+            }
         }
     }
 

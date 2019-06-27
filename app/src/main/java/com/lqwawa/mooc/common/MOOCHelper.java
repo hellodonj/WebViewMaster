@@ -14,7 +14,6 @@ import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
-import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
@@ -23,10 +22,10 @@ import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
-import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.CourseOpenUtils;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.PassParamhelper;
+import com.galaxyschool.app.wawaschool.common.ResourcesPlayUtils;
 import com.galaxyschool.app.wawaschool.common.StudyInfoRecordUtil;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -72,7 +71,6 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
@@ -103,6 +101,7 @@ public class MOOCHelper {
     protected static ProgressDialog progressDialog;
 
     public static void init(UserInfo userInfo) {
+        TaskSliderHelper.onPlayListListener = onPlayListListener;
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
         TaskSliderHelper.onWorkCartListener = onWorkCartListener;
         TaskSliderHelper.onTutorialMarkingListener = onTutorialMarkingListener;
@@ -112,7 +111,7 @@ public class MOOCHelper {
         userInfoVo.setUserName(StringUtils.isValidString(userInfo.getRealName())
                 ? userInfo.getRealName() : userInfo.getNickName());
         userInfoVo.setThumbnail(userInfo.getHeaderPic());
-        if (TextUtils.isEmpty(userInfo.getAllRoles())){
+        if (TextUtils.isEmpty(userInfo.getAllRoles())) {
             userInfoVo.setRoles(userInfo.getRoles());
         } else {
             userInfoVo.setRoles(userInfo.getAllRoles());
@@ -121,8 +120,8 @@ public class MOOCHelper {
         MainApplication.setIsAssistant(userInfo.isAssistant());
 
 
-        if(EmptyUtil.isNotEmpty(userInfo.getSchoolList())){
-            SPUtil.getInstance().put(SharedConstant.KEY_USER_SCHOOL_DATA,JSON.toJSONString(userInfo.getSchoolList()));
+        if (EmptyUtil.isNotEmpty(userInfo.getSchoolList())) {
+            SPUtil.getInstance().put(SharedConstant.KEY_USER_SCHOOL_DATA, JSON.toJSONString(userInfo.getSchoolList()));
         }
 
         UserHelper.setUserInfo(userInfoVo);
@@ -148,6 +147,34 @@ public class MOOCHelper {
         return schoolIds;
     }
 
+    private static TaskSliderHelper.OnPlayListListener onPlayListListener
+            = new TaskSliderHelper.OnPlayListListener() {
+        @Override
+        public Object setResIds(List<String> resIds) {
+            return ResourcesPlayUtils.getInstance().setResIds(resIds);
+        }
+
+        @Override
+        public void startPlay() {
+            ResourcesPlayUtils.getInstance().startPlay();
+        }
+
+        @Override
+        public int getPlayResourceSize() {
+            return ResourcesPlayUtils.getInstance().getPlayResourceSize();
+        }
+
+        @Override
+        public void releasePlayResource() {
+            ResourcesPlayUtils.getInstance().releasePlayResource();
+        }
+
+        @Override
+        public void showPlayListDialog(Activity activity) {
+            ResourcesPlayUtils.getInstance().showPlayListDialog(activity);
+        }
+    };
+
     private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener
             = new TaskSliderHelper.OnTutorialMarkingListener() {
 
@@ -166,7 +193,7 @@ public class MOOCHelper {
                                            @NonNull String tutorName,
                                            String classId) {
             // 进入帮辅主页
-            TutorialParams params = new TutorialParams(tutorMemberId,tutorName);
+            TutorialParams params = new TutorialParams(tutorMemberId, tutorName);
             params.setClassId(classId);
             TutorialHomePageActivity.show(context, params);
         }
@@ -282,7 +309,7 @@ public class MOOCHelper {
 
 
         @Override
-        public void skipMyCourseQuestionWork(Activity activity){
+        public void skipMyCourseQuestionWork(Activity activity) {
             backMainActivity(activity);
         }
 
@@ -317,7 +344,7 @@ public class MOOCHelper {
                                                  @NonNull String classId,
                                                  @Nullable Bundle extras) {
             LqIntroTaskHelper.getInstance().enterIntroTaskDetailActivity(activity, schoolId,
-                    classId,extras);
+                    classId, extras);
         }
     };
 

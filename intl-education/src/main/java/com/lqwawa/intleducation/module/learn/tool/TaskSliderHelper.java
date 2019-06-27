@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.github.mikephil.charting.renderer.scatter.IShapeRenderer;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
@@ -22,7 +21,6 @@ import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -46,10 +44,23 @@ import java.util.List;
 
 public class TaskSliderHelper {
     protected static ProgressDialog progressDialog;
+    public static OnPlayListListener onPlayListListener = null;
     public static OnTaskSliderListener onTaskSliderListener = null;
     private static OnCommitTaskListener onCommitTaskListener = null;
     public static OnWorkCartListener onWorkCartListener = null;
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
+
+    public interface OnPlayListListener {
+        Object setResIds(List<String> resIds);
+
+        void startPlay();
+
+        int getPlayResourceSize();
+
+        void releasePlayResource();
+
+        void showPlayListDialog(Activity activity);
+    }
 
     public interface OnTutorialMarkingListener {
 
