@@ -1,6 +1,8 @@
 package com.galaxyschool.app.wawaschool.common;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -8,12 +10,15 @@ import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
-import com.galaxyschool.app.wawaschool.helper.AudioPlayerHelper;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.views.ResourcePlayListDialog;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
+import com.oosic.apps.iemaker.base.BaseUtils;
+import com.oosic.apps.iemaker.base.PlaybackActivity;
+import com.oosic.apps.iemaker.base.interactionlayer.data.SlideInPlaybackParam;
+
 import java.util.List;
 
 /**
@@ -22,13 +27,13 @@ import java.util.List;
  * ======================================================
  */
 public class ResourcesPlayUtils {
+    //播放完成返回的result
+    public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
     private Activity activity;
-    private AudioPlayerHelper audioPlayerHelper;
     private ResourcePlayListDialog dialog;
     private List<String> resIds;
     private List<CourseData> playDataList;
     private int currentPosition;
-    private int childMp3Position;
 
     public static ResourcesPlayUtils getInstance() {
         return ResourcePlayUtilsHolder.instance;
@@ -52,6 +57,9 @@ public class ResourcesPlayUtils {
     }
 
     public void startPlay() {
+        if (activity == null) {
+            return;
+        }
         if (resIds == null || resIds.size() == 0) {
             return;
         }
@@ -59,28 +67,28 @@ public class ResourcesPlayUtils {
     }
 
     /**
-     * 重新播放
+     * 获取播放列表课件的数量
      */
-    public void rePlayResource() {
-        processMp3Url();
+    public int getPlayResourceSize() {
+        if (resIds == null) {
+            return 0;
+        }
+        return resIds.size();
     }
 
     /**
      * 清空播放的数据
      */
     public void releasePlayResource() {
-        if (audioPlayerHelper != null) {
-            audioPlayerHelper.releaseAudio();
-        }
         currentPosition = 0;
-        childMp3Position = 0;
         resIds = null;
     }
 
     /**
      * 显示播放列表
      */
-    public void showPlayListDialog() {
+    public void showPlayListDialog(Activity activity) {
+        this.activity = activity;
         if (dialog != null) {
             dialog.show();
         }
@@ -105,13 +113,15 @@ public class ResourcesPlayUtils {
                 if (TextUtils.isEmpty(jsonString)) {
                     return;
                 }
-                CourseUploadResult result = JSONObject.parseObject(jsonString,
-                        CourseUploadResult.class);
+                CourseUploadResult result = JSONObject.parseObject(jsonString, CourseUploadResult.class);
                 if (result != null && result.code == 0) {
                     playDataList = result.data;
                     if (playDataList != null && playDataList.size() > 0) {
-                        dialog = new ResourcePlayListDialog(activity, playDataList);
-                        processMp3Url();
+                        dialog = new ResourcePlayListDialog(activity, playDataList,position -> {
+                            currentPosition = (int) position;
+                            openPlayActivity();
+                        });
+                        openPlayActivity();
                     }
                 }
             }
@@ -122,56 +132,6 @@ public class ResourcesPlayUtils {
         });
         request.addHeader("Accept-Encoding", "*");
         request.start(UIUtil.getContext());
-    }
-
-    private void processMp3Url() {
-        if (audioPlayerHelper == null) {
-            audioPlayerHelper = new AudioPlayerHelper(UIUtil.getContext());
-            audioPlayerHelper.setCompleteListener(result -> {
-                //单个播放完成执行下一个
-                LogUtils.log("ResourcesPlayUtils", "complete");
-                String mp3Path = getMp3Path(currentPosition);
-                if (!TextUtils.isEmpty(mp3Path)) {
-                    audioPlayerHelper.setPlayUrl(mp3Path);
-                    audioPlayerHelper.play();
-                    if (dialog != null) {
-                        dialog.updateAlreadyPlayedMp3(currentPosition);
-                    }
-                }
-            });
-        }
-        audioPlayerHelper.setPlayUrl(getMp3Path(0));
-        audioPlayerHelper.play();
-    }
-
-    private String getMp3Path(int position) {
-        String mp3Path = null;
-        if (position < playDataList.size()) {
-            List<String> mp3List = playDataList.get(position).getMp3List();
-            if (mp3List != null && mp3List.size() > 0) {
-                int length = mp3List.size();
-                if (childMp3Position < length) {
-                    mp3Path = mp3List.get(childMp3Position);
-                    childMp3Position++;
-                } else {
-                    //下一段
-                    childMp3Position = 0;
-                    return getMp3Path(position + 1);
-                }
-            } else {
-                childMp3Position = 0;
-                return getMp3Path(position + 1);
-            }
-            currentPosition = position;
-            LogUtils.log("ResourcesPlayUtils", "currentPosition=" + currentPosition);
-            LogUtils.log("ResourcesPlayUtils", "childMp3Position=" + childMp3Position);
-            LogUtils.log("ResourcesPlayUtils", "mp3Path=" + mp3Path);
-        } else {
-            if (dialog != null) {
-                dialog.updateAlreadyPlayedMp3(position);
-            }
-        }
-        return mp3Path;
     }
 
     private String getResIds() {
@@ -185,5 +145,52 @@ public class ResourcesPlayUtils {
         }
 //        builder.append("712577-19").append(",").append("715481-19");
         return builder.toString();
+    }
+
+
+    private void openPlayActivity() {
+        if (activity == null) {
+            return;
+        }
+        CourseData courseData = playDataList.get(currentPosition);
+        if (courseData == null) {
+            return;
+        }
+        Intent intent = new Intent(activity, PlaybackActivity.class);
+        Bundle extras = new Bundle();
+        String courseUrl = playDataList.get(currentPosition).resourceurl;
+        if (courseUrl.endsWith(".zip")) {
+            courseUrl = courseUrl.substring(0, courseUrl.lastIndexOf('.'));
+        } else if (courseUrl.contains(".zip?")) {
+            courseUrl = courseUrl.substring(0, courseUrl.lastIndexOf(".zip?"));
+        }
+        extras.putString(PlaybackActivity.FILE_PATH, courseUrl);
+        extras.putInt(PlaybackActivity.ORIENTATION, courseData.screentype);
+        extras.putInt(PlaybackActivity.PLAYBACK_TYPE, BaseUtils.RES_TYPE_COURSE);
+        extras.putBoolean(PlaybackActivity.IS_PLAY_ORIGIN_VOICE, true);
+        extras.putBoolean(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, true);
+        extras.putParcelable(SlideInPlaybackParam.class.getSimpleName(), new SlideInPlaybackParam());
+        intent.putExtras(extras);
+        activity.startActivityForResult(intent, RESOURCE_PLAY_COMPLETED_REQUEST_CODE);
+    }
+
+    /**
+     * 课件播放完成之后继续播放一下
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE){
+            if (data != null){
+                boolean playCompleted = data.getBooleanExtra(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION,false);
+                if (playCompleted){
+                    currentPosition++;
+                    if (currentPosition < playDataList.size()) {
+                        if (dialog != null) {
+                            dialog.updateAlreadyPlayedMp3(currentPosition);
+                        }
+                        openPlayActivity();
+                    }
+                }
+            }
+        }
     }
 }
