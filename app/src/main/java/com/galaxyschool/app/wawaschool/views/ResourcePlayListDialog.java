@@ -9,9 +9,9 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.adapter.ResourcePlayListAdapter;
+import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 
 import java.util.List;
@@ -19,13 +19,15 @@ import java.util.List;
 public class ResourcePlayListDialog extends Dialog {
     private Context mContext;
     private MyGridView gridView;
+    private CallbackListener listener;
     private ResourcePlayListAdapter adapter;
     private List<CourseData> list;
 
-    public ResourcePlayListDialog(Context context, List<CourseData> list) {
+    public ResourcePlayListDialog(Context context, List<CourseData> list, CallbackListener listener) {
         super(context, R.style.Theme_ContactsDialog);
         mContext = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -47,6 +49,11 @@ public class ResourcePlayListDialog extends Dialog {
             gridView.setNumColumns(1);
             adapter = new ResourcePlayListAdapter(mContext, list);
             gridView.setAdapter(adapter);
+            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                if (listener != null){
+                    listener.onBack(position);
+                }
+            });
         }
     }
 
