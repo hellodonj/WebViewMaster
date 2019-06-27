@@ -13,16 +13,16 @@ import com.galaxyschool.app.wawaschool.R;
  */
 public class PlayListViewActivity extends BaseFragmentActivity {
 
-    private Fragment fragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_list_view);
 
+        Fragment fragment = new PlayListViewFragment();
         Bundle args = getIntent().getExtras();
-        fragment = new PlayListViewFragment();
-        fragment.setArguments(args);
+        if (args != null) {
+            fragment.setArguments(args);
+        }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.activity_body, fragment);
         ft.commit();

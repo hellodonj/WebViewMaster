@@ -60,6 +60,9 @@ public class ChapterVo extends BaseVo {
     private int totalNum;
     // 完成了多少任务
     private int finishNum;
+    //记录是否选中
+    protected boolean isChoosed;
+
 
     public boolean isContainAssistantWork() {
         return containAssistantWork;
@@ -411,5 +414,13 @@ public class ChapterVo extends BaseVo {
 
     public void setFinishNum(int finishNum) {
         this.finishNum = finishNum;
+    }
+
+    public boolean isChoosed() {
+        return isChoosed;
+    }
+
+    public void setChoosed(boolean choosed) {
+        isChoosed = choosed;
     }
 }

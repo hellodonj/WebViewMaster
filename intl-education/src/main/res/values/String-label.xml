@@ -252,6 +252,7 @@
     <string name="label_new_go_online_study">Enter Class Live</string>
     <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
     <string name="label_watch_more_teach_course">More Class Live</string>
+    <string name="label_btn_play_list">播放列表</string>
     <string name="label_history_give">History</string>
     <string name="label_give_complete">Ended</string>
     <string name="label_history_setting">Set as History</string>

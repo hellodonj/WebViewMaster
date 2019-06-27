@@ -257,6 +257,7 @@
     <string name="label_new_go_online_study">去空中课堂</string>
     <!--<string name="label_new_go_online_study">去空中课堂</string>-->
     <string name="label_watch_more_teach_course">查看更多空中课堂</string>
+    <string name="label_btn_play_list">播放列表</string>
     <string name="label_history_give">历史授课</string>
     <string name="label_give_complete">完成授课</string>
     <string name="label_history_setting">设成历史课</string>

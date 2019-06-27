@@ -540,21 +540,19 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                                                 }
                                             }
                                         });
-                                    } else if (data.getId() == R.string.label_play_list){
+                                    } else if (data.getId() == R.string.label_play_list) {
                                         String ids = mCourseId;
                                         if (courseVo != null) {
                                             ids = courseVo.getId();
                                         }
                                         // 生成参数
                                         CourseDetailItemParams params1 = new CourseDetailItemParams(false, mCurMemberId, !mCanEdit, ids);
-                                        params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
-                                        // 设置课程详情参数
-                                        params1.setCourseParams(mCourseDetailParams);
+                                        params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
                                         Intent intent = new Intent();
                                         intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
                                         Bundle bundle = new Bundle();
                                         bundle.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
-                                        studyPlanFragment.setArguments(bundle);
+                                        intent.putExtras(bundle);
                                         activity.startActivity(intent);
                                     }
                                 }
