@@ -105,8 +105,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     // 进入历史学程的Code
     private static final int ENTER_HISTORY_REQUEST_CODE = 1 << 2;
 
-    private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
-    private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
+    public static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
+    public static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
     // 英语国际课程

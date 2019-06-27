@@ -47,6 +47,7 @@ import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.mooc.FakeClassCourseActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
 
@@ -124,7 +125,7 @@ public class HandleCheckResourceFragment extends AdapterFragment {
         } else {
             //空中学校班级学程进入，直接跳转
             if (!isOnlineClass && !TextUtils.isEmpty(classId)){
-                chooseClassLessonCourse(classId);
+                enterFakeClassCourseList(schoolId, classId);
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
@@ -355,6 +356,13 @@ public class HandleCheckResourceFragment extends AdapterFragment {
             data.setInitiativeTrigger(true);
             ClassCourseActivity.show(getActivity(), classCourseParams, data,getArguments());
         }
+    }
+
+    private void enterFakeClassCourseList(String schoolId, String classId) {
+        ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
+        ClassResourceData data = new ClassResourceData();
+        data.setInitiativeTrigger(true);
+        FakeClassCourseActivity.show(getActivity(), classCourseParams, data,getArguments());
     }
 
     /**
