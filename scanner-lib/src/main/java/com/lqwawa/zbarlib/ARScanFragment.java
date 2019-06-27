@@ -29,6 +29,7 @@ public class ARScanFragment extends Fragment implements HelloAR.videoPath {
     public static final String TAG = ARScanFragment.class.getSimpleName();
 
     private GLView glView;
+    private InitAR initAR;
     private FrameLayout container;
 
     @Override
@@ -81,12 +82,11 @@ public class ARScanFragment extends Fragment implements HelloAR.videoPath {
     }
 
     private void onInit() {
-        InitAR initAR = new InitAR(ARScanFragment.this, getActivity(), glView);
+        initAR = new InitAR(ARScanFragment.this, getActivity(), glView, container);
         glView = initAR.initInfo();
         if (glView != null) {
             if (container != null) {
-                container.addView(glView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams
-                        .MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                container.addView(glView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             }
             glView.onResume();
         } else {
@@ -96,6 +96,33 @@ public class ARScanFragment extends Fragment implements HelloAR.videoPath {
 
     @Override
     public void getVideoPath(String s) {
+
+    }
+
+    @Override
+    public void getParams(String s) {
+        
+    }
+
+    @Override
+    public void loading() {
+
+    }
+
+    @Override
+    public void loadCompletion() {
+
+    }
+
+    @Override
+    public void isPlay() {
+        if (initAR != null) {
+            initAR.play(true);
+        }
+    }
+
+    @Override
+    public void closeView() {
 
     }
 
@@ -112,6 +139,14 @@ public class ARScanFragment extends Fragment implements HelloAR.videoPath {
         super.onPause();
         if (glView != null) {
             glView.onPause();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (glView != null) {
+            glView.destroy();
         }
     }
 }
