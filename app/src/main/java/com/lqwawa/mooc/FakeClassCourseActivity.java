@@ -7,8 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.galaxyschool.app.wawaschool.AirClassroomDetailActivity;
 import com.galaxyschool.app.wawaschool.ClassResourceListActivity;
+import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
+import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
@@ -26,11 +29,17 @@ import org.greenrobot.eventbus.ThreadMode;
  * @desc:
  */
 public class FakeClassCourseActivity extends ClassCourseActivity {
+    private Emcee onlineRes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            Bundle args = getIntent().getExtras().getBundle(Common.Constance.KEY_EXTRAS_STUDY_TASK);
+            onlineRes = (Emcee) args.getSerializable(ActivityUtils.EXTRA_DATA_INFO);
         }
     }
 
@@ -45,7 +54,12 @@ public class FakeClassCourseActivity extends ClassCourseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent messageEvent) {
         if (TextUtils.equals(messageEvent.getUpdateAction(), MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS)) {
-            ActivityUtil.finishToActivity(ClassResourceListActivity.class, false);
+            //作业发送成功
+            if (onlineRes != null) {
+                ActivityUtil.finishToActivity(AirClassroomDetailActivity.class, false);
+            } else {
+                ActivityUtil.finishToActivity(ClassResourceListActivity.class, false);
+            }
         }
     }
 
