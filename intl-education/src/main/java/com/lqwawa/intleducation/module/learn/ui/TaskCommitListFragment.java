@@ -17,19 +17,14 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
-import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.vo.PagerArgs;
-import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQResourceDetailVo;
 import com.lqwawa.intleducation.factory.helper.LearningTaskHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
-import com.lqwawa.intleducation.module.discovery.ui.MoreCredentialActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.task.list.TaskCommitParams;
@@ -38,10 +33,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
-import com.lqwawa.intleducation.module.learn.vo.SectionTaskDetailsVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-
-import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +45,7 @@ import java.util.ListIterator;
  * email:man0fchina@foxmail.com
  */
 
-public class TaskCommitListFragment extends MyBaseFragment implements View.OnClickListener{
+public class TaskCommitListFragment extends MyBaseFragment implements View.OnClickListener {
     private static String TAG = TaskCommitListFragment.class.getSimpleName();
     // 角色信息
     public static final String KEY_EXTRA_ROLE_TYPE = "KEY_EXTRA_ROLE_TYPE";
@@ -99,7 +91,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         Bundle arguments = getArguments();
         mRoleType = arguments.getInt(KEY_EXTRA_ROLE_TYPE);
         examId = arguments.getString("examId");
-        isAudition = arguments.getBoolean(KEY_ROLE_FREE_USER,false);
+        isAudition = arguments.getBoolean(KEY_ROLE_FREE_USER, false);
         mCommitParams = (TaskCommitParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
 
         mRoleType = mCommitParams.getOriginalRole();
@@ -121,7 +113,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         mBtnStatisticalScores = (Button) view.findViewById(R.id.btn_statistical_scores);
         pullToRefreshView = (PullToRefreshView) view.findViewById(R.id.pull_to_refresh);
         listView = (ListView) view.findViewById(R.id.listView);
-        sectionResListVo = (SectionResListVo)getArguments().getSerializable("SectionResListVo");
+        sectionResListVo = (SectionResListVo) getArguments().getSerializable("SectionResListVo");
         if (sectionResListVo != null) {
             fillBtnResource(sectionResListVo);
         }
@@ -142,53 +134,56 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     /**
      * 填充按钮资源
      */
-    public void fillBtnResource(@NonNull final SectionResListVo sectionResListVo){
+    public void fillBtnResource(@NonNull final SectionResListVo sectionResListVo) {
         if (sectionResListVo.getTaskType() == 2) {
             mBtnDone.setText(getResources().getString(R.string.retell_task));
         } else if (sectionResListVo.getTaskType() == 3) {
             mBtnDone.setText(getResources().getString(R.string.do_task));
-        } else if(sectionResListVo.getTaskType() == 5){
+        } else if (sectionResListVo.getTaskType() == 5) {
             mBtnDone.setText(getResources().getString(R.string.label_trial_lecture));
+        } else if (sectionResListVo.getTaskType() == 6) {
+            mBtnDone.setText(getResources().getString(R.string.start_dubbing));
         }
 
         // 班级学程入口，才有成绩统计
         CourseDetailParams courseParams = mCommitParams.getCourseParams();
-        if(courseParams.isClassCourseEnter() &&
+        if (courseParams.isClassCourseEnter() &&
                 !mCommitParams.isTeacherVisitor() &&
                 (sectionResListVo.getTaskType() == 2 ||
                         sectionResListVo.getTaskType() == 5 ||
-                        sectionResListVo.getTaskType() == 3)){
+                        sectionResListVo.getTaskType() == 3
+                        || sectionResListVo.getTaskType() == 6)) {
             // 听读课 讲解课 和 读写单都有成绩统计
             mBtnStatisticalScores.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mBtnStatisticalScores.setVisibility(View.GONE);
         }
 
         boolean tutorialMode = MainApplication.isTutorialMode();
-        if(!(tutorialMode && isAudition)){
+        if (!(tutorialMode && isAudition)) {
             // 只有学生才显示读写单和复述课件
-            if(mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())){
+            if (mRoleType == UserHelper.MoocRoleType.STUDENT || (isAudition && mCommitParams.isTeacherVisitor())) {
                 // 试听身份可以查看到按钮
                 mBtnDone.setVisibility(View.VISIBLE);
                 // 只有学生，支持语音评测的听读课才显示语音评测
-                if(sectionResListVo.getTaskType() == 2 &&
-                        SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())){
+                if (sectionResListVo.getTaskType() == 2 &&
+                        SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(sectionResListVo.getResProperties())) {
                     // 支持语音评测的听读课
                     mBtnSpeechEvaluation.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     mBtnSpeechEvaluation.setVisibility(View.GONE);
                 }
-            }else{
+            } else {
                 mBtnDone.setVisibility(View.GONE);
                 mBtnSpeechEvaluation.setVisibility(View.GONE);
             }
-        }else{
+        } else {
             mBtnDone.setVisibility(View.GONE);
             mBtnSpeechEvaluation.setVisibility(View.GONE);
         }
     }
 
-    public void setDoWorkListener(DoWorkListener listener){
+    public void setDoWorkListener(DoWorkListener listener) {
         this.doWorkListener = listener;
     }
 
@@ -198,7 +193,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         initViews();
     }
 
-    public void initViews(){
+    public void initViews() {
         pullToRefreshView.setLoadMoreEnable(pagerArgs.getPageSize() <= AppConfig.PAGE_SIZE);
         pullToRefreshView.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
             @Override
@@ -222,14 +217,14 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             }
         });
 
-        committedTasksAdapter = new CommittedTasksAdapter(getActivity(),null,mCommitParams,sectionResListVo);
+        committedTasksAdapter = new CommittedTasksAdapter(getActivity(), null, mCommitParams, sectionResListVo);
         listView.setAdapter(committedTasksAdapter);
 
         committedTasksAdapter.setCommittedNavigator(new CommittedTasksAdapter.CommittedNavigator() {
             @Override
             public void onDeleteTask(@NonNull LqTaskCommitVo vo) {
                 // 删除某一个Item
-                updateItemDeleteState(vo,false);
+                updateItemDeleteState(vo, false);
                 // 进行删除操作
                 deleteCommittedTask(vo);
             }
@@ -246,8 +241,8 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 // 切换状态
                 updateItemDeleteState(false);
                 LqTaskCommitVo item = (LqTaskCommitVo) committedTasksAdapter.getItem(i);
-                if(!EmptyUtil.isEmpty(doWorkListener)){
-                    doWorkListener.onItemClick(item,false,getSourceType(),false);
+                if (!EmptyUtil.isEmpty(doWorkListener)) {
+                    doWorkListener.onItemClick(item, false, getSourceType(), false);
                 }
             }
         });
@@ -258,12 +253,12 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 // 长按删除功能
                 int handleRole = mCommitParams.getHandleRole();
                 String curMemberId = mCommitParams.getMemberId();
-                if(handleRole == UserHelper.MoocRoleType.EDITOR ||
+                if (handleRole == UserHelper.MoocRoleType.EDITOR ||
                         handleRole == UserHelper.MoocRoleType.TEACHER ||
-                        TextUtils.equals(sectionResListVo.getCreateId(),curMemberId)){
+                        TextUtils.equals(sectionResListVo.getCreateId(), curMemberId)) {
                     // 学习任务的创建者
                     LqTaskCommitVo item = (LqTaskCommitVo) committedTasksAdapter.getItem(position);
-                    updateItemDeleteState(item,!item.isDeleteTag());
+                    updateItemDeleteState(item, !item.isDeleteTag());
                     return true;
                 }
                 return false;
@@ -279,8 +274,8 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     /**
      * 获取答题卡信息
      */
-    private void getAnswerData(){
-        if(sectionResListVo.isAutoMark()){
+    private void getAnswerData() {
+        if (sectionResListVo.isAutoMark()) {
             // 自动批阅类型
             final String resourceId = sectionResListVo.getResId() + "-" + sectionResListVo.getResType();
 
@@ -297,7 +292,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                     updateData(false);
                 }
             });
-        }else{
+        } else {
             updateData(false);
         }
     }
@@ -305,7 +300,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
     /**
      * 删除学习任务的提交
      */
-    private void deleteCommittedTask(@NonNull LqTaskCommitVo vo){
+    private void deleteCommittedTask(@NonNull LqTaskCommitVo vo) {
         LearningTaskHelper.requestDeleteTask(vo.getId(), new DataSource.Callback<Boolean>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -314,7 +309,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
             @Override
             public void onDataLoaded(Boolean aBoolean) {
-                if(true){
+                if (true) {
                     // 刷新UI
                     updateData(false);
                     // 删除成功
@@ -323,7 +318,6 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             }
         });
     }
-
 
 
     public void updateData(boolean isLoadMore) {
@@ -342,21 +336,21 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         String schoolId = courseParams.getSchoolId();
         String classId = courseParams.getClassId();
 
-        if(courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER){
+        if (courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_MOOC_ENTER) {
             schoolId = null;
             classId = null;
-        }else if(courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER){
+        } else if (courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER) {
             // 学程馆学习任务入口
             // 课程发生了绑定
             // 如果绑定的机构Id等于学程馆的Id 提交和列表都是用学程馆的机构Id， 只有提交才传ClassId
             // 如果绑定的机构Id不等于学程馆的Id 列表用学程馆的Id
-            if(courseParams.isBindClass()){
-                if(TextUtils.equals(courseParams.getSchoolId(),courseParams.getBindSchoolId())){
+            if (courseParams.isBindClass()) {
+                if (TextUtils.equals(courseParams.getSchoolId(), courseParams.getBindSchoolId())) {
                     // 学程馆Id和绑定的Id,相等
                     schoolId = courseParams.getBindSchoolId();
                     classId = null;
                 }
-            }else{
+            } else {
                 schoolId = courseParams.getSchoolId();
                 classId = null;
             }
@@ -365,7 +359,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         LessonHelper.getNewCommittedTaskByTaskId(sectionResListVo.getTaskId(),
                 studentId,
                 classId,
-                schoolId,null,mCommitType, pagerArgs, orderByType,
+                schoolId, null, mCommitType, pagerArgs, orderByType,
                 new DataSource.Callback<LqTaskCommitListVo>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {
@@ -379,7 +373,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                         pullToRefreshView.onHeaderRefreshComplete();
                         pullToRefreshView.onFooterRefreshComplete();
 
-                        if (lqTaskCommitListVo != null) {
+                        if (lqTaskCommitListVo.getListCommitTaskOnline() != null) {
                             lqTaskCommitVoList.addAll(lqTaskCommitListVo.getListCommitTaskOnline());
                         }
                         committedTasksAdapter.setData(lqTaskCommitVoList);
@@ -424,23 +418,24 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
     /**
      * 学生穿StudentId,老师,主编,小编不传,家长穿memberId;
+     *
      * @return
      */
-    private String getStudentId(){
+    private String getStudentId() {
         String memberId = null;
-        if(mRoleType == UserHelper.MoocRoleType.TEACHER ||
+        if (mRoleType == UserHelper.MoocRoleType.TEACHER ||
                 mRoleType == UserHelper.MoocRoleType.EDITOR ||
-                isAudition){
-            if(mCommitParams.isTeacherVisitor()){
+                isAudition) {
+            if (mCommitParams.isTeacherVisitor()) {
                 memberId = activity.getIntent().getStringExtra("memberId");
-            }else{
+            } else {
                 // 如果是主编和小编,或者是试听,就不传
                 memberId = "";
             }
-        }else if(mRoleType == UserHelper.MoocRoleType.STUDENT){
+        } else if (mRoleType == UserHelper.MoocRoleType.STUDENT) {
             // 如果是学生,就传自己的Id
             memberId = UserHelper.getUserId();
-        }else{
+        } else {
             // 剩下的就是家长,传孩子的Id
             memberId = activity.getIntent().getStringExtra("memberId");
         }
@@ -449,12 +444,13 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
     /**
      * 过滤人工批阅的自动批阅读写单
+     *
      * @param lqTaskCommitVoList 列表数据
      */
-    private void filterAutoMark(List<LqTaskCommitVo> lqTaskCommitVoList){
-        if(EmptyUtil.isEmpty(lqTaskCommitVoList)) return;
+    private void filterAutoMark(List<LqTaskCommitVo> lqTaskCommitVoList) {
+        if (EmptyUtil.isEmpty(lqTaskCommitVoList)) return;
         ListIterator<LqTaskCommitVo> iterator = lqTaskCommitVoList.listIterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             LqTaskCommitVo vo = iterator.next();
             if (EmptyUtil.isNotEmpty(vo)) {
                 // 如果是自动批阅的读写单,还有支持人工和自动批阅的
@@ -469,6 +465,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
     /**
      * 所有提交列表，老师查看未批阅提到前面
+     *
      * @param lqTaskCommitVoList 批阅列表
      * @return 处理过的集合数据
      */
@@ -482,20 +479,20 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                 for (LqTaskCommitVo vo : lqTaskCommitVoList) {
                     if (vo != null) {
 
-                        if(vo.isSpeechEvaluation()){
-                            if(!vo.isHasVoiceReview()){
+                        if (vo.isSpeechEvaluation()) {
+                            if (!vo.isHasVoiceReview()) {
                                 unmarkList.add(vo);
                             } else {
                                 markList.add(vo);
                             }
-                        }else if(sectionResListVo.isAutoMark()){
-                            if(EmptyUtil.isEmpty(vo.getTaskScore()) /*|| TextUtils.equals(vo.getTaskScore(),"0")*/){
+                        } else if (sectionResListVo.isAutoMark()) {
+                            if (EmptyUtil.isEmpty(vo.getTaskScore()) /*|| TextUtils.equals(vo.getTaskScore(),"0")*/) {
                                 // 0分的
                                 unmarkList.add(vo);
-                            }else{
+                            } else {
                                 markList.add(vo);
                             }
-                        }else{
+                        } else {
                             if (!vo.isHasCommitTaskReview()) {
                                 unmarkList.add(vo);
                             } else {
@@ -519,20 +516,20 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         int viewId = v.getId();
         // 切换状态
         updateItemDeleteState(false);
-        if(EmptyUtil.isNotEmpty(sectionResListVo) && EmptyUtil.isNotEmpty(doWorkListener)){
-            if(isAudition){
+        if (EmptyUtil.isNotEmpty(sectionResListVo) && EmptyUtil.isNotEmpty(doWorkListener)) {
+            if (isAudition) {
                 UIUtil.showToastSafe(R.string.tip_join_or_by_course);
                 return;
             }
         }
 
-        if(viewId == R.id.done_bt){
+        if (viewId == R.id.done_bt) {
             // 做听读课，读写单
             doWorkListener.onDoWork();
-        }else if(viewId == R.id.btn_speech_evaluation){
+        } else if (viewId == R.id.btn_speech_evaluation) {
             // 语音评测
             doWorkListener.onSpeechEvaluation();
-        }else if(viewId == R.id.btn_statistical_scores){
+        } else if (viewId == R.id.btn_statistical_scores) {
             // 成绩统计
             List<LqTaskCommitVo> data = committedTasksAdapter.getData();
             doWorkListener.onStatisticalScores(data);
@@ -541,30 +538,32 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
 
     /**
      * 更换Hold状态
+     *
      * @param state 期望的状态
      */
-    private void updateItemDeleteState(boolean state){
-        updateItemDeleteState(null,state);
+    private void updateItemDeleteState(boolean state) {
+        updateItemDeleteState(null, state);
     }
 
     /**
      * 更换Hold状态
+     *
      * @param state 期望的状态
-     * @param hold state 为true ,hold不能为空
+     * @param hold  state 为true ,hold不能为空
      */
-    private void updateItemDeleteState(@NonNull LqTaskCommitVo hold,boolean state){
+    private void updateItemDeleteState(@NonNull LqTaskCommitVo hold, boolean state) {
         this.isHoldTag = state;
         // 更改所有Hold的状态
         List<LqTaskCommitVo> items = committedTasksAdapter.getData();
-        if(EmptyUtil.isNotEmpty(items)){
-            for (LqTaskCommitVo vo:items) {
-                if(state && vo.getId() == hold.getId()){
+        if (EmptyUtil.isNotEmpty(items)) {
+            for (LqTaskCommitVo vo : items) {
+                if (state && vo.getId() == hold.getId()) {
                     // 同一个课程
                     vo.setDeleteTag(state);
                     break;
                 }
 
-                if(!state){
+                if (!state) {
                     vo.setDeleteTag(state);
                 }
             }
@@ -579,6 +578,7 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             committedTasksAdapter.notifyDataSetChanged();
         }*/
     }
+
     public void updateViews(LqTaskCommitListVo vo) {
         /*if (vo != null) {
             mLqTaskCommitListVo = vo;
@@ -595,22 +595,27 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         }*/
     }
 
-    public interface DoWorkListener{
+    public interface DoWorkListener {
         void onDoWork();
+
         // 打开语音评测,进行录制
         void onSpeechEvaluation();
+
         // 打开成绩统计
         void onStatisticalScores(@NonNull List<LqTaskCommitVo> data);
 
         /**
          * 点击批阅或者查看批阅详情
-         * @param vo 批阅任务实体
-         * @param isCheckMark 是否是查看批阅
-         * @param sourceType 数据类型
+         *
+         * @param vo             批阅任务实体
+         * @param isCheckMark    是否是查看批阅
+         * @param sourceType     数据类型
          * @param taskCourseWare 是否是读写单的课件打开
          */
-        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType,boolean taskCourseWare);
+        void onItemClick(@NonNull LqTaskCommitVo vo, boolean isCheckMark, int sourceType, boolean taskCourseWare);
+
         void onClickCommitListItem(SectionTaskCommitListVo vo);
+
         void openCourseWareDetails(String resId,
                                    int resType,
                                    String resTitle,
@@ -618,11 +623,15 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
                                    String resourceUrl,
                                    String resourceThumbnailUrl,
                                    int commitTaskId);
+
         // 语音评测,打开课件
         void openCourseWareDetails(@NonNull LqTaskCommitVo vo);
+
+        //  分享
+        void onShareCourseWare(@NonNull LqTaskCommitVo vo);
     }
 
-    private int getSourceType(){
+    private int getSourceType() {
         return activity.getIntent().getBooleanExtra("isLive", false) ?
                 (activity.getIntent().getBooleanExtra(SectionTaskDetailsActivity
                         .KEY_IS_FROM_MY, false)

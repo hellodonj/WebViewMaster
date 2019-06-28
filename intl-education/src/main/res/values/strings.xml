@@ -472,7 +472,7 @@
     <string name="voucher_explain">Instructions</string>
     <string name="voucher_explain_1">1.Voucher can only be used to purchase the first chapter of each course on LQWaWa Mini Program in WeChat.\n\n2.Mixed purchase with other chapters are not allowed.\n\n3.Balance can be used in next purchase.\n\n4.No-withdraw，no-transferable.\n\n5.All rights reserved by LQWaWa Information Technology Co. Ltd.</string>
 
-    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买课程的第一章节；混合购买其他章节时不可使用。</string>
     <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="charge_account">Top up</string>
@@ -536,7 +536,15 @@
     <string name="add_course_success">Attended</string>
 
     <!--5.16-->
-    <string name="str_frog_coin">Frog Coin</string>
-    <string name="review_price_dialog_title">Set the review price</string>
+    <string name="str_frog_coin">蛙蛙币</string>
+    <string name="review_price_dialog_title">设置批阅价格</string>
 
+    <string name="dubbing">Q Dubbing</string>
+    <string-array name="dubbing_task_tab_array">
+        <item>Task Requirements</item>
+        <item>Submittal list</item>
+        <item>&#8195;Discuss&#8195;</item>
+    </string-array>
+    <string name="start_dubbing">Dub</string>
+    <string name="join_school_to_learn">Please join school before learning course</string>
 </resources>

@@ -114,10 +114,10 @@ public class NewCommonHolder extends FrameLayout implements View.OnClickListener
         };
 
         mRecycler.setLayoutManager(mLayoutManager);
-        if(mViewerType > ViewerType.VIEWER_TYPE_EIGHT){
-            // 当前有很多Item 切除多余的Item
-            sources = new ArrayList<>(sources.subList(0,8));
-        }
+//        if(mViewerType > ViewerType.VIEWER_TYPE_EIGHT){
+//            // 当前有很多Item 切除多余的Item
+//            sources = new ArrayList<>(sources.subList(0,8));
+//        }
 
         mHolderAdapter = new CourseHolderAdapter(sources,null);
         mRecycler.setAdapter(mHolderAdapter);

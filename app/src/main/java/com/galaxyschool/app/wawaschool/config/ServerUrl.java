@@ -1127,4 +1127,9 @@ public class ServerUrl {
      */
     public static final String GET_RESOURSE_LIST_BYIDS_BASE_URL = WEIKE_SERVER + "account" +
             "/getResourseListByIds";
+    
+    /**
+     * 查询mooc看课件更新已读未读的权限
+     */
+    public static final String GET_TASKTYPE_BY_CHAPTERID_BASE_URL = LQMOOC_BASE_SERVER + "api/chapter/getTaskTypeByChapterId";
 }

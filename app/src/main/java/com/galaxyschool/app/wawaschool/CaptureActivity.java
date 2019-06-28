@@ -395,7 +395,8 @@ public class CaptureActivity extends ScanActivity {
                 if (EmptyUtil.isNotEmpty(paramStrings) && paramStrings.length == 2) {
                     if ("id".equals(paramStrings[0])) {
                         String id = paramStrings[1];
-                        CourseDetailsActivity.start(this, id, true, UserHelper.getUserId());
+                        CourseDetailsActivity.start(this, id, true, UserHelper.getUserId(), false
+                                , true);
                     }
                 }
             }

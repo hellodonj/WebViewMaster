@@ -12,6 +12,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -103,8 +105,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     // 进入历史学程的Code
     private static final int ENTER_HISTORY_REQUEST_CODE = 1 << 2;
 
-    private static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
-    private static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
+    public static final String KEY_EXTRA_RESOURCE_FLAG = "KEY_EXTRA_RESOURCE_FLAG";
+    public static final String KEY_EXTRA_RESOURCE_DATA = "KEY_EXTRA_RESOURCE_DATA";
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
     // 英语国际课程
@@ -185,6 +187,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private boolean holdState;
 
     private boolean isAuthorized;
+
+    private String rightValue;
     // 授权码是否过期
     private boolean isExist;
 
@@ -446,11 +450,13 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             });
         } else {
             mBottomLayout.setVisibility(View.GONE);
+            mBottomActionLayout.setVisibility(View.VISIBLE);
+            mCartContainer.setVisibility(View.VISIBLE);
             if (!isTeacher && UserHelper.isParent(mRoles)) {
                 // 家长身份没有添加学程，申请授权，作业库等功能
-                mBottomActionLayout.setVisibility(View.GONE);
+                mActionContainer.setVisibility(View.GONE);
             } else {
-                mBottomActionLayout.setVisibility(View.VISIBLE);
+                mActionContainer.setVisibility(View.VISIBLE);
             }
         }
 
@@ -507,6 +513,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
 
+                    boolean isAuthorized = checkAuthorizedInfo(entity.getFirstLabelId());
                     CourseDetailParams params = new CourseDetailParams(mSchoolId, mClassId, mClassName, isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
@@ -1251,6 +1258,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         if (EmptyUtil.isNotEmpty(entity)) {
             if (entity.isAuthorized()) {
                 // 已经获取授权,并且没有失效
+                rightValue = entity.getRightValue();
                 isAuthorized = true;
                 // 授权码过期
                 isExist = entity.isExist();
@@ -1312,6 +1320,10 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo<Void> responseVo) {
         if (EmptyUtil.isEmpty(responseVo)) return;
         if (responseVo.isSucceed()) {
+            UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
+
+            rightValue = responseVo.getRightValue();
+
             isAuthorized = true;
             isExist = false;
             if (imputAuthorizationCodeDialog != null) {
@@ -1327,6 +1339,25 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                 imputAuthorizationCodeDialog.clearPassword();
             }
         }
+    }
+
+    /**
+     * 判断某个课程对应的标签有没有授权
+     */
+    private boolean checkAuthorizedInfo(String firstLabelId) {
+        boolean isReallyAuthorized = false;
+        if (!TextUtils.isEmpty(rightValue) && !TextUtils.isEmpty(firstLabelId)) {
+            if (TextUtils.equals(rightValue, "0"))
+                isReallyAuthorized = true;
+            String[] values = rightValue.split(",");
+            if (EmptyUtil.isNotEmpty(values)) {
+                List<String> strings = Arrays.asList(values);
+                if (strings.contains(firstLabelId)) {
+                    isReallyAuthorized = true;
+                }
+            }
+        }
+        return isReallyAuthorized;
     }
 
     @Override
@@ -1358,7 +1389,7 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
             if (UserHelper.isStudent(mRoles)) {
                 // 点击获取授权
-                if (isAuthorized) {
+                if(isAuthorized){
                     // 已经获取到授权
                     UIUtil.showToastSafe(R.string.label_request_authorization_succeed);
                     return;
@@ -1370,7 +1401,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
             // handleSubjectSettingData(this,UserHelper.getUserId());
             // V.5.14.X改成查看历史课程
             // UIUtil.showToastSafe(R.string.label_watch_history_course);
-            HistoryClassCourseActivity.show(this, mClassCourseParams, isAuthorized, ENTER_HISTORY_REQUEST_CODE);
+            HistoryClassCourseActivity.show(this, mClassCourseParams, rightValue,
+                    ENTER_HISTORY_REQUEST_CODE);
         } else if (viewId == R.id.new_cart_container) {
             // 点击作业库
             handleSubjectSettingData(this, UserHelper.getUserId());
@@ -1632,8 +1664,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
      * @param params   核心参数
      * @param data     选择学习任务的筛选
      * @param extras   直播参数
-     *                 <p>onActivityResult回调选择数据,resultCode = {@link Activity.RESULT_OK}</p>
-     *                 <p>data 为List<SectionResListVo> Key = {@link CourseSelectItemFragment.RESULT_LIST}</p>
      */
     public static void show(@NonNull Activity activity,
                             @NonNull ClassCourseParams params,

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 /**
@@ -40,8 +41,13 @@ public class CourseDetailParams extends BaseVo{
     // 学程馆类型
     private int libraryType;
 
+    // 区分视频课
+    private boolean isVideoCourse;
+
     // 是否来自扫码识任务
     private boolean isFromScan;
+
+    private SchoolInfoEntity schoolInfoEntity;
 
     public CourseDetailParams() {
         // 默认的进入方式
@@ -177,12 +183,30 @@ public class CourseDetailParams extends BaseVo{
         return this;
     }
 
+    public boolean isVideoCourse() {
+        return isVideoCourse;
+    }
+
+    public CourseDetailParams setIsVideoCourse(boolean isVideoCourse) {
+        this.isVideoCourse = isVideoCourse;
+        return this;
+    }
+
     public boolean isFromScan() {
         return isFromScan;
     }
 
     public CourseDetailParams setFromScan(boolean fromScan) {
         isFromScan = fromScan;
+        return this;
+    }
+
+    public SchoolInfoEntity getSchoolInfoEntity() {
+        return schoolInfoEntity;
+    }
+
+    public CourseDetailParams setSchoolInfoEntity(SchoolInfoEntity schoolInfoEntity) {
+        this.schoolInfoEntity = schoolInfoEntity;
         return this;
     }
 

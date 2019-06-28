@@ -11,4 +11,6 @@
     <color name="progress_bg">#d8d8d8</color>
     <color name="progress_complete_bg">#0d9541</color>
     <color name="color_orange">#ff4900</color>
+    <color name="eval_default_color">#FF009039</color>
+
 </resources>

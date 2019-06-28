@@ -2,45 +2,20 @@ package com.lqwawa.intleducation.module.discovery.ui.lesson.detail;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.lecloud.skin.ui.utils.VodVideoSettingUtil;
-import com.libs.gallery.ImageBrowserActivity;
-import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.SourceFromType;
-import com.lqwawa.intleducation.AppConfig;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.IBaseFragment;
-import com.lqwawa.intleducation.base.helper.SharedPreferencesHelper;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
-import com.lqwawa.intleducation.base.utils.DisplayUtil;
-import com.lqwawa.intleducation.base.utils.LogUtil;
-import com.lqwawa.intleducation.base.utils.NetWorkUtils;
-import com.lqwawa.intleducation.base.utils.StringUtils;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
-import com.lqwawa.intleducation.base.vo.RequestVo;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
-import com.lqwawa.intleducation.base.widgets.SuperListView;
-import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.LetvVodHelperNew;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -52,7 +27,6 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailPar
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.task.detail.SectionTaskParams;
 import com.lqwawa.intleducation.module.discovery.ui.videodetail.VideoDetailActivity;
-import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
@@ -62,12 +36,6 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.lqresviewlib.LqResViewHelper;
-import com.oosic.apps.iemaker.base.slide_audio.AudioRecorder;
-
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +81,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private SectionDetailsVo mSectionDetailsVo;
     private LessonSourceParams mSourceParams;
     private ReadWeikeHelper mReadWeikeHelper;
-    private boolean isVideoLibrary;
+    private boolean isVideoCourse;
 
     public static LessonSourceFragment newInstance(boolean needFlag,
                                                    boolean canEdit,
@@ -153,15 +121,17 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
 
-        if (mTaskType == 1 || mTaskType == 4 || mTaskType == 2) {
+        if (mTaskType == 1 || mTaskType == 4 || mTaskType == 2 || mTaskType == 6) {
             // 看课件  或者是  复述课件(没有复述课件权限的)
             mReadWeikeHelper = new ReadWeikeHelper(getActivity());
         }
 
         if (mSourceParams != null && mSourceParams.getCourseParams() != null) {
             CourseDetailParams courseDetailParams = mSourceParams.getCourseParams();
-            isVideoLibrary =
-                    courseDetailParams != null && courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
+            isVideoCourse =
+                    courseDetailParams != null
+                            && (courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                            || (courseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseDetailParams.isVideoCourse()));
         }
 
         if (EmptyUtil.isEmpty(courseId) ||
@@ -177,7 +147,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         // 老师身份不显示
         boolean lessonNeedFlag = needFlag && (mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER);
-        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, isVideoLibrary);
+        mCourseResListAdapter = new CourseResListAdapter(getActivity(), lessonNeedFlag, isVideoCourse);
         CourseDetailParams courseParams = mSourceParams.getCourseParams();
         mCourseResListAdapter.setClassTeacher((courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (mSourceParams.isChoiceMode() && mSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter()));
@@ -201,7 +171,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                     }
 
                     if (mCourseResListAdapter.getChoiceMode()) {
-                        if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
+                        if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4
+                                || resVo.getTaskType() == 6) {
                             // 看课件类型
                             if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                                 mReadWeikeHelper.readWeike(resVo);
@@ -223,7 +194,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                     boolean freeUser = getActivity().getIntent().getBooleanExtra(LessonDetailsActivity.KEY_ROLE_FREE_USER, false);
 
                     if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
-                        if (isVideoLibrary) {
+                        if (isVideoCourse) {
                             VideoDetailActivity.start(getActivity(), resVo, mSourceParams);
                         } else {
                             // 看课件
@@ -250,7 +221,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                             // 其它情况，只能看微课
                             mReadWeikeHelper.readWeike(resVo);
                         }
-                    } else if (resVo.getTaskType() == 3) {
+                    } else if (resVo.getTaskType() == 3 || resVo.getTaskType() == 6) {
+                        // 6 Q配音
                         if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                             // 是已经加入的课程
                             // 或者是试听身份

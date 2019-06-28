@@ -1,7 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.app.Activity;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -23,7 +22,6 @@ import com.lqwawa.intleducation.base.utils.ResIconUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
@@ -47,7 +45,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private LayoutInflater inflater;
     // 是否显示已读标识
     boolean needFlagRead;
-    boolean isVideoLibrary;
+    boolean isVideoCourse;
     private int lessonStatus;
     private OnItemClickListener onItemClickListener = null;
     private ResourceSelectListener mSelectListener;
@@ -61,10 +59,10 @@ public class CourseResListAdapter extends MyBaseAdapter {
     private SparseArray<ResIconUtils.ResIcon> resIconSparseArray = new SparseArray<>();
 
 
-    public CourseResListAdapter(Activity activity, boolean needFlagRead, boolean isVideoLibrary) {
+    public CourseResListAdapter(Activity activity, boolean needFlagRead, boolean isVideoCourse) {
         this.activity = activity;
         this.needFlagRead = needFlagRead;
-        this.isVideoLibrary = isVideoLibrary;
+        this.isVideoCourse = isVideoCourse;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<SectionResListVo>();
         lessonStatus = activity.getIntent().getIntExtra("status", 0);
@@ -113,7 +111,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
         if (resType > 10000) {
             resType -= 10000;
         }
-        if (isVideoLibrary) {
+        if (isVideoCourse) {
             holder.resIconIv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), holder.resIconIv, vo.getThumbnail());
         } else {
@@ -121,14 +119,14 @@ public class CourseResListAdapter extends MyBaseAdapter {
             setResIcon(holder.resIconIv, vo, resType);
 
         }
-        setResIconLayout(holder.resIconIv, isVideoLibrary);
+        setResIconLayout(holder.resIconIv, isVideoCourse);
 
-        holder.mIvPlayIcon.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
+        holder.mIvPlayIcon.setVisibility(isVideoCourse ? View.VISIBLE : View.GONE);
 
         if (needFlagRead && vo.isIsRead()) {
             holder.mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
         } else {
-            int resId = isVideoLibrary ? 0 : R.drawable.ic_need_to_commit;
+            int resId = isVideoCourse ? 0 : R.drawable.ic_need_to_commit;
             holder.mIvNeedCommit.setImageResource(resId);
         }
 
@@ -193,7 +191,7 @@ public class CourseResListAdapter extends MyBaseAdapter {
             int taskType = vo.getTaskType();
             if (taskType == 1 || taskType == 4) {
                 // 看课件 视频课
-                holder.mIvNeedCommit.setVisibility(isVideoLibrary ? View.VISIBLE : View.GONE);
+                holder.mIvNeedCommit.setVisibility(isVideoCourse ? View.VISIBLE : View.GONE);
             } else {
                 // 听读课,读写单
                 holder.mIvNeedCommit.setVisibility(!isCourseSelect ? View.VISIBLE : View.GONE);

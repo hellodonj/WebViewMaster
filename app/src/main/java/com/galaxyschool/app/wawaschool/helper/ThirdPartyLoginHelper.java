@@ -137,7 +137,7 @@ public class ThirdPartyLoginHelper {
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                 dismissLoadingDialog();
                 if (!TextUtils.isEmpty(throwable.getMessage())) {
-                    TipMsgHelper.ShowMsg(mContext, throwable.getMessage());
+//                    TipMsgHelper.ShowMsg(mContext, throwable.getMessage());
                 }
             }
 
@@ -169,7 +169,7 @@ public class ThirdPartyLoginHelper {
             public void onError(SHARE_MEDIA platform, int action, Throwable t) {
                 dismissLoadingDialog();
                 if (!TextUtils.isEmpty(t.getMessage())) {
-                    TipMsgHelper.ShowMsg(mContext, t.getMessage());
+//                    TipMsgHelper.ShowMsg(mContext, t.getMessage());
                 }
             }
 

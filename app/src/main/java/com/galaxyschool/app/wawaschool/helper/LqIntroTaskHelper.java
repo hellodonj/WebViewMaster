@@ -13,6 +13,7 @@ import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.client.pojo.StudyResPropType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class LqIntroTaskHelper {
      * 增加一个新任务到任务列表
      *
      * @param list     增加任务的个数
-     * @param taskType 任务的类型 听说课（5） 读写单 8 看课件 9
+     * @param taskType 任务的类型 听说课（5） 读写单 8 看课件 9 Q配音 14
      */
     public void addTask(ArrayList<SectionResListVo> list, int taskType) {
         if (list == null || list.size() == 0) {
@@ -77,7 +78,9 @@ public class LqIntroTaskHelper {
         uploadParameter.setEndDate(endTime);
         uploadParameter.setFileName(tasktitle);
         uploadParameter.setTaskType(taskType);
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE || taskType == StudyTaskType.TASK_ORDER) {
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE
+                || taskType == StudyTaskType.TASK_ORDER
+                || taskType == StudyTaskType.Q_DUBBING) {
             uploadParameter.NeedScore = true;
             uploadParameter.ScoringRule = 2;
         }
@@ -161,6 +164,10 @@ public class LqIntroTaskHelper {
                 lookResDto.setResPropertyMode(1);
             }
             lookResDto.setCompletionMode(info.getCompletionMode());
+            if (taskType == StudyTaskType.Q_DUBBING){
+                //默认按句配音
+                lookResDto.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
+            }
             lookResDtoList.add(lookResDto);
         }
         return lookResDtoList;

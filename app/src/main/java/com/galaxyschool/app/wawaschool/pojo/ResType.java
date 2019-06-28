@@ -21,4 +21,5 @@ public interface ResType {
     int RES_TYPE_STUDY_CARD = 23; // 任务单
     int RES_TYPE_DOC = 24;//doc
     int RES_TYPE_EVALUATE = 26;//语音评测类型
+    int RES_TYPE_Q_DUBBING = 30; //Q配音
 }

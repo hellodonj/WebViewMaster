@@ -414,12 +414,16 @@ public class LQCourseOrderActivity extends PresenterActivity<LQCourseOrderContra
     public static void show(@NonNull Context context,
                             @NonNull CourseVo vo,
                             @NonNull String schoolId,
-                            @NonNull String curMemberId){
+                            @NonNull String curMemberId,
+                            CourseDetailParams courseDetailParams){
         Intent intent = new Intent(context,LQCourseOrderActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_EXTRA_COURSE_ENTITY,vo);
         bundle.putString(KEY_EXTRA_SCHOOL_ID,schoolId);
         bundle.putString(KEY_EXTRA_CURMEMEBER_ID,curMemberId);
+        if (courseDetailParams != null) {
+            bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
+        }
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

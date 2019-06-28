@@ -1548,6 +1548,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
             if (roleType == RoleType.ROLE_TYPE_PARENT) {
                 cardParam.setStudentId(StudentId);
+                if (stuUserInfo != null){
+                    cardParam.setUserInfo(stuUserInfo);
+                }
             } else {
                 cardParam.setStudentId(getMemeberId());
             }

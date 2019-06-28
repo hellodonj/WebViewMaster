@@ -23,7 +23,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.ActClassroomActivity;
 import com.galaxyschool.app.wawaschool.AirClassroomActivity;
 import com.galaxyschool.app.wawaschool.BasicUserInfoActivity;
@@ -55,7 +54,6 @@ import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.pojo.ClassInfoListResult;
 import com.galaxyschool.app.wawaschool.pojo.ClassMessageStatistics;
 import com.galaxyschool.app.wawaschool.pojo.ClassMessageStatisticsListResult;
-import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfoResult;
 import com.galaxyschool.app.wawaschool.pojo.SubscribeClassInfo;
@@ -72,9 +70,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolStarEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
-import com.lqwawa.intleducation.module.discovery.ui.ClassifyIndexActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.HQCCourseListActivity;
 import com.lqwawa.intleducation.module.spanceschool.SchoolFunctionStateType;
 import com.lqwawa.intleducation.module.spanceschool.SpaceSchoolHolderFragment;
 import com.lqwawa.intleducation.module.spanceschool.pager.SchoolFunctionPagerNavigator;
@@ -929,6 +925,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             //校园巡查
@@ -1057,14 +1054,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 //        item.resId = R.drawable.icon_school_introduction;
 //        itemList.add(item);
 //        if(schoolInfo != null && (schoolInfo.isTeacher() ||  VipConfig.isVip(getActivity()))){
-        if (schoolInfo != null && schoolInfo.isTeacher()) {
-            //校本资源库
-            item = new TabEntityPOJO();
-            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
-            item.title = getString(R.string.public_course);
-            item.resId = R.drawable.xiaobenziyuanku;
-            itemList.add(item);
-        }
 
         //学程馆
         item = new TabEntityPOJO();
@@ -1093,6 +1082,23 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.title = getString(R.string.common_practice_library);
         item.resId = R.drawable.ic_practice_library;
         itemList.add(item);
+
+        //全脑馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
+        item.title = getString(R.string.common_brain_library);
+        item.resId = R.drawable.ic_brain_library;
+        itemList.add(item);
+
+        if (schoolInfo != null && schoolInfo.isTeacher()) {
+            //校本资源库
+            item = new TabEntityPOJO();
+            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
+            item.title = getString(R.string.public_course);
+            item.resId = R.drawable.xiaobenziyuanku;
+            itemList.add(item);
+        }
+
 
         //学校班级
         item = new TabEntityPOJO();

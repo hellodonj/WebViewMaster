@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.client.pojo.SourceFromType;
@@ -164,7 +165,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             convertView.setTag(holder);
         }
 
-        if (vo.isSpeechEvaluation()) {
+        if (vo.isSpeechEvaluation() || vo.isVideoType()) {
             // 26是语音评测
             // 语音评测
             // 加载语音评测缩略图和显示分数
@@ -173,6 +174,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             holder.mVoiceScores.setVisibility(View.VISIBLE);
             holder.mVoiceScores.setVisibility(View.VISIBLE);
             if(EmptyUtil.isEmpty(vo.getTaskScore())){
+                vo.setTaskScore("0");
                 holder.mVoiceScores.setText(String.format(UIUtil.getString(R.string.label_voice_scores_format), "0"));
             }else{
                 holder.mVoiceScores.setText(String.format(UIUtil.getString(R.string.label_voice_scores_format), vo.getTaskScore()));
@@ -209,7 +211,12 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             if (vo.isHasVoiceReview()) {
                 // 老师点评
                 holder.mCheckMark.setTextColor(UIUtil.getColor(R.color.colorAccent));
-                holder.mCheckMark.setText(UIUtil.getString(R.string.label_teacher_mark));
+                if (vo.isVideoType()){
+                    //q配音显示查看点评
+                    holder.mCheckMark.setText(UIUtil.getString(R.string.label_look_review));
+                } else {
+                    holder.mCheckMark.setText(UIUtil.getString(R.string.label_teacher_mark));
+                }
                 holder.mCheckMark.setVisibility(View.VISIBLE);
             } else {
                 // 立即点评
@@ -368,11 +375,58 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                 }
             }
         });
+        // 点击课件详情的跳转拦截
+        holder.mIvDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!EmptyUtil.isEmpty(mDoWorkListener)) {
+                    if(EmptyUtil.isNotEmpty(mNavigator)){
+                        mNavigator.onRefreshState(false);
+                    }
 
-        if(vo.isAutoMark()){
-            holder.mTvResDetail.setVisibility(View.GONE);
-            holder.mCourseWareDetailsLayout.setOnClickListener(null);
+                    if(vo.isSpeechEvaluation()){
+                        // 语音评测
+                        mDoWorkListener.openCourseWareDetails(vo);
+                    }else{
+                        // 批阅列表
+                        String studentResId = vo.getStudentResId();
+                        int commitTaskId = vo.getCommitTaskId();
+                        // 新版本用Id
+                        commitTaskId = vo.getId();
+                        if (!EmptyUtil.isEmpty(studentResId)) {
+                            String[] strings = studentResId.split("-");
+                            String resId = EmptyUtil.isEmpty(strings) ? "" : strings[0];
+                            int resType = strings.length < 2 ? -1 : Integer.parseInt(strings[1]);
+                            String title = vo.getStudentResTitle();
+                            String resourceUrl = vo.getStudentResUrl();
+                            String resourceThumbnailUrl = vo.getStudentResThumbnailUrl();
+                            mDoWorkListener.openCourseWareDetails(
+                                    resId,
+                                    resType,
+                                    title,
+                                    0,
+                                    resourceUrl,
+                                    resourceThumbnailUrl,
+                                    commitTaskId);
+                        }
+                    }
+                }
+            }
+        });
+
+        holder.mIvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDoWorkListener.onShareCourseWare(vo);
+            }
+        });
+
+        if(vo.isAutoMark() || vo.isVideoType()){
+            holder.mDetailLayout.setVisibility(View.GONE);
             if(EmptyUtil.isNotEmpty(vo.getStudentResId())) {
+                if (vo.getCommitType() == 6) {
+                    holder.mDetailLayout.setVisibility(View.VISIBLE);
+                }
                 holder.mCourseIconLayout.setEnabled(true);
                 holder.mCourseIconLayout.setClickable(true);
                 holder.mCourseIconLayout.setOnClickListener(new View.OnClickListener() {
@@ -383,55 +437,18 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
                         }
                     }
                 });
-            }else{
-
+            } else{
                 holder.mCourseIconLayout.setEnabled(false);
                 holder.mCourseIconLayout.setClickable(false);
                 holder.mCourseIconLayout.setOnClickListener(null);
             }
         }else{
-            holder.mTvResDetail.setVisibility(View.VISIBLE);
+            holder.mDetailLayout.setVisibility(View.VISIBLE);
             holder.mCourseIconLayout.setOnClickListener(null);
             holder.mCourseIconLayout.setEnabled(false);
             holder.mCourseIconLayout.setClickable(false);
-            // 点击课件详情的跳转拦截
-            holder.mCourseWareDetailsLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!EmptyUtil.isEmpty(mDoWorkListener)) {
-                        if(EmptyUtil.isNotEmpty(mNavigator)){
-                            mNavigator.onRefreshState(false);
-                        }
-
-                        if(vo.isSpeechEvaluation()){
-                            // 语音评测
-                            mDoWorkListener.openCourseWareDetails(vo);
-                        }else{
-                            // 批阅列表
-                            String studentResId = vo.getStudentResId();
-                            int commitTaskId = vo.getCommitTaskId();
-                            // 新版本用Id
-                            commitTaskId = vo.getId();
-                            if (!EmptyUtil.isEmpty(studentResId)) {
-                                String[] strings = studentResId.split("-");
-                                String resId = EmptyUtil.isEmpty(strings) ? "" : strings[0];
-                                int resType = strings.length < 2 ? -1 : Integer.parseInt(strings[1]);
-                                String title = vo.getStudentResTitle();
-                                String resourceUrl = vo.getStudentResUrl();
-                                String resourceThumbnailUrl = vo.getStudentResThumbnailUrl();
-                                mDoWorkListener.openCourseWareDetails(
-                                        resId,
-                                        resType,
-                                        title,
-                                        0,
-                                        resourceUrl,
-                                        resourceThumbnailUrl,
-                                        commitTaskId);
-                            }
-                        }
-                    }
-                }
-            });
+            // 评测列表不显示分享
+            holder.mIvShare.setVisibility(vo.getCommitType() == 5 ? View.GONE : View.VISIBLE);
         }
 
 
@@ -467,8 +484,11 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
         private ImageView mRedPoint;
         // 学生姓名
         private TextView mStudentName;
+        private LinearLayout mDetailLayout;
         // 课件详情
-        private TextView mTvResDetail;
+        private ImageView mIvDetail;
+        // 分享
+        private ImageView mIvShare;
         // 删除按钮
         private ImageView mIvDelete;
         // 课程图片Icon容器
@@ -492,7 +512,9 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             mStudentAvatar = (ImageView) itemView.findViewById(R.id.iv_student_avatar);
             mRedPoint = (ImageView) itemView.findViewById(R.id.red_point);
             mStudentName = (TextView) itemView.findViewById(R.id.tv_student_name);
-            mTvResDetail = (TextView) itemView.findViewById(R.id.tv_res_detail);
+            mDetailLayout = (LinearLayout)itemView.findViewById(R.id.ll_course_detail);
+            mIvDetail = (ImageView) itemView.findViewById(R.id.iv_access_details);
+            mIvShare = (ImageView) itemView.findViewById(R.id.iv_share);
             mIvDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
             mCourseIconLayout = (FrameLayout) itemView.findViewById(R.id.course_icon_layout);
             mCourseIcon = (ImageView) itemView.findViewById(R.id.iv_course_icon);

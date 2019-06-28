@@ -460,9 +460,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // 视频馆/图书馆课程隐藏空中课堂和帮辅群
         boolean isHide =
                 mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
-                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
-        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide || isOnlineClassEnter? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide || isOnlineClassEnter? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
