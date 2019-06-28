@@ -355,6 +355,11 @@
     <string name="label_add_tutorial_lines">Add\nTutor</string>
     <string name="label_un_mark">Unmarked</string>
     <string name="label_have_mark">Marked</string>
+    <string name="label_have_overdue">已过期</string>
+    <string name="label_12_overdue">12h内过期</string>
+    <string name="label_6_overdue">6h内过期</string>
+    <string name="label_2_overdue">2h内过期</string>
+    <string name="label_1_overdue">1h内过期</string>
     <string name="label_watch_task_requirement">View Task Requirement</string>
     <string name="label_task_type_template">"[%s]"</string>
     <string name="label_user_name">Name*:</string>

@@ -45,6 +45,8 @@ public class TaskEntity implements Serializable {
     private String UpdateId;
     private String UpdateName;
     private String UpdateTime;
+    private int ExpireHour;
+    private String ServerNowTime;
 
     public String getAssHeadPicUrl() {
         return AssHeadPicUrl;
@@ -340,5 +342,21 @@ public class TaskEntity implements Serializable {
 
     public void setUpdateTime(String UpdateTime) {
         this.UpdateTime = UpdateTime;
+    }
+
+    public int getExpireHour() {
+        return ExpireHour;
+    }
+
+    public void setExpireHour(int expireHour) {
+        ExpireHour = expireHour;
+    }
+
+    public String getServerNowTime() {
+        return ServerNowTime;
+    }
+
+    public void setServerNowTime(String serverNowTime) {
+        ServerNowTime = serverNowTime;
     }
 }
