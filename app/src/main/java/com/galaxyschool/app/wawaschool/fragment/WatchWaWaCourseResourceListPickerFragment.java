@@ -69,6 +69,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     static final int TAB_SCHOOL_PICTUREBOOK = 4;//精品资源库
     static final int TAB_LQCOURSE_SHOP = 5;//学程馆
     static final int TAB_CLASS_LESSON = 6;
+    static final int TAB_COMMON_LIBRARY = 7;//图书馆
     private MyAttendedSchooListFragment lqProgramFragment;//LQ精品学程
     private int taskType;
     //听说 + 读写 选取读写单
@@ -96,11 +97,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             hideSoftKeyboard(getActivity());
         }
         initViews();
-        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
-            chooseClassLessonCourse(true);
-        } else {
+//        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
+//            chooseClassLessonCourse(true);
+//        } else {
             loadGetStudyTaskResControl();
-        }
+//        }
     }
 
     private void loadViews() {
@@ -249,7 +250,17 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_CLASS_LESSON) {
             //班级学程
             chooseClassLessonCourse(false);
+        } else if (data.type == TAB_COMMON_LIBRARY){
+            //图书馆
+            chooseCommonLibraryResource();
         }
+    }
+
+    /**
+     * 选择图书馆中的资源
+     */
+    private void chooseCommonLibraryResource(){
+
     }
 
     private void chooseOnlineLqCourseShopRes(){
@@ -633,12 +644,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             item.typeName = R.string.common_course_library;
             item.type = TAB_LQCOURSE_SHOP;
             list.add(item);
-        }
-
-
-
-        if (isOnlineClass) {
-
         } else {
             //班级学程
             item = new HomeTypeEntry();
@@ -646,6 +651,15 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             item.typeName = R.string.str_class_lesson;
             item.type = TAB_CLASS_LESSON;
             list.add(item);
+
+            //图书馆(q配音选择时才显示)
+            if (superTaskType == StudyTaskType.Q_DUBBING) {
+                item = new HomeTypeEntry();
+                item.icon = R.drawable.icon_common_library;
+                item.typeName = R.string.common_library;
+                item.type = TAB_COMMON_LIBRARY;
+                list.add(item);
+            }
         }
 
         getCurrAdapterViewHelper().setData(list);
