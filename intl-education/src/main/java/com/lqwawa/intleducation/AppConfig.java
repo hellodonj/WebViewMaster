@@ -946,7 +946,11 @@ public final class AppConfig {
 
         // 获取帮辅老师星级等级
         public static final String PostGetTutorStarLevel =
-                ServerBase + "/api/tutor/getTutorStarLevel";
+                ServerBase + "api/tutor/getTutorStarLevel";
+
+        //获取节下面的录音课件列表
+        public static final String PostGetResourceListByChapterIds =
+                ServerBase + "api/chapter/getResourceListByChapterIds";
 
     }
 }

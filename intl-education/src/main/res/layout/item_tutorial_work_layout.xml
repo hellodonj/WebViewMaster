@@ -161,7 +161,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:textSize="8sp"
-                    android:background="@drawable/expired_time_style_1"
                     android:layout_margin="3dp"
                     android:textColor="@color/white" />
 
