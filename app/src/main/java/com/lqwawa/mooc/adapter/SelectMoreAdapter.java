@@ -7,7 +7,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.R;
+import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 
 import java.util.List;
