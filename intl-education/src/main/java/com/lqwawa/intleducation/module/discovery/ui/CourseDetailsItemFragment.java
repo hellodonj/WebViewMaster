@@ -78,6 +78,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private Button mBtnStatisticalLearning, mBtnCourseStatistics;
     //播放列表
     private Button mBtnPlayList;
+    private LinearLayout mLLPlayList;
 
     // 课程公告的集合以及Adapter
     private List<CourseIntroduceVo> mCourseIntroduceArray;
@@ -120,6 +121,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     private boolean isFromScan;
 
+    private List<String> resIds;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
@@ -128,22 +131,13 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mBtnStatisticalLearning = (Button) view.findViewById(R.id.btn_statistical_learning);
         mBtnCourseStatistics = (Button) view.findViewById(R.id.btn_course_statistics);
         mBtnPlayList = (Button) view.findViewById(R.id.btn_play_list);
+        mLLPlayList = (LinearLayout) view.findViewById(R.id.ll_play_list);
 
         mBtnStatisticalLearning.setOnClickListener(this);
         mBtnCourseStatistics.setOnClickListener(this);
         mBtnPlayList.setOnClickListener(this);
 
         mNoCommentTip = view.findViewById(R.id.no_comment_tip);
-
-        List<String> list = new ArrayList<String>();
-        list.add("712577-19");
-        list.add("715481-19");
-        TaskSliderHelper.onPlayListListener.setResIds(list);
-        if (TaskSliderHelper.onPlayListListener.getPlayResourceSize() > 0) {
-            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
-                mBtnPlayList.setVisibility(View.VISIBLE);
-            }
-        }
         return view;
     }
 
@@ -156,6 +150,19 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER, false);
         isFromScan = getArguments().getBoolean("isFromScan", false);
+        resIds = getArguments().getStringArrayList("resIds");
+
+        mLLPlayList.setVisibility(View.VISIBLE);
+        if (EmptyUtil.isNotEmpty(resIds)){
+//            List<String> list = new ArrayList<String>();
+//            list.add("712577-19");
+//            list.add("715481-19");
+            TaskSliderHelper.onPlayListListener.setResIds(resIds);
+            TaskSliderHelper.onPlayListListener.setActivity(activity);
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+                TaskSliderHelper.onPlayListListener.startPlay();
+            }
+        }
 
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
@@ -657,5 +664,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     public void onDestroy() {
         super.onDestroy();
         activity.unregisterReceiver(mBroadcastReceiver);
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
+            TaskSliderHelper.onPlayListListener.releasePlayResource();
+
+        }
     }
 }

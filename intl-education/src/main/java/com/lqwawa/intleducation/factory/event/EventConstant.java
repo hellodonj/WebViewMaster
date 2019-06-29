@@ -33,6 +33,12 @@ public abstract class EventConstant {
 	 */
 	public static final String APPOINT_COURSE_IN_CLASS_EVENT = "APPOINT_COURSE_IN_CLASS_EVENT";
 
+
+	/**
+	 * 生成播放列表的Event
+	 */
+	public static final String GENERATE_PLAY_LIST_EVENT = "GENERATE_PLAY_LIST_EVENT";
+
 	/**
 	 * 触发更新第一章,或者全本
 	 */

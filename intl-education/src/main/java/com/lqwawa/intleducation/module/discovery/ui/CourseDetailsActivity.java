@@ -214,6 +214,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
+    //播放列表返回的resId
+    private List<String> resIds;
+
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -707,6 +710,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         params2.setCourseParams(mCourseDetailParams);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
         bundle2.putBoolean("isFromScan", isFromScan);
+        bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
 
         studyPlanFragment.setArguments(bundle2);
         // @date   :2018/6/8 0008 上午 12:20
@@ -1724,6 +1728,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
+        }else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
+            resIds = (List<String>) event.getData();
+            initData(false);
         }
     }
 

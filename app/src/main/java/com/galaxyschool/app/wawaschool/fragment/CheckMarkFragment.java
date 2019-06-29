@@ -68,6 +68,7 @@ import com.galaxyschool.app.wawaschool.views.TutorialEvaluationPopWindow;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
@@ -208,17 +209,19 @@ public class CheckMarkFragment extends ContactsListFragment {
         TextView tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
         if (tvTutorial != null) {
             //1 已批阅 角色是学生
-            if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE) {//&& roleType == RoleType.ROLE_TYPE_STUDENT
-                tvTutorial.setVisibility(View.VISIBLE);
-                tvTutorial.setText(R.string.str_tutorial_evaluation);
-                tvTutorial.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mEvaluationDialog();
-                    }
-                });
-            } else {
-                tvTutorial.setVisibility(View.INVISIBLE);
+            if (EmptyUtil.isNotEmpty(taskEntity)){
+                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE) {//&& roleType == RoleType.ROLE_TYPE_STUDENT
+                    tvTutorial.setVisibility(View.VISIBLE);
+                    tvTutorial.setText(R.string.str_tutorial_evaluation);
+                    tvTutorial.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mEvaluationDialog();
+                        }
+                    });
+                } else {
+                    tvTutorial.setVisibility(View.INVISIBLE);
+                }
             }
         }
 

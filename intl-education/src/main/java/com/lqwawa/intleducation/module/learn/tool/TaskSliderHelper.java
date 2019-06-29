@@ -53,6 +53,8 @@ public class TaskSliderHelper {
     public interface OnPlayListListener {
         Object setResIds(List<String> resIds);
 
+        Object setActivity(Activity activity);
+
         void startPlay();
 
         int getPlayResourceSize();

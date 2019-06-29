@@ -155,6 +155,11 @@ public class MOOCHelper {
         }
 
         @Override
+        public Object setActivity(Activity activity) {
+            return ResourcesPlayUtils.getInstance().setActivity(activity);
+        }
+
+        @Override
         public void startPlay() {
             ResourcesPlayUtils.getInstance().startPlay();
         }

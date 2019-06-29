@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterFragment;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
@@ -20,6 +22,9 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.mooc.adapter.SelectMoreAdapter;
 import com.lqwawa.mooc.view.CustomExpandableListView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +48,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private List<ChapterVo> chapterList;
     private List<ChapterVo> children;
     private Map<String, List<ChapterVo>> childMap = new HashMap<String, List<ChapterVo>>();// 子元素数据列表
+
+    private List<Map<String, Object>> playListVo;
 
 
     @Override
@@ -96,10 +103,6 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         showLoadingDialog();
         CourseHelper.getCourseDetailsById(
                 token, courseId, mDetailItemParams.getDataType(), null, new Callback());
-
-
-//        CourseHelper.getCourseDetailsById(
-//                "37985aee-a85a-47d9-84df-adb5ebb3320a", "1199", 2, null, new Callback());
 
     }
 
@@ -196,7 +199,52 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
      * 确定按钮操作
      */
     private void confirm() {
-        ToastUtil.showToast(getActivity(), "确认了");
+        String jsonString = getChapterIds();
+        LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
+
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                UIUtil.showToastSafe(strRes);
+            }
+
+            @Override
+            public void onDataLoaded(ResponseVo responseVo) {
+                if (responseVo.isSucceed()) {
+                    playListVo = (List<Map<String, Object>>) responseVo.getData();
+                    List<String> list = new ArrayList<String>();
+                    if (EmptyUtil.isNotEmpty(playListVo)) {
+                        for (int i = 0; i < playListVo.size(); i++) {
+                            Map<String, Object> map = playListVo.get(i);
+                            int id1 = (int) map.get("resId");
+                            list.add(id1+"");
+                        }
+                        // 通过EventBus通知
+                        EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
+                        getActivity().finish();
+                    }
+                }
+            }
+        });
     }
+
+    private String getChapterIds() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < chapterList.size(); i++) {
+            ChapterVo group = chapterList.get(i);
+            List<ChapterVo> childs = childMap.get(group.getId());
+            for (int j = 0; j < childs.size(); j++) {
+                ChapterVo project = childs.get(j);
+                if (project.isChoosed()) {
+                    if (builder.length() == 0) {
+                        builder.append(project.getId());
+                    } else {
+                        builder.append(",").append(project.getId());
+                    }
+                }
+            }
+        }
+        return builder.toString();
+    }
+
 
 }

@@ -21,12 +21,14 @@
             android:scrollbars="none"/>
 
         <LinearLayout
+            android:id="@+id/ll_play_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:background="@color/bg_gray"
             android:weightSum="2"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:visibility="gone">
 
             <net.qiujuer.genius.ui.widget.Button
                 android:id="@+id/btn_play_list"
