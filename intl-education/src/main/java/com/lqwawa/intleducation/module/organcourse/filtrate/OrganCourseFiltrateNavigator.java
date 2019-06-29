@@ -14,4 +14,5 @@ import java.util.List;
 public interface OrganCourseFiltrateNavigator {
     boolean triggerUpdateData(@NonNull OrganCourseFiltrateParams params);
     List<CourseVo> getCourseVoList();
+    void updateReallyAuthorizeState(boolean isReallyAuthorized);
 }

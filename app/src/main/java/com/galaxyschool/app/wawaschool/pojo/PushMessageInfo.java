@@ -19,6 +19,15 @@ public class PushMessageInfo implements Serializable {
     private String StudentId;
     private String TeacherId;
     private int AssistTask_Id;
+    private int OrderId;
+
+    public int getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(int orderId) {
+        OrderId = orderId;
+    }
 
     public String getStudentId() {
         return StudentId;

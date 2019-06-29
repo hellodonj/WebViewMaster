@@ -23,7 +23,9 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- robotpen start -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <!-- robotpen start -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.hardware.usb.host" />
@@ -31,42 +33,56 @@
 
     <uses-feature
         android:name="android.hardware.usb.host"
-        android:required="true" /> <!-- robotpen end -->
+        android:required="true" />
+    <!-- robotpen end -->
+
     <!-- letv need permission -->
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- jPush Required -->
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!--jPush Required-->
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- Required -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- Required -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" /> <!-- 小米配置的权限 -->
+        android:protectionLevel="signature" />
+
+    <!--小米配置的权限-->
     <permission
         android:name="${applicationId}.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" />
 
-    <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" /> <!-- 魅族配置权限 -->
+    <!--魅族配置权限-->
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
-
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" /> <!-- OPPO需要的权限 -->
-    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" /> <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
+    <!--OPPO需要的权限-->
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+
+    <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
     <uses-feature
         android:name="android.hardware.camera.front"
-        android:required="false" /> <!-- TODO replace above two with next line after Android 4.2 -->
+
+        android:required="false" />
+    <!-- TODO replace above two with next line after Android 4.2 -->
     <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
     <uses-feature
         android:name="android.hardware.camera.autofocus"
@@ -77,8 +93,10 @@
     <uses-feature android:name="android.hardware.screen.landscape" />
     <uses-feature
         android:name="android.hardware.wifi"
-        android:required="false" /> <!-- This excludes Google TV, which is unfortunately included by virtue of not requiring a camera -->
+        android:required="false" />
+    <!-- This excludes Google TV, which is unfortunately included by virtue of not requiring a camera -->
     <uses-feature android:name="android.hardware.touchscreen" />
+    <!-- TODO make this not required again after android.hardware.camera.any is available -->
 
     <application
         android:name=".chat.DemoApplication"
@@ -117,99 +135,119 @@
         <activity
             android:name=".AccountActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".guide.GuideActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
+
         <activity
             android:name=".WatchWawaCourseResourceListPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".HandleCheckResourceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".StudentFinishedHomeworkListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".OriginalShowMoreChildActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyOriginalRemoteLQCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemotePDFListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemotePPTListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyLocalVideoListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemoteVideoListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyLocalAudioListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemoteAudioListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyLocalPictureListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemotePictureListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyRemoteSplitCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".medias.activity.MyLocalLQCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".medias.activity.MyRemoteLQCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ScoreStatisticsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".ReporterIdentityActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".TaskFinishInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ApplicationModelSettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -239,11 +277,12 @@
             android:name=".slide.SlideWawaPageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing|stateHidden|stateAlwaysHidden"></activity>
         <activity
             android:name=".CaptureActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name="com.lqwawa.zbarlib.ScanActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
@@ -251,319 +290,319 @@
             android:name=".ContactsMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ContactsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsFriendRequestListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsClassRequestListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsCreateClassActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsSearchFriendActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan"></activity>
         <activity
             android:name=".ContactsSearchClassActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan"></activity>
         <activity
             android:name=".ContactsMemberDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ForbidClassMemberActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsClassManagementActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HomeworkPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HomeworkSendPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CampusPatrolPickerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CampusPatrolSchoolBasedCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CampusPatrolClassResourceListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CampusPatrolTeacherResourceListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".TodayHomeworkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".EnglishWritingCompositionRequirementsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".EnglishWritingCommentBySentenceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".EnglishWritingCommentDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".EnglishWritingCompletedActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".EnglishWritingBuildActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".EnglishWritingCommentRecordActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".EnglishWritingCommitActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HomeworkCommitActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".TopicDiscussionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".MediaMainActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".CampusPatrolSplitCourseListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".SubscribePersonListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".SubscribeSchoolListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".ModifyPasswordActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".MyFamilyActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"></activity>
         <activity
             android:name=".SearchStudentAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".StudentTasksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ScreeningHomeworkResultActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HomeworkFinishStatusActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CompletedHomeworkListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ShowTopicDiscussionPeopleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsModifyClassNameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".medias.activity.VodPlayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".medias.activity.MediaPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".ContactsSelectClassHeadTeacherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsQrCodeDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ClassContactsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PersonalContactsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PersonalPostBarListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize" />
+            android:windowSoftInputMode="adjustPan|stateHidden|adjustResize"></activity>
         <activity
             android:name=".MyCollectionListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyCollectionBookListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".SchoolMessageListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".SchoolLessonListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SchoolCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SchoolCourseCategorySelectorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SchoolClassListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="com.lqwawa.mooc.select.PlayListViewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ClassResourceListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PersonalSpaceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyMessageListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyResourceListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PlatformResourceListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SchoolSpaceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SubscribeMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CampusPatrolMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SubscribeSearchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustPan"></activity>
         <activity
             android:name=".SchoolInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".QrcodeProcessActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".RoleBindActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CustomerServiceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.oosic.apps.iemaker.base.PlaybackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackActivityNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackActivityPhone"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackWawaPageActivityPhone"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" /> <!-- for wechat pay -->
+            android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
+
+        <!--for wechat pay-->
         <activity
             android:name="com.lqwawa.intleducation.wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
@@ -575,17 +614,20 @@
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- for alipay sdk -->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--for alipay sdk-->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" />
+            android:screenOrientation="behind"></activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" />
+            android:screenOrientation="behind"></activity>
+
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -613,17 +655,17 @@
         <activity
             android:name=".ContactsConversationListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ContactsChatDialogActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".chat.activity.ChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".IntroductionForReadCourseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -634,19 +676,23 @@
         <activity
             android:name=".chat.activity.HomeworkChatActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".OpenCourseHelpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/TranslucentTheme" /> <!-- 自定义的alertdialog -->
+            android:theme="@style/TranslucentTheme" />
+
+        <!-- 自定义的alertdialog -->
         <activity
             android:name=".chat.activity.AlertDialog"
             android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyle" /> <!-- 显示下载大图页面 -->
+            android:theme="@style/MyDialogStyle"></activity>
+        <!-- 显示下载大图页面 -->
         <activity
             android:name=".chat.activity.EaseShowBigImageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
+            android:theme="@style/horizontal_slide"></activity>
         <activity
             android:name=".chat.activity.ShowBigImage"
             android:screenOrientation="portrait"
@@ -654,63 +700,66 @@
         <activity
             android:name=".chat.activity.ShowNormalFileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" /> <!-- 语音通话 -->
+            android:theme="@style/horizontal_slide"></activity>
+        <!-- 语音通话 -->
         <activity
             android:name=".chat.activity.VoiceCallActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/nornal_style" /> <!-- 视频通话 -->
+            android:theme="@style/nornal_style"></activity>
+        <!-- 视频通话 -->
         <activity
             android:name=".chat.activity.VideoCallActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" />
+            android:theme="@style/horizontal_slide"></activity>
         <activity
             android:name=".chat.activity.ShowVideoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- choose video -->
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <!-- choose video -->
         <activity
             android:name=".chat.activity.ImageGridActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".chat.activity.RecorderVideoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".chat.activity.ContextMenu"
             android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyle" />
+            android:theme="@style/MyDialogStyle"></activity>
         <activity
             android:name=".PublishResourceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".BookListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CategorySelectorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".BookCatalogListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CatalogLessonListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ClassSpaceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ShellActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Note.MediaPaperActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -755,102 +804,108 @@
         <activity
             android:name=".MyTaskListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" /> <!-- below added by renbao for bookstore  begin -->
+            android:screenOrientation="portrait"></activity>
+
+        <!-- below added by renbao for bookstore  begin -->
         <activity
             android:name=".BookStoreListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden"></activity>
         <activity
             android:name=".BookDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyStudyTaskActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".BookStoreActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".CatalogSelectActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".ExcellentBooksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".AttendOrAttentionSchoolActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".OriginalShowMoreActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".NewBookStoreActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".PictureBooksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".course.SlideActivityNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustNothing|stateHidden|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing|stateHidden|stateAlwaysHidden"></activity>
         <activity
             android:name="com.lqwawa.libs.appupdater.UpdateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
             android:name=".PictureBooksDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".MyDownloadListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".SplitCourseListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ShareScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ClassDetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ChoiceBooksActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".DeviceManagementActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".NocLePlayActivity"
             android:configChanges="keyboard|screenSize|orientation|layoutDirection"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" /> <!-- robotPen start -->
+            android:screenOrientation="portrait" />
+
+        <!-- robotPen start -->
+
+
         <!-- <activity -->
         <!-- android:name="com.lqwawa.interaction.activity.RobotPenActivity" -->
         <!-- android:configChanges="orientation|keyboardHidden" -->
@@ -868,7 +923,9 @@
         <activity
             android:name="com.example.root.robot_pen_sdk.BleConnectActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" /> <!-- <service android:name="cn.robotpen.core.services.UsbPenService" -->
+            android:screenOrientation="portrait"></activity>
+
+        <!-- <service android:name="cn.robotpen.core.services.UsbPenService" -->
         <!-- android:enabled="true" /> -->
         <!-- <service -->
         <!-- android:name="cn.robotpen.core.services.SmartPenService" -->
@@ -886,27 +943,27 @@
         <activity
             android:name=".WawaCourseChoiceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".TaskOrderDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".TaskOrderlActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
         <activity
             android:name=".SelectedReadingDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
         <activity
             android:name=".BroadcastNoteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".AirClassroomActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -984,79 +1041,98 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".CommonFragmentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".PickerClassAndGroupActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".TalentCipherActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common" />
+            android:theme="@style/AppTheme.Common"></activity>
+
+
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.ChargeCenterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.CoinsDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name="com.lqwawa.intleducation.module.discovery.ui.VoucherDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".AssociateAccountActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".SpeechAssessmentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true" />
+
         <activity
             android:name=".TeacherReviewDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".AchievementStaticsItemActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".AnswerParsingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".AnswerCardDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".CheckMarkActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" /> <!-- letv play -->
+            android:screenOrientation="portrait" />
+        <!-- letv play -->
         <activity
             android:name="com.lecloud.skin.activity.FeedBackActivity"
             android:configChanges="keyboard|screenSize|orientation|layoutDirection"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" /> <!-- bugly升级界面 -->
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <!--bugly升级界面-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
+
         <activity
             android:name=".UpdateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
         <activity
             android:name="com.ebanshu.android.activity.RoomActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -1066,9 +1142,10 @@
         <service
             android:name="com.letvcloud.cmf.MediaService"
             android:process=":cmf" />
-        <service android:name="com.lqwawa.libs.appupdater.instance.DefaultUpdateService" /> <!-- letv play -->
+        <service android:name="com.lqwawa.libs.appupdater.instance.DefaultUpdateService"></service>
+        <!-- letv play -->
         <!-- added by renbao for bookstore  end -->
-        <service android:name="com.lqwawa.libs.filedownloader.DownloadService" />
+        <service android:name="com.lqwawa.libs.filedownloader.DownloadService"></service>
 
         <meta-data
             android:name="UMENG_APPKEY"
@@ -1084,7 +1161,9 @@
             android:value="2" />
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="${EASEMOB_APPKEY}" /> <!-- 声明sdk所需的service -->
+            android:value="${EASEMOB_APPKEY}" />
+
+        <!-- 声明sdk所需的service -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true"
@@ -1092,11 +1171,12 @@
         <service
             android:name="com.hyphenate.chat.EMJobService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- 声明SDK所需的receiver -->
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- 声明SDK所需的receiver -->
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
                 <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
@@ -1121,8 +1201,10 @@
             android:name="com.oosic.apps.iemaker.base.pennote.PenNoteRecognizerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MultiVideoPlayActivity"
-            android:screenOrientation="landscape" /> <!-- 选择学校班级的Activity -->
+            android:name="com.galaxyschool.app.wawaschool.MultiVideoPlayActivity"
+            android:screenOrientation="landscape" />
+
+        <!--选择学校班级的Activity-->
         <activity
             android:name="com.lqwawa.mooc.select.SchoolClassSelectActivity"
             android:screenOrientation="portrait"
@@ -1138,33 +1220,34 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- 帮辅个人主页入口 -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!--帮辅个人主页入口-->
         <activity
             android:name=".QDubbingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".SaveStatisticActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" /> <!-- 申请成为帮辅，注册信息的入口 -->
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
+
+        <activity
+            android:name="com.lqwawa.mooc.FakeClassCourseActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
+
+        <!--申请成为帮辅，注册信息的入口-->
         <activity
             android:name="com.lqwawa.mooc.modle.tutorial.regist.TutorialRegisterActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize" /> <!-- 帮辅申请提交入口 -->
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize" />
+
+        <!--帮辅申请提交入口-->
         <activity
             android:name="com.lqwawa.mooc.modle.tutorial.audit.TutorialAuditActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -1174,12 +1257,17 @@
 
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.1" /> <!-- 配置极光推送需要的参数 -->
-        <!-- Rich push 核心功能 since 2.0.6 -->
+            android:value="2.1" />
+
+
+        <!--配置极光推送需要的参数-->
+        <!-- Rich push 核心功能 since 2.0.6-->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
-            android:theme="@style/MyDialogStyle" /> <!-- Required SDK核心功能 -->
+            android:theme="@style/MyDialogStyle"></activity>
+
+        <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -1208,7 +1296,9 @@
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="${applicationId}.DataProvider"
             android:exported="false"
-            android:process=":pushcore" /> <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+            android:process=":pushcore" />
+
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
         <service
             android:name="cn.jpush.android.service.DaemonService"
@@ -1216,20 +1306,20 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-
                 <category android:name="${applicationId}" />
             </intent-filter>
         </service> <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
             android:authorities="${applicationId}.DownloadProvider"
-            android:exported="true" /> <!-- Required SDK核心功能 -->
+            android:exported="true" />
+        <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
                 <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
@@ -1246,25 +1336,26 @@
         </receiver> <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false" /> <!-- User defined.  For test only  用户自定义的广播接收器 -->
+            android:exported="false" />
+
+        <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
             android:name=".jpush.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver> <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
         <receiver android:name=".jpush.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-
-                <category android:name="${applicationId}" />
+                <category android:name="${applicationId}"></category>
             </intent-filter>
         </receiver> <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
@@ -1272,8 +1363,9 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="5c6fcc821724e04b40c8db58" /> <!-- </>值来自开发者平台取得的AppKey -->
-        <!-- 极光小米配置的权限 -->
+            android:value="5c6fcc821724e04b40c8db58" /> <!--  </>值来自开发者平台取得的AppKey-->
+
+        <!--极光小米配置的权限-->
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
@@ -1297,7 +1389,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -1326,9 +1417,12 @@
         <meta-data
             android:name="XIAOMI_APPKEY"
             android:value="${XIAOMI_APPKEY}" />
+
         <meta-data
             android:name="XIAOMI_APPID"
-            android:value="${XIAOMI_APPID}" /> <!-- 极光华为的配置 -->
+            android:value="${XIAOMI_APPID}" />
+
+        <!--极光华为的配置-->
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
             android:authorities="${applicationId}.hms.update.provider"
@@ -1337,21 +1431,19 @@
 
         <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver">
             <intent-filter>
-
-                <!-- 接收通道发来的通知栏消息,兼容老版本Push -->
+                <!--接收通道发来的通知栏消息,兼容老版本Push-->
                 <action android:name="com.huawei.intent.action.PUSH" />
             </intent-filter>
         </receiver>
         <receiver android:name="cn.jpush.android.service.PluginHuaweiPlatformsReceiver">
             <intent-filter>
-
-                <!-- 必须,用于接收token -->
+                <!--必须,用于接收token-->
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
-                <!-- 必须,用于接收消息 -->
+                <!--必须,用于接收消息-->
                 <action android:name="com.huawei.android.push.intent.RECEIVE" />
-                <!-- 可选,用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                <!--可选,用于点击通知栏或通知栏上的按钮后触发onEvent回调-->
                 <action android:name="com.huawei.android.push.intent.CLICK" />
-                <!-- 可选,查看push通道是否连接,不查看则不需要 -->
+                <!--可选,查看push通道是否连接,不查看则不需要-->
                 <action android:name="com.huawei.intent.action.PUSHSTATE" />
             </intent-filter>
 
@@ -1362,17 +1454,18 @@
 
         <meta-data
             android:name="com.huawei.hms.client.appid"
-            android:value="${HUAWEI_APPID}" /> <!-- 魅族消息接收 -->
+            android:value="${HUAWEI_APPID}" />
+
+        <!--魅族消息接收-->
         <receiver android:name="cn.jpush.android.service.PluginMeizuPlatformsReceiver">
             <intent-filter>
-
-                <!-- 接收push消息 -->
+                <!--接收push消息-->
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
-                <!-- 接收register消息 -->
+                <!--接收register消息-->
                 <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <!-- 接收unregister消息 -->
+                <!--接收unregister消息-->
                 <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
-                <!-- 兼容低版本Flyme3推送服务配置 -->
+                <!--兼容低版本Flyme3推送服务配置-->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
@@ -1385,7 +1478,9 @@
             android:value="${MEIZU_APPKEY}" />
         <meta-data
             android:name="MEIZU_APPID"
-            android:value="${MEIZU_APPID}" /> <!-- 配置oppo需要参数 -->
+            android:value="${MEIZU_APPID}" />
+
+        <!--配置oppo需要参数-->
         <service android:name="cn.jpush.android.service.PluginOppoPushService">
             <intent-filter>
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
@@ -1395,12 +1490,16 @@
         <meta-data
             android:name="OPPO_APPKEY"
             android:value="${OPPO_APPKEY}" />
+
         <meta-data
             android:name="OPPO_APPID"
             android:value="${OPPO_APPID}" />
+
         <meta-data
             android:name="OPPO_APPSECRET"
-            android:value="${OPPO_APPSECRET}" /> <!-- 点击通知栏打开辅助类 -->
+            android:value="${OPPO_APPSECRET}" />
+
+        <!--点击通知栏打开辅助类-->
         <activity
             android:name=".OpenJPushClickActivity"
             android:exported="true"

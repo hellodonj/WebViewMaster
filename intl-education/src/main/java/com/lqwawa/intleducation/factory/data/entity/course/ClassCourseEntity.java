@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.factory.data.entity.course;
 
+import android.text.TextUtils;
+
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 
@@ -24,6 +26,7 @@ public class ClassCourseEntity extends BaseVo{
     private boolean hold;
     private boolean checked;
     private int assortment;
+    private String level;
 
     public String getBuyType() {
         return buyType;
@@ -104,6 +107,25 @@ public class ClassCourseEntity extends BaseVo{
     public ClassCourseEntity setAssortment(int assortment) {
         this.assortment = assortment;
         return this;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public ClassCourseEntity setLevel(String level) {
+        this.level = level;
+        return this;
+    }
+
+    public String getFirstLabelId() {
+        if (!TextUtils.isEmpty(level)) {
+            if (level.contains(".")) {
+                String[] ids = level.split("\\.");
+                return ids[0];
+            }
+        }
+        return level;
     }
 
     /**

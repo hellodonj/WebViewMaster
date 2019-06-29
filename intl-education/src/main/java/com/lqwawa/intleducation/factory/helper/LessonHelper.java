@@ -225,6 +225,7 @@ public class LessonHelper {
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
         requestVo.addParams("role", role);
+        requestVo.addParams("version", 1);
         if (role == 1 && EmptyUtil.isNotEmpty(classId)) {
             requestVo.addParams("classId", classId);
         }

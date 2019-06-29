@@ -79,6 +79,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
+import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -100,6 +101,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
+import static com.lqwawa.intleducation.base.utils.StringUtils.getSectionNumString;
 import static com.lqwawa.intleducation.base.utils.StringUtils.languageIsEnglish;
 
 /**
@@ -244,10 +246,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isMyCourse,
                              final int tabIndex,
                              final CourseVo vo,
-                             final CourseDetailParams params) {
+                             final CourseDetailParams params,
+                             final boolean isFromScan) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
         route.navigation(activity, courseId, memberId, params,
-                tabIndex == -2, new CourseRoute.NavigationListener() {
+                isFromScan, new CourseRoute.NavigationListener() {
                     @Override
                     public void route(boolean needToLearn, CourseRouteEntity entity) {
                         super.route(needToLearn, entity);
@@ -259,9 +262,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             } else {
                                 courseDetailParams = new CourseDetailParams();
                             }
-                            courseDetailParams.setFromScan(tabIndex == -2);
+                            courseDetailParams.setFromScan(isFromScan);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
                             }
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
@@ -284,10 +289,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             if (courseDetailParams == null) {
                                 courseDetailParams = new CourseDetailParams();
                             }
-                            courseDetailParams.setFromScan(tabIndex == -2);
+                            courseDetailParams.setFromScan(isFromScan);
                             courseDetailParams.setIsAuthorized(isAuth);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
                             }
                             intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
                             intent.putExtra("tabIndex", tabIndex);
@@ -308,7 +315,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final @NonNull CourseDetailParams params,
                              final boolean isSchoolEnter) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, false,
-                false, isAuthorized, false, -1, null, params);
+                false, isAuthorized, false, -1, null, params, false);
 
     }
 
@@ -316,16 +323,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final String courseId,
                              final boolean canEdit,
                              final String memberId,
-                             final boolean isMyCourse) {
+                             final boolean isMyCourse,
+                             final boolean isFromScan) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, isMyCourse, -1, null, null);
+                false, false, isMyCourse, -1, null, null, isFromScan);
     }
 
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        start(activity, courseId, canEdit, memberId, false);
+        start(activity, courseId, canEdit, memberId, false, false);
     }
 
     public static void start(final Activity activity,
@@ -336,7 +344,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isOnlineClassEnter,
                              boolean isOnlineTeacher) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, isOnlineClassEnter,
-                isOnlineTeacher, false, false, -1, null, null);
+                isOnlineTeacher, false, false, -1, null, null, false);
     }
 
     public static void start(final Activity activity,
@@ -346,7 +354,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final int tabIndex,
                              final CourseVo vo) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, false, tabIndex, vo, null);
+                false, false, false, tabIndex, vo, null, tabIndex == -2);
 
     }
 
@@ -628,9 +636,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // 视频馆/图书馆课程隐藏空中课堂和帮辅群
         boolean isHide =
                 mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
-                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
-        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
@@ -1164,6 +1173,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             }
 
             textViewPay.setVisibility(View.VISIBLE);
+            boolean isHide =
+                    mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+            if (tutorialMode && isHide) {
+                textViewPay.setVisibility(View.GONE);
+            }
             // mBtnEnterPay.setVisibility(View.VISIBLE);
             if (initTabIndex == 1) {
                 rg_tab.check(R.id.rb_study_plan);
@@ -1258,6 +1274,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         int tag = (int) view.getTag();
                         if (tag == 1) {
                             if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
+
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
+                                
                                 String schoolId = mCourseDetailParams.getSchoolId();
                                 String classId = mCourseDetailParams.getClassId();
                                 CourseHelper.requestJoinInCourse(mCurMemberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
@@ -1300,6 +1323,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.join_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 join(false);
                             }
                         }
@@ -1325,14 +1353,19 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.buy_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 // 购买课程
                                 int intCourseId = Integer.parseInt(courseId);
                                 if (!mCanEdit) {
                                     // 家长身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 } else {
                                     // 普通身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 }
 
                                 // ConfirmOrderActivity.start(activity, courseVo);
@@ -1397,7 +1430,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             UIUtil.showToastSafe(R.string.label_course_buy_warning);
             return;
         }
-        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId);
+        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId, mCourseDetailParams);
     }
 
     /**
@@ -1548,6 +1581,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_success)));
                     // initData();
                     // courseCommentFragment.updateData();
+                    if (mCourseDetailParams != null) {
+                        mCourseDetailParams.buildOrganJoinState(true);
+                    }
                     toJoinCourseDetailsActivity();
                 } else {
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_failed))

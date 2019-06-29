@@ -460,16 +460,19 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 @Override
                                 public void onDataLoaded(ResponseVo<Object> responseVo) {
                                     if (responseVo.isSucceed()) {
+                                        CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
+                                        params.setLibraryType(vo.getLibraryType());
+                                        params.setIsVideoCourse(vo.getType() == 2);
                                         if (getPayDirection(vo) != PayDirection.SELF_TO_OTHER) {
                                             // 自己买给自己，传自己的Id
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), params, activity,
                                                     UserHelper.getUserId());
                                         } else {
                                             PayActivity.newInstance(String.valueOf(vo.getId()),
                                                     String.valueOf(vo.getPrice()), vo.getCourseName(), vo.getCourseId(),
-                                                    vo.getType() == 1, false, !vo.isBuyAll(), null, activity,
+                                                    vo.getType() == 1, false, !vo.isBuyAll(), params, activity,
                                                     vo.getMemberId());
                                         }
                                         /*PayActivity.newInstance(result,
@@ -523,7 +526,8 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                         courseVo.setName(vo.getCourseName());
                                         courseVo.setOrganName(vo.getOrganId());
                                         String memberId = UserHelper.getUserId();
-                                        LQCourseOrderActivity.show(activity, courseVo, vo.getOrganId(), memberId);
+                                        LQCourseOrderActivity.show(activity, courseVo,
+                                                vo.getOrganId(), memberId, null);
                                         // ConfirmOrderActivity.start(activity, vo.getCourseId());
                                     }
                                 });
@@ -556,6 +560,8 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                             } else if (vo.getType() == 0) {
                                 // 0是课程
                                 CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_ORDER_ENTER);
+                                params.setLibraryType(vo.getLibraryType());
+                                params.setIsVideoCourse(vo.getType() == 2);
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                         false, true, UserHelper.getUserId(), false, false, false,
                                         false, params, null);

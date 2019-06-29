@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.BookDetailActivity;
+import com.galaxyschool.app.wawaschool.BookStoreListActivity;
 import com.galaxyschool.app.wawaschool.MyAttendedSchoolListActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ShellActivity;
@@ -69,6 +72,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     static final int TAB_SCHOOL_PICTUREBOOK = 4;//精品资源库
     static final int TAB_LQCOURSE_SHOP = 5;//学程馆
     static final int TAB_CLASS_LESSON = 6;
+    static final int TAB_COMMON_LIBRARY = 7;//图书馆
     private MyAttendedSchooListFragment lqProgramFragment;//LQ精品学程
     private int taskType;
     //听说 + 读写 选取读写单
@@ -96,11 +100,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             hideSoftKeyboard(getActivity());
         }
         initViews();
-        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
-            chooseClassLessonCourse(true);
-        } else {
+//        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
+//            chooseClassLessonCourse(true);
+//        } else {
             loadGetStudyTaskResControl();
-        }
+//        }
     }
 
     private void loadViews() {
@@ -249,7 +253,17 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_CLASS_LESSON) {
             //班级学程
             chooseClassLessonCourse(false);
+        } else if (data.type == TAB_COMMON_LIBRARY){
+            //图书馆
+            chooseCommonLibraryResource();
         }
+    }
+
+    /**
+     * 选择图书馆中的资源
+     */
+    private void chooseCommonLibraryResource(){
+
     }
 
     private void chooseOnlineLqCourseShopRes(){
@@ -524,7 +538,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
      */
     private void chooseSchoolResources(int type) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), MyAttendedSchoolListActivity.class);
+//        intent.setClass(getActivity(), MyAttendedSchoolListActivity.class);
+        //直接跳转到校本资源库的界面
+        intent.setClass(getActivity(), BookStoreListActivity.class);
         intent.putExtra(ActivityUtils.EXTRA_IS_PICK, true);
         intent.putExtra(ActivityUtils.EXTRA_IS_PICK_SCHOOL_RESOURCE, true);
         intent.putExtra(ActivityUtils.EXTRA_TASK_TYPE, taskType);
@@ -570,6 +586,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             intent.putExtra(ActivityUtils.EXTRA_SELECT_MAX_COUNT, getTaskTypeOrSelectCount(false));
             intent.putExtra(ActivityUtils.EXTRA_TASK_TYPE, getTaskTypeOrSelectCount(true));
         }
+        intent.putExtra(BookDetailActivity.SCHOOL_ID, schoolId);
+        intent.putExtra(BookDetailActivity.ORIGIN_SCHOOL_ID, "");
+        intent.putExtra(ActivityUtils.EXTRA_FROM_INTRO_STUDY_TASK,true);
         if (type == TAB_LQCOURSE_SHOP) {
             startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
         } else {
@@ -633,12 +652,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             item.typeName = R.string.common_course_library;
             item.type = TAB_LQCOURSE_SHOP;
             list.add(item);
-        }
-
-
-
-        if (isOnlineClass) {
-
         } else {
             //班级学程
             item = new HomeTypeEntry();
@@ -646,6 +659,15 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             item.typeName = R.string.str_class_lesson;
             item.type = TAB_CLASS_LESSON;
             list.add(item);
+
+            //图书馆(q配音选择时才显示)
+            if (superTaskType == StudyTaskType.Q_DUBBING) {
+                item = new HomeTypeEntry();
+                item.icon = R.drawable.icon_common_library;
+                item.typeName = R.string.common_library;
+                item.type = TAB_COMMON_LIBRARY;
+                list.add(item);
+            }
         }
 
         getCurrAdapterViewHelper().setData(list);
@@ -696,18 +718,21 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (data != null) {
             //LQ学程返回的数据需要处理
             if (requestCode == LQCourseCourseListActivity.RC_SelectCourseRes) {
-                if (data != null) {
-                    ArrayList<SectionResListVo> selectedList = (ArrayList<SectionResListVo>)
-                            data.getSerializableExtra(CourseSelectItemFragment.RESULT_LIST);
-                    if (selectedList != null && selectedList.size() > 0) {
-                        //处理LQ学程选取的数据
-                        WatchWawaCourseResourceSplicingUtils.splicingLQProgramResources
-                                (getActivity(), selectedList);
-                    } else {
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
+                ArrayList<SectionResListVo> selectedList = (ArrayList<SectionResListVo>)
+                        data.getSerializableExtra(CourseSelectItemFragment.RESULT_LIST);
+                if (selectedList != null && selectedList.size() > 0) {
+                    //处理LQ学程选取的数据
+                    WatchWawaCourseResourceSplicingUtils.splicingLQProgramResources
+                            (getActivity(), selectedList);
+                } else {
+                    if (getActivity() != null) {
+                        getActivity().finish();
                     }
+                }
+            } else if (requestCode == IntroductionForReadCourseFragment.REQUEST_CODE_PICKER_RESOURCES){
+                if (getActivity() != null){
+                    getActivity().setResult(Activity.RESULT_OK,data);
+                    getActivity().finish();
                 }
             }
         }

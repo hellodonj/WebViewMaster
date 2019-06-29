@@ -320,7 +320,6 @@ public class CampusOnlineWebFragment extends ContactsListFragment implements Vie
         ShareInfo shareInfo = new ShareInfo();
         SharedResource resource = new SharedResource();
         if (mIsMooc) {
-
             shareInfo.setTitle(mTitle);
             shareInfo.setContent(" ");
             umImage = new UMImage(getActivity(), R.drawable.ic_launcher);
@@ -341,7 +340,11 @@ public class CampusOnlineWebFragment extends ContactsListFragment implements Vie
         } else {
             shareInfo.setTitle(campusOnline.getLname());
             shareInfo.setContent(schoolInfo != null ? schoolInfo.getSchoolName() : " ");
-            umImage = new UMImage(getActivity(), AppSettings.getFileUrl(campusOnline.getLimg()));
+            if (TextUtils.isEmpty(campusOnline.getLimg())){
+                umImage = new UMImage(getActivity(), R.drawable.ic_launcher);
+            } else {
+                umImage = new UMImage(getActivity(), AppSettings.getFileUrl(campusOnline.getLimg()));
+            }
             resource.setTitle(campusOnline.getLname());
             resource.setDescription(schoolInfo != null ? schoolInfo.getSchoolName() : " ");
             resource.setThumbnailUrl(AppSettings.getFileUrl(campusOnline.getLimg()));

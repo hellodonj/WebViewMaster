@@ -150,6 +150,7 @@ public class ActivityUtils {
     public static final String EXTRA_IS_GET_APPOINT_RESOURCE = "get_appoint_resource";//获取指定的资源
     public static final String EXTRA_IS_APPLICATION_START = "isApplicationStart";
     public static final String EXTRA_ASSIGN_WORK_LIB_TASK = "extra_assign_work_lib_task";
+    public static final String EXTRA_FROM_INTRO_STUDY_TASK = "from_intro_study_task";//布置学习任务作业
     public static CommitTask commitTask = null;
 
     /**
@@ -363,7 +364,7 @@ public class ActivityUtils {
                         createName = createName.substring(0, 10);
                         createName = createName + "...";
                     }
-                    createName = createName + "\n" + context.getString(R.string
+                    createName = createName + "  \n" + context.getString(R.string
                             .Str_view_people, String.valueOf(courseInfo.getViewcount()));
                     shareData.setAuthor(createName);
                 }

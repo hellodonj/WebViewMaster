@@ -351,6 +351,7 @@ public class CourseHelper {
             // 是家长身份,那就传学生 memberId
             requestVo.addParams("token", memberId);
         }
+        requestVo.addParams("version", 1);
 
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetCourseStatus + requestVo.getParams());
@@ -402,6 +403,7 @@ public class CourseHelper {
             // 是家长身份,那就传学生 memberId
             requestVo.addParams("token", memberId);
         }
+        requestVo.addParams("version", 1);
 
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetJoinInCourse + requestVo.getParams());

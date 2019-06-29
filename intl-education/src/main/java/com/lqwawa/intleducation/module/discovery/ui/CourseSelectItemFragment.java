@@ -188,9 +188,10 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        boolean isVideoLibrary =
-                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoLibrary);
+        boolean isVideoCourse =
+                mParams != null && (mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || (mParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && mParams.isVideoCourse()));
+        courseResListAdapter = new CourseResListAdapter(activity, false, isVideoCourse);
         courseResListAdapter.setCourseSelect(true, mTaskType);
         courseResListAdapter.setMultipleChoiceCount(mMultipleChoiceCount);
         courseResListAdapter.setOnResourceSelectListener(mListener);
@@ -205,7 +206,8 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             @Override
             public void onItemClick(LinearLayout parent, View view, int position) {
                 SectionResListVo sectionResListVo = (SectionResListVo) courseResListAdapter.getItem(position);
-                if (sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4) {
+                if (sectionResListVo.getTaskType() == 1 || sectionResListVo.getTaskType() == 4
+                        || sectionResListVo.getTaskType() == 6) {
                     // 看课件类型
                     if (EmptyUtil.isNotEmpty(mReadWeikeHelper)) {
                         mReadWeikeHelper.readWeike(sectionResListVo);
@@ -242,6 +244,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
         requestVo.addParams("sectionId", mChapterVo.getId());
         // 1是老师
         requestVo.addParams("role", 1);
+        requestVo.addParams("version", 1);
         if (EmptyUtil.isNotEmpty(mParams) && mParams.isClassCourseEnter()) {
             if (EmptyUtil.isNotEmpty(mParams.getClassId())) {
                 String classId = mParams.getClassId();
@@ -303,7 +306,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
                             updateData(i);
                         } else if (mTaskType == KEY_TASK_ORDER && taskType == 3) {
                             updateData(i);
-                        } else if (mTaskType == KEY_TEXT_BOOK && taskType == 4) {
+                        } else if (mTaskType == KEY_TEXT_BOOK && (taskType == 4 || taskType == 6)) {
                             updateData(i);
                         } else if (mTaskType == KEY_LECTURE_COURSE && taskType == 5) {
                             updateData(i);
@@ -359,7 +362,7 @@ public class CourseSelectItemFragment extends MyBaseFragment {
             }
 
             if (!sectionResListVo.isIsShield()) {
-                if (isOnlineRelevance && mTaskType == KEY_RELL_COURSE) {
+                if (isOnlineRelevance && mTaskType == KEY_RELL_COURSE && mRealTaskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
                     // int resType = sectionResListVo.getResType();
                     if (EmptyUtil.isNotEmpty(mFilterArray) && mFilterArray.contains(resType)) {
                         voListNew.add(sectionResListVo);

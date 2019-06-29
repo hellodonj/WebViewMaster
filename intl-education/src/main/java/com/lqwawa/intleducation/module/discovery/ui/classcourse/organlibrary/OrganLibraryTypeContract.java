@@ -1,6 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary;
 
-import com.lqwawa.intleducation.factory.presenter.BaseContract;
+import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionContract;
 
 /**
  * @author medici
@@ -8,11 +8,11 @@ import com.lqwawa.intleducation.factory.presenter.BaseContract;
  */
 public interface OrganLibraryTypeContract {
 
-    interface Presenter extends BaseContract.Presenter{
+    interface Presenter extends SchoolPermissionContract.Presenter{
 
     }
 
-    interface View extends BaseContract.View<Presenter>{
+    interface View extends SchoolPermissionContract.View<OrganLibraryTypeContract.Presenter>{
 
     }
 

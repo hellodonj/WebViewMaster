@@ -88,8 +88,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
                 StringUtil.fillSafeTextView(mAuthorizedState,UIUtil.getString(R.string.label_unauthorized));
             }
             // 习学程馆显示授权状态，其他不显示
-            mAuthorizedState.setVisibility(entity.getLibraryType()
-                    == OrganLibraryType.TYPE_LQCOURSE_SHOP ? View.VISIBLE : View.GONE);
+            mAuthorizedState.setVisibility(View.VISIBLE);
         }
     }
 }
