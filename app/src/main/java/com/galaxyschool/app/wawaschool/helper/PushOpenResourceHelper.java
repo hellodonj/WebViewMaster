@@ -83,11 +83,14 @@ public class PushOpenResourceHelper {
     private void openResource() {
         if (pushMessageInfo.getPushModuleType() == 7
                 || pushMessageInfo.getPushModuleType() == 8
-                || pushMessageInfo.getPushModuleType() == 9) {
+                || pushMessageInfo.getPushModuleType() == 9
+                || pushMessageInfo.getPushModuleType() == 11) {
             //打开帮辅的推送
+            //助教-帮辅作业提醒过来过期 -> 11
             enterAssistantDetail();
         } else if (pushMessageInfo.getPushModuleType() == 10){
-          //助教审批通过--成为帮辅
+          //助教审批通过--成为帮辅 -> 10
+          //助教-作业未批阅退款给学生 -> 12
             openAssistantModel();
         } else if (pushMessageInfo.getAirClassId() <= 0) {
             //学习任务
