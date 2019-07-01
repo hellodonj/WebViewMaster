@@ -1235,6 +1235,20 @@
             android:theme="@style/AppTheme.Common"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan" />
 
+        <activity android:name=".SaveStatisticActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+                  android:screenOrientation="portrait"
+                  android:hardwareAccelerated="true"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity
+            android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustPan"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:theme="@style/AppTheme.Common"/>
+
         <activity
             android:name="com.lqwawa.mooc.FakeClassCourseActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

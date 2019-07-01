@@ -1815,4 +1815,6 @@
     <string name="str_save_total_size">总计: %s</string>
     <string name="str_load_save_statistic_default">正在统计存储空间\n请稍等...</string>
     <string name="str_retract">收起</string>
+    <string name="str_teacher_assistant_tip">已完成批阅,批阅金额发放中，请稍后到个人空间-我的账户中查看，入账可能有延时</string>
+
 </resources>
