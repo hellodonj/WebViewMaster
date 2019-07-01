@@ -547,4 +547,5 @@
     </string-array>
     <string name="start_dubbing">Dub</string>
     <string name="join_school_to_learn">Please join school before learning course</string>
+    <string name="modify_success_tip">修改成功</string>
 </resources>
