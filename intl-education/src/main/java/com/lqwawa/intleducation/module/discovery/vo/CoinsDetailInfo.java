@@ -40,6 +40,8 @@ public class CoinsDetailInfo extends BaseVo{
     private int recordType;
     // 积分明细-创建时间
     private String createDate;
+    //申请是否拒绝
+    private int isRefunded;
 
 
     public long getCreateTime() {
@@ -200,5 +202,13 @@ public class CoinsDetailInfo extends BaseVo{
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public int getIsRefunded() {
+        return isRefunded;
+    }
+
+    public void setIsRefunded(int isRefunded) {
+        this.isRefunded = isRefunded;
     }
 }
