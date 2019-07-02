@@ -84,6 +84,15 @@ public class CourseData implements Serializable {
     //教辅材料（任务单类型的值为1）
     public int guidanceCardSendFlag;
     private List<String> mp3List;
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public List<String> getMp3List() {
         return mp3List;

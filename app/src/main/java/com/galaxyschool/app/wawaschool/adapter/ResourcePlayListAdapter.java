@@ -18,7 +18,6 @@ import java.util.List;
 public class ResourcePlayListAdapter extends BaseAdapter {
     private Context context;
     private List<CourseData> list;
-    private int playPosition;
 
     public ResourcePlayListAdapter(Context context, List<CourseData> list) {
         this.context = context;
@@ -74,7 +73,7 @@ public class ResourcePlayListAdapter extends BaseAdapter {
                 });
                 //标题
                 holder.titleTextView.setText(data.nickname);
-                if (position < playPosition){
+                if (data.isSelected()){
                     holder.titleTextView.setTextColor(ContextCompat.getColor(UIUtil.getContext(),
                             R.color.text_light_gray));
                 } else {
@@ -111,10 +110,6 @@ public class ResourcePlayListAdapter extends BaseAdapter {
         }
     }
 
-    public void setPlayPosition(int playPosition){
-        this.playPosition = playPosition;
-        notifyDataSetChanged();
-    }
     static class ViewHolder {
         public ImageView iconImageView;
         public TextView titleTextView;
