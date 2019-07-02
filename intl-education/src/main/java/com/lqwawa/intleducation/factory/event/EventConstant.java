@@ -40,6 +40,11 @@ public abstract class EventConstant {
 	public static final String GENERATE_PLAY_LIST_EVENT = "GENERATE_PLAY_LIST_EVENT";
 
 	/**
+	 * 生成帮辅订单的Event
+	 */
+	public static final String CREATE_TUTOR_ORDER = "CREATE_TUTOR_ORDER";
+
+	/**
 	 * 触发更新第一章,或者全本
 	 */
 	public static final String TRIGGER_UPDATE_COURSE = "TRIGGER_UPDATE_COURSE";

@@ -216,7 +216,9 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                         for (int i = 0; i < playListVo.size(); i++) {
                             Map<String, Object> map = playListVo.get(i);
                             int id1 = (int) map.get("resId");
-                            list.add(id1+"");
+                            StringBuffer sb = new StringBuffer();
+                            sb.append(id1 + "-").append(19);
+                            list.add(sb.toString());
                         }
                         // 通过EventBus通知
                         EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));

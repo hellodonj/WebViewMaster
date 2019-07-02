@@ -956,5 +956,9 @@ public final class AppConfig {
         public static final String UpdateTutorInfo =
                 ServerBase + "api/tutor/updateTutorInfo?j=";
 
+        //帮辅订单生成
+        public static final String CreateTutorOrder =
+                PayBase + "api/tutor/createTutorOrder";
+
     }
 }

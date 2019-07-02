@@ -212,7 +212,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (EmptyUtil.isNotEmpty(taskEntity)){
                 if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE) {//&& roleType == RoleType.ROLE_TYPE_STUDENT
                     tvTutorial.setVisibility(View.VISIBLE);
-                    tvTutorial.setText(R.string.str_tutorial_evaluation);
+                    tvTutorial.setText(R.string.str_tutorial_btn);
                     tvTutorial.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
