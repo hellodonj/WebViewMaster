@@ -147,7 +147,6 @@ public class ResourcesPlayUtils {
         return builder.toString();
     }
 
-
     private void openPlayActivity() {
         if (activity == null) {
             return;
@@ -155,6 +154,12 @@ public class ResourcesPlayUtils {
         CourseData courseData = playDataList.get(currentPosition);
         if (courseData == null) {
             return;
+        }
+        if (!courseData.isSelected()){
+            courseData.setSelected(true);
+            if (dialog != null) {
+                dialog.notifyDataSetChanged();
+            }
         }
         Intent intent = new Intent(activity, PlaybackActivity.class);
         Bundle extras = new Bundle();
@@ -184,9 +189,6 @@ public class ResourcesPlayUtils {
                 if (playCompleted){
                     currentPosition++;
                     if (currentPosition < playDataList.size()) {
-                        if (dialog != null) {
-                            dialog.updateAlreadyPlayedMp3(currentPosition);
-                        }
                         openPlayActivity();
                     }
                 }

@@ -1797,8 +1797,9 @@
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
     <string name="class_tutor">Class Tutor</string>
-    <string name="str_click_ratingbar">Click on the star</string>
-    <string name="str_tutorial_evaluation">Your valuable evaluation is very important to us, limited to 200 words</string>
+    <string name="str_tutorial_btn">帮辅评价</string>
+    <string name="str_click_ratingbar">点击评星</string>
+    <string name="str_tutorial_evaluation">您的宝贵评价，对我们至关重要，限200字</string>
     <string name="str_whole_class_grade">全班成绩</string>
     <string name="str_subject_total_score">(总分: %s分)</string>
 

@@ -25,12 +25,13 @@ import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
-import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.lqpay.LqPay;
 import com.lqwawa.intleducation.lqpay.PayParams;
 import com.lqwawa.intleducation.lqpay.callback.OnPayInfoRequestListener;
@@ -41,8 +42,8 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailPar
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
-import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.osastudio.common.utils.LogUtils;
@@ -58,6 +59,8 @@ import org.xutils.x;
 public class PayActivity extends MyBaseActivity implements View.OnClickListener, CommonDialogFragment.WaWaPayListener {
 
     private static final String ACTIVITY_BUNDLE_OBJECT = "ACTIVITY_BUNDLE_OBJECT";
+    private static final String ACTIVITY_BUNDLE_OBJECT1 = "ACTIVITY_BUNDLE_OBJECT1";
+    private static final String ACTIVITY_BUNDLE_OBJECT2 = "ACTIVITY_BUNDLE_OBJECT2";
 
     private TopBar mTopBar;
     private RadioButton mPaywayAlipayBtn;
@@ -81,6 +84,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     private static final String KEY_EXTRA_BUYER_MEMBER_ID = "KEY_EXTRA_BUYER_MEMBER_ID";
     // 是否是学程按章购买
     private static final String KEY_EXTRA_CHAPTER_BUY_ENTER = "KEY_EXTRA_CHAPTER_BUY_ENTER";
+    private static final String KEY_TUTOR_CHOICE_ENTER = "KEY_TUTOR_CHOICE_ENTER";
     private String mPrice;
     private String mCourseId, mOrderId;
     private String mClassId;
@@ -103,6 +107,11 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     private CourseDetailParams mDetailParams;
     // 购买人的Id
     private String mBuyerMemberId;
+    //是否选中老师界面跳转
+    private boolean isTutorChoiceEnter;
+    //帮辅老师选中的参数
+    private TutorChoiceEntity mChoiceEntity;
+    private TutorChoiceParams mParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +125,19 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         mClassId = getIntent().getStringExtra(KEY_CLASSID);
         mOrderId = getIntent().getStringExtra(KEY_ORDERID);
         mPrice = getIntent().getStringExtra(KEY_PRICE);
-        isOnline = getIntent().getBooleanExtra(KEY_IS_ONLINE,false);
-        isLQwawaEnter = getIntent().getBooleanExtra(KEY_EXTRA_LQWAWA_ENTER,false);
-        isChapterBuy = getIntent().getBooleanExtra(KEY_EXTRA_CHAPTER_BUY_ENTER,false);
+        isOnline = getIntent().getBooleanExtra(KEY_IS_ONLINE, false);
+        isLQwawaEnter = getIntent().getBooleanExtra(KEY_EXTRA_LQWAWA_ENTER, false);
+        isChapterBuy = getIntent().getBooleanExtra(KEY_EXTRA_CHAPTER_BUY_ENTER, false);
         mBuyerMemberId = getIntent().getStringExtra(KEY_EXTRA_BUYER_MEMBER_ID);
-        if(getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT)){
+        if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT)) {
             mDetailParams = (CourseDetailParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
+        }
+        isTutorChoiceEnter = getIntent().getBooleanExtra(KEY_TUTOR_CHOICE_ENTER, false);
+        if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT1)) {
+            mChoiceEntity = (TutorChoiceEntity) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT1);
+        }
+        if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT2)) {
+            mParams = (TutorChoiceParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT2);
         }
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         // mTopBar.setBack(true);
@@ -130,10 +146,10 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         mTopBar.setLeftFunctionImage1(R.drawable.ic_back_green, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isPayOk){
+                if (isPayOk) {
                     ActivityUtil.finishActivity(LQCourseOrderActivity.class);
                     // 购买课程后,关闭未加入课程详情页
-                    if(TextUtils.equals(UserHelper.getUserId(),mBuyerMemberId)){
+                    if (TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId)) {
                         // 是自己买
                         LocalBroadcastManager.getInstance(UIUtil.getContext()).sendBroadcast(new Intent(CourseDetailsActivity.LQWAWA_PAY_RESULT_ACTION));
                     }
@@ -171,13 +187,21 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         mCommitTv.setOnClickListener(this);
         mNeedPayTv.setText(new StringBuffer().append("¥").append(mPrice));
 
-        if(isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(),mBuyerMemberId)){
-            // 在线课堂和LQ学程章节购买,替别人购买都关闭激活码购买
+        if (isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId) || isTutorChoiceEnter) {
+            // 在线课堂和LQ学程章节购买,替别人购买都关闭激活码购买 帮辅选择老师支付
             mPaywayActivationCode.setVisibility(View.GONE);
-        }else{
+        } else {
             mPaywayActivationCode.setVisibility(View.VISIBLE);
         }
 
+        if (isTutorChoiceEnter) {
+            //帮辅选择老师支付
+            mPaywayWechatpay.setVisibility(View.GONE);
+            mPaywayAlipay.setVisibility(View.GONE);
+        } else {
+            mPaywayWechatpay.setVisibility(View.VISIBLE);
+            mPaywayAlipay.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -265,7 +289,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                 // 支付成功
                 LogUtils.logd("pay", " payWay == " + payWay.toString());
                 initResultView(true);
-                if(isOnline){
+                if (isOnline) {
                     // 在线班级支付成功
                     EventBus.getDefault().post(new EventWrapper(null, EventConstant.JOIN_IN_CLASS_EVENT));
                 }
@@ -323,11 +347,12 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                     if (jsonCoins != null) {
                         currentCoins = jsonCoins.optString("amount");
 
-                    }else {
+                    } else {
                         currentCoins = "0";
                     }
-
-                    CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(Integer.valueOf(currentCoins), Integer.valueOf(mPrice));
+                    //舍掉小数取整
+                    int pr = (int) Math.floor(Double.parseDouble(mPrice));
+                    CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(Integer.valueOf(currentCoins), pr);
                     dialogFragment.setOnWaWaPayListener(PayActivity.this);
                     dialogFragment.show(getFragmentManager(), "wawa");
                 }
@@ -360,7 +385,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
      * @param payOk
      */
     private void initResultView(boolean payOk) {
-        if(payOk && !isOnline && !getIntent().getBooleanExtra("isLive", false)){
+        if (payOk && !isOnline && !getIntent().getBooleanExtra("isLive", false)) {
             // LQ学程
             sendBroadcast(new Intent().setAction(AppConfig.ServerUrl.joinInCourse));
         }
@@ -381,11 +406,11 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         TextView shopBtn = (TextView) mPayresultView.findViewById(R.id.pay_goshop);
 
         String memberId = UserHelper.getUserId();
-        if(!TextUtils.equals(mBuyerMemberId,memberId)){
+        if (!TextUtils.equals(mBuyerMemberId, memberId)) {
             // 两个Id不相同,说明给别人买的
             // 隐藏去学习
             learnBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             learnBtn.setVisibility(View.VISIBLE);
         }
 
@@ -400,7 +425,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             learnBtn.setVisibility(View.GONE);
         }
 
-        if(isLQwawaEnter && payOk){
+        if (isLQwawaEnter && payOk) {
             Intent intent = new Intent();
             intent.setAction("buy_success");
             sendBroadcast(intent);
@@ -410,9 +435,9 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 // TODO: 2017/7/19 去学习
-                if(isOnline){
-                    ClassDetailActivity.show(activity,mClassId);
-                    if(TextUtils.equals(UserHelper.getUserId(),mBuyerMemberId)){
+                if (isOnline) {
+                    ClassDetailActivity.show(activity, mClassId);
+                    if (TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId)) {
                         // 是自己买
                         LocalBroadcastManager mManager = LocalBroadcastManager.getInstance(UIUtil.getContext());
                         mManager.sendBroadcast(new Intent().setAction(ClassDetailActivity.LQWAWA_PAY_RESULT_ACTION));
@@ -443,12 +468,12 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                             }
                         }
                     });*/
-                }else{
+                } else {
                     if (!getIntent().getBooleanExtra("isLive", false)) {
                         ActivityUtil.finishActivity(CourseDetailsActivity.class);
                         ActivityUtil.finishActivity(LQCourseOrderActivity.class);
 
-                        if(!isLQwawaEnter){
+                        if (!isLQwawaEnter) {
                             MyCourseDetailsActivity.start(activity, mCourseId,
                                     false, true, UserHelper.getUserId(), false,
                                     false, false, false, mDetailParams, null);
@@ -465,9 +490,9 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             @Override
             public void onClick(View v) {
                 // TODO: 2017/7/19 继续购物
-                if(isOnline){
+                if (isOnline) {
                     ActivityUtil.finishActivity(ClassDetailActivity.class);
-                }else{
+                } else {
                     if (!getIntent().getBooleanExtra("isLive", false)) {
                         // 销毁详情页
                         MainApplication.getInstance().finishActivity(CourseDetailsActivity.class);
@@ -481,20 +506,21 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
 
     /**
      * 获取在线课堂角色信息
+     *
      * @param entity 数据实体
      * @return 判断顺序 老师->家长->学生
      */
-    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity){
+    private String getOnlineClassRoleInfo(@NonNull JoinClassEntity entity) {
         String roles = entity.getRoles();
         // 默认学生身份
         String roleType = OnlineClassRole.ROLE_STUDENT;
-        if(UserHelper.isTeacher(roles)){
+        if (UserHelper.isTeacher(roles)) {
             // 老师身份
             roleType = OnlineClassRole.ROLE_TEACHER;
-        }else if(UserHelper.isParent(roles)){
+        } else if (UserHelper.isParent(roles)) {
             // 家长身份
             roleType = OnlineClassRole.ROLE_PARENT;
-        }else if(UserHelper.isStudent(roles)){
+        } else if (UserHelper.isStudent(roles)) {
             // 学生身份
             roleType = OnlineClassRole.ROLE_STUDENT;
         }
@@ -527,10 +553,10 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
      */
     public static void newInstance(Context context, String classId,
                                    String orderId, String price, String coursename,
-                                   String courseId,@NonNull String mBuyerMemberId) {
+                                   String courseId, @NonNull String mBuyerMemberId) {
         Intent starter = new Intent(context, PayActivity.class);
         starter.putExtra(KEY_ORDERID, orderId);
-        starter.putExtra(KEY_CLASSID,classId);
+        starter.putExtra(KEY_CLASSID, classId);
         starter.putExtra(KEY_COURSEID, courseId);
         starter.putExtra(KEY_PRICE, price);
         starter.putExtra(KEY_COURSENAME, coursename);
@@ -553,13 +579,25 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         starter.putExtra(KEY_PRICE, price);
         starter.putExtra(KEY_COURSENAME, coursename);
         starter.putExtra(KEY_IS_LIVE, isLive);
-        starter.putExtra(KEY_EXTRA_LQWAWA_ENTER,isLQwawaEnter);
-        starter.putExtra(KEY_EXTRA_CHAPTER_BUY_ENTER,isChapterBuy);
-        starter.putExtra(ACTIVITY_BUNDLE_OBJECT,params);
+        starter.putExtra(KEY_EXTRA_LQWAWA_ENTER, isLQwawaEnter);
+        starter.putExtra(KEY_EXTRA_CHAPTER_BUY_ENTER, isChapterBuy);
+        starter.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         starter.putExtra(KEY_EXTRA_BUYER_MEMBER_ID, mBuyerMemberId);
         context.startActivity(starter);
     }
 
+    /**
+     * @des 选择ban
+     */
+    public static void newInstance(Context context, boolean isTutorChoiceEnter, @NonNull TutorChoiceParams params,
+                                   @NonNull TutorChoiceEntity choiceEntity) {
+        Intent starter = new Intent(context, PayActivity.class);
+        starter.putExtra(KEY_TUTOR_CHOICE_ENTER, isTutorChoiceEnter);
+        starter.putExtra(KEY_PRICE, choiceEntity.getMarkingPrice());
+        starter.putExtra(ACTIVITY_BUNDLE_OBJECT1, choiceEntity);
+        starter.putExtra(ACTIVITY_BUNDLE_OBJECT2, params);
+        context.startActivity(starter);
+    }
 
 
     @Override
@@ -612,68 +650,123 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             Intent intent = new Intent(this, ChargeCenterActivity.class);
             Bundle bundle = new Bundle();
             UserParams user = UserParams.buildUser(UserHelper.getUserInfo());
-            bundle.putSerializable(ChargeCenterActivity.KEY_EXTRA_USER,user);
+            bundle.putSerializable(ChargeCenterActivity.KEY_EXTRA_USER, user);
             intent.putExtras(bundle);
             startActivity(intent);
 
             return;
         }
 
-        //直接支付
+        if (isTutorChoiceEnter) {
 
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("id", mOrderId);
-        requestVo.addParams("consumeSource",2);//表示android手机
-        String memberId = UserHelper.getUserId();
-        requestVo.addParams("memberId",memberId);
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.PAY_USE_WAWA_COIN + requestVo.getParams());
-
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String jsonString) {
-                if (TextUtils.isEmpty(jsonString)) {
-                    return;
+            UserInfoVo userInfo = UserHelper.getUserInfo();
+            int taskId = mParams.getModel().getT_TaskId();
+            int taskType = mParams.getModel().getT_TaskType();
+            int price = (int) Math.floor(Double.parseDouble(mChoiceEntity.getMarkingPrice()));
+            String memberId = mParams.getMemberId();
+            String tutorMemberId = mChoiceEntity.getMemberId();
+            String title = mParams.getModel().getTitle();
+            RequestVo requestVo = new RequestVo();
+            requestVo.addParams("taskId", taskId);
+            requestVo.addParams("taskType", taskType);
+            requestVo.addParams("token", userInfo.getToken());
+            requestVo.addParams("price", price);
+            requestVo.addParams("taskName", title);
+            requestVo.addParams("title", title);
+            requestVo.addParams("memberId", memberId);
+            requestVo.addParams("consumeSource", 2);
+            if (EmptyUtil.isNotEmpty(mParams.getModel().getT_CourseName())) {
+                requestVo.addParams("courseName", mParams.getModel().getT_CourseName());
+            }
+            requestVo.addParams("tutorMemberId", tutorMemberId);
+            RequestParams params = new RequestParams(AppConfig.ServerUrl.CreateTutorOrder);
+            params.setAsJsonContent(true);
+            params.setBodyContent(requestVo.getParams());
+            params.setConnectTimeout(10000);
+            x.http().post(params, new StringCallback<String>() {
+                @Override
+                public void onSuccess(String str) {
+                    LogUtil.i(PayActivity.class, "request " + params.getUri() + " result :" + str);
+                    if (TextUtils.isEmpty(str)) {
+                        return;
+                    }
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(str);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    int code = jsonObject.optInt("code");
+                    int orderId = jsonObject.optInt("orderId");
+                    if (code == 0) {
+                        // 通过EventBus通知
+                        EventBus.getDefault().post(new EventWrapper(orderId, EventConstant.CREATE_TUTOR_ORDER));
+                    }
                 }
 
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(jsonString);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    ToastUtil.showToast(PayActivity.this, R.string.net_error_tip);
                 }
-                int code = jsonObject.optInt("code");
+            });
+        } else {
+            String memberId = UserHelper.getUserId();
+            RequestVo requestVo = new RequestVo();
+            requestVo.addParams("id", mOrderId);
+            requestVo.addParams("consumeSource", 2);//表示android手机
+            requestVo.addParams("memberId", memberId);
+            RequestParams params = new RequestParams(AppConfig.ServerUrl.PAY_USE_WAWA_COIN + requestVo.getParams());
 
-                if (code == 0) {
-                    //请求成功
-                    initResultView(true);
-                }else{
-                    UIUtil.showToastSafe(R.string.pay_failure);
+            x.http().get(params, new Callback.CommonCallback<String>() {
+                @Override
+                public void onSuccess(String jsonString) {
+                    if (TextUtils.isEmpty(jsonString)) {
+                        return;
+                    }
+
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(jsonString);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    int code = jsonObject.optInt("code");
+
+                    if (code == 0) {
+                        //请求成功
+                        initResultView(true);
+                        if (isTutorChoiceEnter) {
+                            finish();
+                        }
+                    } else {
+                        UIUtil.showToastSafe(R.string.pay_failure);
+                    }
+
                 }
 
-            }
+                @Override
+                public void onCancelled(CancelledException e) {
+                }
 
-            @Override
-            public void onCancelled(CancelledException e) {
-            }
+                @Override
+                public void onError(Throwable throwable, boolean b) {
 
-            @Override
-            public void onError(Throwable throwable, boolean b) {
+                }
 
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
+                @Override
+                public void onFinished() {
+                }
+            });
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(isPayOk){
+        if (isPayOk) {
             ActivityUtil.finishActivity(LQCourseOrderActivity.class);
             // 购买课程后,关闭未加入课程详情页
-            if(TextUtils.equals(UserHelper.getUserId(),mBuyerMemberId)){
+            if (TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId)) {
                 // 是自己买
                 LocalBroadcastManager.getInstance(UIUtil.getContext()).sendBroadcast(new Intent(CourseDetailsActivity.LQWAWA_PAY_RESULT_ACTION));
             }

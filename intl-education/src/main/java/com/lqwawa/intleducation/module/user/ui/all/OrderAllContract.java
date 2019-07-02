@@ -17,9 +17,10 @@ public interface OrderAllContract {
         /**
          * @param pageIndex 页索引
          * @param pageSize  条数
+         * @param tabType 0全部 1待付款 2待批阅 3已完成 4已失效
          * @param memberId
          */
-        void requestOrderList(int pageIndex, int pageSize, String memberId);
+        void requestOrderList(int pageIndex, int pageSize,int tabType, String memberId);
     }
 
     interface View extends BaseContract.View<OrderAllContract.Presenter> {

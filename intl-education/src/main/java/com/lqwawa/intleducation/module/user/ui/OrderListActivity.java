@@ -49,7 +49,7 @@ public class OrderListActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
         mTopBar.setBack(true);
-        mTopBar.setTitle("我的订单");
+        mTopBar.setTitle(R.string.label_my_orders);
     }
 
     private void initData() {

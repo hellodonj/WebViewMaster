@@ -57,9 +57,9 @@ public class ResourcePlayListDialog extends Dialog {
         }
     }
 
-    public void updateAlreadyPlayedMp3(int playPosition) {
+    public void notifyDataSetChanged() {
         if (adapter != null) {
-            adapter.setPlayPosition(playPosition);
+            adapter.notifyDataSetChanged();
         }
     }
 

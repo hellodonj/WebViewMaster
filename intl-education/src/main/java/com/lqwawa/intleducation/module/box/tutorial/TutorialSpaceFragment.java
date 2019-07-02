@@ -8,10 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.ui.ContactsInputDialog;
+import com.lqwawa.intleducation.common.utils.LogUtil;
+import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.box.FunctionAdapter;
 import com.lqwawa.intleducation.module.box.FunctionEntity;
 import com.lqwawa.intleducation.module.box.common.CommonMarkingListFragment;
@@ -27,6 +36,9 @@ import com.lqwawa.intleducation.module.tutorial.teacher.students.TutorialStudent
 import com.lqwawa.intleducation.module.tutorial.teacher.students.TutorialStudentParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +52,8 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
     private RecyclerView mRecycler;
     private FunctionAdapter mAdapter;
     private TextView mTvReviewPrice;
+    private ContactsInputDialog inputBoxDialog;
+
 
     @Override
     protected TutorialSpaceContract.Presenter initPresenter() {
@@ -161,7 +175,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
 
     //设置批阅价格弹框
     private void showEditReviewPriceDialog() {
-        ContactsInputDialog inputBoxDialog = new ContactsInputDialog(
+         inputBoxDialog = new ContactsInputDialog(
                 getActivity(),
                 getString(R.string.review_price_dialog_title),
                 null,
@@ -169,8 +183,8 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
                 getString(R.string.cancel),
                 (dialog, which) -> dialog.dismiss(),
                 getString(R.string.confirm), (dialog, which) -> {
-            dialog.dismiss();
             confirmReviewPrice();
+            dialog.dismiss();
         });
         inputBoxDialog.setIsAutoDismiss(false);
         inputBoxDialog.show();
@@ -179,5 +193,31 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
     //确认设置的批阅价格
     private void confirmReviewPrice() {
         //IntroductionSuperTaskFragment 845
+        String memberId = UserHelper.getUserId();
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("markingPrice", inputBoxDialog.getInputText());
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.UpdateTutorInfo + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+                };
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    ToastUtil.showToast(getActivity(), R.string.modify_success_tip);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                super.onError(throwable, b);
+                ToastUtil.showToast(getActivity(), R.string.net_error_tip);
+            }
+        });
+
     }
 }

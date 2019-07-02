@@ -1124,13 +1124,13 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         entryMap.put(item.type, item);
 
         //关注
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBSCRIBER;
-        item.title = getString(R.string.subscribe);
-        item.resId = R.drawable.guanzhu;
-        item.hasFooter = true;
-        itemList.add(item);
-        entryMap.put(item.type, item);
+//        item = new TabEntityPOJO();
+//        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBSCRIBER;
+//        item.title = getString(R.string.subscribe);
+//        item.resId = R.drawable.guanzhu;
+//        item.hasFooter = true;
+//        itemList.add(item);
+//        entryMap.put(item.type, item);
 
         //关联账号
         item = new TabEntityPOJO();

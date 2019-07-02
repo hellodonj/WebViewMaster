@@ -35,6 +35,7 @@ public class OrderExpiredFragment extends PresenterFragment<OrderAllContract.Pre
     private MyOrderListAdapter mAdapter;
 
     private int mPageIndex = 0;
+    private int tabType = 4;//已失效
     private String mMemberId = UserHelper.getUserId();
 
     @Override
@@ -86,10 +87,10 @@ public class OrderExpiredFragment extends PresenterFragment<OrderAllContract.Pre
     private void requestOrderListData(boolean moreData) {
         if (moreData) {
             mPageIndex++;
-            mPresenter.requestOrderList(mPageIndex, AppConfig.PAGE_SIZE, mMemberId);
+            mPresenter.requestOrderList(mPageIndex, AppConfig.PAGE_SIZE,tabType, mMemberId);
         } else {
             mPageIndex = 0;
-            mPresenter.requestOrderList(mPageIndex, AppConfig.PAGE_SIZE, mMemberId);
+            mPresenter.requestOrderList(mPageIndex, AppConfig.PAGE_SIZE,tabType, mMemberId);
         }
     }
 

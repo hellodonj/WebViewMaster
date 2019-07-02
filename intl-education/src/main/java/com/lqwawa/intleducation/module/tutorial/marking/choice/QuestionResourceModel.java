@@ -24,6 +24,7 @@ public class QuestionResourceModel implements Serializable {
     private String T_CourseId;
     private String T_CourseName;
     private int T_ResCourseId;
+    private int OrderId; //订单Id
 
     public String getAssMemberId() {
         return AssMemberId;
@@ -151,5 +152,13 @@ public class QuestionResourceModel implements Serializable {
 
     public void setT_ResCourseId(int t_ResCourseId) {
         T_ResCourseId = t_ResCourseId;
+    }
+
+    public int getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(int orderId) {
+        OrderId = orderId;
     }
 }

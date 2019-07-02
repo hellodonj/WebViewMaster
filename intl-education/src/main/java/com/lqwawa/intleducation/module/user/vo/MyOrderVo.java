@@ -66,6 +66,10 @@ public class MyOrderVo extends BaseVo{
     private int assortment;
     private String level;
 
+    //订单类型
+    private int taskType;
+    private String taskName;
+
     public int getPayType() {
         return payType;
     }
@@ -274,6 +278,22 @@ public class MyOrderVo extends BaseVo{
     public MyOrderVo setLevel(String level) {
         this.level = level;
         return this;
+    }
+
+    public int getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(int taskType) {
+        this.taskType = taskType;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public int getLibraryType() {
