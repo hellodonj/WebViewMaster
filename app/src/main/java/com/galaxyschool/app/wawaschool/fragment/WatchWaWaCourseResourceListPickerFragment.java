@@ -35,7 +35,10 @@ import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
@@ -43,10 +46,15 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParam
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary.OrganLibraryTypeActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -263,7 +271,36 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
      * 选择图书馆中的资源
      */
     private void chooseCommonLibraryResource(){
+        int taskType = getTaskTypeOrSelectCount(true);
+        int selectMaxCount = getTaskTypeOrSelectCount(false);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(ResType.RES_TYPE_VIDEO);
+        
+        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
 
+        LQCourseConfigEntity entity = new LQCourseConfigEntity();
+        entity.setConfigValue(getString(R.string.str_q_dubbing));
+        entity.setLibraryType(OrganLibraryType.TYPE_LIBRARY);
+        entity.setId(OrganLibraryUtils.LIBRARY_QDUBBING_ID);
+        entity.setLevel(OrganLibraryUtils.LIBRARY_QDUBBING_LEVEL);
+        entity.setEntityOrganId(schoolId);
+
+        SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), schoolId,
+                new DataSource.Callback<SchoolInfoEntity>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                    }
+
+                    @Override
+                    public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                        String roles = schoolInfoEntity.getRoles();
+                        OrganCourseFiltrateActivity.show(
+                                getActivity(),
+                                entity, true, false, resourceData,
+                                false, false, true,
+                                roles, OrganLibraryType.TYPE_LIBRARY);
+                    }
+                });
     }
 
     private void chooseOnlineLqCourseShopRes(){
@@ -645,7 +682,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 item.type = TAB_LQ_PROGRAM;
                 list.add(item);
             }
-            
+
             // 线上学程馆
             item = new HomeTypeEntry();
             item.icon = R.drawable.ic_lqcourse_circle;
