@@ -20,8 +20,8 @@ public class OrderAllPresenter extends BasePresenter<OrderAllContract.View>
     }
 
     @Override
-    public void requestOrderList(int pageIndex, int pageSize, String memberId) {
-        UserHelper.requestLQMyOrderList(pageIndex, pageSize, memberId, new DataSource.Callback<List<MyOrderVo>>() {
+    public void requestOrderList(int pageIndex, int pageSize, int tabType, String memberId) {
+        UserHelper.requestLQMyOrderList(pageIndex, pageSize, tabType, memberId, new DataSource.Callback<List<MyOrderVo>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final OrderAllContract.View view = getView();

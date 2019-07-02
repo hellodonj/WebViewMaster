@@ -545,12 +545,14 @@ public class UserHelper {
      */
     public static void requestLQMyOrderList(int pageIndex,
                                             int pageSize,
+                                            int tabType,
                                             String memberId,
                                             @NonNull final DataSource.Callback<List<MyOrderVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("pageIndex", pageIndex);
         requestVo.addParams("pageSize", pageSize);
+        requestVo.addParams("tabType",tabType);
         requestVo.addParams("memberId", memberId);
         LogUtil.d("UserHelper", requestVo.getParams());
         RequestParams params =

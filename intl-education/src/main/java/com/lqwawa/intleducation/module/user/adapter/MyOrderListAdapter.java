@@ -73,6 +73,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             R.string.order_status_1,
             R.string.order_status_2};
 
+    private static final int[] orderTuttorStatusResId = new int[]{
+            R.string.order_status_1,
+            R.string.order_status_2,
+            R.string.order_status_3};
+
     private static final int[] orderStatusColorId = new int[]{
             R.color.com_text_red,
             R.color.com_text_lq_green,
@@ -170,7 +175,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
         holder.mTvCourseType.setVisibility(vo.getType() == 0 ? View.VISIBLE : View.GONE);
         int courseType = vo.getAssortment();
-        if (courseType >=0 && courseType < mCourseTypeNames.length) {
+        if (courseType >= 0 && courseType < mCourseTypeNames.length) {
             holder.mTvCourseType.setBackgroundResource(mCourseTypesBgId[courseType]);
             holder.mTvCourseType.setText(mCourseTypeNames[courseType]);
         }
@@ -237,6 +242,57 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 holder.delete_order_tv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
                 holder.delete_order_tv.setText(activity.getResources().getString(R.string.delete_order));
                 holder.rebuy_tv.setVisibility(View.GONE);
+            }
+            //帮辅订单
+            if (vo.getType() == 6) {
+                if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
+                    holder.course_name.setText("[听读课]" + vo.getTaskName());
+                } else if (vo.getTaskType() == 13) {
+                    holder.course_name.setText("[做读写单]" + vo.getTaskName());
+                } else {
+                    holder.course_name.setText(vo.getTaskName());
+                }
+                holder.teacher_name.setText("提交给"+vo.getRealName()+"老师");
+                //0等待批阅 1交易成功 2交易关闭
+                if (vo.getStatus()==0){
+                    if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待批阅
+                        holder.rebuy_tv.setVisibility(View.VISIBLE);
+                        holder.rebuy_tv.setText(activity.getResources().getString(R.string.cancel_order));
+                        holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_pay));
+                        holder.delete_order_tv.setTextColor(activity.getResources().getColor(
+                                vo.isDeleted() ? R.color.com_text_light_gray : R.color.com_text_green));
+                        holder.delete_order_tv.setBackground(activity.getResources().getDrawable(
+                                vo.isDeleted() ? R.drawable.shape_circle_gray_stroke_h1_radius_18 : R.drawable.btn_green_stroke_bg_selector));
+                    } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                        holder.rebuy_tv.setVisibility(View.VISIBLE);
+                        holder.rebuy_tv.setText(activity.getResources().getString(R.string.delete_order));
+                        holder.delete_order_tv.setTextColor(activity.getResources().getColor(
+                                vo.isDeleted() ? R.color.com_text_light_gray : R.color.com_text_green));
+                        holder.delete_order_tv.setBackground(activity.getResources().getDrawable(
+                                vo.isDeleted() ? R.drawable.shape_circle_gray_stroke_h1_radius_18 : R.drawable.btn_green_stroke_bg_selector));
+                        if (vo.isIsExpire()) {
+                            holder.delete_order_tv.setVisibility(View.GONE);
+                            holder.delete_order_tv.setBackgroundResource(R.drawable.shape_circle_gray_stroke_h1_radius_18);
+                            holder.delete_order_tv.setTextColor(activity.getResources().getColor(R.color.com_text_gray));
+                        }
+                        if (vo.isIsJoin()) {
+                            holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_learn));
+
+                        } else {
+                            holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_join));
+                        }
+
+                        // 已完成删除去学习和立即参加按钮
+                        if (getPayDirection(vo) == PayDirection.SELF_TO_OTHER) {
+                            // 我买给其它人
+                            holder.delete_order_tv.setVisibility(View.GONE);
+                        } else {
+                            //
+                            holder.delete_order_tv.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+
             }
         }
 
