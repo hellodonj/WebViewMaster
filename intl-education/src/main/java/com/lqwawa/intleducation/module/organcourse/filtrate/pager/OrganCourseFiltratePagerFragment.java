@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateNavigator;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateParams;
@@ -84,6 +85,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
         if (EmptyUtil.isEmpty(mParams)) {
             return false;
         }
+        mResourceData = mParams.getShopResourceData();
         mLibraryNames = getResources().getStringArray(R.array.organ_library_names);
         return super.initArgs(bundle);
     }
@@ -183,8 +185,13 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
             mRefreshLayout.showRefresh();
         }
         if (mParams.isSelectResource()) {
-            mPresenter.requestCourseResourceData(isMoreLoaded, mPageIndex,
-                    AppConfig.PAGE_SIZE, mParams);
+            if (mParams.getLevel().equals(OrganLibraryUtils.LIBRARY_QDUBBING_LEVEL)) {
+                mPresenter.requestCourseData(isMoreLoaded, mPageIndex,
+                        AppConfig.PAGE_SIZE, mParams);
+            } else {
+                mPresenter.requestCourseResourceData(isMoreLoaded, mPageIndex,
+                        AppConfig.PAGE_SIZE, mParams);
+            }
         } else {
             mPresenter.requestCourseData(isMoreLoaded, mPageIndex,
                     AppConfig.PAGE_SIZE, mParams);

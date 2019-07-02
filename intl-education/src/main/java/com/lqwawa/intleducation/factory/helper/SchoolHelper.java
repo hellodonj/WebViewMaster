@@ -76,7 +76,7 @@ public class SchoolHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestSchoolInfoUrl);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
