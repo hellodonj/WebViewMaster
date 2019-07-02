@@ -1143,11 +1143,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity
-            android:name="com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
-
         <service
             android:name="com.letvcloud.cmf.MediaService"
             android:process=":cmf" />
