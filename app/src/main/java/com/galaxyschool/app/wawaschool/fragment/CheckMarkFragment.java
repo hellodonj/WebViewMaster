@@ -141,7 +141,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private QuestionResourceModel markModel;
     private boolean isAssistanceModel;//是不是帮辅模式
     private TaskEntity taskEntity;
-
+    private boolean hasAlreadyMark;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -802,6 +802,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                             JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
                                         sortData(list);
+                                        hasMarkData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
@@ -809,6 +810,17 @@ public class CheckMarkFragment extends ContactsListFragment {
                         }
                     }
                 });
+    }
+
+    private void hasMarkData(List<CheckMarkInfo.ModelBean> list){
+        for (int i = 0; i < list.size(); i++){
+            CheckMarkInfo.ModelBean modelBean = list.get(i);
+            if (modelBean != null && modelBean.getSubmitRole() == 0){
+                //已经批阅
+                hasAlreadyMark = true;
+                break;
+            }
+        }
     }
 
     private void loadMarkData() {
@@ -1095,6 +1107,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 playbackParam.EQId = commitTask.getEQId();
                 playbackParam.taskMarkParam = mTaskMarkParam;
                 playbackParam.taskEntity = taskEntity;
+                playbackParam.hasAlreadyMark = hasAlreadyMark;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
@@ -1306,7 +1319,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                 String coursePath = bundle.getString(SlideManager.EXTRA_COURSE_PATH);
                 String slidePath = bundle.getString(SlideManager.EXTRA_SLIDE_PATH);
                 ApplyMarkHelper helper = new ApplyMarkHelper();
-                helper.uploadCourse(getActivity(), slidePath, coursePath, commitTask.getId(), false);
+                helper.uploadCourse(getActivity(), slidePath, coursePath, commitTask.getId(),
+                        false,hasAlreadyMark);
             }
         } else if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.TRIGGER_UPDATE_LIST_DATA)) {
             loadCommonData();

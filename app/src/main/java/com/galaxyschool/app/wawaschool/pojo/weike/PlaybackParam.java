@@ -46,4 +46,6 @@ public class PlaybackParam implements Serializable {
     public int EQId;//自动批阅读写单标识
 
     public TaskEntity taskEntity;
+
+    public boolean hasAlreadyMark;//是否已经批阅
 }

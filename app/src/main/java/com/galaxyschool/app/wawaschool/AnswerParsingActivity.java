@@ -507,7 +507,8 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
             String coursePath = data.getStringExtra(SlideManager.EXTRA_COURSE_PATH);
             ApplyMarkHelper helper = new ApplyMarkHelper();
             helper.uploadCourse(this, slidePath, coursePath,
-                    Integer.valueOf(playbackParam.taskMarkParam.commitTaskId), false);
+                    Integer.valueOf(playbackParam.taskMarkParam.commitTaskId), false,
+                    playbackParam.hasAlreadyMark);
         }
     }
 }
