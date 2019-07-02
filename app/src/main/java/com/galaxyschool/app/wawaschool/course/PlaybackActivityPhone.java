@@ -1236,7 +1236,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                     CourseData courseData = uploadResult.data.get(0);
                                                                                     if (courseData != null) {
                                                                                         if (!TextUtils.isEmpty(mParam.taskMarkParam.commitTaskId)) {
-                                                                                            ApplyMarkHelper.commitAssistantMarkData(PlaybackActivityPhone.this, courseData, Integer.valueOf(mParam.taskMarkParam.commitTaskId), true);
+                                                                                            ApplyMarkHelper.commitAssistantMarkData(
+                                                                                                    PlaybackActivityPhone.this,
+                                                                                                    courseData,
+                                                                                                    Integer.valueOf(mParam.taskMarkParam.commitTaskId),
+                                                                                                    true,
+                                                                                                    mParam.hasAlreadyMark);
                                                                                         }
                                                                                     }
                                                                                 }
