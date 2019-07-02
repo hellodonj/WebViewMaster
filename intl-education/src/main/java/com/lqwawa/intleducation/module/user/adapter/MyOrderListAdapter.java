@@ -68,6 +68,8 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     ImageOptions imageOptions;
     ImageOptions liveImageOptions;
     ImageOptions onlineImageOptions;
+    ImageOptions orderImageOptions;
+    ImageOptions courseImageOptions;
     private static final int[] orderStatusResId = new int[]{
             R.string.order_status_0,
             R.string.order_status_1,
@@ -135,6 +137,22 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 //.setSize(img_width,img_height)
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
+                .build();
+
+        orderImageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setCrop(false)
+                //.setSize(img_width,img_height)
+                .setLoadingDrawableId(R.drawable.ic_task_not_flag)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_task_not_flag)//加载失败后默认显示图片
+                .build();
+
+        courseImageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setCrop(false)
+                //.setSize(img_width,img_height)
+                .setLoadingDrawableId(R.drawable.ic_lqc)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_lqc)//加载失败后默认显示图片
                 .build();
 
         mCourseTypeNames =
@@ -258,7 +276,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             if (vo.getType() == 6) {
                 if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
                     holder.course_name.setText("[听读课]" + vo.getTaskName());
-                   // holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_lqc));
+                    // holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_lqc));
                 } else if (vo.getTaskType() == 13) {
                     holder.course_name.setText("[做读写单]" + vo.getTaskName());
                     //holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_task_not_flag));
@@ -267,7 +285,6 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 }
                 holder.delete_order_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setVisibility(View.VISIBLE);
-                holder.course_iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
                 holder.status_tv.setText(activity.getResources().getString(orderTuttorStatusResId[vo.getStatus()]));
                 holder.status_tv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
@@ -282,7 +299,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.shape_circle_gray_stroke_h1_radius_18));
                 }
-            }else {
+            } else {
                 holder.mTutorStatusTv.setVisibility(View.GONE);
             }
         }
@@ -684,10 +701,16 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     vo.getThumbnailUrl(),
                     imageOptions);
         } else if (vo.getType() == 6) {
-            //帮辅订单
-            x.image().bind(holder.course_iv,
-                    "",
-                    imageOptions);
+            // 帮辅订单
+            if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
+                x.image().bind(holder.course_iv,
+                        vo.getThumbnailUrl(),
+                        orderImageOptions);
+            } else if (vo.getTaskType() == 13) {
+                x.image().bind(holder.course_iv,
+                        vo.getThumbnailUrl(),
+                        courseImageOptions);
+            }
         } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂
