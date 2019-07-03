@@ -228,6 +228,7 @@ public class ActivityUtils {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(activity);
         helper.setResId(info.getIntegerFormatMicroId())
                 .setResType(info.getResourceType())
+                .setFileSize(info.getFileSize())
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
@@ -287,6 +288,7 @@ public class ActivityUtils {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper((Activity) context);
         helper.setResId(courseInfo.getId())
                 .setResType(courseInfo.getType())
+                .setFileSize(courseInfo.getSize())
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
@@ -309,6 +311,7 @@ public class ActivityUtils {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper((Activity) context);
         helper.setResId(courseInfo.getId())
                 .setResType(courseInfo.getType())
+                .setFileSize(courseInfo.getSize())
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
