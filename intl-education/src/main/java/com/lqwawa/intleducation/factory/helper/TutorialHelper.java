@@ -20,11 +20,8 @@ import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
-import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.AppliedResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
-import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
-import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
@@ -679,6 +676,7 @@ public class TutorialHelper {
     public static void requestAddTutorialComment(@NonNull String memberId,
                                                  @NonNull String tutorMemberId,
                                                  @NonNull String content,
+                                                 @NonNull int starLevel,
                                                  @NonNull DataSource.Callback<Boolean> callback) {
         // 准备数据
         RequestVo requestVo = new RequestVo();
@@ -692,6 +690,7 @@ public class TutorialHelper {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        requestVo.addParams("starLevel", starLevel);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());

@@ -208,7 +208,7 @@ public class TutorialCommentFragment extends PresenterFragment<TutorialCommentCo
 
     private void commitComment(@NonNull CommentDialog.CommentData data){
         String memberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
-        mPresenter.requestSendTutorialComment(memberId,mTutorMemberId,data.getContent());
+        mPresenter.requestSendTutorialComment(memberId,mTutorMemberId,data.getContent(),data.getScort());
     }
 
     @Override
