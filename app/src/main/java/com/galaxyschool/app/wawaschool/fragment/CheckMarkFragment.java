@@ -588,12 +588,12 @@ public class CheckMarkFragment extends ContactsListFragment {
                 public void onSendClick(TextView button, EditText text, float rating) {
                     String content = text.getText().toString();
                     int rate = (int) Math.floor(rating);
+                    String memberId = taskEntity.getStuMemberId();
                     String tutorMemberId = taskEntity.getAssMemberId();
                     if (null == text || TextUtils.isEmpty(content)) {
                         UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.enter_evaluation_content_please);
                         return;
                     }
-                    String memberId = com.lqwawa.intleducation.module.user.tool.UserHelper.getUserId();
                     // 准备数据
                     RequestVo requestVo = new RequestVo();
                     requestVo.addParams("memberId", memberId);
