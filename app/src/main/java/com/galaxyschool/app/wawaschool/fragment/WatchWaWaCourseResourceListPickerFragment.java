@@ -46,13 +46,12 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParam
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
-import com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary.OrganLibraryTypeActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
@@ -294,7 +293,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                     @Override
                     public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
                         String roles = schoolInfoEntity.getRoles();
-                        OrganCourseFiltrateActivity.show(
+                        NewOrganCourseFiltrateActivity.show(
                                 getActivity(),
                                 entity, true, false, resourceData,
                                 false, false, true,

@@ -601,6 +601,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" /> <!-- 在线学习二级页面 -->
         <activity
+            android:name=".module.organcourse.filtrate.NewOrganCourseFiltrateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" /> <!-- 在线学习二级页面 -->
+        <activity
             android:name=".module.discovery.ui.study.filtratelist.OnlineStudyFiltrateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" /> <!-- 在线学习分类课堂 -->

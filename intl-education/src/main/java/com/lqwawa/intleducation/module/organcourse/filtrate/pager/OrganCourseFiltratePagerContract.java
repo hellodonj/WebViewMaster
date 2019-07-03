@@ -2,7 +2,6 @@ package com.lqwawa.intleducation.module.organcourse.filtrate.pager;
 
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateParams;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface OrganCourseFiltratePagerContract {
          * @param pageSize 每页数据量
          */
         void requestCourseData(boolean more, int pageIndex,
-                               int pageSize, OrganCourseFiltrateParams params);
+                               int pageSize, OrganCourseFiltratePagerParams params);
         /**
          * 获取符合筛选条件的选择资源课程数据
          * @param more 是否是加载更多
@@ -31,7 +30,7 @@ public interface OrganCourseFiltratePagerContract {
          * @param level 级别
          */
         void requestCourseResourceData(boolean more, int pageIndex, int pageSize,
-                                       OrganCourseFiltrateParams params);
+                                       OrganCourseFiltratePagerParams params);
     }
 
     interface View extends BaseContract.View<Presenter> {

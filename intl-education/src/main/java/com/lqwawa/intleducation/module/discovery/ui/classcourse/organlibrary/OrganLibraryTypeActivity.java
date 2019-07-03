@@ -28,7 +28,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -152,7 +152,7 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
                                     entity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
                                     entity.setLevel(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL);
                                     entity.setEntityOrganId(mParams.getOrganId());
-                                    OrganCourseFiltrateActivity.show(
+                                    NewOrganCourseFiltrateActivity.show(
                                             OrganLibraryTypeActivity.this,
                                             entity, false, true,
                                             null, true, true, false, roles,
