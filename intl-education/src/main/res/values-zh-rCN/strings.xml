@@ -139,6 +139,9 @@
     <string name="order_status_1">交易成功</string>
     <string name="order_status_2">交易关闭</string>
     <string name="order_status_3">付款成功</string>
+    <string name="tutor_order_status_1">待批阅</string>
+    <string name="tutor_order_status_2">已完成</string>
+    <string name="tutor_order_status_3">已退款</string>
     <string name="feedback_tip1">请填写您的问题与建议，我们将不断改进</string>
     <string name="feedback_tip2">请填写手机号或QQ号，我们会在必要时与您联系</string>
     <string name="feedback_hint1">请填写意见</string>

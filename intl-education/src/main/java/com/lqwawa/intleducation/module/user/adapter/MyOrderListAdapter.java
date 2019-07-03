@@ -68,20 +68,33 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     ImageOptions imageOptions;
     ImageOptions liveImageOptions;
     ImageOptions onlineImageOptions;
+    ImageOptions orderImageOptions;
+    ImageOptions courseImageOptions;
     private static final int[] orderStatusResId = new int[]{
             R.string.order_status_0,
             R.string.order_status_1,
             R.string.order_status_2};
 
     private static final int[] orderTuttorStatusResId = new int[]{
+            R.string.order_status_3,
             R.string.order_status_1,
-            R.string.order_status_2,
-            R.string.order_status_3};
+            R.string.order_status_2};
+
+    private static final int[] orderTutorStatus = new int[]{
+            R.string.tutor_order_status_1,
+            R.string.tutor_order_status_2,
+            R.string.tutor_order_status_3};
 
     private static final int[] orderStatusColorId = new int[]{
             R.color.com_text_red,
             R.color.com_text_lq_green,
             R.color.text_gray};
+
+    private static final int[] orderTutorStatusColor = new int[]{
+            R.color.com_text_lq_green,
+            R.color.com_text_lq_green,
+            R.color.text_gray};
+
     private final int[] mCourseTypesBgId = new int[]{
             R.drawable.shape_course_type_read,
             R.drawable.shape_course_type_learn,
@@ -124,6 +137,22 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 //.setSize(img_width,img_height)
                 .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
+                .build();
+
+        orderImageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setCrop(false)
+                //.setSize(img_width,img_height)
+                .setLoadingDrawableId(R.drawable.ic_task_not_flag)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_task_not_flag)//加载失败后默认显示图片
+                .build();
+
+        courseImageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setCrop(false)
+                //.setSize(img_width,img_height)
+                .setLoadingDrawableId(R.drawable.ic_lqc)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_lqc)//加载失败后默认显示图片
                 .build();
 
         mCourseTypeNames =
@@ -247,52 +276,31 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             if (vo.getType() == 6) {
                 if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
                     holder.course_name.setText("[听读课]" + vo.getTaskName());
+                    // holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_lqc));
                 } else if (vo.getTaskType() == 13) {
                     holder.course_name.setText("[做读写单]" + vo.getTaskName());
+                    //holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_task_not_flag));
                 } else {
                     holder.course_name.setText(vo.getTaskName());
                 }
-                holder.teacher_name.setText("提交给"+vo.getRealName()+"老师");
+                holder.delete_order_tv.setVisibility(View.GONE);
+                holder.mTutorStatusTv.setVisibility(View.VISIBLE);
+                holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
+                holder.status_tv.setText(activity.getResources().getString(orderTuttorStatusResId[vo.getStatus()]));
+                holder.status_tv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
+                holder.rebuy_tv.setVisibility(View.GONE);
+                holder.mTutorStatusTv.setText(activity.getResources().getString(orderTutorStatus[vo.getStatus()]));
+                holder.mTutorStatusTv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
                 //0等待批阅 1交易成功 2交易关闭
-                if (vo.getStatus()==0){
-                    if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待批阅
-                        holder.rebuy_tv.setVisibility(View.VISIBLE);
-                        holder.rebuy_tv.setText(activity.getResources().getString(R.string.cancel_order));
-                        holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_pay));
-                        holder.delete_order_tv.setTextColor(activity.getResources().getColor(
-                                vo.isDeleted() ? R.color.com_text_light_gray : R.color.com_text_green));
-                        holder.delete_order_tv.setBackground(activity.getResources().getDrawable(
-                                vo.isDeleted() ? R.drawable.shape_circle_gray_stroke_h1_radius_18 : R.drawable.btn_green_stroke_bg_selector));
-                    } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
-                        holder.rebuy_tv.setVisibility(View.VISIBLE);
-                        holder.rebuy_tv.setText(activity.getResources().getString(R.string.delete_order));
-                        holder.delete_order_tv.setTextColor(activity.getResources().getColor(
-                                vo.isDeleted() ? R.color.com_text_light_gray : R.color.com_text_green));
-                        holder.delete_order_tv.setBackground(activity.getResources().getDrawable(
-                                vo.isDeleted() ? R.drawable.shape_circle_gray_stroke_h1_radius_18 : R.drawable.btn_green_stroke_bg_selector));
-                        if (vo.isIsExpire()) {
-                            holder.delete_order_tv.setVisibility(View.GONE);
-                            holder.delete_order_tv.setBackgroundResource(R.drawable.shape_circle_gray_stroke_h1_radius_18);
-                            holder.delete_order_tv.setTextColor(activity.getResources().getColor(R.color.com_text_gray));
-                        }
-                        if (vo.isIsJoin()) {
-                            holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_learn));
-
-                        } else {
-                            holder.delete_order_tv.setText(activity.getResources().getString(R.string.to_join));
-                        }
-
-                        // 已完成删除去学习和立即参加按钮
-                        if (getPayDirection(vo) == PayDirection.SELF_TO_OTHER) {
-                            // 我买给其它人
-                            holder.delete_order_tv.setVisibility(View.GONE);
-                        } else {
-                            //
-                            holder.delete_order_tv.setVisibility(View.VISIBLE);
-                        }
-                    }
+                if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待批阅
+                    holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
+                } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
+                } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
+                    holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.shape_circle_gray_stroke_h1_radius_18));
                 }
-
+            } else {
+                holder.mTutorStatusTv.setVisibility(View.GONE);
             }
         }
 
@@ -677,7 +685,6 @@ public class MyOrderListAdapter extends MyBaseAdapter {
 
                     builder.create().show();
                 }
-
             }
         });
 
@@ -693,6 +700,17 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             x.image().bind(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
+        } else if (vo.getType() == 6) {
+            // 帮辅订单
+            if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
+                x.image().bind(holder.course_iv,
+                        vo.getThumbnailUrl(),
+                        orderImageOptions);
+            } else if (vo.getTaskType() == 13) {
+                x.image().bind(holder.course_iv,
+                        vo.getThumbnailUrl(),
+                        courseImageOptions);
+            }
         } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂
@@ -958,6 +976,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         FrameLayout mBuyerLayout;
         TextView mtvBuyer;
         TextView mTvCourseType;
+        TextView mTutorStatusTv;
 
         public ViewHolder(View parentView) {
             coverLay = (RelativeLayout) parentView.findViewById(R.id.cover_lay);
@@ -976,6 +995,8 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             mBuyerLayout = (FrameLayout) parentView.findViewById(R.id.buyer_layout);
             mtvBuyer = (TextView) parentView.findViewById(R.id.tv_buyer);
             mTvCourseType = (TextView) parentView.findViewById(R.id.tv_course_type);
+            mTutorStatusTv = (TextView) parentView.findViewById(R.id.tutor_status_tv);
+
         }
     }
 

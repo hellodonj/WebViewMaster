@@ -141,6 +141,9 @@
     <string name="order_status_1">Completed</string>
     <string name="order_status_2">Closed</string>
     <string name="order_status_3">付款成功</string>
+    <string name="tutor_order_status_1">待批阅</string>
+    <string name="tutor_order_status_2">已完成</string>
+    <string name="tutor_order_status_3">已退款</string>
     <string name="feedback_tip1">Please enter your questions or comments which will keep us
         improving
     </string>

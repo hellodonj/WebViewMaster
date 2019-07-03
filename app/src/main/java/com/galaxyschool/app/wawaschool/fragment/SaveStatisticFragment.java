@@ -17,6 +17,7 @@ import com.lqwawa.apps.views.charts.PieView;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,29 +88,55 @@ public class SaveStatisticFragment extends ContactsListFragment {
     }
 
     private void loadPieData(StorageInfo info) {
-        totalSizeView.setText(getString(R.string.str_save_total_size,getSpaceSize(info.getTotalKb_All())));
-        totalSizeView.setVisibility(View.VISIBLE);
-        loadingContentView.setVisibility(View.GONE);
-        pieView.postDelayed(() -> {
-            float personalPercent =  (info.getTotalKb_Personal() / (float)info.getTotalKb_All());
-            float postBarPercent =  (info.getTotalKb_PostBar() / (float)info.getTotalKb_All());
-            float performPercent = 1 - personalPercent - postBarPercent;
-            ArrayList<PieHelper> pieHelpers = new ArrayList<PieHelper>();
-            pieHelpers.add(new PieHelper(100 * personalPercent, getSpaceSize(info.getTotalKb_Personal()),
-                    Color.parseColor(
-                    "#75c905")));
-            pieHelpers.add(new PieHelper(100 * postBarPercent, getSpaceSize(info.getTotalKb_PostBar()),
-                    Color.parseColor(
-                    "#38c2e0")));
-            pieHelpers.add(new PieHelper(100 * performPercent, getSpaceSize(info.getTotalKb_Perform()),
-                    Color.parseColor(
-                    "#fe9f22")));
-            pieView.setDate(pieHelpers);
-        }, 10);
+        long personalSize = getSpaceLongSize(info.getTotalKb_Personal());
+        long postBarSize = getSpaceLongSize(info.getTotalKb_PostBar());
+        long performSize = getSpaceLongSize(info.getTotalKb_Perform());
+        long totalSize = personalSize + postBarSize + performSize;
+        totalSizeView.setText(getString(R.string.str_save_total_size,getSpaceSize(totalSize)));
+        float personalPercent = personalSize / (float)totalSize;
+        float postBarPercent =  postBarSize / (float)totalSize;
+        float performPercent = 0f;
+        if (performSize > 0){
+            performPercent = 1 - personalPercent - postBarPercent;
+        }
+        if (totalSize > 0) {
+            float finalPerformPercent = performPercent;
+            pieView.postDelayed(() -> {
+                totalSizeView.setVisibility(View.VISIBLE);
+                loadingContentView.setVisibility(View.GONE);
+                ArrayList<PieHelper> pieHelpers = new ArrayList<PieHelper>();
+                pieHelpers.add(new PieHelper(100 * personalPercent, getSpaceSize(personalSize),
+                        Color.parseColor(
+                                "#75c905")));
+                pieHelpers.add(new PieHelper(100 * postBarPercent, getSpaceSize(postBarSize),
+                        Color.parseColor(
+                                "#38c2e0")));
+                pieHelpers.add(new PieHelper(100 * finalPerformPercent, getSpaceSize(performSize),
+                        Color.parseColor(
+                                "#fe9f22")));
+                pieView.setDate(pieHelpers);
+            }, 10);
+        } else {
+            loadingContentView.setText(getString(R.string.str_save_statistic_unuser));
+        }
     }
 
-    public String getSpaceSize(long kbSize){
+    public long getSpaceLongSize(long kbSize){
+        if (kbSize <= 1024 && kbSize > 0){
+            return 1;
+        }
         kbSize = kbSize / 1024;
-        return String.valueOf(kbSize) + "M";
+        return kbSize;
+    }
+
+    public String getSpaceSize(long mSize){
+        if (mSize <= 0){
+            return " ";
+        } else if (mSize < 1024){
+            return String.valueOf(mSize) + "M";
+        }
+        float gSize = mSize / (float)1024;
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(gSize) + "G";
     }
 }
