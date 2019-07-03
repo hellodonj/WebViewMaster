@@ -17,23 +17,17 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
-import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.CourseSelectFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateNavigator;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 import java.util.List;
@@ -55,15 +49,15 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
     private CourseListAdapter mCourseListAdapter;
     // 当前页
 
-    private OrganCourseFiltrateParams mParams;
+    private OrganCourseFiltratePagerParams mParams;
     private ShopResourceData mResourceData;
     private int mPageIndex;
     private String[] mLibraryNames;
 
-    public static OrganCourseFiltratePagerFragment newInstance(OrganCourseFiltrateParams params) {
+    public static OrganCourseFiltratePagerFragment newInstance(OrganCourseFiltratePagerParams params) {
         OrganCourseFiltratePagerFragment fragment = new OrganCourseFiltratePagerFragment();
         Bundle arguments = new Bundle();
-        arguments.putSerializable(OrganCourseFiltrateParams.class.getSimpleName(), params);
+        arguments.putSerializable(OrganCourseFiltratePagerParams.class.getSimpleName(), params);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -81,7 +75,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
 
     @Override
     protected boolean initArgs(Bundle bundle) {
-        mParams = (OrganCourseFiltrateParams) bundle.getSerializable(OrganCourseFiltrateParams.class.getSimpleName());
+        mParams = (OrganCourseFiltratePagerParams) bundle.getSerializable(OrganCourseFiltratePagerParams.class.getSimpleName());
         if (EmptyUtil.isEmpty(mParams)) {
             return false;
         }
@@ -106,7 +100,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
             CourseVo vo = (CourseVo) mCourseListAdapter.getItem(position);
             if (!mParams.isClassCourseEnter()) {
                 if (mParams.isSelectResource()) {
-                    if (!mParams.isAuthorized()) {
+                    if (!mParams.isReallyAuthorized()) {
                         UIUtil.showToastSafe(R.string.label_please_request_authorization);
                         return;
                     }
@@ -273,7 +267,7 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
     }
 
     @Override
-    public boolean triggerUpdateData(@NonNull OrganCourseFiltrateParams params) {
+    public boolean triggerUpdateData(@NonNull OrganCourseFiltratePagerParams params) {
         if (params != null) {
             mParams = params;
             requestCourseData(false);

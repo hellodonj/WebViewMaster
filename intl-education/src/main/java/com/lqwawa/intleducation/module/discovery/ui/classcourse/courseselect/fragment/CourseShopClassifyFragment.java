@@ -41,7 +41,7 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailTyp
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -167,12 +167,12 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
                     public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
                         String roles = schoolInfoEntity.getRoles();
                         if(mSelectResource){
-                            OrganCourseFiltrateActivity.show(
+                            NewOrganCourseFiltrateActivity.show(
                                     getActivity(),
                                     entity,mSelectResource,false,
                                     mResourceData,isAuthorized,isReallyAuthorized,false,roles, 0);
                         }else{
-                            OrganCourseFiltrateActivity.show(
+                            NewOrganCourseFiltrateActivity.show(
                                     getActivity(),
                                     entity,false,true,
                                     null,isAuthorized,isReallyAuthorized,false,roles, 0);
@@ -350,7 +350,7 @@ public class CourseShopClassifyFragment extends PresenterFragment<CourseShopClas
             /*ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
             setResult(Activity.RESULT_OK,new Intent().putExtra(RESULT_LIST, vos));
             // 杀掉所有可能的UI
-            ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
+            ActivityUtil.finishActivity(NewOrganCourseFiltrateActivity.class);
             ActivityUtil.finishActivity(SearchActivity.class);
             finish();*/
         }

@@ -25,7 +25,6 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortTy
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.OnlineSortType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
 import com.lqwawa.intleducation.module.organcourse.online.SearchNavigator;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;

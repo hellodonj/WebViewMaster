@@ -46,7 +46,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.pager.CourseClassifyPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
@@ -242,7 +242,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
                 // 获取该分类是否获取到授权
                 boolean reallyAuthorized = judgeClassifyAuthorizedInfo(entity);
-                OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this, entity,
+                NewOrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this, entity,
                         mSelectResource, false, mResourceData, isAuthorized, reallyAuthorized, false,
                         mRoles, mLibraryType);
             }
@@ -360,7 +360,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     }*/
                     // 获取该分类是否获取到授权
                     boolean reallyAuthorized = judgeClassifyAuthorizedInfo(entity);
-                    OrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this, entity,
+                    NewOrganCourseFiltrateActivity.show(OrganCourseClassifyActivity.this, entity,
                             mSelectResource, false, mResourceData, isAuthorized, reallyAuthorized,
                             false, mRoles, mLibraryType);
                 }
@@ -548,7 +548,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
                 // 杀掉所有可能的UI
-                ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
+                ActivityUtil.finishActivity(NewOrganCourseFiltrateActivity.class);
                 ActivityUtil.finishActivity(SearchActivity.class);
                 finish();
             }
@@ -626,7 +626,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
     private static void enterOrganCourseFiltrate(@NonNull Activity activity, LQCourseConfigEntity lqCourseConfigEntity, int libraryType,
                                                  boolean selectResource, @NonNull ShopResourceData data, @NonNull String roles) {
-        OrganCourseFiltrateActivity.show(activity, lqCourseConfigEntity, selectResource, false, data,
+        NewOrganCourseFiltrateActivity.show(activity, lqCourseConfigEntity, selectResource, false, data,
                 false, false, true, roles, libraryType);
     }
 
