@@ -47,7 +47,7 @@ import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -264,13 +264,13 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                         String roles = schoolInfoEntity.getRoles();
                         if (mSelectResource) {
                             Bundle extras = getIntent().getBundleExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK);
-                            OrganCourseFiltrateActivity.show(
+                            NewOrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity, mSelectResource, false,
                                     mResourceData, extras, isAuthorized, isReallyAuthorized, false,
-                                    roles, mLibraryType);
+                                    roles, mLibraryType, "");
                         } else {
-                            OrganCourseFiltrateActivity.show(
+                            NewOrganCourseFiltrateActivity.show(
                                     CourseShopClassifyActivity.this,
                                     entity, false, true,
                                     null, isAuthorized, isReallyAuthorized, false, roles, mLibraryType);
@@ -536,7 +536,7 @@ public class CourseShopClassifyActivity extends PresenterActivity<CourseShopClas
                 ArrayList<SectionResListVo> vos = (ArrayList<SectionResListVo>) event.getData();
                 setResult(Activity.RESULT_OK, new Intent().putExtra(RESULT_LIST, vos));
                 // 杀掉所有可能的UI
-                ActivityUtil.finishActivity(OrganCourseFiltrateActivity.class);
+                ActivityUtil.finishActivity(NewOrganCourseFiltrateActivity.class);
                 ActivityUtil.finishActivity(SearchActivity.class);
                 finish();
             }

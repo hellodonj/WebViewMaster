@@ -152,8 +152,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         isFromScan = getArguments().getBoolean("isFromScan", false);
         resIds = getArguments().getStringArrayList("resIds");
 
-        mLLPlayList.setVisibility(View.VISIBLE);
         if (EmptyUtil.isNotEmpty(resIds)){
+            mLLPlayList.setVisibility(View.VISIBLE);
 //            List<String> list = new ArrayList<String>();
 //            list.add("712577-19");
 //            list.add("715481-19");
@@ -162,6 +162,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
                 TaskSliderHelper.onPlayListListener.startPlay();
             }
+        }else {
+            mLLPlayList.setVisibility(View.GONE);
         }
 
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {

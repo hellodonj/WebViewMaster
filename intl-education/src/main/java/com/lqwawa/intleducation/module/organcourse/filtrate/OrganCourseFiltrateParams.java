@@ -1,101 +1,37 @@
 package com.lqwawa.intleducation.module.organcourse.filtrate;
 
-
 import android.os.Bundle;
 
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
 
 import java.io.Serializable;
 
 /**
  * @author: wangchao
- * @date: 2019/05/15
+ * @date: 2019/07/02
  * @desc:
  */
-public class OrganCourseFiltrateParams implements Serializable, Cloneable {
-    private String organId;
-    private String level;
-    private int sort;
-    private String keyString;
-    private int paramOneId;
-    private int paramTwoId;
-    private int paramThreeId;
+public class OrganCourseFiltrateParams implements Serializable {
+    private LQCourseConfigEntity lqCourseConfigEntity;
     private int libraryType;
     private boolean isClassCourseEnter;
     private boolean isSelectResource;
     private boolean isAuthorized;
     private boolean isReallyAuthorized;
     private ShopResourceData shopResourceData;
+    private boolean isHostEnter;
+    private String roles;
+    private String keyString;
+    private boolean isHideTopBar;
     private Bundle bundle;
 
-    public OrganCourseFiltrateParams(String organId, int libraryType,
-                                     int sort, boolean isClassCourseEnter) {
-        this.organId = organId;
-        this.libraryType = libraryType;
-        this.sort = sort;
-        this.isClassCourseEnter = isClassCourseEnter;
+    public LQCourseConfigEntity getLqCourseConfigEntity() {
+        return lqCourseConfigEntity;
     }
 
-    public String getOrganId() {
-        return organId;
-    }
-
-    public OrganCourseFiltrateParams setOrganId(String organId) {
-        this.organId = organId;
-        return this;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public OrganCourseFiltrateParams setLevel(String level) {
-        this.level = level;
-        return this;
-    }
-
-    public int getSort() {
-        return sort;
-    }
-
-    public OrganCourseFiltrateParams setSort(int sort) {
-        this.sort = sort;
-        return this;
-    }
-
-    public String getKeyString() {
-        return keyString;
-    }
-
-    public OrganCourseFiltrateParams setKeyString(String keyString) {
-        this.keyString = keyString;
-        return this;
-    }
-
-    public int getParamOneId() {
-        return paramOneId;
-    }
-
-    public OrganCourseFiltrateParams setParamOneId(int paramOneId) {
-        this.paramOneId = paramOneId;
-        return this;
-    }
-
-    public int getParamTwoId() {
-        return paramTwoId;
-    }
-
-    public OrganCourseFiltrateParams setParamTwoId(int paramTwoId) {
-        this.paramTwoId = paramTwoId;
-        return this;
-    }
-
-    public int getParamThreeId() {
-        return paramThreeId;
-    }
-
-    public OrganCourseFiltrateParams setParamThreeId(int paramThreeId) {
-        this.paramThreeId = paramThreeId;
+    public OrganCourseFiltrateParams setLqCourseConfigEntity(LQCourseConfigEntity lqCourseConfigEntity) {
+        this.lqCourseConfigEntity = lqCourseConfigEntity;
         return this;
     }
 
@@ -112,8 +48,8 @@ public class OrganCourseFiltrateParams implements Serializable, Cloneable {
         return isClassCourseEnter;
     }
 
-    public OrganCourseFiltrateParams setIsClassCourseEnter(boolean isClassCourseEnter) {
-        this.isClassCourseEnter = isClassCourseEnter;
+    public OrganCourseFiltrateParams setClassCourseEnter(boolean classCourseEnter) {
+        isClassCourseEnter = classCourseEnter;
         return this;
     }
 
@@ -150,6 +86,42 @@ public class OrganCourseFiltrateParams implements Serializable, Cloneable {
 
     public OrganCourseFiltrateParams setShopResourceData(ShopResourceData shopResourceData) {
         this.shopResourceData = shopResourceData;
+        return this;
+    }
+
+    public boolean isHostEnter() {
+        return isHostEnter;
+    }
+
+    public OrganCourseFiltrateParams setHostEnter(boolean hostEnter) {
+        isHostEnter = hostEnter;
+        return this;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public OrganCourseFiltrateParams setRoles(String roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    public String getKeyString() {
+        return keyString;
+    }
+
+    public OrganCourseFiltrateParams setKeyString(String keyString) {
+        this.keyString = keyString;
+        return this;
+    }
+
+    public boolean isHideTopBar() {
+        return isHideTopBar;
+    }
+
+    public OrganCourseFiltrateParams setHideTopBar(boolean hideTopBar) {
+        isHideTopBar = hideTopBar;
         return this;
     }
 
