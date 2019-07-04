@@ -239,6 +239,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 if (item.isChecked()) {
                     trigger = true;
                     PayActivity.newInstance(this, true,mChoiceParams, item);
+                    finish();
                 }
             }
 

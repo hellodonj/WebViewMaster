@@ -706,6 +706,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                     if (code == 0) {
                         // 通过EventBus通知
                         EventBus.getDefault().post(new EventWrapper(orderId, EventConstant.CREATE_TUTOR_ORDER));
+                        finish();
                     }
                 }
 
