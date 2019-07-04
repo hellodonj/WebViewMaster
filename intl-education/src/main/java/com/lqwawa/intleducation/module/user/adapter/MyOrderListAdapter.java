@@ -274,10 +274,10 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             }
             //帮辅订单
             if (vo.getType() == 6) {
-                if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
+                if (vo.getTaskType() == 5) {
                     holder.course_name.setText("[听读课]" + vo.getTaskName());
                     // holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_lqc));
-                } else if (vo.getTaskType() == 13) {
+                } else if (vo.getTaskType() == 8) {
                     holder.course_name.setText("[做读写单]" + vo.getTaskName());
                     //holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_task_not_flag));
                 } else {
@@ -702,14 +702,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                     imageOptions);
         } else if (vo.getType() == 6) {
             // 帮辅订单
-            if (vo.getTaskType() == 5 || vo.getTaskType() == 12) {
-                x.image().bind(holder.course_iv,
-                        vo.getThumbnailUrl(),
-                        orderImageOptions);
-            } else if (vo.getTaskType() == 13) {
+            if (vo.getTaskType() == 5) {
                 x.image().bind(holder.course_iv,
                         vo.getThumbnailUrl(),
                         courseImageOptions);
+            } else if (vo.getTaskType() == 8) {
+                x.image().bind(holder.course_iv,
+                        vo.getThumbnailUrl(),
+                        orderImageOptions);
             }
         } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
