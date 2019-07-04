@@ -728,6 +728,9 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             } else {
                 holder.mTvBuyType.setText(String.format(UIUtil.getString(R.string.label_order_buy_number_chapter), vo.getBuyChapterNum()));
             }
+        } else if (vo.getType() == 6) {
+            holder.mTvBuyType.setVisibility(View.VISIBLE);
+            holder.mTvBuyType.setText(R.string.label_tutorial);
         } else {
             holder.mTvBuyType.setVisibility(View.GONE);
         }
