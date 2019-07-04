@@ -70,7 +70,7 @@ public class CoinsDetailAdapter extends BaseAdapter {
         holder.tvTime.setText(simpleDateFormat.format(date));
         holder.tvRefund.setVisibility(View.GONE);
         if (info.getVtype() == 0) {
-
+            holder.tvRefund.setVisibility(View.GONE);
             if (info.getRechargeType() == -4) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText(Integer.toString(info.getAmount()));
@@ -79,14 +79,12 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
                 holder.tvCount.setTextColor(Color.parseColor("#161616"));
-                holder.tvName.setText(R.string.label_coins_detail_1);
+                holder.tvName.setText(info.getTypeC());
             } else if (info.getRechargeType() == 6) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
                 holder.tvCount.setTextColor(Color.parseColor("#161616"));
-                StringBuffer sb = new StringBuffer();
-                sb.append(R.string.label_coins_detail_2).append(info.getRealName());
-                holder.tvName.setText(sb.toString());
+                holder.tvName.setText(info.getTypeC());
             } else {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
@@ -135,7 +133,20 @@ public class CoinsDetailAdapter extends BaseAdapter {
                     holder.tvName.setText(spanBuilder);
                     break;
             }
+        } else if (info.getVtype() == 1) {
+            holder.tvCount.setVisibility(View.VISIBLE);
+            holder.tvName.setText(info.getTypeC());
+            holder.tvCount.setTextColor(Color.parseColor("#161616"));
+            holder.tvCount.setText("-" + info.getAmount());
+            if (info.getConsumeType() == 5) {
+                if (info.getIsRefunded() == 1) {
+                    holder.tvRefund.setVisibility(View.VISIBLE);
+                } else if (info.getIsRefunded() == 0) {
+                    holder.tvRefund.setVisibility(View.GONE);
+                }
+            }
         } else {
+            holder.tvRefund.setVisibility(View.GONE);
             holder.tvCount.setVisibility(View.VISIBLE);
             holder.tvCount.setTextColor(Color.parseColor("#161616"));
             holder.tvCount.setText("-" + info.getAmount());
@@ -174,17 +185,6 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 }
 
                 holder.tvName.setText(spanBuilder);
-            } else if (info.getConsumeType() == 5) {
-                if (info.getIsRefunded() == 1) {
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(R.string.label_coins_detail_3).append(info.getRealName());
-                    holder.tvName.setText(sb.toString());
-                    holder.tvRefund.setVisibility(View.VISIBLE);
-                } else if (info.getIsRefunded() == 0) {
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(R.string.label_coins_detail_3).append(info.getRealName());
-                    holder.tvName.setText(sb.toString());
-                }
             }
         }
 
