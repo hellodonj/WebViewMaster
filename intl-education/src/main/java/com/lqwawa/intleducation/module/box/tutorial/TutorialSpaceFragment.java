@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.ui.ContactsInputDialog;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
@@ -175,7 +176,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
 
     //设置批阅价格弹框
     private void showEditReviewPriceDialog() {
-         inputBoxDialog = new ContactsInputDialog(
+        inputBoxDialog = new ContactsInputDialog(
                 getActivity(),
                 getString(R.string.review_price_dialog_title),
                 null,
@@ -184,7 +185,6 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
                 (dialog, which) -> dialog.dismiss(),
                 getString(R.string.confirm), (dialog, which) -> {
             confirmReviewPrice();
-            dialog.dismiss();
         });
         inputBoxDialog.setIsAutoDismiss(false);
         inputBoxDialog.show();
@@ -194,30 +194,35 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
     private void confirmReviewPrice() {
         //IntroductionSuperTaskFragment 845
         String memberId = UserHelper.getUserId();
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("memberId", memberId);
-        requestVo.addParams("markingPrice", inputBoxDialog.getInputText());
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.UpdateTutorInfo + requestVo.getParams());
-        params.setConnectTimeout(10000);
-        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
-        x.http().get(params, new StringCallback<String>() {
-            @Override
-            public void onSuccess(String str) {
-                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
-                };
-                ResponseVo responseVo = JSON.parseObject(str, typeReference);
-                if (responseVo.isSucceed()) {
-                    ToastUtil.showToast(getActivity(), R.string.modify_success_tip);
+        String etPrice = inputBoxDialog.getInputText();
+        if (EmptyUtil.isEmpty(etPrice) || etPrice.equals("") || etPrice.equals("0")) {
+            ToastUtil.showToast(getContext(), "请输入有效的批阅价格");
+        } else {
+            RequestVo requestVo = new RequestVo();
+            requestVo.addParams("memberId", memberId);
+            requestVo.addParams("markingPrice", etPrice);
+            RequestParams params = new RequestParams(AppConfig.ServerUrl.UpdateTutorInfo + requestVo.getParams());
+            params.setConnectTimeout(10000);
+            LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+            x.http().get(params, new StringCallback<String>() {
+                @Override
+                public void onSuccess(String str) {
+                    LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                    TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+                    };
+                    ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                    if (responseVo.isSucceed()) {
+                        inputBoxDialog.dismiss();
+                        ToastUtil.showToast(getActivity(), R.string.modify_success_tip);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Throwable throwable, boolean b) {
-                super.onError(throwable, b);
-                ToastUtil.showToast(getActivity(), R.string.net_error_tip);
-            }
-        });
-
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    super.onError(throwable, b);
+                    ToastUtil.showToast(getActivity(), R.string.net_error_tip);
+                }
+            });
+        }
     }
 }

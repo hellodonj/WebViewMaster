@@ -543,4 +543,5 @@
     <string name="label_coins_detail_2">批阅作业-</string>
     <string name="label_coins_detail_3">申请批阅-</string>
     <string name="label_refunded">已退款</string>
+    <string name="label_tutorial">帮辅</string>
 </resources>
