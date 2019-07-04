@@ -760,7 +760,7 @@ public class MOOCHelper {
                 }
             }
         });
-        task.checkCanReplaceIPAddress(courseData.id, courseData.type, task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type,courseData.size, task);
     }
 
     /**

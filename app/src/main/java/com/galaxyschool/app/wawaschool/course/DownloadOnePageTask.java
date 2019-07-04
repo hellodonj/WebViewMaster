@@ -189,10 +189,14 @@ public class DownloadOnePageTask extends MyAsyncTask<LocalCourseDTO> {
      * @param resId
      * @param resType
      */
-    public void checkCanReplaceIPAddress(int resId, int resType, final DownloadOnePageTask task) {
+    public void checkCanReplaceIPAddress(int resId,
+                                         int resType,
+                                         int fileSize,
+                                         final DownloadOnePageTask task) {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(activity);
         helper.setResId(resId)
                 .setResType(resType)
+                .setFileSize(fileSize)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {

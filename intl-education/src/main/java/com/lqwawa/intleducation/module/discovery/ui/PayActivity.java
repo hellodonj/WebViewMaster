@@ -663,6 +663,8 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             int taskId = mParams.getModel().getT_TaskId();
             int taskType = mParams.getModel().getT_TaskType();
             int price = (int) Math.floor(Double.parseDouble(mChoiceEntity.getMarkingPrice()));
+            String courseId = mParams.getModel().getT_CourseId();
+            String courseName = mParams.getModel().getT_CourseName();
             String memberId = mParams.getMemberId();
             String tutorMemberId = mChoiceEntity.getMemberId();
             String title = mParams.getModel().getTitle();
@@ -675,8 +677,11 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             requestVo.addParams("title", title);
             requestVo.addParams("memberId", memberId);
             requestVo.addParams("consumeSource", 2);
-            if (EmptyUtil.isNotEmpty(mParams.getModel().getT_CourseName())) {
-                requestVo.addParams("courseName", mParams.getModel().getT_CourseName());
+            if (EmptyUtil.isNotEmpty(courseId) && !courseId.equals("0")) {
+                requestVo.addParams("courseId", courseId);
+            }
+            if (EmptyUtil.isNotEmpty(courseName)) {
+                requestVo.addParams("courseName", courseName);
             }
             requestVo.addParams("tutorMemberId", tutorMemberId);
             RequestParams params = new RequestParams(AppConfig.ServerUrl.CreateTutorOrder);

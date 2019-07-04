@@ -46,7 +46,7 @@ public class TutorialEvaluationPopWindow extends PopupWindow {
         mTvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onSendClick(mTvSend, mEtEvaluation);
+                mListener.onSendClick(mTvSend, mEtEvaluation, mRatingBar.getRating());
                 dismiss();
             }
         });
@@ -87,7 +87,7 @@ public class TutorialEvaluationPopWindow extends PopupWindow {
     }
 
     public interface OnSendClickListener {
-        void onSendClick(TextView button, EditText text);
+        void onSendClick(TextView button, EditText text, float rating);
     }
 
     private OnSendClickListener mListener;

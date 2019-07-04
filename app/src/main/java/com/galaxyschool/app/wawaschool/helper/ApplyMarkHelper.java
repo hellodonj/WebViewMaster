@@ -174,6 +174,7 @@ public class ApplyMarkHelper {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper((Activity) mContext);
         helper.setResId(courseData.id)
                 .setResType(courseData.type)
+                .setFileSize(courseData.size)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {

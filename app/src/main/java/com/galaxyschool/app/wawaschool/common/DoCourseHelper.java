@@ -455,7 +455,7 @@ public class DoCourseHelper {
                     newResourceInfo.getScreenType(), Utils.DOWNLOAD_TEMP_FOLDER, null);
             task.setCallbackListener(callbackListener);
             task.checkCanReplaceIPAddress(Integer.valueOf(newResourceInfo.getMicroId()),
-                    newResourceInfo.getResourceType(), task);
+                    newResourceInfo.getResourceType(), newResourceInfo.getFileSize(),task);
         }
     }
 
@@ -584,6 +584,7 @@ public class DoCourseHelper {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper((Activity) mContext);
         helper.setResId(courseData.id)
                 .setResType(courseData.type)
+                .setFileSize(courseData.size)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
@@ -711,7 +712,7 @@ public class DoCourseHelper {
                 (Activity) mContext, courseData.resourceurl, courseData.nickname,
                 courseData.screentype, Utils.DOWNLOAD_TEMP_FOLDER, jsonString);
         task.setCallbackListener(callbackListener);
-        task.checkCanReplaceIPAddress(courseData.id, courseData.type, task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type,courseData.size, task);
     }
 
 

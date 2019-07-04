@@ -26,8 +26,10 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -66,11 +68,18 @@ import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.galaxyschool.app.wawaschool.views.TutorialEvaluationPopWindow;
 import com.libs.gallery.ImageInfo;
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
+import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
@@ -84,7 +93,11 @@ import com.osastudio.common.utils.LQImageLoader;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -142,6 +155,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isAssistanceModel;//是不是帮辅模式
     private TaskEntity taskEntity;
     private boolean hasAlreadyMark;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -209,7 +223,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         TextView tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
         if (tvTutorial != null) {
             //1 已批阅 角色是学生
-            if (EmptyUtil.isNotEmpty(taskEntity)){
+            if (EmptyUtil.isNotEmpty(taskEntity)) {
                 if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE) {//&& roleType == RoleType.ROLE_TYPE_STUDENT
                     tvTutorial.setVisibility(View.VISIBLE);
                     tvTutorial.setText(R.string.str_tutorial_btn);
@@ -560,18 +574,71 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void mEvaluationDialog() {
         TutorialEvaluationPopWindow popWindow = new TutorialEvaluationPopWindow(getActivity());
         popWindow.showAtLocation(findViewById(R.id.ll_layout1), Gravity.BOTTOM, 0, 0);
+
         if (popWindow != null) {
             popWindow.setOnRatingBarClickListener(new TutorialEvaluationPopWindow.OnRatingBarClickListener() {
                 @Override
                 public void onRatingBarClick(RatingBar ratingBar, float v) {
-                    ToastUtil.showToast(getActivity(), v + "颗星");
+
                 }
             });
 
             popWindow.setOnSendClickListener(new TutorialEvaluationPopWindow.OnSendClickListener() {
                 @Override
-                public void onSendClick(TextView button, EditText text) {
-                    ToastUtil.showToast(getActivity(), text.getText().toString());
+                public void onSendClick(TextView button, EditText text, float rating) {
+                    String content = text.getText().toString();
+                    int rate = (int) Math.floor(rating);
+                    String memberId = taskEntity.getStuMemberId();
+                    String tutorMemberId = taskEntity.getAssMemberId();
+                    if (null == text || TextUtils.isEmpty(content)) {
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.enter_evaluation_content_please);
+                        return;
+                    }
+                    // 准备数据
+                    RequestVo requestVo = new RequestVo();
+                    requestVo.addParams("memberId", memberId);
+                    requestVo.addParams("tutorMemberId",tutorMemberId );
+                    try {
+                        String encodeContent = URLEncoder.encode(content, "utf-8");
+                        encodeContent = encodeContent.replaceAll("%0A", "\n");
+                        requestVo.addParams("content", encodeContent);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    requestVo.addParams("starLevel", rate);
+                    RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
+                    params.setConnectTimeout(10000);
+                    LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+                    x.http().get(params, new StringCallback<String>() {
+                        @Override
+                        public void onSuccess(String str) {
+                            TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+                            };
+                            ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                            if (responseVo.isSucceed()) {
+                                // 刷新UI
+                                if (getActivity() instanceof CourseDetailsNavigator) {
+                                    CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
+                                    navigator.commitComment();
+                                }
+                                // 清除评论区域的内容
+                                if (getActivity() instanceof CourseDetailsNavigator) {
+                                    CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
+                                    navigator.clearContent();
+                                }
+                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
+                                        UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
+                            } else {
+                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
+                                        UIUtil.getString(com.lqwawa.intleducation.R.string.failed) + "!");
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable, boolean b) {
+
+                        }
+                    });
                 }
             });
         }
@@ -812,10 +879,10 @@ public class CheckMarkFragment extends ContactsListFragment {
                 });
     }
 
-    private void hasMarkData(List<CheckMarkInfo.ModelBean> list){
-        for (int i = 0; i < list.size(); i++){
+    private void hasMarkData(List<CheckMarkInfo.ModelBean> list) {
+        for (int i = 0; i < list.size(); i++) {
             CheckMarkInfo.ModelBean modelBean = list.get(i);
-            if (modelBean != null && modelBean.getSubmitRole() == 0){
+            if (modelBean != null && modelBean.getSubmitRole() == 0) {
                 //已经批阅
                 hasAlreadyMark = true;
                 break;
@@ -1320,7 +1387,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 String slidePath = bundle.getString(SlideManager.EXTRA_SLIDE_PATH);
                 ApplyMarkHelper helper = new ApplyMarkHelper();
                 helper.uploadCourse(getActivity(), slidePath, coursePath, commitTask.getId(),
-                        false,hasAlreadyMark);
+                        false, hasAlreadyMark);
             }
         } else if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.TRIGGER_UPDATE_LIST_DATA)) {
             loadCommonData();

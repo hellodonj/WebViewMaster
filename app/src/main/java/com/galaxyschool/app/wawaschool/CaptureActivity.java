@@ -945,7 +945,7 @@ public class CaptureActivity extends ScanActivity {
                 }
             }
         });
-        task.checkCanReplaceIPAddress(courseData.id, courseData.type, task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type,courseData.size, task);
     }
 
     private void openLocalOnePage(LocalCourseDTO data, int screenType, String jsonString) {

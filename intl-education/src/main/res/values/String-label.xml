@@ -431,7 +431,7 @@
     <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
     <string name="label_choice_tutor_tip">Please select tutor</string>
     <string name="label_commit_succeed">Submitted successfully</string>
-    <string name="label_commit_succeed_tip">Homework submitted to teacher %s, marking will be completed within 2 working days, please wait.</string>
+    <string name="label_commit_succeed_tip">Homework submitted to teacher %s, marking will be completed within 24 hours, please wait.</string>
     <string name="label_again_submit">Continue to submit</string>
     <string name="label_watch_work">View Homework</string>
     <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
