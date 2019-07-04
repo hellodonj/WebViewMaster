@@ -960,5 +960,8 @@ public final class AppConfig {
         public static final String CreateTutorOrder =
                 PayBase + "api/tutor/createTutorOrder";
 
+        //帮辅协议
+        public static final String TutorAgreement =
+                ServerBase + "api/common/tutorAgreement";
     }
 }

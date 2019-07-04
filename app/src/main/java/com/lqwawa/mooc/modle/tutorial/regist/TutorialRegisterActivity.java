@@ -26,7 +26,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -38,6 +37,7 @@ import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.ImagePopupView;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
@@ -56,6 +56,7 @@ import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.factory.data.entity.MediaEntity;
 import com.lqwawa.mooc.modle.tutorial.audit.TutorialAuditActivity;
 import com.osastudio.common.utils.PhotoUtils;
@@ -226,9 +227,11 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         //点击事件，自由操作
         @Override
         public void onClick(View widget) {
-            Toast.makeText(TutorialRegisterActivity.this, "跳转url", Toast.LENGTH_SHORT).show();
+            String url = AppConfig.ServerUrl.TutorAgreement;
+            WebActivity.start(TutorialRegisterActivity.this, url, "《帮辅服务协议》");
         }
     }
+
 
     /**
      * 设置必填项
@@ -478,10 +481,9 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         String certificateUrl = mUrlArray.get(mBtnCertificateUpload.getId(), "");
         String businessUrl = mUrlArray.get(mBtnBusinessUpload.getId(), "");
 
-        showLoading();
-
         //选中
-        if (mCheckBox.isChecked()){
+        if (mCheckBox.isChecked()) {
+            showLoading();
             mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
                     idType, identifyNumber,
                     UserHelper.getUserId(), UserHelper.getUserName(),
@@ -490,8 +492,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                     cityId, cityName,
                     districtId, districtName,
                     workLife, certificateUrl, businessUrl);
-        }else {
-            ToastUtil.showToast(this,"未选择复选框协议!");
+        } else {
+            ToastUtil.showToast(this, "未选择复选框协议!");
         }
 
     }
