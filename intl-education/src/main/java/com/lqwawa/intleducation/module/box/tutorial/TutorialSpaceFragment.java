@@ -195,7 +195,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
         //IntroductionSuperTaskFragment 845
         String memberId = UserHelper.getUserId();
         String etPrice = inputBoxDialog.getInputText();
-        if (EmptyUtil.isEmpty(etPrice) || etPrice.equals("") || etPrice.equals("0")) {
+        if (EmptyUtil.isEmpty(etPrice) || etPrice.equals("") || etPrice.equals("0") || etPrice.length() > 9) {
             ToastUtil.showToast(getContext(), "请输入有效的批阅价格");
         } else {
             RequestVo requestVo = new RequestVo();
