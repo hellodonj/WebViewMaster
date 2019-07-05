@@ -423,6 +423,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isAutoMark) {
                     needScore = isChecked;
+                } else if (superTaskType != StudyTaskType.Q_DUBBING){
+                    mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
                 }
             }
         });
@@ -543,7 +545,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     if (hasPointData()) {
                         mSelectMark.setVisibility(View.GONE);
                     } else {
-                        mSelectMark.setVisibility(View.VISIBLE);
+                        if (mRbMarkYes.isChecked()) {
+                            mSelectMark.setVisibility(View.VISIBLE);
+                        }
                     }
                 }, result -> {
             //打开
@@ -1561,7 +1565,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         tag.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
                     }
                 }
-                mSelectMark.setVisibility(View.GONE);
+                updateScoreView(View.GONE);
             }
         }
         if (listenAdapter != null) {
