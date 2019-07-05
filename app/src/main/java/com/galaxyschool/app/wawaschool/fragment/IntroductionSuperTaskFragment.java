@@ -838,6 +838,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             taskFileName = title;
             confirmSelectTaskData();
         });
+        inputBoxDialog.setUnitDisplay(false);
         inputBoxDialog.setIsAutoDismiss(false);
         inputBoxDialog.show();
     }
