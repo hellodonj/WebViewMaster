@@ -47,6 +47,15 @@ public class TaskEntity implements Serializable {
     private String UpdateTime;
     private int ExpireHour;
     private String ServerNowTime;
+    private boolean overTimed;//已过期
+
+    public boolean isOverTimed() {
+        return overTimed;
+    }
+
+    public void setOverTimed(boolean overTimed) {
+        this.overTimed = overTimed;
+    }
 
     public String getAssHeadPicUrl() {
         return AssHeadPicUrl;

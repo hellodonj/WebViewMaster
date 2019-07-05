@@ -1169,7 +1169,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         true,
                         MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
                         String.valueOf(commitTask.getId()),
-                        TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
+                        (taskEntity != null && taskEntity.isOverTimed()) || TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
                         false,
                         "",
                         true);
