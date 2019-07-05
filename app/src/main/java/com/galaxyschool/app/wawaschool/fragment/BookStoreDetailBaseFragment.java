@@ -395,7 +395,10 @@ public class BookStoreDetailBaseFragment extends ContactsExpandListFragment impl
             if (!isPickSchoolResource) {
                 enterCatalogLessonList(calalog, bookId, schoolId, fromType);
             } else {
-                if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                if (superTaskType == StudyTaskType.Q_DUBBING) {
+                    //Q配音
+                    enterPublicResource(calalog, bookId, schoolId, fromType);
+                } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                         || taskType == StudyTaskType.RETELL_WAWA_COURSE
                         || taskType == StudyTaskType.TASK_ORDER){
                     //听说 + 读写过来选取资源 或者综合任务

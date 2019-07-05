@@ -37,11 +37,13 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CampusPatrolPickerFragment;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
+import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.medias.activity.MyLocalVideoListActivity;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -72,6 +74,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -122,6 +125,8 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
     private boolean mFromSchoolResource;//从校本资源库,精品资源库,我的课程进入
     private boolean isFromOnline;
     private boolean isGetAppointResource;
+    private boolean isFromStudyTask;
+    private int superTaskType;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -166,6 +171,11 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             isGetAppointResource = getArguments().getBoolean(ActivityUtils
                     .EXTRA_IS_GET_APPOINT_RESOURCE,false);
+            isFromStudyTask = getArguments().getBoolean(MediaListFragment.EXTRA_SUPPORT_MULTI_TYPE_WATCH_WAWA_COURSE);
+            if (isFromStudyTask) {
+                maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
+            }
+            superTaskType = getArguments().getInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE);
         }
     }
     private void initCatalogsNochildren() {
@@ -523,7 +533,7 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
             if (isGetAppointResource){
                 maxCount = 1;
             } else if (WatchWawaCourseResourceSplicingUtils.
-                    watchWawaCourseSupportMultiType(getArguments())){
+                    watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
                 //控制资源最多选多少
                 maxCount = WatchWawaCourseResourceSplicingUtils.
                         controlResourcePickedMaxCount(mediaType,maxCount,false);
@@ -698,6 +708,7 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
 
                 if (getPageHelper().isFetchingPageIndex(result.getModel().getPager())) {
                     List<NewResourceInfoTag> list = result.getModel().getData();
+                    filterOrdinaryVideo(list);
                     if (list == null || list.size() <= 0) {
                         if (getPageHelper().isFetchingFirstPage()) {
                             getCurrAdapterViewHelper().clearData();
@@ -801,6 +812,21 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
                 }
             }
         });
+    }
+
+    private void filterOrdinaryVideo(List<NewResourceInfoTag> list){
+        if (list == null || list.size() == 0){
+            return;
+        }
+        if (superTaskType == StudyTaskType.Q_DUBBING){
+            Iterator<NewResourceInfoTag> it = list.iterator();
+            while (it.hasNext()){
+                NewResourceInfoTag infoTag = it.next();
+                if (infoTag.getResourceType() != MaterialResourceType.Q_DUBBING_VIDEO){
+                    it.remove();
+                }
+            }
+        }
     }
 
     @Override
