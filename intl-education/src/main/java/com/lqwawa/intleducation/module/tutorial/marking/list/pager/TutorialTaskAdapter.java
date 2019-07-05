@@ -246,23 +246,46 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     long[] time = getDistanceTime(time1, time2);
                     long day = time[0];
                     long hour = time[1];
+                    long min = time[2];
                     if (day > 0) {
                         mExpiredTime.setText(R.string.label_have_overdue);
                         mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
                     } else {
-                        if (hour > 6 && hour <= 12) {
-                            mExpiredTime.setText(R.string.label_12_overdue);
-                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                        } else if (hour > 2 && hour <= 6) {
-                            mExpiredTime.setText(R.string.label_6_overdue);
-                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
-                        } else if (hour > 1 && hour <= 2) {
-                            mExpiredTime.setText(R.string.label_2_overdue);
-                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                        } else if (hour > 0 && hour <= 1) {
-                            mExpiredTime.setText(R.string.label_1_overdue);
-                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                            //1h的时候，需要给帮辅推送信息
+                        if (tutorialMode) { //帮辅模式下才显示过期时长
+                            if (hour > 6 && hour < 12) {
+                                mExpiredTime.setText(R.string.label_12_overdue);
+                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                            } else if (hour == 12 && min == 0) {
+                                mExpiredTime.setText(R.string.label_12_overdue);
+                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                            } else if (hour > 2 && hour < 6) {
+                                mExpiredTime.setText(R.string.label_6_overdue);
+                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
+                            } else if (hour == 6) {
+                                if (min > 0) {
+                                    mExpiredTime.setText(R.string.label_12_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                                } else {
+                                    mExpiredTime.setText(R.string.label_6_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
+                                }
+                            } else if (hour == 2) {
+                                if (min > 0) {
+                                    mExpiredTime.setText(R.string.label_6_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
+                                } else {
+                                    mExpiredTime.setText(R.string.label_2_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                                }
+                            } else if (hour == 1) {
+                                if (min > 0) {
+                                    mExpiredTime.setText(R.string.label_2_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                                } else {
+                                    mExpiredTime.setText(R.string.label_1_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                                }
+                            }
                         }
                     }
                 }
@@ -276,6 +299,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
         Date two;
         long day = 0;
         long hour = 0;
+        long min = 0;
         try {
             one = df.parse(starttime);
             two = df.parse(endtime);
@@ -289,10 +313,11 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             }
             day = diff / (24 * 60 * 60 * 1000);
             hour = (diff / (60 * 60 * 1000) - day * 24);
+            min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long[] times = {day, hour};
+        long[] times = {day, hour, min};
         return times;
     }
 

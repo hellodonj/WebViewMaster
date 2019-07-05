@@ -103,7 +103,7 @@
                 <TextView
                     android:id="@+id/tv_course_count"
                     style="@style/tutorial_info_count_style"
-                    android:text="帮辅的课程" />
+                    android:text="帮辅课程" />
 
                 <TextView
                     android:id="@+id/tv_student_count"
