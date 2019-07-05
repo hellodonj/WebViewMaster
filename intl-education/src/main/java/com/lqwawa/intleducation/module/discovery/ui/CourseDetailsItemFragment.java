@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
@@ -234,7 +233,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             CourseStatisticsActivity.show(getActivity(), params);
         } else if (viewId == R.id.btn_play_list) {
             //播放列表
-            ToastUtil.showToast(getActivity(), "播放列表");
             if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
                 TaskSliderHelper.onPlayListListener.showPlayListDialog(getActivity());
             }
