@@ -171,16 +171,36 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
     //批阅价格点击事件
     @Override
     public void onClick(View v) {
-        showEditReviewPriceDialog();
+        String memberId = UserHelper.getUserId();
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetTutorPrice);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialSpaceFragment.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialSpaceFragment.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<TutorPriceEntity> typeReference = new TypeReference<TutorPriceEntity>() {
+                };
+                TutorPriceEntity priceEntity = JSON.parseObject(str, typeReference);
+                if (priceEntity.getCode() == 0) {
+                    String tutorPrice = priceEntity.getPrice() + "";
+                    showEditReviewPriceDialog(tutorPrice);
+                }
+            }
+        });
     }
 
     //设置批阅价格弹框
-    private void showEditReviewPriceDialog() {
+    private void showEditReviewPriceDialog(String price) {
         inputBoxDialog = new ContactsInputDialog(
                 getActivity(),
                 getString(R.string.review_price_dialog_title),
                 null,
-                "请输入...",
+                price,
                 getString(R.string.cancel),
                 (dialog, which) -> dialog.dismiss(),
                 getString(R.string.confirm), (dialog, which) -> {
@@ -193,8 +213,8 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
     //确认设置的批阅价格
     private void confirmReviewPrice() {
         //IntroductionSuperTaskFragment 845
-        String memberId = UserHelper.getUserId();
         String etPrice = inputBoxDialog.getInputText();
+        String memberId = UserHelper.getUserId();
         if (EmptyUtil.isEmpty(etPrice) || etPrice.equals("") || etPrice.equals("0") || etPrice.length() > 9) {
             ToastUtil.showToast(getContext(), "请输入有效的批阅价格");
         } else {
@@ -203,7 +223,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
             requestVo.addParams("markingPrice", etPrice);
             RequestParams params = new RequestParams(AppConfig.ServerUrl.UpdateTutorInfo + requestVo.getParams());
             params.setConnectTimeout(10000);
-            LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+            LogUtil.i(TutorialSpaceFragment.class, "send request ==== " + params.getUri());
             x.http().get(params, new StringCallback<String>() {
                 @Override
                 public void onSuccess(String str) {

@@ -963,5 +963,9 @@ public final class AppConfig {
         //帮辅协议
         public static final String TutorAgreement =
                 ServerBase + "api/common/tutorAgreement";
+
+        //查询帮辅价格
+        public static final String PostGetTutorPrice =
+                ServerBase+"api/tutor/getTutorPriceByMemberId";
     }
 }
