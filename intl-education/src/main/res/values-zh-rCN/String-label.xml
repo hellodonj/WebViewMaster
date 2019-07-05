@@ -392,7 +392,7 @@
     <string name="label_district">区</string>
     <string name="label_mark_price">批阅价格*：</string>
     <string name="label_mark_price_tip">请输入批阅价格</string>
-    <string name="label_RMB">元</string>
+    <string name="label_RMB">蛙蛙币</string>
     <string name="label_mark_price_hint">*建议价格，可修改</string>
     <string name="label_work_period">工作年限：</string>
     <string name="label_work_period_hint">请输入工作年限</string>

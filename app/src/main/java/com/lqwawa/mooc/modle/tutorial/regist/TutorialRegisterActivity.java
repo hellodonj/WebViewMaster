@@ -483,15 +483,19 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
         //选中
         if (mCheckBox.isChecked()) {
-            showLoading();
-            mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
-                    idType, identifyNumber,
-                    UserHelper.getUserId(), UserHelper.getUserName(),
-                    organId, organName, markPrice,
-                    provinceId, provinceName,
-                    cityId, cityName,
-                    districtId, districtName,
-                    workLife, certificateUrl, businessUrl);
+            if (markPrice.equals("") || markPrice.equals("0") || markPrice.length() > 9) {
+                showLoading();
+                mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
+                        idType, identifyNumber,
+                        UserHelper.getUserId(), UserHelper.getUserName(),
+                        organId, organName, markPrice,
+                        provinceId, provinceName,
+                        cityId, cityName,
+                        districtId, districtName,
+                        workLife, certificateUrl, businessUrl);
+            } else {
+                ToastUtil.showToast(this, "请输入有效的批阅价格");
+            }
         } else {
             ToastUtil.showToast(this, "未选择复选框协议!");
         }

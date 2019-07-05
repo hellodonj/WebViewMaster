@@ -91,7 +91,7 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
             gholder = (GroupViewHolder) convertView.getTag();
         }
         final ChapterVo group = (ChapterVo) getGroup(groupPosition);
-        if (group != null) {
+        if (group != null && group.isBuyed()) {
             gholder.mTvTitle.setText(group.getName());
             gholder.mCbTitleSelect.setChecked(group.isChoosed());
             gholder.mCbTitleSelect.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +119,7 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
         }
 
         final ChapterVo detailResponse = (ChapterVo) getChild(groupPosition, childPosition);
-        if (detailResponse != null) {
+        if (detailResponse != null && detailResponse.isBuyed()) {
             cholder.mTvChildTitle.setText(detailResponse.getName());
             cholder.mCbChildSelect.setChecked(detailResponse.isChoosed());
             cholder.mCbChildSelect.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +131,9 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
                     checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
                 }
             });
+        }else {
+            cholder.mTvChildTitle.setVisibility(View.GONE);
+            cholder.mCbChildSelect.setVisibility(View.GONE);
         }
         notifyDataSetChanged();
         return convertView;

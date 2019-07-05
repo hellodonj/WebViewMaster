@@ -246,23 +246,24 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     long[] time = getDistanceTime(time1, time2);
                     long day = time[0];
                     long hour = time[1];
-                    //（6，12】，（2，6】 （1，2】 （0，1】
                     if (day > 0) {
                         mExpiredTime.setText(R.string.label_have_overdue);
                         mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
-                    } else if (hour > 6 && hour <= 12) {
-                        mExpiredTime.setText(R.string.label_12_overdue);
-                        mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                    } else if (hour > 2 && hour <= 6) {
-                        mExpiredTime.setText(R.string.label_6_overdue);
-                        mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
-                    } else if (hour > 1 && hour <= 2) {
-                        mExpiredTime.setText(R.string.label_2_overdue);
-                        mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                    } else if (hour > 0 && hour <= 1) {
-                        mExpiredTime.setText(R.string.label_1_overdue);
-                        mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                        //1h的时候，需要给帮辅推送信息
+                    } else {
+                        if (hour > 6 && hour <= 12) {
+                            mExpiredTime.setText(R.string.label_12_overdue);
+                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                        } else if (hour > 2 && hour <= 6) {
+                            mExpiredTime.setText(R.string.label_6_overdue);
+                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
+                        } else if (hour > 1 && hour <= 2) {
+                            mExpiredTime.setText(R.string.label_2_overdue);
+                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                        } else if (hour > 0 && hour <= 1) {
+                            mExpiredTime.setText(R.string.label_1_overdue);
+                            mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                            //1h的时候，需要给帮辅推送信息
+                        }
                     }
                 }
             }
