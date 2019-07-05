@@ -387,7 +387,7 @@
     <string name="label_district">District</string>
     <string name="label_mark_price">Marking price*:</string>
     <string name="label_mark_price_tip">Please enter marking price</string>
-    <string name="label_RMB">Yuan</string>
+    <string name="label_RMB">蛙蛙币</string>
     <string name="label_mark_price_hint">*Suggested price, modifiable</string>
     <string name="label_work_period">Years of working:</string>
     <string name="label_work_period_hint">Please enter years of working</string>

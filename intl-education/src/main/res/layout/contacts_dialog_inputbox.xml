@@ -13,7 +13,7 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
         android:background="@drawable/review_price_input_style"
-        android:digits="1234567890"
+        android:digits="123456789"
         android:inputType="phone|number"
         android:minWidth="250dp"
         android:textColor="@color/black"
