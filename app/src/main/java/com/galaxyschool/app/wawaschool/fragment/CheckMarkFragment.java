@@ -82,6 +82,7 @@ import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -224,7 +225,9 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (tvTutorial != null) {
             //1 已批阅 角色是学生
             if (EmptyUtil.isNotEmpty(taskEntity)) {
-                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE) {//&& roleType == RoleType.ROLE_TYPE_STUDENT
+                //判断角色
+                boolean isStudent = TextUtils.equals( commitTask.getAssistantRoleType(),TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
                     tvTutorial.setVisibility(View.VISIBLE);
                     tvTutorial.setText(R.string.str_tutorial_btn);
                     tvTutorial.setOnClickListener(new View.OnClickListener() {
@@ -234,7 +237,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         }
                     });
                 } else {
-                    tvTutorial.setVisibility(View.INVISIBLE);
+                    tvTutorial.setVisibility(View.GONE);
                 }
             }
         }
