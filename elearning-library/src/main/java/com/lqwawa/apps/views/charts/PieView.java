@@ -214,7 +214,12 @@ public class PieView extends View {
         if (TextUtils.isEmpty(title)) {
             canvas.drawText(pieHelper.getPercentStr(), x, y, textPaint);
         } else {
-            canvas.drawText(pieHelper.getTitle(), x, y, textPaint);
+            if (title.contains("\n")){
+                String [] array = title.split("\n");
+                canvas.drawText(array[1], x, y-DensityUtils.dp2px(getContext(),15), textPaint);
+            } else {
+                canvas.drawText(title, x, y, textPaint);
+            }
         }
     }
 

@@ -108,7 +108,7 @@ public class SaveStatisticFragment extends ContactsListFragment {
                 pieHelpers.add(new PieHelper(100 * personalPercent, getSpaceSize(personalSize),
                         Color.parseColor(
                                 "#75c905")));
-                pieHelpers.add(new PieHelper(100 * postBarPercent, getSpaceSize(postBarSize),
+                pieHelpers.add(new PieHelper(100 * postBarPercent, " \n" + getSpaceSize(postBarSize),
                         Color.parseColor(
                                 "#38c2e0")));
                 pieHelpers.add(new PieHelper(100 * finalPerformPercent, getSpaceSize(performSize),
