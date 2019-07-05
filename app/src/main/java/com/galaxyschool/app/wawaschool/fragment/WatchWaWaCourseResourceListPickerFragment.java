@@ -652,8 +652,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
 //        item.type=TAB_CLOUD_COURSE;
 //        list.add(item);
 
-        if (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
-                controlGetStudyTaskTypeString.contains("1")) {
+        if (!isOnlineClass
+                && (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
+                controlGetStudyTaskTypeString.contains("1"))) {
             //校本资源库
             item = new HomeTypeEntry();
             item.icon = R.drawable.school_course_library_icon;
@@ -662,8 +663,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             list.add(item);
         }
 
-        if (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
-                controlGetStudyTaskTypeString.contains("2")){
+        if (!isOnlineClass
+                && (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
+                controlGetStudyTaskTypeString.contains("2"))){
             //精品资源库
             item = new HomeTypeEntry();
             item.icon = R.drawable.icon_lq_program;
