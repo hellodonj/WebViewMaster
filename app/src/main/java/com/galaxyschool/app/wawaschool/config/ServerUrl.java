@@ -35,7 +35,7 @@ public class ServerUrl {
         if (Config.DEBUG) {
             VERSION = VER_SIMULATE;
             BASE_SERVER = "http://platformtestop.lqwawa.com/";
-            BASE_SHARE_URL = "http://www.lqwawa.com/";
+            BASE_SHARE_URL = "http://platformtestop.lqwawa.com/";
 //            BASE_SERVER = "http://platformop.lqwawa.com/";
             FILE_SERVER = "http://filetestop.lqwawa.com/";
             WEIKE_SERVER = "http://resop.lqwawa.com/kukewebservice/";
