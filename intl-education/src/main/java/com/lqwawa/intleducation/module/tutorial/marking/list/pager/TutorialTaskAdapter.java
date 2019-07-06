@@ -250,14 +250,21 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     if (day > 0) {
                         mExpiredTime.setText(R.string.label_have_overdue);
                         mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
+                        taskEntity.setOverTimed(true); //已过期
                     } else {
                         if (tutorialMode) { //帮辅模式下才显示过期时长
                             if (hour > 6 && hour < 12) {
                                 mExpiredTime.setText(R.string.label_12_overdue);
                                 mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                            } else if (hour == 12 && min == 0) {
-                                mExpiredTime.setText(R.string.label_12_overdue);
-                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                            } else if (hour == 12) {
+                                if (min > 0) {
+                                    mExpiredTime.setText(R.string.label_have_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
+                                    taskEntity.setOverTimed(true); //已过期
+                                } else {
+                                    mExpiredTime.setText(R.string.label_12_overdue);
+                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
+                                }
                             } else if (hour > 2 && hour < 6) {
                                 mExpiredTime.setText(R.string.label_6_overdue);
                                 mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
@@ -285,6 +292,9 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                                     mExpiredTime.setText(R.string.label_1_overdue);
                                     mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
                                 }
+                            } else if (hour == 0 && min > 0) {
+                                mExpiredTime.setText(R.string.label_1_overdue);
+                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
                             }
                         }
                     }

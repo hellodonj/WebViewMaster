@@ -75,6 +75,7 @@ public class CommitTask implements Serializable, Parcelable {
     private String assistantRoleType;
     private boolean hasTutorialPermission;
     private int scoreColor;
+    private boolean hasAlreadyCommit;
     /**
      * @return 是否是语音评测类型
      */
@@ -546,6 +547,14 @@ public class CommitTask implements Serializable, Parcelable {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public boolean isHasAlreadyCommit() {
+        return hasAlreadyCommit;
+    }
+
+    public void setHasAlreadyCommit(boolean hasAlreadyCommit) {
+        this.hasAlreadyCommit = hasAlreadyCommit;
     }
 
     @Override

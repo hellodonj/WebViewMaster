@@ -79,7 +79,6 @@ import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
-import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
@@ -156,6 +155,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private boolean isAssistanceModel;//是不是帮辅模式
     private TaskEntity taskEntity;
     private boolean hasAlreadyMark;
+    private TextView tvTutorial;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -221,13 +221,13 @@ public class CheckMarkFragment extends ContactsListFragment {
             textView.setText(R.string.str_watch_mark);
         }
         //右侧按钮
-        TextView tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
+        tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
         if (tvTutorial != null) {
-            //1 已批阅 角色是学生
+            //1 已批阅 角色是学生 没有评价过
             if (EmptyUtil.isNotEmpty(taskEntity)) {
                 //判断角色
-                boolean isStudent = TextUtils.equals( commitTask.getAssistantRoleType(),TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
+                boolean isStudent = TextUtils.equals(commitTask.getAssistantRoleType(), TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent && !commitTask.isHasAlreadyCommit()) {
                     tvTutorial.setVisibility(View.VISIBLE);
                     tvTutorial.setText(R.string.str_tutorial_btn);
                     tvTutorial.setOnClickListener(new View.OnClickListener() {
@@ -508,7 +508,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                         userName = data.getNickName();
                                     }
                                     TutorialParams tutorialParams = new TutorialParams(data.getCreateId(), userName);
-                                    tutorialParams.setTutorialMarkedEnter(true);
+                                    tutorialParams.setTutorialMarkedEnter(false);
                                     TutorialHomePageActivity.show(getActivity(), tutorialParams);
                                 } else {
                                     ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
@@ -600,7 +600,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     // 准备数据
                     RequestVo requestVo = new RequestVo();
                     requestVo.addParams("memberId", memberId);
-                    requestVo.addParams("tutorMemberId",tutorMemberId );
+                    requestVo.addParams("tutorMemberId", tutorMemberId);
                     try {
                         String encodeContent = URLEncoder.encode(content, "utf-8");
                         encodeContent = encodeContent.replaceAll("%0A", "\n");
@@ -619,16 +619,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                             };
                             ResponseVo responseVo = JSON.parseObject(str, typeReference);
                             if (responseVo.isSucceed()) {
-                                // 刷新UI
-                                if (getActivity() instanceof CourseDetailsNavigator) {
-                                    CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
-                                    navigator.commitComment();
-                                }
-                                // 清除评论区域的内容
-                                if (getActivity() instanceof CourseDetailsNavigator) {
-                                    CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
-                                    navigator.clearContent();
-                                }
+                                commitTask.setHasAlreadyCommit(true);
                                 UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
                                         UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
                             } else {
