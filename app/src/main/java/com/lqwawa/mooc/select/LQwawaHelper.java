@@ -73,7 +73,7 @@ public class LQwawaHelper {
         if (EmptyUtil.isNotEmpty(chapterId)) {
             requestVo.addParams("chapterIds", chapterId);
         }
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetResourceListByChapterIds );
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetResourceListByChapterIds);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
         params.setConnectTimeout(10000);
@@ -82,12 +82,16 @@ public class LQwawaHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(LQwawaHelper.class, "request " + params.getUri() + " result :" + str);
-                ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo>() {
-                });
-                if (vo.isSucceed()){
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(vo);
+                try {
+                    ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo>() {
+                    });
+                    if (vo.isSucceed()) {
+                        if (EmptyUtil.isNotEmpty(callback)) {
+                            callback.onDataLoaded(vo);
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

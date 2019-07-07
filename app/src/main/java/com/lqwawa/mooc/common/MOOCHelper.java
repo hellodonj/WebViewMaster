@@ -178,6 +178,11 @@ public class MOOCHelper {
         public void showPlayListDialog(Activity activity) {
             ResourcesPlayUtils.getInstance().showPlayListDialog(activity);
         }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            ResourcesPlayUtils.getInstance().onActivityResult(requestCode,resultCode,data);
+        }
     };
 
     private static TaskSliderHelper.OnTutorialMarkingListener onTutorialMarkingListener

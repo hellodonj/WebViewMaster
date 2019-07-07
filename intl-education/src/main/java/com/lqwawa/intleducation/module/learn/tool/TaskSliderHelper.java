@@ -62,6 +62,8 @@ public class TaskSliderHelper {
         void releasePlayResource();
 
         void showPlayListDialog(Activity activity);
+
+        void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 
     public interface OnTutorialMarkingListener {

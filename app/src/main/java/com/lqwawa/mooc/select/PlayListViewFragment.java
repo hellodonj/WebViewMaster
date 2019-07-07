@@ -14,7 +14,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
-import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
@@ -45,6 +45,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private int totalCount = 0;//所选项目的数量
     private SelectMoreAdapter mMoreAdapter;
     private CourseDetailsVo courseDetailsVo;
+    private List<ChapterVo> tempChapterList = new ArrayList<>();
     private List<ChapterVo> chapterList;
     private List<ChapterVo> children;
     private Map<String, List<ChapterVo>> childMap = new HashMap<String, List<ChapterVo>>();// 子元素数据列表
@@ -99,11 +100,15 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
             token = mDetailItemParams.getMemberId();
         }
         String courseId = mDetailItemParams.getCourseId();
+        String schoolIds = null;
+        if (UserHelper.isLogin()
+                && UserHelper.isTeacher(UserHelper.getUserInfo().getRoles())) {
+            //仅在登陆用户是教师身份的情况下才传SchoolIds 以便server用于判断是否显示联合备课内容
+            schoolIds = UserHelper.getUserInfo().getSchoolIds();
+        }
 
         showLoadingDialog();
-        CourseHelper.getCourseDetailsById(
-                token, courseId, mDetailItemParams.getDataType(), null, new Callback());
-
+        LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
     }
 
     /**
@@ -116,11 +121,15 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         public void onDataLoaded(CourseDetailsVo courseDetailsVo) {
             dismissLoadingDialog();
             PlayListViewFragment.this.courseDetailsVo = courseDetailsVo;
-            chapterList = courseDetailsVo.getChapterList();
+            chapterList = courseDetailsVo.getChapters();
             if (EmptyUtil.isNotEmpty(chapterList)) {
                 for (int i = 0; i < chapterList.size(); i++) {
-                    children = chapterList.get(i).getChildren();
-                    childMap.put(chapterList.get(i).getId(), children);
+                    ChapterVo chapterVo = chapterList.get(i);
+                    if (chapterVo.isBuyed()){
+                        tempChapterList.add(chapterVo);
+                        children = chapterList.get(i).getChildren();
+                        childMap.put(chapterList.get(i).getId(), children);
+                    }
                 }
             }
             updateList();
@@ -134,7 +143,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     //更新UI
     private void updateList() {
-        mMoreAdapter = new SelectMoreAdapter(getActivity(), chapterList, childMap);
+        mMoreAdapter = new SelectMoreAdapter(getActivity(), tempChapterList, childMap);
         mMoreAdapter.setCheckInterface(PlayListViewFragment.this);
         mExpandableListView.setAdapter(mMoreAdapter);
         for (int j = 0; j < mMoreAdapter.getGroupCount(); j++) {
@@ -144,7 +153,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     @Override
     public void checkGroup(int groupPosition, boolean isChecked) {
-        ChapterVo group = chapterList.get(groupPosition);
+        ChapterVo group = tempChapterList.get(groupPosition);
         List<ChapterVo> childs = childMap.get(group.getId());
         for (int i = 0; i < childs.size(); i++) {
             childs.get(i).setChoosed(isChecked);
@@ -156,7 +165,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     @Override
     public void checkChild(int groupPosition, int childPosition, boolean isChecked) {
         boolean allChildSameState = true;// 判断该组下面的所有子元素是否是同一种状态
-        ChapterVo group = chapterList.get(groupPosition);
+        ChapterVo group = tempChapterList.get(groupPosition);
         List<ChapterVo> childs = childMap.get(group.getId());
         for (int i = 0; i < childs.size(); i++) {
             // 不全选中
@@ -183,8 +192,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
      */
     private void calculate() {
         totalCount = 0;
-        for (int i = 0; i < chapterList.size(); i++) {
-            ChapterVo group = chapterList.get(i);
+        for (int i = 0; i < tempChapterList.size(); i++) {
+            ChapterVo group = tempChapterList.get(i);
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);
@@ -201,7 +210,6 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private void confirm() {
         String jsonString = getChapterIds();
         LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
-
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -223,6 +231,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                         // 通过EventBus通知
                         EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
                         getActivity().finish();
+                    }else {
+                        UIUtil.showToastSafe("无播放文件！");
                     }
                 }
             }
@@ -231,8 +241,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     private String getChapterIds() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < chapterList.size(); i++) {
-            ChapterVo group = chapterList.get(i);
+        for (int i = 0; i < tempChapterList.size(); i++) {
+            ChapterVo group = tempChapterList.get(i);
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);

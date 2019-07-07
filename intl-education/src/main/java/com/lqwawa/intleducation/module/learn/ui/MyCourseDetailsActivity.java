@@ -71,6 +71,7 @@ import com.lqwawa.intleducation.module.discovery.ui.observable.CourseVoObservabl
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
@@ -228,7 +229,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private RadioButton mRbLive, mRbLiveF;
     //播放列表返回的resId
     private List<String> resIds;
-
+    public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
@@ -1436,6 +1437,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             /*if (mClassroomFragment != null) {
                 mClassroomFragment.onActivityResult(requestCode, resultCode, data);
             }*/
+        } else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+            TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -1458,6 +1461,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         unRegisterBroadcastReceiver();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (TaskSliderHelper.onPlayListListener != null) {
+            TaskSliderHelper.onPlayListListener.releasePlayResource();
         }
     }
 

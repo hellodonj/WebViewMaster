@@ -77,9 +77,9 @@ import com.lqwawa.intleducation.module.discovery.ui.observable.CourseVoObservabl
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
-import com.lqwawa.intleducation.module.organcourse.OrganCourseClassifyActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -101,7 +101,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
-import static com.lqwawa.intleducation.base.utils.StringUtils.getSectionNumString;
 import static com.lqwawa.intleducation.base.utils.StringUtils.languageIsEnglish;
 
 /**
@@ -218,7 +217,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private RadioButton mRbLive, mRbLiveF;
     //播放列表返回的resId
     private List<String> resIds;
-
+    public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -1682,6 +1681,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             //从支付界面返回则刷新数据
             initData(true);
             studyPlanFragment.updateData();
+        }else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+            TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -1704,6 +1705,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         unRegisterBroadcast();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (TaskSliderHelper.onPlayListListener != null) {
+            TaskSliderHelper.onPlayListListener.releasePlayResource();
         }
     }
 
