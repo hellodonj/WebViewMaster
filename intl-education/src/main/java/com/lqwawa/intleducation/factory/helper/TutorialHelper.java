@@ -70,7 +70,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestLocationDataUrl);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -125,7 +125,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestPullTutorialStudents);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -829,7 +829,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestWorkTaskList);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -877,7 +877,7 @@ public class TutorialHelper {
         requestVo.addParams("memberId", memberId);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetHaveAppliedByStudentId + requestVo.getParams());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
 
@@ -1223,6 +1223,10 @@ public class TutorialHelper {
         int T_ResCourseId = model.getT_ResCourseId();
         if (T_ResCourseId > 0) {
             requestVo.addParams("T_ResCourseId", T_ResCourseId);
+        }
+
+        if(model.getOrderId() > 0) {
+            requestVo.addParams("OrderId", model.getOrderId());
         }
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddAssistTask);
