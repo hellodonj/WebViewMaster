@@ -143,16 +143,16 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setCrop(false)
                 //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.ic_task_not_flag)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_task_not_flag)//加载失败后默认显示图片
+                .setLoadingDrawableId(R.drawable.ic_task_not_flag_l)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_task_not_flag_l)//加载失败后默认显示图片
                 .build();
 
         courseImageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.ic_lqc)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_lqc)//加载失败后默认显示图片
+                .setSize(img_width,img_height)
+                .setLoadingDrawableId(R.drawable.ic_lqc_l)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_lqc_l)//加载失败后默认显示图片
                 .build();
 
         mCourseTypeNames =
