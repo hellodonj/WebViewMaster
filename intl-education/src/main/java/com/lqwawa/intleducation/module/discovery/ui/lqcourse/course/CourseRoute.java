@@ -183,7 +183,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) || isOnlineCounselor) {
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) || isOnlineCounselor) {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
@@ -260,7 +260,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) ||
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
                 courseParams.isOrganCounselor() ||
                 isOnlineCounselor) {
             // 如果是机构辅导老师
@@ -355,7 +355,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) ||
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
                 courseParams.isClassParent() ||
                 courseParams.isClassTeacher() ||
                 isOnlineCounselor) {

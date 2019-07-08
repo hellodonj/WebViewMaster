@@ -49,6 +49,8 @@ public class CourseDetailParams extends BaseVo{
 
     private SchoolInfoEntity schoolInfoEntity;
 
+    private boolean isMyCourse;
+
     public CourseDetailParams() {
         // 默认的进入方式
         courseEnterType = CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
@@ -207,6 +209,15 @@ public class CourseDetailParams extends BaseVo{
 
     public CourseDetailParams setSchoolInfoEntity(SchoolInfoEntity schoolInfoEntity) {
         this.schoolInfoEntity = schoolInfoEntity;
+        return this;
+    }
+
+    public boolean isMyCourse() {
+        return isMyCourse;
+    }
+
+    public CourseDetailParams setMyCourse(boolean myCourse) {
+        isMyCourse = myCourse;
         return this;
     }
 
