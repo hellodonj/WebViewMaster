@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.mooc.adapter.SelectMoreAdapter;
 import com.lqwawa.mooc.view.CustomExpandableListView;
@@ -211,6 +212,9 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private void confirm() {
         calculate();
         if (totalCount > 0) {
+           if (TaskSliderHelper.onPlayListListener != null) {
+                TaskSliderHelper.onPlayListListener.releasePlayResource();
+            }
             String jsonString = getChapterIds();
             LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
                 @Override
