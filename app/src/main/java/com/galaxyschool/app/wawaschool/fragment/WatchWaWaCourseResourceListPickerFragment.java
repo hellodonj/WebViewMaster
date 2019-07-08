@@ -586,11 +586,15 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || (isSuperTask && superTaskType == StudyTaskType.RETELL_WAWA_COURSE)
                 || (taskType == StudyTaskType.LISTEN_READ_AND_WRITE && !isCheckTaskOrderRes)) {
-            mediaTypeList.add(MediaType.SCHOOL_COURSEWARE); //LQ课件
-            mediaTypeList.add(MediaType.SCHOOL_PICTURE); //图片
-            mediaTypeList.add(MediaType.SCHOOL_PDF); //PDF
-            mediaTypeList.add(MediaType.SCHOOL_PPT); //PPT
-            mediaTypeList.add(MediaType.SCHOOL_DOC); //DOC
+            if (superTaskType == StudyTaskType.Q_DUBBING){
+                mediaTypeList.add(MediaType.SCHOOL_VIDEO); //视频
+            } else {
+                mediaTypeList.add(MediaType.SCHOOL_COURSEWARE); //LQ课件
+                mediaTypeList.add(MediaType.SCHOOL_PICTURE); //图片
+                mediaTypeList.add(MediaType.SCHOOL_PDF); //PDF
+                mediaTypeList.add(MediaType.SCHOOL_PPT); //PPT
+                mediaTypeList.add(MediaType.SCHOOL_DOC); //DOC
+            }
         } else if (taskType == StudyTaskType.TASK_ORDER
                 || (isSuperTask && superTaskType == StudyTaskType.TASK_ORDER)
                 || (taskType == StudyTaskType.LISTEN_READ_AND_WRITE)) {
