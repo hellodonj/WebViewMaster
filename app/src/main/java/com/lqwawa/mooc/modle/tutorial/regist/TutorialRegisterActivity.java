@@ -56,7 +56,6 @@ import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.module.tutorial.regist.IDType;
 import com.lqwawa.intleducation.module.tutorial.regist.LocationType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.lqresviewlib.office365.WebActivity;
 import com.lqwawa.mooc.factory.data.entity.MediaEntity;
 import com.lqwawa.mooc.modle.tutorial.audit.TutorialAuditActivity;
 import com.osastudio.common.utils.PhotoUtils;
@@ -228,7 +227,15 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         @Override
         public void onClick(View widget) {
             String url = AppConfig.ServerUrl.TutorAgreement;
-            WebActivity.start(TutorialRegisterActivity.this, url,  "《帮辅服务协议》");
+//            WebActivity.start(TutorialRegisterActivity.this, url,  "《帮辅服务协议》");
+            final TutorAgreePopWin treatRecordPopWin = new TutorAgreePopWin(TutorialRegisterActivity.this, url);
+            treatRecordPopWin.showAtLocation(findViewById(R.id.layout), Gravity.CENTER, 0, 0);
+            treatRecordPopWin.setOnConfirmClickListener(new TutorAgreePopWin.OnConfirmClickListener() {
+                @Override
+                public void onConfirmClick(TextView button, int tag) {
+                    treatRecordPopWin.dismiss();
+                }
+            });
         }
     }
 

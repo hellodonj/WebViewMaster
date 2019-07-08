@@ -302,4 +302,11 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/textPrimary</item>
     </style>
+
+    <!--Popupwindow指定开启和关闭动画-->
+    <style name="cancel_project_anim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+    </style>
+
 </resources>
