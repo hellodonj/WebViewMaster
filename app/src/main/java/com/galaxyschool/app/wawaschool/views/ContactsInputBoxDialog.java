@@ -3,9 +3,7 @@ package com.galaxyschool.app.wawaschool.views;
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
 
@@ -25,7 +23,7 @@ public class ContactsInputBoxDialog extends ContactsDialog {
             String inputBoxDefaultText, String inputBoxHintText,
             String leftButtonText, OnClickListener leftButtonClickListener,
             String rightButtonText, OnClickListener rightButtonClickListener) {
-        super(context, theme, title, R.layout.contacts_dialog_inputbox,
+        super(context, theme, title, R.layout.contacts_dialog_content_inputbox,
                 leftButtonText, leftButtonClickListener,
                 rightButtonText, rightButtonClickListener);
 
@@ -46,15 +44,6 @@ public class ContactsInputBoxDialog extends ContactsDialog {
             return textView.getText().toString();
         }
         return null;
-    }
-
-    public void setUnitDisplay(boolean isDisplay){
-        TextView textView = (TextView) getContentView().findViewById(R.id.tv_unit);
-        if (isDisplay){
-            textView.setVisibility(View.VISIBLE);
-        }else {
-            textView.setVisibility(View.GONE);
-        }
     }
 
     public void setInputLimitNumber(int length){

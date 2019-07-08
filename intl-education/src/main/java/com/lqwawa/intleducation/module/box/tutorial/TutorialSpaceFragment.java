@@ -206,6 +206,8 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
                 getString(R.string.confirm), (dialog, which) -> {
             confirmReviewPrice();
         });
+        inputBoxDialog.setInputLimitNumber(9);
+        inputBoxDialog.setUnitDisplay(true);
         inputBoxDialog.setIsAutoDismiss(false);
         inputBoxDialog.show();
     }
@@ -216,7 +218,7 @@ public class TutorialSpaceFragment extends PresenterFragment<TutorialSpaceContra
         String etPrice = inputBoxDialog.getInputText();
         String memberId = UserHelper.getUserId();
         if (EmptyUtil.isEmpty(etPrice) || etPrice.equals("") || etPrice.equals("0") || etPrice.length() > 9) {
-            ToastUtil.showToast(getContext(), "请输入有效的批阅价格");
+            ToastUtil.showToast(getContext(), R.string.label_price_tip);
         } else {
             RequestVo requestVo = new RequestVo();
             requestVo.addParams("memberId", memberId);

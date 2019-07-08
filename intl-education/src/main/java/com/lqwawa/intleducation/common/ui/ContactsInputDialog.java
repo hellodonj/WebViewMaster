@@ -3,7 +3,9 @@ package com.lqwawa.intleducation.common.ui;
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 
@@ -45,6 +47,17 @@ public class ContactsInputDialog extends ContactsDialog{
         }
         return null;
     }
+
+    public void setUnitDisplay(boolean isDisplay){
+        TextView textView = (TextView) getContentView().findViewById(R.id.tv_unit);
+        if (isDisplay){
+            textView.setVisibility(View.VISIBLE);
+        }else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+
+
     public void setInputLimitNumber(int length){
         EditText textView = (EditText) getContentView().findViewById(
                 R.id.contacts_dialog_content_text);
