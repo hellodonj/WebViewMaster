@@ -73,20 +73,20 @@ public class TutorialCommentAdapter extends RecyclerAdapter<TutorCommentEntity> 
             mCommentRatingBar.setRating(entity.getStarLevel());
             // 恢复可用
             mTvZan.setEnabled(true);
-            mTvStatus.setEnabled(true);
+//            mTvStatus.setEnabled(true);
 
-            if(isTutor) {
-                mTvStatus.setVisibility(View.VISIBLE);
-                if (entity.isShowing()) {
-                    mTvStatus.setText(R.string.label_hide);
-                    mTvStatus.setActivated(true);
-                } else {
-                    mTvStatus.setText(R.string.label_showing);
-                    mTvStatus.setActivated(false);
-                }
-            }else{
-                mTvStatus.setVisibility(View.GONE);
-            }
+//            if(isTutor) {
+//                mTvStatus.setVisibility(View.VISIBLE);
+//                if (entity.isShowing()) {
+//                    mTvStatus.setText(R.string.label_hide);
+//                    mTvStatus.setActivated(true);
+//                } else {
+//                    mTvStatus.setText(R.string.label_showing);
+//                    mTvStatus.setActivated(false);
+//                }
+//            }else{
+//                mTvStatus.setVisibility(View.GONE);
+//            }
 
             // 点赞更新
             mTvZan.setOnClickListener(new View.OnClickListener(){
