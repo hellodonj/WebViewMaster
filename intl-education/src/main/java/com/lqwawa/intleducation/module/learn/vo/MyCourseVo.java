@@ -47,6 +47,8 @@ public class MyCourseVo extends BaseVo {
     private int assortment;
     private int type;
     private String level;
+    // 学习进度
+    private int learnRate;
 
     public boolean isShowMoreWeek() {
         return showMoreWeek;
@@ -232,6 +234,15 @@ public class MyCourseVo extends BaseVo {
 
     public MyCourseVo setLevel(String level) {
         this.level = level;
+        return this;
+    }
+
+    public int getLearnRate() {
+        return learnRate;
+    }
+
+    public MyCourseVo setLearnRate(int learnRate) {
+        this.learnRate = learnRate;
         return this;
     }
 
