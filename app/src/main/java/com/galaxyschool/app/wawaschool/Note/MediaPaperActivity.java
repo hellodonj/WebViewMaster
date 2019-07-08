@@ -1603,7 +1603,14 @@ public class MediaPaperActivity extends BaseFragmentActivity implements CommitHe
             conn.setConnectTimeout(10000); //设置连接服务器超时时间
             conn.setReadTimeout(5000);  //设置读取数据超时时间
             conn.connect(); //开始连接
-
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+                mURL = new URL(conn.getHeaderField("Location"));
+                conn = (HttpURLConnection) mURL.openConnection();
+                conn.setRequestProperty("Connection", "close");
+                conn.setConnectTimeout(30 * 1000);
+                conn.setReadTimeout(30 * 1000);
+                conn.connect();
+            }
             int responseCode = conn.getResponseCode(); //得到服务器的响应码
             if (responseCode == 200) {
                 //访问成功

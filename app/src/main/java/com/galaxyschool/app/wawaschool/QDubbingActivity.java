@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -165,14 +166,23 @@ public class QDubbingActivity extends DubbingActivity {
             FileApi.getFile(srtUrl, filePath);
         } else {
             URL newurl = null;
-            URLConnection conn = null;
+            HttpURLConnection conn = null;
             int fileSize = -1;
             FileInputStream fis = null;
             try {
                 newurl = new URL(srtUrl);
-                conn = newurl.openConnection();
+                conn = (HttpURLConnection) newurl.openConnection();
                 conn.setRequestProperty("Accept-Encoding", "identity");
                 conn.setConnectTimeout(60 * 1000);
+                conn.connect();
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    newurl = new URL(conn.getHeaderField("Location"));
+                    conn = (HttpURLConnection) newurl.openConnection();
+                    conn.setRequestProperty("Connection", "close");
+                    conn.setConnectTimeout(60 * 1000);
+                    conn.setReadTimeout(60 * 1000);
+                    conn.connect();
+                }
                 fileSize = conn.getContentLength();
                 fis = new FileInputStream(destFile);
                 int size = fis.available();

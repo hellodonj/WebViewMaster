@@ -110,10 +110,19 @@ public class FileApi {
 		boolean isOk = false;
 		try {
 			newurl = new URL(url);
-			URLConnection conn = newurl.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) newurl.openConnection();
 			conn .setRequestProperty("Accept-Encoding", "identity");
 			conn.setConnectTimeout(20 * 1000);
 			conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            conn.connect();
+			if (conn.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+                newurl = new URL(conn.getHeaderField("Location"));
+                conn = (HttpURLConnection) newurl.openConnection();
+                conn.setRequestProperty("Connection", "close");
+                conn.setConnectTimeout(30 * 1000);
+                conn.setReadTimeout(30 * 1000);
+                conn.connect();
+            }
 			int fileSize = conn.getContentLength();
 
 //			if (fileSize <= 0) {
