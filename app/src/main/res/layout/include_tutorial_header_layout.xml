@@ -102,18 +102,15 @@
 
                 <TextView
                     android:id="@+id/tv_course_count"
-                    style="@style/tutorial_info_count_style"
-                    android:text="帮辅课程" />
+                    style="@style/tutorial_info_count_style" />
 
                 <TextView
                     android:id="@+id/tv_student_count"
-                    style="@style/tutorial_info_count_style"
-                    android:text="学生数" />
+                    style="@style/tutorial_info_count_style" />
 
                 <TextView
                     android:id="@+id/tv_viewer_count"
-                    style="@style/tutorial_info_count_style"
-                    android:text="浏览数" />
+                    style="@style/tutorial_info_count_style" />
 
             </LinearLayout>
 
