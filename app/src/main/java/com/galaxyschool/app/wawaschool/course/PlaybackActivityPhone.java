@@ -1554,7 +1554,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     protected boolean showSlide() {
         boolean rtn = super.showSlide();
         if (mAttachedBar != null) {
-            mAttachedBar.setVisibility(View.VISIBLE);
+            if (applyMark){
+                //申请批阅不显示侧边栏
+                mAttachedBar.setVisibility(View.GONE);
+            } else {
+                mAttachedBar.setVisibility(View.VISIBLE);
+            }
         }
         return rtn;
     }
