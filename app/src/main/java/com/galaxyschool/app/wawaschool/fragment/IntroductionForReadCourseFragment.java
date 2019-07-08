@@ -608,17 +608,13 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     private boolean showScoreView(boolean isListenData) {
-//        for (ResourceInfoTag tag : listenData) {
-//            if (TextUtils.equals("1", tag.getResProperties())) {
-//                isAutoMark = true;
-//                return true;
-//            }
-//        }
+        if (superTaskType == StudyTaskType.Q_DUBBING){
+            return true;
+        }
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || superTaskType == StudyTaskType.RETELL_WAWA_COURSE
-                || superTaskType == StudyTaskType.TASK_ORDER
-                || superTaskType == StudyTaskType.Q_DUBBING) {
+                || superTaskType == StudyTaskType.TASK_ORDER) {
             for (ResourceInfoTag tag : isListenData ? listenData : readWriteData) {
                 if (tag.isSelected()) {
                     return true;
