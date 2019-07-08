@@ -541,13 +541,13 @@
 
                             <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_mark_price"
-                                android:layout_width="60dp"
+                                android:layout_width="40dp"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:ellipsize="end"
                                 android:hint="2"
                                 android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
-                                android:digits="123456789"
+                                android:digits="1234567890"
                                 android:inputType="phone|number"
                                 android:padding="2dp"
                                 android:singleLine="true"
@@ -558,7 +558,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginRight="8dp"
                                 android:ellipsize="end"
                                 android:singleLine="true"
@@ -572,7 +571,6 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="@string/label_mark_price_hint"

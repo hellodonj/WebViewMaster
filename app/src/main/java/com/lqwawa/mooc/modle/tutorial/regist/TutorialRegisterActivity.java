@@ -228,7 +228,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         @Override
         public void onClick(View widget) {
             String url = AppConfig.ServerUrl.TutorAgreement;
-            WebActivity.start(TutorialRegisterActivity.this, url, "《帮辅服务协议》");
+            WebActivity.start(TutorialRegisterActivity.this, url,  "《帮辅服务协议》");
         }
     }
 
@@ -483,7 +483,7 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
         //选中
         if (mCheckBox.isChecked()) {
-            if (markPrice.equals("") || markPrice.equals("0") || markPrice.length() > 9) {
+            if (!markPrice.equals("") &&! markPrice.equals("0") && markPrice.length() < 9) {
                 showLoading();
                 mPresenter.requestApplyForTutor(name, phoneNumber, verificationCode,
                         idType, identifyNumber,
@@ -494,10 +494,10 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
                         districtId, districtName,
                         workLife, certificateUrl, businessUrl);
             } else {
-                ToastUtil.showToast(this, "请输入有效的批阅价格");
+                ToastUtil.showToast(this, R.string.label_price_tip);
             }
         } else {
-            ToastUtil.showToast(this, "未选择复选框协议!");
+            ToastUtil.showToast(this, R.string.label_checked_tip);
         }
 
     }

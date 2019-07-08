@@ -544,4 +544,8 @@
     <string name="label_coins_detail_3">申请批阅-</string>
     <string name="label_refunded">已退款</string>
     <string name="label_tutorial">帮辅</string>
+    <string name="label_tutor_agreement"> 《帮辅服务协议》</string>
+    <string name="label_price_tip"> 请输入有效的批阅价格</string>
+    <string name="label_checked_tip"> 未选择复选框协议</string>
+
 </resources>
