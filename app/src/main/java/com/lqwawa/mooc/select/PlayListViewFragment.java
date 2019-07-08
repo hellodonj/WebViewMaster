@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterFragment;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -125,7 +126,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
             if (EmptyUtil.isNotEmpty(chapterList)) {
                 for (int i = 0; i < chapterList.size(); i++) {
                     ChapterVo chapterVo = chapterList.get(i);
-                    if (chapterVo.isBuyed()){
+                    if (chapterVo.isBuyed()) {
                         tempChapterList.add(chapterVo);
                         children = chapterList.get(i).getChildren();
                         childMap.put(chapterList.get(i).getId(), children);
@@ -208,35 +209,40 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
      * 确定按钮操作
      */
     private void confirm() {
-        String jsonString = getChapterIds();
-        LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                UIUtil.showToastSafe(strRes);
-            }
+        calculate();
+        if (totalCount > 0) {
+            String jsonString = getChapterIds();
+            LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
+                @Override
+                public void onDataNotAvailable(int strRes) {
+                    UIUtil.showToastSafe(strRes);
+                }
 
-            @Override
-            public void onDataLoaded(ResponseVo responseVo) {
-                if (responseVo.isSucceed()) {
-                    playListVo = (List<Map<String, Object>>) responseVo.getData();
-                    List<String> list = new ArrayList<String>();
-                    if (EmptyUtil.isNotEmpty(playListVo)) {
-                        for (int i = 0; i < playListVo.size(); i++) {
-                            Map<String, Object> map = playListVo.get(i);
-                            int id1 = (int) map.get("resId");
-                            StringBuffer sb = new StringBuffer();
-                            sb.append(id1 + "-").append(19);
-                            list.add(sb.toString());
+                @Override
+                public void onDataLoaded(ResponseVo responseVo) {
+                    if (responseVo.isSucceed()) {
+                        playListVo = (List<Map<String, Object>>) responseVo.getData();
+                        List<String> list = new ArrayList<String>();
+                        if (EmptyUtil.isNotEmpty(playListVo)) {
+                            for (int i = 0; i < playListVo.size(); i++) {
+                                Map<String, Object> map = playListVo.get(i);
+                                int id1 = (int) map.get("resId");
+                                StringBuffer sb = new StringBuffer();
+                                sb.append(id1 + "-").append(19);
+                                list.add(sb.toString());
+                            }
+                            // 通过EventBus通知
+                            EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
+                            getActivity().finish();
+                        } else {
+                            ToastUtil.showToast(getActivity(), R.string.label_play_tip);
                         }
-                        // 通过EventBus通知
-                        EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
-                        getActivity().finish();
-                    }else {
-                        UIUtil.showToastSafe("无播放文件！");
                     }
                 }
-            }
-        });
+            });
+        }else {
+            ToastUtil.showToast(getActivity(), R.string.label_chapter_tip);
+        }
     }
 
     private String getChapterIds() {

@@ -465,7 +465,7 @@
     <string name="label_audit">申请记录</string>
     <string name="label_tutorial_task_type_listen_read_course">听读课</string>
     <string name="label_tutorial_task_type_do_task">做读写单</string>
-    
+
     <!--V5.14.X版本字符串-->
     <string name="label_watch_history_course">查看历史课程</string>
     <string name="label_add_history_course">加入历史课程</string>
@@ -501,7 +501,6 @@
         <!--<item>相关课程</item>-->
         <item>习课程</item>
     </string-array>
-
 
 
     <string-array name="label_lesson_source_tabs">
@@ -547,5 +546,7 @@
     <string name="label_tutor_agreement"> 《帮辅服务协议》</string>
     <string name="label_price_tip"> 请输入有效的批阅价格</string>
     <string name="label_checked_tip"> 未选择复选框协议</string>
+    <string name="label_play_tip"> 选中的章节列表中无录音课件</string>
+    <string name="label_chapter_tip">请选择要添加的章节资源</string>
 
 </resources>

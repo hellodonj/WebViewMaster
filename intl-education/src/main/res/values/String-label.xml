@@ -540,4 +540,6 @@
     <string name="label_tutor_agreement"> 《帮辅服务协议》</string>
     <string name="label_price_tip"> 请输入有效的批阅价格</string>
     <string name="label_checked_tip"> 未选择复选框协议</string>
+    <string name="label_play_tip"> 选中的章节列表中无录音课件</string>
+    <string name="label_chapter_tip">请选择要添加的章节资源</string>
 </resources>
