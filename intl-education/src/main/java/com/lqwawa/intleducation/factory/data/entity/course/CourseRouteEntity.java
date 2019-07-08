@@ -8,6 +8,7 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.logging.Level;
 
@@ -155,6 +156,19 @@ public class CourseRouteEntity extends BaseVo {
     public CourseRouteEntity setSchoolInfoEntity(SchoolInfoEntity schoolInfoEntity) {
         this.schoolInfoEntity = schoolInfoEntity;
         return this;
+    }
+
+    /**
+     * 是否课程的老师身份
+     * 传入当前登录Id，区分家长身份
+     */
+
+    public boolean isCourseTeacher(@NonNull String memberId, String userId) {
+        String tempId = memberId;
+        if (!TextUtils.isEmpty(userId) && !userId.equals(memberId)) {
+            tempId = userId;
+        }
+        return isCourseTeacher(tempId);
     }
 
     /**

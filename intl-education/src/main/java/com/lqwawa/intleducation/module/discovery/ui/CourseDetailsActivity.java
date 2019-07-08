@@ -262,6 +262,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 courseDetailParams = new CourseDetailParams();
                             }
                             courseDetailParams.setFromScan(isFromScan);
+                            courseDetailParams.setMyCourse(isMyCourse);
                             if (entity != null) {
                                 courseDetailParams.setLibraryType(entity.getLibraryType());
                                 courseDetailParams.setIsVideoCourse(entity.getType() == 2);
