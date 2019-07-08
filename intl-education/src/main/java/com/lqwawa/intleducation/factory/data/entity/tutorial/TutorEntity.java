@@ -26,7 +26,7 @@ public class TutorEntity implements Serializable {
     private String HeadPicUrl;
     private String markingPrice;
     private int taskNum;
-    private int starLevel;
+    private float starLevel;
 
     public String getCreateTime() {
         return createTime;
@@ -93,11 +93,11 @@ public class TutorEntity implements Serializable {
         return this;
     }
 
-    public int getStarLevel() {
+    public float getStarLevel() {
         return starLevel;
     }
 
-    public void setStarLevel(int starLevel) {
+    public void setStarLevel(float starLevel) {
         this.starLevel = starLevel;
     }
 

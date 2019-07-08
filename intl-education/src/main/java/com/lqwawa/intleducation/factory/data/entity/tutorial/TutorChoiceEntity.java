@@ -13,7 +13,7 @@ public class TutorChoiceEntity implements Serializable {
     private String markingPrice;
     private int taskNum;
     private String memberId;
-    private int starLevel;
+    private float starLevel;
 
     private boolean checked;
 
@@ -65,11 +65,11 @@ public class TutorChoiceEntity implements Serializable {
         this.checked = checked;
     }
 
-    public int getStarLevel() {
+    public float getStarLevel() {
         return starLevel;
     }
 
-    public void setStarLevel(int starLevel) {
+    public void setStarLevel(float starLevel) {
         this.starLevel = starLevel;
     }
 
