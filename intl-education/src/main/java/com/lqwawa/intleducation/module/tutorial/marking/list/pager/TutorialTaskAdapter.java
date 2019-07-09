@@ -239,6 +239,9 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             //3、到2h以后，每个小时都提示，提示“2h后过期”、“1h后过期”
             //4、1h的时候，需要给帮辅推送信息
             // 未批阅状态
+            //清除缓存
+            mExpiredTime.setText("");
+            mExpiredTime.setBackgroundResource(0);
             if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_NOT) {
                 String time1 = taskEntity.getStuAssistTime();
                 String time2 = taskEntity.getServerNowTime();
