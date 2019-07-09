@@ -149,21 +149,21 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER, false);
         isFromScan = getArguments().getBoolean("isFromScan", false);
-        resIds = getArguments().getStringArrayList("resIds");
+//        resIds = getArguments().getStringArrayList("resIds");
 
-        if (EmptyUtil.isNotEmpty(resIds)){
-            mLLPlayList.setVisibility(View.VISIBLE);
-//            List<String> list = new ArrayList<String>();
-//            list.add("712577-19");
-//            list.add("715481-19");
-            TaskSliderHelper.onPlayListListener.setResIds(resIds);
-            TaskSliderHelper.onPlayListListener.setActivity(activity);
-            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
-                TaskSliderHelper.onPlayListListener.startPlay();
-            }
-        }else {
-            mLLPlayList.setVisibility(View.GONE);
-        }
+//        if (EmptyUtil.isNotEmpty(resIds)){
+//            mLLPlayList.setVisibility(View.VISIBLE);
+////            List<String> list = new ArrayList<String>();
+////            list.add("712577-19");
+////            list.add("715481-19");
+//            TaskSliderHelper.onPlayListListener.setResIds(resIds);
+//            TaskSliderHelper.onPlayListListener.setActivity(activity);
+//            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+//                TaskSliderHelper.onPlayListListener.startPlay();
+//            }
+//        }else {
+//            mLLPlayList.setVisibility(View.GONE);
+//        }
 
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
@@ -293,6 +293,22 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     public void updateData() {
         getData(false);
+    }
+
+    public void updatePlayCourseList(List<String> resIds) {
+        if (getActivity() == null) {
+            return;
+        }
+        if (EmptyUtil.isNotEmpty(resIds) && TaskSliderHelper.onPlayListListener != null){
+            mLLPlayList.setVisibility(View.VISIBLE);
+            TaskSliderHelper.onPlayListListener.setResIds(resIds);
+            TaskSliderHelper.onPlayListListener.setActivity(getActivity());
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+                TaskSliderHelper.onPlayListListener.startPlay();
+            }
+        }else {
+            mLLPlayList.setVisibility(View.GONE);
+        }
     }
 
     public void getMore() {

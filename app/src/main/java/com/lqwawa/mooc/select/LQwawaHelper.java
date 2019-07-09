@@ -12,9 +12,12 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * @author mrmedici
@@ -76,14 +79,14 @@ public class LQwawaHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetResourceListByChapterIds);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
-        params.setConnectTimeout(10000);
+        params.setConnectTimeout(60000);
         LogUtil.i(LQwawaHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(LQwawaHelper.class, "request " + params.getUri() + " result :" + str);
                 try {
-                    ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo>() {
+                    ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<CourseResourceEntity>>>() {
                     });
                     if (vo.isSucceed()) {
                         if (EmptyUtil.isNotEmpty(callback)) {

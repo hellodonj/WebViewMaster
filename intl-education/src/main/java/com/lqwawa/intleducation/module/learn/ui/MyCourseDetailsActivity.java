@@ -228,7 +228,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
     //播放列表返回的resId
-    private List<String> resIds;
+//    private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
@@ -659,7 +659,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
-        bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
+//        bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
 
         studyPlanFragment.setArguments(bundle2);
         // TODO 我的课程详情课程评价 从课程详情迁移过来的,传参类型尚未明清
@@ -1594,8 +1594,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             // 刷新UI
             courseVo.setInClass(true);
         } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
-            resIds = (List<String>) event.getData();
-            initData();
+            List<String> resIds = (List<String>) event.getData();
+            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
+                ((CourseDetailsItemFragment)studyPlanFragment).updatePlayCourseList(resIds);
+            }
         }
     }
 
