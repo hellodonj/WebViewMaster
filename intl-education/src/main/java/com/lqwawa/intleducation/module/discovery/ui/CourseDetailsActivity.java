@@ -1253,12 +1253,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
                 if (tutorialMode && !isFromScan) {
                     // TODO 申请成为课程的帮辅老师
+                    textViewPay.setEnabled(false);
                     TutorialCourseApplyForFragment.show(
                             getSupportFragmentManager(),
                             mCurMemberId, courseId, courseVo.getOrganId(),
                             courseDetailsVo.getIsOrganTutorStatus(), new CourseApplyForNavigator() {
                                 @Override
                                 public void onCourseTutorEnter(boolean isCourseTutor) {
+                                    textViewPay.setEnabled(true);
                                     if (isCourseTutor) {
                                         toJoinCourseDetailsActivity();
                                     }

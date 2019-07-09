@@ -190,6 +190,8 @@ public class ResourcesPlayUtils {
                     currentPosition++;
                     if (currentPosition < playDataList.size()) {
                         openPlayActivity();
+                    } else {
+                        currentPosition = 0;
                     }
                 }
             }

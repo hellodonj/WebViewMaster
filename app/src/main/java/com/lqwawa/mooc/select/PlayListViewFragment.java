@@ -13,6 +13,7 @@ import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
@@ -52,7 +53,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private List<ChapterVo> children;
     private Map<String, List<ChapterVo>> childMap = new HashMap<String, List<ChapterVo>>();// 子元素数据列表
 
-    private List<Map<String, Object>> playListVo;
+    private List<CourseResourceEntity> playListVo;
 
 
     @Override
@@ -226,16 +227,21 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
                     if (responseVo.isSucceed()) {
+<<<<<<< HEAD
                         dismissLoadingDialog();
                         playListVo = (List<Map<String, Object>>) responseVo.getData();
+=======
+                        playListVo = (List<CourseResourceEntity>) responseVo.getData();
+>>>>>>> fa80fefe38f8995f31485711b409aa421db9371a
                         List<String> list = new ArrayList<String>();
                         if (EmptyUtil.isNotEmpty(playListVo)) {
                             for (int i = 0; i < playListVo.size(); i++) {
-                                Map<String, Object> map = playListVo.get(i);
-                                int id1 = (int) map.get("resId");
-                                StringBuffer sb = new StringBuffer();
-                                sb.append(id1 + "-").append(19);
-                                list.add(sb.toString());
+                                CourseResourceEntity entity = playListVo.get(i);
+                                if (entity != null) {
+                                    StringBuffer sb = new StringBuffer();
+                                    sb.append(entity.getResId() + "-").append(entity.getResType());
+                                    list.add(sb.toString());
+                                }
                             }
                             // 通过EventBus通知
                             EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
