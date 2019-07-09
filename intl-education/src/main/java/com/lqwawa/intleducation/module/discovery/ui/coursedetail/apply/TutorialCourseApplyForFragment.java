@@ -546,7 +546,9 @@ public class TutorialCourseApplyForFragment extends PresenterDialogFragment<Tuto
                                 MainApplication.isAssistant(schoolId), new DataSource.Callback<Boolean>() {
                                     @Override
                                     public void onDataNotAvailable(int strRes) {
-
+                                        if(EmptyUtil.isNotEmpty(navigator)){
+                                            navigator.onCourseTutorEnter(false);
+                                        }
                                     }
 
                                     @Override
