@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
@@ -119,8 +120,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private boolean mTeacherVisitor;
 
     private boolean isFromScan;
-
-    private List<String> resIds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -295,13 +294,13 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         getData(false);
     }
 
-    public void updatePlayCourseList(List<String> resIds) {
+    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
         if (getActivity() == null) {
             return;
         }
-        if (EmptyUtil.isNotEmpty(resIds) && TaskSliderHelper.onPlayListListener != null){
+        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
             mLLPlayList.setVisibility(View.VISIBLE);
-            TaskSliderHelper.onPlayListListener.setResIds(resIds);
+            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
             TaskSliderHelper.onPlayListListener.setActivity(getActivity());
             if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
                 TaskSliderHelper.onPlayListListener.startPlay();

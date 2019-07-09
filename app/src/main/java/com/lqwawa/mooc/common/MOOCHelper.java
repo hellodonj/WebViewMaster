@@ -67,6 +67,7 @@ import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.factory.constant.SharedConstant;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
@@ -149,9 +150,10 @@ public class MOOCHelper {
 
     private static TaskSliderHelper.OnPlayListListener onPlayListListener
             = new TaskSliderHelper.OnPlayListListener() {
+
         @Override
-        public Object setResIds(List<String> resIds) {
-            return ResourcesPlayUtils.getInstance().setResIds(resIds);
+        public Object setPlayListInfo(List<CourseResourceEntity> playListVo) {
+            return ResourcesPlayUtils.getInstance().setPlayList(playListVo);
         }
 
         @Override

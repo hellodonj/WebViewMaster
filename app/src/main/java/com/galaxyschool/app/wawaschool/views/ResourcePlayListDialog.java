@@ -13,6 +13,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.adapter.ResourcePlayListAdapter;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class ResourcePlayListDialog extends Dialog {
     private MyGridView gridView;
     private CallbackListener listener;
     private ResourcePlayListAdapter adapter;
-    private List<CourseData> list;
+    private List<CourseResourceEntity> list;
 
-    public ResourcePlayListDialog(Context context, List<CourseData> list, CallbackListener listener) {
+    public ResourcePlayListDialog(Context context, List<CourseResourceEntity> playList, CallbackListener listener) {
         super(context, R.style.Theme_ContactsDialog);
         mContext = context;
-        this.list = list;
+        this.list = playList;
         this.listener = listener;
     }
 

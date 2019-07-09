@@ -11,15 +11,15 @@ import android.widget.TextView;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
-import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 
 import java.util.List;
 public class ResourcePlayListAdapter extends BaseAdapter {
     private Context context;
-    private List<CourseData> list;
+    private List<CourseResourceEntity> list;
 
-    public ResourcePlayListAdapter(Context context, List<CourseData> list) {
+    public ResourcePlayListAdapter(Context context, List<CourseResourceEntity> list) {
         this.context = context;
         this.list = list;
     }
@@ -55,11 +55,11 @@ public class ResourcePlayListAdapter extends BaseAdapter {
         }
 
         if (list != null && list.size() > 0) {
-            final CourseData data = list.get(position);
+            final CourseResourceEntity data = list.get(position);
             if (data != null) {
                 //默认图片
                 ResourceInfoTag infoTag = new ResourceInfoTag();
-                infoTag.setResId(data.getIdType());
+                infoTag.setResId(data.getResId() + "-" + data.getResType());
                 int defaultIcon = WatchWawaCourseResourceOpenUtils.getItemDefaultIcon(infoTag);
                 //图片
                 holder.iconImageView.setImageResource(defaultIcon);
@@ -72,7 +72,7 @@ public class ResourcePlayListAdapter extends BaseAdapter {
                     }
                 });
                 //标题
-                holder.titleTextView.setText(data.nickname);
+                holder.titleTextView.setText(data.getNickName());
                 if (data.isSelected()){
                     holder.titleTextView.setTextColor(ContextCompat.getColor(UIUtil.getContext(),
                             R.color.text_light_gray));
@@ -103,7 +103,7 @@ public class ResourcePlayListAdapter extends BaseAdapter {
      *
      * @param resultList
      */
-    public void update(List<CourseData> resultList) {
+    public void update(List<CourseResourceEntity> resultList) {
         if (resultList != null && resultList.size() > 0) {
             this.list = resultList;
             notifyDataSetChanged();

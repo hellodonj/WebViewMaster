@@ -88,7 +88,8 @@ public class PushOpenResourceHelper {
             //打开帮辅的推送
             //助教-帮辅作业提醒过来过期 -> 11
             enterAssistantDetail();
-        } else if (pushMessageInfo.getPushModuleType() == 10){
+        } else if (pushMessageInfo.getPushModuleType() == 10
+                || pushMessageInfo.getPushModuleType() == 12){
           //助教审批通过--成为帮辅 -> 10
           //助教-作业未批阅退款给学生 -> 12
             openAssistantModel();

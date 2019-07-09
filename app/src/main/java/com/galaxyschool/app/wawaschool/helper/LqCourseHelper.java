@@ -103,7 +103,7 @@ public class LqCourseHelper {
                 });
     }
 
-    private static void updateReadState(Activity activity,
+    public static void updateReadState(Activity activity,
                                         int resCourseId,
                                         String resId,
                                         String memberId) {
