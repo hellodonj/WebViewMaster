@@ -85,6 +85,7 @@ public class JoinClassDetailActivity extends BaseClassDetailActivity<JoinClassDe
     @Override
     protected void initWidget() {
         super.initWidget();
+        mClassPrice.setVisibility(View.GONE);
         // 设置公告显示
         mNoticeLayout.setVisibility(View.VISIBLE);
         mTvTimeTable = (TextView) findViewById(R.id.tv_timetable);

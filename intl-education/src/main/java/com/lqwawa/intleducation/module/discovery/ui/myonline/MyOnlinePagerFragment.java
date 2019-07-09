@@ -287,9 +287,9 @@ public class MyOnlinePagerFragment extends PresenterFragment<MyOnlinePagerContra
             // 家长查看孩子
             params.setParent(true,mCurMemberId);
         }
-        ClassDetailActivity.show(getActivity(),params);
-        // String classId = onlineClassEntity.getClassId();
-        // mPresenter.requestLoadClassInfo(classId);
+//        ClassDetailActivity.show(getActivity(),params);
+         String classId = onlineClassEntity.getClassId();
+         mPresenter.requestLoadClassInfo(classId);
     }
 
     @Override

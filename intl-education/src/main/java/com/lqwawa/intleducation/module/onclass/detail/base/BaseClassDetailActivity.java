@@ -579,7 +579,7 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
     @Override
     public boolean onSupportNavigateUp() {
         // 进入主页面
-        if(mClassDetailParams.isPushEnter() && mClassDetailParams.isHome()){
+        if(mClassDetailParams != null && mClassDetailParams.isPushEnter() && mClassDetailParams.isHome()){
             Intent intent = new Intent();
             intent.setClassName(getPackageName(),"com.galaxyschool.app.wawaschool.HomeActivity");
             startActivity(intent);
