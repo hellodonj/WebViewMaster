@@ -1225,7 +1225,7 @@ public class TutorialHelper {
             requestVo.addParams("T_ResCourseId", T_ResCourseId);
         }
 
-        if(model.getOrderId() > 0) {
+        if (model.getOrderId() > 0) {
             requestVo.addParams("OrderId", model.getOrderId());
         }
 
@@ -1267,4 +1267,45 @@ public class TutorialHelper {
         });
     }
 
+    /**
+     * 对帮辅评价是否评价过
+     *
+     * @param taskSendId
+     * @param callback
+     */
+    public static void qryWhetherEstimated(@NonNull int taskSendId,
+                                           @NonNull DataSource.Callback<Boolean> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("taskSendId", taskSendId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostQryWhetherEstimated);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<Map<String, Boolean>>> typeReference = new TypeReference<ResponseVo<Map<String, Boolean>>>() {
+                };
+                ResponseVo<Map<String, Boolean>> responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        boolean estimated = responseVo.getData().get("estimated");
+                        callback.onDataLoaded(estimated);
+                    }
+                } else {
+                    Factory.decodeRspCode(responseVo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
 }

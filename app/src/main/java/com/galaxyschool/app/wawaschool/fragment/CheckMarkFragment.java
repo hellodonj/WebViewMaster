@@ -60,6 +60,7 @@ import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.galaxyschool.app.wawaschool.pojo.weike.EstimatedEntity;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
@@ -222,6 +223,34 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
         //右侧按钮
         tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("taskSendId", taskEntity.getId());
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostQryWhetherEstimated);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+//                TypeReference<ResponseVo<Map<String, Boolean>>> typeReference = new TypeReference<ResponseVo<Map<String, Boolean>>>() {
+//                };
+//                ResponseVo<Map<String, Boolean>> responseVo = JSON.parseObject(str, typeReference);
+                TypeReference<EstimatedEntity> typeReference = new TypeReference<EstimatedEntity>() {
+                };
+                EstimatedEntity responseVo = JSON.parseObject(str, typeReference);
+
+                if (responseVo.getCode()==0) {
+                    boolean estimated = responseVo.isEstimated();
+                    if (estimated) {
+                        tvTutorial.setVisibility(View.GONE);
+                    } else {
+                        tvTutorial.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
         if (tvTutorial != null) {
             //1 已批阅 角色是学生 没有评价过
             if (EmptyUtil.isNotEmpty(taskEntity)) {
@@ -609,6 +638,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         e.printStackTrace();
                     }
                     requestVo.addParams("starLevel", rate);
+                    requestVo.addParams("taskSendId", taskEntity.getId());
                     RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
                     params.setConnectTimeout(10000);
                     LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
@@ -619,6 +649,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                             };
                             ResponseVo responseVo = JSON.parseObject(str, typeReference);
                             if (responseVo.isSucceed()) {
+                                tvTutorial.setVisibility(View.GONE);
                                 commitTask.setHasAlreadyCommit(true);
                                 UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
                                         UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
@@ -804,7 +835,7 @@ public class CheckMarkFragment extends ContactsListFragment {
         //答题的打分
         if (!TextUtils.isEmpty(score)) {
             tvExerciseScoreTextV.setVisibility(View.VISIBLE);
-            if (Utils.isEnglishLanguage(score)){
+            if (Utils.isEnglishLanguage(score)) {
                 tvExerciseScoreTextV.setText(score);
             } else {
                 tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));

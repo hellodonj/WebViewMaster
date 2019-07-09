@@ -877,6 +877,10 @@ public final class AppConfig {
         public static final String GetRequestAddTutorialComment =
                 ServerBase + "api/tutor/addTutorEstimate?j=";
 
+        //对帮辅评价是否评价过
+        public static final String PostQryWhetherEstimated =
+                ServerBase + "api/tutor/qryWhetherEstimated";
+
         // 获取符合筛选条件的帮辅列表
         public static final String GetTutorList =
                 ServerBase + "api/tutor/getTutorList?j=";
