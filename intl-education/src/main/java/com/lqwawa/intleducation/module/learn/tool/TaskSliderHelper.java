@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.Utils;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
@@ -51,7 +52,7 @@ public class TaskSliderHelper {
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
 
     public interface OnPlayListListener {
-        Object setResIds(List<String> resIds);
+        Object setPlayListInfo(List<CourseResourceEntity> playListVo);
 
         Object setActivity(Activity activity);
 

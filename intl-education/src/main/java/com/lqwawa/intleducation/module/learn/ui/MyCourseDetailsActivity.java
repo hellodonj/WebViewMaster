@@ -54,6 +54,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
@@ -1594,9 +1595,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             // 刷新UI
             courseVo.setInClass(true);
         } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
-            List<String> resIds = (List<String>) event.getData();
+            List<CourseResourceEntity> playListVo = (List<CourseResourceEntity>) event.getData();
             if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
-                ((CourseDetailsItemFragment)studyPlanFragment).updatePlayCourseList(resIds);
+                ((CourseDetailsItemFragment)studyPlanFragment).updatePlayCourseList(playListVo);
             }
         }
     }

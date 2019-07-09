@@ -227,24 +227,11 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
                     if (responseVo.isSucceed()) {
-<<<<<<< HEAD
                         dismissLoadingDialog();
-                        playListVo = (List<Map<String, Object>>) responseVo.getData();
-=======
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
->>>>>>> fa80fefe38f8995f31485711b409aa421db9371a
-                        List<String> list = new ArrayList<String>();
                         if (EmptyUtil.isNotEmpty(playListVo)) {
-                            for (int i = 0; i < playListVo.size(); i++) {
-                                CourseResourceEntity entity = playListVo.get(i);
-                                if (entity != null) {
-                                    StringBuffer sb = new StringBuffer();
-                                    sb.append(entity.getResId() + "-").append(entity.getResType());
-                                    list.add(sb.toString());
-                                }
-                            }
                             // 通过EventBus通知
-                            EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
+                            EventBus.getDefault().post(new EventWrapper(playListVo, EventConstant.GENERATE_PLAY_LIST_EVENT));
                             getActivity().finish();
                         } else {
                             ToastUtil.showToast(getActivity(), R.string.label_play_tip);

@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.duowan.mobile.netroid.Request;
+import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.helper.LqCourseHelper;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.views.ResourcePlayListDialog;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.oosic.apps.iemaker.base.BaseUtils;
 import com.oosic.apps.iemaker.base.PlaybackActivity;
@@ -31,9 +35,8 @@ public class ResourcesPlayUtils {
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
     private Activity activity;
     private ResourcePlayListDialog dialog;
-    private List<String> resIds;
-    private List<CourseData> playDataList;
     private int currentPosition;
+    private List<CourseResourceEntity> playList;
 
     public static ResourcesPlayUtils getInstance() {
         return ResourcePlayUtilsHolder.instance;
@@ -48,11 +51,8 @@ public class ResourcesPlayUtils {
         return this;
     }
 
-    /**
-     * @param resIds resId-type
-     */
-    public ResourcesPlayUtils setResIds(List<String> resIds) {
-        this.resIds = resIds;
+    public ResourcesPlayUtils setPlayList(List<CourseResourceEntity> playList) {
+        this.playList = playList;
         return this;
     }
 
@@ -60,7 +60,7 @@ public class ResourcesPlayUtils {
         if (activity == null) {
             return;
         }
-        if (resIds == null || resIds.size() == 0) {
+        if (playList == null || playList.size() == 0){
             return;
         }
         loadResourceData();
@@ -70,10 +70,10 @@ public class ResourcesPlayUtils {
      * 获取播放列表课件的数量
      */
     public int getPlayResourceSize() {
-        if (resIds == null) {
+        if (playList == null) {
             return 0;
         }
-        return resIds.size();
+        return playList.size();
     }
 
     /**
@@ -81,7 +81,7 @@ public class ResourcesPlayUtils {
      */
     public void releasePlayResource() {
         currentPosition = 0;
-        resIds = null;
+        playList = null;
     }
 
     /**
@@ -115,9 +115,10 @@ public class ResourcesPlayUtils {
                 }
                 CourseUploadResult result = JSONObject.parseObject(jsonString, CourseUploadResult.class);
                 if (result != null && result.code == 0) {
-                    playDataList = result.data;
-                    if (playDataList != null && playDataList.size() > 0) {
-                        dialog = new ResourcePlayListDialog(activity, playDataList,position -> {
+                    List<CourseData> dataList = result.data;
+                    if (dataList != null && dataList.size() > 0) {
+                        mergePlayData(dataList);
+                        dialog = new ResourcePlayListDialog(activity, playList, position -> {
                             currentPosition = (int) position;
                             openPlayActivity();
                         });
@@ -134,16 +135,29 @@ public class ResourcesPlayUtils {
         request.start(UIUtil.getContext());
     }
 
-    private String getResIds() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < resIds.size(); i++){
-            if (builder.length() == 0){
-                builder.append(resIds.get(i));
-            } else {
-                builder.append(",").append(resIds.get(i));
+    private void mergePlayData(List<CourseData> dataList){
+        for (int i = 0; i < playList.size(); i++){
+            CourseResourceEntity data = playList.get(i);
+            for (int j = 0; j < dataList.size(); j++){
+                CourseData courseData = dataList.get(j);
+                if (data.getResId() == courseData.id){
+                    data.setScreenType(courseData.screentype);
+                    data.setResourceUrl(courseData.resourceurl);
+                }
             }
         }
-//        builder.append("712577-19").append(",").append("715481-19");
+    }
+
+    private String getResIds() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < playList.size(); i++) {
+            CourseResourceEntity info = playList.get(i);
+            if (builder.length() == 0) {
+                builder.append(info.getResId() + "-" + info.getResType());
+            } else {
+                builder.append(",").append(info.getResId() + "-" + info.getResType());
+            }
+        }
         return builder.toString();
     }
 
@@ -151,44 +165,55 @@ public class ResourcesPlayUtils {
         if (activity == null) {
             return;
         }
-        CourseData courseData = playDataList.get(currentPosition);
-        if (courseData == null) {
+        CourseResourceEntity playInfo = playList.get(currentPosition);
+        if (playInfo == null) {
             return;
         }
-        if (!courseData.isSelected()){
-            courseData.setSelected(true);
+        if (!playInfo.isSelected()) {
+            playInfo.setSelected(true);
             if (dialog != null) {
                 dialog.notifyDataSetChanged();
             }
         }
         Intent intent = new Intent(activity, PlaybackActivity.class);
         Bundle extras = new Bundle();
-        String courseUrl = playDataList.get(currentPosition).resourceurl;
+        String courseUrl = playInfo.getResourceUrl();
         if (courseUrl.endsWith(".zip")) {
             courseUrl = courseUrl.substring(0, courseUrl.lastIndexOf('.'));
         } else if (courseUrl.contains(".zip?")) {
             courseUrl = courseUrl.substring(0, courseUrl.lastIndexOf(".zip?"));
         }
         extras.putString(PlaybackActivity.FILE_PATH, courseUrl);
-        extras.putInt(PlaybackActivity.ORIENTATION, courseData.screentype);
+        extras.putInt(PlaybackActivity.ORIENTATION, playInfo.getScreenType());
         extras.putInt(PlaybackActivity.PLAYBACK_TYPE, BaseUtils.RES_TYPE_COURSE);
         extras.putBoolean(PlaybackActivity.IS_PLAY_ORIGIN_VOICE, true);
         extras.putBoolean(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, true);
         extras.putParcelable(SlideInPlaybackParam.class.getSimpleName(), new SlideInPlaybackParam());
         intent.putExtras(extras);
         activity.startActivityForResult(intent, RESOURCE_PLAY_COMPLETED_REQUEST_CODE);
+        updateTaskReadState(playInfo);
+    }
+
+    private void updateTaskReadState(CourseResourceEntity playInfo){
+        if (playInfo.getId() > 0){
+            if (playInfo.getTaskType() == 1
+                    || playInfo.getTaskType() == 4){
+                LqCourseHelper.updateReadState(activity,playInfo.getId(),playInfo.getResId()+"",
+                        DemoApplication.getInstance().getMemberId());
+            }
+        }
     }
 
     /**
      * 课件播放完成之后继续播放一下
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE){
-            if (data != null){
-                boolean playCompleted = data.getBooleanExtra(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION,false);
-                if (playCompleted){
+        if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+            if (data != null) {
+                boolean playCompleted = data.getBooleanExtra(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, false);
+                if (playCompleted) {
                     currentPosition++;
-                    if (currentPosition < playDataList.size()) {
+                    if (currentPosition < playList.size()) {
                         openPlayActivity();
                     } else {
                         currentPosition = 0;
