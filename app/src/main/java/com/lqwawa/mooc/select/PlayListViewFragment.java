@@ -216,6 +216,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 TaskSliderHelper.onPlayListListener.releasePlayResource();
             }
             String jsonString = getChapterIds();
+            showLoadingDialog();
             LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
                 @Override
                 public void onDataNotAvailable(int strRes) {
@@ -225,6 +226,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
                     if (responseVo.isSucceed()) {
+                        dismissLoadingDialog();
                         playListVo = (List<Map<String, Object>>) responseVo.getData();
                         List<String> list = new ArrayList<String>();
                         if (EmptyUtil.isNotEmpty(playListVo)) {
