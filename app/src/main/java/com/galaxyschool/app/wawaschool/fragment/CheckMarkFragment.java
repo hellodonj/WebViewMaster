@@ -233,7 +233,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     tvTutorial.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mEvaluationDialog();
+                            evaluationDialog();
                         }
                     });
                 } else {
@@ -574,7 +574,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     }
 
     //帮辅评价弹框
-    private void mEvaluationDialog() {
+    private void evaluationDialog() {
         TutorialEvaluationPopWindow popWindow = new TutorialEvaluationPopWindow(getActivity());
         popWindow.showAtLocation(findViewById(R.id.ll_layout1), Gravity.BOTTOM, 0, 0);
 

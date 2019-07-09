@@ -24,6 +24,33 @@ public class CourseResourceEntity extends BaseVo {
     private int id;
     private int studyTaskId;
     private int resId;
+    private int screenType;
+    private boolean selected;
+    private int taskType;
+
+    public int getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(int taskType) {
+        this.taskType = taskType;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public int getScreenType() {
+        return screenType;
+    }
+
+    public void setScreenType(int screenType) {
+        this.screenType = screenType;
+    }
 
     public String getResourceUrl() {
         return resourceUrl;

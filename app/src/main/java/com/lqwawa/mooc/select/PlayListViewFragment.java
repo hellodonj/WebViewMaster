@@ -217,6 +217,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 TaskSliderHelper.onPlayListListener.releasePlayResource();
             }
             String jsonString = getChapterIds();
+            showLoadingDialog();
             LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
                 @Override
                 public void onDataNotAvailable(int strRes) {
@@ -226,19 +227,11 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
                     if (responseVo.isSucceed()) {
+                        dismissLoadingDialog();
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
-                        List<String> list = new ArrayList<String>();
-                        if (EmptyUtil.isNotEmpty(playListVo)) {
-                            for (int i = 0; i < playListVo.size(); i++) {
-                                CourseResourceEntity entity = playListVo.get(i);
-                                if (entity != null) {
-                                    StringBuffer sb = new StringBuffer();
-                                    sb.append(entity.getResId() + "-").append(entity.getResType());
-                                    list.add(sb.toString());
-                                }
-                            }
+                        if (EmptyUtil.isNotEmpty(playListVo) && playListVo.size() > 0) {
                             // 通过EventBus通知
-                            EventBus.getDefault().post(new EventWrapper(list, EventConstant.GENERATE_PLAY_LIST_EVENT));
+                            EventBus.getDefault().post(new EventWrapper(playListVo, EventConstant.GENERATE_PLAY_LIST_EVENT));
                             getActivity().finish();
                         } else {
                             ToastUtil.showToast(getActivity(), R.string.label_play_tip);

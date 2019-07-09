@@ -1296,8 +1296,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             pageSoreTextV.setVisibility(View.VISIBLE);
             int pageScore = data.getEval_score();
             if (scoreRule == 1) {
-                pageSoreTextV.setText(getString(R.string.str_eval_score, StudyTaskUtils
-                        .percentTransformTenLevel(pageScore)));
+                pageSoreTextV.setText(StudyTaskUtils.percentTransformTenLevel(pageScore));
             } else {
                 pageSoreTextV.setText(getString(R.string.str_eval_score, String.valueOf(data
                         .getEval_score())));
