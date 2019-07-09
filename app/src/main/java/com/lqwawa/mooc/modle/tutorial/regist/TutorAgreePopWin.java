@@ -13,11 +13,9 @@ import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
 
-
 /**
- * desc: 治疗明细的填写治疗记录的popup
- * author: dj
- * date: 2017/5/22 11:02
+ * 描述: 帮辅协议弹框
+ * 作者|时间: djj on 2019/7/9 0009 上午 8:55
  */
 public class TutorAgreePopWin extends PopupWindow {
 

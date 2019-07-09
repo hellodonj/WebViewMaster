@@ -804,7 +804,11 @@ public class CheckMarkFragment extends ContactsListFragment {
         //答题的打分
         if (!TextUtils.isEmpty(score)) {
             tvExerciseScoreTextV.setVisibility(View.VISIBLE);
-            tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));
+            if (Utils.isEnglishLanguage(score)){
+                tvExerciseScoreTextV.setText(score);
+            } else {
+                tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));
+            }
         }
 //        } else {
 //            String str = getString(R.string.str_score);

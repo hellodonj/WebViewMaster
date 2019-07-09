@@ -246,53 +246,22 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
                     long[] time = getDistanceTime(time1, time2);
                     long day = time[0];
                     long hour = time[1];
-                    long min = time[2];
                     if (day > 0) {
                         mExpiredTime.setText(R.string.label_have_overdue);
                         mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
                         taskEntity.setOverTimed(true); //已过期
                     } else {
                         if (tutorialMode) { //帮辅模式下才显示过期时长
-                            if (hour > 18 && hour < 24) {
+                            if (hour >= 12 && hour < 18) {
                                 mExpiredTime.setText(R.string.label_12_overdue);
                                 mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                            } else if (hour == 24) {
-                                if (min > 0) {
-                                    mExpiredTime.setText(R.string.label_have_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_4);
-                                    taskEntity.setOverTimed(true); //已过期
-                                } else {
-                                    mExpiredTime.setText(R.string.label_12_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                                }
-                            } else if (hour > 14 && hour < 18) {
+                            } else if (hour >= 18 && hour < 22) {
                                 mExpiredTime.setText(R.string.label_6_overdue);
                                 mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
-                            } else if (hour == 18) {
-                                if (min > 0) {
-                                    mExpiredTime.setText(R.string.label_12_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_1);
-                                } else {
-                                    mExpiredTime.setText(R.string.label_6_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
-                                }
-                            } else if (hour == 14) {
-                                if (min > 0) {
-                                    mExpiredTime.setText(R.string.label_6_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_2);
-                                } else {
-                                    mExpiredTime.setText(R.string.label_2_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                                }
-                            } else if (hour == 13) {
-                                if (min > 0) {
-                                    mExpiredTime.setText(R.string.label_2_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                                } else {
-                                    mExpiredTime.setText(R.string.label_1_overdue);
-                                    mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
-                                }
-                            } else if (hour == 12 && min > 0) {
+                            } else if (hour == 22) {
+                                mExpiredTime.setText(R.string.label_2_overdue);
+                                mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
+                            } else if (hour == 23) {
                                 mExpiredTime.setText(R.string.label_1_overdue);
                                 mExpiredTime.setBackgroundResource(R.drawable.expired_time_style_3);
                             }
@@ -309,7 +278,6 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
         Date two;
         long day = 0;
         long hour = 0;
-        long min = 0;
         try {
             one = df.parse(starttime);
             two = df.parse(endtime);
@@ -323,11 +291,10 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
             }
             day = diff / (24 * 60 * 60 * 1000);
             hour = (diff / (60 * 60 * 1000) - day * 24);
-            min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long[] times = {day, hour, min};
+        long[] times = {day, hour};
         return times;
     }
 
