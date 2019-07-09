@@ -1,10 +1,13 @@
 package com.galaxyschool.app.wawaschool.common;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.duowan.mobile.netroid.Listener;
@@ -63,6 +66,11 @@ public class ResourcesPlayUtils {
         if (playList == null || playList.size() == 0){
             return;
         }
+
+        LocalBroadcastManager.getInstance(this.activity).registerReceiver(
+                playbackCompletionReceiver,
+                new IntentFilter(PlaybackActivity.ACTION_COURSE_PLAYBACK_COMPLETION));
+
         loadResourceData();
     }
 
@@ -80,6 +88,7 @@ public class ResourcesPlayUtils {
      * 清空播放的数据
      */
     public void releasePlayResource() {
+        LocalBroadcastManager.getInstance(this.activity).unregisterReceiver(playbackCompletionReceiver);
         currentPosition = 0;
         playList = null;
     }
@@ -188,6 +197,7 @@ public class ResourcesPlayUtils {
         extras.putInt(PlaybackActivity.PLAYBACK_TYPE, BaseUtils.RES_TYPE_COURSE);
         extras.putBoolean(PlaybackActivity.IS_PLAY_ORIGIN_VOICE, true);
         extras.putBoolean(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, true);
+        extras.putBoolean(PlaybackActivity.EXTRA_PLAYLIST_MODE, true);
         extras.putParcelable(SlideInPlaybackParam.class.getSimpleName(), new SlideInPlaybackParam());
         intent.putExtras(extras);
         activity.startActivityForResult(intent, RESOURCE_PLAY_COMPLETED_REQUEST_CODE);
@@ -208,17 +218,33 @@ public class ResourcesPlayUtils {
      * 课件播放完成之后继续播放一下
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
-            if (data != null) {
-                boolean playCompleted = data.getBooleanExtra(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, false);
-                if (playCompleted) {
-                    currentPosition++;
-                    if (currentPosition < playList.size()) {
-                        openPlayActivity();
-                    } else {
-                        currentPosition = 0;
-                    }
-                }
+//        if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+//            if (data != null) {
+//                boolean playCompleted = data.getBooleanExtra(PlaybackActivity.EXIT_PLAYBACK_AFTER_COMPLETION, false);
+//                if (playCompleted) {
+//                    currentPosition++;
+//                    if (currentPosition < playList.size()) {
+//                        openPlayActivity();
+//                    } else {
+//                        currentPosition = 0;
+//                    }
+//                }
+//            }
+//        }
+    }
+
+
+    private PlaybackCompletionReceiver playbackCompletionReceiver = new PlaybackCompletionReceiver();
+
+    private class PlaybackCompletionReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            currentPosition++;
+            if (currentPosition < playList.size()) {
+                openPlayActivity();
+            } else {
+                currentPosition = 0;
             }
         }
     }

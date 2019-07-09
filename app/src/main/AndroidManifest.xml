@@ -587,23 +587,23 @@
         <activity
             android:name="com.oosic.apps.iemaker.base.PlaybackActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackActivityNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackActivityPhone"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
         <activity
             android:name=".course.PlaybackWawaPageActivityPhone"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-            android:screenOrientation="sensorPortrait"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="adjustNothing|stateHidden"></activity>
 
         <!--for wechat pay-->
@@ -625,12 +625,12 @@
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="locked"></activity>
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
+            android:screenOrientation="locked"></activity>
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -864,6 +864,7 @@
         <activity
             android:name=".course.SlideActivityNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="locked"
             android:windowSoftInputMode="adjustNothing|stateHidden|stateAlwaysHidden"></activity>
         <activity
             android:name="com.lqwawa.libs.appupdater.UpdateActivity"
