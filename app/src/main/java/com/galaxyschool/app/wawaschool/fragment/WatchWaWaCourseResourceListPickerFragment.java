@@ -65,6 +65,7 @@ import com.osastudio.common.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 看课件多类型资源选取列表页面
@@ -722,6 +723,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     }
 
     private void loadGetStudyTaskResControl() {
+        //测试的时候放开 上线关闭
+        Map<String,Object> params = new HashMap<>();
+        params.put("Flag",1);
         RequestHelper.RequestModelResultListener listener = new RequestHelper
                 .RequestModelResultListener(getActivity(), ModelResult.class) {
             @Override
@@ -751,7 +755,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 loadViews();
             }
         };
-        RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_STUDYTASK_CONTROL_BASE_URL, new HashMap<>(),
+        RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_STUDYTASK_CONTROL_BASE_URL, params,
                 listener);
     }
 
