@@ -493,7 +493,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             isAddInClass = true;
         }
         final boolean finalIsAddInClass = isAddInClass;
-        final boolean finalIsAddPlayList = isAddPlayList;
+        final boolean finalIsAddPlayList = true;
         View.OnClickListener clickListener = null;
         if (isAddInClass || isAddPlayList) {
             clickListener = new View.OnClickListener() {

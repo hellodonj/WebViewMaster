@@ -88,7 +88,9 @@ public class ResourcesPlayUtils {
      * 清空播放的数据
      */
     public void releasePlayResource() {
-        LocalBroadcastManager.getInstance(this.activity).unregisterReceiver(playbackCompletionReceiver);
+        if (activity != null && playbackCompletionReceiver != null) {
+            LocalBroadcastManager.getInstance(this.activity).unregisterReceiver(playbackCompletionReceiver);
+        }
         currentPosition = 0;
         playList = null;
     }
