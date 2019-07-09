@@ -227,12 +227,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
                     if (responseVo.isSucceed()) {
-<<<<<<< HEAD
                         dismissLoadingDialog();
-                        playListVo = (List<Map<String, Object>>) responseVo.getData();
-=======
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
->>>>>>> fa80fefe38f8995f31485711b409aa421db9371a
                         List<String> list = new ArrayList<String>();
                         if (EmptyUtil.isNotEmpty(playListVo)) {
                             for (int i = 0; i < playListVo.size(); i++) {
