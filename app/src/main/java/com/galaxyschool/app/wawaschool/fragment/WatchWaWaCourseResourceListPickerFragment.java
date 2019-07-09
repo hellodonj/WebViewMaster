@@ -60,6 +60,7 @@ import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
+import com.osastudio.apps.Config;
 import com.osastudio.common.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -725,7 +726,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private void loadGetStudyTaskResControl() {
         //测试的时候放开 上线关闭
         Map<String,Object> params = new HashMap<>();
-        params.put("Flag",1);
+        if (!Config.UPLOAD_BUGLY_EXCEPTION){
+            params.put("Flag",1);
+        }
         RequestHelper.RequestModelResultListener listener = new RequestHelper
                 .RequestModelResultListener(getActivity(), ModelResult.class) {
             @Override
