@@ -229,7 +229,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                     if (responseVo.isSucceed()) {
                         dismissLoadingDialog();
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
-                        if (EmptyUtil.isNotEmpty(playListVo)) {
+                        if (EmptyUtil.isNotEmpty(playListVo) && playListVo.size() > 0) {
                             // 通过EventBus通知
                             EventBus.getDefault().post(new EventWrapper(playListVo, EventConstant.GENERATE_PLAY_LIST_EVENT));
                             getActivity().finish();
