@@ -3,11 +3,13 @@ package com.lqwawa.intleducation.common.utils;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.lqwawa.intleducation.R;
 import com.osastudio.common.utils.LQImageLoader;
 
+import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -43,6 +45,11 @@ public class ImageUtil {
      */
     private static ImageOptions COURSE_IMAGE_OPTIONS = null;
 
+    /**
+     * 解决重定向builder
+     */
+    private static ImageOptions.ParamsBuilder PARAMS_BUILDER = null;
+
     static {
         CLASSIFY_IMAGE_OPTIONS = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
@@ -77,6 +84,18 @@ public class ImageUtil {
                 .setCircular(true)
                 .setConfig(Bitmap.Config.ARGB_8888)
                 .build();
+
+        PARAMS_BUILDER = (requestParams, imageOptions) -> {
+            requestParams.setRedirectHandler(uriRequest -> {
+                RequestParams uriRequestParams = uriRequest.getParams();
+                String location = uriRequest.getResponseHeader("Location"); //协定的重定向地址
+                if(!TextUtils.isEmpty(location)) {
+                    uriRequestParams = new RequestParams(location);
+                }
+                return uriRequestParams;
+            });
+            return requestParams;
+        };
     }
 
     /**
@@ -120,6 +139,7 @@ public class ImageUtil {
      */
     public static void fillNotificationView(@NonNull ImageView view,String url) {
         if(verificationUrl(url)){
+
             // 每一次都实例化OPTIONS 避免缓存
             ImageOptions DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
                     .setImageScaleType(ImageView.ScaleType.FIT_XY)
