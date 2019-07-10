@@ -134,7 +134,7 @@ public class MyCourseListFragment extends MyBaseFragment implements View.OnClick
                 MyCourseVo vo = (MyCourseVo) courseListAdapter.getItem(position);
                 if (vo != null) {
                     MyCourseDetailsActivity.start(activity, vo.getCourseId(), false, true,
-                            UserHelper.getUserId(), false, false, false, false, null, null);
+                            UserHelper.getUserId(), false, false, false, false,false, null, null);
                 }
             }
         });

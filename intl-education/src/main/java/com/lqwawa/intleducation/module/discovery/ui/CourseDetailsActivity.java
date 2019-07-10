@@ -271,7 +271,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
                                     true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
-                                    isAuthorized, courseDetailParams, vo);
+                                    isAuthorized,false,  courseDetailParams, vo);
                         } else {
                             // 去未加入页面
                             boolean isAuth = isAuthorized;
@@ -1294,7 +1294,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                             mCourseDetailParams.buildOrganJoinState(true);
                                             MyCourseDetailsActivity.start(activity, courseId, false,
                                                     true, mCurMemberId, isSchoolEnter,
-                                                    false, false, isAuthorized, mCourseDetailParams, null);
+                                                    false, false, isAuthorized,false, mCourseDetailParams, null);
                                             ToastUtil.showToast(CourseDetailsActivity.this,
                                                     R.string.add_course_success);
                                             finish();
@@ -1316,7 +1316,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             } else {
                                 MyCourseDetailsActivity.start(activity, courseId, true, true,
                                         activity.getIntent().getStringExtra("memberId"),
-                                        isSchoolEnter, isOnlineClassEnter, false, false,
+                                        isSchoolEnter, isOnlineClassEnter, false, false,false,
                                         mCourseDetailParams, null);
                             }
                         } else {//免费的没有参与 立即参与
@@ -1343,7 +1343,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                     MyCourseDetailsActivity.start(activity, courseId, false, true
                                             , getIntent().getStringExtra("memberId"),
                                             isSchoolEnter, isOnlineClassEnter,
-                                            false, false, mCourseDetailParams, null);
+                                            false, false,false,  mCourseDetailParams, null);
                                 } else {
                                     join(false);
                                     //MyCourseDetailsActivity.start(activity, courseId, true, getIntent().getStringExtra("memberId"));
@@ -1558,7 +1558,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // 先把支付去学习隐藏
         MyCourseDetailsActivity.start(activity, courseId, true, true,
                 activity.getIntent().getStringExtra("memberId"), isSchoolEnter,
-                isOnlineClassEnter, false, false, mCourseDetailParams, null);
+                isOnlineClassEnter, false, false,false,  mCourseDetailParams, null);
         // 当前页面 finish掉
         finish();
     }

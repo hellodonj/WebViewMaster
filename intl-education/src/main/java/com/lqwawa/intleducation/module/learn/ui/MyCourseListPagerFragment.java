@@ -241,7 +241,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         params.setIsVideoCourse(vo.getType() == 2);
                         MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, curSchoolId, params);
+                                , curMemberId, curSchoolId,params);
                     } else {
                         // 学生或家长，需要更新状态
                         CourseDetailsActivity.start(activity, vo.getCourseId(),

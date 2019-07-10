@@ -476,7 +476,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                         if (!isLQwawaEnter) {
                             MyCourseDetailsActivity.start(activity, mCourseId,
                                     false, true, UserHelper.getUserId(), false,
-                                    false, false, false, mDetailParams, null);
+                                    false, false, false, false,mDetailParams, null);
                             if (mPayWay != PayWay.Code)
                                 join(mCourseId);
                         }
