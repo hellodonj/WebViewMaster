@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.factory.data.entity.response.AppliedResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
@@ -1274,7 +1275,7 @@ public class TutorialHelper {
      * @param callback
      */
     public static void qryWhetherEstimated(@NonNull int taskSendId,
-                                           @NonNull DataSource.Callback<Boolean> callback) {
+                                           @NonNull DataSource.Callback<EstimatedEntity> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("taskSendId", taskSendId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostQryWhetherEstimated);
@@ -1286,16 +1287,13 @@ public class TutorialHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
-                TypeReference<ResponseVo<Map<String, Boolean>>> typeReference = new TypeReference<ResponseVo<Map<String, Boolean>>>() {
+                TypeReference<EstimatedEntity> typeReference = new TypeReference<EstimatedEntity>() {
                 };
-                ResponseVo<Map<String, Boolean>> responseVo = JSON.parseObject(str, typeReference);
-                if (responseVo.isSucceed()) {
+                EstimatedEntity estimatedEntity = JSON.parseObject(str, typeReference);
+                if (estimatedEntity.getCode() == 0) {
                     if (EmptyUtil.isNotEmpty(callback)) {
-                        boolean estimated = responseVo.getData().get("estimated");
-                        callback.onDataLoaded(estimated);
+                        callback.onDataLoaded(estimatedEntity);
                     }
-                } else {
-                    Factory.decodeRspCode(responseVo.getCode(), callback);
                 }
             }
 
@@ -1308,4 +1306,62 @@ public class TutorialHelper {
             }
         });
     }
+
+    /**
+     * 添加帮辅的评价
+     * @param memberId 学生memberId
+     * @param content 评价内容
+     * @param tutorMemberId 助教memberId
+     * @param starLevel 星级
+     * @param taskSendId taskEntity的id
+     * @param callback
+     */
+    public static void getRequestAddTutorialComment(@NonNull String memberId, @NonNull String content,
+                                                    @NonNull String tutorMemberId, @NonNull int starLevel,
+                                                    @NonNull int taskSendId, DataSource.Callback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        try {
+            String encodeContent = URLEncoder.encode(content, "utf-8");
+            encodeContent = encodeContent.replaceAll("%0A", "\n");
+            requestVo.addParams("content", encodeContent);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        requestVo.addParams("starLevel", starLevel);
+        requestVo.addParams("taskSendId", taskSendId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send getRequestAddTutorialComment ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+                };
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                        UIUtil.showToastSafe(UIUtil.getString(R.string.student_evaluation) +
+                                UIUtil.getString(R.string.success) + "!");
+                    }
+                } else {
+                    UIUtil.showToastSafe(UIUtil.getString(R.string.student_evaluation) +
+                            UIUtil.getString(R.string.failed) + "!");
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+
+    }
+
 }

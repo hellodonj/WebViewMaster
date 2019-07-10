@@ -47,7 +47,6 @@ public class TutorialEvaluationPopWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 mListener.onSendClick(mTvSend, mEtEvaluation, mRatingBar.getRating());
-                dismiss();
             }
         });
 
