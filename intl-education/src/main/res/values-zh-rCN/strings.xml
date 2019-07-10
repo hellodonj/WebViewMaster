@@ -528,4 +528,5 @@
     <string name="start_dubbing">开始配音</string>
     <string name="join_school_to_learn">加入该机构才可以学习此课程</string>
     <string name="modify_success_tip">修改成功</string>
+    <string name="student_evaluation">添加评价</string>
 </resources>

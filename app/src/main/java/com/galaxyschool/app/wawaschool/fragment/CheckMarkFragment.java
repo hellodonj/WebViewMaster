@@ -26,10 +26,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -60,7 +58,6 @@ import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
-import com.galaxyschool.app.wawaschool.pojo.weike.EstimatedEntity;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
@@ -69,14 +66,10 @@ import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.galaxyschool.app.wawaschool.views.TutorialEvaluationPopWindow;
 import com.libs.gallery.ImageInfo;
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
-import com.lqwawa.intleducation.base.vo.RequestVo;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.TutorialHelper;
@@ -94,11 +87,7 @@ import com.osastudio.common.utils.LQImageLoader;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -223,24 +212,19 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
         //右侧按钮
         tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
-        if (taskEntity != null) {
-            RequestVo requestVo = new RequestVo();
-            requestVo.addParams("taskSendId", taskEntity.getId());
-            RequestParams params = new RequestParams(AppConfig.ServerUrl.PostQryWhetherEstimated);
-            params.setAsJsonContent(true);
-            params.setBodyContent(requestVo.getParams());
-            params.setConnectTimeout(10000);
-            LogUtil.i(CheckMarkFragment.class, "send request ==== " + params.getUri());
-            x.http().post(params, new StringCallback<String>() {
+        if (EmptyUtil.isNotEmpty(taskEntity)) {
+            tvTutorial.setVisibility(View.GONE);
+            int taskSendId = taskEntity.getId();
+            TutorialHelper.qryWhetherEstimated(taskSendId, new DataSource.Callback<com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity>() {
                 @Override
-                public void onSuccess(String str) {
-                    LogUtil.i(CheckMarkFragment.class, "request " + params.getUri() + " result :" + str);
-                    TypeReference<EstimatedEntity> typeReference = new TypeReference<EstimatedEntity>() {
-                    };
-                    EstimatedEntity responseVo = JSON.parseObject(str, typeReference);
+                public void onDataNotAvailable(int strRes) {
+                    UIUtil.showToastSafe(strRes);
+                }
 
-                    if (responseVo.getCode() == 0) {
-                        boolean estimated = responseVo.isEstimated();
+                @Override
+                public void onDataLoaded(com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity estimatedEntity) {
+                    if (estimatedEntity.getCode() == 0) {
+                        boolean estimated = estimatedEntity.isEstimated();
                         if (estimated) {
                             tvTutorial.setVisibility(View.GONE);
                         } else {
@@ -255,8 +239,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (EmptyUtil.isNotEmpty(taskEntity)) {
                 //判断角色
                 boolean isStudent = TextUtils.equals(commitTask.getAssistantRoleType(), TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent && !commitTask.isHasAlreadyCommit()) {
-                    tvTutorial.setVisibility(View.VISIBLE);
+                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
                     tvTutorial.setText(R.string.str_tutorial_btn);
                     tvTutorial.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -264,8 +247,6 @@ public class CheckMarkFragment extends ContactsListFragment {
                             evaluationDialog();
                         }
                     });
-                } else {
-                    tvTutorial.setVisibility(View.GONE);
                 }
             }
         }
@@ -607,13 +588,6 @@ public class CheckMarkFragment extends ContactsListFragment {
         popWindow.showAtLocation(findViewById(R.id.ll_layout1), Gravity.BOTTOM, 0, 0);
 
         if (popWindow != null) {
-            popWindow.setOnRatingBarClickListener(new TutorialEvaluationPopWindow.OnRatingBarClickListener() {
-                @Override
-                public void onRatingBarClick(RatingBar ratingBar, float v) {
-
-                }
-            });
-
             popWindow.setOnSendClickListener(new TutorialEvaluationPopWindow.OnSendClickListener() {
                 @Override
                 public void onSendClick(TextView button, EditText text, float rating) {
@@ -621,48 +595,72 @@ public class CheckMarkFragment extends ContactsListFragment {
                     int rate = (int) Math.floor(rating);
                     String memberId = taskEntity.getStuMemberId();
                     String tutorMemberId = taskEntity.getAssMemberId();
+                    int taskSendId = taskEntity.getId();
                     if (null == text || TextUtils.isEmpty(content)) {
-                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.enter_evaluation_content_please);
+                        UIUtil.showToastSafe(R.string.enter_evaluation_content_please);
                         return;
                     }
-                    // 准备数据
-                    RequestVo requestVo = new RequestVo();
-                    requestVo.addParams("memberId", memberId);
-                    requestVo.addParams("tutorMemberId", tutorMemberId);
-                    try {
-                        String encodeContent = URLEncoder.encode(content, "utf-8");
-                        encodeContent = encodeContent.replaceAll("%0A", "\n");
-                        requestVo.addParams("content", encodeContent);
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    requestVo.addParams("starLevel", rate);
-                    requestVo.addParams("taskSendId", taskEntity.getId());
-                    RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
-                    params.setConnectTimeout(10000);
-                    LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
-                    x.http().get(params, new StringCallback<String>() {
-                        @Override
-                        public void onSuccess(String str) {
-                            TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
-                            };
-                            ResponseVo responseVo = JSON.parseObject(str, typeReference);
-                            if (responseVo.isSucceed()) {
-                                tvTutorial.setVisibility(View.GONE);
-                                commitTask.setHasAlreadyCommit(true);
-                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
-                                        UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
-                            } else {
-                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
-                                        UIUtil.getString(com.lqwawa.intleducation.R.string.failed) + "!");
-                            }
-                        }
+                    TutorialHelper.getRequestAddTutorialComment(memberId, content, tutorMemberId, rate, taskSendId,
+                            new DataSource.Callback<Boolean>() {
+                                @Override
+                                public void onDataLoaded(Boolean aBoolean) {
+                                    if (aBoolean){
+                                        tvTutorial.setVisibility(View.GONE);
+                                        popWindow.dismiss();
+                                    }
+                                }
 
-                        @Override
-                        public void onError(Throwable throwable, boolean b) {
+                                @Override
+                                public void onDataNotAvailable(int strRes) {
+                                    UIUtil.showToastSafe(strRes);
+                                }
+                            });
 
-                        }
-                    });
+//                    // 准备数据
+//                    RequestVo requestVo = new RequestVo();
+//                    requestVo.addParams("memberId", memberId);
+//                    requestVo.addParams("tutorMemberId", tutorMemberId);
+//                    try {
+//                        String encodeContent = URLEncoder.encode(content, "utf-8");
+//                        encodeContent = encodeContent.replaceAll("%0A", "\n");
+//                        requestVo.addParams("content", encodeContent);
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    }
+//                    requestVo.addParams("starLevel", rate);
+//                    requestVo.addParams("taskSendId", taskEntity.getId());
+//                    RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
+//                    params.setConnectTimeout(10000);
+//                    LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+//                    x.http().get(params, new StringCallback<String>() {
+//                        @Override
+//                        public void onSuccess(String str) {
+//                            TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+//                            };
+//                            ResponseVo responseVo = JSON.parseObject(str, typeReference);
+//                            if (responseVo.isSucceed()) {
+//                                tvTutorial.setVisibility(View.GONE);
+//                                commitTask.setHasAlreadyCommit(true);
+//                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
+//                                        UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
+//                            } else {
+//                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
+//                                        UIUtil.getString(com.lqwawa.intleducation.R.string.failed) + "!");
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable throwable, boolean b) {
+//
+//                        }
+//                    });
+                }
+            });
+
+            popWindow.setOnRatingBarClickListener(new TutorialEvaluationPopWindow.OnRatingBarClickListener() {
+                @Override
+                public void onRatingBarClick(RatingBar ratingBar, float v) {
+
                 }
             });
         }
