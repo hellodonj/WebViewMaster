@@ -89,7 +89,7 @@ public class ImageUtil {
             requestParams.setRedirectHandler(uriRequest -> {
                 RequestParams uriRequestParams = uriRequest.getParams();
                 String location = uriRequest.getResponseHeader("Location"); //协定的重定向地址
-                if(!TextUtils.isEmpty(location)) {
+                if (!TextUtils.isEmpty(location)) {
                     uriRequestParams = new RequestParams(location);
                 }
                 return uriRequestParams;
@@ -100,87 +100,94 @@ public class ImageUtil {
 
     /**
      * 填充图片
+     *
      * @param view 图片控件
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillClassifyIcon(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
-            x.image().bind(view,url,CLASSIFY_IMAGE_OPTIONS);
+    public static void fillClassifyIcon(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
+            x.image().bind(view, url, CLASSIFY_IMAGE_OPTIONS);
         }
     }
 
-    public static void fillCourseIcon(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
-            x.image().bind(view,url,COURSE_IMAGE_OPTIONS);
+    public static void fillCourseIcon(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
+            x.image().bind(view, url, COURSE_IMAGE_OPTIONS);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
+     *
      * @param view 显示的View
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillDefaultView(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
+    public static void fillDefaultView(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
             // 每一次都实例化OPTIONS 避免缓存
             ImageOptions DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
                     .setImageScaleType(ImageView.ScaleType.FIT_XY)
                     .setCrop(false)
                     .setConfig(Bitmap.Config.ARGB_8888)
                     .build();
-            x.image().bind(view,url,DEFAULT_IMAGE_OPTIONS);
+            x.image().bind(view, url, DEFAULT_IMAGE_OPTIONS);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
+     *
      * @param view 显示的View
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillNotificationView(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
+    public static void fillNotificationView(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
 
             // 每一次都实例化OPTIONS 避免缓存
             ImageOptions DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
                     .setImageScaleType(ImageView.ScaleType.FIT_XY)
                     .setCrop(false)
                     .setConfig(Bitmap.Config.ARGB_8888)
+                    .setParamsBuilder(PARAMS_BUILDER)
                     .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
                     .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
                     .build();
-            x.image().bind(view,url,DEFAULT_IMAGE_OPTIONS);
+            x.image().bind(view, url, DEFAULT_IMAGE_OPTIONS);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
+     *
      * @param view 显示的View
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillNormalView(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
-            x.image().bind(view,url,NORMAL_IMAGE_OPTIONS);
+    public static void fillNormalView(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
+            x.image().bind(view, url, NORMAL_IMAGE_OPTIONS);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
+     *
      * @param view 显示的View
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillCircleView(@NonNull ImageView view,String url) {
-        if(verificationUrl(url)){
-            x.image().bind(view,url,CROP_IMAGE_OPTIONS);
+    public static void fillCircleView(@NonNull ImageView view, String url) {
+        if (verificationUrl(url)) {
+            x.image().bind(view, url, CROP_IMAGE_OPTIONS);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
+     *
      * @param view 显示的View
-     * @param url 图片资源地址
+     * @param url  图片资源地址
      */
-    public static void fillUserAvatar(@NonNull ImageView view,String url,@DrawableRes int defaultDrawableId) {
-        if(verificationUrl(url)){
+    public static void fillUserAvatar(@NonNull ImageView view, String url, @DrawableRes int defaultDrawableId) {
+        if (verificationUrl(url)) {
             ImageOptions options = new ImageOptions.Builder()
                     .setImageScaleType(ImageView.ScaleType.FIT_XY)
                     .setCrop(true)
@@ -188,18 +195,19 @@ public class ImageUtil {
                     .setFailureDrawableId(defaultDrawableId)
                     .setConfig(Bitmap.Config.ARGB_8888)
                     .build();
-            x.image().bind(view,url,options);
+            x.image().bind(view, url, options);
         }
     }
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
-     * @param view 显示的View
-     * @param url 图片资源地址
+     *
+     * @param view              显示的View
+     * @param url               图片资源地址
      * @param defaultDrawableId 默认显示的图片Id
      */
     public static void fillCircleView(@NonNull ImageView view, String url, @DrawableRes int defaultDrawableId) {
-        if(verificationUrl(url)){
+        if (verificationUrl(url)) {
             // XUtils 默认调用了ImageView setScaleType
             LQImageLoader.DIOptBuiderParam param = new LQImageLoader.DIOptBuiderParam();
             param.mIsCacheInMemory = true;
@@ -211,10 +219,11 @@ public class ImageUtil {
 
     /**
      * 验证图片Url是否合法
+     *
      * @param url 图片url
      * @return true 合法
      */
-    public static boolean verificationUrl(String url){
+    public static boolean verificationUrl(String url) {
         return !EmptyUtil.isEmpty(url);
     }
 
