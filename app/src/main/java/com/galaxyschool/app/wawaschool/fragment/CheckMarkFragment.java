@@ -213,7 +213,6 @@ public class CheckMarkFragment extends ContactsListFragment {
         //右侧按钮
         tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
         if (EmptyUtil.isNotEmpty(taskEntity)) {
-            tvTutorial.setVisibility(View.GONE);
             int taskSendId = taskEntity.getId();
             TutorialHelper.qryWhetherEstimated(taskSendId, new DataSource.Callback<com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity>() {
                 @Override
@@ -228,7 +227,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                         if (estimated) {
                             tvTutorial.setVisibility(View.GONE);
                         } else {
-                            tvTutorial.setVisibility(View.VISIBLE);
+                            //判断角色
+                            boolean isStudent = TextUtils.equals(commitTask.getAssistantRoleType(), TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                            if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
+                                tvTutorial.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
@@ -237,17 +240,13 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (tvTutorial != null) {
             //1 已批阅 角色是学生 没有评价过
             if (EmptyUtil.isNotEmpty(taskEntity)) {
-                //判断角色
-                boolean isStudent = TextUtils.equals(commitTask.getAssistantRoleType(), TutorialRoleType.TUTORIAL_TYPE_STUDENT);
-                if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
-                    tvTutorial.setText(R.string.str_tutorial_btn);
-                    tvTutorial.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            evaluationDialog();
-                        }
-                    });
-                }
+                tvTutorial.setText(R.string.str_tutorial_btn);
+                tvTutorial.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        evaluationDialog();
+                    }
+                });
             }
         }
 
@@ -597,16 +596,15 @@ public class CheckMarkFragment extends ContactsListFragment {
                     String tutorMemberId = taskEntity.getAssMemberId();
                     int taskSendId = taskEntity.getId();
                     if (null == text || TextUtils.isEmpty(content)) {
-                        UIUtil.showToastSafe(R.string.enter_evaluation_content_please);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.enter_evaluation_content_please);
                         return;
                     }
                     TutorialHelper.getRequestAddTutorialComment(memberId, content, tutorMemberId, rate, taskSendId,
                             new DataSource.Callback<Boolean>() {
                                 @Override
                                 public void onDataLoaded(Boolean aBoolean) {
-                                    if (aBoolean){
+                                    if (aBoolean) {
                                         tvTutorial.setVisibility(View.GONE);
-                                        popWindow.dismiss();
                                     }
                                 }
 
@@ -615,45 +613,6 @@ public class CheckMarkFragment extends ContactsListFragment {
                                     UIUtil.showToastSafe(strRes);
                                 }
                             });
-
-//                    // 准备数据
-//                    RequestVo requestVo = new RequestVo();
-//                    requestVo.addParams("memberId", memberId);
-//                    requestVo.addParams("tutorMemberId", tutorMemberId);
-//                    try {
-//                        String encodeContent = URLEncoder.encode(content, "utf-8");
-//                        encodeContent = encodeContent.replaceAll("%0A", "\n");
-//                        requestVo.addParams("content", encodeContent);
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//                    requestVo.addParams("starLevel", rate);
-//                    requestVo.addParams("taskSendId", taskEntity.getId());
-//                    RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
-//                    params.setConnectTimeout(10000);
-//                    LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
-//                    x.http().get(params, new StringCallback<String>() {
-//                        @Override
-//                        public void onSuccess(String str) {
-//                            TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
-//                            };
-//                            ResponseVo responseVo = JSON.parseObject(str, typeReference);
-//                            if (responseVo.isSucceed()) {
-//                                tvTutorial.setVisibility(View.GONE);
-//                                commitTask.setHasAlreadyCommit(true);
-//                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
-//                                        UIUtil.getString(com.lqwawa.intleducation.R.string.success) + "!");
-//                            } else {
-//                                UIUtil.showToastSafe(UIUtil.getString(com.lqwawa.intleducation.R.string.commit_comment) +
-//                                        UIUtil.getString(com.lqwawa.intleducation.R.string.failed) + "!");
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable throwable, boolean b) {
-//
-//                        }
-//                    });
                 }
             });
 
