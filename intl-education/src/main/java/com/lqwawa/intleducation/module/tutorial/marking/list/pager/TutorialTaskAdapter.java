@@ -141,6 +141,7 @@ public class TutorialTaskAdapter extends RecyclerAdapter<TaskEntity> {
 
             // 任务头像
             ImageUtil.fillNotificationView(mTaskAvatar, taskEntity.getResThumbnailUrl());
+//            LQwawaImageUtil.loadCommonIcon(mTaskAvatar.getContext(),mTaskAvatar,taskEntity.getResThumbnailUrl(),R.drawable.img_def);
             // 任务标题
             StringUtil.fillSafeTextView(mTaskName, taskEntity.getTitle());
             // 任务类型
