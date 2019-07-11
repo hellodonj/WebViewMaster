@@ -604,6 +604,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                 @Override
                                 public void onDataLoaded(Boolean aBoolean) {
                                     if (aBoolean) {
+                                        popWindow.dismiss();
                                         tvTutorial.setVisibility(View.GONE);
                                     }
                                 }

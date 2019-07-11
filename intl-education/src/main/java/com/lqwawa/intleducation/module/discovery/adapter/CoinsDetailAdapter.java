@@ -78,12 +78,12 @@ public class CoinsDetailAdapter extends BaseAdapter {
             } else if (info.getRechargeType() == 5) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
-                holder.tvCount.setTextColor(Color.parseColor("#161616"));
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
                 holder.tvName.setText(info.getTypeC());
             } else if (info.getRechargeType() == 6) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
-                holder.tvCount.setTextColor(Color.parseColor("#161616"));
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
                 holder.tvName.setText(info.getTypeC());
             } else {
                 holder.tvCount.setVisibility(View.VISIBLE);

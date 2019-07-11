@@ -219,8 +219,8 @@
     <string name="label_look_review">View Remark</string>
     <string name="label_course_in_class">Assign Course to Class</string>
     <string name="label_old_in_class">Assigned already</string>
-    <string name="label_play_list">创建播放列表</string>
-    <string name="label_picker_chapter">选择章节</string>
+    <string name="label_play_list">Create Playlist</string>
+    <string name="label_picker_chapter">Select Chapter</string>
     <string name="label_picker_class">Select Class</string>
     <string name="label_cancel_order">Cancel Order</string>
     <string name="label_watch_more_course">View More Tutorials</string>
@@ -253,7 +253,7 @@
     <string name="label_new_go_online_study">Enter Class Live</string>
     <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
     <string name="label_watch_more_teach_course">More Class Live</string>
-    <string name="label_btn_play_list">播放列表</string>
+    <string name="label_btn_play_list">Playlist</string>
     <string name="label_history_give">History</string>
     <string name="label_give_complete">Ended</string>
     <string name="label_history_setting">Set as History</string>
@@ -357,11 +357,11 @@
     <string name="label_add_tutorial_lines">Add\nTutor</string>
     <string name="label_un_mark">Unmarked</string>
     <string name="label_have_mark">Marked</string>
-    <string name="label_have_overdue">已过期</string>
-    <string name="label_12_overdue">12h内过期</string>
-    <string name="label_6_overdue">6h内过期</string>
-    <string name="label_2_overdue">2h内过期</string>
-    <string name="label_1_overdue">1h内过期</string>
+    <string name="label_have_overdue">Expired</string>
+    <string name="label_12_overdue">Expire in 12h</string>
+    <string name="label_6_overdue">Expire in 6h</string>
+    <string name="label_2_overdue">Expire in 2h</string>
+    <string name="label_1_overdue">Expire in 1h</string>
     <string name="label_watch_task_requirement">View Task Requirement</string>
     <string name="label_task_type_template">"[%s]"</string>
     <string name="label_user_name">Name*:</string>
@@ -387,7 +387,7 @@
     <string name="label_district">District</string>
     <string name="label_mark_price">Marking price*:</string>
     <string name="label_mark_price_tip">Please enter marking price</string>
-    <string name="label_RMB">蛙蛙币</string>
+    <string name="label_RMB">WaWaCoin</string>
     <string name="label_mark_price_hint">*Suggested price, modifiable</string>
     <string name="label_work_period">Years of working:</string>
     <string name="label_work_period_hint">Please enter years of working</string>
@@ -531,16 +531,16 @@
         <item>Expired</item>
     </string-array>
 
-    <string name="label_my_orders">我的订单</string>
-    <string name="label_coins_detail_1">帮辅批阅-退款</string>
-    <string name="label_coins_detail_2">批阅作业-</string>
-    <string name="label_coins_detail_3">申请批阅-</string>
-    <string name="label_refunded">已退款</string>
-    <string name="label_tutorial">帮辅</string>
-    <string name="label_tutor_agreement"> 《帮辅服务协议》</string>
-    <string name="label_price_tip"> 请输入有效的批阅价格</string>
-    <string name="label_checked_tip"> 请阅读并勾选服务协议</string>
-    <string name="label_play_tip"> 选中的章节列表中无录音课件</string>
-    <string name="label_chapter_tip">请选择要添加的章节资源</string>
-    <string name="btn_tutor_agreement">我知道了</string>
+    <string name="label_my_orders">My Order</string>
+    <string name="label_coins_detail_1">Tutoring-Refund</string>
+    <string name="label_coins_detail_2">Tutoring-</string>
+    <string name="label_coins_detail_3">Consult Tutor-</string>
+    <string name="label_refunded">Refund</string>
+    <string name="label_tutorial">Tutor</string>
+    <string name="label_tutor_agreement">Tutorial Service Agreement</string>
+    <string name="label_price_tip">Please enter a valid price</string>
+    <string name="label_checked_tip">Please read the agreement and check the checkbox</string>
+    <string name="label_play_tip">No recording courseware in selected chapter</string>
+    <string name="label_chapter_tip">Please select chapter</string>
+    <string name="btn_tutor_agreement">I See</string>
 </resources>
