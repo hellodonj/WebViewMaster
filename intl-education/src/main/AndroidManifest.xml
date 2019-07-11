@@ -106,6 +106,7 @@
             android:screenOrientation="portrait" /> <!-- 我的课程详情 -->
         <activity
             android:name=".module.learn.ui.MyCourseDetailsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" /> <!-- 我的订单列表 -->
 
