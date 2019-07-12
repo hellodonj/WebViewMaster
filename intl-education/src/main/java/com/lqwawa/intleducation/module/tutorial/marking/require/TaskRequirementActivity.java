@@ -5,46 +5,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.libs.gallery.ImageBrowserActivity;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.SourceFromType;
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.BaseUtils;
-import com.lqwawa.intleducation.base.vo.RequestVo;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
-import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
-import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
-import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.lessontask.missionrequire.MissionRequireFragment;
-import com.lqwawa.intleducation.module.discovery.ui.task.list.TaskCommitParams;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
-import com.lqwawa.intleducation.module.learn.vo.CourseData;
-import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskInfoVo;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
-
-import org.w3c.dom.Text;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -312,7 +292,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity");
         intent.putParcelableArrayListExtra(ImageBrowserActivity.EXTRA_IMAGE_INFOS, (ArrayList<? extends Parcelable>) resourceInfoList);
         intent.putExtra(ImageBrowserActivity.EXTRA_CURRENT_INDEX, 0);
-        intent.putExtra(ImageBrowserActivity.ISPDF, false);
+        intent.putExtra(ImageBrowserActivity.ISPDF, true);
 
         intent.putExtra(ImageBrowserActivity.KEY_ISHIDEMOREBTN, false);
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, true);
