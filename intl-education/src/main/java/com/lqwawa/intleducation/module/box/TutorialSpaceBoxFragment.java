@@ -99,7 +99,8 @@ public class TutorialSpaceBoxFragment extends PresenterFragment<TutorialSpaceBox
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventWrapper event){
-        if(EventWrapper.isMatch(event,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE) && getUserVisibleHint()){
+        if(EventWrapper.isMatch(event,EventConstant.TRIGGER_SWITCH_APPLICATION_MODE)
+                /*&& getUserVisibleHint()*/){
             int mode = (int) event.getData();
             if(mode == KEY_TUTORIAL_MODE_ID){
                 // 帮辅模式
