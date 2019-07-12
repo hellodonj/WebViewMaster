@@ -125,7 +125,11 @@ public class SaveStatisticFragment extends ContactsListFragment {
         if (kbSize <= 1024 && kbSize > 0){
             return 1;
         }
+        long remainder = kbSize % 1014;
         kbSize = kbSize / 1024;
+        if (remainder > 0){
+            kbSize = kbSize + 1;
+        }
         return kbSize;
     }
 
