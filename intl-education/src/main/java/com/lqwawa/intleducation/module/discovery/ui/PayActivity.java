@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.lqpay.LqPay;
@@ -695,15 +696,10 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                     if (TextUtils.isEmpty(str)) {
                         return;
                     }
-                    JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(str);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    int code = jsonObject.optInt("code");
-                    int orderId = jsonObject.optInt("orderId");
-                    if (code == 0) {
+                    TutorOrderEntity tutorOrderEntity = JSON.parseObject(str, new TypeReference<TutorOrderEntity>() {
+                    });
+                    if (tutorOrderEntity.getCode()==0){
+                       int orderId =  tutorOrderEntity.getOrderId();
                         // 通过EventBus通知
                         EventBus.getDefault().post(new EventWrapper(orderId, EventConstant.CREATE_TUTOR_ORDER));
                         finish();

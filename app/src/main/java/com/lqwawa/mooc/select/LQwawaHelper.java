@@ -85,16 +85,12 @@ public class LQwawaHelper {
             @Override
             public void onSuccess(String str) {
                 LogUtil.i(LQwawaHelper.class, "request " + params.getUri() + " result :" + str);
-                try {
-                    ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<CourseResourceEntity>>>() {
-                    });
-                    if (vo.isSucceed()) {
-                        if (EmptyUtil.isNotEmpty(callback)) {
-                            callback.onDataLoaded(vo);
-                        }
+                ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<CourseResourceEntity>>>() {
+                });
+                if (vo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(vo);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
