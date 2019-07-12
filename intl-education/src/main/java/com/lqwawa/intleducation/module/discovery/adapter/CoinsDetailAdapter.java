@@ -144,6 +144,35 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 } else if (info.getIsRefunded() == 0) {
                     holder.tvRefund.setVisibility(View.GONE);
                 }
+            }else if (info.getConsumeType() == 3) {
+                //购买在线课堂
+                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_online_school), info.getCourseName()));
+            } else if (info.getConsumeType() == 4) {
+                //赠送给他人
+                String desc = UIUtil.getString(R.string.label_donation_money_desc);
+                SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
+                String realName = info.getRealName();
+                if (EmptyUtil.isEmpty(realName)) {
+                    realName = "";
+                }
+
+                String title = String.format(desc, realName);
+                SpannableString spanReal = new SpannableString(title);
+                spanReal.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textPrimary)),
+                        0, title.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                spanBuilder.append(spanReal);
+
+                String userName = info.getUserName();
+                if (EmptyUtil.isNotEmpty(userName)) {
+                    SpannableString spanName = new SpannableString(" (" + userName + ")");
+                    spanName.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond)),
+                            0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanName.setSpan(new AbsoluteSizeSpan((int) DisplayUtil.sp2px(UIUtil.getContext(), 14)),
+                            0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanBuilder.append(spanName);
+                }
+
+                holder.tvName.setText(spanBuilder);
             }
         } else {
             holder.tvRefund.setVisibility(View.GONE);

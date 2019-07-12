@@ -90,7 +90,7 @@ public class ImageUtil {
                 RequestParams uriRequestParams = uriRequest.getParams();
                 String location = uriRequest.getResponseHeader("Location"); //协定的重定向地址
                 if (!TextUtils.isEmpty(location)) {
-                    uriRequestParams = new RequestParams(location);
+                    uriRequestParams.setUri(location);
                 }
                 return uriRequestParams;
             });
