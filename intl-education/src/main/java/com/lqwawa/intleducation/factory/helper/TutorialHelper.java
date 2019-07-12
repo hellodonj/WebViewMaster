@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
@@ -1362,6 +1363,67 @@ public class TutorialHelper {
             }
         });
 
+    }
+
+    /**
+     *TutorChoiceParams的Model 参数传过来
+     * @param taskId
+     * @param taskType
+     * @param price
+     * @param taskName
+     * @param title
+     * @param memberId
+     * @param consumeSource
+     * @param courseId
+     * @param courseName
+     * @param tutorMemberId
+     * @param callback
+     */
+    public static void createTutorOrder(int taskId, int taskType, int price, String taskName, String title,
+                                        String memberId, int consumeSource, @NonNull String courseId,
+                                        @NonNull String courseName, String tutorMemberId, DataSource.Callback<TutorOrderEntity> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("taskId", taskId);
+        requestVo.addParams("taskType", taskType);
+        requestVo.addParams("price", price);
+        requestVo.addParams("taskName", taskName);
+        requestVo.addParams("title", title);
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("consumeSource", consumeSource);//3 表示android平板
+        if (EmptyUtil.isNotEmpty(courseId) && !courseId.equals("0")) {
+            requestVo.addParams("courseId", courseId);
+        }
+        if (EmptyUtil.isNotEmpty(courseName)) {
+            requestVo.addParams("courseName", courseName);
+        }
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.CreateTutorOrder);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().post(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TutorOrderEntity tutorOrderEntity = JSON.parseObject(str, new TypeReference<TutorOrderEntity>() {
+                });
+                if (tutorOrderEntity.getCode() == 0) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(tutorOrderEntity);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
     }
 
 }

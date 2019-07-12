@@ -24,15 +24,14 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
-import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
 import com.lqwawa.intleducation.lqpay.LqPay;
 import com.lqwawa.intleducation.lqpay.PayParams;
 import com.lqwawa.intleducation.lqpay.callback.OnPayInfoRequestListener;
@@ -477,7 +476,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                         if (!isLQwawaEnter) {
                             MyCourseDetailsActivity.start(activity, mCourseId,
                                     false, true, UserHelper.getUserId(), false,
-                                    false, false, false, true,mDetailParams, null);
+                                    false, false, false, true, mDetailParams, null);
                             if (mPayWay != PayWay.Code)
                                 join(mCourseId);
                         }
@@ -659,8 +658,6 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         }
 
         if (isTutorChoiceEnter) {
-
-            UserInfoVo userInfo = UserHelper.getUserInfo();
             int taskId = mParams.getModel().getT_TaskId();
             int taskType = mParams.getModel().getT_TaskType();
             int price = (int) Math.floor(Double.parseDouble(mChoiceEntity.getMarkingPrice()));
@@ -669,48 +666,24 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             String memberId = mParams.getMemberId();
             String tutorMemberId = mChoiceEntity.getMemberId();
             String title = mParams.getModel().getTitle();
-            RequestVo requestVo = new RequestVo();
-            requestVo.addParams("taskId", taskId);
-            requestVo.addParams("taskType", taskType);
-            requestVo.addParams("token", userInfo.getToken());
-            requestVo.addParams("price", price);
-            requestVo.addParams("taskName", title);
-            requestVo.addParams("title", title);
-            requestVo.addParams("memberId", memberId);
-            requestVo.addParams("consumeSource", 2);
-            if (EmptyUtil.isNotEmpty(courseId) && !courseId.equals("0")) {
-                requestVo.addParams("courseId", courseId);
-            }
-            if (EmptyUtil.isNotEmpty(courseName)) {
-                requestVo.addParams("courseName", courseName);
-            }
-            requestVo.addParams("tutorMemberId", tutorMemberId);
-            RequestParams params = new RequestParams(AppConfig.ServerUrl.CreateTutorOrder);
-            params.setAsJsonContent(true);
-            params.setBodyContent(requestVo.getParams());
-            params.setConnectTimeout(10000);
-            x.http().post(params, new StringCallback<String>() {
-                @Override
-                public void onSuccess(String str) {
-                    LogUtil.i(PayActivity.class, "request " + params.getUri() + " result :" + str);
-                    if (TextUtils.isEmpty(str)) {
-                        return;
-                    }
-                    TutorOrderEntity tutorOrderEntity = JSON.parseObject(str, new TypeReference<TutorOrderEntity>() {
-                    });
-                    if (tutorOrderEntity.getCode()==0){
-                       int orderId =  tutorOrderEntity.getOrderId();
-                        // 通过EventBus通知
-                        EventBus.getDefault().post(new EventWrapper(orderId, EventConstant.CREATE_TUTOR_ORDER));
-                        finish();
-                    }
-                }
+            // 2 表示android手机
+            TutorialHelper.createTutorOrder(taskId, taskType, price, title, title, memberId, 2, courseId, courseName,
+                    tutorMemberId, new DataSource.Callback<TutorOrderEntity>() {
+                        @Override
+                        public void onDataNotAvailable(int strRes) {
+                            UIUtil.showToastSafe(strRes);
+                        }
 
-                @Override
-                public void onError(Throwable throwable, boolean b) {
-                    ToastUtil.showToast(PayActivity.this, R.string.net_error_tip);
-                }
-            });
+                        @Override
+                        public void onDataLoaded(TutorOrderEntity tutorOrderEntity) {
+                            if (tutorOrderEntity.getCode() == 0) {
+                                int orderId = tutorOrderEntity.getOrderId();
+                                // 通过EventBus通知
+                                EventBus.getDefault().post(new EventWrapper(orderId, EventConstant.CREATE_TUTOR_ORDER));
+                                finish();
+                            }
+                        }
+                    });
         } else {
             String memberId = UserHelper.getUserId();
             RequestVo requestVo = new RequestVo();
