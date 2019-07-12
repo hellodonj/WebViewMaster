@@ -628,7 +628,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                                 params.setIsVideoCourse(vo.getType() == 2);
                                 MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                         false, true, UserHelper.getUserId(), false, false, false,
-                                        false,false, params, null);
+                                        false, params, null);
                             } else if (vo.getType() == 3) {
                                 // 3是空中课堂
                                 // 发送请求获取schoolId

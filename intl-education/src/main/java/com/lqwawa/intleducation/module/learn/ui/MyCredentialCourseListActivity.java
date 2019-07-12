@@ -97,7 +97,7 @@ public class MyCredentialCourseListActivity extends MyBaseActivity implements Vi
                 MyCredentialCourseListVo vo = (MyCredentialCourseListVo) courseListAdapter.getItem(position);
                 if (vo.isIsAdd() || vo.isIsBuy()) {
                     MyCourseDetailsActivity.start(activity, vo.getCourse().getId(), false, true,
-                            UserHelper.getUserId(), false, false, false, false,false, null, null);
+                            UserHelper.getUserId(), false, false, false, false, null, null);
                 } else {
                     CourseDetailsActivity.start(activity, vo.getCourse().getId(), true, UserHelper.getUserId());
                 }

@@ -222,7 +222,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
     private boolean isSchoolEnter;
     private boolean isOnlineClassEnter;
-    private boolean isOrderListEnter;
     // 课程详情参数
     private CourseDetailParams mCourseDetailParams;
     private boolean isOnlineTeacher;
@@ -260,8 +259,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
      */
     public static void start(Activity activity, String id, boolean isComeFromDetail,
                              boolean canEdit, String memberId, boolean isSchoolEnter, boolean isOnlineClassEnter,
-                             boolean isOnlineTeacher, boolean isAuthorized, boolean isOrderListEnter,
-                             CourseDetailParams params, CourseVo vo) {
+                             boolean isOnlineTeacher, boolean isAuthorized, CourseDetailParams params, CourseVo vo) {
         Intent intent = new Intent(activity, MyCourseDetailsActivity.class)
                 .putExtra("id", id)
                 .putExtra("isComeFromDetail", isComeFromDetail)
@@ -270,8 +268,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
                 .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
                 .putExtra("isOnlineTeacher", isOnlineTeacher)
-                .putExtra("isAuthorized", isAuthorized)
-                .putExtra(KEY_ORDER_LIST_ENTER, isOrderListEnter);
+                .putExtra("isAuthorized", isAuthorized);
         if (params != null) {
             intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         }
@@ -293,7 +290,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
         isSchoolEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_SCHOOL_ENTER, false);
         isOnlineClassEnter = getIntent().getBooleanExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, false);
-        isOrderListEnter = getIntent().getBooleanExtra(KEY_ORDER_LIST_ENTER, false);
         if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT)) {
             mCourseDetailParams = (CourseDetailParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         } else {
@@ -529,7 +525,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                         R.string.label_course_in_class);
                 items.add(data);
             }
-            if (isAddPlayList || isOrderListEnter) {
+            if (isAddPlayList) {
                 PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
                         R.string.label_play_list);
                 items.add(data_play);
