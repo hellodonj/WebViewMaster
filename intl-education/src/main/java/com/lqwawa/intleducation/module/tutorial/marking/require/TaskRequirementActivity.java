@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
+import com.lqwawa.intleducation.base.utils.BaseUtils;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
@@ -41,6 +42,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskInfoVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import org.w3c.dom.Text;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -153,8 +155,10 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         String thumbnailUrl;
         if (resType == 1) {
             thumbnailUrl = getThumbnailUrl(taskInfoVo.getResThumbnailUrl());
-        } else {
+        } else if (resType == 6 || resType == 20 || resType == 24) {
             thumbnailUrl = getThumbnailUrlForDoc(taskInfoVo.getResUrl());
+        } else {
+            thumbnailUrl = taskInfoVo.getResThumbnailUrl();
         }
         LQwawaImageUtil.loadCommonIcon(mTvResName.getContext(), mIvResIcon,
                 thumbnailUrl, R.drawable.img_def);
@@ -263,7 +267,8 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                 String id = mTaskInfoVo.getResId();
                 int resType = getResType(id);
                 if (getResType(id) == 1) {
-                   openImageList(mTaskInfoVo.getResUrl());
+                    openImageList(mTaskInfoVo.getResUrl(), mTaskInfoVo.getResId(),
+                            mTaskInfoVo.getTaskCreateId());
                 } else {
                     if (EmptyUtil.isNotEmpty(id) && id.contains("-")) {
                         String[] strings = id.split("-");
@@ -281,17 +286,23 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         }
     }
 
-    private void openImageList(String resUrl) {
-        if (TextUtils.isEmpty(resUrl)) {
+    private void openImageList(String resUrl, String resId, String createId) {
+        if (TextUtils.isEmpty(resUrl) || TextUtils.isEmpty(resId)
+                || TextUtils.isEmpty(createId)) {
             return;
         }
         List<ImageInfo> resourceInfoList = new ArrayList<>();
-        if (resUrl.contains(",")) {
+        if (resUrl.contains(",") && resId.contains(",")) {
             String[] urls = resUrl.split(",");
-            if (urls != null && urls.length > 0) {
-                for (String url : urls) {
+            String[] ids = resId.split(",");
+            if (urls != null && urls.length > 0 && ids != null
+                    && ids.length == urls.length) {
+                for (int i = 0; i < urls.length; i++) {
                     ImageInfo newResourceInfo = new ImageInfo();
-                    newResourceInfo.setResourceUrl(url.trim());
+                    newResourceInfo.setTitle(BaseUtils.getFileNameFromPath(urls[i]));
+                    newResourceInfo.setResourceUrl(urls[i]);
+                    newResourceInfo.setResourceId(ids[i]);
+                    newResourceInfo.setAuthorId(createId);
                     newResourceInfo.setResourceType(1);
                     resourceInfoList.add(newResourceInfo);
                 }
@@ -304,7 +315,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         intent.putExtra(ImageBrowserActivity.ISPDF, false);
 
         intent.putExtra(ImageBrowserActivity.KEY_ISHIDEMOREBTN, false);
-        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, false);
+        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, true);
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOLLECT, false);
         startActivity(intent);
     }
