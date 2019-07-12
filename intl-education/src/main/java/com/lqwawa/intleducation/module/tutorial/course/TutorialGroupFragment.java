@@ -1,13 +1,9 @@
 package com.lqwawa.intleducation.module.tutorial.course;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,7 +12,6 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
-import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerSpaceItemDecoration;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -24,7 +19,6 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
-import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
 import com.lqwawa.intleducation.module.tutorial.course.filtrate.TutorialFiltrateGroupActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -151,7 +145,7 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
     public void getMore() {
         // 帮辅群只显示自己的，不显示孩子的
         String memberId = UserHelper.getUserId();
-        mPresenter.requestTutorDataByCourseId(mCourseId, memberId, ++pageIndex);
+        mPresenter.requestTutorDataByCourseId(mCourseId, memberId, pageIndex++);
     }
 
     @Override
@@ -166,8 +160,8 @@ public class TutorialGroupFragment extends PresenterFragment<TutorialGroupContra
         refreshAndNotify(entities);
     }
 
-    private void refreshAndNotify(List<TutorialGroupEntity> entities) {
-        if (EmptyUtil.isEmpty(entities)) {
+    private void refreshAndNotify(List<TutorialGroupEntity> entities) {  // 判断有无更多数据,打开或者关闭加载更多
+        if (EmptyUtil.isEmpty(entities) && pageIndex == 0) {
             mEmptyLayout.setVisibility(View.VISIBLE);
             mRecycler.setVisibility(View.GONE);
         } else {
