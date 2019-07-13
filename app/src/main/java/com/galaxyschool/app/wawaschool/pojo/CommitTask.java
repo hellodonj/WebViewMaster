@@ -76,6 +76,7 @@ public class CommitTask implements Serializable, Parcelable {
     private boolean hasTutorialPermission;
     private int scoreColor;
     private boolean hasAlreadyCommit;
+    private int sortPositionId;
     /**
      * @return 是否是语音评测类型
      */
@@ -127,6 +128,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getSortPositionId() {
+        return sortPositionId;
+    }
+
+    public void setSortPositionId(int sortPositionId) {
+        this.sortPositionId = sortPositionId;
     }
 
     public int getScoreColor() {
