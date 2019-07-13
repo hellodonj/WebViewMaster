@@ -20,6 +20,8 @@ import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.osastudio.common.utils.MyListView;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class WholeClassGradeDetailFragment extends ContactsListFragment {
     public static final String TAG = WholeClassGradeDetailFragment.class.getSimpleName();
@@ -228,8 +230,22 @@ public class WholeClassGradeDetailFragment extends ContactsListFragment {
             }
             int color = isPercentageSystem ? PERCENT_COLOR_LIST[positon] : DEFAULT_COLOR_LIST[positon];
             commitTask.setScoreColor(color);
+            commitTask.setSortPositionId(positon);
         }
 
+        //对分数进行排序
+        Collections.sort(mData, (o1, o2) -> {
+            if (TextUtils.isEmpty(o1.getTaskScore()) || TextUtils.isEmpty(o2.getTaskScore())){
+                return 0;
+            }
+            if (isPercentageSystem){
+                //百分制
+                return Integer.valueOf(o2.getTaskScore()) - Integer.valueOf(o1.getTaskScore());
+            } else {
+                //十分制
+                return o1.getSortPositionId() - o2.getSortPositionId();
+            }
+        });
         getCurrAdapterViewHelper().setData(mData);
     }
 
