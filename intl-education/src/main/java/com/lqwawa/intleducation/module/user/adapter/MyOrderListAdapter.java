@@ -275,17 +275,20 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             //帮辅订单
             if (vo.getType() == 6) {
                 if (vo.getTaskType() == 5) {
-                    holder.course_name.setText("[听读课]" + vo.getTaskName());
-                    // holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_lqc));
+                    String typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));
+                    StringUtil.fillSafeTextView(holder.course_name, typeName);
+                    //holder.course_name.setText("[" + activity.getResources().getString(R.string.label_tutorial_task_type_listen_read_course) + "]" + vo.getTaskName());
                 } else if (vo.getTaskType() == 8) {
-                    holder.course_name.setText("[做读写单]" + vo.getTaskName());
-                    //holder.course_iv.setBackground(activity.getResources().getDrawable(R.drawable.ic_task_not_flag));
+                    String typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_do_task));
+                    StringUtil.fillSafeTextView(holder.course_name, typeName);
+                    // holder.course_name.setText("["+activity.getResources().getString(R.string.label_tutorial_task_type_do_task) +"]" + vo.getTaskName());
                 } else {
                     holder.course_name.setText(vo.getTaskName());
                 }
                 holder.delete_order_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setVisibility(View.VISIBLE);
-                holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
+                StringUtil.fillSafeTextView(holder.teacher_name, String.format(UIUtil.getString(R.string.label_commit_placeholder_teacher), vo.getRealName()));
+//                holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
                 holder.status_tv.setText(activity.getResources().getString(orderTuttorStatusResId[vo.getStatus()]));
                 holder.status_tv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
                 holder.rebuy_tv.setVisibility(View.GONE);
