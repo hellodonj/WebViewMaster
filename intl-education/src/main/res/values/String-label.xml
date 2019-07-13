@@ -533,8 +533,8 @@
 
     <string name="label_my_orders">My Order</string>
     <string name="label_coins_detail_1">Tutoring-Refund</string>
-    <string name="label_coins_detail_2">Tutoring-</string>
-    <string name="label_coins_detail_3">Consult Tutor-</string>
+    <string name="label_coins_detail_2">Tutoring-%s</string>
+    <string name="label_coins_detail_3">Consult Tutor-%s</string>
     <string name="label_refunded">Refund</string>
     <string name="label_tutorial">Tutor</string>
     <string name="label_tutor_agreement">Tutorial Service Agreement</string>

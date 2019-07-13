@@ -78,12 +78,12 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
-                holder.tvName.setText(info.getTypeC());
+                holder.tvName.setText(UIUtil.getString(R.string.label_coins_detail_1));//帮辅批阅-退款
             } else if (info.getRechargeType() == 6) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText("+" + info.getAmount());
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
-                holder.tvName.setText(info.getTypeC());
+                holder.tvName.setText(String.format(UIUtil.getString(R.string.label_coins_detail_2), info.getRealName()));//批阅作业-realName
             } else {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
@@ -172,7 +172,7 @@ public class CoinsDetailAdapter extends BaseAdapter {
 
                 holder.tvName.setText(spanBuilder);
             }else if (info.getConsumeType() ==5){
-                holder.tvName.setText(info.getTypeC());
+                holder.tvName.setText(String.format(UIUtil.getString(R.string.label_coins_detail_3), info.getRealName())); //申请批阅 realName
                 if (info.getIsRefunded() == 1) {
                     holder.tvRefund.setVisibility(View.VISIBLE);
                 } else if (info.getIsRefunded() == 0) {
