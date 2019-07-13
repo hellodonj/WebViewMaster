@@ -200,7 +200,8 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
 
         mCheckBox = (CheckBox) findViewById(R.id.check_box);
         mTvPact = (TextView) findViewById(R.id.tv_pact);
-        SpannableString str = new SpannableString("《帮辅服务协议》");
+        String source = UIUtil.getString(R.string.label_tutor_agreement);
+        SpannableString str = new SpannableString(source);
         str.setSpan(new MyCheckTextView(this), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mTvPact.setText(str);
         mTvPact.setMovementMethod(LinkMovementMethod.getInstance());//不设置 没有点击事件
