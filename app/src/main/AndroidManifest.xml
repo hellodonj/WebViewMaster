@@ -536,7 +536,6 @@
         <activity
             android:name=".PersonalSpaceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MyMessageListActivity"
