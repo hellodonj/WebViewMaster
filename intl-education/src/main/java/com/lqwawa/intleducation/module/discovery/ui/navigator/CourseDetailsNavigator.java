@@ -27,4 +27,6 @@ public interface CourseDetailsNavigator{
     void commitComment();
     // 返回课程信息的观察者对象
     Observable getCourseObservable();
+    //播放列表按钮显示
+    void coursePlayListVisible();
 }

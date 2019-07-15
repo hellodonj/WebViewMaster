@@ -26,7 +26,6 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseCommentAdapter;
@@ -76,9 +75,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private LinearLayout mBottomLayout;
     // 学习统计,课程统计
     private Button mBtnStatisticalLearning, mBtnCourseStatistics;
-    //播放列表
-    private Button mBtnPlayList;
-    private LinearLayout mLLPlayList;
 
     // 课程公告的集合以及Adapter
     private List<CourseIntroduceVo> mCourseIntroduceArray;
@@ -128,12 +124,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mBottomLayout = (LinearLayout) view.findViewById(R.id.bottom_layout);
         mBtnStatisticalLearning = (Button) view.findViewById(R.id.btn_statistical_learning);
         mBtnCourseStatistics = (Button) view.findViewById(R.id.btn_course_statistics);
-        mBtnPlayList = (Button) view.findViewById(R.id.btn_play_list);
-        mLLPlayList = (LinearLayout) view.findViewById(R.id.ll_play_list);
 
         mBtnStatisticalLearning.setOnClickListener(this);
         mBtnCourseStatistics.setOnClickListener(this);
-        mBtnPlayList.setOnClickListener(this);
 
         mNoCommentTip = view.findViewById(R.id.no_comment_tip);
         return view;
@@ -148,21 +141,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER, false);
         isFromScan = getArguments().getBoolean("isFromScan", false);
-//        resIds = getArguments().getStringArrayList("resIds");
-
-//        if (EmptyUtil.isNotEmpty(resIds)){
-//            mLLPlayList.setVisibility(View.VISIBLE);
-////            List<String> list = new ArrayList<String>();
-////            list.add("712577-19");
-////            list.add("715481-19");
-//            TaskSliderHelper.onPlayListListener.setResIds(resIds);
-//            TaskSliderHelper.onPlayListListener.setActivity(activity);
-//            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
-//                TaskSliderHelper.onPlayListListener.startPlay();
-//            }
-//        }else {
-//            mLLPlayList.setVisibility(View.GONE);
-//        }
 
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
@@ -210,6 +188,22 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 CourseDetailsNavigator navigator = (CourseDetailsNavigator) activity;
                 navigator.otherFragmentVisible();
             }
+        } else if (!hidden && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
+            // 播放列表显示
+            Activity activity = getActivity();
+            if (activity instanceof CourseDetailsNavigator) {
+                // 回调接口,显示播放列表
+                CourseDetailsNavigator navigator = (CourseDetailsNavigator) activity;
+                navigator.coursePlayListVisible();
+            }
+        }else if (hidden && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN){
+            // 播放列表隐藏
+            Activity activity = getActivity();
+            if (activity instanceof CourseDetailsNavigator) {
+                // 回调接口,隐藏按钮
+                CourseDetailsNavigator navigator = (CourseDetailsNavigator) activity;
+                navigator.otherFragmentVisible();
+            }
         }
     }
 
@@ -230,11 +224,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
             params.setCourseParams(mCourseDetailParams);
             CourseStatisticsActivity.show(getActivity(), params);
-        } else if (viewId == R.id.btn_play_list) {
-            //播放列表
-            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
-                TaskSliderHelper.onPlayListListener.showPlayListDialog(getActivity());
-            }
         }
     }
 
@@ -292,22 +281,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     public void updateData() {
         getData(false);
-    }
-
-    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
-        if (getActivity() == null) {
-            return;
-        }
-        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
-            mLLPlayList.setVisibility(View.VISIBLE);
-            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
-            TaskSliderHelper.onPlayListListener.setActivity(getActivity());
-            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
-                TaskSliderHelper.onPlayListListener.startPlay();
-            }
-        }else {
-            mLLPlayList.setVisibility(View.GONE);
-        }
     }
 
     public void getMore() {

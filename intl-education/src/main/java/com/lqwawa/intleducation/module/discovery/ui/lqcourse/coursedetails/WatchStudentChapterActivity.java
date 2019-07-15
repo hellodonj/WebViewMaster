@@ -128,6 +128,11 @@ public class WatchStudentChapterActivity extends ToolbarActivity implements Cour
     }
 
     @Override
+    public void coursePlayListVisible() {
+
+    }
+
+    @Override
     public void commitComment() {
 
     }
