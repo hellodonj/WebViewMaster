@@ -218,6 +218,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
+    //播放列表
+    private Button mBtnPlayList;
+    private LinearLayout mLLPlayList;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -432,6 +435,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             mRbLive.setVisibility(View.GONE);
             mRbLiveF.setVisibility(View.GONE);
         }
+
+        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
+        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
 
         textViewAddToCart = (TextView) findViewById(R.id.add_to_cart_tv);
         mTvPrice = (TextView) findViewById(R.id.tv_price);
@@ -1737,6 +1743,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void coursePlayListVisible() {
+        findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+        // 评论区域显示
+        mCommentLayout.setVisibility(View.GONE);
+
+    }
+
 
     // @date   :2018/4/10 0010 下午 5:48
     // @func   :保存评论数据

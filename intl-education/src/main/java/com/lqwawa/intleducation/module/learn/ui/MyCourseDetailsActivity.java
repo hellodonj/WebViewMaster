@@ -230,11 +230,13 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
-    //播放列表返回的resId
-//    private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
 
-    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId , CourseDetailParams params) {
+    //播放列表
+    private Button mBtnPlayList;
+    private LinearLayout mLLPlayList;
+
+    public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
                 .putExtra("id", id)
                 .putExtra("canEdit", canEdit)
@@ -349,6 +351,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
+        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
+        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
 
         if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
@@ -425,6 +429,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         textViewOrganName.setOnClickListener(this);
         mBtnIntro.setOnClickListener(this);
         mSchoolEnter.setOnClickListener(this);
+        mBtnPlayList.setOnClickListener(this);
         if (activity.getIntent().getBooleanExtra("canEdit", false)) {
             layCourseInfoRoot.setOnClickListener(this);
         }
@@ -1336,6 +1341,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             final String thumbnailUrl = courseVo.getThumbnailUrl();
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
             share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
+        } else if (view.getId() == R.id.btn_play_list) {
+            //播放列表
+            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
+                TaskSliderHelper.onPlayListListener.showPlayListDialog(MyCourseDetailsActivity.this);
+            }
         }
     }
 
@@ -1498,6 +1508,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mCommentLayout.setVisibility(View.VISIBLE);
         // 隐藏课程表
         textViewLiveTimetable.setVisibility(View.GONE);
+        mLLPlayList.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -1508,7 +1520,21 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @date   :2018/6/7 0007 下午 11:23
         // @func   :Mooc 所有地方都隐藏课程表
         textViewLiveTimetable.setVisibility(View.GONE);
+        //播放列表按钮隐藏
+        mLLPlayList.setVisibility(View.GONE);
     }
+
+    @Override
+    public void coursePlayListVisible() {
+        //播放列表按钮显示
+        mLLPlayList.setVisibility(View.VISIBLE);
+        // 评论区域显示
+        mCommentLayout.setVisibility(View.GONE);
+        // 隐藏课程表
+        textViewLiveTimetable.setVisibility(View.GONE);
+
+    }
+
 
     // @date   :2018/4/10 0010 下午 5:48
     // @func   :保存评论数据
@@ -1597,9 +1623,23 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             courseVo.setInClass(true);
         } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
             List<CourseResourceEntity> playListVo = (List<CourseResourceEntity>) event.getData();
-            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
-                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
+            updatePlayCourseList(playListVo);
+//            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
+//                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
+//            }
+        }
+    }
+
+    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
+        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
+            mLLPlayList.setVisibility(View.VISIBLE);
+            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
+            TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+                TaskSliderHelper.onPlayListListener.startPlay();
             }
+        }else {
+            mLLPlayList.setVisibility(View.GONE);
         }
     }
 
