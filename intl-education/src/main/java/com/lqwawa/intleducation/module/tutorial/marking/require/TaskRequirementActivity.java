@@ -180,7 +180,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                 return thumbnails[0];
             }
         }
-        return null;
+        return resThumbnailUrl;
     }
 
     private boolean isShowCourseDetail(int resType) {
@@ -278,15 +278,13 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
             if (urls != null && urls.length > 0 && ids != null
                     && ids.length == urls.length) {
                 for (int i = 0; i < urls.length; i++) {
-                    ImageInfo newResourceInfo = new ImageInfo();
-                    newResourceInfo.setTitle(BaseUtils.getFileNameFromPath(urls[i]));
-                    newResourceInfo.setResourceUrl(urls[i]);
-                    newResourceInfo.setResourceId(ids[i]);
-                    newResourceInfo.setAuthorId(createId);
-                    newResourceInfo.setResourceType(1);
+                    ImageInfo newResourceInfo = getImageInfo(createId, urls[i], ids[i]);
                     resourceInfoList.add(newResourceInfo);
                 }
             }
+        } else {
+            ImageInfo newResourceInfo = getImageInfo(createId, resUrl, resId);
+            resourceInfoList.add(newResourceInfo);
         }
         Intent intent = new Intent();
         intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity");
@@ -298,6 +296,16 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, true);
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOLLECT, false);
         startActivity(intent);
+    }
+
+    private ImageInfo getImageInfo(String createId, String url, String id) {
+        ImageInfo newResourceInfo = new ImageInfo();
+        newResourceInfo.setTitle(BaseUtils.getFileNameFromPath(url));
+        newResourceInfo.setResourceUrl(url);
+        newResourceInfo.setResourceId(id);
+        newResourceInfo.setAuthorId(createId);
+        newResourceInfo.setResourceType(1);
+        return newResourceInfo;
     }
 
     /**
