@@ -134,8 +134,8 @@ public class ResourcesPlayUtils {
                             currentPosition = (int) position;
                             openPlayActivity();
                         });
-                        openPlayActivity();
-                        new Handler().postDelayed(() -> dialog.show(),1000);
+                        dialog.show();
+                        new Handler().postDelayed(() -> openPlayActivity(),200);
                     }
                 }
             }
