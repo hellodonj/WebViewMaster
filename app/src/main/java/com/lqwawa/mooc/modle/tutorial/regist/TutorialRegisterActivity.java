@@ -2,17 +2,13 @@ package com.lqwawa.mooc.modle.tutorial.regist;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -201,45 +197,22 @@ public class TutorialRegisterActivity extends PresenterActivity<TutorialRegister
         mCheckBox = (CheckBox) findViewById(R.id.check_box);
         mTvPact = (TextView) findViewById(R.id.tv_pact);
         String source = UIUtil.getString(R.string.label_tutor_agreement);
-        SpannableString str = new SpannableString(source);
-        str.setSpan(new MyCheckTextView(this), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTvPact.setText(str);
-        mTvPact.setMovementMethod(LinkMovementMethod.getInstance());//不设置 没有点击事件
-        mTvPact.setHighlightColor(Color.TRANSPARENT); //设置点击后的颜色为透明
+        mTvPact.setText(source);
+        mTvPact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = AppConfig.ServerUrl.TutorAgreement;
+                final TutorAgreePopWin treatRecordPopWin = new TutorAgreePopWin(TutorialRegisterActivity.this, url);
+                treatRecordPopWin.showAtLocation(findViewById(R.id.layout), Gravity.CENTER, 0, 0);
+                treatRecordPopWin.setOnConfirmClickListener(new TutorAgreePopWin.OnConfirmClickListener() {
+                    @Override
+                    public void onConfirmClick(TextView button, int tag) {
+                        treatRecordPopWin.dismiss();
+                    }
+                });
+            }
+        });
     }
-
-    public class MyCheckTextView extends ClickableSpan {
-        private Context context;
-
-        public MyCheckTextView(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            super.updateDrawState(ds);
-            //设置文本的颜色
-            ds.setColor(Color.parseColor("#009039"));
-            //超链接形式的下划线，false 表示不显示下划线，true表示显示下划线,其实默认也是true，如果要下划线的话可以不设置
-            ds.setUnderlineText(false);
-        }
-
-        //点击事件，自由操作
-        @Override
-        public void onClick(View widget) {
-            String url = AppConfig.ServerUrl.TutorAgreement;
-//            WebActivity.start(TutorialRegisterActivity.this, url,  "《帮辅服务协议》");
-            final TutorAgreePopWin treatRecordPopWin = new TutorAgreePopWin(TutorialRegisterActivity.this, url);
-            treatRecordPopWin.showAtLocation(findViewById(R.id.layout), Gravity.CENTER, 0, 0);
-            treatRecordPopWin.setOnConfirmClickListener(new TutorAgreePopWin.OnConfirmClickListener() {
-                @Override
-                public void onConfirmClick(TextView button, int tag) {
-                    treatRecordPopWin.dismiss();
-                }
-            });
-        }
-    }
-
 
     /**
      * 设置必填项
