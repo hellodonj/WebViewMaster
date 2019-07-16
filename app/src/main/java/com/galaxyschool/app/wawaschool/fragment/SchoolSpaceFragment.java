@@ -38,14 +38,12 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.pojo.QrcodeSchoolInfo;
-import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfoResult;
 import com.galaxyschool.app.wawaschool.pojo.TabEntityPOJO;
 import com.galaxyschool.app.wawaschool.views.PopupMenu;
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.module.discovery.ui.HQCCourseListActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
 import com.lqwawa.intleducation.module.onclass.school.SchoolInfoFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -146,6 +144,13 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
         item.title = getString(R.string.common_brain_library);
         item.resId = R.drawable.ic_brain_library_rect;
+        itemList.add(item);
+
+        //三习教案馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LESSON_PLAN_LIBRARY;
+        item.title = getString(R.string.common_lesson_plan_library);
+        item.resId = R.drawable.ic_practice_library_rect;
         itemList.add(item);
 
         if (schoolInfo != null && schoolInfo.isTeacher()) {
@@ -458,6 +463,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LESSON_PLAN_LIBRARY:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             default:

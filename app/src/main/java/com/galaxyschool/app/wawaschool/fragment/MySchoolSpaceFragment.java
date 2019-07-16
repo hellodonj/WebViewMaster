@@ -926,6 +926,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LESSON_PLAN_LIBRARY:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             //校园巡查
@@ -1088,6 +1089,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
         item.title = getString(R.string.common_brain_library);
         item.resId = R.drawable.ic_brain_library;
+        itemList.add(item);
+
+        //三习教案馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LESSON_PLAN_LIBRARY;
+        item.title = getString(R.string.common_lesson_plan_library);
+        item.resId = R.drawable.ic_practice_library;
         itemList.add(item);
 
         if (schoolInfo != null && schoolInfo.isTeacher()) {
