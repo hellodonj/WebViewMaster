@@ -16,11 +16,11 @@
         android:layout_height="wrap_content"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorHeight="4dp"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/textAccent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextAppearance="@style/TabLayoutTextStyle1"
         app:tabTextColor="@color/textPrimary" />
 
     <View
