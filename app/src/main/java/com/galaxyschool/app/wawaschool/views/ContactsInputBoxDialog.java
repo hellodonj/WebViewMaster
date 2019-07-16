@@ -1,10 +1,10 @@
 package com.galaxyschool.app.wawaschool.views;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.widget.EditText;
+
 import com.galaxyschool.app.wawaschool.R;
 
 public class ContactsInputBoxDialog extends ContactsDialog {
@@ -45,6 +45,7 @@ public class ContactsInputBoxDialog extends ContactsDialog {
         }
         return null;
     }
+
     public void setInputLimitNumber(int length){
         EditText textView = (EditText) getContentView().findViewById(
                 R.id.contacts_dialog_content_text);

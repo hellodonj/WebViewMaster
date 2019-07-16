@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 
 import java.io.Serializable;
@@ -75,6 +74,9 @@ public class CommitTask implements Serializable, Parcelable {
     private int commitTaskOnlineId;
     private String assistantRoleType;
     private boolean hasTutorialPermission;
+    private int scoreColor;
+    private boolean hasAlreadyCommit;
+    private int sortPositionId;
     /**
      * @return 是否是语音评测类型
      */
@@ -126,6 +128,22 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getSortPositionId() {
+        return sortPositionId;
+    }
+
+    public void setSortPositionId(int sortPositionId) {
+        this.sortPositionId = sortPositionId;
+    }
+
+    public int getScoreColor() {
+        return scoreColor;
+    }
+
+    public void setScoreColor(int scoreColor) {
+        this.scoreColor = scoreColor;
     }
 
     public boolean isHasTutorialPermission() {
@@ -538,6 +556,14 @@ public class CommitTask implements Serializable, Parcelable {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public boolean isHasAlreadyCommit() {
+        return hasAlreadyCommit;
+    }
+
+    public void setHasAlreadyCommit(boolean hasAlreadyCommit) {
+        this.hasAlreadyCommit = hasAlreadyCommit;
     }
 
     @Override

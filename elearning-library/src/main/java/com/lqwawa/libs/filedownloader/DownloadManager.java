@@ -394,6 +394,14 @@ public class DownloadManager {
 				connection.setRequestProperty("Range", "bytes=" + downloadedSize
 						+ "-" + fileInfo.getFileSize());
 				connection.connect();
+				if (connection.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+					url = new URL(connection.getHeaderField("Location"));
+					connection = (HttpURLConnection) url.openConnection();
+					connection.setRequestProperty("Connection", "close");
+					connection.setConnectTimeout(30 * 1000);
+					connection.setReadTimeout(30 * 1000);
+					connection.connect();
+				}
 				Utils.log("DOWNLOADER", downloadedSize + "/" + fileInfo.getFileSize()
 						+ " " + fileInfo.getFileUrl());
 

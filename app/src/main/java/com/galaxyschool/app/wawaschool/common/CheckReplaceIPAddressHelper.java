@@ -31,6 +31,7 @@ public class CheckReplaceIPAddressHelper {
     private Activity activity;
     private int resId;
     private int resType;
+    private int fileSize;
     //校内网模式的IP地址
     private String headUrl;
     private CallbackListener callBackListener;
@@ -46,6 +47,11 @@ public class CheckReplaceIPAddressHelper {
 
     public CheckReplaceIPAddressHelper setResType(int resType) {
         this.resType = resType;
+        return this;
+    }
+
+    public CheckReplaceIPAddressHelper setFileSize(int fileSize){
+        this.fileSize = fileSize;
         return this;
     }
 
@@ -143,6 +149,7 @@ public class CheckReplaceIPAddressHelper {
         Map param = new HashMap();
         param.put("resId", resId);
         param.put("resType", resType);
+        param.put("fileSize",fileSize);
         String requestUrl = "http://" + headUrl + ":8080" + ServerUrl.CHECK_RESINFO_DO_EXIST_BODY_URL;
         RequestHelper.RequestListener listener =
                 new RequestHelper.RequestResourceResultListener<ResourceResult>(

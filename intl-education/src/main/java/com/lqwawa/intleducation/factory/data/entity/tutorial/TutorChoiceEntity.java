@@ -1,7 +1,6 @@
 package com.lqwawa.intleducation.factory.data.entity.tutorial;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author mrmedici
@@ -14,6 +13,7 @@ public class TutorChoiceEntity implements Serializable {
     private String markingPrice;
     private int taskNum;
     private String memberId;
+    private float starLevel;
 
     private boolean checked;
 
@@ -65,6 +65,14 @@ public class TutorChoiceEntity implements Serializable {
         this.checked = checked;
     }
 
+    public float getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(float starLevel) {
+        this.starLevel = starLevel;
+    }
+
     public static TutorChoiceEntity build(TutorEntity tutorEntity) {
         TutorChoiceEntity tutorChoiceEntity = new TutorChoiceEntity();
         if (tutorEntity != null) {
@@ -73,6 +81,7 @@ public class TutorChoiceEntity implements Serializable {
             tutorChoiceEntity.memberId = tutorEntity.getTutorMemberId();
             tutorChoiceEntity.markingPrice = tutorEntity.getMarkingPrice();
             tutorChoiceEntity.taskNum = tutorEntity.getTaskNum();
+            tutorChoiceEntity.starLevel = tutorEntity.getStarLevel();
         }
         return tutorChoiceEntity;
     }

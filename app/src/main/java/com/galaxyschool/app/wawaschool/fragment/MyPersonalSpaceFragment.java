@@ -1,6 +1,5 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -35,6 +34,7 @@ import com.galaxyschool.app.wawaschool.PersonalContactsActivity;
 import com.galaxyschool.app.wawaschool.PersonalPostBarListActivity;
 import com.galaxyschool.app.wawaschool.PersonalSpaceActivity;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.SaveStatisticActivity;
 import com.galaxyschool.app.wawaschool.ShareScreenActivity;
 import com.galaxyschool.app.wawaschool.SubscribeMainActivity;
 import com.galaxyschool.app.wawaschool.TalentCipherActivity;
@@ -83,11 +83,10 @@ import com.lqwawa.intleducation.module.discovery.ui.UserCoinActivity;
 import com.lqwawa.intleducation.module.discovery.ui.person.mygive.MyGiveInstructionActivity;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyLiveListActivity;
-import com.lqwawa.intleducation.module.user.ui.MyOrderListActivity;
+import com.lqwawa.intleducation.module.user.ui.OrderListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.common.MOOCHelper;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
@@ -185,6 +184,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_MY_PERFORMANCE = 109;
         //科目设置
         int TAB_ENTITY_TYPE_SUBJECT_SETTING = 110;
+        //存储统计
+        int TAB_ENTITY_TYPE_SAVE_STATISTIC = 111;
 
     }
 
@@ -628,7 +629,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
             //我的订单
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_MY_ORDER:
                 MOOCHelper.init(getUserInfo());
-                MyOrderListActivity.newInstance(getActivity());
+//                MyOrderListActivity.newInstance(getActivity());
+                OrderListActivity.newInstance(getActivity());
                 break;
 
             //关注
@@ -666,6 +668,9 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 enterSubjectSettingDetail();
                 break;
 
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC:
+                enterSaveStatisticDetail();
+                break;
             default:
                 break;
         }
@@ -676,6 +681,13 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
      */
     private void enterSubjectSettingDetail(){
         SubjectActivity.show(getActivity());
+    }
+
+    /**
+     * 存储统计详情
+     */
+    private void enterSaveStatisticDetail(){
+        SaveStatisticActivity.start(getActivity());
     }
 
     private void loadChildInfo() {
@@ -1055,6 +1067,14 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
 
         TabEntityPOJO item;
 
+        //存储统计
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC;
+        item.title = getString(R.string.str_save_statistic);
+        item.resId = R.drawable.icon_save_statistic;
+        itemList.add(item);
+        entryMap.put(item.type, item);
+
         //我的余额
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_USER_COIN;
@@ -1104,13 +1124,13 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         entryMap.put(item.type, item);
 
         //关注
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBSCRIBER;
-        item.title = getString(R.string.subscribe);
-        item.resId = R.drawable.guanzhu;
-        item.hasFooter = true;
-        itemList.add(item);
-        entryMap.put(item.type, item);
+//        item = new TabEntityPOJO();
+//        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SUBSCRIBER;
+//        item.title = getString(R.string.subscribe);
+//        item.resId = R.drawable.guanzhu;
+//        item.hasFooter = true;
+//        itemList.add(item);
+//        entryMap.put(item.type, item);
 
         //关联账号
         item = new TabEntityPOJO();

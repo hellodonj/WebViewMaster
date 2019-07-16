@@ -475,6 +475,7 @@ public class PictureBooksDetailFragment extends ResourceBaseFragment
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(getActivity());
         helper.setResId(courseData.id)
                 .setResType(courseData.type)
+                .setFileSize(courseData.size)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
@@ -1168,6 +1169,7 @@ public class PictureBooksDetailFragment extends ResourceBaseFragment
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(getActivity());
         helper.setResId(Integer.valueOf(newResourceInfo.getMicroId()))
                 .setResType(newResourceInfo.getResourceType())
+                .setFileSize(newResourceInfo.getFileSize())
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {

@@ -39,6 +39,7 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CampusPatrolMainFragment;
 import com.galaxyschool.app.wawaschool.fragment.CampusPatrolPickerFragment;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
+import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.MyRemoteSplitCourseListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
@@ -124,6 +125,7 @@ public class MyRemoteDOCListFragment extends ContactsListFragment implements ISc
     private boolean mFromSchoolResource;//从校本资源库,精品资源库,我的课程进入
     private boolean isFromOnline=false;
     private boolean watchWawaCourseSupportMultiType;//看课件
+    private boolean isFromStudyTask;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,6 +133,7 @@ public class MyRemoteDOCListFragment extends ContactsListFragment implements ISc
         initCatalogsNochildren();
         return inflater.inflate(R.layout.fragment_my_remote_lq_course_list, null);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -162,6 +165,10 @@ public class MyRemoteDOCListFragment extends ContactsListFragment implements ISc
                         .EXTRA_SHOW_CHOICE_BOTTOM_LAYOUT);
             }
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
+            isFromStudyTask = getArguments().getBoolean(MediaListFragment.EXTRA_SUPPORT_MULTI_TYPE_WATCH_WAWA_COURSE);
+            if (isFromStudyTask) {
+                maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
+            }
         }
     }
     private void initCatalogsNochildren() {

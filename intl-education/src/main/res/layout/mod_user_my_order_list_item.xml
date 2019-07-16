@@ -250,5 +250,19 @@
             android:paddingRight="15dp"
             android:textColor="#009039"
             tools:text="@string/delete_order" />
+
+        <TextView
+            android:id="@+id/tutor_status_tv"
+            style="@style/text_green_l"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="@dimen/com_item_space"
+            android:background="@drawable/btn_green_stroke_bg_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#009039"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

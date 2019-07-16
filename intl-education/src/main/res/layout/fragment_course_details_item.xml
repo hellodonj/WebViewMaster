@@ -21,6 +21,34 @@
             android:scrollbars="none"/>
 
         <LinearLayout
+            android:id="@+id/ll_play_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/bg_gray"
+            android:weightSum="2"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/btn_play_list"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/label_btn_play_list"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                app:gTouchColor="@color/touch_color"
+                app:gTouchCornerRadius="19dp"
+                app:gTouchEffect="ripple" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

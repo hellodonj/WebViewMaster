@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.module.learn.vo;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.base.vo.BaseVo;
@@ -371,6 +373,21 @@ public class LqTaskCommitVo extends BaseVo {
         if(EmptyUtil.isNotEmpty(studentResId) && studentResId.contains("-")) {
             String[] resIdStrings = studentResId.split("-");
             if (Integer.parseInt(resIdStrings[1]) == 26) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return 提交类型是不是视频类型
+     */
+    public boolean isVideoType(){
+        String studentResId = getStudentResId();
+        if(EmptyUtil.isNotEmpty(studentResId) && studentResId.contains("-")) {
+            String[] resIdStrings = studentResId.split("-");
+            if (Integer.parseInt(resIdStrings[1]) == 3) {
                 return true;
             }
         }

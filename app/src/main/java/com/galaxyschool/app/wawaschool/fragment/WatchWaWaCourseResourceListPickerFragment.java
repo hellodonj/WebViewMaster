@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.BookDetailActivity;
+import com.galaxyschool.app.wawaschool.BookStoreListActivity;
 import com.galaxyschool.app.wawaschool.MyAttendedSchoolListActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ShellActivity;
@@ -32,7 +35,10 @@ import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
@@ -42,19 +48,25 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.CourseShopListActivity;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.list.CourseResourceParams;
 import com.lqwawa.intleducation.module.watchcourse.list.WatchCourseResourceListActivity;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
+import com.osastudio.apps.Config;
 import com.osastudio.common.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 看课件多类型资源选取列表页面
@@ -69,6 +81,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     static final int TAB_SCHOOL_PICTUREBOOK = 4;//精品资源库
     static final int TAB_LQCOURSE_SHOP = 5;//学程馆
     static final int TAB_CLASS_LESSON = 6;
+    static final int TAB_COMMON_LIBRARY = 7;//图书馆
     private MyAttendedSchooListFragment lqProgramFragment;//LQ精品学程
     private int taskType;
     //听说 + 读写 选取读写单
@@ -96,11 +109,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             hideSoftKeyboard(getActivity());
         }
         initViews();
-        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
-            chooseClassLessonCourse(true);
-        } else {
+//        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
+//            chooseClassLessonCourse(true);
+//        } else {
             loadGetStudyTaskResControl();
-        }
+//        }
     }
 
     private void loadViews() {
@@ -249,7 +262,46 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_CLASS_LESSON) {
             //班级学程
             chooseClassLessonCourse(false);
+        } else if (data.type == TAB_COMMON_LIBRARY){
+            //图书馆
+            chooseCommonLibraryResource();
         }
+    }
+
+    /**
+     * 选择图书馆中的资源
+     */
+    private void chooseCommonLibraryResource(){
+        int taskType = getTaskTypeOrSelectCount(true);
+        int selectMaxCount = getTaskTypeOrSelectCount(false);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(ResType.RES_TYPE_VIDEO);
+        
+        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+
+        LQCourseConfigEntity entity = new LQCourseConfigEntity();
+        entity.setConfigValue(getString(R.string.str_q_dubbing));
+        entity.setLibraryType(OrganLibraryType.TYPE_LIBRARY);
+        entity.setId(OrganLibraryUtils.LIBRARY_QDUBBING_ID);
+        entity.setLevel(OrganLibraryUtils.LIBRARY_QDUBBING_LEVEL);
+        entity.setEntityOrganId(schoolId);
+
+        SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), schoolId,
+                new DataSource.Callback<SchoolInfoEntity>() {
+                    @Override
+                    public void onDataNotAvailable(int strRes) {
+                    }
+
+                    @Override
+                    public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                        String roles = schoolInfoEntity.getRoles();
+                        NewOrganCourseFiltrateActivity.show(
+                                getActivity(),
+                                entity, true, false, resourceData,
+                                false, false, true,
+                                roles, OrganLibraryType.TYPE_LIBRARY);
+                    }
+                });
     }
 
     private void chooseOnlineLqCourseShopRes(){
@@ -524,7 +576,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
      */
     private void chooseSchoolResources(int type) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), MyAttendedSchoolListActivity.class);
+//        intent.setClass(getActivity(), MyAttendedSchoolListActivity.class);
+        //直接跳转到校本资源库的界面
+        intent.setClass(getActivity(), BookStoreListActivity.class);
         intent.putExtra(ActivityUtils.EXTRA_IS_PICK, true);
         intent.putExtra(ActivityUtils.EXTRA_IS_PICK_SCHOOL_RESOURCE, true);
         intent.putExtra(ActivityUtils.EXTRA_TASK_TYPE, taskType);
@@ -534,11 +588,15 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || (isSuperTask && superTaskType == StudyTaskType.RETELL_WAWA_COURSE)
                 || (taskType == StudyTaskType.LISTEN_READ_AND_WRITE && !isCheckTaskOrderRes)) {
-            mediaTypeList.add(MediaType.SCHOOL_COURSEWARE); //LQ课件
-            mediaTypeList.add(MediaType.SCHOOL_PICTURE); //图片
-            mediaTypeList.add(MediaType.SCHOOL_PDF); //PDF
-            mediaTypeList.add(MediaType.SCHOOL_PPT); //PPT
-            mediaTypeList.add(MediaType.SCHOOL_DOC); //DOC
+            if (superTaskType == StudyTaskType.Q_DUBBING){
+                mediaTypeList.add(MediaType.SCHOOL_VIDEO); //视频
+            } else {
+                mediaTypeList.add(MediaType.SCHOOL_COURSEWARE); //LQ课件
+                mediaTypeList.add(MediaType.SCHOOL_PICTURE); //图片
+                mediaTypeList.add(MediaType.SCHOOL_PDF); //PDF
+                mediaTypeList.add(MediaType.SCHOOL_PPT); //PPT
+                mediaTypeList.add(MediaType.SCHOOL_DOC); //DOC
+            }
         } else if (taskType == StudyTaskType.TASK_ORDER
                 || (isSuperTask && superTaskType == StudyTaskType.TASK_ORDER)
                 || (taskType == StudyTaskType.LISTEN_READ_AND_WRITE)) {
@@ -570,6 +628,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             intent.putExtra(ActivityUtils.EXTRA_SELECT_MAX_COUNT, getTaskTypeOrSelectCount(false));
             intent.putExtra(ActivityUtils.EXTRA_TASK_TYPE, getTaskTypeOrSelectCount(true));
         }
+        intent.putExtra(BookDetailActivity.SCHOOL_ID, schoolId);
+        intent.putExtra(BookDetailActivity.ORIGIN_SCHOOL_ID, "");
+        intent.putExtra(ActivityUtils.EXTRA_FROM_INTRO_STUDY_TASK,true);
         if (type == TAB_LQCOURSE_SHOP) {
             startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
         } else {
@@ -597,8 +658,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
 //        item.type=TAB_CLOUD_COURSE;
 //        list.add(item);
 
-        if (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
-                controlGetStudyTaskTypeString.contains("1")) {
+        if (!isOnlineClass
+                && (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
+                controlGetStudyTaskTypeString.contains("1"))) {
             //校本资源库
             item = new HomeTypeEntry();
             item.icon = R.drawable.school_course_library_icon;
@@ -607,8 +669,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             list.add(item);
         }
 
-        if (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
-                controlGetStudyTaskTypeString.contains("2")){
+        if (!isOnlineClass
+                && (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
+                controlGetStudyTaskTypeString.contains("2"))){
             //精品资源库
             item = new HomeTypeEntry();
             item.icon = R.drawable.icon_lq_program;
@@ -626,19 +689,13 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 item.type = TAB_LQ_PROGRAM;
                 list.add(item);
             }
-            
+
             // 线上学程馆
             item = new HomeTypeEntry();
             item.icon = R.drawable.ic_lqcourse_circle;
             item.typeName = R.string.common_course_library;
             item.type = TAB_LQCOURSE_SHOP;
             list.add(item);
-        }
-
-
-
-        if (isOnlineClass) {
-
         } else {
             //班级学程
             item = new HomeTypeEntry();
@@ -646,6 +703,15 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             item.typeName = R.string.str_class_lesson;
             item.type = TAB_CLASS_LESSON;
             list.add(item);
+
+            //图书馆(q配音选择时才显示)
+            if (superTaskType == StudyTaskType.Q_DUBBING) {
+                item = new HomeTypeEntry();
+                item.icon = R.drawable.icon_common_library;
+                item.typeName = R.string.common_library;
+                item.type = TAB_COMMON_LIBRARY;
+                list.add(item);
+            }
         }
 
         getCurrAdapterViewHelper().setData(list);
@@ -658,6 +724,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     }
 
     private void loadGetStudyTaskResControl() {
+        //测试的时候放开 上线关闭
+        Map<String,Object> params = new HashMap<>();
+        if (!Config.UPLOAD_BUGLY_EXCEPTION){
+            params.put("Flag",1);
+        }
         RequestHelper.RequestModelResultListener listener = new RequestHelper
                 .RequestModelResultListener(getActivity(), ModelResult.class) {
             @Override
@@ -687,7 +758,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 loadViews();
             }
         };
-        RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_STUDYTASK_CONTROL_BASE_URL, new HashMap<>(),
+        RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_STUDYTASK_CONTROL_BASE_URL, params,
                 listener);
     }
 
@@ -696,18 +767,21 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (data != null) {
             //LQ学程返回的数据需要处理
             if (requestCode == LQCourseCourseListActivity.RC_SelectCourseRes) {
-                if (data != null) {
-                    ArrayList<SectionResListVo> selectedList = (ArrayList<SectionResListVo>)
-                            data.getSerializableExtra(CourseSelectItemFragment.RESULT_LIST);
-                    if (selectedList != null && selectedList.size() > 0) {
-                        //处理LQ学程选取的数据
-                        WatchWawaCourseResourceSplicingUtils.splicingLQProgramResources
-                                (getActivity(), selectedList);
-                    } else {
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
+                ArrayList<SectionResListVo> selectedList = (ArrayList<SectionResListVo>)
+                        data.getSerializableExtra(CourseSelectItemFragment.RESULT_LIST);
+                if (selectedList != null && selectedList.size() > 0) {
+                    //处理LQ学程选取的数据
+                    WatchWawaCourseResourceSplicingUtils.splicingLQProgramResources
+                            (getActivity(), selectedList);
+                } else {
+                    if (getActivity() != null) {
+                        getActivity().finish();
                     }
+                }
+            } else if (requestCode == IntroductionForReadCourseFragment.REQUEST_CODE_PICKER_RESOURCES){
+                if (getActivity() != null){
+                    getActivity().setResult(Activity.RESULT_OK,data);
+                    getActivity().finish();
                 }
             }
         }

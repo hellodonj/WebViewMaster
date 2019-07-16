@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
@@ -18,20 +17,19 @@ import com.lqwawa.intleducation.base.ToolbarActivity;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingListActivity;
-import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialMarkingParams;
-import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialMarkingPagerFragment;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
 import com.lqwawa.intleducation.module.tutorial.target.pager.TutorialTargetPagerTaskFragment;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 描述: 帮辅答疑列表界面
+ */
 public class TutorialStudentTargetTaskActivity extends ToolbarActivity implements View.OnClickListener {
 
     private ImageView mBtnBack;
-    private CheckedTextView mUnMark,mHaveMark;
+    private CheckedTextView mUnMark, mHaveMark;
     private ViewPager mViewPager;
     private List<Fragment> mPagerFragments;
     private TabPagerAdapter mPagerAdapter;
@@ -45,9 +43,9 @@ public class TutorialStudentTargetTaskActivity extends ToolbarActivity implement
 
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
-        if(bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)){
+        if (bundle.containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mTargetTaskParams = (TutorialTargetTaskParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-            if(EmptyUtil.isEmpty(mTargetTaskParams)){
+            if (EmptyUtil.isEmpty(mTargetTaskParams)) {
                 return false;
             }
         }
@@ -76,7 +74,7 @@ public class TutorialStudentTargetTaskActivity extends ToolbarActivity implement
         mPagerFragments.add(notFragment);
         mPagerFragments.add(haveFragment);
 
-        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(),mPagerFragments);
+        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), mPagerFragments);
         mViewPager.setAdapter(mPagerAdapter);
 
         mBtnBack.setOnClickListener(this);
@@ -87,16 +85,16 @@ public class TutorialStudentTargetTaskActivity extends ToolbarActivity implement
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
-        if(viewId == R.id.btn_back){
+        if (viewId == R.id.btn_back) {
             // 返回
             finish();
-        }else if(viewId == R.id.tv_un_mark){
+        } else if (viewId == R.id.tv_un_mark) {
             // 切换Tab,隐藏对话框
             KeyboardUtil.hideSoftInput(this);
             mUnMark.setChecked(true);
             mHaveMark.setChecked(false);
             mViewPager.setCurrentItem(0);
-        }else if(viewId == R.id.tv_have_mark){
+        } else if (viewId == R.id.tv_have_mark) {
             // 切换Tab,隐藏对话框
             KeyboardUtil.hideSoftInput(this);
             mUnMark.setChecked(false);
@@ -123,16 +121,18 @@ public class TutorialStudentTargetTaskActivity extends ToolbarActivity implement
         public int getCount() {
             return fragments.size();
         }
+
     }
 
     /**
      * 学生帮辅列表的入口
+     *
      * @param context
      */
-    public static void show(@NonNull final Context context, @NonNull TutorialTargetTaskParams params){
-        Intent intent = new Intent(context,TutorialStudentTargetTaskActivity.class);
+    public static void show(@NonNull final Context context, @NonNull TutorialTargetTaskParams params) {
+        Intent intent = new Intent(context, TutorialStudentTargetTaskActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT,params);
+        bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

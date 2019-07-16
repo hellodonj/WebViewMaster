@@ -2,73 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorLight"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@color/colorLight">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/iv_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_tutor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="16sp"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/textPrimary"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_task_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:textSize="12sp"
-            android:textColor="@color/textSecond"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_marginTop="2dp"/>
+            android:textColor="@color/textSecond"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_free"
+            <RatingBar
+                android:id="@+id/teacher_rating_bar"
+                style="@style/RatingStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textSize="12sp"
-                android:text="@string/label_tutorial_free"
-                android:textColor="@color/textMoneyRed"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                android:max="5"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="0.05" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_free"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:ellipsize="end"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="@string/label_tutorial_free"-->
+                <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
+                <!--android:textColor="@color/textMoneyRed"-->
+                <!--android:textSize="12sp" />-->
 
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textSize="12sp"
-                android:textColor="@color/textSecond"
                 android:layout_marginLeft="12dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textMoneyRed"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -78,8 +88,8 @@
         android:id="@+id/iv_choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:padding="4dp"
-        android:scaleType="fitXY"
-        android:layout_gravity="center_vertical"/>
+        android:scaleType="fitXY" />
 
 </LinearLayout>

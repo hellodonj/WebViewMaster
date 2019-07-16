@@ -140,6 +140,10 @@
     <string name="order_status_0">Unpaid</string>
     <string name="order_status_1">Completed</string>
     <string name="order_status_2">Closed</string>
+    <string name="order_status_3">Paid</string>
+    <string name="tutor_order_status_1">Unmarked</string>
+    <string name="tutor_order_status_2">Completed</string>
+    <string name="tutor_order_status_3">Refund</string>
     <string name="feedback_tip1">Please enter your questions or comments which will keep us
         improving
     </string>
@@ -303,7 +307,7 @@
     <string name="lesson_introduction">Introduction:</string>
     <string name="lesson_res">Learning Tasks:</string>
     <string name="lq_english">LQ English</string>
-    <string name="lq_galaxy_intl">LQ精品课程</string>
+    <string name="lq_galaxy_intl">LQ Quality Course</string>
     <string name="course_avatar">Avatar</string>
     <string name="do_task">Do Read-Write Task</string>
     <string name="commit_history">Commit History：</string>
@@ -472,7 +476,7 @@
     <string name="voucher_explain">Instructions</string>
     <string name="voucher_explain_1">1.Voucher can only be used to purchase the first chapter of each course on LQWaWa Mini Program in WeChat.\n\n2.Mixed purchase with other chapters are not allowed.\n\n3.Balance can be used in next purchase.\n\n4.No-withdraw，no-transferable.\n\n5.All rights reserved by LQWaWa Information Technology Co. Ltd.</string>
 
-    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买课程的第一章节；混合购买其他章节时不可使用。</string>
     <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="charge_account">Top up</string>
@@ -535,4 +539,18 @@
     <string name="add_class_tutor">+Class Tutor</string>
     <string name="add_course_success">Attended</string>
 
+    <!--5.16-->
+    <string name="str_frog_coin">WaWaCoin</string>
+    <string name="review_price_dialog_title">Set Marking Price</string>
+
+    <string name="dubbing">Q Dubbing</string>
+    <string-array name="dubbing_task_tab_array">
+        <item>Task Requirements</item>
+        <item>Submittal list</item>
+        <item>&#8195;Discuss&#8195;</item>
+    </string-array>
+    <string name="start_dubbing">Dub</string>
+    <string name="join_school_to_learn">Please join school before learning course</string>
+    <string name="modify_success_tip">Price updated</string>
+    <string name="student_evaluation">Comment</string>
 </resources>

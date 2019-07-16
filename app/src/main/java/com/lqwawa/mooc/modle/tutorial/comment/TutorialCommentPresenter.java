@@ -15,7 +15,7 @@ import java.util.List;
  * @author mrmedici
  * @desc 帮辅主页评论列表的契约类
  */
-public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContract.View> implements TutorialCommentContract.Presenter{
+public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContract.View> implements TutorialCommentContract.Presenter {
 
     public TutorialCommentPresenter(TutorialCommentContract.View view) {
         super(view);
@@ -27,7 +27,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.showError(strRes);
                 }
             }
@@ -35,7 +35,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataLoaded(List<TutorCommentEntity> entities) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.updateTutorialCommentView(entities);
                 }
             }
@@ -48,7 +48,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.showError(strRes);
                 }
             }
@@ -56,20 +56,20 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataLoaded(Boolean aBoolean) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
-                    view.updateSingleCommentChangeStatusView(aBoolean,status,1 - status);
+                if (EmptyUtil.isNotEmpty(view)) {
+                    view.updateSingleCommentChangeStatusView(aBoolean, status, 1 - status);
                 }
             }
         });
     }
 
     @Override
-    public void requestSendTutorialComment(@NonNull String memberId, @NonNull String tutorMemberId, @NonNull String content) {
-        TutorialHelper.requestAddTutorialComment(memberId, tutorMemberId, content, new DataSource.Callback<Boolean>() {
+    public void requestSendTutorialComment(@NonNull String memberId, @NonNull String tutorMemberId, @NonNull String content, @NonNull int starLevel) {
+        TutorialHelper.requestAddTutorialComment(memberId, tutorMemberId, content, starLevel, new DataSource.Callback<Boolean>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.showError(strRes);
                 }
             }
@@ -77,7 +77,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataLoaded(Boolean aBoolean) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.updateSendTutorialCommentView(aBoolean);
                 }
             }
@@ -90,7 +90,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataNotAvailable(int strRes) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.showError(strRes);
                 }
             }
@@ -98,7 +98,7 @@ public class TutorialCommentPresenter extends BasePresenter<TutorialCommentContr
             @Override
             public void onDataLoaded(Boolean aBoolean) {
                 final TutorialCommentContract.View view = getView();
-                if(EmptyUtil.isNotEmpty(view)){
+                if (EmptyUtil.isNotEmpty(view)) {
                     view.updateAddCommentPraiseView(aBoolean);
                 }
             }

@@ -146,6 +146,7 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
         typeTable.append(4, CourseSelectItemFragment.KEY_TEXT_BOOK);
         // 讲解课类型
         typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
+        typeTable.append(6, CourseSelectItemFragment.KEY_TEXT_BOOK);
 
         initView();
     }
@@ -260,9 +261,10 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             mEmptyLayout.setEnabled(true);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }
-        boolean isVideoLibrary =
-                mParams != null && mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        mTabLayout.setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        boolean isVideoCourse =
+                mParams != null && (mParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || (mParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && mParams.isVideoCourse()));
+        mTabLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
     }
 
     /**
@@ -290,14 +292,14 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             }
         }else if(realTaskType == CourseSelectItemFragment.KEY_TEXT_BOOK){
             // 视频课类型
-            if(taskType == 1){
+            if(taskType == 1 || taskType == 6){
                 return true;
             }
         }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
             // 看课本类型
-            if (taskType == 1
-                    || taskType == 4) {
+            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5) {
                 // 看课件 视频课
+                // 新增选择讲解课 听说作业
                 return true;
             }
         }

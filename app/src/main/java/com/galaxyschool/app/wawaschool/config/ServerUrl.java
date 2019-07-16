@@ -35,7 +35,7 @@ public class ServerUrl {
         if (Config.DEBUG) {
             VERSION = VER_SIMULATE;
             BASE_SERVER = "http://platformtestop.lqwawa.com/";
-            BASE_SHARE_URL = "http://www.lqwawa.com/";
+            BASE_SHARE_URL = "http://platformtestop.lqwawa.com/";
 //            BASE_SERVER = "http://platformop.lqwawa.com/";
             FILE_SERVER = "http://filetestop.lqwawa.com/";
             WEIKE_SERVER = "http://resop.lqwawa.com/kukewebservice/";
@@ -1116,4 +1116,20 @@ public class ServerUrl {
      * 助教批阅或学生提问
      */
     public static final String GET_ADD_ASSIST_REVIEW_BASE_URL = BASE_SERVER + "Api/Mobile/ST/Assist/AddAssistReview";
+
+    /**
+     * 拉取个人空间存储统计
+     */
+    public static final String GET_MEMBER_STORAGE__BASE_URL = BASE_SERVER + "NewApi/LqMember/GetMemberStorageInfo";
+
+    /**
+     * 获取多个资源的详情数据
+     */
+    public static final String GET_RESOURSE_LIST_BYIDS_BASE_URL = WEIKE_SERVER + "account" +
+            "/getResourseListByIds";
+    
+    /**
+     * 查询mooc看课件更新已读未读的权限
+     */
+    public static final String GET_TASKTYPE_BY_CHAPTERID_BASE_URL = LQMOOC_BASE_SERVER + "api/chapter/getTaskTypeByChapterId";
 }

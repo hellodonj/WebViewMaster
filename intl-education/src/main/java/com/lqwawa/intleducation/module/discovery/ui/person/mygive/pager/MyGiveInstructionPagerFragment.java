@@ -290,10 +290,12 @@ public class MyGiveInstructionPagerFragment extends PresenterFragment<MyGiveInst
         }else if(viewId == R.id.et_search){
             // 点击搜索框
         }else if(viewId == R.id.tv_watch_history || viewId == R.id.btn_watch_history){
+            KeyboardUtil.hideSoftInput(getActivity());
             // 查看历史班
             HistoryClassActivity.show(getContext(),null);
         }else if(viewId == R.id.btn_timetable){
             // 课程表
+            KeyboardUtil.hideSoftInput(getActivity());
             String curMemberId = UserHelper.getUserId();
             TimeTableParams params = new TimeTableParams(curMemberId,LQwawaRoleType.ROLE_TYPE_TEACHER);
             TimeTableActivity.show(getActivity(),params);

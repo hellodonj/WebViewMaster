@@ -227,9 +227,10 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             mBottomLayout.setVisibility(View.GONE);
         }
 
-        boolean isVideoLibrary =
-                courseParams != null && courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        mTopLayout.setVisibility(isVideoLibrary ? View.GONE : View.VISIBLE);
+        boolean isVideoCourse =
+                courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                        || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
+        mTopLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
 
         isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
         if (isContainAssistantWork) {
@@ -536,6 +537,9 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             } else if (moocTaskType == 5) {
                 // 讲解课类型
                 lqwawaTaskType = 5;
+            } else if (moocTaskType == 6) {
+                // Q配音
+                lqwawaTaskType = 14;
             }
             TaskSliderHelper.onWorkCartListener.putResourceToCart((ArrayList<SectionResListVo>) choiceArray, lqwawaTaskType);
             // 刷新数目

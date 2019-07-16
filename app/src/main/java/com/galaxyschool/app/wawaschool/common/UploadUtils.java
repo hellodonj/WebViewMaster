@@ -176,6 +176,10 @@ public class UploadUtils {
         if (TextUtils.isEmpty(path)) {
             return null;
         }
+        // 资源链接地址是阿里云oss地址，更新使用原有地址
+        if (path.contains("aliyuncs.com")) {
+            return  null;
+        }
         int index = path.indexOf("/", 8); //find "/" after "http://"
         if (index > 0 && index < path.length()) {
             return path.substring(0, index);

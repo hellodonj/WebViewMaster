@@ -216,8 +216,11 @@
     <string name="label_voice_scores_format">%s points</string>
     <string name="label_teacher_mark">Remark</string>
     <string name="label_immediate_review">Remark</string>
+    <string name="label_look_review">View Remark</string>
     <string name="label_course_in_class">Assign Course to Class</string>
     <string name="label_old_in_class">Assigned already</string>
+    <string name="label_play_list">Create Playlist</string>
+    <string name="label_picker_chapter">Select Chapter</string>
     <string name="label_picker_class">Select Class</string>
     <string name="label_cancel_order">Cancel Order</string>
     <string name="label_watch_more_course">View More Tutorials</string>
@@ -250,6 +253,7 @@
     <string name="label_new_go_online_study">Enter Class Live</string>
     <!--<string name="label_new_go_online_study">Enter Lecture</string>-->
     <string name="label_watch_more_teach_course">More Class Live</string>
+    <string name="label_btn_play_list">Playlist</string>
     <string name="label_history_give">History</string>
     <string name="label_give_complete">Ended</string>
     <string name="label_history_setting">Set as History</string>
@@ -269,6 +273,7 @@
     <string name="label_colon_book_concern">Book Concern:</string>
     <string name="label_colon_age">Age:</string>
     <string name="label_colon_topic">Topic:</string>
+    <string name="label_colon_category">Category:</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">Authorized</string>
@@ -352,6 +357,11 @@
     <string name="label_add_tutorial_lines">Add\nTutor</string>
     <string name="label_un_mark">Unmarked</string>
     <string name="label_have_mark">Marked</string>
+    <string name="label_have_overdue">Expired</string>
+    <string name="label_12_overdue">Expire in 12h</string>
+    <string name="label_6_overdue">Expire in 6h</string>
+    <string name="label_2_overdue">Expire in 2h</string>
+    <string name="label_1_overdue">Expire in 1h</string>
     <string name="label_watch_task_requirement">View Task Requirement</string>
     <string name="label_task_type_template">"[%s]"</string>
     <string name="label_user_name">Name*:</string>
@@ -377,19 +387,21 @@
     <string name="label_district">District</string>
     <string name="label_mark_price">Marking price*:</string>
     <string name="label_mark_price_tip">Please enter marking price</string>
-    <string name="label_RMB">Yuan</string>
+    <string name="label_RMB">WaWaCoin</string>
     <string name="label_mark_price_hint">*Suggested price, modifiable</string>
     <string name="label_work_period">Years of working:</string>
     <string name="label_work_period_hint">Please enter years of working</string>
     <string name="label_person_academic_certificate">Academic certificate:</string>
     <string name="label_business_certificate">Professional certificate:</string>
     <string name="label_upload">Upload</string>
+    <string name="label_agreed">I have read and agreed</string>
     <string name="label_submit_apply">Apply</string>
     <string name="label_upload_completed">Uploaded successfully</string>
     <string name="label_telephone_hot_line">Hot-line: %s</string>
     <string name="label_apply_for_have_commit">Application submitted</string>
     <string name="label_applying_for">Waiting approval</string>
     <string name="label_tutorial_space">Tutor Space</string>
+    <string name="label_review_price">Review Price</string>
     <string name="label_course_box">My Course</string>
     <string name="label_tutorial_work">Homework</string>
     <string name="label_tutorial_student">Student</string>
@@ -401,7 +413,9 @@
     <string name="label_student_live">Class</string>
     <string name="label_my">My</string>
     <string name="label_tutorial_student_review_count">%d unmarked</string>
-    <string name="label_viewer_count">%d viewers</string>
+    <string name="label_course_count">%d \n courses</string>
+    <string name="label_student_count">%d \n students</string>
+    <string name="label_viewer_count">%d \n viewers</string>
     <string name="label_attention_count">%d followers</string>
     <string name="label_personal_introduce">Introduction</string>
     <string name="label_showing">Show</string>
@@ -417,7 +431,7 @@
     <string name="label_commit_placeholder_teacher">Submitted to teacher %s</string>
     <string name="label_choice_tutor_tip">Please select tutor</string>
     <string name="label_commit_succeed">Submitted successfully</string>
-    <string name="label_commit_succeed_tip">Homework submitted to teacher %s, marking will be completed within 2 working days, please wait.</string>
+    <string name="label_commit_succeed_tip">Homework submitted to teacher %s, marking will be completed within 24 hours, please wait.</string>
     <string name="label_again_submit">Continue to submit</string>
     <string name="label_watch_work">View Homework</string>
     <string name="label_apply_to_be_tutorial">Apply to be Tutor</string>
@@ -509,4 +523,24 @@
 
     <string name="voice_evaluating">Oral Test</string>
 
+    <string-array name="label_order_list_tabs">
+        <item>AlL</item>
+        <item>Pending Payment</item>
+        <item>Pending Review</item>
+        <item>Completed</item>
+        <item>Expired</item>
+    </string-array>
+
+    <string name="label_my_orders">My Order</string>
+    <string name="label_coins_detail_1">Tutoring-Refund</string>
+    <string name="label_coins_detail_2">Tutoring-%s</string>
+    <string name="label_coins_detail_3">Consult Tutor-%s</string>
+    <string name="label_refunded">Refund</string>
+    <string name="label_tutorial">Tutor</string>
+    <string name="label_tutor_agreement">Tutorial Service Agreement</string>
+    <string name="label_price_tip">Please enter a valid price</string>
+    <string name="label_checked_tip">Please read the agreement and check the checkbox</string>
+    <string name="label_play_tip">No recording courseware in selected chapter</string>
+    <string name="label_chapter_tip">Please select chapter</string>
+    <string name="btn_tutor_agreement">I See</string>
 </resources>

@@ -3,23 +3,34 @@ package com.lqwawa.intleducation.module.user.tool;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
+import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.helper.SharedPreferencesHelper;
 import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.db.DbHelper;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
+import com.lqwawa.intleducation.module.user.vo.MyOrderVo;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
+
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
 import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -77,6 +88,7 @@ public class UserHelper {
             }
         }
     }
+
     public static String getUserName() {
         if (getUserInfo() == null) {
             return "";
@@ -146,6 +158,7 @@ public class UserHelper {
         params.setConnectTimeout(10000);
         x.http().get(params, callback);
     }
+
     public static void getGroupListByUuid(String uuid, Callback.CommonCallback<String> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("groupUuids", uuid);
@@ -157,12 +170,13 @@ public class UserHelper {
 
     /**
      * 判断用户是否是学生角色
+     *
      * @param roles
      * @return
      */
-    public static boolean isStudent(String roles){
-        if(StringUtils.isValidString(roles)){
-            if(roles.contains("1")){
+    public static boolean isStudent(String roles) {
+        if (StringUtils.isValidString(roles)) {
+            if (roles.contains("1")) {
                 return true;
             }
         }
@@ -171,12 +185,13 @@ public class UserHelper {
 
     /**
      * 判断用户是否是老师角色
+     *
      * @param roles
      * @return
      */
-    public static boolean isTeacher(String roles){
-        if(StringUtils.isValidString(roles)){
-            if(roles.contains("0")){
+    public static boolean isTeacher(String roles) {
+        if (StringUtils.isValidString(roles)) {
+            if (roles.contains("0")) {
                 return true;
             }
         }
@@ -185,12 +200,13 @@ public class UserHelper {
 
     /**
      * 判断用户是否是家长角色
+     *
      * @param roles
      * @return
      */
-    public static boolean isParent(String roles){
-        if(StringUtils.isValidString(roles)){
-            if(roles.contains("2")){
+    public static boolean isParent(String roles) {
+        if (StringUtils.isValidString(roles)) {
+            if (roles.contains("2")) {
                 return true;
             }
         }
@@ -199,11 +215,12 @@ public class UserHelper {
 
     /**
      * 判断课程的讲师，助教，辅导老师是否包含当前用户
-     * @param courseVo 课程信息
+     *
+     * @param courseVo          课程信息
      * @param isOnlineCounselor 只有用户没有购买过,并且是空中课堂的老师,才是辅导老师身份
      * @return true 老师身份
      */
-    public static boolean checkCourseAuthor(CourseVo courseVo,boolean isOnlineCounselor) {
+    public static boolean checkCourseAuthor(CourseVo courseVo, boolean isOnlineCounselor) {
         String memberId = getUserId();
         if (courseVo != null && !TextUtils.isEmpty(memberId)) {
             //讲师中包含当前用户
@@ -228,6 +245,7 @@ public class UserHelper {
 
     /**
      * 判断空中课堂的讲师，助教，辅导老师是否包含当前用户
+     *
      * @param dataBean 空中课堂班级信息
      * @return true 老师身份
      */
@@ -246,19 +264,20 @@ public class UserHelper {
 
     /**
      * 根据角色信息获取角色包装对象
+     *
      * @param roles 角色信息
      * @return 角色包装对象 OnlineClassRole
      */
     public static String getOnlineRoleWithUserRoles(@NonNull String roles) {
         // 默认学生身份
         String roleType = OnlineClassRole.ROLE_STUDENT;
-        if(UserHelper.isTeacher(roles)){
+        if (UserHelper.isTeacher(roles)) {
             // 老师身份
             roleType = OnlineClassRole.ROLE_TEACHER;
-        }else if(UserHelper.isParent(roles)){
+        } else if (UserHelper.isParent(roles)) {
             // 家长身份
             roleType = OnlineClassRole.ROLE_PARENT;
-        }else if(UserHelper.isStudent(roles)){
+        } else if (UserHelper.isStudent(roles)) {
             // 学生身份
             roleType = OnlineClassRole.ROLE_STUDENT;
         }
@@ -279,7 +298,7 @@ public class UserHelper {
     /**
      * 定义MOOC老师类型
      */
-    public interface TeacherType{
+    public interface TeacherType {
         // 默认的,说明不是老师
         int TEACHER_DEFAULT = 0;
         // 讲师
@@ -292,6 +311,7 @@ public class UserHelper {
 
     /**
      * 判断课程的用户身份 用于客户端登录用户的身份判断
+     *
      * @param memberId memberId 如果不等于自己的memberId,那就说明传的是孩子的memberId。那么该身份就是家长
      * @param courseVo 课程信息
      * @return {{@link MoocRoleType#PARENT},{@link MoocRoleType#STUDENT},{@link MoocRoleType#STUDENT}
@@ -302,7 +322,7 @@ public class UserHelper {
                 && !curMemberId.equals(memberId)) {
             return MoocRoleType.PARENT;
         }
-        if (checkCourseAuthor(courseVo,false)) {
+        if (checkCourseAuthor(courseVo, false)) {
             return MoocRoleType.TEACHER;
         }
         return MoocRoleType.STUDENT;
@@ -310,17 +330,18 @@ public class UserHelper {
 
     /**
      * 判断课程的用户身份 用于客户端登录用户的身份判断
+     *
      * @param memberId memberId 如果不等于自己的memberId,那就说明传的是孩子的memberId。那么该身份就是家长
      * @param courseVo 课程信息
      * @return {{@link MoocRoleType#PARENT},{@link MoocRoleType#STUDENT},{@link MoocRoleType#STUDENT}
      */
-    public static int getCourseAuthorRole(String memberId, CourseVo courseVo,boolean isOnlineTeacher) {
+    public static int getCourseAuthorRole(String memberId, CourseVo courseVo, boolean isOnlineTeacher) {
         String curMemberId = getUserId();
         if (!TextUtils.isEmpty(curMemberId) && !TextUtils.isEmpty(memberId)
                 && !curMemberId.equals(memberId)) {
             return MoocRoleType.PARENT;
         }
-        if (checkCourseAuthor(courseVo,isOnlineTeacher)) {
+        if (checkCourseAuthor(courseVo, isOnlineTeacher)) {
             return MoocRoleType.TEACHER;
         }
         return MoocRoleType.STUDENT;
@@ -328,12 +349,13 @@ public class UserHelper {
 
     /**
      * 判断某个用户在课程中的身份 用于其他用户的身份判断
-     * @param userId 用户Id
+     *
+     * @param userId   用户Id
      * @param courseVo 课程实体
      * @return 身份信息
      */
-    public static int getRoleWithCourse(@NonNull String userId,@NonNull CourseVo courseVo){
-        if(checkCourseAuthorWithUserId(userId,courseVo)){
+    public static int getRoleWithCourse(@NonNull String userId, @NonNull CourseVo courseVo) {
+        if (checkCourseAuthorWithUserId(userId, courseVo)) {
             return MoocRoleType.TEACHER;
         }
         return MoocRoleType.STUDENT;
@@ -341,11 +363,12 @@ public class UserHelper {
 
     /**
      * 判断某个用户是否是老师身份
-     * @param userId 用户Id
+     *
+     * @param userId   用户Id
      * @param courseVo 课程信息
      * @return true 老师身份
      */
-    public static boolean checkCourseAuthorWithUserId(@NonNull String userId,@NonNull CourseVo courseVo) {
+    public static boolean checkCourseAuthorWithUserId(@NonNull String userId, @NonNull CourseVo courseVo) {
         String memberId = userId;
         if (courseVo != null && !TextUtils.isEmpty(memberId)) {
             // 讲师中包含当前用户
@@ -370,21 +393,23 @@ public class UserHelper {
 
     /**
      * 判断当前登录用户在课程中,是否是讲师角色
+     *
      * @param courseVo 课程信息
      * @return true 讲师角色
      */
     public static boolean isCourseTeacher(CourseVo courseVo) {
         String memberId = getUserId();
-        return isCourseTeacher(memberId,courseVo);
+        return isCourseTeacher(memberId, courseVo);
     }
 
     /**
      * 判断某个用户是否是老师身份
+     *
      * @param memberId 用户Id
      * @param courseVo 课程信息
      * @return true 讲师身份
      */
-    private static boolean isCourseTeacher(@NonNull String memberId,@NonNull CourseVo courseVo){
+    private static boolean isCourseTeacher(@NonNull String memberId, @NonNull CourseVo courseVo) {
         if (courseVo != null && !TextUtils.isEmpty(memberId)) {
             //讲师中包含当前用户
             String teachersId = courseVo.getTeachersId();
@@ -398,21 +423,23 @@ public class UserHelper {
 
     /**
      * 判断当前登录用户在课程中,是否是助教角色
+     *
      * @param courseVo 课程信息
      * @return true 助教
      */
     public static boolean isCourseTutor(CourseVo courseVo) {
         String memberId = getUserId();
-        return isCourseTutor(memberId,courseVo);
+        return isCourseTutor(memberId, courseVo);
     }
 
     /**
      * 判断某个用户是否是助教身份
+     *
      * @param memberId 用户Id
      * @param courseVo 课程信息
      * @return true 助教身份
      */
-    public static boolean isCourseTutor(@NonNull String memberId,@NonNull CourseVo courseVo){
+    public static boolean isCourseTutor(@NonNull String memberId, @NonNull CourseVo courseVo) {
         if (courseVo != null && !TextUtils.isEmpty(memberId)) {
             //讲师中包含当前用户
             String teachersId = courseVo.getTeachersId();
@@ -431,35 +458,38 @@ public class UserHelper {
 
     /**
      * 判断当前登录用户在课程中,是否是辅导老师角色
+     *
      * @param courseVo 课程信息
      * @return true 辅导老师角色
      */
     public static boolean isCourseCounselor(CourseVo courseVo) {
         // 获取自己的memberId
         String memberId = getUserId();
-        return isCourseCounselor(memberId,courseVo,false);
+        return isCourseCounselor(memberId, courseVo, false);
     }
 
     /**
      * 判断当前登录用户在课程中,是否是辅导老师角色
-     * @param courseVo 课程信息
+     *
+     * @param courseVo        课程信息
      * @param isOnlineTeacher 是否是空中课堂老师
      * @return true 辅导老师角色
      */
-    public static boolean isCourseCounselor(CourseVo courseVo,boolean isOnlineTeacher) {
+    public static boolean isCourseCounselor(CourseVo courseVo, boolean isOnlineTeacher) {
         // 获取自己的memberId
         String memberId = getUserId();
-        return isCourseCounselor(memberId,courseVo,isOnlineTeacher);
+        return isCourseCounselor(memberId, courseVo, isOnlineTeacher);
     }
 
     /**
      * 判断当在课程中,是否是辅导老师角色
-     * @param memberId 用户Id
-     * @param courseVo 课程信息
+     *
+     * @param memberId        用户Id
+     * @param courseVo        课程信息
      * @param isOnlineTeacher 是否是空中课堂老师
      * @return true 辅导老师角色
      */
-    public static boolean isCourseCounselor(@NonNull String memberId,@NonNull CourseVo courseVo,boolean isOnlineTeacher){
+    public static boolean isCourseCounselor(@NonNull String memberId, @NonNull CourseVo courseVo, boolean isOnlineTeacher) {
         if (courseVo != null && !TextUtils.isEmpty(memberId)) {
             // 讲师中包含当前用户
             String teachersId = courseVo.getTeachersId();
@@ -487,25 +517,75 @@ public class UserHelper {
      * KEY_TASK_ORDER = 8;任务单
      * KEY_TEXT_BOOK = 14;看课本 // V5.14兼容Q配音的类型
      *
-     *
      * @param taskType mooc学习任务类型
      * @return
      */
-    public static int transferResourceTypeWithMooc(int taskType){
-        if(taskType == 1){
+    public static int transferResourceTypeWithMooc(int taskType) {
+        if (taskType == 1) {
             return 14;
-        }else if(taskType == 2){
+        } else if (taskType == 2) {
             return 5;
-        }else if(taskType == 3){
+        } else if (taskType == 3) {
             return 8;
-        }else if(taskType == 4){
+        } else if (taskType == 4) {
             return 9;
-        }else if(taskType == 5){
+        } else if (taskType == 5) {
             return 5;
         }
 
         return 0;
     }
 
-   
+
+    /**
+     * @param pageIndex
+     * @param pageSize
+     * @param memberId
+     * @param callback
+     */
+    public static void requestLQMyOrderList(int pageIndex,
+                                            int pageSize,
+                                            int tabType,
+                                            String memberId,
+                                            @NonNull final DataSource.Callback<List<MyOrderVo>> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("pageIndex", pageIndex);
+        requestVo.addParams("pageSize", pageSize);
+        requestVo.addParams("tabType",tabType);
+        requestVo.addParams("memberId", memberId);
+        LogUtil.d("UserHelper", requestVo.getParams());
+        RequestParams params =
+                new RequestParams(AppConfig.ServerUrl.GetMyOrderList + requestVo.getParams());
+        params.setConnectTimeout(10000);
+
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i("UserHelper.class", "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<MyOrderVo>>> typeReference =
+                        new TypeReference<ResponseVo<List<MyOrderVo>>>() {
+                        };
+                ResponseVo<List<MyOrderVo>> result = JSON.parseObject(str, typeReference);
+                if (result.isSucceed()) {
+                    List<MyOrderVo> data = result.getData();
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        callback.onDataLoaded(data);
+                    }
+                } else {
+                    Factory.decodeRspCode(result.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                super.onError(throwable, b);
+                LogUtil.w("UserHelper.class", "request " + params.getUri() + " failed");
+                if (!EmptyUtil.isEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
 }

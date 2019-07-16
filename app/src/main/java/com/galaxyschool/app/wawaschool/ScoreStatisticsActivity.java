@@ -1,5 +1,6 @@
 package com.galaxyschool.app.wawaschool;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.View;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.fragment.AchievementStatisticsFragment;
 import com.galaxyschool.app.wawaschool.fragment.AnswerAnalysisFragment;
+import com.galaxyschool.app.wawaschool.fragment.WholeClassGradeDetailFragment;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
@@ -40,7 +43,8 @@ public class ScoreStatisticsActivity extends BaseFragmentActivity {
     private Bundle args;
     private boolean showExerciseTab;
     private ArrayList<CommitTask> mData;
-
+    private int fromType;//0 成绩统计 1 全部成绩
+    private int roleType;
     /**
      * @param context
      * @param retellCourseList 复述课件的数据list
@@ -72,6 +76,18 @@ public class ScoreStatisticsActivity extends BaseFragmentActivity {
         context.startActivity(intent);
     }
 
+    /**
+     * 进入全班成绩的界面
+     */
+    public static void start(Activity activity,
+                             Bundle args){
+        Intent intent = new Intent(activity,ScoreStatisticsActivity.class);
+        if (args != null){
+            args.putInt("fromType",1);
+            intent.putExtras(args);
+        }
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,21 +100,37 @@ public class ScoreStatisticsActivity extends BaseFragmentActivity {
         ToolbarTopView toolbarTopView = (ToolbarTopView) findViewById(R.id.toolbar_top_view);
         if (toolbarTopView != null) {
             toolbarTopView.getBackView().setVisibility(View.VISIBLE);
-            toolbarTopView.getTitleView().setText(R.string.str_achievement_statistic);
-            toolbarTopView.getBackView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
+            if (fromType == 0) {
+                toolbarTopView.getTitleView().setText(R.string.str_achievement_statistic);
+                toolbarTopView.getCommitView().setText(getString(R.string.str_whole_class_grade));
+                if (roleType == RoleType.ROLE_TYPE_TEACHER) {
+//                    //老师显示查看全部成绩
+                    toolbarTopView.getCommitView().setVisibility(View.VISIBLE);
                 }
-            });
+                toolbarTopView.getCommitView().setTextColor(ContextCompat.getColor(this, R.color.text_green));
+                toolbarTopView.getCommitView().setOnClickListener(v -> {
+                    //查看全班的成绩
+                    start(this,args);
+                });
+            } else {
+                //全部成绩
+                toolbarTopView.getTitleView().setText(R.string.str_whole_class_grade);
+            }
+            toolbarTopView.getBackView().setOnClickListener(v -> finish());
         }
-        initContent();
+        if (fromType == 0){
+            initContent();
+        } else {
+            initWholeGradeContent();
+        }
         initTab();
     }
 
     private void loadIntent(){
         args = getIntent().getExtras();
         if (args != null){
+            roleType = args.getInt(ActivityUtils.EXTRA_USER_ROLE_TYPE, -1);
+            fromType = args.getInt("fromType");
             hasEvalAssessment = args.getBoolean(AchievementStatisticsFragment.Constants.HAS_EVAL_DATA);
             scoreRule = args.getInt(AchievementStatisticsFragment.Constants.SCORE_RULE);
             mData = args.getParcelableArrayList(AchievementStatisticsFragment.Constants.RETELL_DATA_LIST);
@@ -116,8 +148,14 @@ public class ScoreStatisticsActivity extends BaseFragmentActivity {
     private void initTab() {
         ViewCompat.setElevation(mTabTl, 10);
         mTabTl.setupWithViewPager(mContentVp);
-        if ((scoreRule == 0 || !hasEvalAssessment) && !showExerciseTab){
-            mTabTl.setVisibility(View.GONE);
+        if (fromType == 0) {
+            if ((scoreRule == 0 || !hasEvalAssessment) && !showExerciseTab) {
+                mTabTl.setVisibility(View.GONE);
+            }
+        } else {
+            if (scoreRule == 0 || !hasEvalAssessment){
+                mTabTl.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -155,6 +193,33 @@ public class ScoreStatisticsActivity extends BaseFragmentActivity {
                 AnswerAnalysisFragment analysisFragment = new AnswerAnalysisFragment();
                 analysisFragment.setArguments(args);
                 tabFragments.add(analysisFragment);
+            }
+        }
+        contentAdapter = new ContentPagerAdapter(getSupportFragmentManager());
+        mContentVp.setAdapter(contentAdapter);
+    }
+
+    private void initWholeGradeContent(){
+        tabIndicators = new ArrayList<>();
+        tabFragments = new ArrayList<>();
+        //复述课件
+        tabIndicators.add(getString(R.string.retell_course_new));
+        if (scoreRule == 0){
+            WholeClassGradeDetailFragment evalFragment = new WholeClassGradeDetailFragment();
+            evalFragment.setArguments(args);
+            evalFragment.setEvalAssessment(true);
+            tabFragments.add(evalFragment);
+        } else {
+            WholeClassGradeDetailFragment retellFragment = new WholeClassGradeDetailFragment();
+            retellFragment.setArguments(args);
+            tabFragments.add(retellFragment);
+            if (hasEvalAssessment) {
+                //任务单的语音评测
+                tabIndicators.add(getString(R.string.auto_mark));
+                WholeClassGradeDetailFragment evalFragment = new WholeClassGradeDetailFragment();
+                evalFragment.setArguments(args);
+                evalFragment.setEvalAssessment(true);
+                tabFragments.add(evalFragment);
             }
         }
         contentAdapter = new ContentPagerAdapter(getSupportFragmentManager());

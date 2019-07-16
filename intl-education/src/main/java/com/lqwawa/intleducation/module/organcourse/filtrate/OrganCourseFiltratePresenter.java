@@ -28,7 +28,7 @@ public class OrganCourseFiltratePresenter extends SchoolPermissionPresenter<Orga
     public void requestOrganCourseLabelData(@NonNull String organId, @NonNull int parentId,
                                             @NonNull String level, int libraryType) {
         // 获取中英文数据
-        // organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+//         organId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         OrganCourseHelper.requestOrganClassifyLabelData(organId, languageRes, parentId, level,
                 libraryType, new DataSource.Callback<List<LQCourseConfigEntity>>() {

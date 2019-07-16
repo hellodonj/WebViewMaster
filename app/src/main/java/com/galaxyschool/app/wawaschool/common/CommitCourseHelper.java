@@ -16,7 +16,6 @@ import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.net.course.UploadCourseManager;
-import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.ResourceTitle;
 import com.galaxyschool.app.wawaschool.pojo.ResourceTitleResult;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
@@ -25,15 +24,14 @@ import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.pojo.weike.LocalCourseInfo;
 import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
-import com.galaxyschool.app.wawaschool.views.ContactsInputBoxDialog;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.InputBoxDialog;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.oosic.apps.share.ShareItem;
 import com.oosic.apps.share.ShareType;
 import com.osastudio.common.utils.Constants;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -431,9 +429,9 @@ public class CommitCourseHelper extends CommitHelper {
         return title;
     }
 
-//    ContactsInputBoxDialog showEditDialog(String dialogTitle, String dataTitle,
+//    ContactsInputDialog showEditDialog(String dialogTitle, String dataTitle,
 //                                          DialogInterface.OnClickListener confirmButtonClickListener) {
-//        ContactsInputBoxDialog dialog = new ContactsInputBoxDialog(mContext, dialogTitle, dataTitle,
+//        ContactsInputDialog dialog = new ContactsInputDialog(mContext, dialogTitle, dataTitle,
 //            mContext.getString(R.string.pls_enter_title),
 //                mContext.getString(R.string.cancel),
 //                new DialogInterface.OnClickListener() {

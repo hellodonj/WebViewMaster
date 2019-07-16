@@ -120,7 +120,7 @@ public final class AppConfig {
         //接口基础地址 测试环境+interCourse
         // @date   :2018/5/4 0004 下午 6:06
         // @func   :V5.5的坑
-        public static final String ServerBase = ReleaseSever ? URL_HOST +"/": URL_HOST + "/interCourse/";
+        public static final String ServerBase = ReleaseSever ? URL_HOST + "/" : URL_HOST + "/interCourse/";
         //登录接口
         public static final String Login = ServerBase + "api/user/login?j=";
         //退出登录
@@ -672,7 +672,7 @@ public final class AppConfig {
                 ServerBase + "api/online/getCourseIdByClassId?j=";
 
         // 空中课堂生成二维码Url 分享
-        public static final String QRCODE_SHARE_URL = LQWAWA_BASE_SERVER+
+        public static final String QRCODE_SHARE_URL = LQWAWA_BASE_SERVER +
                 "mobileHtml/ShareSchoolInfo.aspx?Id={id}";
         // public static final String QRCODE_SHARE_URL = "http://platformtestop.lqwawa.com/mobileHtml/ShareSchoolInfo.aspx?Id={id}";
 
@@ -877,6 +877,10 @@ public final class AppConfig {
         public static final String GetRequestAddTutorialComment =
                 ServerBase + "api/tutor/addTutorEstimate?j=";
 
+        //对帮辅评价是否评价过
+        public static final String PostQryWhetherEstimated =
+                ServerBase + "api/tutor/qryWhetherEstimated";
+
         // 获取符合筛选条件的帮辅列表
         public static final String GetTutorList =
                 ServerBase + "api/tutor/getTutorList?j=";
@@ -929,7 +933,7 @@ public final class AppConfig {
                 ServerBase + "api/class/removeClassHistoryCourse";
 
         // 获取视频下配套教材
-        public static final String  PostGetSRListByChapterId =
+        public static final String PostGetSRListByChapterId =
                 ServerBase + "api/chapter/getSRListByChapterId";
 
         // 获取视频下评论列表
@@ -944,5 +948,28 @@ public final class AppConfig {
         public static final String PostGetTutorSubjectList =
                 ServerBase + "api/config/getTutorSubjectList";
 
+        // 获取帮辅老师星级等级
+        public static final String PostGetTutorStarLevel =
+                ServerBase + "api/tutor/getTutorStarLevel";
+
+        //获取节下面的录音课件列表
+        public static final String PostGetResourceListByChapterIds =
+                ServerBase + "api/chapter/getResourceListByChapterIds";
+
+        //修改批阅价格
+        public static final String UpdateTutorInfo =
+                ServerBase + "api/tutor/updateTutorInfo?j=";
+
+        //帮辅订单生成
+        public static final String CreateTutorOrder =
+                PayBase + "api/tutor/createTutorOrder";
+
+        //帮辅协议
+        public static final String TutorAgreement =
+                ServerBase + "api/common/tutorAgreement";
+
+        //查询帮辅价格
+        public static final String PostGetTutorPrice =
+                ServerBase+"api/tutor/getTutorPriceByMemberId";
     }
 }

@@ -44,6 +44,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.search.SearchActivi
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     public static final String KEY_EXTRA_TRIGGER = "KEY_EXTRA_TRIGGER";
     private static final String KEY_EXTRA_AUTHORIZATION = "KEY_EXTRA_AUTHORIZATION";
+    private static final String KEY_EXTRA_RIGHT_VALUE = "KEY_EXTRA_RIGHT_VALUE";
 
     // 小语种课程
     private static final int MINORITY_LANGUAGE_COURSE_ID = 2004;
@@ -130,7 +132,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
 
     private boolean isUpdate;
 
-    private boolean isAuthorized;
+    private String rightValue;
 
     // 暂存上个标签参数，当前标签参数与上个不一致，清空所保存的选择Id
     private String lastTagParams;
@@ -149,7 +151,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     @Override
     protected boolean initArgs(@NonNull Bundle bundle) {
         mClassCourseParams = (ClassCourseParams) bundle.getSerializable(ACTIVITY_BUNDLE_OBJECT);
-        isAuthorized = bundle.getBoolean(KEY_EXTRA_AUTHORIZATION);
+        rightValue = bundle.getString(KEY_EXTRA_RIGHT_VALUE);
         if (EmptyUtil.isEmpty(mClassCourseParams)) return false;
         mSchoolId = mClassCourseParams.getSchoolId();
         mClassId = mClassCourseParams.getClassId();
@@ -300,6 +302,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
 
+                    boolean isAuthorized = checkAuthorizedInfo(entity.getFirstLabelId());
                     CourseDetailParams params = new CourseDetailParams(mSchoolId, mClassId, mClassName, isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
@@ -1143,6 +1146,25 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         }
     }
 
+    /**
+     * 判断某个课程对应的标签有没有授权
+     */
+    private boolean checkAuthorizedInfo(String firstLabelId) {
+        boolean isReallyAuthorized = false;
+        if (!TextUtils.isEmpty(rightValue) && !TextUtils.isEmpty(firstLabelId)) {
+            if (TextUtils.equals(rightValue, "0"))
+                isReallyAuthorized = true;
+            String[] values = rightValue.split(",");
+            if (EmptyUtil.isNotEmpty(values)) {
+                List<String> strings = Arrays.asList(values);
+                if (strings.contains(firstLabelId)) {
+                    isReallyAuthorized = true;
+                }
+            }
+        }
+        return isReallyAuthorized;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1190,12 +1212,12 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
      */
     public static void show(@NonNull Activity activity,
                             @NonNull ClassCourseParams params,
-                            boolean isAuthorized,
+                            String rightValue,
                             int requestCode) {
         Intent intent = new Intent(activity, HistoryClassCourseActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(ACTIVITY_BUNDLE_OBJECT, params);
-        bundle.putBoolean(KEY_EXTRA_AUTHORIZATION, isAuthorized);
+        bundle.putString(KEY_EXTRA_RIGHT_VALUE, rightValue);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, requestCode);
     }

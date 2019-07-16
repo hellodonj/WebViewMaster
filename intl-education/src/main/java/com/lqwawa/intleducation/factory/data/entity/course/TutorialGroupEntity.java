@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * @author mrmedici
  * @desc 帮辅群的实体
+ *
  */
 public class TutorialGroupEntity implements Serializable {
     private boolean addedTutor;
@@ -15,6 +16,7 @@ public class TutorialGroupEntity implements Serializable {
     private String createName;
     private int taskNum;
     private String createId;
+    private float starLevel; //星级水平
 
 
 
@@ -104,6 +106,13 @@ public class TutorialGroupEntity implements Serializable {
         this.createId = createId;
     }
 
+    public float getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(float starLevel) {
+        this.starLevel = starLevel;
+    }
 
     private boolean hasAttention;
     private String headPic;

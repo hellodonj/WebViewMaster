@@ -44,7 +44,6 @@ import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.mycourse.tab.TabCourseEmptyView;
-import com.lqwawa.intleducation.module.discovery.vo.CourseSortType;
 import com.lqwawa.intleducation.module.learn.adapter.MyCourseListAdapter;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -58,7 +57,6 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -199,13 +197,14 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
             }
         });
 
+        //编辑完之后点击软键盘上的各种键才会触发
         editTextSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (editTextSearch.getText().toString().isEmpty()) {
-                        return false;
+                        return false;//隐藏软键盘
                     }
                     search();
                     hideKeyboard();
@@ -239,21 +238,22 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         // 如果是老师,直接进入已加入详情
                         CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER);
                         params.setLibraryType(vo.getLibraryType());
+                        params.setIsVideoCourse(vo.getType() == 2);
                         MyCourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, curSchoolId, params);
+                                , curMemberId, curSchoolId,params);
                     } else {
                         // 学生或家长，需要更新状态
                         CourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, true);
+                                , curMemberId, true, false);
                     }
                 }
             }
         });
 
         if (!isTeacher) {
-            // 如果是老师身份，不允许长按退出课程
+            // 如果不是老师身份，不允许长按退出课程
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -322,7 +322,7 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                         });
                 if (result.getCode() == 0) {
 
-                    // 发送刷新标签的通知
+                    // 发送刷新标签的通知 退出课程
                     EventBus.getDefault().post(new EventWrapper(null, EventConstant.TRIGGER_EXIT_COURSE));
 
                     ToastUtil.showToast(activity, getResources().getString(R.string.exit_course)

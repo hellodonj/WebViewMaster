@@ -105,12 +105,12 @@
     <string name="label_online_course">空中课堂</string>
     <string name="label_course">课程</string>
     <!--学程馆改成自习课程-->
-    <string name="label_course_shop">学程馆</string>
+    <string name="label_course_shop">课本馆</string>
     <!--<string name="label_course_shop">自习课程</string>-->
     <string name="label_space_school_function_class">开课班</string>
     <string name="label_space_school_function_course">精品课程</string>
     <!--学程馆改成自习课程-->
-    <string name="label_space_school_function_shop">学程馆</string>
+    <string name="label_space_school_function_shop">课本馆</string>
     <!--<string name="label_space_school_function_shop">自习课程</string>-->
     <string name="label_space_school_function_teacher">名师堂</string>
     <string name="label_space_school_function_choice_books">精品资源库</string>
@@ -144,7 +144,7 @@
     <string name="label_intro">简介</string>
     <string name="label_many_attention">%d人关注</string>
     <string name="label_request_authorization">获取授权</string>
-    <string name="label_more_course_line">更多学程</string>
+    <string name="label_more_course_line">更多课程</string>
     <string name="label_please_request_authorization">请获取授权</string>
     <string name="label_old_request_authorization">已经获取授权</string>
     <string name="label_request_authorization_succeed">获取授权成功</string>
@@ -163,12 +163,12 @@
     <string name="label_yet_pay">已购</string>
     <string name="label_total_money">合计：</string>
     <string name="label_to_pay">去结算</string>
-    <string name="label_my_course">我的\n学程</string>
-    <string name="label_more_course">更多\n学程</string>
+    <string name="label_my_course">我的\n课程</string>
+    <string name="label_more_course">更多\n课程</string>
     <string name="label_auto_mark">自动批阅</string>
     <string name="label_voice_evaluating">语音评测</string>
     <!--学程馆改成自习课程-->
-    <string name="label_organ_shop_permission_description">该机构暂无更多学程馆课程，敬请期待！</string>
+    <string name="label_organ_shop_permission_description">该机构暂无更多课本馆课程，敬请期待！</string>
     <string name="label_organ_course_permission_description">该机构暂无更多%s课程，敬请期待！</string>
 
     <string name="label_new_create">新建</string>
@@ -176,7 +176,7 @@
     <string name="label_complete_give_lessons">完成授课</string>
     <!--<string name="label_tab_autonomously_study">我的自主学习</string>-->
     <!--<string name="label_tab_autonomously_study">我的自习课程</string>-->
-    <string name="label_tab_autonomously_study">&#8195;我的学程&#8195;</string>
+    <string name="label_tab_autonomously_study">&#8195;我的课程&#8195;</string>
     <string name="label_tab_online_study">我的空中课堂</string>
     <string name="label_tab_give_course">&#8195;我开设的课程&#8195;</string>
     <string name="label_tab_give_online_study">我开设的空中课堂</string>
@@ -199,7 +199,7 @@
     <!--学程馆改成自习课程-->
     <!--<string name="label_go_course_shop">去学程馆</string>-->
     <!--<string name="label_go_course_shop">去自习课程</string>-->
-    <string name="label_go_course_shop">去学程馆</string>
+    <string name="label_go_course_shop">去课本馆</string>
     <string name="label_go_online_study">去空中课堂</string>
 
     <string name="label_update_time">最后更新：</string>
@@ -213,7 +213,7 @@
     <string name="label_give_start">正在授课</string>
     <string name="label_give_finish">授课结束</string>
     <string name="label_recommend_course">推荐课程</string>
-    <string name="label_add_course">添加学程</string>
+    <string name="label_add_course">添加课程</string>
     <string name="label_please_input_keyword_hint">请输入关键字</string>
     <string name="label_confirm_add">确认添加</string>
     <string name="label_speech_evaluation">语音评测</string>
@@ -221,9 +221,12 @@
     <string name="label_voice_scores_format">%s分</string>
     <string name="label_teacher_mark">老师点评</string>
     <string name="label_immediate_review">立即点评</string>
-    <string name="label_course_in_class">指定学程所在班级</string>
+    <string name="label_look_review">查看点评</string>
+    <string name="label_course_in_class">指定课程所在班级</string>
     <string name="label_old_in_class">已指定班级</string>
+    <string name="label_play_list">创建播放列表</string>
     <string name="label_picker_class">选择班级</string>
+    <string name="label_picker_chapter">选择章节</string>
     <string name="label_cancel_order">取消订单</string>
     <string name="label_watch_more_course">查看更多习课程</string>
     <string name="label_basics_course">基础课程</string>
@@ -255,6 +258,7 @@
     <string name="label_new_go_online_study">去空中课堂</string>
     <!--<string name="label_new_go_online_study">去空中课堂</string>-->
     <string name="label_watch_more_teach_course">查看更多空中课堂</string>
+    <string name="label_btn_play_list">播放列表</string>
     <string name="label_history_give">历史授课</string>
     <string name="label_give_complete">完成授课</string>
     <string name="label_history_setting">设成历史课</string>
@@ -274,6 +278,7 @@
     <string name="label_colon_book_concern">出版社：</string>
     <string name="label_colon_age">年龄段：</string>
     <string name="label_colon_topic">主题：</string>
+    <string name="label_colon_category">分类：</string>
 
     <!--V5.11.X字符串-->
     <string name="label_be_authorized">已授权</string>
@@ -327,7 +332,7 @@
     <string name="label_other_donation_money_desc">他人转赠: %s</string>
     <string name="label_generation_of_charge_desc">代充: %s</string>
     <string name="label_other_generation_of_charge_desc">他人代充: %s</string>
-    <string name="label_add_course_lines">添加\n学程</string>
+    <string name="label_add_course_lines">添加\n课程</string>
     <string name="label_request_authorization_lines">获取\n授权</string>
     <string name="label_confirm_authorization">确定</string>
 
@@ -344,7 +349,7 @@
     <string name="label_work_cart_max_count_tip">任务添加不能超过6个!</string>
     <string name="label_dialog_cart_left">不发布,清空</string>
     <string name="label_dialog_cart_right">现在去发布</string>
-    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级学程，将清空作业库，现在去发布吗？</string>
+    <string name="label_dialog_cart_content">作业库中有未发布的作业单，退出班级课程，将清空作业库，现在去发布吗？</string>
     <string name="label_learning_progress">学习进度：</string>
     <string name="label_many_people">%d人</string>
     <string name="label_assigned">【已布置】</string>
@@ -357,6 +362,11 @@
     <string name="label_add_tutorial_lines">添加\n帮辅</string>
     <string name="label_un_mark">未批阅</string>
     <string name="label_have_mark">已批阅</string>
+    <string name="label_have_overdue">已过期</string>
+    <string name="label_12_overdue">12h内过期</string>
+    <string name="label_6_overdue">6h内过期</string>
+    <string name="label_2_overdue">2h内过期</string>
+    <string name="label_1_overdue">1h内过期</string>
     <string name="label_watch_task_requirement">查看任务要求</string>
     <string name="label_task_type_template">"[%s]"</string>
     <string name="label_user_name">姓名*：</string>
@@ -382,19 +392,21 @@
     <string name="label_district">区</string>
     <string name="label_mark_price">批阅价格*：</string>
     <string name="label_mark_price_tip">请输入批阅价格</string>
-    <string name="label_RMB">元</string>
+    <string name="label_RMB">蛙蛙币</string>
     <string name="label_mark_price_hint">*建议价格，可修改</string>
     <string name="label_work_period">工作年限：</string>
     <string name="label_work_period_hint">请输入工作年限</string>
     <string name="label_person_academic_certificate">个人学历证书：</string>
     <string name="label_business_certificate">行业资历认证证书：</string>
     <string name="label_upload">上传</string>
+    <string name="label_agreed">我已阅并同意</string>
     <string name="label_submit_apply">提交申请</string>
     <string name="label_upload_completed">上传成功</string>
     <string name="label_telephone_hot_line">垂询热线：%s</string>
     <string name="label_apply_for_have_commit">申请已提交</string>
     <string name="label_applying_for">机构管理员正在审核，请耐心等待</string>
     <string name="label_tutorial_space">帮辅空间</string>
+    <string name="label_review_price">批阅价格</string>
     <string name="label_course_box">我的课程</string>
     <string name="label_tutorial_work">作业列表</string>
     <string name="label_tutorial_student">我帮辅的学生</string>
@@ -406,7 +418,9 @@
     <string name="label_student_live">空中课堂</string>
     <string name="label_my">我的</string>
     <string name="label_tutorial_student_review_count">%d未批</string>
-    <string name="label_viewer_count">%d人浏览</string>
+    <string name="label_course_count">%d\n帮辅课程</string>
+    <string name="label_student_count">%d\n学生数</string>
+    <string name="label_viewer_count">%d\n浏览数</string>
     <string name="label_attention_count">%d人关注</string>
     <string name="label_personal_introduce">个人介绍</string>
     <string name="label_showing">显示</string>
@@ -422,7 +436,7 @@
     <string name="label_commit_placeholder_teacher">提交给%s老师</string>
     <string name="label_choice_tutor_tip">请选择帮辅老师</string>
     <string name="label_commit_succeed">提交成功</string>
-    <string name="label_commit_succeed_tip">提交的作业已发送给%s老师，老师将在2个工作日内完成批阅，请耐心等待。</string>
+    <string name="label_commit_succeed_tip">提交的作业已发送给%s老师，老师将在24个小时内完成批阅，请耐心等待。</string>
     <string name="label_again_submit">继续提交</string>
     <string name="label_watch_work">查看作业</string>
     <string name="label_apply_to_be_tutorial">申请成为帮辅</string>
@@ -451,16 +465,16 @@
     <string name="label_audit">申请记录</string>
     <string name="label_tutorial_task_type_listen_read_course">听读课</string>
     <string name="label_tutorial_task_type_do_task">做读写单</string>
-    
+
     <!--V5.14.X版本字符串-->
-    <string name="label_watch_history_course">查看历史学程</string>
-    <string name="label_add_history_course">加入历史学程</string>
+    <string name="label_watch_history_course">查看历史课程</string>
+    <string name="label_add_history_course">加入历史课程</string>
     <string name="label_add_in">添加</string>
     <string name="label_remove_out">移除</string>
     <string name="label_delete">删除</string>
-    <string name="label_please_choice_add_history_course">请选择需要添加的历史学程</string>
-    <string name="label_please_choice_remove_history_course">请选择需要移除的历史学程</string>
-    <string name="label_please_choice_add_course">请选择需要添加的学程</string>
+    <string name="label_please_choice_add_history_course">请选择需要添加的历史课程</string>
+    <string name="label_please_choice_remove_history_course">请选择需要移除的历史课程</string>
+    <string name="label_please_choice_add_course">请选择需要添加的课程</string>
 
     <string-array name="label_tutorial_group_tabs">
         <item>最新</item>
@@ -489,7 +503,6 @@
     </string-array>
 
 
-
     <string-array name="label_lesson_source_tabs">
         <item>视频课</item>
         <item>练听说</item>
@@ -515,5 +528,26 @@
     </string-array>
 
     <string name="voice_evaluating">语音评测</string>
+
+    <string-array name="label_order_list_tabs">
+        <item>全部</item>
+        <item>待付款</item>
+        <item>待批阅</item>
+        <item>已完成</item>
+        <item>已失效</item>
+    </string-array>
+
+    <string name="label_my_orders">我的订单</string>
+    <string name="label_coins_detail_1">帮辅批阅-退款</string>
+    <string name="label_coins_detail_2">批阅作业-%s</string>
+    <string name="label_coins_detail_3">申请批阅-%s</string>
+    <string name="label_refunded">已退款</string>
+    <string name="label_tutorial">帮辅</string>
+    <string name="label_tutor_agreement"> 《帮辅服务协议》</string>
+    <string name="label_price_tip"> 请输入有效的批阅价格</string>
+    <string name="label_checked_tip"> 请阅读并勾选服务协议</string>
+    <string name="label_play_tip"> 选中的章节列表中无录音课件</string>
+    <string name="label_chapter_tip">请选择要添加的章节资源</string>
+    <string name="btn_tutor_agreement">我知道了</string>
 
 </resources>

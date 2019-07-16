@@ -10,10 +10,8 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.ArrayMap;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -47,7 +45,6 @@ import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.Common;
 import com.galaxyschool.app.wawaschool.common.DateUtils;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
-import com.galaxyschool.app.wawaschool.common.DialogHelper;
 import com.galaxyschool.app.wawaschool.common.DoCourseHelper;
 import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
@@ -67,20 +64,11 @@ import com.galaxyschool.app.wawaschool.fragment.MediaListFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
+import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.LearnTaskInfo;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
-import com.galaxyschool.app.wawaschool.views.AnswerCardPopWindow;
-import com.galaxyschool.app.wawaschool.views.AssistantCheckMarkWayDialog;
-import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
-import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceActivity;
-import com.lqwawa.intleducation.module.tutorial.marking.choice.TutorChoiceParams;
-import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
-import com.lqwawa.lqbaselib.net.ThisStringRequest;
-import com.lqwawa.lqbaselib.net.library.DataModelResult;
-import com.lqwawa.lqbaselib.net.library.RequestHelper;
-import com.galaxyschool.app.wawaschool.pojo.CourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
@@ -94,12 +82,18 @@ import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfoListResult;
+import com.galaxyschool.app.wawaschool.views.AnswerCardPopWindow;
+import com.galaxyschool.app.wawaschool.views.AssistantCheckMarkWayDialog;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.MarkScoreDialog;
 import com.galaxyschool.app.wawaschool.views.PopupMenu;
 import com.galaxyschool.app.wawaschool.views.ShareTypeSelectDialog;
 import com.hyphenate.EMCallBack;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.lqbaselib.common.DoubleOperationUtil;
+import com.lqwawa.lqbaselib.net.ThisStringRequest;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
+import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.FileZipHelper;
 import com.lqwawa.tools.FileZipHelper.ZipUnzipFileListener;
@@ -120,9 +114,7 @@ import com.umeng.socialize.media.UMImage;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -301,6 +293,11 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
             setNewPageAsSubpage(false);
         }
         userInfo = ((MyApplication) getApplication()).getUserInfo();
+        if (isAnswerCardQuestion && cardParam != null){
+            if (cardParam.getUserInfo() != null){
+                userInfo = cardParam.getUserInfo();
+            }
+        }
         boolean isMySelf = isMySelf();
         if (mParam == null) {
             mParam = new PlaybackParam();
@@ -1086,7 +1083,7 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 exit(true);
             }
         },
-                true);
+                getTotalScore());
         mMarkScoreDialog.show();
         mMarkScoreDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -1094,6 +1091,17 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                 hideSoftKeyboard(PlaybackActivityPhone.this);
             }
         });
+    }
+
+    private String getTotalScore(){
+        String totalScore = null;
+        if (taskMarkParam.cardParam != null) {
+            ExerciseItem item = taskMarkParam.cardParam.getExerciseItem();
+            if (item != null){
+                totalScore = item.getScore();
+            }
+        }
+        return totalScore;
     }
 
     public void hideSoftKeyboard(Activity activity) {
@@ -1228,7 +1236,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
                                                                                     CourseData courseData = uploadResult.data.get(0);
                                                                                     if (courseData != null) {
                                                                                         if (!TextUtils.isEmpty(mParam.taskMarkParam.commitTaskId)) {
-                                                                                            ApplyMarkHelper.commitAssistantMarkData(PlaybackActivityPhone.this, courseData, Integer.valueOf(mParam.taskMarkParam.commitTaskId), true);
+                                                                                            ApplyMarkHelper.commitAssistantMarkData(
+                                                                                                    PlaybackActivityPhone.this,
+                                                                                                    courseData,
+                                                                                                    Integer.valueOf(mParam.taskMarkParam.commitTaskId),
+                                                                                                    true,
+                                                                                                    mParam.hasAlreadyMark);
                                                                                         }
                                                                                     }
                                                                                 }
@@ -1541,7 +1554,12 @@ public class PlaybackActivityPhone extends PlaybackActivityNew implements
     protected boolean showSlide() {
         boolean rtn = super.showSlide();
         if (mAttachedBar != null) {
-            mAttachedBar.setVisibility(View.VISIBLE);
+            if (applyMark){
+                //申请批阅不显示侧边栏
+                mAttachedBar.setVisibility(View.GONE);
+            } else {
+                mAttachedBar.setVisibility(View.VISIBLE);
+            }
         }
         return rtn;
     }

@@ -1,6 +1,10 @@
 package com.lqwawa.intleducation.module.user.vo;
 
+import android.text.TextUtils;
+
 import com.lqwawa.intleducation.base.vo.BaseVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
 
 /**
  * Created by XChen on 2016/12/5.
@@ -60,6 +64,11 @@ public class MyOrderVo extends BaseVo{
 
     // 课程类型
     private int assortment;
+    private String level;
+
+    //订单类型
+    private int taskType;
+    private String taskName;
 
     public int getPayType() {
         return payType;
@@ -260,5 +269,48 @@ public class MyOrderVo extends BaseVo{
     public MyOrderVo setAssortment(int assortment) {
         this.assortment = assortment;
         return this;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public MyOrderVo setLevel(String level) {
+        this.level = level;
+        return this;
+    }
+
+    public int getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(int taskType) {
+        this.taskType = taskType;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public int getLibraryType() {
+        if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
+            return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+        }
+        if (type == 0) {
+            if (assortment == 0 || assortment == 1) {
+                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
+            } else if (assortment == 2 || assortment == 3) {
+                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            }
+        } else if (type == 1) {
+            return OrganLibraryType.TYPE_LIBRARY;
+        } else if (type == 2) {
+            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        }
+        return -1;
     }
 }

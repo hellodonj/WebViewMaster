@@ -2,7 +2,6 @@ package com.lqwawa.intleducation.factory.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -11,13 +10,12 @@ import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
-import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
-import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -48,9 +46,11 @@ public class LQConfigHelper {
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetSetupConfigDataUrl + requestVo.getParams());
         params.setConnectTimeout(10000);
+        LogUtil.i(LQConfigHelper.class, "1send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
+                LogUtil.i(LQConfigHelper.class, "1request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo<List<LQCourseConfigEntity>>> typeReference =
                         new TypeReference<ResponseVo<List<LQCourseConfigEntity>>>() {
                         };
@@ -91,9 +91,11 @@ public class LQConfigHelper {
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetAssignConfigDataUrl + requestVo.getParams());
         params.setConnectTimeout(10000);
+        LogUtil.i(LQConfigHelper.class, "2send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
+                LogUtil.i(LQConfigHelper.class, "2request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo<List<LQCourseConfigEntity>>> typeReference =
                         new TypeReference<ResponseVo<List<LQCourseConfigEntity>>>() {
                         };
@@ -132,9 +134,11 @@ public class LQConfigHelper {
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.GetSaveTeacherConfigUrl + requestVo.getParams());
         params.setConnectTimeout(10000);
+        LogUtil.i(LQConfigHelper.class, "3send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
+                LogUtil.i(LQConfigHelper.class, "3request " + params.getUri() + " result :" + str);
                 TypeReference<ResponseVo<Void>> typeReference =
                         new TypeReference<ResponseVo<Void>>() {
                         };

@@ -20,17 +20,16 @@ import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
-import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.AppliedResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQModelMultipleParamIncludePagerResponse;
-import com.lqwawa.intleducation.factory.data.entity.school.OrganResponseVo;
-import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.AssistStudentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.DateFlagEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.LocationEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
@@ -73,7 +72,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestLocationDataUrl);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -128,7 +127,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestPullTutorialStudents);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -679,6 +678,7 @@ public class TutorialHelper {
     public static void requestAddTutorialComment(@NonNull String memberId,
                                                  @NonNull String tutorMemberId,
                                                  @NonNull String content,
+                                                 @NonNull int starLevel,
                                                  @NonNull DataSource.Callback<Boolean> callback) {
         // 准备数据
         RequestVo requestVo = new RequestVo();
@@ -692,6 +692,7 @@ public class TutorialHelper {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        requestVo.addParams("starLevel", starLevel);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
@@ -830,7 +831,7 @@ public class TutorialHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestWorkTaskList);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -878,7 +879,7 @@ public class TutorialHelper {
         requestVo.addParams("memberId", memberId);
 
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetHaveAppliedByStudentId + requestVo.getParams());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
         x.http().get(params, new StringCallback<String>() {
 
@@ -1226,6 +1227,10 @@ public class TutorialHelper {
             requestVo.addParams("T_ResCourseId", T_ResCourseId);
         }
 
+        if (model.getOrderId() > 0) {
+            requestVo.addParams("OrderId", model.getOrderId());
+        }
+
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddAssistTask);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
@@ -1250,6 +1255,163 @@ public class TutorialHelper {
                 } else {
                     if (EmptyUtil.isNotEmpty(callback)) {
                         callback.onDataLoaded(response.isSucceed());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 对帮辅评价是否评价过
+     *
+     * @param taskSendId
+     * @param callback
+     */
+    public static void qryWhetherEstimated(@NonNull int taskSendId,
+                                           @NonNull DataSource.Callback<EstimatedEntity> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("taskSendId", taskSendId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostQryWhetherEstimated);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<EstimatedEntity> typeReference = new TypeReference<EstimatedEntity>() {
+                };
+                EstimatedEntity estimatedEntity = JSON.parseObject(str, typeReference);
+                if (estimatedEntity.getCode() == 0) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(estimatedEntity);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 添加帮辅的评价
+     * @param memberId 学生memberId
+     * @param content 评价内容
+     * @param tutorMemberId 助教memberId
+     * @param starLevel 星级
+     * @param taskSendId taskEntity的id
+     * @param callback
+     */
+    public static void getRequestAddTutorialComment(@NonNull String memberId, @NonNull String content,
+                                                    @NonNull String tutorMemberId, @NonNull int starLevel,
+                                                    @NonNull int taskSendId, DataSource.Callback<Boolean> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        try {
+            String encodeContent = URLEncoder.encode(content, "utf-8");
+            encodeContent = encodeContent.replaceAll("%0A", "\n");
+            requestVo.addParams("content", encodeContent);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        requestVo.addParams("starLevel", starLevel);
+        requestVo.addParams("taskSendId", taskSendId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetRequestAddTutorialComment + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(TutorialHelper.class, "send getRequestAddTutorialComment ==== " + params.getUri());
+        x.http().get(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                TypeReference<ResponseVo> typeReference = new TypeReference<ResponseVo>() {
+                };
+                ResponseVo responseVo = JSON.parseObject(str, typeReference);
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(true);
+                        UIUtil.showToastSafe(UIUtil.getString(R.string.student_evaluation) +
+                                UIUtil.getString(R.string.success) + "!");
+                    }
+                } else {
+                    UIUtil.showToastSafe(UIUtil.getString(R.string.student_evaluation) +
+                            UIUtil.getString(R.string.failed) + "!");
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(TutorialHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+
+    }
+
+    /**
+     *TutorChoiceParams的Model 参数传过来
+     * @param taskId
+     * @param taskType
+     * @param price
+     * @param taskName
+     * @param title
+     * @param memberId
+     * @param consumeSource
+     * @param courseId
+     * @param courseName
+     * @param tutorMemberId
+     * @param callback
+     */
+    public static void createTutorOrder(int taskId, int taskType, int price, String taskName, String title,
+                                        String memberId, int consumeSource, @NonNull String courseId,
+                                        @NonNull String courseName, String tutorMemberId, DataSource.Callback<TutorOrderEntity> callback) {
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("taskId", taskId);
+        requestVo.addParams("taskType", taskType);
+        requestVo.addParams("price", price);
+        requestVo.addParams("taskName", taskName);
+        requestVo.addParams("title", title);
+        requestVo.addParams("memberId", memberId);
+        requestVo.addParams("consumeSource", consumeSource);//3 表示android平板
+        if (EmptyUtil.isNotEmpty(courseId) && !courseId.equals("0")) {
+            requestVo.addParams("courseId", courseId);
+        }
+        if (EmptyUtil.isNotEmpty(courseName)) {
+            requestVo.addParams("courseName", courseName);
+        }
+        requestVo.addParams("tutorMemberId", tutorMemberId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.CreateTutorOrder);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().post(params, new StringCallback<String>() {
+
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(TutorialHelper.class, "request " + params.getUri() + " result :" + str);
+                TutorOrderEntity tutorOrderEntity = JSON.parseObject(str, new TypeReference<TutorOrderEntity>() {
+                });
+                if (tutorOrderEntity.getCode() == 0) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(tutorOrderEntity);
                     }
                 }
             }

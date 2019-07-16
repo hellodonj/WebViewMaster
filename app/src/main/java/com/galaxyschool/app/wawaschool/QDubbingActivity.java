@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONArray;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
@@ -14,6 +15,7 @@ import com.icedcap.dubbing.DubbingActivity;
 import com.lecloud.xutils.cache.MD5FileNameGenerator;
 import com.lqwawa.lqbaselib.net.FileApi;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -34,6 +37,23 @@ public class QDubbingActivity extends DubbingActivity {
     public static int COMMIT_Q_DUBBING_TASK_SUCCESS = 0x1000;
     private CommitTask commitTask;
 
+    /**
+     * 打开学生详情 commitTask 不能传null  学生做作业(开始配音) commitTask 传null
+     *
+     * @param context
+     * @param resourceUrl         mp4Url
+     * @param level               level==3 表示有背景音乐
+     * @param commitTask          (mooc过来对象转化一下->
+     *                            需要转化的字段 （
+     *                            studentResUrl,
+     *                            AutoEvalContent,
+     *                            commitTaskId(id),
+     *                            HasVoiceReview,
+     *                            TaskScore,
+     *                            TaskScoreRemark））
+     * @param hasReviewPermission 点评的权限
+     * @param resPropertyValue    配音的类型 按句配音(2) 通篇配音(3)
+     */
     public static void start(Activity context,
                              String resourceUrl,
                              String level,
@@ -118,10 +138,18 @@ public class QDubbingActivity extends DubbingActivity {
 
     @Override
     protected void enterTeacherReviewActivity() {
+        String commitTaskOnlineId = null;
+        String commitTaskId = null;
+        if (commitTask.getCommitTaskId() > 0){
+            commitTaskId = String.valueOf(commitTask.getCommitTaskId());
+        }
+        if (commitTask.getCommitTaskOnlineId() > 0){
+            commitTaskOnlineId = String.valueOf(commitTask.getCommitTaskOnlineId());
+        }
         TeacherReviewDetailActivity.start(
                 this,
-                "",
-                String.valueOf(commitTask.getCommitTaskId()),
+                commitTaskOnlineId,
+                commitTaskId,
                 2,
                 commitTask.getTaskScore());
     }
@@ -138,14 +166,23 @@ public class QDubbingActivity extends DubbingActivity {
             FileApi.getFile(srtUrl, filePath);
         } else {
             URL newurl = null;
-            URLConnection conn = null;
+            HttpURLConnection conn = null;
             int fileSize = -1;
             FileInputStream fis = null;
             try {
                 newurl = new URL(srtUrl);
-                conn = newurl.openConnection();
+                conn = (HttpURLConnection) newurl.openConnection();
                 conn.setRequestProperty("Accept-Encoding", "identity");
                 conn.setConnectTimeout(60 * 1000);
+                conn.connect();
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    newurl = new URL(conn.getHeaderField("Location"));
+                    conn = (HttpURLConnection) newurl.openConnection();
+                    conn.setRequestProperty("Connection", "close");
+                    conn.setConnectTimeout(60 * 1000);
+                    conn.setReadTimeout(60 * 1000);
+                    conn.connect();
+                }
                 fileSize = conn.getContentLength();
                 fis = new FileInputStream(destFile);
                 int size = fis.available();

@@ -1,7 +1,5 @@
 package com.lqwawa.intleducation.module.tutorial.target.pager;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,10 +16,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
-import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
-import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.TextWatcherAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
@@ -29,14 +25,11 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
-import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.OrderByType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
 import com.lqwawa.intleducation.module.tutorial.marking.list.pager.TutorialTaskAdapter;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
-import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskContract;
 import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskParams;
-import com.lqwawa.intleducation.module.tutorial.target.TutorialTargetTaskPresenter;
 
 import java.util.Date;
 import java.util.List;

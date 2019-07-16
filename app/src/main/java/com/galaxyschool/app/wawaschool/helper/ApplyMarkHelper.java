@@ -174,6 +174,7 @@ public class ApplyMarkHelper {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper((Activity) mContext);
         helper.setResId(courseData.id)
                 .setResType(courseData.type)
+                .setFileSize(courseData.size)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {
@@ -210,7 +211,8 @@ public class ApplyMarkHelper {
     public static void commitAssistantMarkData(Activity activity,
                                                CourseData courseData,
                                                int assistTaskId,
-                                               boolean needFinish) {
+                                               boolean needFinish,
+                                               boolean hasAlreadyMark) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("MemberId", DemoApplication.getInstance().getMemberId());
         params.put("SubmitRole", MainApplication.isTutorialMode() ? 0 : 1);
@@ -228,7 +230,11 @@ public class ApplyMarkHelper {
                 if (jsonObject != null) {
                     int errorCode = jsonObject.getInteger("ErrorCode");
                     if (errorCode == 0) {
-                        TipMsgHelper.ShowMsg(activity,R.string.upload_comment_success);
+                        if (!hasAlreadyMark && MainApplication.isTutorialMode()){
+                            TipMsgHelper.ShowMsg(activity,R.string.str_teacher_assistant_tip);
+                        } else {
+                            TipMsgHelper.ShowMsg(activity,R.string.upload_comment_success);
+                        }
                         //发送成功
                         if (MainApplication.isTutorialMode()) {
                             EventBus.getDefault().post(new MessageEvent(EventConstant.TRIGGER_UPDATE_LIST_DATA));
@@ -248,17 +254,18 @@ public class ApplyMarkHelper {
                               String slidePath,
                               String coursePath,
                               int assistantTaskId,
-                              boolean needFinish){
+                              boolean needFinish,
+                              boolean hasAlreadyMark){
         if (!TextUtils.isEmpty(slidePath) && !TextUtils.isEmpty(coursePath)) {
             LocalCourseInfo info = getLocalCourseInfo(activity,coursePath);
             if (info != null) {
-                uploadCourse(activity,info,assistantTaskId,needFinish);
+                uploadCourse(activity,info,assistantTaskId,needFinish,hasAlreadyMark);
             }
         } else if (!TextUtils.isEmpty(slidePath)) {
             //只打开素材没有录制微课，此时slidePath不空，coursePath空值，此时删除素材
             LocalCourseInfo info = getLocalCourseInfo(activity,slidePath);
             if (info != null) {
-                uploadCourse(activity,info,assistantTaskId,needFinish);
+                uploadCourse(activity,info,assistantTaskId,needFinish,hasAlreadyMark);
             }
         }
     }
@@ -266,7 +273,8 @@ public class ApplyMarkHelper {
     private void uploadCourse(Activity activity,
                               final LocalCourseInfo localCourseInfo,
                               int assistantTaskId,
-                              boolean needFinish) {
+                              boolean needFinish,
+                              boolean hasAlreadyMark) {
         UserInfo userInfo = DemoApplication.getInstance().getUserInfo();
         if (userInfo == null || TextUtils.isEmpty(userInfo.getMemberId())) {
             ActivityUtils.enterLogin(activity);
@@ -306,7 +314,8 @@ public class ApplyMarkHelper {
                                                     final CourseData courseData = uploadResult.data.get(0);
                                                     if (courseData != null) {
                                                         commitAssistantMarkData(activity,
-                                                                courseData,assistantTaskId,needFinish);
+                                                                courseData,assistantTaskId,
+                                                                needFinish,hasAlreadyMark);
                                                     }
                                                 }
                                             }

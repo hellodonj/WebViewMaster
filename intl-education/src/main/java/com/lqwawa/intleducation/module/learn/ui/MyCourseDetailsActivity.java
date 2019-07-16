@@ -50,13 +50,11 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseBindClassEntity;
-import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
+import com.lqwawa.intleducation.factory.data.entity.course.CourseResourceEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
@@ -74,6 +72,7 @@ import com.lqwawa.intleducation.module.discovery.ui.observable.CourseVoObservabl
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
@@ -114,6 +113,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private static final String KEY_EXTRA_IS_SCHOOL_ENTER = "KEY_EXTRA_IS_SCHOOL_ENTER";
     // 是不是从在线课堂班级进入的
     private static final String KEY_EXTRA_IS_ONLINE_CLASS_ENTER = "KEY_EXTRA_IS_ONLINE_CLASS_ENTER";
+    //是不是从我的订单 去学习进入
+    private static final String KEY_ORDER_LIST_ENTER = "KEY_ORDER_LIST_ENTER";
     private static final String TAG = "CourseDetailsActivity";
     private TopBar topBar;
     private ImageView imageViewCover;
@@ -229,6 +230,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
+    public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
+
+    //播放列表
+    private Button mBtnPlayList;
+    private LinearLayout mLLPlayList;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
@@ -255,8 +261,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
      */
     public static void start(Activity activity, String id, boolean isComeFromDetail,
                              boolean canEdit, String memberId, boolean isSchoolEnter, boolean isOnlineClassEnter,
-                             boolean isOnlineTeacher, boolean isAuthorized,
-                             CourseDetailParams params, CourseVo vo) {
+                             boolean isOnlineTeacher, boolean isAuthorized, CourseDetailParams params, CourseVo vo) {
         Intent intent = new Intent(activity, MyCourseDetailsActivity.class)
                 .putExtra("id", id)
                 .putExtra("isComeFromDetail", isComeFromDetail)
@@ -346,6 +351,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
+        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
+        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
 
         if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
@@ -422,6 +429,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         textViewOrganName.setOnClickListener(this);
         mBtnIntro.setOnClickListener(this);
         mSchoolEnter.setOnClickListener(this);
+        mBtnPlayList.setOnClickListener(this);
         if (activity.getIntent().getBooleanExtra("canEdit", false)) {
             layCourseInfoRoot.setOnClickListener(this);
         }
@@ -463,9 +471,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // 视频馆/图书馆课程隐藏空中课堂和帮辅群
         boolean isHide =
                 mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
-                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
-        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
@@ -479,74 +488,109 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
      * Menu配置
      */
     private void initMenu() {
+        boolean isAddInClass = false;
+        boolean isAddPlayList = mCourseDetailParams != null && mCourseDetailParams.isMyCourse();
         if (mCanEdit && !mCourseDetailParams.isClassParent() &&
                 !mCourseDetailParams.isClassTeacher() &&
                 // 需要判断是否是机构的授权老师
                 !mCourseDetailParams.isOrganCounselor() &&
                 !UserHelper.checkCourseAuthor(courseVo, isOnlineCounselor) &&
                 !isOnlineTeacher) {
-            topBar.setRightFunctionImage1(R.drawable.ic_all_classify_small, new View.OnClickListener() {
+            isAddInClass = true;
+        }
+        final boolean finalIsAddInClass = isAddInClass;
+        final boolean finalIsAddPlayList = isAddPlayList;
+        View.OnClickListener clickListener = null;
+        if (isAddInClass || isAddPlayList) {
+            clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 溢出菜单
-                    List<PopupMenu.PopupMenuData> items = new ArrayList();
-                    if (EmptyUtil.isEmpty(courseVo)) return;
-                    if (courseVo.isInClass() && false) {
-                        // 没有这个inClass字段,用接口拉取
-                        PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
-                                R.string.label_old_in_class);
-                        items.add(data);
-                    } else {
-                        PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
-                                R.string.label_course_in_class);
-                        items.add(data);
-                    }
+                    initMenu(v, finalIsAddInClass, finalIsAddPlayList);
+                }
+            };
+        }
+        topBar.setRightFunctionImage1(R.drawable.ic_all_classify_small, clickListener);
+    }
 
-                    AdapterView.OnItemClickListener itemClickListener =
-                            new AdapterView.OnItemClickListener() {
+    private void initMenu(View view, boolean isAddInClass, boolean isAddPlayList) {
+        // 溢出菜单
+        List<PopupMenu.PopupMenuData> items = new ArrayList();
+        if (EmptyUtil.isEmpty(courseVo)) return;
+        if (courseVo.isInClass() && false) {
+            // 没有这个inClass字段,用接口拉取
+            PopupMenu.PopupMenuData data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
+                    R.string.label_old_in_class);
+            PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                    R.string.label_play_list);
+            items.add(data);
+            items.add(data_play);
+        } else {
+            if (isAddInClass) {
+                PopupMenu.PopupMenuData data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
+                        R.string.label_course_in_class);
+                items.add(data);
+            }
+            if (isAddPlayList) {
+                PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                        R.string.label_play_list);
+                items.add(data_play);
+            }
+        }
+
+        AdapterView.OnItemClickListener itemClickListener =
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        if (view.getTag() == null) {
+                            return;
+                        }
+                        PopupMenu.PopupMenuData data = (PopupMenu.PopupMenuData) view.getTag();
+                        if (data.getId() == R.string.label_course_in_class) {
+                            // 先用接口拉判断是否已经绑定班级
+                            String token = mCurMemberId;
+                            CourseHelper.isBindClass(token, courseVo.getId(), new DataSource.Callback<LQCourseBindClassEntity>() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view,
-                                                        int position, long id) {
-                                    if (view.getTag() == null) {
-                                        return;
-                                    }
-                                    PopupMenu.PopupMenuData data = (PopupMenu.PopupMenuData) view.getTag();
-                                    if (data.getId() == R.string.label_course_in_class) {
-                                        // 先用接口拉判断是否已经绑定班级
-                                        String token = mCurMemberId;
-                                        CourseHelper.isBindClass(token, courseVo.getId(), new DataSource.Callback<LQCourseBindClassEntity>() {
-                                            @Override
-                                            public void onDataNotAvailable(int strRes) {
-                                                UIUtil.showToastSafe(strRes);
-                                            }
+                                public void onDataNotAvailable(int strRes) {
+                                    UIUtil.showToastSafe(strRes);
+                                }
 
-                                            @Override
-                                            public void onDataLoaded(LQCourseBindClassEntity lqCourseBindClassEntity) {
-                                                if (!lqCourseBindClassEntity.isBindClass()) {
-                                                    // 去指定班级的页面
-                                                    // 去指定到班级
-                                                    Intent intent = new Intent();
-                                                    intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.SchoolClassSelectActivity");
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putString("courseId", courseVo.getId());
-                                                    intent.putExtras(bundle);
-                                                    activity.startActivity(intent);
-                                                } else {
-                                                    // 吐司弹提示
-                                                    UIUtil.showToastSafe(R.string.label_old_in_class);
-                                                }
-                                            }
-                                        });
+                                @Override
+                                public void onDataLoaded(LQCourseBindClassEntity lqCourseBindClassEntity) {
+                                    if (!lqCourseBindClassEntity.isBindClass()) {
+                                        // 去指定班级的页面
+                                        // 去指定到班级
+                                        Intent intent = new Intent();
+                                        intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.SchoolClassSelectActivity");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("courseId", courseVo.getId());
+                                        intent.putExtras(bundle);
+                                        activity.startActivity(intent);
                                     } else {
-
+                                        // 吐司弹提示
+                                        UIUtil.showToastSafe(R.string.label_old_in_class);
                                     }
                                 }
-                            };
-                    PopupMenu popupMenu = new PopupMenu(MyCourseDetailsActivity.this, itemClickListener, items);
-                    popupMenu.showAsDropDown(v, v.getWidth(), 0);
-                }
-            });
-        }
+                            });
+                        } else if (data.getId() == R.string.label_play_list) {
+                            String ids = mCourseId;
+                            if (courseVo != null) {
+                                ids = courseVo.getId();
+                            }
+                            // 生成参数
+                            CourseDetailItemParams params1 = new CourseDetailItemParams(false, mCurMemberId, !mCanEdit, ids);
+                            params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+                            Intent intent = new Intent();
+                            intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
+                            intent.putExtras(bundle);
+                            activity.startActivity(intent);
+                        }
+                    }
+                };
+        PopupMenu popupMenu = new PopupMenu(MyCourseDetailsActivity.this, itemClickListener, items);
+        popupMenu.showAsDropDown(view, view.getWidth(), 0);
     }
 
     private void initTabAndFragment() {
@@ -622,6 +666,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
+//        bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
 
         studyPlanFragment.setArguments(bundle2);
         // TODO 我的课程详情课程评价 从课程详情迁移过来的,传参类型尚未明清
@@ -1296,6 +1341,11 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             final String thumbnailUrl = courseVo.getThumbnailUrl();
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
             share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
+        } else if (view.getId() == R.id.btn_play_list) {
+            //播放列表
+            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onPlayListListener)) {
+                TaskSliderHelper.onPlayListListener.showPlayListDialog(MyCourseDetailsActivity.this);
+            }
         }
     }
 
@@ -1416,6 +1466,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             /*if (mClassroomFragment != null) {
                 mClassroomFragment.onActivityResult(requestCode, resultCode, data);
             }*/
+        } else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+            TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -1439,6 +1491,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        if (TaskSliderHelper.onPlayListListener != null) {
+            TaskSliderHelper.onPlayListListener.releasePlayResource();
+        }
     }
 
     @Override
@@ -1453,6 +1508,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         mCommentLayout.setVisibility(View.VISIBLE);
         // 隐藏课程表
         textViewLiveTimetable.setVisibility(View.GONE);
+        mLLPlayList.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -1463,7 +1520,21 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         // @date   :2018/6/7 0007 下午 11:23
         // @func   :Mooc 所有地方都隐藏课程表
         textViewLiveTimetable.setVisibility(View.GONE);
+        //播放列表按钮隐藏
+        mLLPlayList.setVisibility(View.GONE);
     }
+
+    @Override
+    public void coursePlayListVisible() {
+        //播放列表按钮显示
+        mLLPlayList.setVisibility(View.VISIBLE);
+        // 评论区域显示
+        mCommentLayout.setVisibility(View.GONE);
+        // 隐藏课程表
+        textViewLiveTimetable.setVisibility(View.GONE);
+
+    }
+
 
     // @date   :2018/4/10 0010 下午 5:48
     // @func   :保存评论数据
@@ -1550,8 +1621,28 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
+        } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
+            List<CourseResourceEntity> playListVo = (List<CourseResourceEntity>) event.getData();
+            updatePlayCourseList(playListVo);
+//            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
+//                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
+//            }
         }
     }
+
+    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
+        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
+            mLLPlayList.setVisibility(View.VISIBLE);
+            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
+            TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+                TaskSliderHelper.onPlayListListener.startPlay();
+            }
+        }else {
+            mLLPlayList.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * 注册广播事件

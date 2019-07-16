@@ -4,11 +4,11 @@ apply plugin: 'bugly'
 bugly {
     appId = 'eea1375c3e' // 注册时分配的App ID
     appKey = 'a07b42dc-cb09-4c1f-9de1-289f839b35a9' // 注册时分配的App Key
-    uploadMapping = true
+    uploadMapping = false
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':elearning-library')
     compile project(':onekey-share-lib')
@@ -22,18 +22,19 @@ dependencies {
     compile project(':lqbase-lib')
     compile project(':dubbing')
     compile(name: 'ebanshu-android-sdk', ext: 'aar')
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.github.NodeMedia:NodeMediaClient-Android:2.4.2'
-    compile 'com.tencent.bugly:crashreport_upgrade:1.3.7'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.4.2'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.7'
     //小米
-    compile 'cn.jiguang.sdk.plugin:xiaomi:3.1.5'
+    implementation 'cn.jiguang.sdk.plugin:xiaomi:3.1.5'
     //华为
-    compile'cn.jiguang.sdk.plugin:huawei:3.1.5'
+    implementation 'cn.jiguang.sdk.plugin:huawei:3.1.5'
     //魅族
-    compile'cn.jiguang.sdk.plugin:meizu:3.1.5'
+    implementation 'cn.jiguang.sdk.plugin:meizu:3.1.5'
     //oppo
-    compile'cn.jiguang.sdk.plugin:oppo:3.1.8'
-    compile 'org.jsoup:jsoup:1.11.3'
+    implementation 'cn.jiguang.sdk.plugin:oppo:3.1.8'
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
 static def releaseTime() {
@@ -50,8 +51,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 596
-        versionName "5.15.0"
+        versionCode 616
+        versionName "5.15.36"
 
         multiDexEnabled true
         ndk {
@@ -82,16 +83,16 @@ android {
             zipAlignEnabled false
             shrinkResources false
             signingConfig signingConfigs.debug
-            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919",
+            manifestPlaceholders = [UMENG_APPKEY  : "5535a7fce0f55ad0d2001919",
                                     EASEMOB_APPKEY: "lqwwxx#newlqwawa",
-                                    JPUSH_PKGNAME: "com.galaxyschool.app.wawaschool",
-                                    XIAOMI_APPKEY: "MI-5161744662580",//小米平台的appKey
-                                    XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
-                                    HUAWEI_APPID: "appid=10468811",//华为的appId
-                                    MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
-                                    MEIZU_APPID: "MZ-117876",
-                                    OPPO_APPKEY : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
-                                    OPPO_APPID : "OP-3286830", // OPPO
+                                    JPUSH_PKGNAME : "com.galaxyschool.app.wawaschool",
+                                    XIAOMI_APPKEY : "MI-5161744662580",//小米平台的appKey
+                                    XIAOMI_APPID  : "MI-2882303761517446580",//小米平台的appId
+                                    HUAWEI_APPID  : "appid=10468811",//华为的appId
+                                    MEIZU_APPKEY  : "MZ-e2a164887b354a979d420b4b815889ed",//魅族
+                                    MEIZU_APPID   : "MZ-117876",
+                                    OPPO_APPKEY   : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
+                                    OPPO_APPID    : "OP-3286830", // OPPO
                                     OPPO_APPSECRET: "OP-8dcF28E47c180688667E809cf3F13890"
             ]
         }
@@ -106,16 +107,16 @@ android {
 
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-            manifestPlaceholders = [UMENG_APPKEY: "5535a7fce0f55ad0d2001919",
+            manifestPlaceholders = [UMENG_APPKEY  : "5535a7fce0f55ad0d2001919",
                                     EASEMOB_APPKEY: "lqwwxx#newlqwawa",
-                                    JPUSH_PKGNAME: "com.galaxyschool.app.wawaschool",
-                                    XIAOMI_APPKEY: "MI-5161744662580",//小米平台的appKey
-                                    XIAOMI_APPID: "MI-2882303761517446580",//小米平台的appId
-                                    HUAWEI_APPID: "appid=10468811",//华为的appId
-                                    MEIZU_APPKEY: "MZ-e2a164887b354a979d420b4b815889ed",//魅族
-                                    MEIZU_APPID: "MZ-117876",
-                                    OPPO_APPKEY : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
-                                    OPPO_APPID : "OP-3286830", // OPPO
+                                    JPUSH_PKGNAME : "com.galaxyschool.app.wawaschool",
+                                    XIAOMI_APPKEY : "MI-5161744662580",//小米平台的appKey
+                                    XIAOMI_APPID  : "MI-2882303761517446580",//小米平台的appId
+                                    HUAWEI_APPID  : "appid=10468811",//华为的appId
+                                    MEIZU_APPKEY  : "MZ-e2a164887b354a979d420b4b815889ed",//魅族
+                                    MEIZU_APPID   : "MZ-117876",
+                                    OPPO_APPKEY   : "OP-7zsuFBqT2408c08Csgw4cwcO8", // OPPO
+                                    OPPO_APPID    : "OP-3286830", // OPPO
                                     OPPO_APPSECRET: "OP-8dcF28E47c180688667E809cf3F13890"
             ]
         }
@@ -167,5 +168,8 @@ android {
         }
     }
 
-}
+    configurations {
+        all*.exclude group:'com.google.code.gson'
+    }
 
+}

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
@@ -20,16 +21,17 @@ import com.lqwawa.intleducation.base.utils.LogUtil;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
-import com.lqwawa.intleducation.base.widgets.ExpandableTextView;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.ui.LinePopupWindow;
 import com.lqwawa.intleducation.module.user.adapter.MyOrderListAdapter;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.MyOrderVo;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,6 +189,7 @@ public class MyOrderListActivity extends MyBaseActivity implements View.OnClickL
                 new RequestParams(AppConfig.ServerUrl.GetMyOrderList + requestVo.getParams());
         pageIndex = 0;
         params.setConnectTimeout(10000);
+        LogUtil.d(TAG, params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String s) {

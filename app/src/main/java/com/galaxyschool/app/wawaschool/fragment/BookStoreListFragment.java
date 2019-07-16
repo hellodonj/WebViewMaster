@@ -116,6 +116,7 @@ public class BookStoreListFragment extends ContactsListFragment {
     //区分是否来自精品资源库
     private boolean isFromChoiceLib;
     private String headerTitle;
+    private boolean fromIntroStudyTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -346,21 +347,26 @@ public class BookStoreListFragment extends ContactsListFragment {
 
 
     private void getIntentData() {
-        schoolInfo = (SchoolInfo) getArguments().getSerializable("schoolInfo");
-        fromType = getActivity().getIntent().getIntExtra("fromType", 0);
-        originSchoolId = getArguments().getString(BookDetailActivity.ORIGIN_SCHOOL_ID);
-        schoolId = getArguments().getString(BookDetailActivity.SCHOOL_ID);
-        isPick = getArguments().getBoolean(ActivityUtils.EXTRA_IS_PICK);
-        taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
-        isPicBookChoice = getArguments().getBoolean(ActivityUtils.IS_PIC_BOOK_CHOICE);
-        isPickSchoolResource = getArguments().getBoolean(ActivityUtils
-                .EXTRA_IS_PICK_SCHOOL_RESOURCE);
+        Bundle args = getArguments();
+        if (args != null){
+            schoolInfo = (SchoolInfo) args.getSerializable("schoolInfo");
+            fromType = getActivity().getIntent().getIntExtra("fromType", 0);
+            originSchoolId = args.getString(BookDetailActivity.ORIGIN_SCHOOL_ID);
+            schoolId = args.getString(BookDetailActivity.SCHOOL_ID);
+            isPick = args.getBoolean(ActivityUtils.EXTRA_IS_PICK);
+            taskType = args.getInt(ActivityUtils.EXTRA_TASK_TYPE);
+            isPicBookChoice = args.getBoolean(ActivityUtils.IS_PIC_BOOK_CHOICE);
+            isPickSchoolResource = args.getBoolean(ActivityUtils
+                    .EXTRA_IS_PICK_SCHOOL_RESOURCE);
 
-        //判断是否来自空中课堂的字段
-        isFromAirClass = getArguments().getBoolean(SchoolResourceContainerFragment.Constants
-                .FROM_AIRCLASS_ONLINE, false);
-        //判断是不是来精品资源库的资源
-        isFromChoiceLib = getArguments().getBoolean(ActivityUtils.IS_FROM_CHOICE_LIB, false);
+            //判断是否来自空中课堂的字段
+            isFromAirClass = args.getBoolean(SchoolResourceContainerFragment.Constants
+                    .FROM_AIRCLASS_ONLINE, false);
+            //判断是不是来精品资源库的资源
+            isFromChoiceLib = args.getBoolean(ActivityUtils.IS_FROM_CHOICE_LIB, false);
+            //来自学习任务的布置
+            fromIntroStudyTask = args.getBoolean(ActivityUtils.EXTRA_FROM_INTRO_STUDY_TASK, false);
+        }
 
     }
 
@@ -986,8 +992,12 @@ public class BookStoreListFragment extends ContactsListFragment {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.contacts_header_left_btn) {
-            if (isPick && !isFromAirClass) {
-                popStack();
+            if (isPick) {
+                if (isFromAirClass || fromIntroStudyTask){
+                    super.onClick(v);
+                } else {
+                    popStack();
+                }
             } else {
                 super.onClick(v);
             }

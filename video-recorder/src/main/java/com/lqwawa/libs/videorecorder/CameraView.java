@@ -1,11 +1,5 @@
 package com.lqwawa.libs.videorecorder;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -20,11 +14,22 @@ import android.media.MediaRecorder.VideoSource;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.*;
+import android.view.Gravity;
+import android.view.OrientationEventListener;
+import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CameraView extends FrameLayout implements Callback, OnErrorListener {
 

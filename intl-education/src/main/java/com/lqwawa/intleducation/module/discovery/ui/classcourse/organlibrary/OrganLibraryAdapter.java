@@ -1,5 +1,8 @@
 package com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary;
 
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 public class OrganLibraryAdapter extends RecyclerAdapter<LQCourseConfigEntity>{
 
@@ -47,7 +51,18 @@ public class OrganLibraryAdapter extends RecyclerAdapter<LQCourseConfigEntity>{
         protected void onBind(LQCourseConfigEntity entity) {
             mRoot.setBackgroundColor(UIUtil.getColor(R.color.colorLight));
 
-            StringUtil.fillSafeTextView(mTvContent,entity.getConfigValue());
+            if(!entity.isAuthorized() && entity.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY){
+                // 未授权
+                String configValue = entity.getConfigValue();
+                String unAuthorized = UIUtil.getString(R.string.label_unauthorized_container);
+                String showStr = configValue + unAuthorized;
+                SpannableString spannableString = new SpannableString(configValue+unAuthorized);
+                ForegroundColorSpan span = new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond));
+                spannableString.setSpan(span,configValue.length(),showStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                StringUtil.fillSafeTextView(mTvContent,spannableString);
+            }else{
+                StringUtil.fillSafeTextView(mTvContent,entity.getConfigValue());
+            }
 
             // 设置分类图标
             String thumbnail = entity.getThumbnail();

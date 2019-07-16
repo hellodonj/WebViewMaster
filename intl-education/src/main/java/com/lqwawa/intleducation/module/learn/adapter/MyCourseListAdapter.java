@@ -277,32 +277,22 @@ public class MyCourseListAdapter extends MyBaseAdapter {
             }
         }*/
 
-        final ViewHolder tempHolder = holder;
 
         // 加载课程信息
         String token = null;
         if (!canEdit) {
             token = curMemberId;
         }
-        CourseHelper.getCourseLearningProcess(token, vo.getCourseId(), new DataSource.Callback<CourseRateEntity>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
+        holder.mProgressBar.setProgress(vo.getLearnRate());
+        holder.mProgressPercent.setText(String.format(
+                UIUtil.getString(R.string.label_course_progress_percent).toString(), vo.getLearnRate()));
+        if (!isTeacher) {
+            // 不是老师身份
+            holder.mProgressLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.mProgressLayout.setVisibility(View.GONE);
+        }
 
-            }
-
-            @Override
-            public void onDataLoaded(CourseRateEntity courseRateEntity) {
-                int learnRate = courseRateEntity.getLearnRate();
-                tempHolder.mProgressBar.setProgress(learnRate);
-                tempHolder.mProgressPercent.setText(String.format(UIUtil.getString(R.string.label_course_progress_percent).toString(), learnRate));
-                if (!isTeacher) {
-                    // 不是老师身份
-                    tempHolder.mProgressLayout.setVisibility(View.VISIBLE);
-                } else {
-                    tempHolder.mProgressLayout.setVisibility(View.GONE);
-                }
-            }
-        });
         return convertView;
     }
 

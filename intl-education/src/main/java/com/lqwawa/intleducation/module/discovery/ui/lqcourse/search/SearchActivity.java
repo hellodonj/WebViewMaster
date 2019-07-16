@@ -44,7 +44,7 @@ import com.lqwawa.intleducation.module.discovery.ui.study.filtrate.NewOnlineStud
 import com.lqwawa.intleducation.module.discovery.ui.study.filtratelist.OnlineStudyFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.vo.ClassifyVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
+import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -199,7 +199,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                     // 空中课堂列表搜索
                     LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,key,mSchoolId,isOnlineSchoolEnter);
                 }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_SCHOOL_SHOP)) {
-                    OrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, key,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
+                    NewOrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, key,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
                 }else if(TextUtils.equals(mSortType,Integer.toString(OnlineStudyType.SORT_ONLINE_STUDY_SEARCH))){
                     // 在线学习
                     OnlineStudyFiltrateActivity.show(SearchActivity.this,mConfigEntity,true,key);
@@ -285,7 +285,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
                             // 空中课堂列表搜索
                             LQCourseListActivity.showFromSearch(SearchActivity.this,mSortType,mTitle,keyString,mSchoolId,isOnlineSchoolEnter);
                         }else if(TextUtils.equals(mSortType,HideSortType.TYPE_SORT_SCHOOL_SHOP)) {
-                            OrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, keyString,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
+                            NewOrganCourseFiltrateActivity.showFromSearch(SearchActivity.this, mClassifyEntity, keyString,mSelectResource,isClassCourseEnter,mResourceData,isHostEnter);
                         }else if(TextUtils.equals(mSortType,Integer.toString(OnlineStudyType.SORT_ONLINE_STUDY_SEARCH))){
                             // 在线学习
                             OnlineStudyFiltrateActivity.show(SearchActivity.this,mConfigEntity,true,keyString);
@@ -497,7 +497,7 @@ public class SearchActivity extends PresenterActivity<SearchContract.Presenter>
      * 搜索页面的入口  分类数据入口
      *
      * @param context 上下问对象
-     * @param entity  筛选页面传入,搜索的时候需要传给OrganCourseFiltrateActivity
+     * @param entity  筛选页面传入,搜索的时候需要传给NewOrganCourseFiltrateActivity
      * @param sort    1000
      * @param title   标题
      * @param isHostEnter 是否从机构主页进来的

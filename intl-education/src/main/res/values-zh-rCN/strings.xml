@@ -138,6 +138,10 @@
     <string name="order_status_0">等待付款</string>
     <string name="order_status_1">交易成功</string>
     <string name="order_status_2">交易关闭</string>
+    <string name="order_status_3">付款成功</string>
+    <string name="tutor_order_status_1">待批阅</string>
+    <string name="tutor_order_status_2">已完成</string>
+    <string name="tutor_order_status_3">已退款</string>
     <string name="feedback_tip1">请填写您的问题与建议，我们将不断改进</string>
     <string name="feedback_tip2">请填写手机号或QQ号，我们会在必要时与您联系</string>
     <string name="feedback_hint1">请填写意见</string>
@@ -173,7 +177,7 @@
     <string name="personal_position">所在地：</string>
     <string name="exit_class">退出班级</string>
     <string name="student">学生</string>
-    <string name="my_course">我的学程</string>
+    <string name="my_course">我的课程</string>
     <string name="hot_recommended">热门推荐</string>
     <string name="comment">评论</string>
     <string name="enter_name_please">请输入姓名：</string>
@@ -306,11 +310,11 @@
     <string name="pls_input_comment_content">请输入评论内容</string>
     <string name="question_count">题目数量:</string>
     <string name="question_type">题目类型:</string>
-    <string name="lq_course">LQ学程</string>
+    <string name="lq_course">LQ课程</string>
     <string name="book_concern">出版社</string>
     <string name="classification">分类</string>
     <string name="language">语言</string>
-    <string name="my_learning_process">我的学程</string>
+    <string name="my_learning_process">我的课程</string>
     <string name="enter_evaluation_content_please">请输入评价内容</string>
     <string name="section_task_commit_tip">确定要提交？</string>
     <string name="some_exam_no_answer">有未做的题目是否确认提交？</string>
@@ -318,12 +322,12 @@
     <string name="buy_course_please">请参加或购买课程!</string>
     <string name="test_commit_tip">提交后本次测验答案将不可修改，\r\n确定要提交？</string>
     <string name="retell_course">听读课</string>
-    <string name="xx_learning_process">的学程</string>
-    <string name="x_learning_process">的学程</string>
+    <string name="xx_learning_process">的课程</string>
+    <string name="x_learning_process">的课程</string>
     <string name="no_comment">暂无评论</string>
     <string name="no_vip_permissions_tip">更多精彩课程，请联系两栖蛙蛙客服开通浏览权限。</string>
     <string name="customer_service_telephone">客服电话：400-1007-727</string>
-    <string name="order_has_join_tip">该课程已经加入到我的学程，可以直接去我的学程学习。</string>
+    <string name="order_has_join_tip">该课程已经加入到我的课程，可以直接去我的课程学习。</string>
     <string name="i_know">知道了</string>
     <string name="get_authorization_fail_tip">获取授权信息失败!错误信息:</string>
     <string name="imput_authorization_title">请输入授权码获得授权</string>
@@ -447,8 +451,8 @@
 
     <string name="voucher_amount">代金券金额</string>
     <string name="voucher_explain">使用说明</string>
-    <string name="voucher_explain_1">1.该代金券只可用于两栖蛙蛙小程序购买学程的第一章节；\n\n2.混合购买其他章节时不可使用；\n\n3.代金券每次消费的余额可下次继续使用；\n\n4.不可提现，不可转让；\n\n5.最终解释权归两栖蛙蛙信息技术有限公司所有。</string>
-    <!--<string name="voucher_explain_2">2.该代金券只可用于购买学程的第一章节；混合购买其他章节时不可使用。</string>
+    <string name="voucher_explain_1">1.该代金券只可用于两栖蛙蛙小程序购买课程的第一章节；\n\n2.混合购买其他章节时不可使用；\n\n3.代金券每次消费的余额可下次继续使用；\n\n4.不可提现，不可转让；\n\n5.最终解释权归两栖蛙蛙信息技术有限公司所有。</string>
+    <!--<string name="voucher_explain_2">2.该代金券只可用于购买课程的第一章节；混合购买其他章节时不可使用。</string>
     <string name="voucher_explain_3">3.代金券每次消费的余额可下次继续使用，不可提现，不可转让。</string>-->
 
     <string name="wawa_pay">蛙蛙币支付</string>
@@ -510,4 +514,19 @@
     <string name="class_tutor">班级帮辅</string>
     <string name="add_class_tutor">+班级帮辅</string>
     <string name="add_course_success">课程参加成功</string>
+
+    <!--5.16-->
+    <string name="str_frog_coin">蛙蛙币</string>
+    <string name="review_price_dialog_title">设置批阅价格</string>
+
+    <string name="dubbing">Q配音</string>
+    <string-array name="dubbing_task_tab_array">
+        <item>任务要求</item>
+        <item>提交列表</item>
+        <item>&#8195;讨论&#8195;</item>
+    </string-array>
+    <string name="start_dubbing">开始配音</string>
+    <string name="join_school_to_learn">加入该机构才可以学习此课程</string>
+    <string name="modify_success_tip">修改成功</string>
+    <string name="student_evaluation">添加评价</string>
 </resources>

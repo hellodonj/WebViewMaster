@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.osastudio.apps.BaseActivity;
 
-/**
+/**url
  * Created by XChen on 2017/1/3.
  * email:man0fchina@foxmail.com
  */

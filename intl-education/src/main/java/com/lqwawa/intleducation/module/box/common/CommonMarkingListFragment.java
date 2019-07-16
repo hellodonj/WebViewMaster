@@ -9,16 +9,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.PresenterFragment;
-import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
@@ -98,6 +95,7 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity()){
+            //表示已经滑动到底部
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -109,6 +107,7 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
         mRecycler.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
 
         mTutorialAdapter.setCallback(new TutorialTaskAdapter.EntityCallback() {
+            //查看任务要求
             @Override
             public void onRequireClick(View it, int position, @NonNull TaskEntity entity) {
                 if(mTutorialMode || true) {
@@ -132,7 +131,7 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
                     }
                 }
             }
-
+            //实体点击
             @Override
             public void onEntityClick(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){
@@ -142,7 +141,7 @@ public class CommonMarkingListFragment extends PresenterFragment<CommonMarkingLi
                     TaskSliderHelper.onTutorialMarkingListener.openAssistanceMark(getActivity(),entity,roleType);
                 }
             }
-
+            // 未批阅\已批阅点击
             @Override
             public void onCheckMark(View it, int position, @NonNull TaskEntity entity, int state) {
                 if(EmptyUtil.isNotEmpty(TaskSliderHelper.onTaskSliderListener)){

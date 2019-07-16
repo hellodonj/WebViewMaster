@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -14,14 +15,14 @@ import com.lqwawa.tools.DensityUtils;
 import java.util.ArrayList;
 
 /**
-  * ================================================
-  * 作    者：Blizzard-liu
-  * 版    本：1.0
-  * 创建日期：2017/10/13 9:41
-  * 描    述：饼状图
-  * 修订历史：
-  * ================================================
-  */
+ * ================================================
+ * 作    者：Blizzard-liu
+ * 版    本：1.0
+ * 创建日期：2017/10/13 9:41
+ * 描    述：饼状图
+ * 修订历史：
+ * ================================================
+ */
 public class PieView extends View {
 
     public static final int NO_SELECTED_INDEX = -1;
@@ -44,7 +45,8 @@ public class PieView extends View {
     private int selectedIndex = NO_SELECTED_INDEX;
     private boolean showPercentLabel = true;
     private Runnable animator = new Runnable() {
-        @Override public void run() {
+        @Override
+        public void run() {
             boolean needNewFrame = false;
             for (PieHelper pie : pieHelperList) {
                 pie.update();
@@ -138,15 +140,13 @@ public class PieView extends View {
         postInvalidate();
     }
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
         if (pieHelperList.isEmpty()) {
             return;
         }
 
         int index = 0;
-//        for (int i = 0; i < pieHelperList.size(); i++) {
-//            PieHelper pieHelper = pieHelperList.get(i);
-//        }
         for (PieHelper pieHelper : pieHelperList) {
             boolean selected = (selectedIndex == index);
             RectF rect = selected ? cirSelectedRect : cirRect;
@@ -156,17 +156,25 @@ public class PieView extends View {
                 cirPaint.setColor(DEFAULT_COLOR_LIST[index % 5]);
             }
             canvas.drawArc(rect, pieHelper.getStartDegree(), pieHelper.getSweep(), true, cirPaint);
-            if (pieHelperList.size() == 1) {
-                drawPercentText(canvas, pieHelper, true);
-            } else {
-                drawPercentText(canvas, pieHelper,false);
-            }
-
-            if (pieHelperList.size() > 1 ) {
+            if (pieHelperList.size() > 1) {
                 drawLineBesideCir(canvas, pieHelper.getStartDegree(), selected);
                 drawLineBesideCir(canvas, pieHelper.getEndDegree(), selected);
             }
+            index++;
+        }
 
+        index = 0;
+        for (PieHelper pieHelper : pieHelperList) {
+            if (pieHelper.isColorSetted()) {
+                cirPaint.setColor(pieHelper.getColor());
+            } else {
+                cirPaint.setColor(DEFAULT_COLOR_LIST[index % 5]);
+            }
+            if (pieHelperList.size() == 1) {
+                drawPercentText(canvas, pieHelper, true);
+            } else {
+                drawPercentText(canvas, pieHelper, false);
+            }
             index++;
         }
     }
@@ -184,7 +192,7 @@ public class PieView extends View {
         canvas.drawLine(pieCenterPoint.x, pieCenterPoint.y, lineToX, lineToY, whiteLinePaint);
     }
 
-    private void drawPercentText(Canvas canvas, PieHelper pieHelper,boolean isOne) {
+    private void drawPercentText(Canvas canvas, PieHelper pieHelper, boolean isOne) {
         if (!showPercentLabel) return;
         float angel = (pieHelper.getStartDegree() + pieHelper.getEndDegree()) / 2;
         int sth = 1;
@@ -194,7 +202,7 @@ public class PieView extends View {
         float x = 0;
         float y = 0;
         if (isOne) {
-            x = (float) mViewHeight / 2 ;
+            x = (float) mViewHeight / 2;
             y = (float) mViewHeight / 2;
         } else {
             x = (float) (mViewHeight / 2 + Math.cos(Math.toRadians(-angel)) * pieRadius / 2);
@@ -202,7 +210,17 @@ public class PieView extends View {
                     + sth * Math.abs(Math.sin(Math.toRadians(-angel))) * pieRadius / 2);
         }
 
-        canvas.drawText(pieHelper.getPercentStr(), x, y, textPaint);
+        String title = pieHelper.getTitle();
+        if (TextUtils.isEmpty(title)) {
+            canvas.drawText(pieHelper.getPercentStr(), x, y, textPaint);
+        } else {
+            if (title.contains("\n")){
+                String [] array = title.split("\n");
+                canvas.drawText(array[1], x, y-DensityUtils.dp2px(getContext(),15), textPaint);
+            } else {
+                canvas.drawText(title, x, y, textPaint);
+            }
+        }
     }
 
     private void drawText(Canvas canvas, PieHelper pieHelper) {
@@ -251,7 +269,8 @@ public class PieView extends View {
         return NO_SELECTED_INDEX;
     }
 
-    @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mViewWidth = measureWidth(widthMeasureSpec);
         mViewHeight = measureHeight(heightMeasureSpec);
         margin = mViewWidth / 16;

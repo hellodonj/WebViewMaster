@@ -30,6 +30,7 @@ public class TutorCommentEntity implements Serializable {
     private String memberId;
     private int praiseNum;
     private int status;
+    private float starLevel; //星级等级
 
     public String getHeadPicUrl() {
         return HeadPicUrl;
@@ -95,11 +96,20 @@ public class TutorCommentEntity implements Serializable {
         this.status = status;
     }
 
-    public boolean isShowing(){
+    public boolean isShowing() {
         return this.status == STATUS_SHOWING;
     }
 
-    public boolean isHide(){
+    public boolean isHide() {
         return this.status == STATUS_HIDE;
     }
+
+    public float getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(float starLevel) {
+        this.starLevel = starLevel;
+    }
+
 }

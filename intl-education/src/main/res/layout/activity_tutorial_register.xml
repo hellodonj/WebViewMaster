@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorLight"
     android:orientation="vertical">
 
@@ -57,12 +58,12 @@
                         android:background="@null"
                         android:ellipsize="end"
                         android:hint="@string/label_user_name_hint"
+                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:inputType="text"
                         android:padding="2dp"
                         android:singleLine="true"
                         android:textColor="@color/textPrimary"
                         android:textColorHint="@color/textGray"
-                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:textSize="16sp" />
 
 
@@ -110,12 +111,12 @@
                         android:background="@null"
                         android:ellipsize="end"
                         android:hint="@string/label_phone_number_hint"
+                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:inputType="number"
                         android:padding="2dp"
                         android:singleLine="true"
                         android:textColor="@color/textPrimary"
                         android:textColorHint="@color/textGray"
-                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:textSize="16sp" />
 
 
@@ -171,20 +172,20 @@
                             android:background="@null"
                             android:ellipsize="end"
                             android:hint="@string/label_verification_code_hint"
+                            android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                             android:inputType="number"
                             android:padding="2dp"
                             android:singleLine="true"
                             android:textColor="@color/textPrimary"
                             android:textColorHint="@color/textGray"
-                            android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                             android:textSize="16sp" />
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_horizontal"
-                            android:background="@color/divider_color"
-                            android:layout_marginRight="20dp"/>
+                            android:layout_marginRight="20dp"
+                            android:background="@color/divider_color" />
 
                     </LinearLayout>
 
@@ -234,34 +235,34 @@
                         android:id="@+id/tv_label_identifier"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_identify_type"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_gravity="center_vertical"
                         android:textSize="16sp" />
 
                     <LinearLayout
                         android:id="@+id/identify_content_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:layout_gravity="center_vertical">
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="5">
 
                         <TextView
                             android:id="@+id/tv_type_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="@string/label_identify_card"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                             android:textColor="@color/textPrimary"
-                            android:textSize="16sp"
-                            android:layout_gravity="center_vertical"/>
+                            android:textSize="16sp" />
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -325,11 +326,11 @@
                         android:digits="@string/label_identify_digits"
                         android:ellipsize="end"
                         android:hint="@string/label_identify_number_hint"
+                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:padding="2dp"
                         android:singleLine="true"
                         android:textColor="@color/textPrimary"
                         android:textColorHint="@color/textGray"
-                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:textSize="16sp" />
 
 
@@ -362,13 +363,13 @@
                         android:id="@+id/tv_label_choice_organ"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_choice_organ"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_gravity="center_vertical"
                         android:textSize="16sp" />
 
                     <FrameLayout
@@ -380,19 +381,19 @@
                             android:id="@+id/organ_spinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            app:textTint="@color/textPrimary"
                             android:hint="@string/label_choice_organ_hint"
+                            android:singleLine="true"
                             android:textColorHint="@color/textGray"
+                            app:arrowTint="@color/colorGary"
                             app:popupTextAlignment="center"
-                            app:arrowTint="@color/colorGary"/>
+                            app:textTint="@color/textPrimary" />
                     </FrameLayout>
 
 
                     <Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"/>
+                        android:layout_weight="0" />
 
 
                 </LinearLayout>
@@ -444,46 +445,46 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:singleLine="true"
-                            app:textTint="@color/textPrimary"
                             android:hint="@string/label_province"
+                            android:singleLine="true"
                             android:textColorHint="@color/textGray"
+                            app:arrowTint="@color/colorGary"
                             app:popupTextAlignment="center"
-                            app:arrowTint="@color/colorGary"/>
+                            app:textTint="@color/textPrimary" />
 
                         <Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"/>
+                            android:layout_weight="0.5" />
 
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/city_spinner"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:singleLine="true"
-                            app:textTint="@color/textPrimary"
                             android:hint="@string/label_city"
+                            android:singleLine="true"
                             android:textColorHint="@color/textGray"
+                            app:arrowTint="@color/colorGary"
                             app:popupTextAlignment="center"
-                            app:arrowTint="@color/colorGary"/>
+                            app:textTint="@color/textPrimary" />
 
                         <Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"/>
+                            android:layout_weight="0.5" />
 
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/district_spinner"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:singleLine="true"
-                            app:textTint="@color/textPrimary"
                             android:hint="@string/label_district"
+                            android:singleLine="true"
                             android:textColorHint="@color/textGray"
+                            app:arrowTint="@color/colorGary"
                             app:popupTextAlignment="center"
-                            app:arrowTint="@color/colorGary"/>
+                            app:textTint="@color/textPrimary" />
                     </LinearLayout>
 
 
@@ -515,56 +516,56 @@
                         android:id="@+id/tv_label_marking_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_mark_price"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:textSize="16sp"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="5"
                         android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical">
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
+                            android:background="@drawable/bg_rectangle_stroke_gray_radius_2"
                             android:gravity="center_vertical"
-                            android:background="@drawable/bg_rectangle_stroke_gray_radius_2">
+                            android:orientation="horizontal">
 
                             <android.support.v7.widget.AppCompatEditText
                                 android:id="@+id/et_mark_price"
-                                android:layout_width="60dp"
+                                android:layout_width="40dp"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:ellipsize="end"
+                                android:hint="2"
+                                android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
+                                android:digits="1234567890"
+                                android:inputType="phone|number"
                                 android:padding="2dp"
                                 android:singleLine="true"
-                                android:hint="2"
                                 android:textColor="@color/textPrimary"
                                 android:textColorHint="@color/textGray"
-                                android:inputType="numberDecimal"
-                                android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="8dp"
                                 android:ellipsize="end"
                                 android:singleLine="true"
                                 android:text="@string/label_RMB"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/textGray"
-                                android:textSize="16sp"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"/>
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -576,8 +577,8 @@
                             android:text="@string/label_mark_price_hint"
                             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                             android:textColor="@color/textSecond"
-                            android:textSize="14sp"
-                            android:layout_marginLeft="20dp"/>
+                            android:layout_marginLeft="8dp"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -625,12 +626,12 @@
                         android:background="@null"
                         android:ellipsize="end"
                         android:hint="@string/label_work_period_hint"
+                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:inputType="number"
                         android:padding="2dp"
                         android:singleLine="true"
                         android:textColor="@color/textPrimary"
                         android:textColorHint="@color/textGray"
-                        android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
                         android:textSize="16sp" />
 
 
@@ -660,40 +661,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_person_academic_certificate"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
                         android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_thumbnail_image1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:scaleType="centerInside"
-                        android:visibility="gone"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/btn_certificate_upload"/>
+                        android:layout_toLeftOf="@+id/btn_certificate_upload"
+                        android:scaleType="centerInside"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/btn_certificate_upload"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/bg_rectangle_stroke_gray_radius_2"
                         android:ellipsize="end"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="2dp"
                         android:paddingLeft="12dp"
+                        android:paddingTop="2dp"
                         android:paddingRight="12dp"
+                        android:paddingBottom="2dp"
                         android:singleLine="true"
                         android:text="@string/label_upload"
                         android:textColor="@color/textGray"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
                         android:textSize="14sp" />
 
 
@@ -723,40 +724,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@string/label_business_certificate"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="@color/textPrimary"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentLeft="true"
                         android:textSize="16sp" />
 
                     <ImageView
                         android:id="@+id/iv_thumbnail_image2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:scaleType="centerInside"
-                        android:visibility="gone"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/tv_business_upload"/>
+                        android:layout_toLeftOf="@+id/tv_business_upload"
+                        android:scaleType="centerInside"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_business_upload"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/bg_rectangle_stroke_gray_radius_2"
                         android:ellipsize="end"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="2dp"
                         android:paddingLeft="12dp"
+                        android:paddingTop="2dp"
                         android:paddingRight="12dp"
+                        android:paddingBottom="2dp"
                         android:singleLine="true"
                         android:text="@string/label_upload"
                         android:textColor="@color/textGray"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
                         android:textSize="14sp" />
 
 
@@ -772,15 +773,44 @@
             </FrameLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/check_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:button="@drawable/contacts_item_selector" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_agreed" />
+
+                <TextView
+                    android:id="@+id/tv_pact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/bottom_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:background="@color/colorLight"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="10dp"
-                android:weightSum="2"
-                android:layout_marginTop="100dp">
+                android:weightSum="2">
 
                 <net.qiujuer.genius.ui.widget.Button
                     android:id="@+id/btn_submit"

@@ -1548,6 +1548,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
             if (roleType == RoleType.ROLE_TYPE_PARENT) {
                 cardParam.setStudentId(StudentId);
+                if (stuUserInfo != null){
+                    cardParam.setUserInfo(stuUserInfo);
+                }
             } else {
                 cardParam.setStudentId(getMemeberId());
             }
@@ -1926,7 +1929,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 }
             }
         });
-        task.checkCanReplaceIPAddress(courseData.id, courseData.type, task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type,courseData.size, task);
     }
 
     /**
@@ -2312,6 +2315,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(getActivity());
         helper.setResId(courseData.id)
                 .setResType(courseData.type)
+                .setFileSize(courseData.size)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {

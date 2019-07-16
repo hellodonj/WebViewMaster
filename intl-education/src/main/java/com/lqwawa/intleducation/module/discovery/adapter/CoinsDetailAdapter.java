@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.module.discovery.ui.empty.EmptyActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CoinsDetailInfo;
 
 import java.text.SimpleDateFormat;
@@ -59,6 +57,7 @@ public class CoinsDetailAdapter extends BaseAdapter {
             holder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
             holder.tvTime = (TextView) convertView.findViewById(R.id.tv_time);
             holder.tvCount = (TextView) convertView.findViewById(R.id.tv_count);
+            holder.tvRefund = (TextView) convertView.findViewById(R.id.tv_refund);
             convertView.setTag(holder);
         } else {
             holder = (DetailHolder) convertView.getTag();
@@ -69,19 +68,29 @@ public class CoinsDetailAdapter extends BaseAdapter {
         //获取当前时间
         Date date = new Date(info.getCreateTime());
         holder.tvTime.setText(simpleDateFormat.format(date));
+        holder.tvRefund.setVisibility(View.GONE);
         if (info.getVtype() == 0) {
-
-            if(info.getRechargeType() == -4){
+            if (info.getRechargeType() == -4) {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setText(Integer.toString(info.getAmount()));
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
-            }else{
+            } else if (info.getRechargeType() == 5) {
+                holder.tvCount.setVisibility(View.VISIBLE);
+                holder.tvCount.setText("+" + info.getAmount());
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
+                holder.tvName.setText(UIUtil.getString(R.string.label_coins_detail_1));//帮辅批阅-退款
+            } else if (info.getRechargeType() == 6) {
+                holder.tvCount.setVisibility(View.VISIBLE);
+                holder.tvCount.setText("+" + info.getAmount());
+                holder.tvCount.setTextColor(Color.parseColor("#01913a"));
+                holder.tvName.setText(String.format(UIUtil.getString(R.string.label_coins_detail_2), info.getRealName()));//批阅作业-realName
+            } else {
                 holder.tvCount.setVisibility(View.VISIBLE);
                 holder.tvCount.setTextColor(Color.parseColor("#01913a"));
                 holder.tvCount.setText("+" + info.getAmount());
             }
 
-            switch (info.getRechargeType()){
+            switch (info.getRechargeType()) {
                 case 0:
                     // 账户充值
                     holder.tvName.setText(context.getResources().getString(R.string.charge_account));
@@ -91,32 +100,32 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 case -4:
                     // 给他人充值
                     String benefitStr = UIUtil.getString(R.string.label_other_donation_money_desc);
-                    if(info.getRechargeType() == 1){
+                    if (info.getRechargeType() == 1) {
                         benefitStr = UIUtil.getString(R.string.label_other_generation_of_charge_desc);
-                    }else if(info.getRechargeType() == -4){
+                    } else if (info.getRechargeType() == -4) {
                         // 代充
                         benefitStr = UIUtil.getString(R.string.label_generation_of_charge_desc);
                     }
 
                     SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
                     String realName = info.getRealName();
-                    if(EmptyUtil.isEmpty(realName)) {
+                    if (EmptyUtil.isEmpty(realName)) {
                         realName = "";
                     }
 
-                    String title = String.format(benefitStr,realName);
+                    String title = String.format(benefitStr, realName);
                     SpannableString spanReal = new SpannableString(title);
                     spanReal.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textPrimary)),
-                            0,title.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                            0, title.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                     spanBuilder.append(spanReal);
 
                     String userName = info.getUserName();
-                    if(EmptyUtil.isNotEmpty(userName)){
-                        SpannableString spanName = new SpannableString(" ("+userName+")");
+                    if (EmptyUtil.isNotEmpty(userName)) {
+                        SpannableString spanName = new SpannableString(" (" + userName + ")");
                         spanName.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond)),
-                                0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        spanName.setSpan(new AbsoluteSizeSpan((int)DisplayUtil.sp2px(UIUtil.getContext(),14)),
-                                0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                                0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spanName.setSpan(new AbsoluteSizeSpan((int) DisplayUtil.sp2px(UIUtil.getContext(), 14)),
+                                0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                         spanBuilder.append(spanName);
                     }
 
@@ -127,41 +136,48 @@ public class CoinsDetailAdapter extends BaseAdapter {
             holder.tvCount.setVisibility(View.VISIBLE);
             holder.tvCount.setTextColor(Color.parseColor("#161616"));
             holder.tvCount.setText("-" + info.getAmount());
-            if (info.getConsumeType() == 0){
+            if (info.getConsumeType() == 0) {
                 //购买课程
-                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_course),info.getCourseName()));
-            }else if (info.getConsumeType() == 1){
+                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_course), info.getCourseName()));
+            } else if (info.getConsumeType() == 1) {
                 //购买直播
-                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_live),info.getCourseName()));
-            }else if (info.getConsumeType() == 3){
-               //购买在线课堂
-                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_online_school),info.getCourseName()));
-            }else if(info.getConsumeType() == 4){
+                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_live), info.getCourseName()));
+            } else if (info.getConsumeType() == 3) {
+                //购买在线课堂
+                holder.tvName.setText(String.format(context.getResources().getString(R.string.buy_online_school), info.getCourseName()));
+            } else if (info.getConsumeType() == 4) {
                 //赠送给他人
                 String desc = UIUtil.getString(R.string.label_donation_money_desc);
                 SpannableStringBuilder spanBuilder = new SpannableStringBuilder();
                 String realName = info.getRealName();
-                if(EmptyUtil.isEmpty(realName)) {
+                if (EmptyUtil.isEmpty(realName)) {
                     realName = "";
                 }
 
-                String title = String.format(desc,realName);
+                String title = String.format(desc, realName);
                 SpannableString spanReal = new SpannableString(title);
                 spanReal.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textPrimary)),
                         0, title.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 spanBuilder.append(spanReal);
 
                 String userName = info.getUserName();
-                if(EmptyUtil.isNotEmpty(userName)) {
+                if (EmptyUtil.isNotEmpty(userName)) {
                     SpannableString spanName = new SpannableString(" (" + userName + ")");
                     spanName.setSpan(new ForegroundColorSpan(UIUtil.getColor(R.color.textSecond)),
                             0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                    spanName.setSpan(new AbsoluteSizeSpan((int)DisplayUtil.sp2px(UIUtil.getContext(),14)),
-                            0,spanName.length(),Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spanName.setSpan(new AbsoluteSizeSpan((int) DisplayUtil.sp2px(UIUtil.getContext(), 14)),
+                            0, spanName.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                     spanBuilder.append(spanName);
                 }
 
                 holder.tvName.setText(spanBuilder);
+            }else if (info.getConsumeType() ==5){
+                holder.tvName.setText(String.format(UIUtil.getString(R.string.label_coins_detail_3), info.getRealName())); //申请批阅 realName
+                if (info.getIsRefunded() == 1) {
+                    holder.tvRefund.setVisibility(View.VISIBLE);
+                } else if (info.getIsRefunded() == 0) {
+                    holder.tvRefund.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -184,6 +200,7 @@ public class CoinsDetailAdapter extends BaseAdapter {
         TextView tvName;
         TextView tvTime;
         TextView tvCount;
+        TextView tvRefund;
 
     }
 

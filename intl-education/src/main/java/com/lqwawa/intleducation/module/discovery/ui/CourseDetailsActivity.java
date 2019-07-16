@@ -52,10 +52,8 @@ import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.ui.CustomDialog;
 import com.lqwawa.intleducation.common.ui.PopupMenu;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
@@ -79,6 +77,7 @@ import com.lqwawa.intleducation.module.discovery.ui.observable.CourseVoObservabl
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
@@ -212,10 +211,16 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     // 是否是学程馆进来的，并且获取到授权
     private boolean isAuthorized;
     private boolean isFromScan;
-    
+
 
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
+    //播放列表返回的resId
+    private List<String> resIds;
+    public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
+    //播放列表
+    private Button mBtnPlayList;
+    private LinearLayout mLLPlayList;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -243,60 +248,67 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isMyCourse,
                              final int tabIndex,
                              final CourseVo vo,
-                             final CourseDetailParams params) {
+                             final CourseDetailParams params,
+                             final boolean isFromScan) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
         route.navigation(activity, courseId, memberId, params,
-                tabIndex == -2, new CourseRoute.NavigationListener() {
-            @Override
-            public void route(boolean needToLearn, CourseRouteEntity entity) {
-                super.route(needToLearn, entity);
-                CourseDetailParams courseDetailParams = params;
-                if (needToLearn) {
-                    // 去详情页面
-                    if (courseDetailParams != null) {
-                        courseDetailParams.buildOrganJoinState(needToLearn);
-                    } else {
-                        courseDetailParams = new CourseDetailParams();
+                isFromScan, new CourseRoute.NavigationListener() {
+                    @Override
+                    public void route(boolean needToLearn, CourseRouteEntity entity) {
+                        super.route(needToLearn, entity);
+                        CourseDetailParams courseDetailParams = params;
+                        if (needToLearn) {
+                            // 去详情页面
+                            if (courseDetailParams != null) {
+                                courseDetailParams.buildOrganJoinState(needToLearn);
+                            } else {
+                                courseDetailParams = new CourseDetailParams();
+                            }
+                            courseDetailParams.setFromScan(isFromScan);
+                            courseDetailParams.setMyCourse(isMyCourse);
+                            if (entity != null) {
+                                courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
+                            }
+                            final boolean isOnlineCounselor = route.isOnlineCounselor();
+                            MyCourseDetailsActivity.start(activity, courseId, false,
+                                    true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
+                                    isAuthorized, courseDetailParams, vo);
+                        } else {
+                            // 去未加入页面
+                            boolean isAuth = isAuthorized;
+                            if (entity != null && entity.isLabelAuthorized()) {
+                                isAuth = true;
+                            }
+                            Intent intent = new Intent(activity, CourseDetailsActivity.class)
+                                    .putExtra("id", courseId)
+                                    .putExtra("canEdit", canEdit)
+                                    .putExtra("memberId", memberId)
+                                    .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
+                                    .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
+                                    .putExtra("isAuthorized", isAuth)
+                                    .putExtra("isMyCourse", isMyCourse);
+                            if (courseDetailParams == null) {
+                                courseDetailParams = new CourseDetailParams();
+                            }
+                            courseDetailParams.setFromScan(isFromScan);
+                            courseDetailParams.setMyCourse(isMyCourse);
+                            courseDetailParams.setIsAuthorized(isAuth);
+                            if (entity != null) {
+                                courseDetailParams.setLibraryType(entity.getLibraryType());
+                                courseDetailParams.setIsVideoCourse(entity.getType() == 2);
+                                courseDetailParams.setSchoolInfoEntity(entity.getSchoolInfoEntity());
+                            }
+                            intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
+                            intent.putExtra("tabIndex", tabIndex);
+                            if (vo != null) {
+                                intent.putExtra("CourseVo", vo);
+                            }
+                            activity.startActivity(intent);
+                        }
                     }
-                    courseDetailParams.setFromScan(tabIndex == -2);
-                    if (entity != null) {
-                        courseDetailParams.setLibraryType(entity.getLibraryType());
-                    }
-                    final boolean isOnlineCounselor = route.isOnlineCounselor();
-                    MyCourseDetailsActivity.start(activity, courseId, false,
-                            true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
-                            isAuthorized, courseDetailParams, vo);
-                } else {
-                    // 去未加入页面
-                    boolean isAuth = isAuthorized;
-                    if (entity != null && entity.isLabelAuthorized()) {
-                        isAuth = true;
-                    }
-                    Intent intent = new Intent(activity, CourseDetailsActivity.class)
-                            .putExtra("id", courseId)
-                            .putExtra("canEdit", canEdit)
-                            .putExtra("memberId", memberId)
-                            .putExtra(KEY_EXTRA_IS_SCHOOL_ENTER, isSchoolEnter)
-                            .putExtra(KEY_EXTRA_IS_ONLINE_CLASS_ENTER, isOnlineClassEnter)
-                            .putExtra("isAuthorized", isAuth)
-                            .putExtra("isMyCourse", isMyCourse);
-                    if (courseDetailParams == null) {
-                        courseDetailParams = new CourseDetailParams();
-                    }
-                    courseDetailParams.setFromScan(tabIndex == -2);
-                    courseDetailParams.setIsAuthorized(isAuth);
-                    if (entity != null) {
-                        courseDetailParams.setLibraryType(entity.getLibraryType());
-                    }
-                    intent.putExtra(ACTIVITY_BUNDLE_OBJECT, courseDetailParams);
-                    intent.putExtra("tabIndex", tabIndex);
-                    if (vo != null) {
-                        intent.putExtra("CourseVo", vo);
-                    }
-                    activity.startActivity(intent);
-                }
-            }
-        });
+                });
     }
 
     public static void start(final Activity activity,
@@ -307,7 +319,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final @NonNull CourseDetailParams params,
                              final boolean isSchoolEnter) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, false,
-                false, isAuthorized, false, -1, null, params);
+                false, isAuthorized, false, -1, null, params, false);
 
     }
 
@@ -315,16 +327,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final String courseId,
                              final boolean canEdit,
                              final String memberId,
-                             final boolean isMyCourse) {
+                             final boolean isMyCourse,
+                             final boolean isFromScan) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, isMyCourse, -1, null, null);
+                false, false, isMyCourse, -1, null, null, isFromScan);
     }
 
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        start(activity, courseId, canEdit, memberId, false);
+        start(activity, courseId, canEdit, memberId, false, false);
     }
 
     public static void start(final Activity activity,
@@ -335,7 +348,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              boolean isOnlineClassEnter,
                              boolean isOnlineTeacher) {
         start(activity, courseId, canEdit, memberId, isSchoolEnter, isOnlineClassEnter,
-                isOnlineTeacher, false, false, -1, null, null);
+                isOnlineTeacher, false, false, -1, null, null, false);
     }
 
     public static void start(final Activity activity,
@@ -345,7 +358,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final int tabIndex,
                              final CourseVo vo) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, false, tabIndex, vo, null);
+                false, false, false, tabIndex, vo, null, tabIndex == -2);
 
     }
 
@@ -423,6 +436,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             mRbLiveF.setVisibility(View.GONE);
         }
 
+        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
+        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
+
         textViewAddToCart = (TextView) findViewById(R.id.add_to_cart_tv);
         mTvPrice = (TextView) findViewById(R.id.tv_price);
         mTvOriginalPrice = (TextView) findViewById(R.id.tv_original_price);
@@ -496,13 +512,19 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     List<PopupMenu.PopupMenuData> items = new ArrayList();
                     if (EmptyUtil.isEmpty(courseVo)) return;
                     if (courseVo.isInClass()) {
-                        PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
+                        PopupMenu.PopupMenuData data = new PopupMenu.PopupMenuData(0, R.string.label_old_in_class,
                                 R.string.label_old_in_class);
+                        PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                                R.string.label_play_list);
                         items.add(data);
+                        items.add(data_play);
                     } else {
-                        PopupMenu.PopupMenuData data = data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
+                        PopupMenu.PopupMenuData data = new PopupMenu.PopupMenuData(0, R.string.label_course_in_class,
                                 R.string.label_course_in_class);
+                        PopupMenu.PopupMenuData data_play = new PopupMenu.PopupMenuData(0, R.string.label_play_list,
+                                R.string.label_play_list);
                         items.add(data);
+                        items.add(data_play);
                     }
 
                     AdapterView.OnItemClickListener itemClickListener =
@@ -523,8 +545,22 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                         bundle.putString("courseId", courseVo.getCourseId());
                                         intent.putExtras(bundle);
                                         activity.startActivity(intent);
-                                    } else {
-
+                                    } else if (data.getId() == R.string.label_play_list) {
+                                        String ids = courseId;
+                                        if (courseVo != null) {
+                                            ids = courseVo.getId();
+                                        }
+                                        // 生成参数
+                                        CourseDetailItemParams params1 = new CourseDetailItemParams(false, mCurMemberId, !mCanEdit, ids);
+                                        params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION);
+                                        // 设置课程详情参数
+                                        params1.setCourseParams(mCourseDetailParams);
+                                        Intent intent = new Intent();
+                                        intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
+                                        studyPlanFragment.setArguments(bundle);
+                                        activity.startActivity(intent);
                                     }
                                 }
                             };
@@ -607,9 +643,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // 视频馆/图书馆课程隐藏空中课堂和帮辅群
         boolean isHide =
                 mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
-                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY);
-        findViewById(R.id.rb_live).setVisibility(isHide ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rb_live_f).setVisibility(isHide ? View.GONE : View.VISIBLE);
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                        || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+        findViewById(R.id.rb_live).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
+        findViewById(R.id.rb_live_f).setVisibility(isHide || isOnlineClassEnter ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
@@ -689,6 +726,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         params2.setCourseParams(mCourseDetailParams);
         bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
         bundle2.putBoolean("isFromScan", isFromScan);
+        bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
 
         studyPlanFragment.setArguments(bundle2);
         // @date   :2018/6/8 0008 上午 12:20
@@ -1142,6 +1180,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             }
 
             textViewPay.setVisibility(View.VISIBLE);
+            boolean isHide =
+                    mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
+                            || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
+            if (tutorialMode && isHide) {
+                textViewPay.setVisibility(View.GONE);
+            }
             // mBtnEnterPay.setVisibility(View.VISIBLE);
             if (initTabIndex == 1) {
                 rg_tab.check(R.id.rb_study_plan);
@@ -1215,12 +1260,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
                 if (tutorialMode && !isFromScan) {
                     // TODO 申请成为课程的帮辅老师
+                    textViewPay.setEnabled(false);
                     TutorialCourseApplyForFragment.show(
                             getSupportFragmentManager(),
                             mCurMemberId, courseId, courseVo.getOrganId(),
                             courseDetailsVo.getIsOrganTutorStatus(), new CourseApplyForNavigator() {
                                 @Override
                                 public void onCourseTutorEnter(boolean isCourseTutor) {
+                                    textViewPay.setEnabled(true);
                                     if (isCourseTutor) {
                                         toJoinCourseDetailsActivity();
                                     }
@@ -1236,6 +1283,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         int tag = (int) view.getTag();
                         if (tag == 1) {
                             if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
+
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
+                                
                                 String schoolId = mCourseDetailParams.getSchoolId();
                                 String classId = mCourseDetailParams.getClassId();
                                 CourseHelper.requestJoinInCourse(mCurMemberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
@@ -1278,6 +1332,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.join_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 join(false);
                             }
                         }
@@ -1303,14 +1362,19 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 ToastUtil.showToast(activity, activity.getResources()
                                         .getString(R.string.buy_self_course_tip));
                             } else {
+                                if (mCourseDetailParams != null && mCourseDetailParams.getSchoolInfoEntity() != null
+                                        && !mCourseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
+                                    UIUtil.showToastSafe(R.string.join_school_to_learn);
+                                    return;
+                                }
                                 // 购买课程
                                 int intCourseId = Integer.parseInt(courseId);
                                 if (!mCanEdit) {
                                     // 家长身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, true, mCurMemberId, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 } else {
                                     // 普通身份
-                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, this);
+                                    PayCourseDialogFragment.show(getSupportFragmentManager(), courseVo, null, intCourseId, PayCourseDialogFragment.TYPE_COURSE, CourseDetailsActivity.this);
                                 }
 
                                 // ConfirmOrderActivity.start(activity, courseVo);
@@ -1375,7 +1439,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             UIUtil.showToastSafe(R.string.label_course_buy_warning);
             return;
         }
-        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId);
+        LQCourseOrderActivity.show(activity, courseVo, courseVo.getOrganId(), curMemberId, mCourseDetailParams);
     }
 
     /**
@@ -1526,6 +1590,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_success)));
                     // initData();
                     // courseCommentFragment.updateData();
+                    if (mCourseDetailParams != null) {
+                        mCourseDetailParams.buildOrganJoinState(true);
+                    }
                     toJoinCourseDetailsActivity();
                 } else {
                     ToastUtil.showToast(activity, (getResources().getString(R.string.join_failed))
@@ -1624,6 +1691,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             //从支付界面返回则刷新数据
             initData(true);
             studyPlanFragment.updateData();
+        }else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+            TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -1646,6 +1715,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         unRegisterBroadcast();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
+        }
+        if (TaskSliderHelper.onPlayListListener != null) {
+            TaskSliderHelper.onPlayListListener.releasePlayResource();
         }
     }
 
@@ -1671,6 +1743,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void coursePlayListVisible() {
+        findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+        // 评论区域显示
+        mCommentLayout.setVisibility(View.GONE);
+
+    }
+
 
     // @date   :2018/4/10 0010 下午 5:48
     // @func   :保存评论数据
@@ -1706,6 +1787,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
+        }else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
+            resIds = (List<String>) event.getData();
+            initData(false);
         }
     }
 

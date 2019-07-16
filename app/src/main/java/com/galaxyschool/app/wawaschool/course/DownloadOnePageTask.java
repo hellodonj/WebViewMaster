@@ -17,6 +17,7 @@ import com.lqwawa.tools.FileZipHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -112,14 +113,23 @@ public class DownloadOnePageTask extends MyAsyncTask<LocalCourseDTO> {
             FileApi.getFile(resUrl, filePath);
         } else {
             URL newurl = null;
-            URLConnection conn = null;
+            HttpURLConnection conn = null;
             int fileSize = -1;
             FileInputStream fis = null;
             try {
                 newurl = new URL(resUrl);
-                conn = newurl.openConnection();
+                conn = (HttpURLConnection) newurl.openConnection();
                 conn.setRequestProperty("Accept-Encoding", "identity");
                 conn.setConnectTimeout(60 * 1000);
+                conn.connect();
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    newurl = new URL(conn.getHeaderField("Location"));
+                    conn = (HttpURLConnection) newurl.openConnection();
+                    conn.setRequestProperty("Connection", "close");
+                    conn.setConnectTimeout(30 * 1000);
+                    conn.setReadTimeout(30 * 1000);
+                    conn.connect();
+                }
                 fileSize = conn.getContentLength();
 
                 fis = new FileInputStream(destFile);
@@ -189,10 +199,14 @@ public class DownloadOnePageTask extends MyAsyncTask<LocalCourseDTO> {
      * @param resId
      * @param resType
      */
-    public void checkCanReplaceIPAddress(int resId, int resType, final DownloadOnePageTask task) {
+    public void checkCanReplaceIPAddress(int resId,
+                                         int resType,
+                                         int fileSize,
+                                         final DownloadOnePageTask task) {
         final CheckReplaceIPAddressHelper helper = new CheckReplaceIPAddressHelper(activity);
         helper.setResId(resId)
                 .setResType(resType)
+                .setFileSize(fileSize)
                 .setCallBackListener(new CallbackListener() {
                     @Override
                     public void onBack(Object result) {

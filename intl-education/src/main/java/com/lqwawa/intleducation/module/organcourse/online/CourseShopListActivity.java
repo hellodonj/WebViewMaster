@@ -64,7 +64,6 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.ShopResourceData;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 import com.lqwawa.intleducation.module.organcourse.online.pager.CourseShopPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
@@ -253,6 +252,14 @@ public class CourseShopListActivity extends ToolbarActivity implements View.OnCl
                         int state = mPriceArrowView.triggerSwitch();
                         triggerPriceSwitch(state);
                     }
+                }
+
+                // 解决在线机构在线班级列表，搜索不联动的问题
+                if(EmptyUtil.isEmpty(mNavigatorList)) return;
+                String searchKey = mSearchEt.getText().toString().trim();
+                for (SearchNavigator navigator : mNavigatorList) {
+                    boolean isVisible = navigator.search(searchKey);
+                    if (isVisible) break;
                 }
             }
 

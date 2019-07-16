@@ -22,8 +22,15 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.tutorial.marking.result.QuestionResultActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -55,6 +62,9 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
 
     @Override
     protected int getContentLayoutId() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         return R.layout.activity_tutor_choice;
     }
 
@@ -85,7 +95,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
                 mCourseId = "";
             }
 
-            if (EmptyUtil.isNotEmpty(mCourseId) &&
+            if (EmptyUtil.isNotEmpty(mChapterId) &&
                     Integer.parseInt(mChapterId) <= 0) {
                 mChapterId = "";
             }
@@ -228,19 +238,33 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
             for (TutorChoiceEntity item : items) {
                 if (item.isChecked()) {
                     trigger = true;
-                    // 发送作业
-                    final QuestionResourceModel model = mResourceModel;
-                    model.setStuMemberId(mCurMemberId);
-                    model.setAssMemberId(item.getMemberId());
-                    String object = JSON.toJSONString(model);
-                    showLoading();
-                    mPresenter.requestAddAssistTask(item, object);
-                    break;
+                    PayActivity.newInstance(this, true,mChoiceParams, item);
+//                    finish();
                 }
             }
 
             if (!trigger) {
                 UIUtil.showToastSafe(R.string.label_choice_tutor_tip);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull EventWrapper event) {
+        if (EventWrapper.isMatch(event, EventConstant.CREATE_TUTOR_ORDER)) {
+            List<TutorChoiceEntity> items = mAdapter.getItems();
+            for (TutorChoiceEntity item : items) {
+                if (item.isChecked()) {
+                    // 发送作业
+                    final QuestionResourceModel model = mResourceModel;
+                    model.setStuMemberId(mCurMemberId);
+                    model.setAssMemberId(item.getMemberId());
+                    model.setOrderId((Integer) event.getData());
+                    String object = JSON.toJSONString(model);
+                    showLoading();
+                    mPresenter.requestAddAssistTask(item, object);
+
+                }
             }
         }
     }
@@ -258,6 +282,14 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
         super.showError(str);
         mRefreshLayout.onHeaderRefreshComplete();
         mRefreshLayout.onFooterRefreshComplete();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     /**

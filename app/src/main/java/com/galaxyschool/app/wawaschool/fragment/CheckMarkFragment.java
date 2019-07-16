@@ -6,22 +6,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.ArrayMap;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,7 +39,6 @@ import com.galaxyschool.app.wawaschool.common.PassParamhelper;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
-import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -46,36 +46,39 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.ApplyMarkHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
-import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
-import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
-import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
-import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
-import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
-import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
-import com.libs.gallery.ImageInfo;
-import com.lqwawa.intleducation.MainApplication;
-import com.lqwawa.intleducation.common.utils.SPUtil;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
-import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
-import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
-import com.lqwawa.lqbaselib.net.library.DataModelResult;
-import com.lqwawa.lqbaselib.net.library.ModelResult;
-import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkInfo;
 import com.galaxyschool.app.wawaschool.pojo.CheckMarkResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseItemArea;
 import com.galaxyschool.app.wawaschool.pojo.NewResourceInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
 import com.galaxyschool.app.wawaschool.pojo.TaskMarkParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
 import com.galaxyschool.app.wawaschool.pojo.weike.PlaybackParam;
 import com.galaxyschool.app.wawaschool.pojo.weike.SplitCourseInfo;
 import com.galaxyschool.app.wawaschool.views.CircleImageView;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
+import com.galaxyschool.app.wawaschool.views.TutorialEvaluationPopWindow;
+import com.libs.gallery.ImageInfo;
+import com.lqwawa.intleducation.MainApplication;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.helper.TutorialHelper;
+import com.lqwawa.intleducation.module.tutorial.marking.choice.QuestionResourceModel;
+import com.lqwawa.intleducation.module.tutorial.marking.list.MarkingStateType;
+import com.lqwawa.intleducation.module.tutorial.marking.list.TutorialRoleType;
+import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
+import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
@@ -141,6 +144,8 @@ public class CheckMarkFragment extends ContactsListFragment {
     private QuestionResourceModel markModel;
     private boolean isAssistanceModel;//是不是帮辅模式
     private TaskEntity taskEntity;
+    private boolean hasAlreadyMark;
+    private TextView tvTutorial;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -205,22 +210,61 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (textView != null) {
             textView.setText(R.string.str_watch_mark);
         }
+        //右侧按钮
+        tvTutorial = (TextView) findViewById(R.id.contacts_header_right_btn);
+        if (EmptyUtil.isNotEmpty(taskEntity)) {
+            int taskSendId = taskEntity.getId();
+            TutorialHelper.qryWhetherEstimated(taskSendId, new DataSource.Callback<com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity>() {
+                @Override
+                public void onDataNotAvailable(int strRes) {
+                    UIUtil.showToastSafe(strRes);
+                }
+
+                @Override
+                public void onDataLoaded(com.lqwawa.intleducation.factory.data.entity.tutorial.EstimatedEntity estimatedEntity) {
+                    if (estimatedEntity.getCode() == 0) {
+                        boolean estimated = estimatedEntity.isEstimated();
+                        if (estimated) {
+                            tvTutorial.setVisibility(View.GONE);
+                        } else {
+                            //判断角色
+                            boolean isStudent = TextUtils.equals(commitTask.getAssistantRoleType(), TutorialRoleType.TUTORIAL_TYPE_STUDENT);
+                            if (taskEntity.getReviewState() == MarkingStateType.MARKING_STATE_HAVE && isStudent) {
+                                tvTutorial.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        if (tvTutorial != null) {
+            //1 已批阅 角色是学生 没有评价过
+            if (EmptyUtil.isNotEmpty(taskEntity)) {
+                tvTutorial.setText(R.string.str_tutorial_btn);
+                tvTutorial.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        evaluationDialog();
+                    }
+                });
+            }
+        }
 
         TextView courseDetailTextV = (TextView) findViewById(R.id.tv_access_details);
         if (courseDetailTextV != null) {
             courseDetailTextV.setOnClickListener(this);
             if (isAnswerTaskOrderQuestion) {
                 courseDetailTextV.setText(getString(R.string.str_look_origin_question));
-            } else if (isAssistanceModel){
+            } else if (isAssistanceModel) {
                 courseDetailTextV.setText(getString(R.string.str_look_task_require));
-                if (taskEntity != null && taskEntity.getT_TaskId() == 0){
+                if (taskEntity != null && taskEntity.getT_TaskId() == 0) {
                     courseDetailTextV.setVisibility(View.INVISIBLE);
                 } else {
                     courseDetailTextV.setVisibility(View.VISIBLE);
                 }
                 TextView typeNameTextV = (TextView) findViewById(R.id.tv_exercise_type);
-                if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())){
-                    typeNameTextV.setText("《"+taskEntity.getT_CourseName() + "》");
+                if (typeNameTextV != null && taskEntity != null && !TextUtils.isEmpty(taskEntity.getT_CourseName())) {
+                    typeNameTextV.setText("《" + taskEntity.getT_CourseName() + "》");
                     typeNameTextV.setVisibility(View.VISIBLE);
                 }
             }
@@ -267,7 +311,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 } else if (isAssistanceModel) {
                     if (commitTask.getCommitTaskId() > 0) {
                         markModel.setT_CommitTaskId(commitTask.getCommitTaskId());
-                    } else if (commitTask.getCommitTaskOnlineId() > 0){
+                    } else if (commitTask.getCommitTaskOnlineId() > 0) {
                         markModel.setT_CommitTaskOnlineId(commitTask.getCommitTaskOnlineId());
                     }
                 } else {
@@ -275,16 +319,16 @@ public class CheckMarkFragment extends ContactsListFragment {
                         markModel.setT_CommitTaskId(Integer.valueOf(CommitTaskId));
                     }
                 }
-                if (commitTask.getEQId() > 0){
+                if (commitTask.getEQId() > 0) {
                     markModel.setT_EQId(String.valueOf(commitTask.getEQId()));
-                } else if (exerciseItem != null){
+                } else if (exerciseItem != null) {
                     markModel.setT_EQId(exerciseItem.getIndex());
                 }
                 markModel.setT_AirClassId(commitTask.getAirClassId());
                 ApplyMarkHelper.showApplyMarkView(getActivity(), mTvSore);
                 mTvSore.setOnClickListener(v -> {
                     if (cardParam == null) {
-                        openCourse(commitTask.getStudentResId(), false, true,0);
+                        openCourse(commitTask.getStudentResId(), false, true, 0);
                     } else {
                         //读写单的主观题
                         cardParam.setMarkModel(markModel);
@@ -468,11 +512,11 @@ public class CheckMarkFragment extends ContactsListFragment {
                             if (!TextUtils.isEmpty(data.getCreateId())) {
                                 if (isAssistanceModel) {
                                     String userName = data.getRealName();
-                                    if (TextUtils.isEmpty(data.getRealName())){
+                                    if (TextUtils.isEmpty(data.getRealName())) {
                                         userName = data.getNickName();
                                     }
-                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId(),userName);
-                                    tutorialParams.setTutorialMarkedEnter(true);
+                                    TutorialParams tutorialParams = new TutorialParams(data.getCreateId(), userName);
+                                    tutorialParams.setTutorialMarkedEnter(false);
                                     TutorialHomePageActivity.show(getActivity(), tutorialParams);
                                 } else {
                                     ActivityUtils.enterPersonalSpace(getActivity(), data.getCreateId());
@@ -484,7 +528,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         @Override
                         public void onClick(View v) {
                             isOriginal = false;
-                            openCourse(data.getResId(), false, false,data.getReviewFlag());
+                            openCourse(data.getResId(), false, false, data.getReviewFlag());
                         }
                     });
 
@@ -528,7 +572,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     }
                     CheckMarkInfo.ModelBean data = (CheckMarkInfo.ModelBean) holder.data;
                     if (data != null) {
-                        openCourse(data.getResId(), false, false,data.getReviewFlag());
+                        openCourse(data.getResId(), false, false, data.getReviewFlag());
                     }
                 }
             };
@@ -537,12 +581,58 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
     }
 
-    private boolean showReviewFlagPermiss(CheckMarkInfo.ModelBean data){
+    //帮辅评价弹框
+    private void evaluationDialog() {
+        TutorialEvaluationPopWindow popWindow = new TutorialEvaluationPopWindow(getActivity());
+        popWindow.showAtLocation(findViewById(R.id.ll_layout1), Gravity.BOTTOM, 0, 0);
+
+        if (popWindow != null) {
+            popWindow.setOnSendClickListener(new TutorialEvaluationPopWindow.OnSendClickListener() {
+                @Override
+                public void onSendClick(TextView button, EditText text, float rating) {
+                    String content = text.getText().toString();
+                    int rate = (int) Math.floor(rating);
+                    String memberId = taskEntity.getStuMemberId();
+                    String tutorMemberId = taskEntity.getAssMemberId();
+                    int taskSendId = taskEntity.getId();
+                    if (null == text || TextUtils.isEmpty(content)) {
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.enter_evaluation_content_please);
+                        return;
+                    }
+                    TutorialHelper.getRequestAddTutorialComment(memberId, content, tutorMemberId, rate, taskSendId,
+                            new DataSource.Callback<Boolean>() {
+                                @Override
+                                public void onDataLoaded(Boolean aBoolean) {
+                                    if (aBoolean) {
+                                        popWindow.dismiss();
+                                        tvTutorial.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                @Override
+                                public void onDataNotAvailable(int strRes) {
+                                    UIUtil.showToastSafe(strRes);
+                                }
+                            });
+                }
+            });
+
+            popWindow.setOnRatingBarClickListener(new TutorialEvaluationPopWindow.OnRatingBarClickListener() {
+                @Override
+                public void onRatingBarClick(RatingBar ratingBar, float v) {
+
+                }
+            });
+        }
+
+    }
+
+    private boolean showReviewFlagPermiss(CheckMarkInfo.ModelBean data) {
         boolean hasPermission = false;
         if (commitTask == null) {
             return hasPermission;
         }
-        if (TextUtils.equals(getMemeberId(),commitTask.getStudentId())
+        if (TextUtils.equals(getMemeberId(), commitTask.getStudentId())
                 && data.getReviewFlag() == 1) {
             hasPermission = true;
         }
@@ -702,7 +792,11 @@ public class CheckMarkFragment extends ContactsListFragment {
         //答题的打分
         if (!TextUtils.isEmpty(score)) {
             tvExerciseScoreTextV.setVisibility(View.VISIBLE);
-            tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));
+            if (Utils.isEnglishLanguage(score)) {
+                tvExerciseScoreTextV.setText(score);
+            } else {
+                tvExerciseScoreTextV.setText(getString(R.string.str_eval_score, score));
+            }
         }
 //        } else {
 //            String str = getString(R.string.str_score);
@@ -761,6 +855,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                                             JSONArray.parseArray(jsonArray.toString(), CheckMarkInfo.ModelBean.class);
                                     if (list != null && list.size() > 0) {
                                         sortData(list);
+                                        hasMarkData(list);
                                         getCurrAdapterViewHelper().setData(list);
                                     }
                                 }
@@ -768,6 +863,17 @@ public class CheckMarkFragment extends ContactsListFragment {
                         }
                     }
                 });
+    }
+
+    private void hasMarkData(List<CheckMarkInfo.ModelBean> list) {
+        for (int i = 0; i < list.size(); i++) {
+            CheckMarkInfo.ModelBean modelBean = list.get(i);
+            if (modelBean != null && modelBean.getSubmitRole() == 0) {
+                //已经批阅
+                hasAlreadyMark = true;
+                break;
+            }
+        }
     }
 
     private void loadMarkData() {
@@ -819,10 +925,10 @@ public class CheckMarkFragment extends ContactsListFragment {
         }
     }
 
-    private void sortData(List<CheckMarkInfo.ModelBean> list){
-        if (list != null && list.size() > 0){
-            Collections.sort(list,((o1, o2) -> DateUtils.compareDate(o1.getCreateTime(),
-                    o2.getCreateTime(),DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS)));
+    private void sortData(List<CheckMarkInfo.ModelBean> list) {
+        if (list != null && list.size() > 0) {
+            Collections.sort(list, ((o1, o2) -> DateUtils.compareDate(o1.getCreateTime(),
+                    o2.getCreateTime(), DateUtils.DATE_PATTERN_yyyy_MM_dd_HH_MM_SS)));
         }
     }
 
@@ -903,7 +1009,7 @@ public class CheckMarkFragment extends ContactsListFragment {
             if (isAnswerTaskOrderQuestion) {
                 openQuestion();
             } else {
-                openCourse(resId, false, false,0);
+                openCourse(resId, false, false, 0);
             }
         }
     }
@@ -1046,7 +1152,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                         true,
                         MainApplication.isTutorialMode() ? RoleType.ROLE_TYPE_EDITOR : RoleType.ROLE_TYPE_STUDENT,
                         String.valueOf(commitTask.getId()),
-                        TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
+                        (taskEntity != null && taskEntity.isOverTimed()) || TextUtils.equals(commitTask.getAssistantRoleType(), "2"),
                         false,
                         "",
                         true);
@@ -1054,6 +1160,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                 playbackParam.EQId = commitTask.getEQId();
                 playbackParam.taskMarkParam = mTaskMarkParam;
                 playbackParam.taskEntity = taskEntity;
+                playbackParam.hasAlreadyMark = hasAlreadyMark;
             } else {
                 if (mTaskMarkParam == null) {
                     //游客身份
@@ -1129,7 +1236,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     private void enterLookOriginQuestion() {
         if (cardParam != null) {
             //记得传当前pageIndex
-            openCourse(cardParam.getResId(), true, false,0);
+            openCourse(cardParam.getResId(), true, false, 0);
         }
     }
 
@@ -1174,7 +1281,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     if (exerciseItem != null) {
                         exerciseItem.setStudent_score(score);
                     }
-                    if (mTaskMarkParam != null){
+                    if (mTaskMarkParam != null) {
                         mTaskMarkParam.score = score;
                     }
                 }
@@ -1257,7 +1364,7 @@ public class CheckMarkFragment extends ContactsListFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent messageEvent){
+    public void onMessageEvent(MessageEvent messageEvent) {
         if (TextUtils.equals(messageEvent.getUpdateAction(),
                 MessageEventConstantUtils.SEND_DO_COURSE_PATH_RESULT)) {
             Bundle bundle = messageEvent.getBundle();
@@ -1265,7 +1372,8 @@ public class CheckMarkFragment extends ContactsListFragment {
                 String coursePath = bundle.getString(SlideManager.EXTRA_COURSE_PATH);
                 String slidePath = bundle.getString(SlideManager.EXTRA_SLIDE_PATH);
                 ApplyMarkHelper helper = new ApplyMarkHelper();
-                helper.uploadCourse(getActivity(),slidePath,coursePath,commitTask.getId(),false);
+                helper.uploadCourse(getActivity(), slidePath, coursePath, commitTask.getId(),
+                        false, hasAlreadyMark);
             }
         } else if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.TRIGGER_UPDATE_LIST_DATA)) {
             loadCommonData();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -13,9 +14,11 @@ import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
@@ -63,14 +66,14 @@ public class CourseRoute {
                            final boolean isFromScan,
                            final INavigationListener listener) {
 
-        if (!UserHelper.isLogin()) {
-            // 未登录
-            if (EmptyUtil.isNotEmpty(listener)) {
-                // 进入未登录页面
-                listener.route(false, null);
-                return;
-            }
-        }
+//        if (!UserHelper.isLogin()) {
+//            // 未登录
+//            if (EmptyUtil.isNotEmpty(listener)) {
+//                // 进入未登录页面
+//                listener.route(false, null);
+//                return;
+//            }
+//        }
 
         showLoadingDialog(activity);
         // 获取到入口类型
@@ -90,30 +93,56 @@ public class CourseRoute {
                     return;
                 }
 
+//                if(routeEntity != null && routeEntity.isLabelAuthorized()) {
+//                    courseParams.setIsAuthorized(true);
+//                }
+
                 // 再网络请求，是否是帮辅模式,并且是老师
                 boolean tutorialMode = MainApplication.isTutorialMode() &&
                         (EmptyUtil.isEmpty(courseParams) ||
                                 courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_MOOC_ENTER);
+                if (courseParams != null && !TextUtils.isEmpty(courseParams.getSchoolId())) {
+                    SchoolHelper.requestSchoolInfo(UserHelper.getUserId(),
+                            courseParams.getSchoolId(),
+                            new DataSource.Callback<SchoolInfoEntity>() {
 
-                if (isFromScan) {
-                    tutorialMode = false;
-                    navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+                                @Override
+                                public void onDataNotAvailable(int strRes) {
+
+                                }
+
+                                @Override
+                                public void onDataLoaded(SchoolInfoEntity schoolInfoEntity) {
+                                    routeEntity.setSchoolInfoEntity(schoolInfoEntity);
+                                    navigationDispatch(routeEntity, tutorialMode, isFromScan, enterType, memberId, courseId, courseParams, listener);
+
+                                }
+                            });
                 } else {
-                    if (tutorialMode) {
-                        final boolean fTutorialMode = tutorialMode;
-                        CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
-                            @Override
-                            public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
-                                boolean isTutorCourse = entity.isTutorCourse();
-                                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
-                            }
-                        });
-                    } else {
-                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
-                    }
+                    navigationDispatch(routeEntity, tutorialMode, isFromScan, enterType, memberId, courseId, courseParams, listener);
                 }
             }
         });
+    }
+
+    private void navigationDispatch(CourseRouteEntity routeEntity, boolean tutorialMode, boolean isFromScan, int enterType, String memberId, String courseId, CourseDetailParams courseParams, INavigationListener listener) {
+        if (isFromScan) {
+            tutorialMode = false;
+            navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+        } else {
+            if (tutorialMode) {
+                final boolean fTutorialMode = tutorialMode;
+                CourseHelper.isTutorCourseBycourseId(memberId, courseId, new DataSource.SucceedCallback<CourseTutorResponseVo.CourseTutorEntity>() {
+                    @Override
+                    public void onDataLoaded(CourseTutorResponseVo.CourseTutorEntity entity) {
+                        boolean isTutorCourse = entity.isTutorCourse();
+                        navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, fTutorialMode, isTutorCourse);
+                    }
+                });
+            } else {
+                navigationDispatch(enterType, memberId, courseId, courseParams, routeEntity, listener, tutorialMode, false);
+            }
+        }
     }
 
     /***
@@ -154,7 +183,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) || isOnlineCounselor) {
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) || isOnlineCounselor) {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
@@ -231,7 +260,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) ||
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
                 courseParams.isOrganCounselor() ||
                 isOnlineCounselor) {
             // 如果是机构辅导老师
@@ -326,7 +355,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId) ||
+        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
                 courseParams.isClassParent() ||
                 courseParams.isClassTeacher() ||
                 isOnlineCounselor) {

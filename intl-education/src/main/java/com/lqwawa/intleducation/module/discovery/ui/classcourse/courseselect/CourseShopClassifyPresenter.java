@@ -13,7 +13,6 @@ import com.lqwawa.intleducation.factory.helper.OrganCourseHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
-import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 
 import java.io.Serializable;
 import java.util.List;

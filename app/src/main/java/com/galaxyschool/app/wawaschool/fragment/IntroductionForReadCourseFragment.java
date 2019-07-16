@@ -423,6 +423,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isAutoMark) {
                     needScore = isChecked;
+                } else if (superTaskType != StudyTaskType.Q_DUBBING){
+                    mSelectMark.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
                 }
             }
         });
@@ -543,7 +545,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     if (hasPointData()) {
                         mSelectMark.setVisibility(View.GONE);
                     } else {
-                        mSelectMark.setVisibility(View.VISIBLE);
+                        if (mRbMarkYes.isChecked()) {
+                            mSelectMark.setVisibility(View.VISIBLE);
+                        }
                     }
                 }, result -> {
             //打开
@@ -604,17 +608,13 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     private boolean showScoreView(boolean isListenData) {
-//        for (ResourceInfoTag tag : listenData) {
-//            if (TextUtils.equals("1", tag.getResProperties())) {
-//                isAutoMark = true;
-//                return true;
-//            }
-//        }
+        if (superTaskType == StudyTaskType.Q_DUBBING){
+            return true;
+        }
         if (taskType == StudyTaskType.TASK_ORDER
                 || taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || superTaskType == StudyTaskType.RETELL_WAWA_COURSE
-                || superTaskType == StudyTaskType.TASK_ORDER
-                || superTaskType == StudyTaskType.Q_DUBBING) {
+                || superTaskType == StudyTaskType.TASK_ORDER) {
             for (ResourceInfoTag tag : isListenData ? listenData : readWriteData) {
                 if (tag.isSelected()) {
                     return true;
@@ -1502,28 +1502,27 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
         int length = this.readWriteData.size() - 1;
         this.readWriteData.addAll(length, readWriteData);
-        boolean flag = true;
-        boolean pointFlag = true;
+        boolean flag = false;
+        boolean pointFlag = false;
         for (ResourceInfoTag tag : this.readWriteData) {
             //来自学程
-            if (tag.isSelected() && flag) {
+            if (tag.isSelected() && !flag) {
                 if (!isSuperTask) {
                     TipMsgHelper.ShowMsg(getActivity(), R.string.str_show_select_lqcourse_mark_score_tip);
                 }
-                updateScoreView(View.GONE);
-                flag = false;
+                flag = true;
             }
 
             //兼容point
             if (!TextUtils.isEmpty(tag.getPoint())) {
-//                if (!isSuperTask) {
-//                    tag.setResPropertyMode(1);
-//                }
-                if (pointFlag) {
-                    updateScoreView(View.GONE);
-                    mSelectMark.setVisibility(View.GONE);
-                    pointFlag = false;
-                }
+                pointFlag = true;
+            }
+        }
+
+        if (flag || pointFlag){
+            updateScoreView(View.GONE);
+            if (pointFlag){
+                mSelectMark.setVisibility(View.GONE);
             }
         }
 
@@ -1561,7 +1560,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         tag.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
                     }
                 }
-                mSelectMark.setVisibility(View.GONE);
+                updateScoreView(View.GONE);
             }
         }
         if (listenAdapter != null) {

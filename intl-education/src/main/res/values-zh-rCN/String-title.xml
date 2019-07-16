@@ -3,12 +3,12 @@
     <string name="title_course_notice">公告</string>
     <string name="title_class_notice">通知</string>
     <!--<string name="title_course_shop">自习课程</string>-->
-    <string name="title_course_shop">学程馆</string>
+    <string name="title_course_shop">课本馆</string>
     <string name="title_listening_and_speaking">听读课</string>
     <string name="title_Reading_and_writing_single">做读写单</string>
     <string name="title_watch_history">查看历史</string>
     <string name="title_join_school">入驻机构</string>
-    <string name="title_class_course">班级学程</string>
+    <string name="title_class_course">班级课程</string>
     <string name="title_related_course">相关课程</string>
     <string name="title_basics_course">基础课程</string>
     <string name="title_my_timetable">我的课程表</string>
@@ -26,6 +26,6 @@
     <string name="title_choice_tutor">选择帮辅老师</string>
     <string name="title_submit_succeed">提交成功</string>
     <string name="title_watch_task_requirement">查看任务要求</string>
-    <string name="title_history_course">历史学程</string>
-    <string name="title_add_course">添加学程</string>
+    <string name="title_history_course">历史课程</string>
+    <string name="title_add_course">添加课程</string>
 </resources>

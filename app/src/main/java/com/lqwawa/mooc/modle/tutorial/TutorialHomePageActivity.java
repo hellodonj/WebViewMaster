@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.duowan.mobile.netroid.Listener;
@@ -43,6 +44,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.Netroid;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.lqresviewlib.office365.WebActivity;
+import com.lqwawa.intleducation.factory.data.entity.TutorStarLevelEntity;
 import com.lqwawa.mooc.modle.tutorial.comment.TutorialCommentFragment;
 import com.lqwawa.mooc.modle.tutorial.list.TutorialCourseListFragment;
 import com.oosic.apps.share.BaseShareUtils;
@@ -67,7 +69,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private TextView mTvShare;
     private TextView mTvName;
     private TextView mTvViewerCount;
-    private TextView mTvAttentionCount;
+    //private TextView mTvAttentionCount;
     private ImageView mIvQRCode;
     private ImageView mIvSex;
     private ImageView mIvAvatar;
@@ -91,6 +93,10 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     private String mCourseSubject;
     private String mClassId;
     private boolean mIsHideAddTutorial;
+    private RatingBar mTeacherRatingBar;
+    private TextView mTvCourseCount;
+    private TextView mTvStudentCount;
+    private TutorStarLevelEntity mStarLevelEntity;
 
     @Override
     protected TutorialHomePageContract.Presenter initPresenter() {
@@ -133,13 +139,16 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         mTvShare.setOnClickListener(this);
         mTvName = (TextView) findViewById(R.id.tv_name);
         mTvViewerCount = (TextView) findViewById(R.id.tv_viewer_count);
-        mTvAttentionCount = (TextView) findViewById(R.id.tv_attention_count);
+        //mTvAttentionCount = (TextView) findViewById(R.id.tv_attention_count);
         mIvQRCode = (ImageView) findViewById(R.id.iv_QR_code);
         mIvSex = (ImageView) findViewById(R.id.iv_sex);
         mIvQRCode.setOnClickListener(this);
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mTeacherRatingBar = (RatingBar) findViewById(R.id.teacher_rating_bar);
+        mTvCourseCount = (TextView) findViewById(R.id.tv_course_count);
+        mTvStudentCount = (TextView) findViewById(R.id.tv_student_count);
 
         mCourseSubjectLayout = findViewById(R.id.course_subject_layout);
         mCourseSubjectLayout.setOnClickListener(view -> {
@@ -190,11 +199,13 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         // 请求个人信息
         mPresenter.requestUserInfoWithUserId(mTutorMemberId);
         mPresenter.requestTutorSubjectList(mTutorMemberId);
+        //请求星级等级
+        mPresenter.requestTutorStarLevel(mTutorMemberId);
 
         // 如果当前帮辅老师与自己是同一个人，隐藏按钮
         boolean tutorialMode = MainApplication.isTutorialMode();
         boolean isHide =
-                tutorialMode  || TextUtils.equals(mTutorMemberId,UserHelper.getUserId());
+                tutorialMode || TextUtils.equals(mTutorMemberId, UserHelper.getUserId());
         if (!TextUtils.isEmpty(mClassId)) {
             isHide = false;
         }
@@ -235,7 +246,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
     @Override
     public void updateUserInfoView(@NonNull UserEntity entity) {
         this.mUserEntity = entity;
-        
+
         initFragments();
 
         //设置用户名
@@ -251,7 +262,7 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         // 多少人浏览
         StringUtil.fillSafeTextView(mTvViewerCount, getString(R.string.label_viewer_count, entity.getBrowseNum()));
         // 多少人关注
-        StringUtil.fillSafeTextView(mTvAttentionCount, getString(R.string.label_attention_count, entity.getAttentionNumber()));
+        //StringUtil.fillSafeTextView(mTvAttentionCount, getString(R.string.label_attention_count, entity.getAttentionNumber()));
 
         // 加载头像
         thumbnailManager.displayUserIcon(AppSettings.getFileUrl(
@@ -317,6 +328,19 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         }
     }
 
+    @Override
+    public void updateTutorStarLevel(TutorStarLevelEntity entity) {
+        this.mStarLevelEntity = entity;
+
+        // 星级等级
+        mTeacherRatingBar.setRating(entity.getStarLevel());
+        //帮扶的课程数
+        StringUtil.fillSafeTextView(mTvCourseCount, getString(R.string.label_course_count, entity.getCourseNum()));
+        //学生数
+        StringUtil.fillSafeTextView(mTvStudentCount, getString(R.string.label_student_count, entity.getStudentNum()));
+
+    }
+
     private void updateSubscribeBar() {
         //更新二维码
         mQRCodeImageUrl = AppSettings.getFileUrl(mUserEntity.getQRCode());
@@ -368,10 +392,10 @@ public class TutorialHomePageActivity extends PresenterActivity<TutorialHomePage
         } else if (viewId == R.id.tv_share) {
             // 分享
             if (EmptyUtil.isEmpty(mUserEntity)) return;
-            if (!UserHelper.isLogin()) {
-                LoginHelper.enterLogin(this);
-                return;
-            }
+//            if (!UserHelper.isLogin()) {
+//                LoginHelper.enterLogin(this);
+//                return;
+//            }
 
             sharePersonal();
         } else if (viewId == R.id.iv_QR_code) {

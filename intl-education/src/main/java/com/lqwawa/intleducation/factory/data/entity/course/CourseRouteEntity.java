@@ -1,10 +1,16 @@
 package com.lqwawa.intleducation.factory.data.entity.course;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
+
+import java.util.logging.Level;
 
 /**
  * @author mrmedici
@@ -32,6 +38,8 @@ public class CourseRouteEntity extends BaseVo {
     private int type;
     private int assortment;
     private boolean isLabelAuthorized;
+    private String level;
+    private SchoolInfoEntity schoolInfoEntity;
 
     public int getBuyType() {
         return buyType;
@@ -132,35 +140,71 @@ public class CourseRouteEntity extends BaseVo {
         return this;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public CourseRouteEntity setLevel(String level) {
+        this.level = level;
+        return this;
+    }
+
+    public SchoolInfoEntity getSchoolInfoEntity() {
+        return schoolInfoEntity;
+    }
+
+    public CourseRouteEntity setSchoolInfoEntity(SchoolInfoEntity schoolInfoEntity) {
+        this.schoolInfoEntity = schoolInfoEntity;
+        return this;
+    }
+
+    /**
+     * 是否课程的老师身份
+     * 传入当前登录Id，区分家长身份
+     */
+
+    public boolean isCourseTeacher(@NonNull String memberId, String userId) {
+        String tempId = memberId;
+        if (!TextUtils.isEmpty(userId) && !userId.equals(memberId)) {
+            tempId = userId;
+        }
+        return isCourseTeacher(tempId);
+    }
+
     /**
      * 是否是课程的老师身份
+     *
      * @param memberId 用户Id
      * @return
      */
-    public boolean isCourseTeacher(@NonNull String memberId){
-        if(EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)){
+    public boolean isCourseTeacher(@NonNull String memberId) {
+        if (EmptyUtil.isEmpty(memberId)) {
+            return false;
+        }
+        if (EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)) {
             return true;
         }
 
-        if(EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)){
+        if (EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)) {
             return true;
         }
 
         // 辅导老师中包含
-        if(EmptyUtil.isNotEmpty(counselorId) && counselorId.contains(memberId)){
+        if (EmptyUtil.isNotEmpty(counselorId) && counselorId.contains(memberId)) {
             return true;
         }
 
-        return  false;
+        return false;
     }
 
     /**
      * 是否是讲师
+     *
      * @param memberId 用户的memberId
      * @return true 讲师身份
      */
-    public boolean isTeacher(@NonNull String memberId){
-        if(EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)){
+    public boolean isTeacher(@NonNull String memberId) {
+        if (EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)) {
             return true;
         }
         return false;
@@ -168,45 +212,51 @@ public class CourseRouteEntity extends BaseVo {
 
     /**
      * 是否是助教
+     *
      * @param memberId 用户的memberId
      * @return true 助教身份
      */
-    public boolean isTutor(@NonNull String memberId){
-        if(EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)){
+    public boolean isTutor(@NonNull String memberId) {
+        if (EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)) {
             return false;
         }
 
         // 助教中包含
-        if(EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)){
+        if (EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)) {
             return true;
         }
 
-        return  false;
+        return false;
     }
 
     /**
      * 是否是辅导老师
+     *
      * @param memberId 用户的memberId
      * @return true 辅导老师身份
      */
-    public boolean isCounselorId(@NonNull String memberId){
-        if(EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)){
+    public boolean isCounselorId(@NonNull String memberId) {
+        if (EmptyUtil.isNotEmpty(teachersId) && teachersId.contains(memberId)) {
             return false;
         }
 
-        if(EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)){
+        if (EmptyUtil.isNotEmpty(tutorId) && tutorId.contains(memberId)) {
             return false;
         }
 
         // 辅导老师中包含
-        if(EmptyUtil.isNotEmpty(counselorId) && counselorId.contains(memberId)){
+        if (EmptyUtil.isNotEmpty(counselorId) && counselorId.contains(memberId)) {
             return true;
         }
 
-        return  false;
+        return false;
     }
 
     public int getLibraryType() {
+        if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
+            return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+        }
+        
         if (type == 0) {
             if (assortment == 0 || assortment == 1) {
                 return OrganLibraryType.TYPE_LQCOURSE_SHOP;

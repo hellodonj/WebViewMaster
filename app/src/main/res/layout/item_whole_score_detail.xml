@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/text_white"
+    android:padding="10dp">
+
+
+    <com.galaxyschool.app.wawaschool.views.CircleImageView
+        android:id="@+id/iv_user_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/default_user_icon"/>
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1.0"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/text_black"
+        android:textSize="16sp"
+        tools:text=""/>
+
+
+    <TextView
+        android:id="@+id/tv_student_score"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_dark_gray"
+        android:textSize="16sp"
+        tools:text=""/>
+
+
+</LinearLayout>

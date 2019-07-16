@@ -479,7 +479,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
 
             //看课件多类型
             if (WatchWawaCourseResourceSplicingUtils.
-                    watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
+                    watchWawaCourseSupportMultiType(getArguments())){
                 //控制资源最多选多少
                 maxCount = WatchWawaCourseResourceSplicingUtils.
                         controlResourcePickedMaxCount(mediaType,maxCount,false);

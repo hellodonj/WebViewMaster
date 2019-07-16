@@ -1,8 +1,8 @@
 package com.lqwawa.intleducation.module.tutorial.marking.choice;
 
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
@@ -29,13 +29,14 @@ public class TutorChoiceAdapter extends RecyclerAdapter<TutorChoiceEntity> {
         return new TutorChoiceHolder(root);
     }
 
-    private class TutorChoiceHolder extends RecyclerAdapter.ViewHolder<TutorChoiceEntity>{
+    private class TutorChoiceHolder extends RecyclerAdapter.ViewHolder<TutorChoiceEntity> {
 
         private ImageView mIvAvatar;
         private TextView mTvTutorName;
         private TextView mTvTaskCount;
         private TextView mTvPrice;
         private ImageView mIvChoice;
+        private RatingBar mRatingBar; //星级水平
 
         public TutorChoiceHolder(View itemView) {
             super(itemView);
@@ -44,20 +45,22 @@ public class TutorChoiceAdapter extends RecyclerAdapter<TutorChoiceEntity> {
             mTvTaskCount = (TextView) itemView.findViewById(R.id.tv_task_count);
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mIvChoice = (ImageView) itemView.findViewById(R.id.iv_choice);
+            mRatingBar = (RatingBar) itemView.findViewById(R.id.teacher_rating_bar);
         }
 
         @Override
         protected void onBind(TutorChoiceEntity entity) {
-            LQwawaImageUtil.loadCommonCircular(mIvAvatar.getContext(),mIvAvatar,entity.getHeadPicUrl(),4);
-            StringUtil.fillSafeTextView(mTvTutorName,entity.getTutorName());
-            mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark),entity.getTaskNum()));
+            LQwawaImageUtil.loadCommonCircular(mIvAvatar.getContext(), mIvAvatar, entity.getHeadPicUrl(), 4);
+            StringUtil.fillSafeTextView(mTvTutorName, entity.getTutorName());
+            mTvTaskCount.setText(String.format(UIUtil.getString(R.string.label_placeholder_task_have_mark), entity.getTaskNum()));
             mTvPrice.setText(Common.Constance.MOOC_MONEY_MARK + entity.getMarkingPrice());
-            mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            if(entity.isChecked()){
+            //mTvPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            if (entity.isChecked()) {
                 mIvChoice.setImageResource(R.drawable.select);
-            }else{
+            } else {
                 mIvChoice.setImageResource(R.drawable.unselect);
             }
+            mRatingBar.setRating(entity.getStarLevel());
         }
     }
 }

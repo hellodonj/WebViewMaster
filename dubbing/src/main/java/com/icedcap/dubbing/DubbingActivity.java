@@ -210,7 +210,7 @@ public class DubbingActivity extends AppCompatActivity implements View.OnClickLi
                                     EvaluateManager.parseItemResult(3, evalResult);
                             SpannableString spannableString = null;
                             if (evaluateItemResult != null) {
-                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult, Color.BLACK);
+                                spannableString = EvaluateHelper.getSpannableEvaluateItemText(evaluateItemResult, getResources().getColor(R.color.eval_default_color));
                             }
                             dubbingEntityList.get(curPosition).setEvalResult(spannableString);
                         }

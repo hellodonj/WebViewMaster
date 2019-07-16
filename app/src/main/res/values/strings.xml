@@ -1406,7 +1406,7 @@
     <string name="campus_model_ip">School Server IP</string>
     <string name="pls_input_complete_ip">Please enter a full school server IP</string>
     <string name="check_ip_input_legal">Invalid %s. Please set a value between 0 and 255.</string>
-    
+
     <string name="str_clean_cache">Clear Cache</string>
     <string name="str_clear_cache">Clearing cache, please wait...</string>
 
@@ -1797,4 +1797,27 @@
     <string name="invalid_lqwawa_resource">Unable to access resources other than LQWaWa\'s
         belongings.</string>
     <string name="class_tutor">Class Tutor</string>
+
+    <string name="str_tutorial_btn">Comment</string>
+    <string name="str_click_ratingbar">Touch to grade</string>
+    <string name="str_tutorial_evaluation">Your comment (within 200 characters) is very important to us</string>
+    <string name="str_whole_class_grade">List</string>
+    <string name="str_subject_total_score">(Full Score: %s)</string>
+
+    <string name="str_guidance_study_home_work">Guidance Learning</string>
+    <string name="str_student_answer_question_way">Answer Method:</string>
+    <string name="str_cross_picture">Image</string>
+    <string name="str_cross_video">Video</string>
+    <string name="str_cross_audio">Audio</string>
+    <string name="str_submit_mode_not_null">Answer Method cannot be blank</string>
+    <string name="str_guidance_task_hint">(Listen-Read Course/Read-Write Task/Audio/Image/Video/PPT/PDF/DOC)</string>
+    <string name="str_do_home_work">Do Homework</string>
+
+    <string name="str_save_statistic">Storage</string>
+    <string name="str_save_total_size">Total: %s</string>
+    <string name="str_load_save_statistic_default">In calculating, please wait...</string>
+    <string name="str_retract">Collapse</string>
+    <string name="str_teacher_assistant_tip">Marking completed, please check your account via Me > My Account, entry may be delayed</string>
+    <string name="str_save_statistic_unuser">Cloud space is empty</string>
+
 </resources>

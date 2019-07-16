@@ -803,7 +803,7 @@ public class CourseInfo implements Parcelable {
                     content = content.substring(0,10);
                     content = content + "...";
                 }
-                content = content + "\n" + activity.getString(R.string
+                content = content + "  \n" + activity.getString(R.string
                         .Str_view_people, String.valueOf(viewcount));
                 shareInfo.setContent(content);
             }

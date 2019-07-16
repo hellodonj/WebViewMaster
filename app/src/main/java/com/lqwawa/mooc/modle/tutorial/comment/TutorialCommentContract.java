@@ -19,7 +19,7 @@ public interface TutorialCommentContract {
         // 教辅对评论的显示隐藏
         void requestSingleCommentChangeStatus(@NonNull String memberId,int commentId,int status);
         // 发送评论
-        void requestSendTutorialComment(@NonNull String memberId,@NonNull String tutorMemberId,@NonNull String content);
+        void requestSendTutorialComment(@NonNull String memberId,@NonNull String tutorMemberId,@NonNull String content ,@NonNull int starLevel);
         void requestAddCommentPraise(@NonNull String memberId, int commentId);
 
     }

@@ -100,7 +100,7 @@
     </style>
 
 
-<!--========================支付键盘============================-->
+    <!--========================支付键盘============================-->
     <style name="GridPasswordView" />
 
     <style name="GridPasswordView.TextView">
@@ -123,8 +123,8 @@
         <item name="android:layout_marginBottom">1dp</item>
     </style>
     <!-- 透明风格 -->
-    <style name="ActTranslucent" parent="@android:style/Theme.Translucent.NoTitleBar">
-    </style>
+    <style name="ActTranslucent" parent="@android:style/Theme.Translucent.NoTitleBar"></style>
+
     <style name="contacts_dialog_text">
         <item name="android:textSize">18dp</item>
         <item name="android:padding">10dp</item>
@@ -132,4 +132,17 @@
     </style>
 
     <style name="Theme.ContactsDialog" parent="@android:style/Theme.Dialog"></style>
+
+    <style name="review_price_dialog_text">
+        <item name="android:textSize">18dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#009BE5</item>
+    </style>
+
+    <!--下划线-->
+    <style name="gray_divider_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/horizontalDividerHeight</item>
+        <item name="android:background">@color/divider_color</item>
+    </style>
 </resources>

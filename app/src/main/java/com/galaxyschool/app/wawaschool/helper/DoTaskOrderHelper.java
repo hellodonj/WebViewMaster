@@ -26,7 +26,6 @@ import com.galaxyschool.app.wawaschool.common.UploadUtils;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
-import com.galaxyschool.app.wawaschool.course.PlaybackActivityPhone;
 import com.galaxyschool.app.wawaschool.db.LocalCourseDao;
 import com.galaxyschool.app.wawaschool.db.dto.LocalCourseDTO;
 import com.galaxyschool.app.wawaschool.fragment.CompletedHomeworkListFragment;
@@ -958,7 +957,7 @@ public class DoTaskOrderHelper {
                         dialog.dismiss();
                         handler.discard();
                     }
-                }, true);
+                }, itemData.getScore());
         mMarkScoreDialog.show();
     }
 
