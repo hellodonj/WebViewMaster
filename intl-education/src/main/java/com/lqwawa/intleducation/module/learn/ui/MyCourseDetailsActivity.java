@@ -1627,19 +1627,21 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 //            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
 //                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
 //            }
+            if (rg_tab.getCheckedRadioButtonId()==R.id.rb_task){
+                mLLPlayList.setVisibility(View.VISIBLE);
+            }else {
+                mLLPlayList.setVisibility(View.GONE);
+            }
         }
     }
 
     public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
         if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
-            mLLPlayList.setVisibility(View.VISIBLE);
             TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
             TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
             if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
                 TaskSliderHelper.onPlayListListener.startPlay();
             }
-        }else {
-            mLLPlayList.setVisibility(View.GONE);
         }
     }
 
