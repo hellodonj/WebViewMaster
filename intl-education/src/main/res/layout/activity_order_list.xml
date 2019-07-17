@@ -14,13 +14,14 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabBackground="@color/white"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
-        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorHeight="2dp"
         app:tabMaxWidth="0dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/textAccent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle1"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/textPrimary" />
 
     <View

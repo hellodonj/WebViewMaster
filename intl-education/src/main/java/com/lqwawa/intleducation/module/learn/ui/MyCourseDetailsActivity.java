@@ -1624,24 +1624,27 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
             List<CourseResourceEntity> playListVo = (List<CourseResourceEntity>) event.getData();
             updatePlayCourseList(playListVo);
-//            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
-//                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
-//            }
-            if (rg_tab.getCheckedRadioButtonId()==R.id.rb_task){
-                mLLPlayList.setVisibility(View.VISIBLE);
-            }else {
-                mLLPlayList.setVisibility(View.GONE);
+            setPlayListVisible(R.id.rb_task);
+        }
+    }
+
+
+    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
+        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null) {
+            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
+            TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize() > 0) {
+                TaskSliderHelper.onPlayListListener.startPlay();
             }
         }
     }
 
-    public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
-        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
-            TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
-            TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
-            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
-                TaskSliderHelper.onPlayListListener.startPlay();
-            }
+    //创建完成后显示播放列表按钮
+    private void setPlayListVisible(int id) {
+        if (rg_tab.getCheckedRadioButtonId() == id) {
+            mLLPlayList.setVisibility(View.VISIBLE);
+        } else {
+            mLLPlayList.setVisibility(View.GONE);
         }
     }
 

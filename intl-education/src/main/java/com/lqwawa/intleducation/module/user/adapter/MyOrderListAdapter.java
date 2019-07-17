@@ -144,7 +144,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 .build();
 
         orderImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setCrop(false)
                 //.setSize(img_width,img_height)
                 .setLoadingDrawableId(R.drawable.ic_task_not_flag_l)//加载中默认显示图片
@@ -154,7 +154,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         courseImageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setCrop(false)
-                .setSize(img_width, img_height)
+                //.setSize(img_width, img_height)
                 .setLoadingDrawableId(R.drawable.ic_lqc_l)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.ic_lqc_l)//加载失败后默认显示图片
                 .build();
@@ -282,25 +282,16 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 String typeName = "";
                 if (vo.getTaskType() == 5) {
                     typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));
-                    SpannableString spannableString =
-                            new SpannableString(typeName + vo.getTaskName());
-                    if (!TextUtils.isEmpty(typeName)) {
-                        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#009039")),
-                                0, typeName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    holder.course_name.setText(spannableString);
                 } else if (vo.getTaskType() == 8) {
                     typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_do_task));
-                    SpannableString spannableString =
-                            new SpannableString(typeName + vo.getTaskName());
-                    if (!TextUtils.isEmpty(typeName)) {
-                        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#009039")),
-                                0, typeName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    holder.course_name.setText(spannableString);
-                }else {
-                    holder.course_name.setText(vo.getTaskName());
                 }
+                SpannableString spannableString =
+                        new SpannableString(typeName + vo.getTaskName());
+                if (!TextUtils.isEmpty(typeName)) {
+                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#009039")),
+                            0, typeName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                holder.course_name.setText(spannableString);
 
                 holder.delete_order_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setVisibility(View.VISIBLE);
@@ -764,14 +755,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             layoutParams.height = img_height;
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
-        } else {
-            // 空中课堂
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
-            layoutParams.width = img_height;
-            layoutParams.height = img_width;
-            holder.course_iv.setLayoutParams(layoutParams);
-            // holder.coverLay.setLayoutParams(new RelativeLayout.LayoutParams(img_height, img_width));
-        }
+        } else{
+                // 空中课堂
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
+                layoutParams.width = img_height;
+                layoutParams.height = img_width;
+                holder.course_iv.setLayoutParams(layoutParams);
+                // holder.coverLay.setLayoutParams(new RelativeLayout.LayoutParams(img_height, img_width));
+            }
 
         return convertView;
     }
