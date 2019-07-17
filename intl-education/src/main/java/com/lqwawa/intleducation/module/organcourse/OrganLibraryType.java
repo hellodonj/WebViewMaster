@@ -4,7 +4,7 @@ package com.lqwawa.intleducation.module.organcourse;
  * @desc:
  * @author: wangchao
  * @date: 2019/04/24
- * 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
+ * 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆 5三习教案馆
  */
 public interface OrganLibraryType {
     // 习课程馆

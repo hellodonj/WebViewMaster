@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerChangedAdapter;
@@ -50,7 +49,6 @@ import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltra
 import com.lqwawa.intleducation.module.organcourse.pager.CourseClassifyPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
-import com.nostra13.universalimageloader.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

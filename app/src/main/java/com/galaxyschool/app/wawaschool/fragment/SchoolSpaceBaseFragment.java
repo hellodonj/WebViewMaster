@@ -330,7 +330,7 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
 
     /**
      * @param type
-     * @return 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
+     * @return 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆 5 三习教案馆
      */
     private static int getLibraryType(int type) {
         switch (type) {

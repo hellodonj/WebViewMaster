@@ -2,7 +2,6 @@ package com.lqwawa.intleducation.factory.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -17,7 +16,6 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
-import com.lqwawa.intleducation.module.discovery.vo.ClassifyVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 
 import org.xutils.http.RequestParams;
@@ -36,7 +34,7 @@ public class OrganCourseHelper {
      * 获取实体机构学程馆一级标签及课程
      * @param organId 机构Id
      * @param isZh 语言 0 中文版， 1 英文版
-     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆
+     * @param libraryType 学程馆类型 0 习课程馆 1练测馆  2 图书馆  3 视频馆 5三习教案馆
      */
     public static void requestOrganCourseClassifyData(@NonNull String organId,
                                                       @NonNull @LanguageType.LanguageRes int isZh,
