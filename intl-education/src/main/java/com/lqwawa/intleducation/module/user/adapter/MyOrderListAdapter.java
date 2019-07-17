@@ -755,7 +755,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             layoutParams.height = img_height;
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
-        } else{
+        } else if (vo.getType() != 6) {
                 // 空中课堂
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
                 layoutParams.width = img_height;
