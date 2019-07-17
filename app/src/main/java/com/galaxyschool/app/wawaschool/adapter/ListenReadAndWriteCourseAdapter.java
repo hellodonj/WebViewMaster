@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
+import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import java.util.HashMap;
@@ -132,7 +133,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         } else {
             holder.deleteImage.setVisibility(View.VISIBLE);
             holder.courseImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            MyApplication.getThumbnailManager((Activity) context).displayImageWithDefault(info.getImgPath(), holder
+            MyApplication.getThumbnailManager((Activity) context).displayImageWithDefault(StudyTaskUtils.getResourceThumbnail(info.getImgPath()),
+                    holder
                     .courseImageView, R.drawable.default_cover);
             if (TextUtils.equals(info.getResProperties(), "1")
                     || !TextUtils.isEmpty(info.getPoint())) {

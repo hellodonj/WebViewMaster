@@ -207,7 +207,9 @@ public class AnswerParsingActivity extends BaseFragmentActivity implements View.
                     if (item != null && !TextUtils.isEmpty(item.getType()) && item.getDatas() != null && item.getDatas().size() > 0) {
                         if (Integer.valueOf(item.getType()) == LearnTaskCardType.SUBJECTIVE_PROBLEM) {
                             //主观题
-                            if (taskMarkParam != null && taskMarkParam.roleType == RoleType.ROLE_TYPE_EDITOR) {
+                            if (taskMarkParam != null
+                                    && taskMarkParam.roleType == RoleType.ROLE_TYPE_EDITOR
+                                    && !taskMarkParam.isVisitor) {
                                 rightTextV.setVisibility(View.VISIBLE);
                                 rightTextV.setOnClickListener(v -> {
                                     showMarkWayDialog();
