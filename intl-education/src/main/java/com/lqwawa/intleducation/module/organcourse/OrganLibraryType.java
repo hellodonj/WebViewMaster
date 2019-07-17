@@ -18,4 +18,7 @@ public interface OrganLibraryType {
 
     // 全脑馆
     int TYPE_BRAIN_LIBRARY = 4;
+
+    // 三习教案馆
+    int TYPE_TEACHING_PLAN = 5;
 }

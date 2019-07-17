@@ -70,7 +70,8 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
         int TAB_ENTITY_TYPE_PRACTICE_LIBRARY = 10;
         // 全脑馆
         int TAB_ENTITY_TYPE_BRAIN_LIBRARY = 11;
-
+        //三习教案馆
+        int TAB_ENTITY_TYPE_TEACHING_PLAN = 12;
 
         // 学习任务
         int TAB_ENTITY_TYPE_LEARNING_TASKS = 100;
@@ -343,6 +344,8 @@ public class SchoolSpaceBaseFragment extends ContactsListFragment {
                 return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
                 return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN:
+                return OrganLibraryType.TYPE_TEACHING_PLAN;
         }
         return -1;
     }

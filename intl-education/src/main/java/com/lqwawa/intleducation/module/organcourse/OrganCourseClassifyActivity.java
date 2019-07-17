@@ -180,8 +180,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         if (mLibraryType >= OrganLibraryType.TYPE_LQCOURSE_SHOP
-                && mLibraryType <= OrganLibraryType.TYPE_VIDEO_LIBRARY) {
-            mTopBar.setTitle(mLibraryNames[mLibraryType]);
+                && mLibraryType <= OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mTopBar.setTitle(mLibraryNames[mLibraryType] );
         }
         mTopBar.setTitleColor(R.color.colorDark);
         mContentLayout = (ScrollView) findViewById(R.id.lay_content);
@@ -274,6 +274,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     // 进入课程详情
                     // 线下机构学程馆,是从空中学校进入的 isSchoolEnter = true;
                     // String roles = UserHelper.getUserInfo().getRoles();
+                    mSchoolId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
                     SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), mSchoolId, new DataSource.Callback<SchoolInfoEntity>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {

@@ -7,6 +7,7 @@
     <string name="common_library">Library</string>
     <string name="common_video_library">Video</string>
     <string name="common_brain_library">Potential</string>
+    <string name="common_teaching_plan_library">Teaching Plan</string>
 
     <string-array name="organ_library_names">
         <item>Course</item>
@@ -14,6 +15,7 @@
         <item>Library</item>
         <item>Video</item>
         <item>Potential</item>
+        <item>Teaching Plan</item>
     </string-array>
 
 </resources>

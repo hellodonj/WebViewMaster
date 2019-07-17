@@ -920,12 +920,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 UIUtils.currentSourceFromType = SourceFromType.CHOICE_LIBRARY;
                 ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo, true);
                 break;
-            //习课程馆, 视频馆，图书馆, 练测馆
+            //习课程馆, 视频馆，图书馆, 练测馆,三习教案馆
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             //校园巡查
@@ -1087,6 +1088,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
         item.title = getString(R.string.common_brain_library);
+        item.resId = R.drawable.ic_brain_library;
+        itemList.add(item);
+
+        //三习教案馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN;
+        item.title = getString(R.string.common_teaching_plan_library);
         item.resId = R.drawable.ic_brain_library;
         itemList.add(item);
 

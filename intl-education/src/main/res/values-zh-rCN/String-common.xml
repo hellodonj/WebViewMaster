@@ -6,6 +6,7 @@
     <string name="common_library">图书馆</string>
     <string name="common_video_library">视频馆</string>
     <string name="common_brain_library">右脑潜能开发</string>
+    <string name="common_teaching_plan_library">三习教案馆</string>
 
     <string-array name="organ_library_names">
         <item>课本馆</item>
@@ -13,5 +14,6 @@
         <item>图书馆</item>
         <item>视频馆</item>
         <item>右脑潜能开发</item>
+        <item>三习教案馆</item>
     </string-array>
 </resources>
