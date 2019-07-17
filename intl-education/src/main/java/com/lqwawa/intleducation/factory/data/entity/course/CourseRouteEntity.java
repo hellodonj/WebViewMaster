@@ -256,7 +256,7 @@ public class CourseRouteEntity extends BaseVo {
         if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
             return OrganLibraryType.TYPE_BRAIN_LIBRARY;
         }
-        
+
         if (type == 0) {
             if (assortment == 0 || assortment == 1) {
                 return OrganLibraryType.TYPE_LQCOURSE_SHOP;
@@ -267,6 +267,8 @@ public class CourseRouteEntity extends BaseVo {
             return OrganLibraryType.TYPE_LIBRARY;
         } else if (type == 2) {
             return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        } else if (type == 3) {
+            return OrganLibraryType.TYPE_TEACHING_PLAN;
         }
         return -1;
     }

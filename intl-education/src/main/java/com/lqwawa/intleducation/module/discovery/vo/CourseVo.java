@@ -559,6 +559,8 @@ public class CourseVo extends BaseVo {
             return OrganLibraryType.TYPE_LIBRARY;
         } else if (type == 2) {
             return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        }else if (type == 3){
+            return OrganLibraryType.TYPE_TEACHING_PLAN;
         }
         return -1;
     }

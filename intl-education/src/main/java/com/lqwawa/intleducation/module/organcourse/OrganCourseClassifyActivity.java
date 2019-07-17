@@ -272,7 +272,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     // 进入课程详情
                     // 线下机构学程馆,是从空中学校进入的 isSchoolEnter = true;
                     // String roles = UserHelper.getUserInfo().getRoles();
-                    mSchoolId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+//                    mSchoolId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
                     SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), mSchoolId, new DataSource.Callback<SchoolInfoEntity>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
@@ -571,8 +571,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             @NonNull final String roles,
                             int libraryType) {
 
-//        final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
-        final String finalOrganId = organId;
+        final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+//        final String finalOrganId = organId;
         if (libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
             LQCourseConfigEntity lqCourseConfigEntity = new LQCourseConfigEntity();
             lqCourseConfigEntity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
