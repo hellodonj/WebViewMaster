@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.organcourse.pager;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.SchoolFunctionEntity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.tools.ScreenUtils;
 
 import java.util.List;
 
@@ -27,8 +29,12 @@ import java.util.List;
  */
 public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEntity> {
 
-    public CourseClassifyPagerAdapter(List<LQCourseConfigEntity> entities, AdapterListener<LQCourseConfigEntity> listener) {
+    private int screenWidth, itemWidth;
+
+    public CourseClassifyPagerAdapter(Context context, List<LQCourseConfigEntity> entities, AdapterListener<LQCourseConfigEntity> listener) {
         super(entities, listener);
+        screenWidth = ScreenUtils.getScreenWidth(context);
+        itemWidth = screenWidth / 4;
     }
 
     @Override
@@ -55,6 +61,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
         public ViewHolder(View itemView) {
             super(itemView);
             mClassifyRoot = (LinearLayout) itemView.findViewById(R.id.classify_root);
+            mClassifyRoot.getLayoutParams().width = itemWidth;
             mAuthorizedLayout = (FrameLayout) itemView.findViewById(R.id.authorized_layout);
             mAuthorizedState = (TextView) itemView.findViewById(R.id.tv_authorized_state);
             mClassifyIcon = (ImageView) itemView.findViewById(R.id.classify_img);
@@ -69,9 +76,9 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
             String thumbnail = entity.getThumbnail();
             if (!EmptyUtil.isEmpty(thumbnail)) {
                 if (StringUtils.isValidWebResString(thumbnail)) {
-                    ImageUtil.fillNormalView(mClassifyIcon,entity.getThumbnail().trim());
+                    ImageUtil.fillNormalView(mClassifyIcon, entity.getThumbnail().trim());
                 } else {
-                    mClassifyIcon.setImageResource(ResourceUtils.getDrawableId(UIUtil.getContext(),thumbnail));
+                    mClassifyIcon.setImageResource(ResourceUtils.getDrawableId(UIUtil.getContext(), thumbnail));
                 }
             }
 
@@ -79,13 +86,13 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
             // 是否授权
             mAuthorizedState.setActivated(entity.isAuthorized());
             // 配置左边Left
-            DrawableUtil.initTextDrawableSize(mAuthorizedState,16,DrawableUtil.Direction.left);
-            if(entity.isAuthorized()){
+            DrawableUtil.initTextDrawableSize(mAuthorizedState, 16, DrawableUtil.Direction.left);
+            if (entity.isAuthorized()) {
                 // 已授权的大小
-                StringUtil.fillSafeTextView(mAuthorizedState,UIUtil.getString(R.string.label_be_authorized));
-            }else{
+                StringUtil.fillSafeTextView(mAuthorizedState, UIUtil.getString(R.string.label_be_authorized));
+            } else {
                 // 未授权
-                StringUtil.fillSafeTextView(mAuthorizedState,UIUtil.getString(R.string.label_unauthorized));
+                StringUtil.fillSafeTextView(mAuthorizedState, UIUtil.getString(R.string.label_unauthorized));
             }
             // 习学程馆显示授权状态，其他不显示
             mAuthorizedState.setVisibility(View.VISIBLE);

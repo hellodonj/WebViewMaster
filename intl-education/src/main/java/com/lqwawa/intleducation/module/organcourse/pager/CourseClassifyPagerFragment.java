@@ -57,14 +57,14 @@ public class CourseClassifyPagerFragment extends IBaseFragment{
     protected void initWidget() {
         super.initWidget();
         mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
-        mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
+//        mRecycler = (RecyclerView) mRootView.findViewById(R.id.recycler);
         mRecycler.setLayoutManager(new GridLayoutManager(getContext(), mConfigEntities.size()) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         });
-        mAdapter = new CourseClassifyPagerAdapter(mConfigEntities,new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
+        mAdapter = new CourseClassifyPagerAdapter(getActivity(),mConfigEntities,new RecyclerAdapter.AdapterListenerImpl<LQCourseConfigEntity>() {
             @Override
             public void onItemClick(RecyclerAdapter.ViewHolder holder, LQCourseConfigEntity lqCourseConfigEntity) {
                 super.onItemClick(holder, lqCourseConfigEntity);

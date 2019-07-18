@@ -235,6 +235,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     //播放列表
     private Button mBtnPlayList;
     private LinearLayout mLLPlayList;
+    private List<CourseResourceEntity> playListVo;
 
     public static void start(Activity activity, String id, boolean canEdit, String memberId, String schoolId, CourseDetailParams params) {
         activity.startActivity(new Intent(activity, MyCourseDetailsActivity.class)
@@ -1527,7 +1528,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     @Override
     public void coursePlayListVisible() {
         //播放列表按钮显示
-        mLLPlayList.setVisibility(View.VISIBLE);
+        mLLPlayList.setVisibility(isPlayListNotEmpty() ? View.VISIBLE : View.GONE);
         // 评论区域显示
         mCommentLayout.setVisibility(View.GONE);
         // 隐藏课程表
@@ -1622,26 +1623,39 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
             // 刷新UI
             courseVo.setInClass(true);
         } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
-            List<CourseResourceEntity> playListVo = (List<CourseResourceEntity>) event.getData();
+            playListVo = (List<CourseResourceEntity>) event.getData();
             updatePlayCourseList(playListVo);
-//            if (studyPlanFragment != null && studyPlanFragment instanceof CourseDetailsItemFragment) {
-//                ((CourseDetailsItemFragment) studyPlanFragment).updatePlayCourseList(playListVo);
-//            }
+            setPlayListVisible();
         }
     }
 
+
     public void updatePlayCourseList(List<CourseResourceEntity> playListVo) {
-        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null){
-            mLLPlayList.setVisibility(View.VISIBLE);
+        if (EmptyUtil.isNotEmpty(playListVo) && TaskSliderHelper.onPlayListListener != null) {
             TaskSliderHelper.onPlayListListener.setPlayListInfo(playListVo);
             TaskSliderHelper.onPlayListListener.setActivity(MyCourseDetailsActivity.this);
-            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize()>0){
+            if (TaskSliderHelper.onPlayListListener.getPlayResourceSize() > 0) {
                 TaskSliderHelper.onPlayListListener.startPlay();
             }
-        }else {
+        }
+    }
+
+    //创建完成后显示播放列表按钮
+    private void setPlayListVisible() {
+        boolean isShow =
+                (rg_tab.getVisibility() == View.VISIBLE && rg_tab.getCheckedRadioButtonId() == R.id.rb_task)
+                || (rg_tab_f.getVisibility() == View.VISIBLE && rg_tab_f.getCheckedRadioButtonId() == R.id.rb_task_f);
+        if (isShow && isPlayListNotEmpty()) {
+            mLLPlayList.setVisibility(View.VISIBLE);
+        } else {
             mLLPlayList.setVisibility(View.GONE);
         }
     }
+
+    private boolean isPlayListNotEmpty() {
+        return playListVo != null && !playListVo.isEmpty();
+    }
+
 
 
     /**
