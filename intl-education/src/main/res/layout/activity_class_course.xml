@@ -48,7 +48,9 @@
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabIndicatorHeight="0dp"
-                app:tabMode="scrollable">
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
 
             </android.support.design.widget.TabLayout>
 
@@ -81,8 +83,8 @@
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"
-                app:tabPaddingEnd="2dp"
-                app:tabPaddingStart="2dp">
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
 
             </android.support.design.widget.TabLayout>
 
@@ -114,8 +116,8 @@
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"
-                app:tabPaddingEnd="2dp"
-                app:tabPaddingStart="2dp">
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
 
             </android.support.design.widget.TabLayout>
 
@@ -147,8 +149,8 @@
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable"
-                app:tabPaddingEnd="2dp"
-                app:tabPaddingStart="2dp">
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
 
             </android.support.design.widget.TabLayout>
 
