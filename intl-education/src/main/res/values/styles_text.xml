@@ -200,4 +200,5 @@
         <item name="android:textSize">@dimen/com_font_size_5</item>
         <item name="android:textColor">@color/com_text_pink</item>
     </style>
+
 </resources>
