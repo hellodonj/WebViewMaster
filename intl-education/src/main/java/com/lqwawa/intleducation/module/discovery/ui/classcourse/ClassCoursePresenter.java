@@ -11,10 +11,8 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.helper.ClassCourseHelper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
-import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
-import com.lqwawa.intleducation.module.discovery.ui.subject.SubjectContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionPresenter;
 
 import java.util.List;
@@ -60,12 +58,12 @@ public class ClassCoursePresenter extends SchoolPermissionPresenter<ClassCourseC
                                        int role,@NonNull String name,
                                        @NonNull String level,
                                        int paramOneId,int paramTwoId,
-                                       final int pageIndex) {
+                                       final int pageIndex,int courseType) {
         // 测试数据
         // classId = "164cdc60-243e-4318-92dd-a91f00a85974";
         // token = "4f961e8f-778a-4cf1-97a4-09fe25a183ff";
         // role = 1;
-        ClassCourseHelper.requestClassCourseData(classId,0, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
+        ClassCourseHelper.requestClassCourseData(classId,0, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,courseType,new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final ClassCourseContract.View view = getView();

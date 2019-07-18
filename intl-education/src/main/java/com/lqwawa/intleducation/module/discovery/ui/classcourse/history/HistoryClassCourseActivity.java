@@ -93,9 +93,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private TextView mSearchFilter;
 
     private LinearLayout mHeaderLayout;
-    private LinearLayout mTabVector1, mTabVector2, mTabVector3;
-    private TextView mTabLabel1, mTabLabel2, mTabLabel3;
-    private TabLayout mTabLayout1, mTabLayout2, mTabLayout3;
+    private LinearLayout mTabVector1, mTabVector2, mTabVector3, mTabVector4;
+    private TextView mTabLabel1, mTabLabel2, mTabLabel3, mTabLabel4;
+    private TabLayout mTabLayout1, mTabLayout2, mTabLayout3, mTabLayout4;
 
     private PullToRefreshView mRefreshLayout;
     private RecyclerView mRecycler;
@@ -123,6 +123,16 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private List<Tab> mFiltrateArray2;
     // 筛选集合3
     private List<Tab> mFiltrateArray3;
+    // 筛选集合4
+    private List<Tab> mFiltrateArray4;
+    //读本、学本、练本、测本、视频、教案
+    private static final String[] courseFiltrateCategory = new String[]{
+            UIUtil.getString(R.string.label_course_filtrate_readers),
+            UIUtil.getString(R.string.label_course_filtrate_schoolbook),
+            UIUtil.getString(R.string.label_course_filtrate_exercises),
+            UIUtil.getString(R.string.label_course_filtrate_testing),
+            UIUtil.getString(R.string.label_course_filtrate_video),
+            UIUtil.getString(R.string.label_course_filtrate_teaching)};
 
     private int pageIndex;
     // 是否是Hold状态
@@ -242,12 +252,15 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         mTabVector1 = (LinearLayout) findViewById(R.id.tab_vector_1);
         mTabVector2 = (LinearLayout) findViewById(R.id.tab_vector_2);
         mTabVector3 = (LinearLayout) findViewById(R.id.tab_vector_3);
+        mTabVector4 = (LinearLayout) findViewById(R.id.tab_vector_4);
         mTabLabel1 = (TextView) findViewById(R.id.tab_label_1);
         mTabLabel2 = (TextView) findViewById(R.id.tab_label_2);
         mTabLabel3 = (TextView) findViewById(R.id.tab_label_3);
+        mTabLabel4 = (TextView) findViewById(R.id.tab_label_4);
         mTabLayout1 = (TabLayout) findViewById(R.id.tab_layout_1);
         mTabLayout2 = (TabLayout) findViewById(R.id.tab_layout_2);
         mTabLayout3 = (TabLayout) findViewById(R.id.tab_layout_3);
+        mTabLayout4 = (TabLayout) findViewById(R.id.tab_layout_4);
 
         mRefreshLayout = (PullToRefreshView) findViewById(R.id.refresh_layout);
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
@@ -438,6 +451,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         String level = "";
         int paramOneId = 0;
         int paramTwoId = 0;
+        int paramThreeId = 0;
 
         if (mFiltrateArray1 != null &&
                 mFiltrateArray2 != null &&
@@ -481,6 +495,15 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     }
                 }
             }
+
+            // 不是分类阅读,绘本,Q配音
+            if (rootId != CLASSIFIED_READING_ID && rootId != PICTURE_BOOK_ID && rootId != Q_DUBBING_ID) {
+                for (Tab tab : mFiltrateArray4) {
+                    if (!tab.isAll() && tab.isChecked()) {
+                        paramThreeId = tab.getLabelId();
+                    }
+                }
+            }
         }
 
         String tagParams = getTagParams(name, level, paramOneId, paramTwoId);
@@ -489,7 +512,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             RefreshUtil.getInstance().clear();
         }
 
-        mPresenter.requestHistoryClassCourseData(mClassId, role, name, level, paramOneId, paramTwoId, pageIndex);
+        mPresenter.requestHistoryClassCourseData(mClassId, role, name, level, paramOneId, paramTwoId, pageIndex,paramThreeId);
     }
 
     private String getTagParams(String name, String level, int paramOneId, int paramTwoId) {
@@ -511,6 +534,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             mFiltrateArray1 = new ArrayList<>();
             mFiltrateArray2 = new ArrayList<>();
             mFiltrateArray3 = new ArrayList<>();
+            mFiltrateArray4 = new ArrayList<>();
 
             if (EmptyUtil.isEmpty(mConfigEntities)) return;
             recursionConfig(entities);
@@ -540,41 +564,45 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
     private void configLabel(@NonNull int rootId) {
         // 类型固定
         mTabLabel1.setText(getString(R.string.label_colon_type));
+        //类别固定
+        mTabLabel4.setText(getString(R.string.label_colon_category1));
         mTabVector2.setVisibility(View.VISIBLE);
         if (rootId == MINORITY_LANGUAGE_COURSE_ID) {
             // 小语种课程 二级页面
             mTabVector3.setVisibility(View.GONE);
-
+            mTabVector4.setVisibility(View.VISIBLE);
             // 语言
             mTabLabel2.setText(getString(R.string.label_colon_language));
         } else if (rootId == ENGLISH_INTERNATIONAL_COURSE_ID) {
             // 英语国际课程 三级页面
             // 类型 科目
-
             mTabVector3.setVisibility(View.VISIBLE);
+            mTabVector4.setVisibility(View.VISIBLE);
 
             mTabLabel2.setText(getString(R.string.label_colon_type));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
         } else if (rootId == CLASSIFIED_READING_ID) {
             //分类阅读
             mTabVector3.setVisibility(View.GONE);
-
+            mTabVector4.setVisibility(View.GONE);
             // 科目, 级别
             mTabLabel2.setText(getString(R.string.label_colon_subject));
             mTabLabel3.setText(getString(R.string.label_colon_level));
         } else if (rootId == PICTURE_BOOK_ID) {
             //绘本  三级页面
             mTabVector3.setVisibility(View.VISIBLE);
-
+            mTabVector4.setVisibility(View.GONE);
             // 年龄段 语言
             mTabLabel2.setText(getString(R.string.label_colon_age));
             mTabLabel3.setText(getString(R.string.label_colon_language));
         } else if (rootId == Q_DUBBING_ID) {
             mTabVector2.setVisibility(View.GONE);
             mTabVector3.setVisibility(View.GONE);
+            mTabVector4.setVisibility(View.GONE);
         } else {
             // 三级页面
             mTabVector3.setVisibility(View.VISIBLE);
+            mTabVector4.setVisibility(View.VISIBLE);
 
             // 学段 科目
             mTabLabel2.setText(getString(R.string.label_colon_period));
@@ -677,6 +705,19 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                     mFiltrateArray3.add(0, allTab3);
                 }
             }
+
+            for (int i = 0; i < courseFiltrateCategory.length; i++) {
+                Tab tab = Tab.buildTab(i, courseFiltrateCategory[i],false);
+                if (!mFiltrateArray4.contains(tab)) {
+                    mFiltrateArray4.add(tab);
+                }
+            }
+            // 第四个筛选容器,加全部
+            Tab allTab4 = Tab.buildTab(-1, mAllText,true);
+            if (!mFiltrateArray4.contains(allTab4)) {
+                mFiltrateArray4.add(0, allTab4);
+            }
+
             // 递归调用
             List<LQCourseConfigEntity> childList = entity.getChildList();
             recursionConfigArray(childList);
@@ -788,6 +829,39 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         mTabLayout3.smoothScrollTo(0, 0);
     }
 
+    private void initTabControl4() {
+        mTabLayout4.removeAllTabs();
+
+        // 查看是否有Selected的
+        boolean haveSelected = false;
+        for (Tab tab : mFiltrateArray4) {
+            if (tab.isSelected() && isTeacher) {
+                haveSelected = true;
+                break;
+            }
+        }
+
+        boolean setSelected = false;
+        if (EmptyUtil.isNotEmpty(mFiltrateArray4)) {
+            for (Tab tab : mFiltrateArray4) {
+                View tabView = UIUtil.inflate(R.layout.item_tab_control_layout);
+                TextView tvContent = (TextView) tabView.findViewById(R.id.tv_content);
+                tvContent.setText(tab.getConfigValue());
+                TabLayout.Tab newTab = mTabLayout4.newTab().setCustomView(tabView).setTag(tab);
+
+                if (!setSelected) {
+                    setSelected = (mTabLayout4.getTabCount() == 0 && !haveSelected) || (tab.isSelected() && isTeacher);
+                    mTabLayout4.addTab(newTab, setSelected);
+                } else {
+                    // 已经添加过已经选择的Tab
+                    mTabLayout4.addTab(newTab);
+                }
+            }
+        }
+
+        mTabLayout4.smoothScrollTo(0, 0);
+    }
+
     /**
      * 设置相关联动的监听
      */
@@ -801,6 +875,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
         // 小语种TabLayout3被隐藏了
         mTabLayout3.removeOnTabSelectedListener(tabLayout3Adapter);
         mTabLayout3.addOnTabSelectedListener(tabLayout3Adapter);
+
+        mTabLayout4.removeOnTabSelectedListener(tabLayout4Adapter);
+        mTabLayout4.addOnTabSelectedListener(tabLayout4Adapter);
     }
 
     private TabSelectedAdapter tabLayout1Adapter = new TabSelectedAdapter() {
@@ -820,6 +897,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 recursionConfigArray(tabData.getChildList());
                 initTabControl3();
             }
+            initTabControl4();
             // 3在点1的时候则不需要初始化，因为全部都是三级联动的效果
             // initTabControl3();
 
@@ -854,6 +932,9 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
                 clearArray(CONFIG_TYPE_3);
                 recursionConfigArray(tabData.getChildList());
                 initTabControl3();
+
+                // 重新配置4数据的联动效果
+                initTabControl4();
             }
 
             // 数据请求
@@ -874,6 +955,7 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             super.onTabSelected(tab);
             Tab tabData = (Tab) tab.getTag();
             setTabItemSelected(mFiltrateArray3, tabData);
+            initTabControl4();
             // 数据请求
             triggerUpdateData();
         }
@@ -947,6 +1029,18 @@ public class HistoryClassCourseActivity extends PresenterActivity<HistoryClassCo
             }
         });
     }*/
+
+    private TabSelectedAdapter tabLayout4Adapter = new TabSelectedAdapter() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            super.onTabSelected(tab);
+            // 全部发生数据联动
+            Tab tabData = (Tab) tab.getTag();
+            setTabItemSelected(mFiltrateArray4, tabData);
+            requestClassCourse(false);
+
+        }
+    };
 
     /**
      * 设置该Tab选中
