@@ -3,8 +3,12 @@ package com.lqwawa.intleducation.module.user.adapter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,7 +144,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 .build();
 
         orderImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setCrop(false)
                 //.setSize(img_width,img_height)
                 .setLoadingDrawableId(R.drawable.ic_task_not_flag_l)//加载中默认显示图片
@@ -150,7 +154,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         courseImageOptions = new ImageOptions.Builder()
                 .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setCrop(false)
-                .setSize(img_width,img_height)
+                //.setSize(img_width, img_height)
                 .setLoadingDrawableId(R.drawable.ic_lqc_l)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.ic_lqc_l)//加载失败后默认显示图片
                 .build();
@@ -272,19 +276,23 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 holder.delete_order_tv.setText(activity.getResources().getString(R.string.delete_order));
                 holder.rebuy_tv.setVisibility(View.GONE);
             }
+
             //帮辅订单
             if (vo.getType() == 6) {
+                String typeName = "";
                 if (vo.getTaskType() == 5) {
-                    String typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));
-                    StringUtil.fillSafeTextView(holder.course_name, typeName);
-                    //holder.course_name.setText("[" + activity.getResources().getString(R.string.label_tutorial_task_type_listen_read_course) + "]" + vo.getTaskName());
+                    typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));
                 } else if (vo.getTaskType() == 8) {
-                    String typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_do_task));
-                    StringUtil.fillSafeTextView(holder.course_name, typeName);
-                    // holder.course_name.setText("["+activity.getResources().getString(R.string.label_tutorial_task_type_do_task) +"]" + vo.getTaskName());
-                } else {
-                    holder.course_name.setText(vo.getTaskName());
+                    typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_do_task));
                 }
+                SpannableString spannableString =
+                        new SpannableString(typeName + vo.getTaskName());
+                if (!TextUtils.isEmpty(typeName)) {
+                    spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#009039")),
+                            0, typeName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                holder.course_name.setText(spannableString);
+
                 holder.delete_order_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                 StringUtil.fillSafeTextView(holder.teacher_name, String.format(UIUtil.getString(R.string.label_commit_placeholder_teacher), vo.getRealName()));
@@ -747,14 +755,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
             layoutParams.height = img_height;
             holder.course_iv.setLayoutParams(layoutParams);
             // holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
-        } else {
-            // 空中课堂
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
-            layoutParams.width = img_height;
-            layoutParams.height = img_width;
-            holder.course_iv.setLayoutParams(layoutParams);
-            // holder.coverLay.setLayoutParams(new RelativeLayout.LayoutParams(img_height, img_width));
-        }
+        } else if (vo.getType() != 6) {
+                // 空中课堂
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.course_iv.getLayoutParams();
+                layoutParams.width = img_height;
+                layoutParams.height = img_width;
+                holder.course_iv.setLayoutParams(layoutParams);
+                // holder.coverLay.setLayoutParams(new RelativeLayout.LayoutParams(img_height, img_width));
+            }
 
         return convertView;
     }

@@ -211,16 +211,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     // 是否是学程馆进来的，并且获取到授权
     private boolean isAuthorized;
     private boolean isFromScan;
-
-
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
+    //三习教案tab
+    private RadioButton mRbStudy, mRbStudyF;
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
-    //播放列表
-    private Button mBtnPlayList;
-    private LinearLayout mLLPlayList;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -428,6 +425,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         rg_tab = (RadioGroup) findViewById(R.id.rg_tab);
         rg_tab_f = (RadioGroup) findViewById(R.id.rg_tab_f);
 
+        mRbStudy = (RadioButton) findViewById(R.id.rb_study_plan);
+        mRbStudyF = (RadioButton) findViewById(R.id.rb_study_plan_f);
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
 
@@ -436,8 +435,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             mRbLiveF.setVisibility(View.GONE);
         }
 
-        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
-        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mRbStudy.setText(getResources().getText(R.string.label_lesson_plan));
+            mRbStudyF.setText(getResources().getText(R.string.label_lesson_plan));
+            mRbLive.setText(getResources().getText(R.string.label_teaching_assistant));
+            mRbLiveF.setText(getResources().getText(R.string.label_teaching_assistant));
+        }else {
+            mRbStudy.setText(getResources().getText(R.string.label_tab_course_chapter));
+            mRbStudyF.setText(getResources().getText(R.string.label_tab_course_chapter));
+            mRbLive.setText(getResources().getText(R.string.label_teach_class));
+            mRbLiveF.setText(getResources().getText(R.string.label_teach_class));
+        }
 
         textViewAddToCart = (TextView) findViewById(R.id.add_to_cart_tv);
         mTvPrice = (TextView) findViewById(R.id.tv_price);
@@ -1289,7 +1297,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                     UIUtil.showToastSafe(R.string.join_school_to_learn);
                                     return;
                                 }
-                                
+
                                 String schoolId = mCourseDetailParams.getSchoolId();
                                 String classId = mCourseDetailParams.getClassId();
                                 CourseHelper.requestJoinInCourse(mCurMemberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
@@ -1691,7 +1699,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             //从支付界面返回则刷新数据
             initData(true);
             studyPlanFragment.updateData();
-        }else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+        } else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
             TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -1787,7 +1795,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
-        }else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
+        } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
             resIds = (List<String>) event.getData();
             initData(false);
         }

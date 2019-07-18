@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.icedcap.dubbing.services;
+package com.ijkplayer.services;
 
 import android.app.Service;
 import android.content.Context;

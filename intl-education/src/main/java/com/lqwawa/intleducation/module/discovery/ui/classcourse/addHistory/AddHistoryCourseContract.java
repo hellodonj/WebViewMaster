@@ -2,10 +2,8 @@ package com.lqwawa.intleducation.module.discovery.ui.classcourse.addHistory;
 
 import android.support.annotation.NonNull;
 
-import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
 import com.lqwawa.intleducation.factory.presenter.BaseContract;
-import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionContract;
 
 import java.util.List;
 

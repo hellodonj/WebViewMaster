@@ -573,6 +573,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
 
         final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
 //        final String finalOrganId = organId;
+
         if (libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
             LQCourseConfigEntity lqCourseConfigEntity = new LQCourseConfigEntity();
             lqCourseConfigEntity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);

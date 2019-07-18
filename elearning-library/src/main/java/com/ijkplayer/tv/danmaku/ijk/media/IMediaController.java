@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package tv.danmaku.ijk.media;
+package com.ijkplayer.tv.danmaku.ijk.media;
 
 import android.view.View;
 import android.widget.MediaController;

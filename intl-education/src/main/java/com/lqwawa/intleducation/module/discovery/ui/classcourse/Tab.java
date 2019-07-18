@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
-import com.lqwawa.intleducation.factory.data.entity.online.NewOnlineConfigEntity;
 
 import java.util.List;
 
@@ -128,6 +127,20 @@ public class Tab {
 
         // 选中状态,也要赋值进去
         tab.selected = entity.isSelected();
+        return tab;
+    }
+
+    /**
+     *
+     * @param id
+     * @param configValue
+     * @return
+     */
+    public static Tab buildTab(int id,String configValue,boolean checked) {
+        Tab tab = new Tab();
+        tab.setLabelId(id);
+        tab.setConfigValue(configValue);
+        tab.setChecked(checked);
         return tab;
     }
 

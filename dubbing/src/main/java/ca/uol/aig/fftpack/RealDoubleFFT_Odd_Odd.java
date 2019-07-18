@@ -1,4 +1,5 @@
 package ca.uol.aig.fftpack;
+
 /**
   * sine FFT transform with odd wave numbers.
   * @author Baoshe Zhang
