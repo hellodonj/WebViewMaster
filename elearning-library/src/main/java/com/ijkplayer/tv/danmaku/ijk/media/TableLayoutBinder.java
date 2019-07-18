@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package tv.danmaku.ijk.media;
+package com.ijkplayer.tv.danmaku.ijk.media;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.icedcap.dubbing.R;
+import com.lqwawa.apps.R;
 
 
 public class TableLayoutBinder {

@@ -1,17 +1,17 @@
-package com.icedcap.dubbing.utils;
+package com.ijkplayer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.icedcap.dubbing.R;
+import com.lqwawa.apps.R;
 
 
 /**
  * Created by dsq on 2017/4/24.
  */
 
-public class Config {
+public class IjkPlayerConfig {
     private Context mAppContext;
     private SharedPreferences mSharedPreferences;
     public static final int PV_PLAYER__Auto = 0;
@@ -19,7 +19,7 @@ public class Config {
     public static final int PV_PLAYER__IjkMediaPlayer = 2;
     public static final int PV_PLAYER__IjkExoMediaPlayer = 3;
     public static int KEY_PLAYER_DEFAULT_VALUE = 0;//预览/在线播放的默认值
-    public Config(Context context) {
+    public IjkPlayerConfig(Context context) {
         mAppContext = context.getApplicationContext();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mAppContext);
     }

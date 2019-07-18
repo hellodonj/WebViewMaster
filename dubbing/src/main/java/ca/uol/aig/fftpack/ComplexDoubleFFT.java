@@ -1,4 +1,5 @@
 package ca.uol.aig.fftpack;
+
 /**
   * FFT transform of a complex periodic sequence.
   * @author Baoshe Zhang
