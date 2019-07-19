@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:background="@drawable/ic_work_cart_shadow"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_work_cart"
