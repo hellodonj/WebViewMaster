@@ -44,7 +44,7 @@ public class RecordHomeWorkLocalHelper {
         //先检查本地是否有数据
         boolean hasData = false;
         boolean readAll = false;
-        NewWatchWawaCourseResourceDTO targetDto = getLocalResource(studentId,taskId);
+        NewWatchWawaCourseResourceDTO targetDto = getLocalResource(taskId,studentId);
         if (targetDto != null) {
             hasData = true;
             readAll = targetDto.isReadAll();
@@ -191,9 +191,8 @@ public class RecordHomeWorkLocalHelper {
                             if (tag != null) {
                                 for (ResourceInfoTag result : resultList) {
                                     if (result != null) {
-                                        if (!TextUtils.isEmpty(tag.getResId())
-                                                && !TextUtils.isEmpty(result.getResId())
-                                                && tag.getResId().equals(result.getResId())) {
+                                        if (result.isHasRead()
+                                                && TextUtils.equals(result.getResId(), tag.getResId())) {
                                             //是同一条记录：从数据库取数据赋值
                                             tag.setIsStudentDoneTask(true);
                                             break;

@@ -352,13 +352,14 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
                         || taskType == StudyTaskType.Q_DUBBING
                         || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
-                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT){
+                        || taskType == StudyTaskType.MULTIPLE_OTHER
+                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT
+                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE){
                     //学生更新提交作业和讨论话题已读接口
                     UpdateStudentIsRead(data.getTaskId(),memberId,String.valueOf(taskType));
                 }else {
                     //学生更新看微课、看课件、看作业已读接口
-                    if (roleType == RoleType.ROLE_TYPE_STUDENT
-                            && taskType != StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                    if (roleType == RoleType.ROLE_TYPE_STUDENT) {
                         //目前新版看课件已读本地处理，接口不支持。
                         updateReadStatus(data.getTaskId(), memberId);
                     }
