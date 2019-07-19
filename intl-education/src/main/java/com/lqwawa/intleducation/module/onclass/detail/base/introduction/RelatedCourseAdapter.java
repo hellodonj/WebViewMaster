@@ -3,7 +3,6 @@ package com.lqwawa.intleducation.module.onclass.detail.base.introduction;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
@@ -13,8 +12,6 @@ import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
-
-import org.xutils.x;
 
 import java.util.List;
 
@@ -56,7 +53,8 @@ public class RelatedCourseAdapter extends RecyclerAdapter<ClassDetailEntity.Rela
                 R.drawable.shape_course_type_learn,
                 R.drawable.shape_course_type_practice,
                 R.drawable.shape_course_type_exam,
-                R.drawable.shape_course_type_video
+                R.drawable.shape_course_type_video,
+                R.drawable.shape_course_type_lesson
         };
 
         private String[] courseTypeNames;

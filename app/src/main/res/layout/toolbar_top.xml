@@ -45,7 +45,7 @@
             android:layout_marginRight="6dp"
             android:textColor="#ffffffff"
             android:textSize="16sp"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
     </LinearLayout>
 
     <ImageView style="@style/line_gray" />

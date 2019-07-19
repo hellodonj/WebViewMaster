@@ -529,6 +529,7 @@
         <item>Exercise</item>
         <item>Test</item>
         <item>Video</item>
+        <item>教案</item>
     </string-array>
 
     <string name="user_comment">Comment</string>

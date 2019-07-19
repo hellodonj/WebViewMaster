@@ -611,7 +611,7 @@ public class HomeworkPickerFragment extends ContactsPickerFragment
         //目前：隐藏交作业，筛选“作业”其实就是筛选“看作业”和“交作业”。
         StudyTaskTypeInfo scanHomework = new StudyTaskTypeInfo();
 //        scanHomework.setType("2");
-        scanHomework.setType("2,3");
+        scanHomework.setType("2,3,17,18");
         scanHomework.setTypeName(getString(R.string.other));
 //        scanHomework.setTypeName(getString(R.string.look_through_homework));
 
