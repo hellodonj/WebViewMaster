@@ -553,4 +553,5 @@
     <string name="join_school_to_learn">Please join school before learning course</string>
     <string name="modify_success_tip">Price updated</string>
     <string name="student_evaluation">Comment</string>
+    <string name="select_all">select all</string>
 </resources>

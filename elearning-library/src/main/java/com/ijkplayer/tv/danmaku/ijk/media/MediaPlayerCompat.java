@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package tv.danmaku.ijk.media;
+package com.ijkplayer.tv.danmaku.ijk.media;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;

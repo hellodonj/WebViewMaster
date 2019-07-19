@@ -200,7 +200,8 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                                 int taskType = data.getTaskType();
                                 if (taskType == StudyTaskType.WATCH_WAWA_COURSE
                                         || taskType == StudyTaskType.WATCH_HOMEWORK
-                                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
+                                        || taskType == StudyTaskType.MULTIPLE_OTHER) {
                                     //目前看作业和看课件没有完成情况
                                     return;
                                 } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE

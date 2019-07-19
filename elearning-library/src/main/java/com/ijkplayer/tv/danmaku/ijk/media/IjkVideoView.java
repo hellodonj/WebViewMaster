@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package tv.danmaku.ijk.media;
+package com.ijkplayer.tv.danmaku.ijk.media;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -39,9 +39,9 @@ import android.widget.MediaController;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.icedcap.dubbing.R;
-import com.icedcap.dubbing.services.MediaPlayerService;
-import com.icedcap.dubbing.utils.Config;
+import com.ijkplayer.services.MediaPlayerService;
+import com.ijkplayer.utils.IjkPlayerConfig;
+import com.lqwawa.apps.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,7 +114,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     // private RenderingWidget.OnChangedListener mSubtitlesChangedListener;
 
     private Context mAppContext;
-    private Config mSettings;
+    private IjkPlayerConfig mSettings;
     private IRenderView mRenderView;
     private int mVideoSarNum;
     private int mVideoSarDen;
@@ -157,7 +157,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     private void initVideoView(Context context) {
         mAppContext = context.getApplicationContext();
-        mSettings = new Config(mAppContext);
+        mSettings = new IjkPlayerConfig(mAppContext);
 
         initBackground();
         initRenders();
@@ -176,9 +176,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         subtitleDisplay = new TextView(context);
         subtitleDisplay.setTextSize(24);
         subtitleDisplay.setGravity(Gravity.CENTER);
-        FrameLayout.LayoutParams layoutParams_txt = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
+        LayoutParams layoutParams_txt = new LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT,
                 Gravity.BOTTOM);
         addView(subtitleDisplay, layoutParams_txt);
     }
@@ -205,9 +205,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             renderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
 
         View renderUIView = mRenderView.getView();
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
+        LayoutParams lp = new LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
         renderUIView.setLayoutParams(lp);
         addView(renderUIView);
@@ -1012,13 +1012,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public static String getPlayerText(Context context, int player) {
         String text;
         switch (player) {
-            case Config.PV_PLAYER__AndroidMediaPlayer:
+            case IjkPlayerConfig.PV_PLAYER__AndroidMediaPlayer:
                 text = context.getString(R.string.VideoView_player_AndroidMediaPlayer);
                 break;
-            case Config.PV_PLAYER__IjkMediaPlayer:
+            case IjkPlayerConfig.PV_PLAYER__IjkMediaPlayer:
                 text = context.getString(R.string.VideoView_player_IjkMediaPlayer);
                 break;
-            case Config.PV_PLAYER__IjkExoMediaPlayer:
+            case IjkPlayerConfig.PV_PLAYER__IjkExoMediaPlayer:
                 text = context.getString(R.string.VideoView_player_IjkExoMediaPlayer);
                 break;
             default:
@@ -1032,17 +1032,17 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         IMediaPlayer mediaPlayer = null;
 
         switch (playerType) {
-            case Config.PV_PLAYER__IjkExoMediaPlayer: {
+            case IjkPlayerConfig.PV_PLAYER__IjkExoMediaPlayer: {
                 IjkExoMediaPlayer IjkExoMediaPlayer = new IjkExoMediaPlayer(mAppContext);
                 mediaPlayer = IjkExoMediaPlayer;
             }
             break;
-            case Config.PV_PLAYER__AndroidMediaPlayer: {
+            case IjkPlayerConfig.PV_PLAYER__AndroidMediaPlayer: {
                 AndroidMediaPlayer androidMediaPlayer = new AndroidMediaPlayer();
                 mediaPlayer = androidMediaPlayer;
             }
             break;
-            case Config.PV_PLAYER__IjkMediaPlayer:
+            case IjkPlayerConfig.PV_PLAYER__IjkMediaPlayer:
             default: {
                 IjkMediaPlayer ijkMediaPlayer = null;
                 if (mUri != null) {

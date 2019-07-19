@@ -60,6 +60,9 @@ public class ChapterVo extends BaseVo {
     private int totalNum;
     // 完成了多少任务
     private int finishNum;
+
+    //0,教案，1考试
+    private int examType = -1;
     //记录是否选中
     protected boolean isChoosed;
 
@@ -422,5 +425,13 @@ public class ChapterVo extends BaseVo {
 
     public void setChoosed(boolean choosed) {
         isChoosed = choosed;
+    }
+
+    public void setExamType(int examType) {
+        this.examType = examType;
+    }
+
+    public int getExamType() {
+        return examType;
     }
 }

@@ -1,4 +1,4 @@
-package tv.danmaku.ijk.media;
+package com.ijkplayer.tv.danmaku.ijk.media;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,8 +6,7 @@ import android.os.Message;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TableLayout;
-
-import com.icedcap.dubbing.R;
+import com.lqwawa.apps.R;
 
 import java.util.Locale;
 

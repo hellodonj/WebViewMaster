@@ -5,14 +5,7 @@
     android:layout_height="match_parent"
     android:background="#ff000000">
 
-    <!--<com.example.missevan.mydubbing.camera.CameraContainer-->
-        <!--android:id="@+id/cameraContainer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center|right|top"-->
-        <!--android:visibility="gone" />-->
-
-    <tv.danmaku.ijk.media.IjkVideoView
+    <com.ijkplayer.tv.danmaku.ijk.media.IjkVideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

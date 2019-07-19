@@ -1,4 +1,5 @@
 package ca.uol.aig.fftpack;
+
 /**
   * cosine FFT transform of a real even sequence.
   * @author Baoshe Zhang
