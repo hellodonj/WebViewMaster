@@ -82,6 +82,10 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+                //复述课件
+                holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
+                //语音评测
+                holder.multiTypeBtnRB.setText(context.getString(R.string.auto_mark));
                 //完成方式
                 holder.completionTitle.setText(R.string.str_complete_method);
             } else if (taskType == StudyTaskType.TASK_ORDER && showCheckType) {
@@ -102,10 +106,6 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.completionTitle.setText(context.getString(R.string.str_dubbing_type));
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
-                //复述课件
-                holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
-                //语音评测
-                holder.multiTypeBtnRB.setText(context.getString(R.string.auto_mark));
                 //完成方式
                 holder.completionTitle.setText(R.string.str_complete_method);
             }
