@@ -1,7 +1,9 @@
 package com.lqwawa.intleducation.common.ui.treeview.binder;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
@@ -35,7 +37,7 @@ public class FirstLevelNodeViewBinder extends CheckableNodeViewBinder {
     }
 
     @Override
-    public void bindView(final TreeNode treeNode) {
+    public void bindView(final TreeNode treeNode, Context context) {
         SxExamDetailVo.TaskListVO value = (SxExamDetailVo.TaskListVO) treeNode.getValue();
         textView.setText(value.taskName);
     }

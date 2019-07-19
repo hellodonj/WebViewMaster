@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
@@ -26,9 +25,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
@@ -396,6 +393,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                 // 是否试听权限 没有阅读全部
                                 boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+                                CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                                 if (role == UserHelper.MoocRoleType.STUDENT ||
                                         role == UserHelper.MoocRoleType.PARENT) {
@@ -420,7 +418,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                     // 不是从学程馆进来的,购买
                                     int intId = Integer.parseInt(vo.getParentId());
-                                    CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                                     if (!firstChapter && isJoinCourse && !vo.isBuyed() && !isAuthorized) {
 
@@ -501,7 +498,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     return;
                                 }
 //                                int examType = vo.getExamType();
-                                int libraryType = courseVo.getLibraryType();
+                                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                                 //点击入口是三习教案馆
                                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                                     ChapterVo chapterVo = list.get(position);
@@ -510,7 +507,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                     if (examType == TYPE_EXAM) {
                                         //courseid,sectionId,token
-                                        ExamsAndTestsActivity.start(activity,courseId, vo.getId(), role, "");
+//                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
                                     } else {
                                         //普通教案详情入口
                                         Log.e(TAG, "onClick: 普通教案详情入口");
@@ -651,7 +649,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.tvPrice.setBackgroundResource(R.drawable.btn_red_stroke_radius_16);
                 }
             }
-
+            boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+            CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
             // 添加点击事件
             holder.tvPrice.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -681,8 +680,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         // 没有购买 点击购买
                         int intId = Integer.parseInt(vo.getId());
                         // 是否试听权限 没有阅读全部
-                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
-                        CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
+//                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+//                        CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                         if (courseDetailParams != null && courseDetailParams.getSchoolInfoEntity() != null
                                 && !courseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
@@ -752,8 +751,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //三习教案馆考试章节跳转
-                    if (courseVo.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity,courseId, vo.getId(), role, "");
+                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);

@@ -48,6 +48,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
     private View EMPTY_PARAMETER;
 
     private TreeView treeView;
+    private boolean isShowCheckBox;
 
     TreeViewAdapter(Context context, TreeNode root,
                     @NonNull BaseNodeViewFactory baseNodeViewFactory) {
@@ -103,6 +104,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
         final View nodeView = holder.itemView;
         final TreeNode treeNode = expandedNodeList.get(position);
         final BaseNodeViewBinder viewBinder = (BaseNodeViewBinder) holder;
+        treeNode.setShowCheckBox(isShowCheckBox);
 
         if (viewBinder.getToggleTriggerViewId() != 0) {
             View triggerToggleView = nodeView.findViewById(viewBinder.getToggleTriggerViewId());
@@ -130,7 +132,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
             setupCheckableItem(nodeView, treeNode, (CheckableNodeViewBinder) viewBinder);
         }
 
-        viewBinder.bindView(treeNode);
+        viewBinder.bindView(treeNode,context);
     }
 
     private void setupCheckableItem(View nodeView,
@@ -274,5 +276,9 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
 
     void setTreeView(TreeView treeView) {
         this.treeView = treeView;
+    }
+
+    public void setIsShowCheckBox(boolean isShowCheckBox) {
+        this.isShowCheckBox = isShowCheckBox;
     }
 }

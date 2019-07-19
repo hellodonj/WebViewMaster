@@ -108,6 +108,18 @@ public class TreeView implements SelectableTreeAction {
         }
     }
 
+    public void notifychanged() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setIsShowCheckBox(boolean isShowCheckBox){
+        if (adapter != null) {
+            adapter.setIsShowCheckBox(isShowCheckBox);
+        }
+    }
+
     @Override
     public void expandNode(TreeNode treeNode) {
         adapter.expandNode(treeNode);

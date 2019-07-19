@@ -530,4 +530,5 @@
     <string name="modify_success_tip">修改成功</string>
     <string name="student_evaluation">添加评价</string>
     <string name="select_all">全选</string>
+    <string name="deselect_all">取消全选</string>
 </resources>
