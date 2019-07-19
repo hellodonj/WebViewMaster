@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -27,11 +26,7 @@ import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
-import com.lqwawa.intleducation.base.widgets.PullRefreshView.NoScrollGridView;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.entity.CourseRateEntity;
-import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseVo;
 
@@ -80,7 +75,8 @@ public class MyCourseListAdapter extends MyBaseAdapter {
             R.drawable.shape_course_type_learn,
             R.drawable.shape_course_type_practice,
             R.drawable.shape_course_type_exam,
-            R.drawable.shape_course_type_video
+            R.drawable.shape_course_type_video,
+            R.drawable.shape_course_type_lesson
     };
 
     private String[] courseTypeNames;
