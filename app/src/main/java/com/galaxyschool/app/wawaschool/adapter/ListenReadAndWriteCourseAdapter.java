@@ -187,9 +187,6 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                         }
                         notifyDataSetChanged();
                     });
-                }
-
-                if (holder.radioGroup != null){
                     if (taskType == StudyTaskType.TASK_ORDER){
                         holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
                                 R.id.rb_multi_type);
@@ -214,16 +211,16 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                         holder.rellTypeBtnRB.setChecked(false);
                     }
                     //复述
-                    holder.rellTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,holder,true));
+                    holder.rellTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,true));
                     //语音评测
-                    holder.multiTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,holder,false));
+                    holder.multiTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,false));
                 }
             }
         }
         return convertView;
     }
 
-    private void analysisCompletionMode(ResourceInfoTag info,ViewHolder holder,boolean isRetell){
+    private void analysisCompletionMode(ResourceInfoTag info,boolean isRetell){
         if (isRetell){
             if (info.getCompletionMode() == 1){
                 return;

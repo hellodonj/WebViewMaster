@@ -285,20 +285,24 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
             Fragment fragment = null;
             fragment = fragmentList.get(0);
-            if (fragment != null && fragment instanceof TaskRequirementFragment) {
+            if (fragment instanceof TaskRequirementFragment) {
                 //刷新提交按钮
                 ((TaskRequirementFragment) fragment).refreshData();
             }
 
             fragment = fragmentList.get(1);
-            if (fragment != null && fragment instanceof CompletedHomeworkListFragment) {
+            if (fragment instanceof CompletedHomeworkListFragment) {
                 //刷新提交按钮
                 ((CompletedHomeworkListFragment) fragment).refreshData();
             }
 
+            if (fragment instanceof EvalHomeworkListFragment){
+                ((EvalHomeworkListFragment) fragment).refreshData();
+            }
+
             if (propertiesType == 1) {
                 fragment = fragmentList.get(2);
-                if (fragment != null && fragment instanceof EvalHomeworkListFragment) {
+                if (fragment instanceof EvalHomeworkListFragment) {
                     //刷新提交按钮
                     ((EvalHomeworkListFragment) fragment).refreshData();
                 }
