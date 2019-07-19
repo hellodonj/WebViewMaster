@@ -300,6 +300,7 @@ public class MyTaskListFragment extends ContactsListFragment {
         builder.append(",").append(StudyTaskType.SUPER_TASK);
         builder.append(",").append(StudyTaskType.MULTIPLE_RETELL_COURSE);
         builder.append(",").append(StudyTaskType.MULTIPLE_TASK_ORDER);
+        builder.append(",").append(StudyTaskType.MULTIPLE_OTHER_SUBMIT);
         params.put("TaskTypes", builder.toString());
         //分页信息
         params.put("Pager", getPageHelper().getFetchingPagerArgs());
@@ -407,7 +408,8 @@ public class MyTaskListFragment extends ContactsListFragment {
         if (!isSave && (
                 taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
-                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER)) {
+                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT)) {
             enterListenReadAndWriteDetail();
             return;
         } else if (!isSave && Integer.valueOf(selectHomeworkInfo.getTaskType()) == StudyTaskType.SUPER_TASK) {
