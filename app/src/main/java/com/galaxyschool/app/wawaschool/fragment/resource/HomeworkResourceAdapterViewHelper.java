@@ -150,6 +150,7 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || type.equals("13")
                         || type.equals("14")
                         || type.equals("15")
+                        || type.equals("18")
                         || (type.equals("11") && data.isNeedCommit())){
                     imageView.setVisibility(View.VISIBLE);
                 }else {
@@ -170,11 +171,11 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                     textView.setBackgroundResource(R.drawable.scan_class_course);
                 } else if (type.equals("1")){
                     textView.setBackgroundResource(R.drawable.scan_class_course);
-                } else if (type.equals("2")){
+                } else if (type.equals("2")
+                        || type.equals("3")
+                        || type.equals("17")
+                        || type.equals("18")){
                     //看作业
-                    textView.setBackgroundResource(R.drawable.icon_other);
-                } else if (type.equals("3")){
-                    //交作业，目前看作业和交作业背景图片是一致的，只是用“需提交”来区分。
                     textView.setBackgroundResource(R.drawable.icon_other);
                 } else if (type.equals("4")){
                     textView.setBackgroundResource(R.drawable.discuss_topic);
@@ -350,7 +351,8 @@ public abstract class HomeworkResourceAdapterViewHelper<T> extends AdapterViewHe
                         || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
                         || taskType == StudyTaskType.Q_DUBBING
-                        || taskType == StudyTaskType.MULTIPLE_Q_DUBBING){
+                        || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT){
                     //学生更新提交作业和讨论话题已读接口
                     UpdateStudentIsRead(data.getTaskId(),memberId,String.valueOf(taskType));
                 }else {

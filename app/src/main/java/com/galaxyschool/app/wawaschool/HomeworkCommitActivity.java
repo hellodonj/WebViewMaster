@@ -32,7 +32,9 @@ public class HomeworkCommitActivity extends BaseFragmentActivity {
         if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
                 || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                 || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
-                || taskType == StudyTaskType.MULTIPLE_Q_DUBBING) {
+                || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                || taskType == StudyTaskType.MULTIPLE_OTHER
+                || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT) {
             fragment = new ListenReadAndWriteStudyTaskFragment();
             TAG = ListenReadAndWriteStudyTaskFragment.TAG;
         } else if (taskType == StudyTaskType.SUPER_TASK) {
