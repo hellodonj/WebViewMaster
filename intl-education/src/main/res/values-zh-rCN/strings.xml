@@ -505,6 +505,7 @@
         <item>练本</item>
         <item>测本</item>
         <item>视频</item>
+        <item>教案</item>
     </string-array>
 
     <string name="user_comment">用户评论</string>
@@ -530,4 +531,5 @@
     <string name="modify_success_tip">修改成功</string>
     <string name="student_evaluation">添加评价</string>
     <string name="select_all">全选</string>
+    <string name="deselect_all">取消全选</string>
 </resources>

@@ -1,8 +1,9 @@
-package com.lqwawa.intleducation.module.discovery.adapter;
+package com.lqwawa.intleducation.module.tutorial.assistance;
 
 import android.app.Activity;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.StringUtil;
@@ -29,14 +29,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by XChen on 2016/11/12.
- * email:man0fchina@foxmail.com
+ * 描述: 三习教案的帮辅适配器
+ * 作者|时间: djj on 2019/7/19 0019 上午 11:50
  */
 
-public class CourseListAdapter extends MyBaseAdapter {
+public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssistanceAdapter.ViewHolder> {
+
     private Activity activity;
     private List<CourseVo> list;
-    private LayoutInflater inflater;
     private int img_width;
     private int img_height;
     ImageOptions imageOptions;
@@ -62,9 +62,8 @@ public class CourseListAdapter extends MyBaseAdapter {
 
     private String[] courseTypeNames;
 
-    public CourseListAdapter(Activity activity) {
+    public RelatedAssistanceAdapter(Activity activity) {
         this.activity = activity;
-        this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<CourseVo>();
 
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
@@ -81,45 +80,28 @@ public class CourseListAdapter extends MyBaseAdapter {
         courseTypeNames = activity.getResources().getStringArray(R.array.course_type_names);
     }
 
-    public CourseListAdapter(boolean tutorialMode, @NonNull @AuditType.AuditTypeRes int type, Activity activity) {
+    public RelatedAssistanceAdapter(boolean tutorialMode, @NonNull @AuditType.AuditTypeRes int type, Activity activity) {
         this(activity);
         this.tutorialMode = tutorialMode;
         this.type = type;
     }
 
-    public CourseListAdapter(Activity activity, boolean isClassCourseEnter) {
+    public RelatedAssistanceAdapter(Activity activity, boolean isClassCourseEnter) {
         this(activity);
         this.isClassCourseEnter = isClassCourseEnter;
     }
 
+
     @Override
-    public int getCount() {
-        return list.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mod_course_list_item, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+    public void onBindViewHolder(ViewHolder holder, int position) {
         CourseVo vo = list.get(position);
-        if (convertView != null) {
-            holder = (ViewHolder) convertView.getTag();
-        } else {
-            convertView = inflater.inflate(R.layout.mod_course_list_item, null);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        }
-
-
         // 设置选中未选中
         holder.cbSelect.setChecked(vo.isTag());
         if (isClassCourseEnter) {
@@ -151,18 +133,6 @@ public class CourseListAdapter extends MyBaseAdapter {
             holder.courseType.setText(courseTypeNames[courseType]);
             holder.courseType.setBackgroundResource(courseTypesBgId[courseType]);
         }
-        
-        /*if (vo.getPrice() > 0) {
-            holder.priceTitleTv.setVisibility(View.VISIBLE);
-
-            holder.coursePrice.setText("¥" + vo.getPrice());
-
-            holder.coursePrice.setText(Common.Constance.MOOC_MONEY_MARK + vo.getPrice());
-
-        }else{
-            holder.priceTitleTv.setVisibility(View.GONE);
-            holder.coursePrice.setText(activity.getResources().getString(R.string.free));
-        }*/
         if (vo.getPrice() == 0) {
             // 免费
             holder.mOrginalPriceLayout.setVisibility(View.GONE);
@@ -193,7 +163,7 @@ public class CourseListAdapter extends MyBaseAdapter {
         if (tutorialMode) {
             Date date = DateUtils.stringToDate(vo.getStartTime(), DateUtils.YYYYMMDD);
             holder.course_date_tv.setText(DateUtils.dateToString(date, DateUtils.YYYYMMDDCH));
-            /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(vo.getStartTime(),
+            /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(list.getStartTime(),
                     DateUtils.YYYYMMDDCH));*/
             holder.mBodyLayout.setVisibility(View.GONE);
             holder.mBottomLayout.setVisibility(View.VISIBLE);
@@ -216,54 +186,80 @@ public class CourseListAdapter extends MyBaseAdapter {
             holder.mBodyLayout.setVisibility(View.VISIBLE);
             holder.mBottomLayout.setVisibility(View.GONE);
         }
-        return convertView;
-    }
 
-    private class ViewHolder {
-        FrameLayout coverLay;
-        ImageView courseIv;
-        TextView courseType;
-        TextView courseName;
-        TextView organName;
-        TextView teacherName;
-        TextView courseStatus;
-        LinearLayout mOrginalPriceLayout;
-        TextView mOrginalTitle;
-        TextView mOrginalPrice;
-        LinearLayout mPriceLayout;
-        TextView priceTitleTv;
-        TextView coursePrice;
-        LinearLayout mBodyLayout;
-        FrameLayout mBottomLayout;
-        TextView course_date_tv;
-        TextView tvType;
-
-
-        CheckBox cbSelect;
-
-        public ViewHolder(View parent) {
-            coverLay = (FrameLayout) parent.findViewById(R.id.cover_lay);
-            courseIv = (ImageView) parent.findViewById(R.id.course_iv);
-            courseType = (TextView) parent.findViewById(R.id.course_type);
-            courseName = (TextView) parent.findViewById(R.id.course_name);
-            organName = (TextView) parent.findViewById(R.id.organ_name);
-            teacherName = (TextView) parent.findViewById(R.id.teacher_name);
-            courseStatus = (TextView) parent.findViewById(R.id.course_status);
-
-            mOrginalPriceLayout = (LinearLayout) parent.findViewById(R.id.original_price_layout);
-            mOrginalTitle = (TextView) parent.findViewById(R.id.tv_original_desc);
-            mOrginalPrice = (TextView) parent.findViewById(R.id.tv_original_price);
-            mPriceLayout = (LinearLayout) parent.findViewById(R.id.price_layout);
-            priceTitleTv = (TextView) parent.findViewById(R.id.price_title_tv);
-            coursePrice = (TextView) parent.findViewById(R.id.course_price);
-            mBodyLayout = (LinearLayout) parent.findViewById(R.id.body_layout);
-            mBottomLayout = (FrameLayout) parent.findViewById(R.id.bottom_layout);
-            course_date_tv = (TextView) parent.findViewById(R.id.course_date_tv);
-            tvType = (TextView) parent.findViewById(R.id.tv_type);
-            cbSelect = (CheckBox) parent.findViewById(R.id.cb_select);
+        // 如果设置了回调，则设置点击事件
+        if (mOnItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position1 = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView, position1);
+                }
+            });
         }
-
     }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        private FrameLayout coverLay;
+        private ImageView courseIv;
+        private TextView courseType;
+        private TextView courseName;
+        private TextView organName;
+        private TextView teacherName;
+        private TextView courseStatus;
+        private LinearLayout mOrginalPriceLayout;
+        private TextView mOrginalTitle;
+        private TextView mOrginalPrice;
+        private LinearLayout mPriceLayout;
+        private TextView priceTitleTv;
+        private TextView coursePrice;
+        private LinearLayout mBodyLayout;
+        private FrameLayout mBottomLayout;
+        private TextView course_date_tv;
+        private TextView tvType;
+        private CheckBox cbSelect;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            coverLay = (FrameLayout) itemView.findViewById(R.id.cover_lay);
+            courseIv = (ImageView) itemView.findViewById(R.id.course_iv);
+            courseType = (TextView) itemView.findViewById(R.id.course_type);
+            courseName = (TextView) itemView.findViewById(R.id.course_name);
+            organName = (TextView) itemView.findViewById(R.id.organ_name);
+            teacherName = (TextView) itemView.findViewById(R.id.teacher_name);
+            courseStatus = (TextView) itemView.findViewById(R.id.course_status);
+            mOrginalPriceLayout = (LinearLayout) itemView.findViewById(R.id.original_price_layout);
+            mOrginalTitle = (TextView) itemView.findViewById(R.id.tv_original_desc);
+            mOrginalPrice = (TextView) itemView.findViewById(R.id.tv_original_price);
+            mPriceLayout = (LinearLayout) itemView.findViewById(R.id.price_layout);
+            priceTitleTv = (TextView) itemView.findViewById(R.id.price_title_tv);
+            coursePrice = (TextView) itemView.findViewById(R.id.course_price);
+            mBodyLayout = (LinearLayout) itemView.findViewById(R.id.body_layout);
+            mBottomLayout = (FrameLayout) itemView.findViewById(R.id.bottom_layout);
+            course_date_tv = (TextView) itemView.findViewById(R.id.course_date_tv);
+            tvType = (TextView) itemView.findViewById(R.id.tv_type);
+            cbSelect = (CheckBox) itemView.findViewById(R.id.cb_select);
+        }
+    }
+    /**
+     * 定义接口回调
+     */
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
 
     /**
      * 下拉刷新设置数据
@@ -295,4 +291,14 @@ public class CourseListAdapter extends MyBaseAdapter {
     public List<CourseVo> getItems() {
         return list;
     }
+
+    /**
+     * 获取实体
+     * @param position
+     * @return
+     */
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
 }

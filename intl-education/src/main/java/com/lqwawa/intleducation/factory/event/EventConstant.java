@@ -45,6 +45,11 @@ public abstract class EventConstant {
 	public static final String CREATE_TUTOR_ORDER = "CREATE_TUTOR_ORDER";
 
 	/**
+	 * 创建班级付费订单的Event
+	 */
+	public static final String CREATE_CLASS_ORDER = "CREATE_CLASS_ORDER";
+
+	/**
 	 * 触发更新第一章,或者全本
 	 */
 	public static final String TRIGGER_UPDATE_COURSE = "TRIGGER_UPDATE_COURSE";

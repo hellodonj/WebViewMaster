@@ -605,7 +605,7 @@
 -keep class com.coloros.mcsdk.** { *; }
 
 #---dubbing---
--dontwarn com.ijkplayer.tv.danmaku.ijk.media.**
--keep class com.ijkplayer.tv.danmaku.ijk.media.** { *; }
+-dontwarn tv.danmaku.ijk.media.**
+-keep class tv.danmaku.ijk.media.** { *; }
 -keep class com.icedcap.dubbing.view.** { *; }
 -keep class me.zhouzhuo.zzhorizontalprogressbar.** { *; }

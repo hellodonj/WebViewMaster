@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.ijkplayer.tv.danmaku.ijk.media;
+package tv.danmaku.ijk.media;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import com.ijkplayer.services.MediaPlayerService;
 import com.ijkplayer.utils.IjkPlayerConfig;
+import com.ijkplayer.utils.IjkPlayerUtils;
 import com.lqwawa.apps.R;
 
 import java.io.File;
@@ -1046,7 +1047,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             default: {
                 IjkMediaPlayer ijkMediaPlayer = null;
                 if (mUri != null) {
-                    ijkMediaPlayer = new IjkMediaPlayer();
+                    ijkMediaPlayer = IjkPlayerUtils.newPlayer();
                     ijkMediaPlayer.native_setLogLevel(IjkMediaPlayer.IJK_LOG_DEBUG);
 
                     if (mSettings.getUsingMediaCodec()) {

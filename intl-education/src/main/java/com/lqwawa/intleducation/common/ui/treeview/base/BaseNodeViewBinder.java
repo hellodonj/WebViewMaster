@@ -14,6 +14,7 @@
 
 package com.lqwawa.intleducation.common.ui.treeview.base;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public abstract class BaseNodeViewBinder extends RecyclerView.ViewHolder {
      *
      * @param treeNode Node data
      */
-    public abstract void bindView(TreeNode treeNode);
+    public abstract void bindView(TreeNode treeNode, Context context);
 
     /**
      * if you do not want toggle the node when click whole item view,then you can assign a view to

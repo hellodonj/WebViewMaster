@@ -24,8 +24,12 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.StringCallback;
+import com.lqwawa.intleducation.factory.data.entity.ClassOrderEntity;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
@@ -112,6 +116,17 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     //帮辅老师选中的参数
     private TutorChoiceEntity mChoiceEntity;
     private TutorChoiceParams mParams;
+    private static final String KEY_JOIN_CLASS_ENTER = "KEY_JOIN_CLASS_ENTER";
+    private static final String KEY_MEMBER_ID = "KEY_MEMBER_ID";
+    private static final String KEY_CLASS_ID_1 = "KEY_CLASS_ID_1";
+    private static final String KEY_CLASS_NAME = "KEY_CLASS_NAME";
+    private static final String KEY_CLASS_THUILIMAGE = "KEY_CLASS_THUILIMAGE";
+    private static final String KEY_SCHOOL_ID = "KEY_SCHOOL_ID";
+    private static final String KEY_SCHOOL_NAME = "KEY_SCHOOL_NAME";
+    private static final String KEY_PRICE_1 = "KEY_PRICE_1";
+    //是否加入班级跳转
+    private boolean isJoinClassEnter;
+    private String mMemberId, mClassId1, mClassName, mClassThuilImage, mSchoolId, mSchoolName, mPrice1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +154,16 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT2)) {
             mParams = (TutorChoiceParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT2);
         }
+        //mMemberId, mClassId1, mClassName, mClassThuilImage, mSchoolId, mSchoolName, mPrice1;
+        isJoinClassEnter = getIntent().getBooleanExtra(KEY_JOIN_CLASS_ENTER, false);
+        mMemberId =  getIntent().getStringExtra(KEY_MEMBER_ID);
+        mClassId1 =  getIntent().getStringExtra(KEY_CLASS_ID_1);
+        mClassName =  getIntent().getStringExtra(KEY_CLASS_NAME);
+        mClassThuilImage =  getIntent().getStringExtra(KEY_CLASS_THUILIMAGE);
+        mSchoolId =  getIntent().getStringExtra(KEY_SCHOOL_ID);
+        mSchoolName =  getIntent().getStringExtra(KEY_SCHOOL_NAME);
+        mPrice1 =  getIntent().getStringExtra(KEY_PRICE_1);
+
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         // mTopBar.setBack(true);
         mTopBar.setTitle(getResources().getString(R.string.pay_way));
@@ -187,14 +212,14 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         mCommitTv.setOnClickListener(this);
         mNeedPayTv.setText(new StringBuffer().append("¥").append(mPrice));
 
-        if (isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId) || isTutorChoiceEnter) {
+        if (isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId) || isTutorChoiceEnter || isJoinClassEnter) {
             // 在线课堂和LQ学程章节购买,替别人购买都关闭激活码购买 帮辅选择老师支付
             mPaywayActivationCode.setVisibility(View.GONE);
         } else {
             mPaywayActivationCode.setVisibility(View.VISIBLE);
         }
 
-        if (isTutorChoiceEnter) {
+        if (isTutorChoiceEnter || isJoinClassEnter) {
             //帮辅选择老师支付
             mPaywayWechatpay.setVisibility(View.GONE);
             mPaywayAlipay.setVisibility(View.GONE);
@@ -599,6 +624,24 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         context.startActivity(starter);
     }
 
+    /**
+     * @des 加入班级入口
+     */
+    public static void newInstance(Context context, boolean isJoinClassEnter, @NonNull String memberId, @NonNull String classId,
+                                   String className, String classThuilImage, @NonNull String schoolId, String schoolName,
+                                   @NonNull String price) {
+        Intent starter = new Intent(context, PayActivity.class);
+        starter.putExtra(KEY_JOIN_CLASS_ENTER, isJoinClassEnter);
+        starter.putExtra(KEY_MEMBER_ID, memberId);
+        starter.putExtra(KEY_CLASS_ID_1, classId);
+        starter.putExtra(KEY_CLASS_NAME, className);
+        starter.putExtra(KEY_CLASS_THUILIMAGE, classThuilImage);
+        starter.putExtra(KEY_SCHOOL_ID, schoolId);
+        starter.putExtra(KEY_SCHOOL_NAME, schoolName);
+        starter.putExtra(KEY_PRICE_1, price);
+        context.startActivity(starter);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -684,6 +727,43 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                             }
                         }
                     });
+        }else if (isJoinClassEnter){
+            //{"memberId":"","classId":"","className":"","classThuilImage":"","schoolId":"","schoolName":"","price":2s}
+            RequestVo requestVo = new RequestVo();
+            requestVo.addParams("memberId",mMemberId);
+            requestVo.addParams("classId",mClassId1);
+            requestVo.addParams("className",mClassName);
+            requestVo.addParams("classThuilImage",mClassThuilImage);
+            requestVo.addParams("schoolId",mSchoolId);
+            requestVo.addParams("schoolName",mSchoolName);
+            requestVo.addParams("price",mPrice1);
+            RequestParams params = new RequestParams(AppConfig.ServerUrl.PostCreateClassOrder);
+            params.setAsJsonContent(true);
+            params.setBodyContent(requestVo.getParams());
+            params.setConnectTimeout(10000);
+            LogUtil.i(PayActivity.class, "send CreateClassOrder ==== " + params.getUri());
+            x.http().post(params, new StringCallback<ClassOrderEntity>() {
+
+                @Override
+                public void onSuccess(ClassOrderEntity result) {
+                    if (EmptyUtil.isEmpty(result)) {
+                        return;
+                    }
+                    if (result.getCode() == 0) {
+                        int id = result.getId();
+                        // 通过EventBus通知
+                        EventBus.getDefault().post(new EventWrapper(id, EventConstant.CREATE_CLASS_ORDER));
+                        finish();
+                    }else {
+                        UIUtil.showToastSafe(result.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(Throwable throwable, boolean b) {
+                    super.onError(throwable, b);
+                }
+            });
         } else {
             String memberId = UserHelper.getUserId();
             RequestVo requestVo = new RequestVo();

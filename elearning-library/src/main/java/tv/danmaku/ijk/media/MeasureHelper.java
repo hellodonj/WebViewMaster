@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.ijkplayer.tv.danmaku.ijk.media;
+package tv.danmaku.ijk.media;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

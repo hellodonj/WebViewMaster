@@ -36,7 +36,11 @@ public class TreeNode {
 
     private boolean selected;
 
+    private boolean isShowCheckBox;
+
     private boolean itemClickEnable = true;
+
+    private Object extras;
 
     public TreeNode(Object value) {
         this.value = value;
@@ -110,6 +114,14 @@ public class TreeNode {
         return children;
     }
 
+    public boolean isShowCheckBox() {
+        return isShowCheckBox;
+    }
+
+    public void setShowCheckBox(boolean showCheckBox) {
+        isShowCheckBox = showCheckBox;
+    }
+
     public List<TreeNode> getSelectedChildren() {
         List<TreeNode> selectedChildren = new ArrayList<>();
         for (TreeNode child : getChildren()) {
@@ -119,16 +131,16 @@ public class TreeNode {
         }
         return selectedChildren;
     }
-    
+
     public void setChildren(List<TreeNode> children) {
         if (children == null) {
             return;
-        }        
+        }
         this.children = new ArrayList<>();
         for (TreeNode child : children) {
             addChild(child);
         }
-    }    
+    }
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
@@ -170,4 +182,11 @@ public class TreeNode {
         this.selected = selected;
     }
 
+    public Object getExtras() {
+        return extras;
+    }
+
+    public void setExtras(Object extras) {
+        this.extras = extras;
+    }
 }

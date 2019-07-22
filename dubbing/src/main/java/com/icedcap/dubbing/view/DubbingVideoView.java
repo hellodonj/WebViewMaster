@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import com.icedcap.dubbing.DubbingActivity;
 import com.icedcap.dubbing.DubbingPreviewActivity;
 import com.icedcap.dubbing.R;
-import com.ijkplayer.tv.danmaku.ijk.media.IjkVideoView;
+import tv.danmaku.ijk.media.IjkVideoView;
 import com.icedcap.dubbing.utils.AudioMedia;
 import com.icedcap.dubbing.utils.DimenUtil;
 import com.icedcap.dubbing.utils.MediaUtil;

@@ -75,6 +75,14 @@ public class SxExamDetailVo {
                 public String linkCourseName;
                 @SerializedName("score")
                 public String score;
+                @SerializedName("isRead")
+                private boolean isRead;
+                @SerializedName("taskType")
+                public int taskType;
+
+                public boolean isIsRead() {
+                    return isRead || status == 1;
+                }
             }
         }
 
