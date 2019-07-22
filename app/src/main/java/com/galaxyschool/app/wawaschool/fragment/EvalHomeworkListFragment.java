@@ -1713,6 +1713,10 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                 //复述课件,任务单显示成绩统计  打分
                 if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                     mStatisticFl.setVisibility(View.VISIBLE);
+                    if (task.getRepeatCourseCompletionMode() == 3 && roleType != RoleType.ROLE_TYPE_TEACHER){
+                        mCommitBtnFl.setVisibility(View.GONE);
+                        setSpeechAssessmentViewVisible();
+                    }
                 } else {
                     mStatisticFl.setVisibility(View.GONE);
                 }
@@ -1720,6 +1724,12 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                 if (taskType == StudyTaskType.RETELL_WAWA_COURSE && propertiesType == 1){
                     //语音评测课件
                     mStatisticFl.setVisibility(View.VISIBLE);
+                } else if (task.getRepeatCourseCompletionMode() == 3) {
+                    mStatisticFl.setVisibility(View.VISIBLE);
+                    if (roleType != RoleType.ROLE_TYPE_TEACHER) {
+                        mCommitBtnFl.setVisibility(View.GONE);
+                        setSpeechAssessmentViewVisible();
+                    }
                 } else {
                     mStatisticFl.setVisibility(View.GONE);
                 }

@@ -34,7 +34,9 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
     public CourseClassifyPagerAdapter(Context context, List<LQCourseConfigEntity> entities, AdapterListener<LQCourseConfigEntity> listener) {
         super(entities, listener);
         screenWidth = ScreenUtils.getScreenWidth(context);
-        itemWidth = screenWidth / 4;
+        int size = entities.size();
+        if (size > 4) itemWidth = screenWidth / 4;
+        else itemWidth = screenWidth / size;
     }
 
     @Override

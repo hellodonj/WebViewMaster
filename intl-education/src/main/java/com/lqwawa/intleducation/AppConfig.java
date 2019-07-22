@@ -971,5 +971,13 @@ public final class AppConfig {
         //查询帮辅价格
         public static final String PostGetTutorPrice =
                 ServerBase+"api/tutor/getTutorPriceByMemberId";
+
+        //三习教案关联教辅
+        public static final String PostGetSxRelationCourseList =
+                ServerBase+"api/courseEx/getSxRelationCourseList";
+
+        // 三习教案考试测试
+        public static final String GetSxExamDetail = ServerBase +
+                "api/student/getSxExamDetail";
     }
 }

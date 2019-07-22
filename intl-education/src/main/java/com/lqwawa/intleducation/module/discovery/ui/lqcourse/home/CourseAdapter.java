@@ -1,7 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.lqcourse.home;
 
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,9 +8,6 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-
-import org.w3c.dom.Text;
-import org.xutils.x;
 
 /**
  * **********************************
@@ -50,7 +46,8 @@ public class CourseAdapter extends RecyclerAdapter<CourseVo> {
                 R.drawable.shape_course_type_learn,
                 R.drawable.shape_course_type_practice,
                 R.drawable.shape_course_type_exam,
-                R.drawable.shape_course_type_video
+                R.drawable.shape_course_type_video,
+                R.drawable.shape_course_type_lesson
         };
 
         private String[] courseTypeNames;

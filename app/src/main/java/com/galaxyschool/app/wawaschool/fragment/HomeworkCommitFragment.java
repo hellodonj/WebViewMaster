@@ -255,14 +255,18 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     //听说+读写只有两个tab
                     fragment = fragmentList.get(0);
                 }
-                if (fragment != null && fragment instanceof CompletedHomeworkListFragment) {
+                if (fragment instanceof CompletedHomeworkListFragment) {
                     //刷新提交列表
                     ((CompletedHomeworkListFragment) fragment).refreshData();
                 }
 
+                if (fragment instanceof EvalHomeworkListFragment){
+                    ((EvalHomeworkListFragment) fragment).refreshData();
+                }
+
                 if (propertiesType == 1) {
                     fragment = fragmentList.get(2);
-                    if (fragment != null && fragment instanceof EvalHomeworkListFragment) {
+                    if (fragment instanceof EvalHomeworkListFragment) {
                         //刷新提交按钮
                         ((EvalHomeworkListFragment) fragment).refreshData();
                     }
@@ -281,20 +285,24 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
             Fragment fragment = null;
             fragment = fragmentList.get(0);
-            if (fragment != null && fragment instanceof TaskRequirementFragment) {
+            if (fragment instanceof TaskRequirementFragment) {
                 //刷新提交按钮
                 ((TaskRequirementFragment) fragment).refreshData();
             }
 
             fragment = fragmentList.get(1);
-            if (fragment != null && fragment instanceof CompletedHomeworkListFragment) {
+            if (fragment instanceof CompletedHomeworkListFragment) {
                 //刷新提交按钮
                 ((CompletedHomeworkListFragment) fragment).refreshData();
             }
 
+            if (fragment instanceof EvalHomeworkListFragment){
+                ((EvalHomeworkListFragment) fragment).refreshData();
+            }
+
             if (propertiesType == 1) {
                 fragment = fragmentList.get(2);
-                if (fragment != null && fragment instanceof EvalHomeworkListFragment) {
+                if (fragment instanceof EvalHomeworkListFragment) {
                     //刷新提交按钮
                     ((EvalHomeworkListFragment) fragment).refreshData();
                 }
@@ -506,13 +514,15 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
      * 进入成绩统计
      */
     public void enterAchievementStatistics() {
-        if (completedHomeworkListFragment != null) {
+        if (completedHomeworkListFragment != null || evalHomeworkListFragment != null) {
             ArrayList<CommitTask> data = new ArrayList<>();
-            ArrayList<CommitTask> commitTasks = (ArrayList<CommitTask>) completedHomeworkListFragment.getData();
-            if (commitTasks != null && commitTasks.size() > 0) {
-                data.addAll(commitTasks);
+            if (completedHomeworkListFragment != null) {
+                ArrayList<CommitTask> commitTasks = (ArrayList<CommitTask>) completedHomeworkListFragment.getData();
+                if (commitTasks != null && commitTasks.size() > 0) {
+                    data.addAll(commitTasks);
+                }
             }
-            if (propertiesType == 1 && evalHomeworkListFragment != null) {
+            if ((propertiesType == 1 || studyTask.getRepeatCourseCompletionMode() == 3) && evalHomeworkListFragment != null) {
                 ArrayList<CommitTask> evalTaskList = (ArrayList<CommitTask>) evalHomeworkListFragment.getData();
                 if (evalTaskList != null && evalTaskList.size() > 0) {
                     data.addAll(evalTaskList);
@@ -563,6 +573,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     }
                 }
                 answerCardParam.setRoleType(roleType);
+            }
+            if (TaskType == StudyTaskType.RETELL_WAWA_COURSE){
+                if (studyTask.getRepeatCourseCompletionMode() == 3){
+                    list = evalList;
+                }
             }
             ScoreStatisticsActivity.start(
                     getActivity(),
@@ -729,7 +744,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.pager_sliding_tab_strip);
 
         //初始化标题
-        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE) {
+        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE
+                && studyTaskType != StudyTaskType.MULTIPLE_OTHER) {
             titleList.add(getString(R.string.task_requirements));
         }
         //看课件和看作业不显示提交列表
@@ -746,7 +762,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         //初始化fragment
         Fragment fragment = null;
         //任务要求
-        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE) {
+        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE
+                && studyTaskType != StudyTaskType.MULTIPLE_OTHER) {
             fragment = new TaskRequirementFragment();
             fragment.setArguments(getHomeworkListBundleInfo());
             fragmentList.add(fragment);
@@ -759,15 +776,28 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (shouldShowCommitedList()) {
             fragment = new CompletedHomeworkListFragment();
             fragment.setArguments(getHomeworkListBundleInfo());
-            fragmentList.add(fragment);
-            //赋值
-            this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
-            if (propertiesType == 1) {
-                fragment = new EvalHomeworkListFragment();
-                fragment.setArguments(getHomeworkListBundleInfo());
+            if (TaskType == StudyTaskType.RETELL_WAWA_COURSE){
+                if (studyTask.getRepeatCourseCompletionMode() == 3){
+                    //评测
+                    fragment = new EvalHomeworkListFragment();
+                    fragment.setArguments(getHomeworkListBundleInfo());
+                    fragmentList.add(fragment);
+                    //赋值
+                    this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                } else {
+                    fragmentList.add(fragment);
+                    this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
+                    if (propertiesType == 1) {
+                        fragment = new EvalHomeworkListFragment();
+                        fragment.setArguments(getHomeworkListBundleInfo());
+                        fragmentList.add(fragment);
+                        //赋值
+                        this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                    }
+                }
+            } else {
                 fragmentList.add(fragment);
-                //赋值
-                this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
             }
         }
 
@@ -1032,7 +1062,12 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (task == null) {
             return;
         }
-
+        if (studyTaskType == StudyTaskType.MULTIPLE_OTHER && homeworkListInfo != null){
+            task.setResId(homeworkListInfo.getResId());
+            task.setResThumbnailUrl(homeworkListInfo.getResThumbnailUrl());
+            task.setResUrl(homeworkListInfo.getResUrl());
+            task.setTaskTitle(homeworkListInfo.getTaskTitle());
+        }
         String resId = task.getResId();
         if (!TextUtils.isEmpty(resId)) {
             if (resId.contains(",")) {
@@ -3351,8 +3386,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 if (courseData != null) {
                     String resproperties = courseData.getResproperties();
                     taskCourseOrientation = courseData.screentype;
-                    if (!TextUtils.isEmpty(resproperties)) {
-                        propertiesType = Integer.valueOf(resproperties);
+                    if (studyTask.getRepeatCourseCompletionMode() == 2) {
+                        if (!TextUtils.isEmpty(resproperties)) {
+                            propertiesType = Integer.valueOf(resproperties);
+                        }
                     }
                     if (viewPager == null) {
                         initViewPager();

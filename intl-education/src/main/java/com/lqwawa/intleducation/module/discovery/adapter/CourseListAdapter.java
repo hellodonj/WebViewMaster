@@ -56,7 +56,8 @@ public class CourseListAdapter extends MyBaseAdapter {
             R.drawable.shape_course_type_learn,
             R.drawable.shape_course_type_practice,
             R.drawable.shape_course_type_exam,
-            R.drawable.shape_course_type_video
+            R.drawable.shape_course_type_video,
+            R.drawable.shape_course_type_lesson
     };
 
     private String[] courseTypeNames;

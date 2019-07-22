@@ -442,6 +442,10 @@ public class TaskRequirementFragment extends ContactsListFragment{
                         || taskType == StudyTaskType.RETELL_WAWA_COURSE
                         || taskType == StudyTaskType.Q_DUBBING) {
                     mStatisticFl.setVisibility(View.VISIBLE);
+                    if (task.getRepeatCourseCompletionMode() == 3 && roleType != RoleType.ROLE_TYPE_TEACHER){
+                        retellCourseFl.setVisibility(View.GONE);
+                        setSpeechAssessmentViewVisible();
+                    }
                 } else {
                     mStatisticFl.setVisibility(View.GONE);
                 }
@@ -449,6 +453,12 @@ public class TaskRequirementFragment extends ContactsListFragment{
                 if (taskType == StudyTaskType.RETELL_WAWA_COURSE && propertiesType == 1){
                     //语音评测课件
                     mStatisticFl.setVisibility(View.VISIBLE);
+                } else if (task.getRepeatCourseCompletionMode() == 3){
+                    mStatisticFl.setVisibility(View.VISIBLE);
+                    if (roleType != RoleType.ROLE_TYPE_TEACHER) {
+                        retellCourseFl.setVisibility(View.GONE);
+                        setSpeechAssessmentViewVisible();
+                    }
                 } else {
                     mStatisticFl.setVisibility(View.GONE);
                 }

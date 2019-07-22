@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
@@ -38,9 +37,11 @@ import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.ui.CourseExamListActivity;
+import com.lqwawa.intleducation.module.learn.ui.ExamsAndTestsActivity;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.UnitExamListActivity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.osastudio.common.utils.TipMsgHelper;
 
@@ -57,6 +58,7 @@ import java.util.List;
 public class CourseChapterAdapter extends MyBaseAdapter {
     public static final int TYPE_CWORK = 10;
     public static final int TYPE_CEXAM = 11;
+    public static final int TYPE_EXAM = 1;
     private Activity activity;
     private List<ChapterVo> list;
     private LayoutInflater inflater;
@@ -87,6 +89,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     //是否从班级学程进入
     private boolean isClassCourseEnter;
     private boolean isFromScan;
+    private String TAG = getClass().getSimpleName();
 
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -160,6 +163,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             holder.isChildren = vo.getIsChildren();
             convertView.setTag(holder);
         }
+        int role = UserHelper.getCourseAuthorRole(activity.getIntent()
+                .getStringExtra("memberId"), courseVo);
+
         if (vo.getIsChildren()) {
             //课程
             Drawable drawableFlagHere = activity.getResources().getDrawable(R.drawable.ic_flag_here);
@@ -212,6 +218,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                             // 判空
                             if (EmptyUtil.isEmpty(courseVo)) return;
+
 
                             UnitExamListActivity.start(activity, vo.getCourseId(), vo.getParentId(),
                                     activity.getIntent().getBooleanExtra("canEdit", false),
@@ -345,6 +352,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     /*holder.lessonNameTv.setText(
                             StringUtils.getSectionNumString(activity, vo.getSectionName(), vo.getWeekNum())
                                     + "  " + vo.getName());*/
+
+
                     holder.lessonNameTv.setText(vo.getName());
                     holder.resRootLay.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -353,7 +362,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 mOnSelectListener.onSelect(vo);
                                 return;
                             }
-
                             if (tutorialMode && !isJoinCourse) {
                                 if (!vo.getParentId().equals(list.get(0).getId())) {
                                     UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
@@ -385,6 +393,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                 // 是否试听权限 没有阅读全部
                                 boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+                                CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                                 if (role == UserHelper.MoocRoleType.STUDENT ||
                                         role == UserHelper.MoocRoleType.PARENT) {
@@ -409,7 +418,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                                     // 不是从学程馆进来的,购买
                                     int intId = Integer.parseInt(vo.getParentId());
-                                    CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                                     if (!firstChapter && isJoinCourse && !vo.isBuyed() && !isAuthorized) {
 
@@ -489,8 +497,23 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     UIUtil.showToastSafe(R.string.join_school_to_learn);
                                     return;
                                 }
+//                                int examType = vo.getExamType();
+                                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                                //点击入口是三习教案馆
+                                if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                                    ChapterVo chapterVo = list.get(position);
+                                    int examType = chapterVo.getExamType();
+                                    //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
 
-                                toLessonDetailsActivity(vo, isFreeUser);
+                                    if (examType == TYPE_EXAM) {
+                                        //courseid,sectionId,token
+//                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
+                                    } else {
+                                        //普通教案详情入口
+                                        Log.e(TAG, "onClick: 普通教案详情入口");
+                                    }
+                                } else toLessonDetailsActivity(vo, isFreeUser);
                                 /*LessonDetailsActivity.start(activity, courseId, vo.getId(),
                                         vo.getSectionName(), vo.getName(),
                                         needFlagRead,
@@ -626,7 +649,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.tvPrice.setBackgroundResource(R.drawable.btn_red_stroke_radius_16);
                 }
             }
-
+            boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+            CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
             // 添加点击事件
             holder.tvPrice.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -656,8 +680,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         // 没有购买 点击购买
                         int intId = Integer.parseInt(vo.getId());
                         // 是否试听权限 没有阅读全部
-                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
-                        CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
+//                        boolean isFreeUser = (!vo.isBuyed()) && !UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+//                        CourseDetailParams params = getCourseDetailParams(courseVo, isFreeUser);
 
                         if (courseDetailParams != null && courseDetailParams.getSchoolInfoEntity() != null
                                 && !courseDetailParams.getSchoolInfoEntity().hasJoinedSchool()) {
@@ -719,20 +743,30 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.arrow_up_gray_ico));
             }
+            //如果是考试 则隐藏f折叠按钮
+//            int examType = vo.getExamType();
+            int examType = list.get(position).getExamType();
+            holder.hideLessonIv.setVisibility(examType == TYPE_EXAM ? View.GONE : View.VISIBLE);
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean hide = !list.get(position).isIsHide();
-                    list.get(position).setIsHide(hide);
-                    for (int i = position + 1; i < list.size(); i++) {
-                        if (list.get(i).getIsChildren()
-                                && list.get(i).getType() != TYPE_CEXAM) {
-                            list.get(i).setIsHide(hide);
-                        } else {
-                            break;
+                    //三习教案馆考试章节跳转
+                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
+                    } else {
+                        boolean hide = !list.get(position).isIsHide();
+                        list.get(position).setIsHide(hide);
+                        for (int i = position + 1; i < list.size(); i++) {
+                            if (list.get(i).getIsChildren()
+                                    && list.get(i).getType() != TYPE_CEXAM) {
+                                list.get(i).setIsHide(hide);
+                            } else {
+                                break;
+                            }
                         }
+                        notifyDataSetChanged();
                     }
-                    notifyDataSetChanged();
                 }
             });
         }
@@ -1173,6 +1207,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         params.setTeacherTutorIds(stringBuilder.toString());
 
         boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false);
+
         LessonDetailsActivity.start(activity, courseId, chapterId,
                 sectionName, name, needFlagRead, true, canEdit,
                 status, memberId, vo.isContainAssistantWork(),

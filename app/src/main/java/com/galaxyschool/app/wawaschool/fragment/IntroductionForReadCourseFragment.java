@@ -1249,6 +1249,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
         //针对复述课件的图片的处理方式
         setRetellImageCourseData();
+//        if (multipleDoTask) {
+            //多选的读写单和听说课
+            configMultipleBaseData();
+//        }
         if (isFromSuperTask && !multipleDoTask) {
             uploadParameter.setTempData(isTempData);
             //综合任务的返回
@@ -1257,10 +1261,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
         //发布类型
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
-        if (multipleDoTask) {
-            //多选的读写单和听说课
-            configMultipleBaseData();
-        }
         if (onlineRes != null) {
             //空中课堂的布置学习任务
             enterSendOnlineStudyTask();
