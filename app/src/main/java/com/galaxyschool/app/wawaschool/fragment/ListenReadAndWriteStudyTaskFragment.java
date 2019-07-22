@@ -285,6 +285,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                         taskFinishCount, taskNum);
             }
         }
+    }
+
+    private void updateRightView(){
         //更新右上角的是否可以查看
         if (homeworkListInfo != null && homeworkListInfo.getViewOthersTaskPermisson() == 1
                 && roleType == RoleType.ROLE_TYPE_TEACHER){
@@ -434,6 +437,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 //听说 + 读写 任务对象
                 homeworkListInfo = info;
                 updateFinishStatus();
+                updateRightView();
             } else if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
                     || info.getType() == StudyTaskType.WATCH_HOMEWORK
                     || info.getType() == StudyTaskType.SUBMIT_HOMEWORK
@@ -443,6 +447,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
+                        updateRightView();
                     } else {
                         listenData.add(info);
                     }
@@ -455,6 +460,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
+                        updateRightView();
                     } else {
                         readAndWriteData.add(info);
                     }

@@ -345,6 +345,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         taskFinishCount,taskNum);
             }
         }
+    }
+
+    private void updateRightView(){
         //更新右上角的是否可以查看
         if (homeworkListInfo != null && homeworkListInfo.getViewOthersTaskPermisson() == 1
                 && roleType == RoleType.ROLE_TYPE_TEACHER){
@@ -1071,6 +1074,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             if (info.getType() == StudyTaskType.SUPER_TASK) {
                 homeworkListInfo = info;
                 updateFinishStatus();
+                updateRightView();
             } else {
                 if (isPick) {
                     if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
