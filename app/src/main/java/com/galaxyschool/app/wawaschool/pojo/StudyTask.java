@@ -52,6 +52,15 @@ public class StudyTask implements Serializable{
     private int RepeatCourseCompletionMode;
     private String CourseId;
     private String CourseName;
+    private int ViewOthersTaskPermisson;//是否可以查看  0 可以查看 1 不可以查看
+
+    public int getViewOthersTaskPermisson() {
+        return ViewOthersTaskPermisson;
+    }
+
+    public void setViewOthersTaskPermisson(int viewOthersTaskPermisson) {
+        ViewOthersTaskPermisson = viewOthersTaskPermisson;
+    }
 
     public String getCourseId() {
         return CourseId;

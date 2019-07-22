@@ -553,6 +553,7 @@
 
     <string name="label_lesson_plan">教案大纲</string>
     <string name="label_teaching_assistant">关联教辅</string>
+    <string name="label_lesson_comment">教案评价</string>
     <string name="label_colon_category1">类别：</string>
     <string name="label_course_filtrate_readers">读本</string>
     <string name="label_course_filtrate_schoolbook">学本</string>

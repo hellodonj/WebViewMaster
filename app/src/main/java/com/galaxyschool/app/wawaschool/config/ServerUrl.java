@@ -1132,4 +1132,9 @@ public class ServerUrl {
      * 查询mooc看课件更新已读未读的权限
      */
     public static final String GET_TASKTYPE_BY_CHAPTERID_BASE_URL = LQMOOC_BASE_SERVER + "api/chapter/getTaskTypeByChapterId";
+
+    /**
+     * 设置学生查看其他学生的作业权限
+     */
+    public static final String GET_VIEW_OTHERS_PERMISSION_BASE_URL = BASE_SERVER + "Api/Mobile/ST/StudyTask/SetStudentViewOthersTaskPermisson";
 }

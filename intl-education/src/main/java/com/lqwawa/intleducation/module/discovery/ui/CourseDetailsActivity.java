@@ -218,6 +218,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private RadioButton mRbLive, mRbLiveF;
     //三习教案tab
     private RadioButton mRbStudy, mRbStudyF;
+    //教案评价
+    private RadioButton mRbComment,mRbCommentF;
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
@@ -432,6 +434,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         mRbStudyF = (RadioButton) findViewById(R.id.rb_study_plan_f);
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
+        mRbComment= (RadioButton) findViewById(R.id.rb_course_comment);
+        mRbCommentF= (RadioButton) findViewById(R.id.rb_course_comment_f);
 
         if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
@@ -443,11 +447,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             mRbStudyF.setText(getResources().getText(R.string.label_lesson_plan));
             mRbLive.setText(getResources().getText(R.string.label_teaching_assistant));
             mRbLiveF.setText(getResources().getText(R.string.label_teaching_assistant));
+            mRbComment.setText(getResources().getText(R.string.label_lesson_comment));
+            mRbCommentF.setText(getResources().getText(R.string.label_lesson_comment));
         }else {
             mRbStudy.setText(getResources().getText(R.string.label_tab_course_chapter));
             mRbStudyF.setText(getResources().getText(R.string.label_tab_course_chapter));
             mRbLive.setText(getResources().getText(R.string.label_teach_class));
             mRbLiveF.setText(getResources().getText(R.string.label_teach_class));
+            mRbComment.setText(getResources().getText(R.string.label_course_evaluation));
+            mRbCommentF.setText(getResources().getText(R.string.label_course_evaluation));
         }
 
         textViewAddToCart = (TextView) findViewById(R.id.add_to_cart_tv);

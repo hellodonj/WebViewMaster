@@ -82,7 +82,15 @@ public class UploadParameter implements Serializable{
     private int SubmitType;
     //校本资源库的类型
     public int schoolMaterialType;
+    private int viewOtherPermissionType;
 
+    public int getViewOtherPermissionType() {
+        return viewOtherPermissionType;
+    }
+
+    public void setViewOtherPermissionType(int viewOtherPermissionType) {
+        this.viewOtherPermissionType = viewOtherPermissionType;
+    }
 
     public int getSchoolMaterialType() {
         return schoolMaterialType;

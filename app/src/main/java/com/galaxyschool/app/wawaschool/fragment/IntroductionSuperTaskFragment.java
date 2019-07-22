@@ -45,6 +45,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.LookResDto;
@@ -81,11 +82,13 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     public static final String TAG = IntroductionSuperTaskFragment.class.getSimpleName();
     private LinearLayout addNewTaskLayout;
     private LinearLayout superTaskHeaderLayout;
+    private TextView headRightTextV;
     private TextView taskTitleTextV;
     private TextView finishStudyTaskStatus;
     private TextView taskStartTimeTextV;//开始时间
     private RadioButton immediatelyRb;//立即发布
     private RadioButton answerByTimeRb;//按时间作答
+    private RadioButton hasReadPerRb;//可以查看
     private ConstraintLayout publishTimeAndTypeLayout;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private SlideListView listView;
@@ -224,6 +227,12 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskTitleTextV.setText(headTitle);
             }
         }
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_btn);
+        headRightTextV.setOnClickListener(v -> {
+            StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                headRightTextV.setVisibility(View.GONE);
+            }).setViewOthersTaskPermission(TaskId,0);
+        });
         //底部的确实btn
         TextView confirmTextV = (TextView) findViewById(R.id.tv_bottom_confirm);
         if (confirmTextV != null) {
@@ -241,6 +250,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         taskStartTimeTextV = (TextView) findViewById(R.id.tv_publish_start_time);
         immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
         answerByTimeRb = (RadioButton) findViewById(R.id.rb_publish_according_time);
+        hasReadPerRb = (RadioButton) findViewById(R.id.rb_can_read);
         if (isFromMoocIntroTask){
             boolean answerAtAnyTime = LqIntroTaskHelper.getInstance().getAnswerAtAnyTimeValue();
             if (answerAtAnyTime){
@@ -250,6 +260,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 immediatelyRb.setChecked(false);
                 answerByTimeRb.setChecked(true);
             }
+            hasReadPerRb.setChecked(LqIntroTaskHelper.getInstance().isHasReadPermission());
         }
         publishTimeAndTypeLayout = (ConstraintLayout) findViewById(R.id.ll_publish_time_and_type);
         if (isOnlineSuperTaskDetail) {
@@ -333,6 +344,24 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStudyTaskStatus,
                         taskFinishCount,taskNum);
             }
+        }
+    }
+
+    private void updateRightView(){
+        //更新右上角的是否可以查看
+        if (homeworkListInfo != null && homeworkListInfo.getViewOthersTaskPermisson() == 1
+                && roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (TextUtils.equals(getMemeberId(),homeworkListInfo.getTaskCreateId())){
+                //创建者
+                if (isPick || lookStudentTaskFinish || isHistoryClass){
+
+                } else {
+                    headRightTextV.setText(getString(R.string.str_set_can_read));
+                    headRightTextV.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            headRightTextV.setVisibility(View.GONE);
         }
     }
 
@@ -784,6 +813,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             //同步更新数据
             LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
             LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
+            LqIntroTaskHelper.getInstance().setHasReadPermission(hasReadPerRb.isChecked());
         }
     }
 
@@ -861,6 +891,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         uploadParameter.setStartDate(getIntroductionDate(true));
         uploadParameter.setEndDate(getIntroductionDate(false));
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
+        uploadParameter.setViewOtherPermissionType(hasReadPerRb.isChecked() ? 0 : 1);
         if (onlineRes != null) {
             autoDistinguishStudyType(uploadParameter, schoolClassInfos);
         } else {
@@ -1043,6 +1074,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             if (info.getType() == StudyTaskType.SUPER_TASK) {
                 homeworkListInfo = info;
                 updateFinishStatus();
+                updateRightView();
             } else {
                 if (isPick) {
                     if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
@@ -1156,6 +1188,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 parameter.setMemberId(uploadParameter.getMemberId());
                 parameter.setCreateName(uploadParameter.getCreateName());
                 parameter.setSubmitType(uploadParameter.getSubmitType());
+                parameter.setViewOtherPermissionType(uploadParameter.getViewOtherPermissionType());
                 int taskType = parameter.getTaskType();
                 if (taskType == StudyTaskType.WATCH_WAWA_COURSE
                         || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE){
@@ -1237,6 +1270,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
                 taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
@@ -1463,6 +1497,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
                 taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
                 if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
                     taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 } else {

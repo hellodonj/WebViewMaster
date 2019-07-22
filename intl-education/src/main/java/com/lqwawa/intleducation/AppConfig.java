@@ -979,5 +979,9 @@ public final class AppConfig {
         // 三习教案考试测试
         public static final String GetSxExamDetail = ServerBase +
                 "api/student/getSxExamDetail";
+
+        //创建班级付费订单
+        public static final String PostCreateClassOrder =
+                PayBase + "api/order/createClassOrder";
     }
 }
