@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.common.ui.treeview.base.BaseNodeViewBinder;
 import com.lqwawa.intleducation.common.ui.treeview.base.BaseNodeViewFactory;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
 import com.lqwawa.intleducation.common.ui.treeview.helper.TreeHelper;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
 
         this.EMPTY_PARAMETER = new View(context);
         this.expandedNodeList = new ArrayList<>();
+
 
         buildExpandedNodeList();
     }
@@ -105,6 +107,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
         final TreeNode treeNode = expandedNodeList.get(position);
         final BaseNodeViewBinder viewBinder = (BaseNodeViewBinder) holder;
         treeNode.setShowCheckBox(isShowCheckBox);
+//        ReadWeikeHelper mReadWeikeHelper = (ReadWeikeHelper) treeView.getExtras();
 
         if (viewBinder.getToggleTriggerViewId() != 0) {
             View triggerToggleView = nodeView.findViewById(viewBinder.getToggleTriggerViewId());
@@ -114,7 +117,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         onNodeToggled(treeNode);
-                        viewBinder.onNodeToggled(treeNode, treeNode.isExpanded());
+                        viewBinder.onNodeToggled(position,treeNode, treeNode.isExpanded(),context);
                     }
                 });
             }
@@ -123,7 +126,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     onNodeToggled(treeNode);
-                    viewBinder.onNodeToggled(treeNode, treeNode.isExpanded());
+                    viewBinder.onNodeToggled(position,treeNode, treeNode.isExpanded(), context);
                 }
             });
         }
@@ -132,7 +135,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
             setupCheckableItem(nodeView, treeNode, (CheckableNodeViewBinder) viewBinder);
         }
 
-        viewBinder.bindView(treeNode,context);
+        viewBinder.bindView(treeNode, context);
     }
 
     private void setupCheckableItem(View nodeView,

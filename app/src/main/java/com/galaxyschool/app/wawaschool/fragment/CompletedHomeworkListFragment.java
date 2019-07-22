@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -152,6 +153,7 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
     private int propertiesType;
     private boolean hasSubjectProblem;
     private int airClassId;
+    private int viewOthersPermission;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -518,9 +520,13 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
 
                         if (imageView != null) {
                             imageView.setOnClickListener(v -> {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 //缩略图的点击事件
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
-                                onViewClick(data,true);
+                                onViewClick(data, true);
                             });
                         }
 
@@ -591,6 +597,10 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         tvCheckMark.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 data.setAirClassId(airClassId);
@@ -635,6 +645,10 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         courseDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 if (data.isEvalType()) {
                                     updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                     //语音评测资源
@@ -668,17 +682,36 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         ImageView shareImageView = (ImageView) view.findViewById(R.id.iv_share);
                         if (shareImageView != null){
                             shareImageView.setVisibility(View.VISIBLE);
-                            shareImageView.setOnClickListener(v -> ShareCommitUtils.shareCommitData(getActivity(),data.getStudentResId()));
+                            shareImageView.setOnClickListener(v -> {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
+                                ShareCommitUtils.shareCommitData(getActivity(), data.getStudentResId());
+                            });
                         }
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 onViewClick(data,false);
                             }
                         });
 
+                        //任务锁定
+                        RelativeLayout lockRl = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                        if (lockRl != null){
+                            if (isLockStudentCommitTask(data.getStudentId())){
+                                lockRl.setVisibility(View.VISIBLE);
+                            } else {
+                                lockRl.setVisibility(View.GONE);
+                            }
+                        }
                         ImageView deleteImageV = (ImageView) view.findViewById(R.id.iv_delete_item);
                         if (deleteImageV != null) {
                             if (data.isShowDeleted()) {
@@ -719,7 +752,6 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                                 return false;
                             }
                         });
-
                         view.setTag(holder);
                         return view;
                     }
@@ -826,6 +858,24 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                 }
             }
         }
+    }
+
+    /**
+     * 是否锁定学生提交的任务
+     */
+    private boolean isLockStudentCommitTask(String commitStudentId){
+        boolean isLock = false;
+        if (viewOthersPermission == 1 && (roleType == RoleType.ROLE_TYPE_STUDENT
+                || roleType == RoleType.ROLE_TYPE_PARENT)){
+            String memberId = getMemeberId();
+            if (roleType == RoleType.ROLE_TYPE_PARENT){
+                memberId = studentId;
+            }
+            if (!TextUtils.equals(commitStudentId,memberId)){
+                isLock = true;
+            }
+        }
+        return isLock;
     }
 
     public void upDateDeleteButtonShowStatus(CommitTask data, boolean onClick) {
@@ -1764,6 +1814,9 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         if (homeworkCommitObjectInfo != null) {
             dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
             task = homeworkCommitObjectInfo.getTaskInfo();
+            if (task != null){
+                viewOthersPermission = task.getViewOthersTaskPermisson();
+            }
             if (!isAnswerTaskOrderQuestion && task != null) {
                 //答题卡的信息
                 if (task.getResPropType() == 1) {

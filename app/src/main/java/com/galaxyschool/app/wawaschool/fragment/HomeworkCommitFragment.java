@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,6 +72,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.CheckLqShopPmnHelper;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkText;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkTextResult;
@@ -122,12 +124,16 @@ import com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.tools.DensityUtils;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.PlaybackActivity;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.iemaker.base.data.NormalProperty;
 import com.oosic.apps.share.ShareInfo;
 import com.oosic.apps.share.SharedResource;
+import com.osastudio.common.popmenu.CustomPopWindow;
+import com.osastudio.common.popmenu.EntryBean;
+import com.osastudio.common.popmenu.PopMenuAdapter;
 import com.osastudio.common.utils.TimerUtils;
 import com.umeng.socialize.media.UMImage;
 
@@ -143,6 +149,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static cn.easyar.engine.EasyAR.getApplicationContext;
 
 /**
  * 作业提交
@@ -161,6 +169,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private String StudentId = "";
     private int TaskType;
     private StudyTask studyTask;
+    private ImageView headRightImageV;
+    private TextView headRightTextV;
     private TextView rightTextView;
     private ImageView homeworkIcon;
     private ImageView mediaCover;//播放按钮
@@ -226,6 +236,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean isStudentFinishEValTask;
     private boolean isFistIn = true;
     public CourseData taskData;
+    private CustomPopWindow mPopWindow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -411,23 +422,17 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
 
         //分享
-        textView = (TextView) findViewById(R.id.contacts_header_right_text_view);
-        if (textView != null) {
-            //老看课件和其他（不需提交）的任务暂时隐藏分享
-            if (TaskType == StudyTaskType.WATCH_WAWA_COURSE
-                    || TaskType == StudyTaskType.WATCH_HOMEWORK) {
-                textView.setVisibility(View.GONE);
-            }
-//            else if (studyTaskType == StudyTaskType.LISTEN_READ_AND_WRITE){
-//                textView.setVisibility(View.GONE);
-//            }
-            else {
-                textView.setVisibility(View.VISIBLE);
-            }
-            textView.setText(getString(R.string.share));
-            textView.setOnClickListener(this);
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_text_view);
+        if (headRightTextV != null) {
+            headRightTextV.setText(getString(R.string.share));
+            headRightTextV.setOnClickListener(this);
         }
 
+        headRightImageV = (ImageView) findViewById(R.id.contacts_header_right_ico);
+        if (headRightImageV != null){
+            headRightImageV.setImageResource(R.drawable.icon_more_green);
+            headRightImageV.setOnClickListener(v -> popHeadRightPopWindow());
+        }
         headView = findViewById(R.id.layout_assign_homework);
         headView.setOnClickListener(this);
 
@@ -507,6 +512,34 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
         if (TaskType != StudyTaskType.RETELL_WAWA_COURSE) {
             initViewPager();
+        }
+    }
+
+    private void initRightViewData(){
+        //老看课件和其他（不需提交）的任务暂时隐藏分享
+        if (TaskType == StudyTaskType.WATCH_WAWA_COURSE
+                || TaskType == StudyTaskType.WATCH_HOMEWORK) {
+            headRightTextV.setVisibility(View.GONE);
+        } else if (TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                || TaskType == StudyTaskType.TASK_ORDER
+                || TaskType == StudyTaskType.Q_DUBBING
+                || TaskType == StudyTaskType.SUBMIT_HOMEWORK) {
+            if (studyTaskType > 0 || isHistoryClass){
+                headRightTextV.setVisibility(View.VISIBLE);
+            } else {
+                if (task != null
+                        && task.getViewOthersTaskPermisson() == 1
+                        && roleType == RoleType.ROLE_TYPE_TEACHER
+                        && TextUtils.equals(getMemeberId(),task.getTaskCreateId())){
+                    headRightTextV.setVisibility(View.GONE);
+                    headRightImageV.setVisibility(View.VISIBLE);
+                } else {
+                    headRightImageV.setVisibility(View.GONE);
+                    headRightTextV.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            headRightTextV.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1062,6 +1095,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (task == null) {
             return;
         }
+        initRightViewData();
         if (studyTaskType == StudyTaskType.MULTIPLE_OTHER && homeworkListInfo != null){
             task.setResId(homeworkListInfo.getResId());
             task.setResThumbnailUrl(homeworkListInfo.getResThumbnailUrl());
@@ -3626,6 +3660,63 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         filter.addAction(BUG_LQ_COURSE_SHOP_SUCCESS);
         filter.addAction(REFRESH_COMMIT_LIST_DATA);
         getActivity().registerReceiver(receiver, filter);
+    }
+
+    private void popHeadRightPopWindow(){
+        View contentView = LayoutInflater.from(getActivity()).inflate(com.lqwawa.apps.R.layout.pop_menu, null);
+        //处理popWindow 显示内容
+        if (mPopWindow == null){
+            handleLogic(contentView);
+            mPopWindow = new CustomPopWindow.PopupWindowBuilder(getActivity())
+                    .setView(contentView)//显示的布局，还可以通过设置一个View
+                    .setFocusable(true)//是否获取焦点，默认为ture
+                    .setOutsideTouchable(true)//是否PopupWindow 以外触摸dissmiss
+                    .create();//创建PopupWindow
+        }
+        mPopWindow.showAsDropDown(headRightImageV, -DensityUtils.dp2px(getActivity(), 100),
+                        0);
+    }
+
+    /**
+     * 处理弹出显示内容、点击事件等逻辑
+     *
+     * @param contentView
+     */
+    protected void handleLogic(View contentView) {
+        EntryBean entryBean = null;
+        final List<EntryBean> list = new ArrayList<>();
+        entryBean = new EntryBean();
+        entryBean.value = getString(R.string.share);
+        entryBean.id = 0;
+        list.add(entryBean);
+        entryBean = new EntryBean();
+        entryBean.value = getString(R.string.str_set_can_read);
+        entryBean.id = 1;
+        list.add(entryBean);
+        ListView listView = (ListView) contentView.findViewById(com.lqwawa.apps.R.id.pop_menu_list);
+        PopMenuAdapter adapter = new PopMenuAdapter(getActivity(), list);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mPopWindow != null) {
+                    mPopWindow.dissmiss();
+                }
+                EntryBean bean = list.get(i);
+                if (bean.id == 0) {
+                    //分享
+                    share();
+                } else if (bean.id == 1) {
+                    StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                        if (task != null){
+                            task.setViewOthersTaskPermisson(0);
+                            initRightViewData();
+                        }
+                    }).setViewOthersTaskPermission(TaskId,0);
+                }
+            }
+        });
+
     }
 
     @Override

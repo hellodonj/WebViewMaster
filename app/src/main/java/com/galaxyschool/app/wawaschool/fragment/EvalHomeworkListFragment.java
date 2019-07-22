@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -133,7 +134,7 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
     private FrameLayout speechAssessmentFl;
     private boolean isHistoryClass;
     private int propertiesType;
-
+    private int viewOthersPermission;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -550,6 +551,10 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                         tvCheckMark.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 if (data.isEvalType()) {
                                     //进入点评的详情页
                                     enterTeacherReviewDetailActivity(data, true);
@@ -617,6 +622,10 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                         courseDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 if (data.isEvalType()) {
                                     updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                     //语音评测资源
@@ -649,6 +658,10 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (isLockStudentCommitTask(data.getStudentId())){
+                                    TipMsgHelper.ShowMsg(getActivity(),R.string.str_view_other_permission_tips);
+                                    return;
+                                }
                                 //更新小红点
                                 updateLookTaskStatus(data.getCommitTaskId(), data.isRead());
                                 if (data.isEvalType()) {
@@ -667,6 +680,16 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
                                 }
                             }
                         });
+
+                        //任务锁定
+                        RelativeLayout lockRl = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                        if (lockRl != null){
+                            if (isLockStudentCommitTask(data.getStudentId())){
+                                lockRl.setVisibility(View.VISIBLE);
+                            } else {
+                                lockRl.setVisibility(View.GONE);
+                            }
+                        }
 
                         ImageView deleteImageV = (ImageView) view.findViewById(R.id.iv_delete_item);
                         if (deleteImageV != null) {
@@ -787,6 +810,24 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
 
             }
         });
+    }
+
+    /**
+     * 是否锁定学生提交的任务
+     */
+    private boolean isLockStudentCommitTask(String commitStudentId){
+        boolean isLock = false;
+        if (viewOthersPermission == 1 && (roleType == RoleType.ROLE_TYPE_STUDENT
+                || roleType == RoleType.ROLE_TYPE_PARENT)){
+            String memberId = getMemeberId();
+            if (roleType == RoleType.ROLE_TYPE_PARENT){
+                memberId = studentId;
+            }
+            if (!TextUtils.equals(commitStudentId,memberId)){
+                isLock = true;
+            }
+        }
+        return isLock;
     }
 
     public void upDateDeleteButtonShowStatus(CommitTask data, boolean onClick) {
@@ -1705,6 +1746,9 @@ public class EvalHomeworkListFragment extends ContactsListFragment {
         if (homeworkCommitObjectInfo != null) {
             dealTaskTypeFinishDetail(homeworkCommitObjectInfo);
             task = homeworkCommitObjectInfo.getTaskInfo();
+            if (task != null){
+                viewOthersPermission = task.getViewOthersTaskPermisson();
+            }
             //显示的时候才更新
             if (shouldShowCommitBtn) {
                 updateCommitBtn(homeworkCommitObjectInfo);

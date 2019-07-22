@@ -29,6 +29,7 @@ public class LqIntroTaskHelper {
 
     private List<UploadParameter> uploadParameters = new ArrayList<>();
     private boolean answerAtAnyTime = true;//随时作答
+    private boolean hasReadPermission = true;//有查看的权限
     public static LqIntroTaskHelper getInstance() {
         return LqIntroTaskHelperHolder.instantce;
     }
@@ -94,6 +95,7 @@ public class LqIntroTaskHelper {
     public void clearTaskList() {
         uploadParameters.clear();
         answerAtAnyTime = true;
+        hasReadPermission = true;
     }
 
     /**
@@ -179,5 +181,13 @@ public class LqIntroTaskHelper {
 
     public boolean getAnswerAtAnyTimeValue(){
         return answerAtAnyTime;
+    }
+
+    public void setHasReadPermission(boolean hasReadPermission){
+        this.hasReadPermission = hasReadPermission;
+    }
+
+    public boolean isHasReadPermission() {
+        return hasReadPermission;
     }
 }

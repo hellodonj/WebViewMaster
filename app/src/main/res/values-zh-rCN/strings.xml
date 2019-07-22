@@ -1724,4 +1724,10 @@
     <string name="str_retract">收起</string>
     <string name="str_teacher_assistant_tip">已完成批阅,批阅金额发放中，请稍后到个人空间-我的账户中查看，入账可能有延时</string>
     <string name="str_save_statistic_unuser">还没有使用过云空间哟</string>
+
+    <string name="str_student_look_other_work">学生查看他人作业</string>
+    <string name="str_can_read">可查看</string>
+    <string name="str_no_read">不可查看</string>
+    <string name="str_view_other_permission_tips">老师也设定为不可查看</string>
+    <string name="str_set_can_read">设置可查看</string>
 </resources>

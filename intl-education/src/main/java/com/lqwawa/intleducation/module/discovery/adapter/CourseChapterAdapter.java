@@ -31,6 +31,7 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailPar
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayDialogNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
 import com.lqwawa.intleducation.module.discovery.ui.order.LQCourseOrderActivity;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
@@ -499,6 +500,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     return;
                                 }
 //                                int examType = vo.getExamType();
+                                String memberId = activity.getIntent().getStringExtra("memberId");
+                                int teacherType = handleTeacherType();
+                                CourseChapterParams courseChapterParams = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
+                                courseChapterParams.setCourseParams(params);
+                                LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                                 int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                                 //点击入口是三习教案馆
                                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
@@ -509,7 +515,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     if (examType == TYPE_EXAM) {
                                         //courseid,sectionId,token
 //                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
-                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), lessonSourceParams);
+//                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
                                     } else if (examType == TYPE_LESSON){
                                         //普通教案详情入口
                                         toLessonDetailsActivity(vo, isFreeUser,true);
@@ -752,9 +759,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 @Override
                 public void onClick(View v) {
                     //三习教案馆考试章节跳转
+                    String memberId = activity.getIntent().getStringExtra("memberId");
+                    int teacherType = handleTeacherType();
+                    CourseChapterParams courseChapterParams = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
+                    courseChapterParams.setCourseParams(params);
+                    LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), lessonSourceParams);
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);
