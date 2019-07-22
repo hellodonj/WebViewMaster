@@ -46,6 +46,8 @@ public class TreeView implements SelectableTreeAction {
 
     private boolean itemSelectable = true;
 
+    private Object extras;
+
     public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
         this.itemAnimator = itemAnimator;
         if (rootView != null && itemAnimator != null) {
@@ -62,6 +64,14 @@ public class TreeView implements SelectableTreeAction {
         if (baseNodeViewFactory == null) {
             throw new IllegalArgumentException("You must assign a BaseNodeViewFactory!");
         }
+    }
+
+    public void setExtras(Object extras) {
+        this.extras = extras;
+    }
+
+    public Object getExtras() {
+        return extras;
     }
 
     public View getView() {
@@ -114,7 +124,7 @@ public class TreeView implements SelectableTreeAction {
         }
     }
 
-    public void setIsShowCheckBox(boolean isShowCheckBox){
+    public void setIsShowCheckBox(boolean isShowCheckBox) {
         if (adapter != null) {
             adapter.setIsShowCheckBox(isShowCheckBox);
         }

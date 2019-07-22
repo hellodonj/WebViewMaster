@@ -66,7 +66,7 @@ import java.util.List;
  */
 public class LessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
+    public static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
     // 是否是空中课堂老师
     public static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";

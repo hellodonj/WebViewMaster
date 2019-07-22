@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.vo;
 
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
+
 public class ExamsAndTestExtrasVo {
 
     private boolean needFlagRead;
@@ -8,14 +10,18 @@ public class ExamsAndTestExtrasVo {
     private boolean mClassTeacher;
     private boolean isCourseSelect;
     private boolean mChoiceMode;
+    private LessonSourceParams lessonSourceParams;
+    private String schoolId;
 
-    public ExamsAndTestExtrasVo(boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode) {
+    public ExamsAndTestExtrasVo( String schoolId,LessonSourceParams lessonSourceParams,boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode) {
+        this.schoolId =schoolId;
         this.needFlagRead = needFlagRead;
         this.lessonStatus = lessonStatus;
         this.isVideoCourse = isVideoCourse;
         this.mClassTeacher = mClassTeacher;
         this.isCourseSelect = isCourseSelect;
         this.mChoiceMode = mChoiceMode;
+        this.lessonSourceParams = lessonSourceParams;
     }
 
     public boolean isNeedFlagRead() {
@@ -64,5 +70,21 @@ public class ExamsAndTestExtrasVo {
 
     public void setmChoiceMode(boolean mChoiceMode) {
         this.mChoiceMode = mChoiceMode;
+    }
+
+    public LessonSourceParams getLessonSourceParams() {
+        return lessonSourceParams;
+    }
+
+    public void setLessonSourceParams(LessonSourceParams lessonSourceParams) {
+        this.lessonSourceParams = lessonSourceParams;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 }
