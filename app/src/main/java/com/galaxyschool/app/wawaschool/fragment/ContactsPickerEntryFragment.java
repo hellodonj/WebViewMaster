@@ -930,6 +930,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 parameter.setMemberId(uploadParameter.getMemberId());
                 parameter.setCreateName(uploadParameter.getCreateName());
                 parameter.setSubmitType(uploadParameter.getSubmitType());
+                parameter.setViewOtherPermissionType(uploadParameter.getViewOtherPermissionType());
                 int taskType = parameter.getTaskType();
                 if (taskType == StudyTaskType.WATCH_WAWA_COURSE
                         || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE){
@@ -978,6 +979,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
                 taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                //作业可不可查看
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
                 JSONArray secondTaskList = new JSONArray();
                 JSONObject secondObject = null;
                 List<UploadParameter> data = uploadParameter.getUploadParameters();
@@ -1426,6 +1429,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
                 taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
                 if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
                     taskParams.put("DiscussContent", uploadParameter.getDisContent());
                 } else {

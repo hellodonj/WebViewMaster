@@ -39,6 +39,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.CheckLqShopPmnHelper;
 import com.galaxyschool.app.wawaschool.helper.RecordHomeWorkLocalHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
@@ -77,6 +78,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private TextView finishStudyTaskStatus;
     private TextView headTitleView;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
+    private TextView headRightTextV;
     private int roleType = -1;
     private String TaskId;
     private HomeworkListInfo homeworkListInfo;
@@ -160,6 +162,12 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private void initView() {
         //标题
         headTitleView = (TextView) findViewById(R.id.contacts_header_title);
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_btn);
+        headRightTextV.setOnClickListener(v -> {
+            StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                headRightTextV.setVisibility(View.GONE);
+            }).setViewOthersTaskPermission(TaskId,0);
+        });
         if (headTitleView != null) {
             if (lookStudentTaskFinish) {
                 if (!TextUtils.isEmpty(studentName)) {
@@ -276,6 +284,24 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(), finishStudyTaskStatus,
                         taskFinishCount, taskNum);
             }
+        }
+        //更新右上角的是否可以查看
+        if (homeworkListInfo != null && homeworkListInfo.getViewOthersTaskPermisson() == 1
+                && roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (TextUtils.equals(getMemeberId(),homeworkListInfo.getTaskCreateId())){
+                //创建者
+                if (isPick || lookStudentTaskFinish || isHistoryClass || isSuperChildTask){
+
+                } else if (taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT
+                        || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
+                    headRightTextV.setText(getString(R.string.str_set_can_read));
+                    headRightTextV.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            headRightTextV.setVisibility(View.GONE);
         }
     }
 
