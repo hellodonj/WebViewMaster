@@ -57,25 +57,15 @@ import org.xutils.common.util.DensityUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @param needFlagRead 是否需要标志已读，未加入课程全部是false,已加入页面全部是true
- * @param canRead      是否可以进提交列表Item,目前是全部都可以的
- * @param canEdit      家长身份 false
- * @desc 节详情页面
- */
-public class LessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SxLessonDetailsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
-
     // 是否是空中课堂老师
     public static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";
     // 是否是游离的身份
     public static final String KEY_ROLE_FREE_USER = "KEY_ROLE_FREE_USER";
-
     public static final String ACTIVITY_BUNDLE_OBJECT = "ACTIVITY_BUNDLE_OBJECT";
-
     private boolean mFreeUser;
-
     public static String COURSE_ID = "course_id";
     public static String SECTION_ID = "section_id";
     public static String SECTION_NAME = "section_name";
@@ -85,6 +75,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     public static String CAN_EDIT = "can_edit";
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
+
 
     /**
      * @param activity               启动此界面的activity
@@ -109,7 +100,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                              boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
                              boolean isFreeUser, @NonNull CourseChapterParams params,
                              @Nullable Bundle extras) {
-        activity.startActivity(new Intent(activity, LessonDetailsActivity.class)
+        activity.startActivity(new Intent(activity, SxLessonDetailsActivity.class)
                 .putExtra(COURSE_ID, courseId)
                 .putExtra(SECTION_ID, sectionId)
                 .putExtra(SECTION_NAME, sectionName)
@@ -131,6 +122,20 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
     private TopBar topBar;
     private ExpandableTextView textViewLessonIntroduction;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+
+    private String sectionTitle;
+    private String courseId;
+    private String sectionName;
+    private String sectionId;
+    //1：预习 2:练习 3：复习   不传或者-1 全部
+    private int  exerciseType;
+    // 课程大纲参数
+    private CourseChapterParams mChapterParams;
+    private SectionDetailsVo sectionDetailsVo;
+    // 是否是空中课堂老师过来的
+    private boolean isOnlineTeacher;
 
     private FrameLayout mNewCartContainer;
     private TextView mTvWorkCart;
@@ -148,39 +153,23 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private boolean canRead, isContainAssistantWork;
     private boolean canEdit = false;
 
-    // 课程大纲参数
-    private CourseChapterParams mChapterParams;
-
-    private String courseId;
-    private String sectionId;
-    private String sectionName;
-    private String sectionTitle;
-
-    // 是否是空中课堂老师过来的
-    private boolean isOnlineTeacher;
-    private SectionDetailsVo sectionDetailsVo;
-
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-
     private List<String> mTabLists = new ArrayList<>();
     private List<LessonSourceNavigator> mTabSourceNavigator = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lesson_details);
+        setContentView(R.layout.activity_sx_lesson_details);
+
         topBar = (TopBar) findViewById(R.id.top_bar);
         topBar.setBack(true);
         textViewLessonIntroduction = (ExpandableTextView) findViewById(R.id.lesson_introduction_tv);
-
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-
         mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
         mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
-
         mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
         mCartContainer = (FrameLayout) findViewById(R.id.cart_container);
         mAddCartContainer = (FrameLayout) findViewById(R.id.action_container);
@@ -197,6 +186,12 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         sectionId = getIntent().getStringExtra(SECTION_ID);
         sectionName = getIntent().getStringExtra(SECTION_NAME);
         sectionTitle = getIntent().getStringExtra(SECTION_TITLE);
+        courseId = getIntent().getStringExtra(COURSE_ID);
+        sectionId = getIntent().getStringExtra(SECTION_ID);
+        sectionTitle = getIntent().getStringExtra(SECTION_TITLE);
+        if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
+            mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
+        }
 
         topBar.setTitle(sectionTitle);
         topBar.setTitleWide(DensityUtil.dip2px(120));
@@ -244,14 +239,16 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                     intent.putExtra("isMooc", true);
                     intent.putExtra("title", getString(R.string.assistant_desk));
                     startActivity(intent);
-//                    WebActivity.start(LessonDetailsActivity.this,url,getString(R.string.assistant_desk));
                 }
             });
         }
 
+        mTabLists.add(getResources().getString(R.string.label_sx_preview));
+        mTabLists.add(getResources().getString(R.string.label_sx_practice));
+        mTabLists.add(getResources().getString(R.string.label_sx_review));
+
         // 刷新数目
         refreshCartPoint();
-
         getData();
     }
 
@@ -262,23 +259,19 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         refreshCartPoint();
     }
 
+    //初始化数据
     private void getData() {
-
         String token = mChapterParams.getMemberId();
-
         int role = 2;
         if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
             role = 1;
         }
-
         String classId = "";
         if (role == 1 && mChapterParams.getCourseParams().isClassCourseEnter()) {
             classId = mChapterParams.getCourseParams().getClassId();
         }
-
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        //exerciseType 不传或者-1 全部
         LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role,-1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -287,13 +280,12 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
-                LessonDetailsActivity.this.sectionDetailsVo = sectionDetailsVo;
+                SxLessonDetailsActivity.this.sectionDetailsVo = sectionDetailsVo;
                 if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
                 updateView();
             }
         });
     }
-
 
     private void updateView() {
         if (sectionDetailsVo != null) {
@@ -319,8 +311,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                     SectionTaskListVo listVo = taskList.get(index);
                     if (EmptyUtil.isNotEmpty(listVo.getData())) {
                         int taskType = listVo.getTaskType();
-                        String taskName = listVo.getTaskName();
-                        mTabLists.add(taskName);
+                        //String taskName = listVo.getTaskName();
+                       // mTabLists.add(taskName);
                         LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType, params);
                         mTabSourceNavigator.add(fragment);
                         fragments.add(fragment);
@@ -328,20 +320,20 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                 }
             }
 
-            mViewPager.setAdapter(new LessonSourcePagerAdapter(getSupportFragmentManager(), fragments));
+            mViewPager.setAdapter(new SxLessonSourcePagerAdapter(getSupportFragmentManager(), fragments));
             mViewPager.setOffscreenPageLimit(fragments.size());
             mTabLayout.setupWithViewPager(mViewPager);
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
+            mTabLayout.getTabAt(0).getCustomView().setSelected(true);
+            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-            if (mTabLayout.getTabCount() > 4) {
-                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            } else {
-                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-            }
-
+//            if (mTabLayout.getTabCount() > 4) {
+//                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+//            } else {
+//                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+//            }
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
-
         }
     }
 
@@ -487,7 +479,6 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             }
         }
     }
-
     /**
      * 取消资源
      */
@@ -631,11 +622,11 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         }
     };
 
-    class LessonSourcePagerAdapter extends FragmentPagerAdapter {
+    class SxLessonSourcePagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> mFragments;
 
-        public LessonSourcePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+        public SxLessonSourcePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.mFragments = fragments;
         }
@@ -655,5 +646,6 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             return mTabLists.get(position);
         }
     }
+
 
 }

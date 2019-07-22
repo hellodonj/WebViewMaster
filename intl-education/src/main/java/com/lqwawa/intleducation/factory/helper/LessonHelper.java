@@ -18,9 +18,7 @@ import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
-import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
@@ -213,7 +211,7 @@ public class LessonHelper {
                                                @Nullable String classId,
                                                @NonNull String courseId,
                                                @NonNull String sectionId,
-                                               int role,
+                                               int role,int exerciseType,
                                                @NonNull DataSource.Callback<SectionDetailsVo> callback) {
         RequestVo requestVo = new RequestVo();
         // 是否是中文字体,根据参数,后台返回相应语言
@@ -225,6 +223,7 @@ public class LessonHelper {
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
         requestVo.addParams("role", role);
+        requestVo.addParams("exerciseType",exerciseType);
         requestVo.addParams("version", 1);
         if (role == 1 && EmptyUtil.isNotEmpty(classId)) {
             requestVo.addParams("classId", classId);

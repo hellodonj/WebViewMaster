@@ -532,4 +532,8 @@
     <string name="student_evaluation">添加评价</string>
     <string name="select_all">全选</string>
     <string name="deselect_all">取消全选</string>
+    
+    <string name="label_sx_preview">预习</string>
+    <string name="label_sx_practice">练习</string>
+    <string name="label_sx_review">复习</string>
 </resources>
