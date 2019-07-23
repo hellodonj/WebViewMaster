@@ -110,9 +110,9 @@ public class PlanLiveAdapter extends RecyclerAdapter<LiveEntity>{
         @Override
         protected void onBind(LiveEntity liveEntity) {
             String title = liveEntity.getTitle();
-            if(EmptyUtil.isNotEmpty(title) && title.length() > 12){
-                title = title.substring(0,12) + "...";
-            }
+//            if(EmptyUtil.isNotEmpty(title) && title.length() > 12){
+//                title = title.substring(0,12) + "...";
+//            }
 
             //直播的标题
             mLiveTitle.setText(title);

@@ -1,20 +1,27 @@
 package com.lqwawa.intleducation.module.onclass.detail.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,22 +33,33 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.widgets.AppBarStateChangeListener;
 import com.lqwawa.intleducation.base.widgets.ScrollChildSwipeRefreshLayout;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.ui.CommentDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.ImageUtil;
+import com.lqwawa.intleducation.common.utils.KeyboardUtil;
 import com.lqwawa.intleducation.common.utils.TimeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
+import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
+import com.lqwawa.intleducation.module.discovery.ui.navigator.CourseDetailsNavigator;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
+import com.lqwawa.intleducation.module.onclass.detail.base.comment.ClassCommentFragment;
+import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailActivity;
+import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.osastudio.common.popmenu.CustomPopWindow;
 import com.osastudio.common.popmenu.EntryBean;
 import com.osastudio.common.popmenu.PopMenuAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -66,12 +84,7 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
     protected static final String KEY_EXTRA_IS_COURSE_ENTER = "KEY_EXTRA_IS_COURSE_ENTER";
     protected static final String KEY_EXTRA_IS_SCHOOL_ENTER = "KEY_EXTRA_IS_SCHOOL_ENTER";
 
-    private ScrollChildSwipeRefreshLayout mRefreshLayout;
-
-    // 折叠布局
-    private CollapsingToolbarLayout mCollapsingLayout;
-
-    private AppBarLayout mAppBarLayout;
+    protected CoordinatorLayout mCoordinatorLayout;
 
     // toolbar right
     private ImageView mToolbarRight;
@@ -91,10 +104,7 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
     protected RatingBar mRatingBar;
     // 班级评分
     protected TextView mGradeSource;
-    // 课程价格
-    protected TextView mClassPrice;
-    // 立即购买
-    protected Button mBtnPay;
+
     // 公告容器
     protected FrameLayout mNoticeLayout;
     // 公告内容
@@ -106,6 +116,29 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
 
     private CustomPopWindow mPopWindow;
 
+    protected LinearLayout mClassDetailBottomLayout;
+    // 课程价格
+    protected TextView mClassPrice;
+    // 立即购买
+    protected Button mBtnPay;
+    
+    protected LinearLayout mJoinClassDetailBottomLayout;
+    // 新开课
+    protected TextView mBtnCreateClass;
+    // 完成授课
+    protected TextView mBtnGiveLessons;
+
+    protected LinearLayout mCommentLayout;
+    // 评论内容
+    private EditText mCommentContent;
+    // 发送按钮
+    private TextView mBtnSend;
+    // 评论数据
+    private OnlineCommentEntity mCommentEntity;
+    // 评论Dialog
+    private CommentDialog mCommentDialog;
+    // 评论数据
+    private CommentDialog.CommentData mCommentData;
 
     protected String mSchoolId;
     protected String mClassId;
@@ -178,26 +211,8 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
     @Override
     protected void initWidget() {
         super.initWidget();
-        mRefreshLayout = (ScrollChildSwipeRefreshLayout) findViewById(R.id.refresh_layout);
-        mCollapsingLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_layout);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-        // 折叠监听
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                if( state == State.EXPANDED ) {
-                    //展开状态
-                    mRefreshLayout.setEnabled(true);
-                }else if(state == State.COLLAPSED){
-                    //折叠状态
-                    mRefreshLayout.setEnabled(false);
-                }else {
-                    //中间状态
-                    mRefreshLayout.setEnabled(false);
-                }
-            }
-        });
-
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        
         mToolbarRight = (ImageView) findViewById(R.id.iv_toolbar_right);
         mToolbarRight.setOnClickListener(this);
 
@@ -215,10 +230,6 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
         mRatingBar = (RatingBar) findViewById(R.id.grade_rating_bar);
         // 班级评分
         mGradeSource = (TextView) findViewById(R.id.tv_grade_source);
-        // 课程价格
-        mClassPrice = (TextView) findViewById(R.id.tv_class_money);
-        // 立即购买
-        mBtnPay = (Button) findViewById(R.id.btn_enter_pay);
         // 公告容器
         mNoticeLayout = (FrameLayout) findViewById(R.id.notice_container);
         // 公告内容
@@ -228,31 +239,45 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setOffscreenPageLimit(tabTexts.length);
 
+        mClassDetailBottomLayout = (LinearLayout) findViewById(R.id.class_detail_bottom_layout);
+        mClassPrice = (TextView) findViewById(R.id.tv_class_money);
+        mBtnPay = (Button) findViewById(R.id.btn_enter_pay);
+        mJoinClassDetailBottomLayout =
+                (LinearLayout) findViewById(R.id.join_class_detail_bottom_layout);
+        mBtnCreateClass = (Button) findViewById(R.id.btn_new_class);
+        mBtnGiveLessons = (Button) findViewById(R.id.btn_complete_give_lessons);
+        
+        mCommentLayout = (LinearLayout) findViewById(R.id.comment_layout);
+        mCommentContent = (EditText) findViewById(R.id.et_comment_content);
+        mBtnSend = (TextView) findViewById(R.id.btn_send);
+        mCommentLayout.setVisibility(View.GONE);
+
+        mBtnSend.setOnClickListener(v -> {
+            // 提交评论
+            commitComment(mCommentData);
+        });
+
+        // @func   :点击文本框,显示评论对话框
+        mCommentContent.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                triggerCommentDialog(mCommentData);
+                return true;
+            }
+            return false;
+        });
+
         if (isSchoolEnter || true) {
             mSchoolEnter.setVisibility(View.GONE);
             mSchoolName.setEnabled(false);
         }
 
         mSchoolName.setOnClickListener(v -> {
-            // 进入机构主页
-            /*Intent intent=new Intent();
-            intent.putExtra("isOpenSchoolSpace",true);
-            intent.putExtra("schoolId",schoolId);
-            intent.setClassName(getPackageName(),
-                    "com.galaxyschool.app.wawaschool.OpenCourseHelpActivity");
-            startActivity(intent);*/
+
             subscribeSchool();
         });
 
         // 点击学校名称,进入学校主页
         mSchoolEnter.setOnClickListener(v -> {
-            // 进入机构主页
-            /*Intent intent=new Intent();
-            intent.putExtra("isOpenSchoolSpace",true);
-            intent.putExtra("schoolId",schoolId);
-            intent.setClassName(getPackageName(),
-                    "com.galaxyschool.app.wawaschool.OpenCourseHelpActivity");
-            startActivity(intent);*/
             subscribeSchool();
         });
     }
@@ -290,6 +315,99 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
         }
     }
 
+    /**
+     * 打开评论对话框
+     *
+     * @param data 评论数据
+     */
+    private void triggerCommentDialog(CommentDialog.CommentData data) {
+        if (EmptyUtil.isEmpty(mCommentEntity)) {
+            // 数据未准备好
+            return;
+        }
+
+        if (!UserHelper.isLogin()) {
+            // 验证是否登录,没有登录,请求登录
+            LoginHelper.enterLogin(this);
+            return;
+        }
+
+        int currentScort = -1;
+        if (mCommentEntity.getStarLevel() > 0) {//已经评过分了
+            currentScort = mCommentEntity.getStarLevel();
+        }
+        int commentType = CommentDialog.TYPE_COMMENT_LOW_PERMISSION;
+        if (this instanceof ClassDetailActivity || OnlineClassRole.ROLE_PARENT.equals(mRole)) {
+            // 如果是家长身份,也是低优先级
+            commentType = CommentDialog.TYPE_COMMENT_LOW_PERMISSION;
+        } else if (this instanceof JoinClassDetailActivity) {
+            commentType = CommentDialog.TYPE_COMMENT_HIGH_PERMISSION;
+        }
+        mCommentDialog = new CommentDialog(this, currentScort, commentType, OnlineClassRole.ROLE_PARENT.equals(mRole), data, new CommentDialog.CommitCallBack() {
+            @Override
+            public void dismiss(CommentDialog.CommentData module) {
+                // 课程评价片段显示
+                // 记录当前文本
+                BaseClassDetailActivity.this.mCommentData = module;
+                mCommentContent.setText(module.getContent());
+                if (BaseClassDetailActivity.this instanceof CourseDetailsNavigator) {
+                    // 回调接口,显示课程评价,隐藏按钮
+                    CourseDetailsNavigator navigator = (CourseDetailsNavigator) BaseClassDetailActivity.this;
+                    navigator.setContent(module);
+                }
+            }
+
+            @Override
+            public void triggerSend(CommentDialog.CommentData module) {
+                BaseClassDetailActivity.this.mCommentData = module;
+                if (mCommentDialog.isShowing()) {
+                    mCommentDialog.dismiss();
+                    commitComment(module);
+                }
+            }
+        });
+
+        if (mCommentDialog != null && !mCommentDialog.isShowing()) {
+            Window window = mCommentDialog.getWindow();
+            mCommentDialog.show();
+            window.setGravity(Gravity.BOTTOM);
+        }
+    }
+
+    /**
+     * 提交评论
+     *
+     * @param data 评论内容和评分
+     */
+    public void commitComment(CommentDialog.CommentData data) {
+        if (null == data || TextUtils.isEmpty(data.getContent())) {
+            UIUtil.showToastSafe(R.string.enter_evaluation_content_please);
+            return;
+        }
+
+        if (!EmptyUtil.isEmpty(mCurrentEntity.getData())) {
+            ClassDetailEntity.DataBean dataBean = mCurrentEntity.getData().get(0);
+            mPresenter.requestCommitComment(0, dataBean.getId(), null,
+                    data.getContent(), data.getScort());
+        }
+    }
+
+    @Override
+    public void commitCommentResult(boolean isSucceed) {
+        // 清除评论区域的内容
+        mCommentContent.getText().clear();
+        mCommentData = null;
+        // 重新加载评论
+        MessageEvent messageEvent = new MessageEvent(EventConstant.TRIGGER_CLASS_DETAIL_COMMENTS_UPDATE);
+        EventBus.getDefault().post(messageEvent);
+        // 更新评论数
+        refreshData();
+        if (isSucceed) {
+            // 隐藏软件盘
+            KeyboardUtil.hideSoftInput(BaseClassDetailActivity.this);
+        }
+    }
+
     @Override
     protected void initData() {
         super.initData();
@@ -315,26 +433,16 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
     }
 
     @Override
-    public void refreshData() {
-        // 供Fragment调用,刷新
-        mPresenter.requestClassDetail(mId, true);
-    }
-
-    @Override
     public void updateSchoolInfoView(@NonNull SchoolInfoEntity entity) {
         mSchoolEntity = entity;
         // 获取到机构详情,显示已关注,+关注信息
         mSchoolEnter.setText(getString(R.string.label_enter_school));
-        // mSchoolEnter.setText(entity.getState() != 0 ? getString(R.string.label_yet_attention) : getString(R.string.label_add_attention));
-        // mSchoolEnter.setTextColor(entity.getState() != 0 ? UIUtil.getColor(R.color.colorGary) : UIUtil.getColor(R.color.colorAccent));
-        // mSchoolEnter.setBackgroundResource(entity.getState() != 0 ? R.drawable.bg_rectangle_gary_radius_10 : R.drawable.bg_rectangle_accent_radius_10);
         mSchoolEnter.setTextColor(UIUtil.getColor(R.color.colorAccent));
         mSchoolEnter.setBackgroundResource(R.drawable.bg_rectangle_accent_radius_10);
     }
 
     @Override
     public void updateClassDetailView(boolean refreshHeader, @NonNull ClassDetailEntity entity) {
-        mRefreshLayout.setRefreshing(false);
         mCurrentEntity = entity;
         // 加载到信息实体
         List<ClassDetailEntity.DataBean> listData = entity.getData();
@@ -371,12 +479,11 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
             if (dataBean.getPrice() == 0) {
                 // 免费班级
                 mClassPrice.setText(getString(R.string.label_class_gratis));
-                // mBtnPay.setText(R.string.to_join);
                 // 改成我要学习
                 mBtnPay.setText(R.string.label_to_study);
             } else {
                 // 收费班级
-                mClassPrice.setText(Common.Constance.MOOC_MONEY_MARK + dataBean.getPrice());
+                mClassPrice.setText(String.format("%s%d", Common.Constance.MOOC_MONEY_MARK, dataBean.getPrice()));
                 mBtnPay.setText(R.string.buy_immediately);
             }
         }
@@ -560,20 +667,14 @@ public abstract class BaseClassDetailActivity<Presenter extends BaseClassDetailC
 
     protected abstract void setHistoryClass();
 
-    /**
-     * 添加可以关联下拉刷新的View
-     * @param view 列表
-     */
-    public void addRefreshView(View view){
-        mRefreshLayout.setScrollUpChild(view);
+    @Override
+    public void refreshData() {
+        mPresenter.requestClassDetail(mId, true);
     }
 
-    /**
-     * 获取下拉刷新控件
-     * @return mRefreshLayout
-     */
-    public SwipeRefreshLayout getRefreshLayout(){
-        return mRefreshLayout;
+    @Override
+    public void setOnlineCommentEntity(OnlineCommentEntity entity) {
+        mCommentEntity = entity;
     }
 
     @Override

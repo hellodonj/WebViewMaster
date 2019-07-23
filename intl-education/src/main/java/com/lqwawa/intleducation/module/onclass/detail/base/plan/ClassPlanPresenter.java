@@ -2,16 +2,13 @@ package com.lqwawa.intleducation.module.onclass.detail.base.plan;
 
 import android.support.annotation.NonNull;
 
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
-import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.LiveEntity;
 import com.lqwawa.intleducation.factory.helper.LiveHelper;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
-import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.List;
 
@@ -62,32 +59,6 @@ public class ClassPlanPresenter extends BasePresenter<ClassPlanContract.View>
     }
 
     @Override
-    public void requestLoadClassInfo(@NonNull String classId) {
-        String memberId = UserHelper.getUserId();
-        // 获取班级详情信息时候,弹出Dialog
-        start();
-        // 发送获取班级详情细信息的请求
-        OnlineCourseHelper.loadOnlineClassInfo(memberId, classId, new DataSource.Callback<JoinClassEntity>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final ClassPlanContract.View view = getView();
-                if(!EmptyUtil.isEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
-
-            @Override
-            public void onDataLoaded(JoinClassEntity joinClassEntity) {
-                // 进行验证
-                final ClassPlanContract.View view = getView();
-                if(!EmptyUtil.isEmpty(view) && !EmptyUtil.isEmpty(joinClassEntity)){
-                    view.onClassCheckSucceed(joinClassEntity);
-                }
-            }
-        });
-    }
-
-    @Override
     public void requestDeleteLive(int id, @NonNull String classId,boolean deleteAll) {
         OnlineCourseHelper.requestDeletePlanLive(id,classId,deleteAll,new DataSource.Callback<Boolean>(){
             @Override
@@ -128,27 +99,6 @@ public class ClassPlanPresenter extends BasePresenter<ClassPlanContract.View>
                 final ClassPlanContract.View view = getView();
                 if(!EmptyUtil.isEmpty(view)){
                     view.showError(strRes);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void requestCompleteGive(@NonNull int id) {
-        OnlineCourseHelper.requestCompleteGiveOrHistory(id, 2,new DataSource.Callback<Boolean>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                final ClassPlanContract.View view = getView();
-                if(!EmptyUtil.isEmpty(view)){
-                    view.showError(strRes);
-                }
-            }
-
-            @Override
-            public void onDataLoaded(Boolean aBoolean) {
-                final ClassPlanContract.View view = getView();
-                if(!EmptyUtil.isEmpty(view)){
-                    view.updateCompleteGiveView(aBoolean);
                 }
             }
         });

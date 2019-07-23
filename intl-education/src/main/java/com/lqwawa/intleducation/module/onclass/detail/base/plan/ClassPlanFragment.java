@@ -2,57 +2,35 @@ package com.lqwawa.intleducation.module.onclass.detail.base.plan;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.recyclerview.LuRecyclerView;
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter;
-import com.github.jdsjlzx.view.LoadingFooter;
-import com.github.jdsjlzx.view.SimpleViewSwitcher;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterFragment;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
-import com.lqwawa.intleducation.base.utils.LogUtil;
-import com.lqwawa.intleducation.base.widgets.PullRefreshView.PullToRefreshView;
+import com.lqwawa.intleducation.base.widgets.ScrollChildSwipeRefreshLayout;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerAdapter;
 import com.lqwawa.intleducation.base.widgets.recycler.TimeLineItemDecoration;
 import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
-import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.LiveEntity;
-import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.factory.event.EventWrapper;
-import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.tool.LiveDetails;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
-import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.base.OnlineTabParams;
 import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailNavigator;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailNavigator;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,22 +46,12 @@ import java.util.List;
  * **********************************
  */
 public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Presenter>
-        implements ClassPlanContract.View ,View.OnClickListener{
+        implements ClassPlanContract.View {
 
-    private static final String KEY_EXTRA_ENTITY = "KEY_EXTRA_ENTITY";
-    private static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
-    private static final String KEY_EXTRA_ORIGIN_ROLE = "KEY_EXTRA_ORIGIN_ROLE";
-    private static final String KEY_EXTRA_HANDLE_ROLE = "KEY_EXTRA_HANDLE_ROLE";
-
-    // private PullToRefreshView mRefreshLayout;
+     private ScrollChildSwipeRefreshLayout mRefreshLayout;
     private LuRecyclerView mRecycler;
     private PlanLiveAdapter mAdapter;
     private LuRecyclerViewAdapter mLuAdapter;
-    private LinearLayout mBottomLayout;
-    private TextView mBtnCreateClass;
-    private TextView mBtnGiveLessons;
-    private TextView mTvTimeTable;
-
     // 原本角色信息
     private String mRole;
     private boolean isParent;
@@ -94,7 +62,6 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
 
     private OnlineTabParams mTabParams;
     private ClassDetailEntity mClassDetailEntity;
-    private JoinClassEntity mClassEntity;
 
     // 多个发布对象时候,选择的选项
     private RadioButton deleteAllClassRB;
@@ -137,47 +104,10 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
     @Override
     protected void initWidget() {
         super.initWidget();
-        // mRefreshLayout = (PullToRefreshView) mRootView.findViewById(R.id.refresh_layout);
+        mRefreshLayout = (ScrollChildSwipeRefreshLayout) mRootView.findViewById(R.id.refresh_layout);
         mRecycler = (LuRecyclerView) mRootView.findViewById(R.id.recycler);
-        mBottomLayout = (LinearLayout) mRootView.findViewById(R.id.bottom_layout);
-        mBtnCreateClass = (TextView) mRootView.findViewById(R.id.btn_new_class);
-        mBtnGiveLessons = (TextView) mRootView.findViewById(R.id.btn_complete_give_lessons);
-        mTvTimeTable = (TextView) mRootView.findViewById(R.id.tv_timetable);
-        mBtnCreateClass.setOnClickListener(this);
-        mBtnGiveLessons.setOnClickListener(this);
-        mTvTimeTable.setOnClickListener(this);
 
-        if(getActivity() instanceof JoinClassDetailActivity){
-            // V5.11隐藏课程表功能
-            mTvTimeTable.setVisibility(View.GONE);
-            // 未加入页面 没有课程表相关
-            // 判断身份，只有老师才显示bottom
-            // 班级详情只有班主任才显示
-            boolean isTeacher = OnlineClassRole.ROLE_TEACHER.equals(mRole);
-            if(!isParent && isTeacher && !mTabParams.isGiveFinish() && !mTabParams.isGiveHistory()){
-                // 不是家长身份
-                // 是老师身份，并且并没有授课完成
-                // 授课完成了，班主任自然不能再完成授课，老师也不能新开课
-                mBtnCreateClass.setVisibility(View.VISIBLE);
-                mBottomLayout.setVisibility(View.VISIBLE);
-
-                // 判断是否是班主任
-                ClassDetailEntity.DataBean data = mClassDetailEntity.getData().get(0);
-                boolean isHeadMaster = UserHelper.getUserId().equals(data.getCreateId());
-                if(!isHeadMaster){
-                    // 不是班主任角色
-                    // 隐藏完成授课
-                    mBtnGiveLessons.setVisibility(View.GONE);
-                }else{
-                    mBtnGiveLessons.setVisibility(View.VISIBLE);
-                }
-            }else{
-                mBottomLayout.setVisibility(View.GONE);
-            }
-        }else{
-            mBottomLayout.setVisibility(View.GONE);
-            mTvTimeTable.setVisibility(View.GONE);
-        }
+        mRefreshLayout.setScrollUpChild(mRecycler);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext())/* {
             @Override
@@ -195,39 +125,21 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
         mAdapter.setGiveHistory(mTabParams.isGiveHistory());
         mLuAdapter = new LuRecyclerViewAdapter(mAdapter);
         mRecycler.setAdapter(mLuAdapter);
-        // 动态设置margin,预留课程表的高度
-        if (getActivity() instanceof JoinClassDetailActivity && false) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mRecycler.getLayoutParams();
-            layoutParams.bottomMargin = DisplayUtil.dip2px(UIUtil.getContext(), 80);
-            mRecycler.setLayoutParams(layoutParams);
-        }
 
-        /*mRefreshLayout.setOnHeaderRefreshListener(view ->{
-            if (!EmptyUtil.isEmpty(mClassDetailEntity.getData())) {
-                String classId = mClassDetailEntity.getData().get(0).getClassId();
-                mPresenter.requestOnlineClassLiveData(schoolId, classId, 0);
-            }
-        });
-
-        mRefreshLayout.setOnFooterRefreshListener(view -> {
-            if (!EmptyUtil.isEmpty(mClassDetailEntity.getData())) {
-                String classId = mClassDetailEntity.getData().get(0).getClassId();
-                mPresenter.requestOnlineClassLiveData(schoolId, classId, ++pageIndex);
-            }
-        });*/
+        mRefreshLayout.setOnRefreshListener(() -> loadData() );
 
         // 如果在初始化的时候设置false footerView 就被移除了
-        // mRecycler.setLoadMoreEnabled(false);
-        mRecycler.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                if (!EmptyUtil.isEmpty(mClassDetailEntity.getData())) {
-                    String classId = mClassDetailEntity.getData().get(0).getClassId();
-                    mPresenter.requestOnlineClassLiveData(schoolId, classId, ++pageIndex);
-                }
-
-            }
-        });
+         mRecycler.setLoadMoreEnabled(false);
+//        mRecycler.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                if (!EmptyUtil.isEmpty(mClassDetailEntity.getData())) {
+//                    String classId = mClassDetailEntity.getData().get(0).getClassId();
+//                    mPresenter.requestOnlineClassLiveData(schoolId, classId, ++pageIndex);
+//                }
+//
+//            }
+//        });
 
         // 已经加入的班级,可以打开授课计划
         mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<LiveEntity>() {
@@ -286,117 +198,6 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
         });
     }
 
-    @Override
-    protected void initData() {
-        super.initData();
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
-        // 获取到班级信息
-        if(EmptyUtil.isNotEmpty(mClassDetailEntity.getData())){
-            String classId = mClassDetailEntity.getData().get(0).getClassId();
-            mPresenter.requestLoadClassInfo(classId);
-        }
-    }
-
-    @Override
-    public void onClassCheckSucceed(@NonNull JoinClassEntity entity) {
-        mClassEntity = entity;
-    }
-
-    @Override
-    public void onClick(View v) {
-        int viewId = v.getId();
-        if(viewId == R.id.btn_new_class){
-            // 新开课
-            if(EmptyUtil.isEmpty(mClassDetailEntity) ||
-                    EmptyUtil.isEmpty(mClassDetailEntity.getData())){
-                return;
-            }
-
-            if(EmptyUtil.isNotEmpty(mClassEntity)){
-                // 直播创建跳转
-                String classMailId = mClassEntity.getClassMailListId();
-                String schoolId = mClassEntity.getSchoolId();
-                String schoolName = mClassEntity.getSchoolName();
-                String className = mClassEntity.getClassName();
-                String classId = mClassEntity.getClassId();
-                if(EmptyUtil.isEmpty(classMailId) ||
-                        EmptyUtil.isEmpty(schoolId) ||
-                        EmptyUtil.isEmpty(schoolName) ||
-                        EmptyUtil.isEmpty(classId) ||
-                        EmptyUtil.isEmpty(className)){
-                    return;
-                }
-                LiveDetails.jumpToCreateLive(getContext(),schoolId,schoolName,className,classMailId,classId);
-            }
-
-        }else if(viewId == R.id.btn_complete_give_lessons){
-            // 完成授课
-            // UIUtil.showToastSafe(R.string.label_complete_give_lessons);
-            // 调用完成授课的接口
-            if(EmptyUtil.isEmpty(mClassDetailEntity) ||
-                    EmptyUtil.isEmpty(mClassDetailEntity.getData())){
-                return;
-            }
-            popGiveLessons();
-        }else if(viewId == R.id.tv_timetable){
-            // 课程表
-            if(EmptyUtil.isEmpty(mClassDetailEntity) ||
-                    EmptyUtil.isEmpty(mClassDetailEntity.getData()) ||
-                    EmptyUtil.isEmpty(mClassEntity)){
-                return;
-            }
-
-            ClassDetailEntity.DataBean dataBean = mClassDetailEntity.getData().get(0);
-
-            boolean isTeacher = OnlineClassRole.ROLE_TEACHER.equals(mRole);
-            boolean isHeadMaster = UserHelper.getUserId().equals(dataBean.getCreateId());
-            if(isParent){
-                mRole = OnlineClassRole.ROLE_PARENT;
-                isHeadMaster = false;
-                isTeacher = false;
-            }
-
-            Intent intent = new Intent();
-            intent.putExtra("schoolId",schoolId);
-            intent.putExtra("classId",dataBean.getClassId());
-            intent.putExtra("role_type",Integer.parseInt(mRole));
-            intent.putExtra("isHeadMaster",isHeadMaster);
-            intent.putExtra("isTeacher",isTeacher);
-            intent.putExtra("isOpenAirClassLiveTable",true);
-            intent.putExtra("id",mClassEntity.getClassMailListId());
-            intent.putExtra("className",dataBean.getName());
-            intent.putExtra("schoolName",dataBean.getOrganName());
-            intent.putExtra("is_online_class_class",true);
-            // 传参是否是结束授课
-            intent.putExtra("is_histroy_class",mTabParams.isGiveHistory());
-            // 是否是历史班
-            intent.putExtra("is_finish_lecture",mTabParams.isGiveFinish());
-            intent.setClassName(getContext().getPackageName(),
-                    "com.galaxyschool.app.wawaschool.OpenCourseHelpActivity");
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void updateCompleteGiveView(boolean complete) {
-        if(complete){
-            // 通知给所有的前一个页面，刷新UI
-            EventBus.getDefault().post(new EventWrapper(null, EventConstant.ONLINE_CLASS_COMPLETE_GIVE_EVENT));
-            // 完成授课
-            getActivity().finish();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MessageEvent event){
-        String action = event.getUpdateAction();
-        if("createOnlineSuccess".equals(action)){
-            // 创建授课计划成功,成功拉取数据
-            // onResume已经调用
-        }
-    }
 
     /**
      * 有多个发布对象，调用
@@ -430,32 +231,6 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
                 });
         messageDialog.show();
         deleteAllClassRB = (RadioButton) messageDialog.getContentView().findViewById(R.id.rb_all_Class);
-    }
-
-    /**
-     * 完成授课
-     */
-    private void popGiveLessons(){
-        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                getActivity(),
-                null,
-                UIUtil.getString(R.string.label_online_class_give_lessons_tip),
-                getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                },
-                getString(R.string.confirm),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mPresenter.requestCompleteGive(mClassDetailEntity.getData().get(0).getId());
-                    }
-                });
-        messageDialog.show();
     }
 
     /**
@@ -532,10 +307,7 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
 
     @Override
     public void updateOnlineClassLiveView(@NonNull List<LiveEntity> entities) {
-        if(getActivity() instanceof BaseClassDetailActivity) {
-            BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
-            parentActivity.getRefreshLayout().setRefreshing(false);
-        }
+        mRefreshLayout.setRefreshing(false);
         // 对集合进行反转
         Collections.reverse(entities);
         mAdapter.replace(entities);
@@ -614,28 +386,6 @@ public class ClassPlanFragment extends PresenterFragment<ClassPlanContract.Prese
         if(activity instanceof JoinClassDetailNavigator){
             JoinClassDetailNavigator navigator = (JoinClassDetailNavigator) activity;
             navigator.updateCommentVisibility(getUserVisibleHint());
-        }
-
-        if(getUserVisibleHint()){
-            // 显示了课堂简介
-            if(getActivity() instanceof BaseClassDetailActivity){
-                BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
-                parentActivity.addRefreshView(mRecycler);
-                parentActivity.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        loadData();
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().unregister(this);
         }
     }
 }

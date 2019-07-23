@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.onclass.detail.notjoin;
 
-import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailNavigator;
+
+import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
 
 /**
  * **********************************
