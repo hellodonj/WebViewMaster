@@ -1,9 +1,11 @@
 package com.galaxyschool.app.wawaschool;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +21,18 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
 import com.galaxyschool.app.wawaschool.fragment.ClassDetailsFragment;
+import com.galaxyschool.app.wawaschool.fragment.ContactsPickerFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.discovery.vo.DiscoveryItemVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.NetErrorResult;
 import com.lqwawa.lqbaselib.net.PostByMapParamsModelRequest;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.*;
@@ -38,9 +43,13 @@ import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,6 +116,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         }
         initData();
         initViews();
+        registerEventBus();
     }
 
     private void initData() {
@@ -1263,5 +1273,63 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 classDetailInfo.getSchoolId(),
                 classDetailInfo.getSchoolName(),
                 String.valueOf(classDetailInfo.getPrice()));
+    }
+
+    private void registerEventBus(){
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    private void unRegisterEventBus(){
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.CREATE_CLASS_ORDER)){
+            //支付成功加入班级
+            String memberId = DemoApplication.getInstance().getMemberId();
+            if (TextUtils.isEmpty(memberId)){
+                return;
+            }
+            List<String> studentIds = new ArrayList<>();
+            studentIds.add(memberId);
+            addStudentToClass(studentIds);
+        }
+    }
+
+    private void addStudentToClass(List<String> studentIds) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        //班主任的memberId
+        params.put("MemberId", classDetailInfo.getHeadMasterId());
+        //班级的classId
+        params.put("ClassId", classDetailInfo.getClassId());
+        params.put("StudentList", studentIds);
+        RequestHelper.RequestListener listener =
+                new RequestHelper.RequestDataResultListener<DataModelResult>(
+                        QrcodeProcessActivity.this, DataModelResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        super.onSuccess(jsonString);
+                        if (getResult() == null || !getResult().isSuccess()) {
+
+                        } else {
+                            TipsHelper.showToast(QrcodeProcessActivity.this, R.string.str_join_success);
+                            finish();
+                        }
+                    }
+                };
+        listener.setShowLoading(true);
+        RequestHelper.sendPostRequest(QrcodeProcessActivity.this, ServerUrl.ADD_STUDENT_TO_CLASS_URL,
+                params, listener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unRegisterEventBus();
+        super.onDestroy();
     }
 }
