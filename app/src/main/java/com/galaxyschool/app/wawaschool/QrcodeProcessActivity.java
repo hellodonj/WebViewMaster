@@ -26,6 +26,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.discovery.vo.DiscoveryItemVo;
@@ -1288,8 +1289,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent messageEvent){
-        if (TextUtils.equals(messageEvent.getUpdateAction(), EventConstant.CREATE_CLASS_ORDER)){
+    public void onMessageEvent(EventWrapper event){
+        if (EventWrapper.isMatch(event,EventConstant.CREATE_CLASS_ORDER)){
             //支付成功加入班级
             String memberId = DemoApplication.getInstance().getMemberId();
             if (TextUtils.isEmpty(memberId)){
