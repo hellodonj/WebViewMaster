@@ -14,6 +14,7 @@ import com.lqwawa.intleducation.base.utils.ToastUtil;
 
 public class ContactsInputDialog extends ContactsDialog {
 
+    private boolean fromApplyClassPrice;
     public ContactsInputDialog(Context context, String title,
                                String inputBoxDefaultText, String inputBoxHintText,
                                String leftButtonText, OnClickListener leftButtonClickListener,
@@ -69,6 +70,10 @@ public class ContactsInputDialog extends ContactsDialog {
         }
     }
 
+    public void setFromApplyClassPrice(boolean fromApplyClassPrice){
+        this.fromApplyClassPrice = fromApplyClassPrice;
+    }
+
     public void setInputLimit() {
         EditText textView = (EditText) getContentView().findViewById(
                 R.id.contacts_dialog_content_text);
@@ -82,7 +87,11 @@ public class ContactsInputDialog extends ContactsDialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (textView.getText().toString().matches("^0")) {//判断当前的输入第一个数是不是为0
                     textView.setText("");
-                    ToastUtil.showToast(getContext(), R.string.label_price_tip);
+                    if (fromApplyClassPrice){
+                        ToastUtil.showToast(getContext(), R.string.str_class_price_not_null);
+                    } else {
+                        ToastUtil.showToast(getContext(), R.string.label_price_tip);
+                    }
                 }
             }
 

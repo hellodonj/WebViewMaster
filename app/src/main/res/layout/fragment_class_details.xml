@@ -4,7 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
+
     <include layout="@layout/contacts_header"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -14,43 +16,79 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
 
+                <include layout="@layout/contacts_user_basic_info"/>
 
-                    <include layout="@layout/contacts_user_basic_info"/>
+                <ImageView
+                    android:id="@+id/contacts_qrcode_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="40dp"
+                    android:minWidth="150dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/default_photo"/>
 
-                    <ImageView
-                        android:id="@+id/contacts_qrcode_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="40dp"
-                        android:minHeight="150dp"
-                        android:minWidth="150dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/default_photo"/>
-
-                    <com.galaxyschool.app.wawaschool.views.MyGridView
-                        android:id="@+id/class_grid_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:cacheColorHint="@android:color/transparent"
-                        android:gravity="center"
-                        android:horizontalSpacing="0dp"
-                        android:listSelector="@android:color/transparent"
-                        android:numColumns="4"
-                        android:verticalSpacing="0dp"
-                        android:visibility="gone"/>
+                <com.galaxyschool.app.wawaschool.views.MyGridView
+                    android:id="@+id/class_grid_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:gravity="center"
+                    android:horizontalSpacing="0dp"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="4"
+                    android:verticalSpacing="0dp"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_charge_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/str_charge_class_tips"
+            android:textColor="@color/text_normal"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_wawa_coin"/>
+
+        <TextView
+            android:id="@+id/tv_charge_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="33"
+            android:textColor="@color/red"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/attend_btn"
         android:layout_width="150dp"
@@ -59,8 +97,8 @@
         android:layout_marginBottom="25dp"
         android:background="@drawable/green_10dp_green"
         android:gravity="center_horizontal"
-        android:paddingBottom="15dp"
         android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textColor="@color/white"
         android:visibility="gone"
         />

@@ -40,4 +40,5 @@
     <dimen name="top_bar_valid_height">48dp</dimen>
     <dimen name="three_grid_unit">0dp</dimen>
     <dimen name="one_and_a_half_grid_unit">0dp</dimen>
+    <dimen name="class_detail_bottom_height">50dp</dimen>
 </resources>

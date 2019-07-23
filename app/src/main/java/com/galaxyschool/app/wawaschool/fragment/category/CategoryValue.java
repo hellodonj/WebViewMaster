@@ -9,6 +9,7 @@ public class CategoryValue implements Parcelable {
     private String value;
     private String newValue;
     private boolean isDefault;
+    private String price;
 
     public CategoryValue() {
 
@@ -17,6 +18,14 @@ public class CategoryValue implements Parcelable {
     public CategoryValue(Parcel src) {
         this.id = src.readString();
         this.value = src.readString();
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getId() {

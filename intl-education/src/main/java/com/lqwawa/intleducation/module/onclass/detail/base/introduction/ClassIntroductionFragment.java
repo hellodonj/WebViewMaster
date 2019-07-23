@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.onclass.OnlineClassRole;
 import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailActivity;
 import com.lqwawa.intleducation.module.onclass.detail.base.OnlineTabParams;
+import com.lqwawa.intleducation.module.onclass.detail.join.JoinClassDetailNavigator;
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailNavigator;
 import com.lqwawa.intleducation.module.onclass.related.RelatedCourseListActivity;
 import com.lqwawa.intleducation.module.onclass.related.RelatedCourseParams;
@@ -331,18 +332,9 @@ public class ClassIntroductionFragment extends PresenterFragment<ClassIntroducti
             navigator.onCommentChanged(getUserVisibleHint());
         }
 
-        if (getUserVisibleHint()) {
-            // 显示了课堂简介
-            if (getActivity() instanceof BaseClassDetailActivity) {
-                BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
-                parentActivity.addRefreshView(mNestedView);
-                parentActivity.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        parentActivity.refreshData();
-                    }
-                });
-            }
+        if (activity instanceof JoinClassDetailNavigator) {
+            JoinClassDetailNavigator navigator = (JoinClassDetailNavigator) activity;
+            navigator.updateCommentVisibility(getUserVisibleHint());
         }
     }
 }

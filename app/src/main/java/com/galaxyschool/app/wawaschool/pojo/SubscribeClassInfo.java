@@ -28,6 +28,16 @@ public class SubscribeClassInfo implements Serializable {
     private boolean isInClass;
     //用来区分在班级中进行跳转---通知、秀秀等等具体跳转细节区分
     private boolean isTempData;
+    private int Price;
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
+    }
+
     public void setIsTempData(boolean  isTempData){
         this.isTempData=isTempData;
     }

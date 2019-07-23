@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contacts_list_item_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ffffff"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="10dp">
+              android:id="@+id/contacts_list_item_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffffff"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="10dp">
 
     <ImageView
         android:id="@+id/contacts_item_icon"
@@ -14,14 +14,48 @@
         android:layout_height="@dimen/logo_size"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"/>
 
-    <TextView
-        android:id="@+id/contacts_item_title"
-        style="@style/txt_wawa_normal_black"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="标题" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contacts_item_title"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标题"/>
+
+        <LinearLayout
+            android:id="@+id/ll_pay_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center|left"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/separate_20dp"
+                android:layout_height="@dimen/separate_20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_wawa_coin"/>
+
+            <TextView
+                android:id="@+id/tv_wawa_coin_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/red"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>
 
