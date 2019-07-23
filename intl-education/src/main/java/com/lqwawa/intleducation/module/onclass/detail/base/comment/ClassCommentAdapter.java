@@ -135,8 +135,6 @@ public class ClassCommentAdapter extends RecyclerAdapter<CommentVo> {
                     .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
                     .build();
 
-            commentContentTv = (TextView) itemView.findViewById(R.id.comment_content_tv);
-            commentTimeTv = (TextView) itemView.findViewById(R.id.comment_time_tv);
             userHeadIv = (ImageView) itemView.findViewById(R.id.user_head_iv);
             nickNameTv = (TextView) itemView.findViewById(R.id.nick_name_tv);
             gradeRatingBar = (RatingBar) itemView.findViewById(R.id.grade_rating_bar);

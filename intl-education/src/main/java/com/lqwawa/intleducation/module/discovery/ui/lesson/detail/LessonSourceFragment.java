@@ -344,7 +344,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
+        //exerciseType 不传或者-1 全部
+        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role,-1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

@@ -43,7 +43,7 @@ public class FirstLevelNodeViewBinder extends CheckableNodeViewBinder {
     }
 
     @Override
-    public void onNodeToggled(TreeNode treeNode, boolean expand) {
-        imageView.setBackgroundResource(expand ? R.drawable.arrow_down_gray_ico : R.drawable.arrow_up_gray_ico);
+    public void onNodeToggled(int position,TreeNode treeNode, boolean expand,Context context) {
+        imageView.setBackgroundResource(expand ? R.drawable.arrow_up_gray_ico : R.drawable.arrow_down_gray_ico);
     }
 }

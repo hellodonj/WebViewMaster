@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.module.onclass.detail.base;
 
+import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
+
 /**
  * **********************************
  *
@@ -13,4 +15,6 @@ package com.lqwawa.intleducation.module.onclass.detail.base;
 public interface BaseClassDetailNavigator {
     // refreshData 评论信息,需要更新数据
     void refreshData();
+    //
+    void setOnlineCommentEntity(OnlineCommentEntity entity);
 }

@@ -557,4 +557,7 @@
     <string name="select_all">select all</string>
     <string name="deselect_all">deselect all</string>
     <string name="str_class_price_not_null">请输入有效的班级价格</string>
+    <string name="label_sx_preview">预习</string>
+    <string name="label_sx_practice">练习</string>
+    <string name="label_sx_review">复习</string>
 </resources>

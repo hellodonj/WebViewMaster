@@ -1,5 +1,7 @@
 package com.lqwawa.intleducation.module.onclass.detail.join;
 
+import com.lqwawa.intleducation.factory.data.entity.OnlineCommentEntity;
+
 /**
  * **********************************
  *

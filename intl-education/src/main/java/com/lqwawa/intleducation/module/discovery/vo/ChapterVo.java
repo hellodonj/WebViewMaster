@@ -65,6 +65,8 @@ public class ChapterVo extends BaseVo {
     private int examType = -1;
     //记录是否选中
     protected boolean isChoosed;
+    //教案类型 1：预习 2:练习 3：复习
+    private int exerciseType;
 
 
     public boolean isContainAssistantWork() {
@@ -433,5 +435,13 @@ public class ChapterVo extends BaseVo {
 
     public int getExamType() {
         return examType;
+    }
+
+    public int getExerciseType() {
+        return exerciseType;
+    }
+
+    public void setExerciseType(int exerciseType) {
+        this.exerciseType = exerciseType;
     }
 }

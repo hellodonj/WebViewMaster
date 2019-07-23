@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.vo;
 
 import com.google.gson.annotations.SerializedName;
+import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
 import java.util.List;
 
@@ -27,63 +28,64 @@ public class SxExamDetailVo {
             @SerializedName("taskName")
             public String taskName;
             @SerializedName("data")
-            public List<DetailVo> data;
+            public List<SectionResListVo> data;
 
-            public class DetailVo {
 
-                @SerializedName("taskId")
-                public int taskId;
-                @SerializedName("isShield")
-                public boolean isShield;
-                @SerializedName("status")
-                public int status;
-                @SerializedName("assigned")
-                public boolean assigned;
-                @SerializedName("leStatus")
-                public int leStatus;
-                @SerializedName("resourceUrl")
-                public String resourceUrl;
-                @SerializedName("screenType")
-                public int screenType;
-                @SerializedName("resId")
-                public int resId;
-                @SerializedName("vuid")
-                public String vuid;
-                @SerializedName("resProperties")
-                public String resProperties;
-                @SerializedName("id")
-                public int id;
-                @SerializedName("point")
-                public String point;
-                @SerializedName("resPropType")
-                public int resPropType;
-                @SerializedName("thumbnail")
-                public String thumbnail;
-                @SerializedName("name")
-                public String name;
-                @SerializedName("viewCount")
-                public int viewCount;
-                @SerializedName("resType")
-                public int resType;
-                @SerializedName("originName")
-                public String originName;
-                @SerializedName("createId")
-                public String createId;
-                @SerializedName("linkCourseId")
-                public int linkCourseId;
-                @SerializedName("linkCourseName")
-                public String linkCourseName;
-                @SerializedName("score")
-                public String score;
-                @SerializedName("isRead")
-                private boolean isRead;
-                @SerializedName("taskType")
-                public int taskType;
-
-                public boolean isIsRead() {
-                    return isRead || status == 1;
-                }
-            }
+//            public class DetailVo {
+//
+//                @SerializedName("taskId")
+//                public int taskId;
+//                @SerializedName("isShield")
+//                public boolean isShield;
+//                @SerializedName("status")
+//                public int status;
+//                @SerializedName("assigned")
+//                public boolean assigned;
+//                @SerializedName("leStatus")
+//                public int leStatus;
+//                @SerializedName("resourceUrl")
+//                public String resourceUrl;
+//                @SerializedName("screenType")
+//                public int screenType;
+//                @SerializedName("resId")
+//                public int resId;
+//                @SerializedName("vuid")
+//                public String vuid;
+//                @SerializedName("resProperties")
+//                public String resProperties;
+//                @SerializedName("id")
+//                public int id;
+//                @SerializedName("point")
+//                public String point;
+//                @SerializedName("resPropType")
+//                public int resPropType;
+//                @SerializedName("thumbnail")
+//                public String thumbnail;
+//                @SerializedName("name")
+//                public String name;
+//                @SerializedName("viewCount")
+//                public int viewCount;
+//                @SerializedName("resType")
+//                public int resType;
+//                @SerializedName("originName")
+//                public String originName;
+//                @SerializedName("createId")
+//                public String createId;
+//                @SerializedName("linkCourseId")
+//                public int linkCourseId;
+//                @SerializedName("linkCourseName")
+//                public String linkCourseName;
+//                @SerializedName("score")
+//                public String score;
+//                @SerializedName("isRead")
+//                private boolean isRead;
+//                @SerializedName("taskType")
+//                public int taskType;
+//
+//                public boolean isIsRead() {
+//                    return isRead || status == 1;
+//                }
+//            }
         }
 
     @Override

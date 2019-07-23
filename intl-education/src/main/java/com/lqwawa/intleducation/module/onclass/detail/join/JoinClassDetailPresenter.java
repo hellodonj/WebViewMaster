@@ -7,6 +7,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassNotificationEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.module.onclass.detail.base.BaseClassDetailPresenter;
+import com.lqwawa.intleducation.module.onclass.detail.base.plan.ClassPlanContract;
 
 import java.util.List;
 
@@ -64,6 +65,27 @@ public class JoinClassDetailPresenter extends BaseClassDetailPresenter<JoinClass
                 final JoinClassDetailContract.View view = getView();
                 if(!EmptyUtil.isEmpty(view)){
                     view.updateSettingHistory(aBoolean);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestCompleteGive(@NonNull int id) {
+        OnlineCourseHelper.requestCompleteGiveOrHistory(id, 2,new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final JoinClassDetailContract.View view = getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    view.showError(strRes);
+                }
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final JoinClassDetailContract.View view = getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    view.updateCompleteGiveView(aBoolean);
                 }
             }
         });

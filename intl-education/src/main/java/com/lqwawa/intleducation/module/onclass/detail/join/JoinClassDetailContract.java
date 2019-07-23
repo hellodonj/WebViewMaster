@@ -26,6 +26,8 @@ public class JoinClassDetailContract {
         void requestNotificationData(@NonNull String classId, int pageIndex);
         // 请求设置成历史班
         void requestSettingHistory(@NonNull int id);
+        // 请求完成授课
+        void requestCompleteGive(@NonNull int id);
     }
 
     interface View extends BaseClassDetailContract.View<Presenter>{
@@ -33,6 +35,8 @@ public class JoinClassDetailContract {
         void updateNotificationView(@NonNull List<ClassNotificationEntity> entities);
         // 设置成历史班成功
         void updateSettingHistory(boolean complete);
+        // 完成授课成功
+        void updateCompleteGiveView(boolean complete);
     }
 
 }

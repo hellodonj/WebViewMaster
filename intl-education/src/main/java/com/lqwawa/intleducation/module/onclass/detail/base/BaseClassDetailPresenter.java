@@ -6,17 +6,16 @@ import android.text.TextUtils;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
-import com.lqwawa.intleducation.factory.presenter.BaseContract;
 import com.lqwawa.intleducation.factory.presenter.BasePresenter;
+import com.lqwawa.intleducation.module.onclass.detail.base.comment.ClassCommentContract;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
-import com.oosic.apps.iemaker.base.ooshare.ShareUtil;
 import com.oosic.apps.share.BaseShareUtils;
-import com.oosic.apps.share.ShareHelper;
 import com.oosic.apps.share.ShareInfo;
 import com.umeng.socialize.media.UMImage;
 
@@ -99,5 +98,29 @@ public abstract class BaseClassDetailPresenter<T extends BaseClassDetailContract
             utils.share(activity.getWindow().getDecorView(),shareInfo);
         }
 
+    }
+    @Override
+    public void requestCommitComment(int type, int courseId, String commentId, @NonNull String content, int starLevel) {
+        OnlineCourseHelper.requestCommitComment(type, courseId, commentId, content, starLevel, new DataSource.Callback<Boolean>() {
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                final BaseClassDetailContract.View view = getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    UIUtil.showToastSafe(UIUtil.getString(R.string.commit_comment) + UIUtil.getString(R.string.failed));
+                }
+            }
+
+            @Override
+            public void onDataLoaded(Boolean aBoolean) {
+                final BaseClassDetailContract.View view = getView();
+                if(!EmptyUtil.isEmpty(view)){
+                    if(aBoolean){
+                        view.commitCommentResult(aBoolean);
+                    }else{
+                        UIUtil.showToastSafe(UIUtil.getString(R.string.commit_comment) + UIUtil.getString(R.string.failed));
+                    }
+                }
+            }
+        });
     }
 }
