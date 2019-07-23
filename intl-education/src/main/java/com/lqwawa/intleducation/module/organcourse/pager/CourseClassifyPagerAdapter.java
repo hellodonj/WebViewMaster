@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.organcourse.pager;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ import com.lqwawa.tools.ScreenUtils;
 
 import java.util.List;
 
+import static com.lqwawa.intleducation.module.learn.ui.MyCourseListFragment.TAG;
+
 /**
  * @author medici
  * @desc 学程馆分类菜单顶部的Adapter
@@ -35,8 +38,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
         super(entities, listener);
         screenWidth = ScreenUtils.getScreenWidth(context);
         int size = entities.size();
-        if (size > 4) itemWidth = screenWidth / 4;
-        else itemWidth = screenWidth / size;
+        if (size > 4 || size < 3) itemWidth = screenWidth / 4;
     }
 
     @Override
@@ -63,7 +65,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
         public ViewHolder(View itemView) {
             super(itemView);
             mClassifyRoot = (LinearLayout) itemView.findViewById(R.id.classify_root);
-            mClassifyRoot.getLayoutParams().width = itemWidth;
+            if (itemWidth != 0) mClassifyRoot.getLayoutParams().width = itemWidth;
             mAuthorizedLayout = (FrameLayout) itemView.findViewById(R.id.authorized_layout);
             mAuthorizedState = (TextView) itemView.findViewById(R.id.tv_authorized_state);
             mClassifyIcon = (ImageView) itemView.findViewById(R.id.classify_img);
