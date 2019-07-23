@@ -556,4 +556,5 @@
     <string name="student_evaluation">Comment</string>
     <string name="select_all">select all</string>
     <string name="deselect_all">deselect all</string>
+    <string name="str_class_price_not_null">请输入有效的班级价格</string>
 </resources>

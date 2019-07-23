@@ -1,31 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/category_list_value_item_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ffebebeb"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="10dp">
+              android:id="@+id/category_list_value_item_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffebebeb"
+              android:gravity="center_vertical"
+              android:orientation="vertical"
+              android:padding="10dp">
 
-    <TextView
-        android:id="@+id/category_value"
-        style="@style/txt_wawa_normal_black"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:gravity="center_vertical|left"
-        android:text="值" />
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/category_selector"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/category_value"
+            style="@style/txt_wawa_normal_black"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="值"/>
+
+        <ImageView
+            android:id="@+id/category_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/single_choice_btn"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pay_detail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/single_choice_btn"
-        android:scaleType="centerInside"
-        android:visibility="visible"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="7dp"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="@dimen/separate_20dp"
+            android:layout_height="@dimen/separate_20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_wawa_coin"/>
+
+        <TextView
+            android:id="@+id/tv_wawa_coin_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/red"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="@string/str_click_change"
+            android:textColor="@color/text_normal"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
 
 </LinearLayout>
 
