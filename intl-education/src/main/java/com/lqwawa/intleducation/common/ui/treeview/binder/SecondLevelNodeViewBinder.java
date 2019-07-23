@@ -90,7 +90,8 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     public void bindView(final TreeNode treeNode, Context context) {
         SectionResListVo vo = (SectionResListVo) treeNode.getValue();
         ExamsAndTestExtrasVo extras = (ExamsAndTestExtrasVo) treeNode.getExtras();
-        boolean mChoiceMode = treeNode.isShowCheckBox();
+//        boolean mChoiceMode = treeNode.isShowCheckBox();
+        boolean mChoiceMode =extras.ismChoiceMode();
         itemRootLay.setVisibility(View.VISIBLE);
         int resType = vo.getResType();
         if (resType > 10000) resType -= 10000;
