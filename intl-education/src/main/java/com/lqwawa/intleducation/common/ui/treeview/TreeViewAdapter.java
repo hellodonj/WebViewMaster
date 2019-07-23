@@ -106,7 +106,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
         final View nodeView = holder.itemView;
         final TreeNode treeNode = expandedNodeList.get(position);
         final BaseNodeViewBinder viewBinder = (BaseNodeViewBinder) holder;
-        treeNode.setShowCheckBox(isShowCheckBox);
+//        treeNode.setShowCheckBox(treeNode.getExtras());
 //        ReadWeikeHelper mReadWeikeHelper = (ReadWeikeHelper) treeView.getExtras();
 
         if (viewBinder.getToggleTriggerViewId() != 0) {

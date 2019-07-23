@@ -214,6 +214,12 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
         mEntityList.add(entity);
 
         entity = new LQCourseConfigEntity();
+        entity.setLibraryType(OrganLibraryType.TYPE_TEACHING_PLAN);
+        entity.setThumbnail("ic_teaching_plan_library_circle");
+        entity.setConfigValue(getString(R.string.common_teaching_plan_library));
+        mEntityList.add(entity);
+
+        entity = new LQCourseConfigEntity();
         entity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
         entity.setLibraryType(OrganLibraryType.TYPE_BRAIN_LIBRARY);
         entity.setThumbnail("ic_brain_library_circle");
