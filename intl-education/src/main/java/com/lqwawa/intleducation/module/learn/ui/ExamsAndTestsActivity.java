@@ -44,7 +44,10 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity.SUBJECT_SETTING_REQUEST_CODE;
 
@@ -66,6 +69,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private MyNodeViewFactory myNodeViewFactory;
     private ReadWeikeHelper mReadWeikeHelper;
     private LessonSourceParams lessonSourceParams;
+    private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,10 +89,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         cancelBtn = (TextView) findViewById(R.id.cancel_btn);
         selectAll = (TextView) findViewById(R.id.select_all);
         okBtn = (TextView) findViewById(R.id.ok_btn);
-//        cancelBtn = (TextView) findViewById(R.id.cancel_btn);
         llSelectAction = (LinearLayout) findViewById(R.id.ll_select_action);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
-//        mTvPoint = (TextView) findViewById(R.id.tv_point);
         root = TreeNode.root();
         myNodeViewFactory = new MyNodeViewFactory();
         treeView = new TreeView(root, this, myNodeViewFactory);
@@ -137,7 +139,6 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         LQCourseHelper.getSxExamDetail(courseId, sectionId, this);
     }
 
-    //fromType 最初是从哪个页面跳转过来的，比如班级课程，三系教案馆等
     public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor, int status, LessonSourceParams lessonSourceParams) {
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -204,27 +205,37 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             }
         } else if (id == R.id.ok_btn) {
             List<TreeNode> selectedNodes = treeView.getSelectedNodes();
-            List<SectionResListVo> choiceArray = new ArrayList<>();
+            addToCartInDifferentTypes.clear();
             for (int i = 0; i < selectedNodes.size(); i++) {
                 Object value = selectedNodes.get(i).getValue();
-                if (value instanceof SectionResListVo) choiceArray.add((SectionResListVo) value);
+                if (value instanceof SectionResListVo) {
+                    SectionResListVo vo = (SectionResListVo) value;
+                    int taskType = vo.getTaskType();
+                    List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
+                    if (vos == null) vos = new ArrayList<>();
+                    vos.add(vo);
+                    addToCartInDifferentTypes.put(taskType, vos);
+                }
             }
-            if (EmptyUtil.isEmpty(choiceArray)) {
+            if (EmptyUtil.isEmpty(selectedNodes)) {
                 UIUtil.showToastSafe(R.string.str_select_tips);
                 return;
             }
-
             if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                 int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                if (count >= 6) {
+                if (count > 6) {
                     UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                     return;
                 }
             }
-            confirmResourceCart(choiceArray);
+            Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
+            for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
+                List<SectionResListVo> choiceArray = entry.getValue();
+                confirmResourceCart(choiceArray);
+            }
             updateView(false);
-        } else if (id == R.id.new_cart_container){
-            handleSubjectSettingData(this,UserHelper.getUserId());
+        } else if (id == R.id.new_cart_container) {
+            handleSubjectSettingData(this, UserHelper.getUserId());
         }
     }
 
@@ -233,6 +244,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         mAddCartContainer.setVisibility(isAddToCart ? View.GONE : View.VISIBLE);
         treeView.setIsShowCheckBox(isAddToCart);
         treeView.notifychanged();
+        treeView.deselectAll();
     }
 
     /**
@@ -258,7 +270,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private int confirmResourceCart(List<SectionResListVo> choiceArray) {
         // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
-        Log.e(TAG, "confirmResourceCart: " + choiceArray.size() );
+        Log.e(TAG, "confirmResourceCart: " + choiceArray.size());
         if (EmptyUtil.isEmpty(choiceArray)) {
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;
