@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.category.Category;
 import com.galaxyschool.app.wawaschool.fragment.category.CategorySelectorFragment;
 import com.galaxyschool.app.wawaschool.fragment.category.CategorySelectorView;
 import com.galaxyschool.app.wawaschool.fragment.category.CategoryValue;
+import com.lqwawa.intleducation.common.ui.ContactsInputDialog;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.*;
 import com.galaxyschool.app.wawaschool.views.ContactsInputBoxDialog;
@@ -29,12 +31,14 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
         int SCHOOL_CATEGORY_STAGE = 2;
         int SCHOOL_CATEGORY_GRADE = 3;
         int SCHOOL_CATEGORY_CLASS = 4;
+        int SCHOOL_CLASS_JOIN_TYPE = 5;//班级加入方式
     }
 
     protected ContactsSchoolListResult schoolListResult;
     protected ContactsClassCategorySetResult classCategoryResult;
     protected String schoolId;
     protected String schoolName;
+    private ContactsInputDialog inputBoxDialog;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -308,6 +312,23 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
             categoryList.add(cat);
         }
 
+        //加入方式
+        cat = new Category();
+        cat.setType(Constants.SCHOOL_CLASS_JOIN_TYPE);
+        cat.setName(getString(R.string.str_accession_mode));
+        cat.setAllValues(new ArrayList());
+        //审批加入
+        value = new CategoryValue();
+        value.setId("0");
+        value.setValue(getString(R.string.str_approval_for_accession));
+        cat.getAllValues().add(value);
+        //付费加入
+        value = new CategoryValue();
+        value.setId("1");
+        value.setValue(getString(R.string.str_pay_to_join));
+        cat.getAllValues().add(value);
+        categoryList.add(cat);
+
         Category schoolCategory = categoryList.get(0);
         CategoryValue currValue = schoolCategory.getCurrValue();
         int currValuePosition = categoryView.getSelectedValuePosition(schoolCategory);
@@ -348,7 +369,15 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
                 showCustomizeDialog(category);
             }
             break;
+        case Constants.SCHOOL_CLASS_JOIN_TYPE:
+            //班级加入方式
+            if (TextUtils.equals("1",category.getCurrValue().getId())){
+                //付费加入
+                showPayWawaCoinDialog(category);
+            }
+            break;
         }
+
     }
 
     protected void showCustomizeDialog(final Category category) {
@@ -393,6 +422,32 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
         //设置不自动消失
         dialog.setIsAutoDismiss(false);
         dialog.show();
+    }
+
+    private void showPayWawaCoinDialog(Category category){
+        inputBoxDialog = new ContactsInputDialog(
+                getActivity(),
+                getString(R.string.str_pls_input_class_price),
+                category.getCurrValue().getPrice(),
+                "",
+                getString(R.string.cancel),
+                (dialog, which) -> dialog.dismiss(),
+                getString(R.string.confirm), (dialog, which) -> {
+            String price = inputBoxDialog.getInputText();
+            if (TextUtils.isEmpty(price)){
+                TipMsgHelper.ShowMsg(getActivity(),R.string.str_class_price_not_null);
+                return;
+            }
+            dialog.dismiss();
+            category.getCurrValue().setPrice(price);
+            categoryView.updateCategoryValueListView();
+        });
+        inputBoxDialog.setInputLimitNumber(6);
+        inputBoxDialog.setInputLimit();
+        inputBoxDialog.setUnitDisplay(true);
+        inputBoxDialog.setIsAutoDismiss(false);
+        inputBoxDialog.setFromApplyClassPrice(true);
+        inputBoxDialog.show();
     }
 
     protected boolean isAllCategoriesSelected() {

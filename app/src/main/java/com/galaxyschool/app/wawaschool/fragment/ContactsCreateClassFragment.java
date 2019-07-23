@@ -58,6 +58,7 @@ public class ContactsCreateClassFragment extends ContactsClassCategorySelectorFr
         Category stageCategory = null;
         Category gradeCategory = null;
         Category classCategory = null;
+        Category payClassCategory = null;
         for (Category category : selectedCategories) {
             if (category.getType() == Constants.SCHOOL_CATEGORY_SCHOOL) {
                 schoolCategory = category;
@@ -67,6 +68,8 @@ public class ContactsCreateClassFragment extends ContactsClassCategorySelectorFr
                 gradeCategory = category;
             } else if (category.getType() == Constants.SCHOOL_CATEGORY_CLASS) {
                 classCategory = category;
+            } else if (category.getType() == Constants.SCHOOL_CLASS_JOIN_TYPE) {
+                payClassCategory = category;
             }
         }
 
@@ -119,6 +122,18 @@ public class ContactsCreateClassFragment extends ContactsClassCategorySelectorFr
         params.put("MemberId", getUserInfo().getMemberId());
         params.put("SchoolId", schoolCategory.getCurrValue().getId());
         params.put("NewModel", classParams);
+        //班级价格
+        if (payClassCategory != null){
+            String price = payClassCategory.getCurrValue().getPrice();
+            if (TextUtils.equals("1",payClassCategory.getCurrValue().getId())){
+                if (TextUtils.isEmpty(price)){
+                    TipsHelper.showToast(getActivity(),R.string.str_pls_input_class_price);
+                    return;
+                } else {
+                    params.put("Price", Integer.valueOf(price));
+                }
+            }
+        }
         DefaultListener listener =
                 new DefaultListener<ModelResult>(ModelResult.class) {
             @Override

@@ -129,7 +129,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
         if (!mTeacherVisitor && courseParams != null &&
                 courseParams.isClassCourseEnter() &&
-                courseParams.isClassTeacher()) {
+                courseParams.isClassTeacher() ||
+                lessonSourceParams.isChoiceMode()) {
             mBottomLayout.setVisibility(View.VISIBLE);
             mNewCartContainer.setVisibility(View.VISIBLE);
         } else {
@@ -160,7 +161,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     private void formatData(SxExamDetailVo examDetailVo) {
-        ExamsAndTestExtrasVo extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, false);
+        ExamsAndTestExtrasVo extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
@@ -270,7 +271,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private int confirmResourceCart(List<SectionResListVo> choiceArray) {
         // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
-        Log.e(TAG, "confirmResourceCart: " + choiceArray.size());
+//        Log.e(TAG, "confirmResourceCart: " + choiceArray.size());
         if (EmptyUtil.isEmpty(choiceArray)) {
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;

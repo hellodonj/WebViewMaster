@@ -12,12 +12,20 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
+import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.*;
 import com.galaxyschool.app.wawaschool.common.DialogHelper.LoadingDialog;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
+import com.galaxyschool.app.wawaschool.fragment.ClassDetailsFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.discovery.vo.DiscoveryItemVo;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.NetErrorResult;
 import com.lqwawa.lqbaselib.net.PostByMapParamsModelRequest;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
@@ -58,7 +66,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     private ViewGroup mRealnameLayout, mSubjectLayout, mRelationLayout;
     private LoadingDialog loadingDialog;
     private WheelPopupView wheelPopupView;
-
+    private LinearLayout chargeDetailLayout;
+    private TextView wawaPayNumTextV;
     private String[] qrcodeAddInfos;
     private String qrcodeStr;
     private int qrcode_process_type;
@@ -83,7 +92,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     private int position = 0;
     private String studentId = null;
     private boolean isFromMooc;
-
+    private SubscribeClassInfo classDetailInfo;
+    private boolean needPayJoinClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +172,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         classExtra.setOnClickListener(this);
         radioGroup.setOnCheckedChangeListener(this);
 
+        chargeDetailLayout = (LinearLayout) findViewById(R.id.ll_charge_detail);
+        wawaPayNumTextV = (TextView) findViewById(R.id.tv_charge_count);
         if (qrcodeClassInfo == null && qrcodeSchoolInfo == null) {
             getQrcodeInfo();
         } else {
@@ -181,6 +193,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                             null, null, null, null);
                     classExtra.setEnabled(false);
                 }
+                loadClassInfo();
             }
 
             if (qrcodeSchoolInfo != null) {
@@ -541,12 +554,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     }
 
     private void addStudentToClass() {
-        String verifyStr = mRealnameEditText.getText().toString().trim();
-//        if (TextUtils.isEmpty(verifyStr)) {
-//            TipMsgHelper.ShowMsg(QrcodeProcessActivity.this, getString(R.string.pls_input_name));
-//            return;
-//        }
-        addToClass(RoleType.ROLE_TYPE_STUDENT, verifyStr);
+        if (needPayJoinClass){
+            applyPayJoinClass();
+        } else {
+            String verifyStr = mRealnameEditText.getText().toString().trim();
+            addToClass(RoleType.ROLE_TYPE_STUDENT, verifyStr);
+        }
     }
 
     private void addParentToClass() {
@@ -1105,6 +1118,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSubjectLayout.setVisibility(View.VISIBLE);
                 mRelationLayout.setVisibility(View.GONE);
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
+                chargeDetailLayout.setVisibility(View.GONE);
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.getRealName())) {
@@ -1126,6 +1140,9 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSubjectLayout.setVisibility(View.GONE);
                 mRelationLayout.setVisibility(View.GONE);
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
+                if (needPayJoinClass){
+                    chargeDetailLayout.setVisibility(View.VISIBLE);
+                }
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.getRealName())) {
@@ -1146,6 +1163,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mRealnameLayout.setVisibility(View.VISIBLE);
                 mSubjectLayout.setVisibility(View.GONE);
                 mRelationLayout.setVisibility(View.VISIBLE);
+                chargeDetailLayout.setVisibility(View.GONE);
                 //如果存在重名学生才显示
                 classInfo.setText(R.string.stu_name);
                 mRealnameEditText.setHint(R.string.pls_input_student_name);
@@ -1196,5 +1214,54 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 initLayout(qrcode_process_type);
             }
         }
+    }
+
+    private void loadClassInfo() {
+        if (TextUtils.isEmpty(DemoApplication.getInstance().getMemberId()) || qrcodeClassInfo == null){
+            return;
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("MemberId", DemoApplication.getInstance().getMemberId());
+        params.put("ClassId", qrcodeClassInfo.getClassId());
+        RequestHelper.RequestDataResultListener listener =
+                new RequestHelper.RequestDataResultListener<SubscribeClassInfoResult>(this,
+                        SubscribeClassInfoResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        super.onSuccess(jsonString);
+                        SubscribeClassInfoResult result = getResult();
+                        if (result == null || !result.isSuccess()
+                                || result.getModel() == null) {
+                            return;
+                        }
+                        classDetailInfo = result.getModel().getData();
+                        if (classDetailInfo != null && classDetailInfo.getPrice() > 0){
+                            if (wawaPayNumTextV != null){
+                                wawaPayNumTextV.setText(String.valueOf(classDetailInfo.getPrice()));
+                            }
+                            needPayJoinClass = true;
+                        }
+                    }
+                };
+        RequestHelper.sendPostRequest(this, ServerUrl.CONTACTS_CLASS_INFO_URL, params, listener);
+    }
+
+    private void applyPayJoinClass(){
+        if (classDetailInfo == null){
+            return;
+        }
+        if (classDetailInfo.getRoles().contains("1")){
+            TipMsgHelper.ShowMsg(this,R.string.str_pay_join_class_tip);
+            return;
+        }
+        PayActivity.newInstance(this,
+                true,
+                DemoApplication.getInstance().getMemberId(),
+                classDetailInfo.getClassId(),
+                classDetailInfo.getClassName(),
+                classDetailInfo.getHeadPicUrl(),
+                classDetailInfo.getSchoolId(),
+                classDetailInfo.getSchoolName(),
+                String.valueOf(classDetailInfo.getPrice()));
     }
 }

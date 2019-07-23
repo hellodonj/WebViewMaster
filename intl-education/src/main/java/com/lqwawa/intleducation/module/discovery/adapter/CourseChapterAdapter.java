@@ -758,6 +758,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mOnSelectListener !=null){
+                        mOnSelectListener.onSelect(vo);
+//                        return;
+                    }
                     //三习教案馆考试章节跳转
                     String memberId = activity.getIntent().getStringExtra("memberId");
                     int teacherType = handleTeacherType();

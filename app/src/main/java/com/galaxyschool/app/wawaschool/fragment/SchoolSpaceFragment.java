@@ -150,7 +150,7 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN;
         item.title = getString(R.string.common_teaching_plan_library);
-        item.resId = R.drawable.ic_practice_library_rect;
+        item.resId = R.drawable.ic_teaching_plan_rect;
         itemList.add(item);
 
         if (schoolInfo != null && schoolInfo.isTeacher()) {

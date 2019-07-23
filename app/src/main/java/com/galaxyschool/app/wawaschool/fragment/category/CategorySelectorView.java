@@ -152,10 +152,9 @@ public class CategorySelectorView extends LinearLayout {
                         if (DefaultPosition.FIRST.ordinal() == this.defaultValuePosition.ordinal()) {
                             obj.getAllValues().add(0, newDefaultValue());
                         } else {
-                            if ((obj.getType() == ContactsClassCategorySelectorFragment.Constants
-                                    .SCHOOL_CATEGORY_STAGE) || (obj.getType() ==
-                                    ContactsClassCategorySelectorFragment.Constants
-                                    .SCHOOL_CATEGORY_GRADE)){
+                            if ((obj.getType() == ContactsClassCategorySelectorFragment.Constants.SCHOOL_CATEGORY_STAGE)
+                                    || (obj.getType() == ContactsClassCategorySelectorFragment.Constants.SCHOOL_CATEGORY_GRADE)
+                                    || obj.getType() == ContactsClassCategorySelectorFragment.Constants.SCHOOL_CLASS_JOIN_TYPE){
                             } else {
                                 obj.getAllValues().add(newDefaultValue());
                             }
@@ -458,6 +457,14 @@ public class CategorySelectorView extends LinearLayout {
                                 R.drawable.my_detail_right_off_ico);
                     }
 
+                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    if (TextUtils.isEmpty(data.getPrice())){
+                        payLayout.setVisibility(GONE);
+                    } else {
+                        payLayout.setVisibility(VISIBLE);
+                        wawaPayNumView.setText(data.getPrice());
+                    }
                     view.setTag(holder);
                     return view;
                 }
