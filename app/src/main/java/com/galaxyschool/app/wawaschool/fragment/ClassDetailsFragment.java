@@ -14,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.duowan.mobile.netroid.Listener;
@@ -110,6 +111,8 @@ public class ClassDetailsFragment extends ContactsListFragment
     private int fromType = 0;
     private TextView attendClassBtn;
     private MyGridView gridView;
+    private LinearLayout chargeDetailLayout;
+    private TextView wawaPayNumTextV;
     private String headPicUrl;
     private String className;
     private String schoolName;
@@ -138,6 +141,8 @@ public class ClassDetailsFragment extends ContactsListFragment
         gridView = (MyGridView) findViewById(R.id.class_grid_view);
         attendClassBtn = (TextView) findViewById(R.id.attend_btn);
         attendClassBtn.setOnClickListener(this);
+        chargeDetailLayout = (LinearLayout) findViewById(R.id.ll_charge_detail);
+        wawaPayNumTextV = (TextView) findViewById(R.id.tv_charge_count);
         AdapterViewHelper adapterViewHelper = null;
         if (gridView != null) {
             gridView.setNumColumns(4);
@@ -416,6 +421,7 @@ public class ClassDetailsFragment extends ContactsListFragment
 
         if (fromType == Constants.FROM_TYPE_CLASS_HEAD_PIC) {
             if (hasJoinedClass) {
+                chargeDetailLayout.setVisibility(View.GONE);
                 attendClassBtn.setVisibility(View.GONE);
                 if (classState == ContactsClassManagementActivity.CLASS_STATUS_PRESENT) {
                     gridView.setVisibility(View.VISIBLE);
@@ -423,6 +429,12 @@ public class ClassDetailsFragment extends ContactsListFragment
                     gridView.setVisibility(View.GONE);
                 }
             } else {
+                if (classInfo != null && classInfo.getPrice() > 0){
+                    chargeDetailLayout.setVisibility(View.VISIBLE);
+                    wawaPayNumTextV.setText(String.valueOf(classInfo.getPrice()));
+                } else {
+                    chargeDetailLayout.setVisibility(View.GONE);
+                }
                 attendClassBtn.setVisibility(View.VISIBLE);
                 gridView.setVisibility(View.GONE);
                 attendClassBtn.setText(getString(R.string.join_class));

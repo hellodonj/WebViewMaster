@@ -42,7 +42,7 @@
         android:layout_marginLeft="7dp"
         android:gravity="center|left"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/separate_20dp"

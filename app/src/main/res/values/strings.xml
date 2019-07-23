@@ -1831,4 +1831,6 @@
     <string name="str_click_change">(点击修改)</string>
     <string name="str_pls_input_class_price">请输入班级价格</string>
     <string name="str_class_price_not_null">请输入有效的班级价格</string>
+    <string name="str_charge_class_tips">本班级为付费班级,需支付:</string>
+    <string name="str_pay_join_class_tip">已在班级，不可重复申请</string>
 </resources>

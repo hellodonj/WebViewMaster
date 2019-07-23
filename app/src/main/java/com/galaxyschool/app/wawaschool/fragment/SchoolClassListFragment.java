@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -145,7 +146,7 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
         }
     }
 
-    /**
+    /**etView
      * 进入老师通讯录
      *
      * @param classInfo
@@ -276,6 +277,17 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                             textView.setBackgroundResource(R.drawable.button_bg_with_round_sides);
 //                            textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
                             textView.setOnClickListener(SchoolClassListFragment.this);
+                        }
+                    }
+
+                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    if (payLayout != null && wawaPayNumView != null){
+                        if (data.getPrice() > 0){
+                            payLayout.setVisibility(View.VISIBLE);
+                            wawaPayNumView.setText(String.valueOf(data.getPrice()));
+                        } else {
+                            payLayout.setVisibility(View.GONE);
                         }
                     }
 
@@ -444,6 +456,17 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                         textView.setText(data.getGradeName() != null ?
                                 data.getGradeName() + data.getClassName() :
                                 data.getClassName());
+                    }
+
+                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    if (payLayout != null && wawaPayNumView != null){
+                        if (data.getPrice() > 0){
+                            payLayout.setVisibility(View.VISIBLE);
+                            wawaPayNumView.setText(String.valueOf(data.getPrice()));
+                        } else {
+                            payLayout.setVisibility(View.GONE);
+                        }
                     }
 
                     ViewHolder holder = (ViewHolder) view.getTag();
