@@ -22,6 +22,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
 import com.galaxyschool.app.wawaschool.fragment.ClassDetailsFragment;
 import com.galaxyschool.app.wawaschool.fragment.ContactsPickerFragment;
+import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
@@ -1318,6 +1319,9 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                         if (getResult() == null || !getResult().isSuccess()) {
 
                         } else {
+                            //刷新前面界面的数据
+                            MySchoolSpaceFragment.sendBrocast(QrcodeProcessActivity.this);
+                            EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.JOIN_CHARGE_CLASS_SUCCESS));
                             TipsHelper.showToast(QrcodeProcessActivity.this, R.string.str_join_success);
                             finish();
                         }
