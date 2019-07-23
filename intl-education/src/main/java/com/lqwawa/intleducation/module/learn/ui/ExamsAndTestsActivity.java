@@ -70,6 +70,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private ReadWeikeHelper mReadWeikeHelper;
     private LessonSourceParams lessonSourceParams;
     private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
+    private ExamsAndTestExtrasVo extrasVo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -161,7 +162,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     private void formatData(SxExamDetailVo examDetailVo) {
-        ExamsAndTestExtrasVo extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
+        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
@@ -243,7 +244,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private void updateView(boolean isAddToCart) {
         llSelectAction.setVisibility(isAddToCart ? View.VISIBLE : View.GONE);
         mAddCartContainer.setVisibility(isAddToCart ? View.GONE : View.VISIBLE);
-        treeView.setIsShowCheckBox(isAddToCart);
+//        treeView.setIsShowCheckBox(isAddToCart);
+        if (extrasVo !=null) extrasVo.setmChoiceMode(isAddToCart);
         treeView.notifychanged();
         treeView.deselectAll();
     }
