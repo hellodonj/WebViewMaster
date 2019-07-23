@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +40,7 @@ import com.lqwawa.intleducation.module.learn.ui.CourseExamListActivity;
 import com.lqwawa.intleducation.module.learn.ui.ExamsAndTestsActivity;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
+import com.lqwawa.intleducation.module.learn.ui.SxLessonDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.UnitExamListActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -59,6 +59,7 @@ import java.util.List;
 public class CourseChapterAdapter extends MyBaseAdapter {
     public static final int TYPE_CWORK = 10;
     public static final int TYPE_CEXAM = 11;
+    public static final int TYPE_LESSON = 0;
     public static final int TYPE_EXAM = 1;
     private Activity activity;
     private List<ChapterVo> list;
@@ -368,7 +369,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
                                 } else {
                                     // 直接拦截
-                                    toLessonDetailsActivity(vo, true);
+                                    toLessonDetailsActivity(vo, true,false);
                                 }
                                 return;
                             }
@@ -515,11 +516,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         //courseid,sectionId,token
 //                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
                                         ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), lessonSourceParams);
-                                    } else {
+//                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
+                                    } else if (examType == TYPE_LESSON){
                                         //普通教案详情入口
-                                        Log.e(TAG, "onClick: 普通教案详情入口");
+                                        toLessonDetailsActivity(vo, isFreeUser,true);
                                     }
-                                } else toLessonDetailsActivity(vo, isFreeUser);
+                                } else toLessonDetailsActivity(vo, isFreeUser,false);
                                 /*LessonDetailsActivity.start(activity, courseId, vo.getId(),
                                         vo.getSectionName(), vo.getName(),
                                         needFlagRead,
@@ -1157,7 +1159,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
      *
      * @param vo 章节
      */
-    private void toLessonDetailsActivity(@NonNull ChapterVo vo, boolean isFreeUser) {
+    private void toLessonDetailsActivity(@NonNull ChapterVo vo, boolean isFreeUser,boolean isSxLesson) {
         // 判空
         if (EmptyUtil.isEmpty(courseVo)) return;
 
@@ -1219,11 +1221,19 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
         boolean isFromMyCourse = activity.getIntent().getBooleanExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false);
 
-        LessonDetailsActivity.start(activity, courseId, chapterId,
-                sectionName, name, needFlagRead, true, canEdit,
-                status, memberId, vo.isContainAssistantWork(),
-                schoolId, isFromMyCourse, courseVo,
-                isOnlineTeacher, isFreeUser, params, null);
+        if (isSxLesson) {
+            SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                    sectionName, name, needFlagRead, true, canEdit,
+                    status, memberId, vo.isContainAssistantWork(),
+                    schoolId, isFromMyCourse, courseVo,
+                    isOnlineTeacher, isFreeUser, params, null);
+        } else {
+            LessonDetailsActivity.start(activity, courseId, chapterId,
+                    sectionName, name, needFlagRead, true, canEdit,
+                    status, memberId, vo.isContainAssistantWork(),
+                    schoolId, isFromMyCourse, courseVo,
+                    isOnlineTeacher, isFreeUser, params, null);
+        }
     }
 
     /**

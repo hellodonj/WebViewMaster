@@ -109,12 +109,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" /> <!-- 我的订单列表 -->
-
         <activity
             android:name=".module.user.ui.OrderListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Common" /><!-- 我的订单列表 -->
-
+            android:theme="@style/AppTheme.Common" /> <!-- 我的订单列表 -->
         <activity
             android:name=".module.user.ui.MyOrderListActivity"
             android:screenOrientation="portrait" /> <!-- 更多老师 -->
@@ -444,6 +442,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
         <activity
+            android:name=".module.learn.ui.SxLessonDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+        <activity
             android:name=".module.discovery.ui.ClassifyIndexActivity"
             android:screenOrientation="portrait" /> <!-- 子课程列表-例如从LQ英语界面进入课程列表使用此界面 -->
         <activity
@@ -680,9 +682,7 @@
             android:name=".module.discovery.ui.coin.donation.DonationCoinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common"
-            android:windowSoftInputMode="adjustPan" />
-
-        <!--我的习课程标签详情课程列表-->
+            android:windowSoftInputMode="adjustPan" /> <!-- 我的习课程标签详情课程列表 -->
         <activity
             android:name=".module.learn.ui.mycourse.detail.MyCourseConfigDetailActivity"
             android:screenOrientation="portrait"
