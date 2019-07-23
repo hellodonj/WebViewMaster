@@ -25,6 +25,7 @@ import com.galaxyschool.app.wawaschool.ContactsCreateClassActivity;
 import com.galaxyschool.app.wawaschool.QrcodeProcessActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
@@ -47,6 +48,10 @@ import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PopupMenu;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +99,7 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
         init();
         refreshData();
         loadSchoolInfo();
+        addEventBusReceiver();
     }
 
     private void refreshData() {
@@ -1125,6 +1131,13 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                     refreshData();
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(), MessageEventConstantUtils.JOIN_CHARGE_CLASS_SUCCESS)){
+            refreshData();
         }
     }
 

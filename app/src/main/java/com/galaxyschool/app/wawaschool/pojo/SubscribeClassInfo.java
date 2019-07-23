@@ -29,6 +29,15 @@ public class SubscribeClassInfo implements Serializable {
     //用来区分在班级中进行跳转---通知、秀秀等等具体跳转细节区分
     private boolean isTempData;
     private int Price;
+    private String HeadMasterId;
+
+    public String getHeadMasterId() {
+        return HeadMasterId;
+    }
+
+    public void setHeadMasterId(String headMasterId) {
+        HeadMasterId = headMasterId;
+    }
 
     public int getPrice() {
         return Price;

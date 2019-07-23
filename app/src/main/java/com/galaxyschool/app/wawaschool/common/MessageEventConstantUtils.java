@@ -20,4 +20,9 @@ public class MessageEventConstantUtils {
      * 发送作业成功
      */
     public static String SEND_HOME_WORK_LIB_SUCCESS = "send_home_work_lib_success";
+
+    /**
+     * 加入班级成功
+     */
+    public static String JOIN_CHARGE_CLASS_SUCCESS = "join_charge_class_success";
 }
