@@ -123,8 +123,16 @@ public class ContactsCreateClassFragment extends ContactsClassCategorySelectorFr
         params.put("SchoolId", schoolCategory.getCurrValue().getId());
         params.put("NewModel", classParams);
         //班级价格
-        if (payClassCategory != null && !TextUtils.isEmpty(payClassCategory.getCurrValue().getPrice())){
-            params.put("Price",Integer.valueOf(payClassCategory.getCurrValue().getPrice()));
+        if (payClassCategory != null){
+            String price = payClassCategory.getCurrValue().getPrice();
+            if (TextUtils.equals("1",payClassCategory.getCurrValue().getId())){
+                if (TextUtils.isEmpty(price)){
+                    TipsHelper.showToast(getActivity(),R.string.str_pls_input_class_price);
+                    return;
+                } else {
+                    params.put("Price", Integer.valueOf(price));
+                }
+            }
         }
         DefaultListener listener =
                 new DefaultListener<ModelResult>(ModelResult.class) {
