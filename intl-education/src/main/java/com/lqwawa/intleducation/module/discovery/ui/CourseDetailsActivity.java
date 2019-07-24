@@ -275,8 +275,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             }
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
-                                    true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
-                                    isAuthorized, courseDetailParams, vo);
+                                    canEdit, memberId, isSchoolEnter, isOnlineClassEnter,
+                                    isOnlineCounselor, isAuthorized, courseDetailParams, vo);
                         } else {
                             // 去未加入页面
                             boolean isAuth = isAuthorized;
