@@ -74,6 +74,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     ImageOptions onlineImageOptions;
     ImageOptions orderImageOptions;
     ImageOptions courseImageOptions;
+    ImageOptions classImageOptions;
     private static final int[] orderStatusResId = new int[]{
             R.string.order_status_0,
             R.string.order_status_1,
@@ -157,6 +158,14 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 //.setSize(img_width, img_height)
                 .setLoadingDrawableId(R.drawable.ic_lqc_l)//加载中默认显示图片
                 .setFailureDrawableId(R.drawable.ic_lqc_l)//加载失败后默认显示图片
+                .build();
+
+        classImageOptions = new ImageOptions.Builder()
+                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
+                .setCrop(false)
+                .setSize(img_width, img_height)
+                .setLoadingDrawableId(R.drawable.default_group_icon)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.default_group_icon)//加载失败后默认显示图片
                 .build();
 
         mCourseTypeNames =
@@ -310,7 +319,13 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.shape_circle_gray_stroke_h1_radius_18));
                 }
-            } else {
+            } else if (vo.getType()==7){
+                holder.course_name.setText(vo.getClassName());
+                holder.organName.setText(vo.getSchoolName());
+                holder.rebuy_tv.setVisibility(View.VISIBLE);
+                holder.rebuy_tv.setText(activity.getResources().getString(R.string.delete_order));
+                holder.delete_order_tv.setVisibility(View.GONE);
+            }else {
                 holder.mTutorStatusTv.setVisibility(View.GONE);
             }
         }
@@ -722,6 +737,11 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                         vo.getThumbnailUrl(),
                         orderImageOptions);
             }
+        } else if (vo.getType() == 7) {
+            // 加入班级
+            x.image().bind(holder.course_iv,
+                    vo.getThumbnailUrl(),
+                    classImageOptions);
         } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂

@@ -70,6 +70,9 @@ public class MyOrderVo extends BaseVo{
     private int taskType;
     private String taskName;
 
+    private String className;
+    private String schoolName;
+
     public int getPayType() {
         return payType;
     }
@@ -294,6 +297,22 @@ public class MyOrderVo extends BaseVo{
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public int getLibraryType() {

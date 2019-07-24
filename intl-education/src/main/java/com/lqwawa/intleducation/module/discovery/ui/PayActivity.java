@@ -731,6 +731,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             requestVo.addParams("schoolId",mSchoolId);
             requestVo.addParams("schoolName",mSchoolName);
             requestVo.addParams("price",mPrice);
+            requestVo.addParams("consumeSource", 2);
             RequestParams params = new RequestParams(AppConfig.ServerUrl.PostCreateClassOrder);
             params.setAsJsonContent(true);
             params.setBodyContent(requestVo.getParams());
@@ -750,9 +751,8 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                     }
                     int code = jsonObject.optInt("code");
                     if (code == 0) {
-                        int id = jsonObject.optInt("id");
                         // 通过EventBus通知
-                        EventBus.getDefault().post(new EventWrapper(id, EventConstant.CREATE_CLASS_ORDER));
+                        EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
                         finish();
                     } else {
                         UIUtil.showToastSafe(R.string.pay_failure);
