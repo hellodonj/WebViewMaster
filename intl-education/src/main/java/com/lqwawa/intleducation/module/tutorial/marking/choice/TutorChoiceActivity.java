@@ -251,7 +251,7 @@ public class TutorChoiceActivity extends PresenterActivity<TutorChoiceContract.P
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(@NonNull EventWrapper event) {
-        if (EventWrapper.isMatch(event, EventConstant.CREATE_TUTOR_ORDER)) {
+        if (EventWrapper.isMatch(event, EventConstant. CREATE_TUTOR_ORDER)) {
             List<TutorChoiceEntity> items = mAdapter.getItems();
             for (TutorChoiceEntity item : items) {
                 if (item.isChecked()) {

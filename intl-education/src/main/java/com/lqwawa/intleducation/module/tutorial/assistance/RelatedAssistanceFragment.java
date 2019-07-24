@@ -87,6 +87,12 @@ public class RelatedAssistanceFragment extends PresenterFragment<RelatedAssistan
         mAdapter = new RelatedAssistanceAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        requestSxRelationCourse(false);
         mAdapter.setOnItemClickListener(new RelatedAssistanceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -98,12 +104,6 @@ public class RelatedAssistanceFragment extends PresenterFragment<RelatedAssistan
                 CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
             }
         });
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        requestSxRelationCourse(false);
     }
 
     /**

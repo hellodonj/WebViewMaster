@@ -86,6 +86,7 @@ public class SectionResListVo extends BaseVo {
     private String thumbnail;
 
 
+
     public String getTaskId() {
         return taskId;
     }

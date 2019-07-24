@@ -37,9 +37,9 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.SxLessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
@@ -57,7 +57,7 @@ import org.xutils.common.util.DensityUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SxLessonDetailsActivity extends AppCompatActivity implements View.OnClickListener{
+public class SxLessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
     // 是否是空中课堂老师
@@ -129,8 +129,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String courseId;
     private String sectionName;
     private String sectionId;
-    //1：预习 2:练习 3：复习   不传或者-1 全部
-    private int  exerciseType;
     // 课程大纲参数
     private CourseChapterParams mChapterParams;
     private SectionDetailsVo sectionDetailsVo;
@@ -272,19 +270,19 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         }
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role,-1, new DataSource.Callback<SectionDetailsVo>() {
-            @Override
-            public void onDataNotAvailable(int strRes) {
-                UIUtil.showToastSafe(strRes);
-            }
+            LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, -1, new DataSource.Callback<SectionDetailsVo>() {
+                @Override
+                public void onDataNotAvailable(int strRes) {
+                    UIUtil.showToastSafe(strRes);
+                }
 
-            @Override
-            public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
-                SxLessonDetailsActivity.this.sectionDetailsVo = sectionDetailsVo;
-                if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
-                updateView();
-            }
-        });
+                @Override
+                public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
+                    SxLessonDetailsActivity.this.sectionDetailsVo = sectionDetailsVo;
+                    if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
+                    updateView();
+                }
+            });
     }
 
     private void updateView() {
@@ -307,16 +305,11 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 } else {
                     params.setAddMode(true);
                 }
-                for (int index = 0; index < taskList.size(); index++) {
-                    SectionTaskListVo listVo = taskList.get(index);
-                    if (EmptyUtil.isNotEmpty(listVo.getData())) {
-                        int taskType = listVo.getTaskType();
-                        //String taskName = listVo.getTaskName();
-                       // mTabLists.add(taskName);
-                        LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType, params);
-                        mTabSourceNavigator.add(fragment);
-                        fragments.add(fragment);
-                    }
+
+                for (int i = 0; i < mTabLists.size(); i++) {
+                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(courseId,sectionId,i+1,params);
+                    mTabSourceNavigator.add(fragment);
+                    fragments.add(fragment);
                 }
             }
 
@@ -325,14 +318,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mTabLayout.setupWithViewPager(mViewPager);
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
-            mTabLayout.getTabAt(0).getCustomView().setSelected(true);
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-
-//            if (mTabLayout.getTabCount() > 4) {
-//                mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//            } else {
-//                mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-//            }
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
         }
     }
@@ -479,6 +465,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             }
         }
     }
+
     /**
      * 取消资源
      */

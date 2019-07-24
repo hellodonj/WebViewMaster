@@ -36,6 +36,7 @@ import java.util.List;
 public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssistanceAdapter.ViewHolder> {
 
     private Activity activity;
+    private LayoutInflater inflater;
     private List<CourseVo> list;
     private int img_width;
     private int img_height;
@@ -64,6 +65,7 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
 
     public RelatedAssistanceAdapter(Activity activity) {
         this.activity = activity;
+        this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<CourseVo>();
 
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
@@ -94,7 +96,7 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mod_course_list_item, parent, false);
+        View view = inflater.inflate(R.layout.mod_course_list_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
