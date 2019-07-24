@@ -1834,4 +1834,5 @@
     <string name="str_charge_class_tips">本班级为付费班级,需支付:</string>
     <string name="str_pay_join_class_tip">已在班级，不可重复申请</string>
     <string name="str_join_success">加入班级成功</string>
+    <string name="str_creating">正在创建...</string>
 </resources>

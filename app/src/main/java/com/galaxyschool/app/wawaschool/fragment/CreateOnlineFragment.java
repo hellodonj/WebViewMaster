@@ -646,6 +646,7 @@ public class CreateOnlineFragment extends ContactsListFragment {
                     }
                 };
         listener.setShowLoading(true);
+        listener.setLoadingContent(getString(R.string.str_creating));
         RequestHelper.sendPostRequest(getActivity(), ServerUrl.CREATE_AIR_CLASSROOM_NEW_BASE_URL, params, listener);
     }
 

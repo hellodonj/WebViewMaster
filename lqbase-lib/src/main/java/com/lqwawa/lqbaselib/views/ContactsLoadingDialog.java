@@ -3,6 +3,7 @@ package com.lqwawa.lqbaselib.views;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -16,7 +17,7 @@ public class ContactsLoadingDialog extends Dialog {
 
     private Context context;
     private Animation animation;
-
+    private String loadContent;
 
     public ContactsLoadingDialog(Context context) {
         super(context, R.style.Theme_ContactsLoadingDialog);
@@ -29,7 +30,7 @@ public class ContactsLoadingDialog extends Dialog {
     }
 
     public void setContent(String content) {
-        ((TextView) findViewById(R.id.loading_tips)).setText(content);
+        this.loadContent = content;
     }
 
     @Override
@@ -42,6 +43,13 @@ public class ContactsLoadingDialog extends Dialog {
 
         ImageView imageViewLoading = (ImageView) findViewById(R.id.loading_progress);
         imageViewLoading.startAnimation(animation);
+
+        TextView loadTipTextV = (TextView) findViewById(R.id.loading_tips);
+        if (loadTipTextV != null){
+            if (!TextUtils.isEmpty(loadContent)){
+                loadTipTextV.setText(loadContent);
+            }
+        }
     }
 
 }
