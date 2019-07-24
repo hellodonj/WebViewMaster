@@ -26,6 +26,15 @@ public class ContactsClassInfo {
     private String smallGroup;
     private int CourseOnlineStatus;
     private int NewCourseOnlineStatus;
+    private int Price;
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
+    }
 
     public int getNewCourseOnlineStatus() {
         return NewCourseOnlineStatus;

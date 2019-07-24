@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contacts_list_item_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ffebebeb"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="10dp">
+              android:id="@+id/contacts_list_item_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffebebeb"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="10dp">
 
     <FrameLayout
         android:layout_width="@dimen/logo_size"
@@ -18,7 +18,7 @@
             android:id="@+id/contacts_item_icon"
             android:layout_width="@dimen/logo_size"
             android:layout_height="@dimen/logo_size"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/contacts_item_description"
@@ -26,31 +26,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:padding="0dp"
             android:background="#e0009039"
-            android:gravity="center"
-            android:textSize="8sp"
-            android:singleLine="true"
             android:ellipsize="middle"
+            android:gravity="center"
+            android:padding="0dp"
+            android:singleLine="true"
             android:text="描述"
+            android:textSize="8sp"
             android:visibility="gone"/>
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/contacts_item_title"
-        style="@style/txt_wawa_normal_gray"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        android:text="标题" />
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contacts_item_title"
+            style="@style/txt_wawa_normal_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标题"/>
+
+        <LinearLayout
+            android:id="@+id/ll_pay_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center|left"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/separate_20dp"
+                android:layout_height="@dimen/separate_20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_wawa_coin"/>
+
+            <TextView
+                android:id="@+id/tv_wawa_coin_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/red"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/contacts_item_status"
         style="@style/txt_wawa_normal_darkgray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="状态" />
+        android:text="状态"/>
 
 </LinearLayout>
 
