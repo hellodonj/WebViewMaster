@@ -1131,6 +1131,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mRelationLayout.setVisibility(View.GONE);
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
                 chargeDetailLayout.setVisibility(View.GONE);
+                addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.getRealName())) {
@@ -1154,6 +1155,9 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
                 if (needPayJoinClass){
                     chargeDetailLayout.setVisibility(View.VISIBLE);
+                    addBtn.setText(getString(R.string.str_go_to_pay));
+                } else {
+                    addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
                 }
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
@@ -1176,6 +1180,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSubjectLayout.setVisibility(View.GONE);
                 mRelationLayout.setVisibility(View.VISIBLE);
                 chargeDetailLayout.setVisibility(View.GONE);
+                addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
                 //如果存在重名学生才显示
                 classInfo.setText(R.string.stu_name);
                 mRealnameEditText.setHint(R.string.pls_input_student_name);
@@ -1262,8 +1267,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         if (classDetailInfo == null){
             return;
         }
-        if (classDetailInfo.getRoles().contains("1")){
+        if (classDetailInfo.isStudentByRoles()){
             TipMsgHelper.ShowMsg(this,R.string.str_pay_join_class_tip);
+            return;
+        }
+        if (classDetailInfo.isTeacherByRoles() || classDetailInfo.isParentByRoles()){
+            TipMsgHelper.ShowMsg(this,R.string.str_repeat_role_info);
             return;
         }
         PayActivity.newInstance(this,

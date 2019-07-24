@@ -76,6 +76,9 @@ public class SubscribeClassInfo implements Serializable {
         return (Roles != null && Roles.contains(String.valueOf(RoleType.ROLE_TYPE_PARENT)));
     }
 
+    public boolean isStudentByRoles(){
+        return (Roles != null && Roles.contains(String.valueOf(RoleType.ROLE_TYPE_STUDENT)));
+    }
 
     public String getClassName() {
         return ClassName;
