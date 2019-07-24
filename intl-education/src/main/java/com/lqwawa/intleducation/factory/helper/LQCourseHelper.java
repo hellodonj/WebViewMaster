@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQRmResponseVo;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
@@ -797,7 +798,7 @@ public class LQCourseHelper {
         requestVo.addParams("sectionId", sectionId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSxExamDetail);
         params.setAsJsonContent(true);
-        params.setBodyContent( requestVo.getParams());
+        params.setBodyContent(requestVo.getParams());
         params.setConnectTimeout(10000);
         LogUtil.i(LQCourseHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
@@ -817,6 +818,39 @@ public class LQCourseHelper {
             @Override
             public void onError(Throwable throwable, boolean b) {
                 LogUtil.w(LQCourseHelper.class, "request " + params.getUri() + " failed");
+                if (!EmptyUtil.isEmpty(callback)) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+
+    public static void loadSixlLibraryLabelData(String organId,DataSource.Callback<ResponseVo<List<LibraryLabelEntity>>> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("organId", organId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSixLibraryLabelList);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(LQCourseHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<LibraryLabelEntity>>>() {
+                });
+                if (vo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(vo);
+                    }
+                } else {
+                    Factory.decodeRspCode(vo.getCode(), callback);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LQCourseHelper.class, "request " + params.getUri() + " failed---" +throwable.getMessage());
                 if (!EmptyUtil.isEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }

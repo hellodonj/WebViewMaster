@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.ui.treeview.animator.TreeItemAnimator;
 import com.lqwawa.intleducation.common.ui.treeview.base.BaseNodeViewFactory;
 import com.lqwawa.intleducation.common.ui.treeview.base.SelectableTreeAction;
@@ -47,6 +48,7 @@ public class TreeView implements SelectableTreeAction {
     private boolean itemSelectable = true;
 
     private Object extras;
+    private RecyclerView recyclerView;
 
     public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
         this.itemAnimator = itemAnimator;
@@ -84,7 +86,7 @@ public class TreeView implements SelectableTreeAction {
 
     @NonNull
     private RecyclerView buildRootView() {
-        RecyclerView recyclerView = new RecyclerView(context);
+        recyclerView = new RecyclerView(context);
         /**
          * disable multi touch event to prevent terrible data set error when calculate list.
          */
@@ -95,11 +97,19 @@ public class TreeView implements SelectableTreeAction {
         itemAnimator.setSupportsChangeAnimations(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+
         adapter = new TreeViewAdapter(context, root, baseNodeViewFactory);
         adapter.setTreeView(this);
         recyclerView.setAdapter(adapter);
         return recyclerView;
     }
+
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        if (recyclerView != null)
+            recyclerView.addItemDecoration(itemDecoration);
+    }
+
 
     @Override
     public void expandAll() {

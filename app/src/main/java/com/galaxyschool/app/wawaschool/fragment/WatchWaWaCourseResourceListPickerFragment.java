@@ -6,10 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,7 +20,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.BookDetailActivity;
 import com.galaxyschool.app.wawaschool.BookStoreListActivity;
-import com.galaxyschool.app.wawaschool.MyAttendedSchoolListActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ShellActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -31,12 +32,18 @@ import com.galaxyschool.app.wawaschool.fragment.resource.MyAttendedSchooListFrag
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.SchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
-import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
 import com.lqwawa.client.pojo.MediaType;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
+import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
+import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
+import com.lqwawa.intleducation.common.ui.treeview.TreeView;
+import com.galaxyschool.app.wawaschool.adapter.adapterbinder.factory.WatchCourseResourceBinderFactory;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
@@ -71,7 +78,7 @@ import java.util.Map;
 /**
  * 看课件多类型资源选取列表页面
  */
-public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
+public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment implements DataSource.Callback<ResponseVo<List<LibraryLabelEntity>>> {
 
     public static final String TAG = WatchWaWaCourseResourceListPickerFragment.class.getSimpleName();
     static final int TAB_LOCAL_COURSE = 0;//本机课件
@@ -96,6 +103,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     private String vipSchoolId = "D8FE8280-FB40-4B61-9936-08819AA7E611";
     private boolean openSelectSchoolRes = false;
     private String titleName = null;
+    private TreeView treeView;
+    private TextView rightBtn;
+    private TreeNode root;
+    private FrameLayout container;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,8 +124,14 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
 //        if (!isOnlineClass && !TextUtils.isEmpty(classId)) {
 //            chooseClassLessonCourse(true);
 //        } else {
-            loadGetStudyTaskResControl();
+        loadGetStudyTaskResControl();
+        loadSixlLibraryLabelData();
 //        }
+    }
+
+    private void loadSixlLibraryLabelData() {
+//        Log.e(TAG, "loadSixlLibraryLabelData:taskType--- " + taskType + "----superTaskType---" + superTaskType);
+        LQCourseHelper.loadSixlLibraryLabelData(schoolId, this);
     }
 
     private void loadViews() {
@@ -138,8 +156,8 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             isOnlineClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_ONLINE_CLASS);
             classId = getArguments().getString(ActivityUtils.EXTRA_CLASS_ID);
             schoolId = getArguments().getString(ActivityUtils.EXTRA_SCHOOL_ID);
-            if (!TextUtils.isEmpty(schoolId)){
-                if (TextUtils.equals(schoolId.toLowerCase(),vipSchoolId.toLowerCase())){
+            if (!TextUtils.isEmpty(schoolId)) {
+                if (TextUtils.equals(schoolId.toLowerCase(), vipSchoolId.toLowerCase())) {
                     openSelectSchoolRes = true;
                 }
             }
@@ -166,17 +184,16 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 titleName = getString(R.string.appoint_course_no_point);
             }
         }
-        ToolbarTopView toolbarTopView = (ToolbarTopView) findViewById(R.id.toolbar_top_view);
-        if (toolbarTopView != null) {
-            toolbarTopView.getBackView().setVisibility(View.VISIBLE);
-            toolbarTopView.getTitleView().setText(titleName);
-            toolbarTopView.getBackView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().finish();
-                }
-            });
-        }
+        findViewById(R.id.contacts_header_left_btn).setOnClickListener(v -> {
+            getActivity().finish();
+        });
+        ((TextView) findViewById(R.id.contacts_header_title)).setText(titleName);
+        rightBtn = (TextView) findViewById(R.id.contacts_header_right_btn);
+        rightBtn.setText(getString(R.string.label_request_authorization));
+        rightBtn.setVisibility(View.VISIBLE);
+        rightBtn.setOnClickListener(v -> {
+        });
+
         ListView listView = (ListView) findViewById(R.id.listview);
         if (listView != null) {
             listView.setDivider(new ColorDrawable(getResources().getColor(R.color.main_bg_color)));
@@ -223,6 +240,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             };
             setCurrAdapterViewHelper(listView, helper);
         }
+
+        //六大馆
+        container = (FrameLayout) findViewById(R.id.container);
+        root = TreeNode.root();
+        treeView = new TreeView(root, getActivity(), new WatchCourseResourceBinderFactory());
     }
 
     /**
@@ -253,7 +275,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             chooseSchoolResources(TAB_SCHOOL_PICTUREBOOK);
         } else if (data.type == TAB_LQCOURSE_SHOP) {
             //学程馆
-            if (isOnlineClass){
+            if (isOnlineClass) {
 //                chooseSchoolResources(TAB_LQCOURSE_SHOP);
                 chooseOnlineLqCourseShopRes();
             } else {
@@ -262,7 +284,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else if (data.type == TAB_CLASS_LESSON) {
             //班级学程
             chooseClassLessonCourse(false);
-        } else if (data.type == TAB_COMMON_LIBRARY){
+        } else if (data.type == TAB_COMMON_LIBRARY) {
             //图书馆
             chooseCommonLibraryResource();
         }
@@ -271,13 +293,13 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
     /**
      * 选择图书馆中的资源
      */
-    private void chooseCommonLibraryResource(){
+    private void chooseCommonLibraryResource() {
         int taskType = getTaskTypeOrSelectCount(true);
         int selectMaxCount = getTaskTypeOrSelectCount(false);
         ArrayList<Integer> arrayList = new ArrayList<>();
         arrayList.add(ResType.RES_TYPE_VIDEO);
-        
-        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+
+        ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
 
         LQCourseConfigEntity entity = new LQCourseConfigEntity();
         entity.setConfigValue(getString(R.string.str_q_dubbing));
@@ -304,17 +326,17 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                 });
     }
 
-    private void chooseOnlineLqCourseShopRes(){
+    private void chooseOnlineLqCourseShopRes() {
         int taskType = getTaskTypeOrSelectCount(true);
         int selectMaxCount = getTaskTypeOrSelectCount(false);
         ArrayList<Integer> arrayList = new ArrayList<>();
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
             arrayList.add(ResType.RES_TYPE_ONEPAGE);
-        } else if (taskType == StudyTaskType.TASK_ORDER){
+        } else if (taskType == StudyTaskType.TASK_ORDER) {
             arrayList.add(ResType.RES_TYPE_STUDY_CARD);
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
-                taskType == StudyTaskType.WATCH_WAWA_COURSE){
+                taskType == StudyTaskType.WATCH_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
             arrayList.add(ResType.RES_TYPE_ONEPAGE);
             arrayList.add(ResType.RES_TYPE_IMG);
@@ -324,28 +346,28 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             arrayList.add(ResType.RES_TYPE_VIDEO);
             arrayList.add(ResType.RES_TYPE_DOC);
         }
-        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
-        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
+        ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId, true, resourceData);
         CourseShopListActivity.show(getActivity(),
                 titleName,
                 HideSortType.TYPE_SORT_ONLINE_COURSE,
-                params,null);
+                params, null);
     }
 
     /**
      * 进入学程馆选取资源
      */
-    private void enterLqCourseShopSpace(){
+    private void enterLqCourseShopSpace() {
         int taskType = getTaskTypeOrSelectCount(true);
         int selectMaxCount = getTaskTypeOrSelectCount(false);
         ArrayList<Integer> arrayList = new ArrayList<>();
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
             arrayList.add(ResType.RES_TYPE_ONEPAGE);
-        } else if (taskType == StudyTaskType.TASK_ORDER){
+        } else if (taskType == StudyTaskType.TASK_ORDER) {
             arrayList.add(ResType.RES_TYPE_STUDY_CARD);
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
-                taskType == StudyTaskType.WATCH_WAWA_COURSE){
+                taskType == StudyTaskType.WATCH_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
             arrayList.add(ResType.RES_TYPE_ONEPAGE);
             arrayList.add(ResType.RES_TYPE_IMG);
@@ -355,10 +377,10 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             arrayList.add(ResType.RES_TYPE_VIDEO);
             arrayList.add(ResType.RES_TYPE_DOC);
         }
-        ShopResourceData resourceData = new ShopResourceData(taskType,selectMaxCount,arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+        ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
         // OrganCourseClassifyActivity.show(getActivity(),data.getSchoolId(),true,resourceData);
-        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId,true,resourceData);
-        CourseShopClassifyActivity.show(getActivity(),params);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId, true, resourceData);
+        CourseShopClassifyActivity.show(getActivity(), params);
     }
 
     private void chooseLqConnectCourse() {
@@ -442,18 +464,18 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         } else {
             ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
             ClassResourceData data = null;
-            if (type == StudyTaskType.RETELL_WAWA_COURSE){
+            if (type == StudyTaskType.RETELL_WAWA_COURSE) {
                 ArrayList<Integer> selectType = new ArrayList<>();
                 selectType.add(18);
                 selectType.add(19);
-                data = new ClassResourceData(type,count,selectType, LQCourseCourseListActivity
+                data = new ClassResourceData(type, count, selectType, LQCourseCourseListActivity
                         .RC_SelectCourseRes);
             } else {
-                data = new ClassResourceData(type,count,new ArrayList<Integer>(),
+                data = new ClassResourceData(type, count, new ArrayList<Integer>(),
                         LQCourseCourseListActivity.RC_SelectCourseRes);
             }
             data.setIsDirectToClassCourse(isDirectToClassCourse);
-            ClassCourseActivity.show(getActivity(),classCourseParams,data);
+            ClassCourseActivity.show(getActivity(), classCourseParams, data);
         }
     }
 
@@ -588,7 +610,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE
                 || (isSuperTask && superTaskType == StudyTaskType.RETELL_WAWA_COURSE)
                 || (taskType == StudyTaskType.LISTEN_READ_AND_WRITE && !isCheckTaskOrderRes)) {
-            if (superTaskType == StudyTaskType.Q_DUBBING){
+            if (superTaskType == StudyTaskType.Q_DUBBING) {
                 mediaTypeList.add(MediaType.SCHOOL_VIDEO); //视频
             } else {
                 mediaTypeList.add(MediaType.SCHOOL_COURSEWARE); //LQ课件
@@ -630,7 +652,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
         }
         intent.putExtra(BookDetailActivity.SCHOOL_ID, schoolId);
         intent.putExtra(BookDetailActivity.ORIGIN_SCHOOL_ID, "");
-        intent.putExtra(ActivityUtils.EXTRA_FROM_INTRO_STUDY_TASK,true);
+        intent.putExtra(ActivityUtils.EXTRA_FROM_INTRO_STUDY_TASK, true);
         if (type == TAB_LQCOURSE_SHOP) {
             startActivityForResult(intent, LQCourseCourseListActivity.RC_SelectCourseRes);
         } else {
@@ -671,7 +693,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
 
         if (!isOnlineClass
                 && (openSelectSchoolRes || !TextUtils.isEmpty(controlGetStudyTaskTypeString) &&
-                controlGetStudyTaskTypeString.contains("2"))){
+                controlGetStudyTaskTypeString.contains("2"))) {
             //精品资源库
             item = new HomeTypeEntry();
             item.icon = R.drawable.icon_lq_program;
@@ -705,16 +727,46 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
             list.add(item);
 
             //图书馆(q配音选择时才显示)
-            if (superTaskType == StudyTaskType.Q_DUBBING) {
-                item = new HomeTypeEntry();
-                item.icon = R.drawable.icon_common_library;
-                item.typeName = R.string.common_library;
-                item.type = TAB_COMMON_LIBRARY;
-                list.add(item);
-            }
+//            if (superTaskType == StudyTaskType.Q_DUBBING) {
+//                item = new HomeTypeEntry();
+//                item.icon = R.drawable.icon_common_library;
+//                item.typeName = R.string.common_library;
+//                item.type = TAB_COMMON_LIBRARY;
+//                list.add(item);
+//            }
         }
 
         getCurrAdapterViewHelper().setData(list);
+    }
+
+
+    @Override
+    public void onDataNotAvailable(int strRes) {
+        UIUtil.showToastSafe(strRes);
+    }
+
+    @Override
+    public void onDataLoaded(ResponseVo<List<LibraryLabelEntity>> responseVo) {
+        List<LibraryLabelEntity> libraryLabelEntities = responseVo.getData();
+        if (libraryLabelEntities == null || libraryLabelEntities.isEmpty()) {
+            return;
+        }
+        List<LibraryLabelEntity> filteredLabelEntities = LibraryLabelEntity.generateData(superTaskType > 0,
+                superTaskType, libraryLabelEntities);
+        for (LibraryLabelEntity filteredLabelEntity : filteredLabelEntities) {
+            TreeNode treeNode = new TreeNode(filteredLabelEntity);
+            treeNode.setLevel(0);
+            List<LibraryLabelEntity> list = filteredLabelEntity.getList();
+            for (LibraryLabelEntity libraryLabelEntity : list) {
+                TreeNode treeNode1 = new TreeNode(libraryLabelEntity);
+                treeNode1.setLevel(1);
+                treeNode.addChild(treeNode1);
+            }
+            root.addChild(treeNode);
+        }
+        View view = treeView.getView();
+        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
+        container.addView(view);
     }
 
     class HomeTypeEntry {
@@ -725,9 +777,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
 
     private void loadGetStudyTaskResControl() {
         //测试的时候放开 上线关闭
-        Map<String,Object> params = new HashMap<>();
-        if (!Config.UPLOAD_BUGLY_EXCEPTION){
-            params.put("Flag",1);
+        Map<String, Object> params = new HashMap<>();
+        if (!Config.UPLOAD_BUGLY_EXCEPTION) {
+            params.put("Flag", 1);
         }
         RequestHelper.RequestModelResultListener listener = new RequestHelper
                 .RequestModelResultListener(getActivity(), ModelResult.class) {
@@ -778,9 +830,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment {
                         getActivity().finish();
                     }
                 }
-            } else if (requestCode == IntroductionForReadCourseFragment.REQUEST_CODE_PICKER_RESOURCES){
-                if (getActivity() != null){
-                    getActivity().setResult(Activity.RESULT_OK,data);
+            } else if (requestCode == IntroductionForReadCourseFragment.REQUEST_CODE_PICKER_RESOURCES) {
+                if (getActivity() != null) {
+                    getActivity().setResult(Activity.RESULT_OK, data);
                     getActivity().finish();
                 }
             }

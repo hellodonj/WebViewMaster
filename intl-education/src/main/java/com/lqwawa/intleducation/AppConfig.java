@@ -983,5 +983,9 @@ public final class AppConfig {
         //创建班级付费订单
         public static final String PostCreateClassOrder =
                 PayBase + "api/order/createClassOrder";
+
+        //六大馆标签
+        public static final String GetSixLibraryLabelList =
+                ServerBase + "api/config/getSixLibraryLabelList";
     }
 }
