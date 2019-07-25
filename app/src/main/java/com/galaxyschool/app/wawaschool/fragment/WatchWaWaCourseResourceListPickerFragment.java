@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,21 +39,26 @@ import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.TreeView;
 import com.galaxyschool.app.wawaschool.adapter.adapterbinder.factory.WatchCourseResourceBinderFactory;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
+import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.school.CheckSchoolPermissionEntity;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
+import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.ui.LQCourseCourseListActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassCourseParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.ClassResourceData;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyActivity;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
+import com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary.OrganLibraryViewPresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
@@ -73,12 +79,13 @@ import com.osastudio.common.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * 看课件多类型资源选取列表页面
  */
-public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment implements DataSource.Callback<ResponseVo<List<LibraryLabelEntity>>> {
+public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment implements DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>>, OrganLibraryViewPresenter.View {
 
     public static final String TAG = WatchWaWaCourseResourceListPickerFragment.class.getSimpleName();
     static final int TAB_LOCAL_COURSE = 0;//本机课件
@@ -107,6 +114,30 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     private TextView rightBtn;
     private TreeNode root;
     private FrameLayout container;
+    private OrganLibraryViewPresenter organLibraryViewPresenter;
+    private ImputAuthorizationCodeDialog imputAuthorizationCodeDialog;
+    private List<LQCourseConfigEntity> filteredLabelEntities;
+    private boolean isAuthorized;
+    private boolean isExist;
+    private CheckSchoolPermissionEntity mPermissionEntity;
+
+    private static HashMap<String, String> authorizationErrorMapZh =
+            new HashMap<>();
+    private static HashMap<String, String> authorizationErrorMapEn =
+            new HashMap<>();
+
+    static {
+        authorizationErrorMapZh.put("1001", "授权码错误，请重新输入");
+        authorizationErrorMapZh.put("1002", "授权码已过期，请重新输入");
+        authorizationErrorMapZh.put("1003", "授权码尚未生效，请重新输入");
+        authorizationErrorMapZh.put("1004", "授权码已被使用，请重新输入");
+        authorizationErrorMapEn.put("1001", "Incorrect authorization code, please re-enter");
+        authorizationErrorMapEn.put("1002", "Authorization code expired，please re-enter");
+        authorizationErrorMapEn.put("1003", "Invalid authorization code, please re-enter");
+        authorizationErrorMapEn.put("1004", "Authorization code has been used, please re-enter");
+    }
+
+    private CheckSchoolPermissionEntity entity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,13 +156,19 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
 //            chooseClassLessonCourse(true);
 //        } else {
         loadGetStudyTaskResControl();
-        loadSixlLibraryLabelData();
+
 //        }
     }
 
     private void loadSixlLibraryLabelData() {
-//        Log.e(TAG, "loadSixlLibraryLabelData:taskType--- " + taskType + "----superTaskType---" + superTaskType);
         LQCourseHelper.loadSixlLibraryLabelData(schoolId, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (organLibraryViewPresenter != null)
+            organLibraryViewPresenter.requestCheckSchoolPermission(schoolId, 0, false);
     }
 
     private void loadViews() {
@@ -192,6 +229,14 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         rightBtn.setText(getString(R.string.label_request_authorization));
         rightBtn.setVisibility(View.VISIBLE);
         rightBtn.setOnClickListener(v -> {
+            // 点击获取授权
+            if (isAuthorized) {
+                // 已经获取到授权
+                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_request_authorization_succeed);
+                return;
+            }
+            // 获取授权
+            requestAuthorizedPermission(isExist);
         });
 
         ListView listView = (ListView) findViewById(R.id.listview);
@@ -245,6 +290,13 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         container = (FrameLayout) findViewById(R.id.container);
         root = TreeNode.root();
         treeView = new TreeView(root, getActivity(), new WatchCourseResourceBinderFactory());
+        initPresenter();
+//        new OrganLibraryTypePresenter(this);
+    }
+
+    private void initPresenter() {
+        if (organLibraryViewPresenter == null)
+            organLibraryViewPresenter = new OrganLibraryViewPresenter(this);
     }
 
     /**
@@ -746,18 +798,22 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     }
 
     @Override
-    public void onDataLoaded(ResponseVo<List<LibraryLabelEntity>> responseVo) {
-        List<LibraryLabelEntity> libraryLabelEntities = responseVo.getData();
+    public void onDataLoaded(ResponseVo<List<LQCourseConfigEntity>> responseVo) {
+        List<LQCourseConfigEntity> libraryLabelEntities = responseVo.getData();
         if (libraryLabelEntities == null || libraryLabelEntities.isEmpty()) {
             return;
         }
-        List<LibraryLabelEntity> filteredLabelEntities = LibraryLabelEntity.generateData(superTaskType > 0,
-                superTaskType, libraryLabelEntities);
-        for (LibraryLabelEntity filteredLabelEntity : filteredLabelEntities) {
+        filteredLabelEntities = LQCourseConfigEntity.generateData(
+                superTaskType > 0, superTaskType, libraryLabelEntities);
+        //给子item权限
+        for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
+            if (entity != null) entity.assembleAuthorizedInClassify(filteredLabelEntity.getList());
+        }
+        for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
             TreeNode treeNode = new TreeNode(filteredLabelEntity);
             treeNode.setLevel(0);
-            List<LibraryLabelEntity> list = filteredLabelEntity.getList();
-            for (LibraryLabelEntity libraryLabelEntity : list) {
+            List<LQCourseConfigEntity> list = filteredLabelEntity.getList();
+            for (LQCourseConfigEntity libraryLabelEntity : list) {
                 TreeNode treeNode1 = new TreeNode(libraryLabelEntity);
                 treeNode1.setLevel(1);
                 treeNode.addChild(treeNode1);
@@ -765,8 +821,62 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             root.addChild(treeNode);
         }
         View view = treeView.getView();
-        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(),RecyclerItemDecoration.VERTICAL_LIST));
+        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
         container.addView(view);
+    }
+
+    @Override
+    public void updateCheckPermissionView(@NonNull CheckSchoolPermissionEntity entity, boolean autoRequest) {
+        if (EmptyUtil.isNotEmpty(entity)) {
+            this.entity = entity;
+//            treeView.notifychanged();
+            if (entity.isAuthorized()) {
+                // 已经获取授权,并且没有失效
+                isAuthorized = true;
+                isExist = entity.isExist();
+            } else {
+                if (autoRequest) {
+                    // 点击获取授权
+                    requestAuthorizedPermission(entity.isExist());
+                }
+            }
+        }
+        loadSixlLibraryLabelData();
+    }
+
+    @Override
+    public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo<Void> responseVo) {
+        if (EmptyUtil.isEmpty(responseVo)) return;
+        if (responseVo.isSucceed()) {
+            UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_request_authorization_succeed);
+
+            // 刷新权限信息
+            String rightValue = responseVo.getRightValue();
+            CheckSchoolPermissionEntity entity = new CheckSchoolPermissionEntity();
+            entity.setRightValue(rightValue);
+            entity.setAuthorized(true);
+            entity.setExist(false);
+            mPermissionEntity = entity;
+            for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
+                entity.assembleAuthorizedInClassify(filteredLabelEntity.getList());
+            }
+            treeView.notifychanged();
+
+            isAuthorized = true;
+            isExist = false;
+            if (imputAuthorizationCodeDialog != null) {
+                imputAuthorizationCodeDialog.setCommited(true);
+                imputAuthorizationCodeDialog.dismiss();
+            }
+        } else {
+            String language = Locale.getDefault().getLanguage();
+            //提示授权码错误原因然后退出
+            UIUtil.showToastSafe(language.equals("zh") ? authorizationErrorMapZh.get("" + responseVo.getCode()) : authorizationErrorMapEn.get("" + responseVo.getCode()));
+
+            if (imputAuthorizationCodeDialog != null) {
+                imputAuthorizationCodeDialog.clearPassword();
+            }
+        }
     }
 
     class HomeTypeEntry {
@@ -837,5 +947,46 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
                 }
             }
         }
+    }
+
+    /**
+     * 申请授权
+     */
+    private void requestAuthorizedPermission(boolean isExist) {
+        String tipInfo = UIUtil.getString(com.lqwawa.intleducation.R.string.label_request_authorization_tip);
+        if (isExist) {
+            tipInfo = UIUtil.getString(com.lqwawa.intleducation.R.string.authorization_out_time_tip);
+        }
+        if (imputAuthorizationCodeDialog == null) {
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,
+                    new ImputAuthorizationCodeDialog.CommitCallBack() {
+                        @Override
+                        public void onCommit(String code) {
+                            commitAuthorizationCode(code);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            if (EmptyUtil.isNotEmpty(imputAuthorizationCodeDialog)) {
+                                imputAuthorizationCodeDialog.dismiss();
+                            }
+                        }
+                    });
+        }
+        imputAuthorizationCodeDialog.setTipInfo(tipInfo);
+        if (!imputAuthorizationCodeDialog.isShowing()) {
+            imputAuthorizationCodeDialog.show();
+        }
+    }
+
+    private void commitAuthorizationCode(String code) {
+        if (organLibraryViewPresenter != null)
+            organLibraryViewPresenter.commitAuthorizationCode(schoolId, code);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (organLibraryViewPresenter != null) organLibraryViewPresenter.onDestory();
     }
 }

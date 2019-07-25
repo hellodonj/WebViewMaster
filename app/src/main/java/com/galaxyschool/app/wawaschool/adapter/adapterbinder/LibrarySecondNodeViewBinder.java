@@ -7,8 +7,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.UIUtils;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
+import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 
 
@@ -41,11 +44,12 @@ public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
 
     @Override
     public void bindView(TreeNode treeNode, Context context) {
-        LibraryLabelEntity entity = (LibraryLabelEntity) treeNode.getValue();
+        LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
         Glide.with(context).load(entity.getThumbnail()).into(thumbnail);
         name.setText(entity.getConfigValue());
         subTitle.setText(entity.isAuthorized() ? context.getString(R.string.label_be_authorized_container) :
                 context.getString(R.string.label_unauthorized_container));
+        subTitle.setTextColor(entity.isAuthorized() ? UIUtil.getColor(R.color.textBlue) : UIUtil.getColor(R.color.textSecond));
     }
 
     //item的点击事件

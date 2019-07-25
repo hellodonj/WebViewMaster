@@ -91,31 +91,7 @@ public class LibraryLabelEntity extends BaseEntity {
     }
 
 
-    public static List<LibraryLabelEntity> generateData(boolean isSuperTaskType,int taskType, List<LibraryLabelEntity> libraryLabelEntities) {
-        ArrayList<LibraryLabelEntity> entities = new ArrayList<>();
-        for (LibraryLabelEntity entity : libraryLabelEntities) {
-            int type = entity.getType();
-            if (taskType == StudyTaskType.Q_DUBBING) {
-                if (type == OrganLibraryType.TYPE_LIBRARY || type == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                    entities.add(entity);
-                }
-                if (entities.size() >= 2) return entities;
-            }else if (taskType == StudyTaskType.TASK_ORDER || taskType == StudyTaskType.RETELL_WAWA_COURSE){
-                if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP || type == OrganLibraryType.TYPE_PRACTICE_LIBRARY|| type == OrganLibraryType.TYPE_LIBRARY
-                        || type == OrganLibraryType.TYPE_BRAIN_LIBRARY|| type == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                    entities.add(entity);
-                }
-                if (entities.size() >= 5) return entities;
-            } else if (taskType == StudyTaskType.WATCH_WAWA_COURSE){
-                if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP || type == OrganLibraryType.TYPE_PRACTICE_LIBRARY|| type == OrganLibraryType.TYPE_LIBRARY
-                        || type == OrganLibraryType.TYPE_BRAIN_LIBRARY|| type == OrganLibraryType.TYPE_TEACHING_PLAN|| type == OrganLibraryType.TYPE_VIDEO_LIBRARY) {
-                    entities.add(entity);
-                }
-                if (entities.size() >= 6) return entities;
-            }
-        }
-        return entities;
-    }
+
 
 
 

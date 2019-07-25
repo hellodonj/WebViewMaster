@@ -826,7 +826,7 @@ public class LQCourseHelper {
     }
 
 
-    public static void loadSixlLibraryLabelData(String organId,DataSource.Callback<ResponseVo<List<LibraryLabelEntity>>> callback) {
+    public static void loadSixlLibraryLabelData(String organId,DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("organId", organId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSixLibraryLabelList);
@@ -837,7 +837,7 @@ public class LQCourseHelper {
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String str) {
-                ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<LibraryLabelEntity>>>() {
+                ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<LQCourseConfigEntity>>>() {
                 });
                 if (vo.isSucceed()) {
                     if (EmptyUtil.isNotEmpty(callback)) {

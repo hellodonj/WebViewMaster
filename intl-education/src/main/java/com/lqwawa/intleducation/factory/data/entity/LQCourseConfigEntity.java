@@ -2,7 +2,9 @@ package com.lqwawa.intleducation.factory.data.entity;
 
 import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +46,9 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
     private String entityOrganId;
     private List<CourseVo> courseList;
     private List<LQCourseConfigEntity> childList;
+    private List<LQCourseConfigEntity> list;
+    private int type;
+    private String name;
 
     // V5.11.X新添加的字段
     private boolean isAuthorized;
@@ -274,6 +279,30 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
         return libraryType;
     }
 
+    public List<LQCourseConfigEntity> getList() {
+        return list;
+    }
+
+    public void setList(List<LQCourseConfigEntity> list) {
+        this.list = list;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public LQCourseConfigEntity setLibraryType(int libraryType) {
         this.libraryType = libraryType;
         return this;
@@ -287,5 +316,31 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
             e.printStackTrace();
         }
         return entity;
+    }
+
+    public static List<LQCourseConfigEntity> generateData(boolean isSuperTaskType,int taskType, List<LQCourseConfigEntity> libraryLabelEntities) {
+        ArrayList<LQCourseConfigEntity> entities = new ArrayList<>();
+        for (LQCourseConfigEntity entity : libraryLabelEntities) {
+            int type = entity.getType();
+            if (taskType == LibraryLabelEntity.StudyTaskType.Q_DUBBING) {
+                if (type == OrganLibraryType.TYPE_LIBRARY || type == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    entities.add(entity);
+                }
+                if (entities.size() >= 2) return entities;
+            }else if (taskType == LibraryLabelEntity.StudyTaskType.TASK_ORDER || taskType == LibraryLabelEntity.StudyTaskType.RETELL_WAWA_COURSE){
+                if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP || type == OrganLibraryType.TYPE_PRACTICE_LIBRARY|| type == OrganLibraryType.TYPE_LIBRARY
+                        || type == OrganLibraryType.TYPE_BRAIN_LIBRARY|| type == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    entities.add(entity);
+                }
+                if (entities.size() >= 5) return entities;
+            } else if (taskType == LibraryLabelEntity.StudyTaskType.WATCH_WAWA_COURSE){
+                if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP || type == OrganLibraryType.TYPE_PRACTICE_LIBRARY|| type == OrganLibraryType.TYPE_LIBRARY
+                        || type == OrganLibraryType.TYPE_BRAIN_LIBRARY|| type == OrganLibraryType.TYPE_TEACHING_PLAN|| type == OrganLibraryType.TYPE_VIDEO_LIBRARY) {
+                    entities.add(entity);
+                }
+                if (entities.size() >= 6) return entities;
+            }
+        }
+        return entities;
     }
 }

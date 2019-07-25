@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
+import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
@@ -42,16 +43,15 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     @Override
     public void bindView(TreeNode treeNode, Context context) {
-        LibraryLabelEntity entity = (LibraryLabelEntity) treeNode.getValue();
+        LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
         Glide.with(context).load(entity.getThumbnail()).into(thumbnail);
         name.setText(entity.getName());
-        arrowRight.setRotation(entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY ? 0 : 90);
+        arrowRight.setRotation(90);
     }
 
     //item的点击事件
     @Override
     public void onNodeToggled(int position, TreeNode treeNode, boolean expand, Context context) {
-//        LibraryLabelEntity entity = (LibraryLabelEntity) treeNode.getValue();
-        arrowRight.setRotation(expand ? 90 : 180);
+        arrowRight.setRotation(expand ? -90 : 90);
     }
 }
