@@ -339,11 +339,12 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
                     entity.setDirectAccessNextPage(true);
                     entities.add(entity);
                 } else if (type == OrganLibraryType.TYPE_LIBRARY) {
-                    for (LQCourseConfigEntity lqCourseConfigEntity : entity.getList()) {
-                        if (lqCourseConfigEntity.getId() == OrganCourseFiltrateActivity.Q_DUBBING_ID) {
-                            entity.setAuthorized(lqCourseConfigEntity.isAuthorized());
-                            break;
-                        }
+                    Iterator<LQCourseConfigEntity> iterator = entity.getList().iterator();
+                    while (iterator.hasNext()) {
+                        LQCourseConfigEntity lqCourseConfigEntity = iterator.next();
+                        int id = lqCourseConfigEntity.getId();
+                        boolean notDelet = id == OrganCourseFiltrateActivity.Q_DUBBING_ID;
+                        if (!notDelet) iterator.remove();
                     }
                     entity.setDirectAccessNextPage(false);
                     entities.add(entity);

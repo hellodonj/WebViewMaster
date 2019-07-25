@@ -54,6 +54,8 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
         name.setText(entity.getName());
         arrowRight.setRotation(entity.isDirectAccessNextPage() ? 0 : -90);
         //false是无法展开，然后直接进入下一个页面
+        List<LQCourseConfigEntity> entityList = entity.getList();
+        if (entityList.size() == 1) entity.setAuthorized(entityList.get(0).isAuthorized());//如果一级item只有一个子item，那么他的权限就是这个子item的权限
         subTitle.setVisibility(entity.isDirectAccessNextPage() ? View.GONE : View.VISIBLE);
         subTitle.setText(entity.isAuthorized() ? context.getString(R.string.label_be_authorized_container) :
                 context.getString(R.string.label_unauthorized_container));
