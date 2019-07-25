@@ -1,30 +1,31 @@
 package com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.IBaseFragment;
+import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
+import com.lqwawa.intleducation.common.ui.treeview.TreeView;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
-import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceNavigator;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.factory.SxNodeViewFactory;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.discovery.vo.ExamsAndTestExtrasVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,37 +34,57 @@ import java.util.Map;
  * 描述: 三习教案课程节详情的Fragment
  * 作者|时间: djj on 2019/7/23 0023 上午 10:27
  */
-public class SxLessonSourceFragment extends IBaseFragment implements LessonSourceNavigator, SxCourseResListAdapter.CheckInterface {
+public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSourceNavigator {
 
-    public static final String LESSON_RESOURCE_CHOICE_PUBLISH_ACTION = "LESSON_RESOURCE_CHOICE_PUBLISH_ACTION";
+    private static final String KEY_EXTRA_NEED_FLAG = "KEY_EXTRA_NEED_FLAG";
+    private static final String KEY_EXTRA_CAN_READ = "KEY_EXTRA_CAN_READ";
+    private static final String KEY_EXTRA_CAN_EDIT = "KEY_EXTRA_CAN_EDIT";
+    private static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_SECTION_ID = "KEY_EXTRA_SECTION_ID";
     private static final String KEY_EXTRA_EXERCISE_TYPE = "KEY_EXTRA_EXERCISE_TYPE";
+    private static final String KEY_STATUS = "KEY_STATUS";
+
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
     private String sectionId;
     private int exerciseType;
-    private LessonSourceParams mSourceParams;
-    private SxCourseResListAdapter mAdapter;
+    private LessonSourceParams lessonSourceParams;
     private SectionDetailsVo mSectionDetailsVo;
-    private CustomExpandableListView mExpandableListView;
+    private boolean lessonNeedFlag;
+    private int status;
+    private boolean isVideoCourse;
+    private boolean mClassTeacher;
+    private CourseDetailParams courseParams;
+    private FrameLayout container;
 
     private ReadWeikeHelper mReadWeikeHelper;
-    private int totalCount = 0;//所选项目的数量
-    private List<SectionTaskListVo> tempChapterList = new ArrayList<>();
     private List<SectionTaskListVo> chapterList;
-    private List<SectionResListVo> children;
     private Map<String, List<SectionResListVo>> childMap = new HashMap<String, List<SectionResListVo>>();// 子元素数据列表
+    private TreeNode root;
+    private TreeView treeView;
+    private SxNodeViewFactory mNodeViewFactory;
+    private ExamsAndTestExtrasVo extrasVo;
+    private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
 
-
-    public static SxLessonSourceFragment newInstance(@NonNull String courseId,
+    public static SxLessonSourceFragment newInstance(boolean needFlag,
+                                                     boolean canEdit,
+                                                     boolean canRead,
+                                                     boolean isOnlineTeacher,
+                                                     @NonNull String courseId,
                                                      @NonNull String sectionId,
+                                                     int status,
                                                      int exerciseType,
                                                      @NonNull LessonSourceParams params) {
         SxLessonSourceFragment fragment = new SxLessonSourceFragment();
         Bundle arguments = new Bundle();
+        arguments.putBoolean(KEY_EXTRA_NEED_FLAG, needFlag);
+        arguments.putBoolean(KEY_EXTRA_CAN_EDIT, canEdit);
+        arguments.putBoolean(KEY_EXTRA_CAN_READ, canRead);
+        arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher);
         arguments.putString(KEY_EXTRA_COURSE_ID, courseId);
         arguments.putString(KEY_EXTRA_SECTION_ID, sectionId);
+        arguments.putInt(KEY_STATUS, status);
         arguments.putInt(KEY_EXTRA_EXERCISE_TYPE, exerciseType);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
@@ -76,14 +97,18 @@ public class SxLessonSourceFragment extends IBaseFragment implements LessonSourc
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         exerciseType = bundle.getInt(KEY_EXTRA_EXERCISE_TYPE);
         if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
-            mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
+            lessonSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
-
+        status = bundle.getInt(KEY_STATUS);
+        lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
+        isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
+        mClassTeacher = EmptyUtil.isNotEmpty(courseParams) && courseParams.isClassCourseEnter() && EmptyUtil.isNotEmpty(courseParams.getClassId());
 
 
         if (EmptyUtil.isEmpty(courseId) ||
                 EmptyUtil.isEmpty(sectionId) ||
-                EmptyUtil.isEmpty(mSourceParams)) return false;
+                EmptyUtil.isEmpty(lessonSourceParams)) return false;
         return super.initArgs(bundle);
     }
 
@@ -95,33 +120,37 @@ public class SxLessonSourceFragment extends IBaseFragment implements LessonSourc
     @Override
     protected void initWidget() {
         super.initWidget();
-        mExpandableListView = (CustomExpandableListView) mRootView.findViewById(R.id.expandable_list_view);
+        container = (FrameLayout) mRootView.findViewById(R.id.sx_container);
+        root = TreeNode.root();
+        mNodeViewFactory = new SxNodeViewFactory();
+        treeView = new TreeView(root, getContext(), mNodeViewFactory);
 
     }
 
     @Override
     protected void initData() {
         super.initData();
-        registerBroadcastReceiver();
         getData();
     }
 
-    //
+
     private void getData() {
-        String token = mSourceParams.getMemberId();
+        String token = lessonSourceParams.getMemberId();
         int role = 2;
-        if (mSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
+        if (lessonSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
             role = 1;
         }
 
         String classId = "";
-        if (role == 1 && mSourceParams.getCourseParams().isClassCourseEnter()) {
-            classId = mSourceParams.getCourseParams().getClassId();
-        } else if (role == 1 && mAdapter.getChoiceMode()) {
-            if (EmptyUtil.isNotEmpty(mSourceParams.getCourseParams().getClassId())) {
-                classId = mSourceParams.getCourseParams().getClassId();
+        if (role == 1 && lessonSourceParams.getCourseParams().isClassCourseEnter()) {
+            classId = lessonSourceParams.getCourseParams().getClassId();
+        } else if (role == 1) {
+            if (EmptyUtil.isNotEmpty(lessonSourceParams.getCourseParams().getClassId())) {
+                classId = lessonSourceParams.getCourseParams().getClassId();
             }
         }
+        mReadWeikeHelper = new ReadWeikeHelper(getActivity());
+        treeView.setExtras(mReadWeikeHelper);
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
@@ -134,144 +163,87 @@ public class SxLessonSourceFragment extends IBaseFragment implements LessonSourc
 
             @Override
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
+                //SectionTaskListVo TaskListVO //SectionDetailsVo SxExamDetailVo
                 mSectionDetailsVo = sectionDetailsVo;
                 if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
-                chapterList = sectionDetailsVo.getTaskList();
-                for (int i = 0; i < chapterList.size(); i++) {
-                    SectionTaskListVo taskListVo = chapterList.get(i);
-                    tempChapterList.add(taskListVo);
-                    children = chapterList.get(i).getData();
-                    childMap.put(chapterList.get(i).getTaskName(), children);
-                }
-                updateView();
+                updateViews(sectionDetailsVo);
             }
         });
     }
 
-    private void updateView() {
-        mAdapter = new SxCourseResListAdapter(getActivity(), tempChapterList, childMap);
-        mAdapter.setCheckInterface(SxLessonSourceFragment.this);
-        mExpandableListView.setAdapter(mAdapter);
-        for (int j = 0; j < mAdapter.getGroupCount(); j++) {
-            mExpandableListView.expandGroup(j);
+    private void updateViews(SectionDetailsVo sectionDetailsVo) {
+        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
+        List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
+        for (SectionTaskListVo taskListVO : taskList) {
+            TreeNode treeNode = new TreeNode(taskListVO);
+            treeNode.setLevel(0);
+            for (SectionResListVo datum : taskListVO.getData()) {
+                datum.setTaskType(taskListVO.getTaskType());
+                TreeNode treeNode1 = new TreeNode(datum);
+                treeNode1.setExtras(extrasVo);
+                treeNode1.setLevel(1);
+                treeNode.addChild(treeNode1);
+            }
+            root.addChild(treeNode);
         }
+        View view = treeView.getView();
+        treeView.expandAll();
+        container.addView(view);
     }
 
     @Override
     public void triggerChoice(boolean open) {
-        if (EmptyUtil.isNotEmpty(mAdapter)) {
-            mAdapter.triggerChoiceMode(open);
-            mSourceParams.setAddMode(open);
-        }
+        // 触发添加到作业库的动作,开放选择功能
+        if (extrasVo != null) extrasVo.setmChoiceMode(open);
+        treeView.notifychanged();
+        treeView.deselectAll();
     }
 
     @Override
-    public List<SectionResListVo> takeChoiceResource() {
-        List<SectionResListVo> data = mAdapter.getData();
-        List<SectionResListVo> choiceArray = new ArrayList<>();
-        if (EmptyUtil.isNotEmpty(data)) {
-            for (SectionResListVo vo : data) {
-                if (vo.isActivated()) {
-                    choiceArray.add(vo);
-                }
-            }
-        }
-
-        return choiceArray;
+    public List<TreeNode> getChoiceResource() {
+        // 获取已经选中的作业库
+        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
+        return selectedNodes;
     }
+
+//    @Override
+//    public List<SectionResListVo> takeChoiceResource() {
+//        // 获取已经选中的作业库
+//        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
+//        addToCartInDifferentTypes.clear();
+//        for (int i = 0; i < selectedNodes.size(); i++) {
+//            Object value = selectedNodes.get(i).getValue();
+//            if (value instanceof SectionResListVo) {
+//                SectionResListVo vo = (SectionResListVo) value;
+//                int taskType = vo.getTaskType();
+//                List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
+//                if (vos == null) vos = new ArrayList<>();
+//                vos.add(vo);
+//                addToCartInDifferentTypes.put(taskType, vos);
+//            }
+//        }
+//        if (EmptyUtil.isEmpty(selectedNodes)) {
+//            UIUtil.showToastSafe(R.string.str_select_tips);
+//        }
+//        Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
+//        for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
+//            List<SectionResListVo> choiceArray = entry.getValue();
+//            return choiceArray;
+//        }
+//        return null;
+//    }
 
     @Override
     public void clearAllResourceState() {
-        List<SectionResListVo> data = mAdapter.getData();
-        if (EmptyUtil.isNotEmpty(data)) {
-            for (SectionResListVo vo : data) {
-                vo.setActivated(false);
-            }
-
-            mSourceParams.setAddMode(false);
-            mAdapter.notifyDataSetChanged();
-        }
+        // 清楚所有资源选中状态
+        addToCartInDifferentTypes.clear();
     }
 
     @Override
-    public void checkGroup(int groupPosition, boolean isHide) {
-        SectionTaskListVo group = tempChapterList.get(groupPosition);
-        List<SectionResListVo> childs = childMap.get(group.getTaskName());
-        for (int i = 0; i < childs.size(); i++) {
-            childs.get(i).setChecked(isHide);
+    public TreeView getTreeView() {
+        if (EmptyUtil.isNotEmpty(treeView)) {
+            return treeView;
         }
-        mAdapter.notifyDataSetChanged();
-        calculate();
+        return null;
     }
-
-    @Override
-    public void checkChild(int groupPosition, int childPosition, boolean isChecked) {
-        boolean allChildSameState = true;// 判断该组下面的所有子元素是否是同一种状态
-        SectionTaskListVo group = tempChapterList.get(groupPosition);
-        List<SectionResListVo> childs = childMap.get(group.getTaskName());
-        for (int i = 0; i < childs.size(); i++) {
-            // 不全选中
-            if (childs.get(i).isChecked() != isChecked) {
-                allChildSameState = false;
-                break;
-            }
-        }
-        //获取该时间段的选中项目状态
-        if (allChildSameState) {
-            group.setChecked(isChecked);// 如果所有子元素状态相同，那么对应的组元素被设为这种统一状态
-        } else {
-            group.setChecked(false);// 否则，组元素一律设置为未选中状态
-        }
-        mAdapter.notifyDataSetChanged();
-        calculate();
-    }
-
-    /**
-     * 统计操作<br>
-     * 1.先清空全局计数器<br>
-     * 2.遍历所有子元素，只要是被选中状态的，就进行相关的计算操作<br>
-     */
-    private void calculate() {
-        //List<SectionTaskListVo> children;
-        //    private Map<String, List<SectionResListVo>> childMap
-        totalCount = 0;
-        for (int i = 0; i < tempChapterList.size(); i++) {
-            SectionTaskListVo group = tempChapterList.get(i);
-            List<SectionResListVo> childs = childMap.get(group.getTaskName());
-            for (int j = 0; j < childs.size(); j++) {
-                SectionResListVo project = childs.get(j);
-                if (project.isChecked()) {
-                    totalCount++;
-                }
-            }
-        }
-    }
-
-
-    /**
-     * 注册广播事件,接收事件刷新
-     */
-    protected void registerBroadcastReceiver() {
-        IntentFilter myIntentFilter = new IntentFilter();
-        myIntentFilter.addAction(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE);// 读写单
-        myIntentFilter.addAction(LESSON_RESOURCE_CHOICE_PUBLISH_ACTION);// 作业库发布更新
-        //注册广播
-        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
-    }
-
-    /**
-     * 数据刷新广播的处理
-     */
-    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(CourseDetailsItemFragment.LQWAWA_ACTION_READ_WRITE_SINGLE) ||
-                    action.equalsIgnoreCase(LESSON_RESOURCE_CHOICE_PUBLISH_ACTION)) {
-                // 读写单
-                // 作业库发布
-                getData();
-            }
-        }
-    };
 }

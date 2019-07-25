@@ -2,7 +2,6 @@ package com.lqwawa.intleducation.module.tutorial.assistance;
 
 import android.app.Activity;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
-import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,9 +39,9 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
     ImageOptions imageOptions;
 
     // 是否是班级学程入口，用来选择课程的
-    private boolean isClassCourseEnter;
-    private boolean tutorialMode;
-    private int type;
+//    private boolean isClassCourseEnter;
+//    private boolean tutorialMode;
+//    private int type;
 
     private static final int[] courseStatusResId = new int[]{
             R.string.course_status_0,
@@ -82,16 +78,16 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
         courseTypeNames = activity.getResources().getStringArray(R.array.course_type_names);
     }
 
-    public RelatedAssistanceAdapter(boolean tutorialMode, @NonNull @AuditType.AuditTypeRes int type, Activity activity) {
-        this(activity);
-        this.tutorialMode = tutorialMode;
-        this.type = type;
-    }
+//    public RelatedAssistanceAdapter(boolean tutorialMode, @NonNull @AuditType.AuditTypeRes int type, Activity activity) {
+//        this(activity);
+//        this.tutorialMode = tutorialMode;
+//        this.type = type;
+//    }
 
-    public RelatedAssistanceAdapter(Activity activity, boolean isClassCourseEnter) {
-        this(activity);
-        this.isClassCourseEnter = isClassCourseEnter;
-    }
+//    public RelatedAssistanceAdapter(Activity activity, boolean isClassCourseEnter) {
+//        this(activity);
+//        this.isClassCourseEnter = isClassCourseEnter;
+//    }
 
 
     @Override
@@ -106,9 +102,9 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
         CourseVo vo = list.get(position);
         // 设置选中未选中
         holder.cbSelect.setChecked(vo.isTag());
-        if (isClassCourseEnter) {
-            holder.cbSelect.setVisibility(View.VISIBLE);
-        }
+//        if (isClassCourseEnter) {
+//            holder.cbSelect.setVisibility(View.VISIBLE);
+//        }
 
         holder.courseName.setText(vo.getName() == null ? vo.getCourseName() : vo.getName());
         holder.organName.setText(vo.getOrganName());
@@ -156,38 +152,12 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
                 holder.mOrginalPrice.setVisibility(View.GONE);
             }
         }
-
         x.image().bind(holder.courseIv,
                 vo.getThumbnailUrl().trim(),
                 imageOptions);
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
-
-        if (tutorialMode) {
-            Date date = DateUtils.stringToDate(vo.getStartTime(), DateUtils.YYYYMMDD);
-            holder.course_date_tv.setText(DateUtils.dateToString(date, DateUtils.YYYYMMDDCH));
-            /*holder.course_date_tv.setText(DateUtils.getFormatByStringDate(list.getStartTime(),
-                    DateUtils.YYYYMMDDCH));*/
-            holder.mBodyLayout.setVisibility(View.GONE);
-            holder.mBottomLayout.setVisibility(View.VISIBLE);
-            holder.course_date_tv.setVisibility(View.VISIBLE);
-            if (type == AuditType.AUDITING || type == AuditType.AUDITED_REJECT) {
-                holder.tvType.setVisibility(View.VISIBLE);
-                if (type == AuditType.AUDITING) {
-                    holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_green));
-                    holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_accent_radius_19);
-                    holder.tvType.setText(R.string.label_auditing);
-                } else if (type == AuditType.AUDITED_REJECT) {
-                    holder.tvType.setTextColor(UIUtil.getColor(R.color.com_text_light_gray));
-                    holder.tvType.setBackgroundResource(R.drawable.bg_rectangle_gary_radius_19);
-                    holder.tvType.setText(R.string.label_audit_reject);
-                }
-            } else {
-                holder.tvType.setVisibility(View.GONE);
-            }
-        } else {
-            holder.mBodyLayout.setVisibility(View.VISIBLE);
-            holder.mBottomLayout.setVisibility(View.GONE);
-        }
+        holder.mBodyLayout.setVisibility(View.VISIBLE);
+        holder.mBottomLayout.setVisibility(View.GONE);
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickListener != null) {
@@ -299,7 +269,7 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
      * @param position
      * @return
      */
-    public Object getItem(int position) {
+    public CourseVo getItem(int position) {
         return list.get(position);
     }
 

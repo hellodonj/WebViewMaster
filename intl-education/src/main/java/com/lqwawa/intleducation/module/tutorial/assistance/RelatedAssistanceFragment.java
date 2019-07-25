@@ -86,13 +86,13 @@ public class RelatedAssistanceFragment extends PresenterFragment<RelatedAssistan
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new RelatedAssistanceAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
     protected void initData() {
         super.initData();
         requestSxRelationCourse(false);
+
         mAdapter.setOnItemClickListener(new RelatedAssistanceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -100,8 +100,8 @@ public class RelatedAssistanceFragment extends PresenterFragment<RelatedAssistan
                     LoginHelper.enterLogin(getActivity());
                     return;
                 }
-                CourseVo vo = (CourseVo) mAdapter.getItem(position);
-                CourseDetailsActivity.start(getActivity(), vo.getCourseId(), true, UserHelper.getUserId());
+                CourseVo vo = mAdapter.getItem(position);
+                CourseDetailsActivity.start(getActivity(), vo.getId(), true, UserHelper.getUserId());
             }
         });
     }
@@ -132,7 +132,6 @@ public class RelatedAssistanceFragment extends PresenterFragment<RelatedAssistan
 
     @Override
     public void updateSxRelationCourseView(@NonNull List<CourseVo> courseVos) {
-        mAdapter = new RelatedAssistanceAdapter(getActivity());
         mAdapter.setData(courseVos);
         mRecyclerView.setAdapter(mAdapter);
         updateRelationCourseView(courseVos);

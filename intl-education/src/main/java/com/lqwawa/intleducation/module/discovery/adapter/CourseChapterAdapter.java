@@ -521,7 +521,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         //普通教案详情入口
                                         toLessonDetailsActivity(vo, isFreeUser,true);
                                     }
-                                } else toLessonDetailsActivity(vo, isFreeUser,false);
+                                } else {
+                                    toLessonDetailsActivity(vo, isFreeUser,false);
+                                }
                                 /*LessonDetailsActivity.start(activity, courseId, vo.getId(),
                                         vo.getSectionName(), vo.getName(),
                                         needFlagRead,

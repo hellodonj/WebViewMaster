@@ -13,7 +13,10 @@ public class ExamsAndTestExtrasVo {
     private LessonSourceParams lessonSourceParams;
     private String schoolId;
 
-    public ExamsAndTestExtrasVo( String schoolId,LessonSourceParams lessonSourceParams,boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode) {
+    public ExamsAndTestExtrasVo() {
+    }
+
+    public ExamsAndTestExtrasVo(String schoolId, LessonSourceParams lessonSourceParams, boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode) {
         this.schoolId =schoolId;
         this.needFlagRead = needFlagRead;
         this.lessonStatus = lessonStatus;

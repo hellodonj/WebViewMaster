@@ -1,4 +1,4 @@
-package com.lqwawa.intleducation.common.ui.treeview.binder;
+package com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.binder;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,10 +43,11 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 
 /**
- * Created by bta on 17/4/23.
+ * 描述: 第二级别
+ * 作者|时间: djj on 2019/7/25 0025 下午 12:01
  */
 
-public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
+public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     private CheckBox checkbox;
     TextView resName, mTvAutoMask, mViewCount;
@@ -59,7 +60,7 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     private String TAG = getClass().getSimpleName();
 
 
-    public SecondLevelNodeViewBinder(View itemView) {
+    public SxSecondLevelNodeViewBinder(View itemView) {
         super(itemView);
         resName = (TextView) itemView.findViewById(R.id.tv_res_name);
         resIcon = (ImageView) itemView.findViewById(R.id.iv_res_icon);
@@ -88,10 +89,10 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     @Override
     public void bindView(final TreeNode treeNode, Context context) {
+        //SectionTaskListVo TaskListVO //SectionDetailsVo SxExamDetailVo
         SectionResListVo vo = (SectionResListVo) treeNode.getValue();
         ExamsAndTestExtrasVo extras = (ExamsAndTestExtrasVo) treeNode.getExtras();
         if (extras == null) extras = new ExamsAndTestExtrasVo();
-//        boolean mChoiceMode = treeNode.isShowCheckBox();
         boolean mChoiceMode =extras.ismChoiceMode();
         itemRootLay.setVisibility(View.VISIBLE);
         int resType = vo.getResType();
@@ -112,7 +113,6 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             int resId = extras.isVideoCourse() ? 0 : R.drawable.ic_need_to_commit;
             mIvNeedCommit.setImageResource(resId);
         }
-//        Log.e(TAG, "bindView: " +  vo.name  + mChoiceMode);
 
         if (!mChoiceMode) {
             int taskType = vo.getTaskType();
