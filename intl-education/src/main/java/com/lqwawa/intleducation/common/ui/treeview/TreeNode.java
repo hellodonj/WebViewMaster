@@ -40,6 +40,8 @@ public class TreeNode {
 
     private boolean itemClickEnable = true;
 
+    private boolean itemExpandedEnable = true;
+
     private Object extras;
 
     public TreeNode(Object value) {
@@ -188,5 +190,13 @@ public class TreeNode {
 
     public void setExtras(Object extras) {
         this.extras = extras;
+    }
+
+    public boolean isItemExpandedEnable() {
+        return itemExpandedEnable;
+    }
+
+    public void setItemExpandedEnable(boolean itemExpandedEnable) {
+        this.itemExpandedEnable = itemExpandedEnable;
     }
 }

@@ -106,8 +106,6 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
         final View nodeView = holder.itemView;
         final TreeNode treeNode = expandedNodeList.get(position);
         final BaseNodeViewBinder viewBinder = (BaseNodeViewBinder) holder;
-//        treeNode.setShowCheckBox(treeNode.getExtras());
-//        ReadWeikeHelper mReadWeikeHelper = (ReadWeikeHelper) treeView.getExtras();
 
         if (viewBinder.getToggleTriggerViewId() != 0) {
             View triggerToggleView = nodeView.findViewById(viewBinder.getToggleTriggerViewId());
@@ -116,8 +114,8 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 triggerToggleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onNodeToggled(treeNode);
-                        viewBinder.onNodeToggled(position,treeNode, treeNode.isExpanded(),context);
+                        if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
+                        viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
                     }
                 });
             }
@@ -125,8 +123,8 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
             nodeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onNodeToggled(treeNode);
-                    viewBinder.onNodeToggled(position,treeNode, treeNode.isExpanded(), context);
+                    if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
+                    viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
                 }
             });
         }

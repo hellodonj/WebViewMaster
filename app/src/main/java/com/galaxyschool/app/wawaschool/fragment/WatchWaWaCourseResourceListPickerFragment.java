@@ -811,10 +811,12 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         }
         for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
             TreeNode treeNode = new TreeNode(filteredLabelEntity);
+            treeNode.setItemExpandedEnable(filteredLabelEntity.isDirectAccessNextPage());
             treeNode.setLevel(0);
             List<LQCourseConfigEntity> list = filteredLabelEntity.getList();
             for (LQCourseConfigEntity libraryLabelEntity : list) {
                 TreeNode treeNode1 = new TreeNode(libraryLabelEntity);
+                treeNode1.setItemExpandedEnable(libraryLabelEntity.isDirectAccessNextPage());
                 treeNode1.setLevel(1);
                 treeNode.addChild(treeNode1);
             }

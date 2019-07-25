@@ -18,13 +18,14 @@ import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
 
     private TextView name, subTitle;
-    private ImageView thumbnail;
+    private ImageView thumbnail,arrowRight;
 
     public LibrarySecondNodeViewBinder(View itemView) {
         super(itemView);
         name = (TextView) itemView.findViewById(R.id.name);
         subTitle = (TextView) itemView.findViewById(R.id.sub_title);
         thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
+        arrowRight = (ImageView) itemView.findViewById(R.id.arrow_right);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
         subTitle.setText(entity.isAuthorized() ? context.getString(R.string.label_be_authorized_container) :
                 context.getString(R.string.label_unauthorized_container));
         subTitle.setTextColor(entity.isAuthorized() ? UIUtil.getColor(R.color.textBlue) : UIUtil.getColor(R.color.textSecond));
+        arrowRight.setRotation( -90);
     }
 
     //item的点击事件
