@@ -13,6 +13,8 @@ import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.organcourse.filtrate.OrganCourseFiltrateActivity;
 
 
 public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
@@ -57,6 +59,34 @@ public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
     //item的点击事件
     @Override
     public void onNodeToggled(int position, TreeNode treeNode, boolean expand, Context context) {
+        LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
+        int id = entity.getId();
+        int parentId = entity.getParentId();
+        //parentId在 OrganLibraryType类中 里有注释
+        if (id == OrganCourseFiltrateActivity.MINORITY_LANGUAGE_COURSE) {
+            //configValue=小语种课程
 
+        } else if (id ==  OrganCourseFiltrateActivity.ENGLISH_INTERNATIONAL_COURSE) {
+            //configValue=国际英语
+
+        } else if (id == OrganCourseFiltrateActivity.CHARACTERISTICS_ENGLISH) {
+            //configValue=英语学科
+
+        } else if (id == OrganCourseFiltrateActivity.BASIC_COURSE) {
+            //configValue=国家课程
+
+        } else if (id == OrganCourseFiltrateActivity.CLASSIFIED_READING_ID) {
+            //configValue=分级阅读
+
+        } else if (id == OrganCourseFiltrateActivity.PICTURE_BOOK_ID) {
+            //configValue=绘本
+
+        }else if (id == OrganCourseFiltrateActivity.Q_DUBBING_ID) {
+            //configValue=Q配音
+
+        }else if (id == OrganCourseFiltrateActivity.RA_BRAIN_ID) {
+            //configValue=右脑潜能开发
+
+        }
     }
 }

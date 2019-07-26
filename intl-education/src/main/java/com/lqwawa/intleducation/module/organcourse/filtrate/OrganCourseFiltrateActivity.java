@@ -107,15 +107,15 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     // 特色英语ID
     private static final int CHARACTER_ENGLISH_ID = 2096;
     // 英语国际课程ID
-    private static final int ENGLISH_INTERNATIONAL_COURSE = 2001;
+    public static final int ENGLISH_INTERNATIONAL_COURSE = 2001;
     // 英语国内磕碜ID
-    private static final int ENGLISH_INLAND_COURSE = 2002;
+    public static final int ENGLISH_INLAND_COURSE = 2002;
     // 小语种课程ID
-    private static final int MINORITY_LANGUAGE_COURSE = 2004;
+    public static final int MINORITY_LANGUAGE_COURSE = 2004;
     // 基础课程ID
-    private static final int BASIC_COURSE = 2003;
+    public static final int BASIC_COURSE = 2003;
     // 特色英语ID
-    private static final int CHARACTERISTICS_ENGLISH = 2005;
+    public static final int CHARACTERISTICS_ENGLISH = 2005;
 
     // 分类阅读
     public static final int CLASSIFIED_READING_ID = 1001;
@@ -137,7 +137,7 @@ public class OrganCourseFiltrateActivity extends PresenterActivity<OrganCourseFi
     private static final int ENGLISH_INTERNATIONAL_ENGLISH_ITEP_ID = 2244;
 
     // RA BRAIN
-    private static final int RA_BRAIN_ID = 2351;
+    public static final int RA_BRAIN_ID = 2351;
 
     private TopBar mTopBar;
 

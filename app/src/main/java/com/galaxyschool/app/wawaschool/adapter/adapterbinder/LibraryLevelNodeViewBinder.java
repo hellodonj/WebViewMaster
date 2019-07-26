@@ -55,7 +55,8 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
         arrowRight.setRotation(entity.isDirectAccessNextPage() ? 0 : -90);
         //false是无法展开，然后直接进入下一个页面
         List<LQCourseConfigEntity> entityList = entity.getList();
-        if (entityList.size() == 1) entity.setAuthorized(entityList.get(0).isAuthorized());//如果一级item只有一个子item，那么他的权限就是这个子item的权限
+        if (entityList.size() == 1)
+            entity.setAuthorized(entityList.get(0).isAuthorized());//如果一级item只有一个子item，那么他的权限就是这个子item的权限
         subTitle.setVisibility(entity.isDirectAccessNextPage() ? View.GONE : View.VISIBLE);
         subTitle.setText(entity.isAuthorized() ? context.getString(R.string.label_be_authorized_container) :
                 context.getString(R.string.label_unauthorized_container));
@@ -66,6 +67,31 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
     @Override
     public void onNodeToggled(int position, TreeNode treeNode, boolean expand, Context context) {
         LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
-        if (entity.isDirectAccessNextPage()) arrowRight.setRotation(expand ? 180 : 0);
+        //true是可展开，一级item不响应跳转
+        if (entity.isDirectAccessNextPage()) {
+            arrowRight.setRotation(expand ? 180 : 0);
+            return;
+        }
+        //
+        int type = entity.getType();
+        if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP) {
+            //课本馆
+
+        } else if (type == OrganLibraryType.TYPE_PRACTICE_LIBRARY) {
+            //练测馆
+
+        } else if (type == OrganLibraryType.TYPE_LIBRARY) {
+            //图书馆
+
+        } else if (type == OrganLibraryType.TYPE_VIDEO_LIBRARY) {
+            //视频馆
+
+        } else if (type == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
+            //全脑馆
+
+        } else if (type == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            //三习教案馆
+
+        }
     }
 }
