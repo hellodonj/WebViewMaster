@@ -248,7 +248,10 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
                 enterPickTypeDetail(TAB_LQ_PROGRAM);
             } else if (entity.getType() == OrganLibraryType.TYPE_ONLINE_COMMON_LIBRARY){
                 enterPickTypeDetail(TAB_LQCOURSE_SHOP);
-            } else {
+            } else if (entity.getType() == OrganLibraryType.TYPE_LIBRARY){
+                //图书馆
+                enterPickTypeDetail(TAB_COMMON_LIBRARY);
+            } else if (entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY){
 
             }
 
