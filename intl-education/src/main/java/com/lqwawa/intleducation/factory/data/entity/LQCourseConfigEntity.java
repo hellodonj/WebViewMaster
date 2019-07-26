@@ -70,6 +70,15 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
 
     // 学程馆类型
     private int libraryType;
+    private int drawableId;
+
+    public int getDrawableId() {
+        return drawableId;
+    }
+
+    public void setDrawableId(int drawableId) {
+        this.drawableId = drawableId;
+    }
 
     public int getConfigType() {
         return configType;

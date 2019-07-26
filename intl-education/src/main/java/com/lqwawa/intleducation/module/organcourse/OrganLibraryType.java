@@ -21,4 +21,15 @@ public interface OrganLibraryType {
 
     // 三习教案馆
     int TYPE_TEACHING_PLAN = 5;
+
+    //校本资源库
+    int TYPE_SCHOOL_LIBRARY = 1001;
+    //精品资源库
+    int TPYE_CHOICE_LIBRARY = 1002;
+    //班级学程
+    int TYPE_CLASS_COURSE = 1003;
+    //关联学程
+    int TYPE_CONNECT_COURSE = 1004;
+    //线上课本馆
+    int TYPE_ONLINE_COMMON_LIBRARY = 1005;
 }
