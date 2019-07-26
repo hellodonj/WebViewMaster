@@ -143,6 +143,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         initViews();
         if (isOnlineClass){
          //直接填充数据
+            handleTreeView();
         } else {
             loadGetStudyTaskResControl();
         }

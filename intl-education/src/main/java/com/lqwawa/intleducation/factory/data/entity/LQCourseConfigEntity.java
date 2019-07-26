@@ -57,8 +57,10 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
 
     // V5.12新添加的字段
     private boolean selected;
-
+    // 学程馆类型
+    private int libraryType;
     private boolean isDirectAccessNextPage;
+    private int drawableId;
 
     public boolean isDirectAccessNextPage() {
         return isDirectAccessNextPage;
@@ -67,11 +69,6 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
     public void setDirectAccessNextPage(boolean directAccessNextPage) {
         isDirectAccessNextPage = directAccessNextPage;
     }
-
-    // 学程馆类型
-    private int libraryType;
-    private int drawableId;
-
     public int getDrawableId() {
         return drawableId;
     }
