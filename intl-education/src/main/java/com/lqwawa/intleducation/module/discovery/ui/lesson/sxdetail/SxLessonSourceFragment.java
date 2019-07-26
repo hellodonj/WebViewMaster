@@ -206,37 +206,11 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         return selectedNodes;
     }
 
-//    @Override
-//    public List<SectionResListVo> takeChoiceResource() {
-//        // 获取已经选中的作业库
-//        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
-//        addToCartInDifferentTypes.clear();
-//        for (int i = 0; i < selectedNodes.size(); i++) {
-//            Object value = selectedNodes.get(i).getValue();
-//            if (value instanceof SectionResListVo) {
-//                SectionResListVo vo = (SectionResListVo) value;
-//                int taskType = vo.getTaskType();
-//                List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
-//                if (vos == null) vos = new ArrayList<>();
-//                vos.add(vo);
-//                addToCartInDifferentTypes.put(taskType, vos);
-//            }
-//        }
-//        if (EmptyUtil.isEmpty(selectedNodes)) {
-//            UIUtil.showToastSafe(R.string.str_select_tips);
-//        }
-//        Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
-//        for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
-//            List<SectionResListVo> choiceArray = entry.getValue();
-//            return choiceArray;
-//        }
-//        return null;
-//    }
-
     @Override
     public void clearAllResourceState() {
         // 清楚所有资源选中状态
-        addToCartInDifferentTypes.clear();
+        if (treeView!=null)
+        treeView.deselectAll();
     }
 
     @Override

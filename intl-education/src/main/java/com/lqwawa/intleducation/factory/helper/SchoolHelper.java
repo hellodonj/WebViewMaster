@@ -507,6 +507,13 @@ public class SchoolHelper {
         });
     }
 
+    /**
+     * 三习关联教辅
+     * @param courseId
+     * @param pageIndex
+     * @param pageSize
+     * @param callback
+     */
     public static void requestSxRelationCourseList(@Nullable String courseId,
                                                    int pageIndex,int pageSize,
                                                    @NonNull DataSource.Callback<List<CourseVo>> callback){

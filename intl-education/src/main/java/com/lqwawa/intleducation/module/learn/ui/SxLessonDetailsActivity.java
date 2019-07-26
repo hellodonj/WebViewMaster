@@ -348,6 +348,20 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             }
         } else if (viewId == R.id.action_container) {
             if (mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()) {
+                int currentPosition = mViewPager.getCurrentItem();
+                SxLessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
+                List<TreeNode> selectedNodes = navigator.getChoiceResource();
+                if (EmptyUtil.isEmpty(selectedNodes)) {
+                    UIUtil.showToastSafe(R.string.str_select_tips);
+                    return;
+                }
+                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                    int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+                    if (count >= 6) {
+                        UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                        return;
+                    }
+                }
                 // 直接添加到作业库
                 confirmResourceCart(false);
             } else {
@@ -512,15 +526,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 if (vos == null) vos = new ArrayList<>();
                 vos.add(vo);
                 addToCartInDifferentTypes.put(taskType, vos);
-            }
-        }
-        if (EmptyUtil.isEmpty(selectedNodes)) {
-            UIUtil.showToastSafe(R.string.str_select_tips);
-        }
-        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-            if (count > 6) {
-                UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
             }
         }
         List<SectionResListVo> choiceArray = new ArrayList<SectionResListVo>();

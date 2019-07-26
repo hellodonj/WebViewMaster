@@ -45,15 +45,16 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.ExamsAndTestsActivity;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
+import com.lqwawa.intleducation.module.learn.ui.SxLessonDetailsActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter.TYPE_EXAM;
+import static com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter.TYPE_LESSON;
 
 /**
  * ================================================
@@ -307,8 +308,13 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
                                 ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), lessonSourceParams);
-                            } else {
-                                //普通教案入口
+                            } else if (chapterVo.getExamType() == TYPE_LESSON){
+                                //普通教案详情入口
+                                SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                                        sectionName, name, false, true, true,
+                                        status, memberId, chapterVo.isContainAssistantWork(),
+                                        "", false, courseVo,
+                                        false, false, params, mExtras);
                             }
                         } else {
                             if (chapterVo.getIsChildren()) LessonDetailsActivity.start(activity, courseId, chapterId,
