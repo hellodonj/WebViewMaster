@@ -1,6 +1,7 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -290,6 +291,12 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         container = (FrameLayout) findViewById(R.id.container);
         root = TreeNode.root();
         treeView = new TreeView(root, getActivity(), new WatchCourseResourceBinderFactory());
+        treeView.setOnItemClilcedListener(new TreeView.OnItemClilcedListener() {
+            @Override
+            public void onItemClickedListener(int position, TreeNode treeNode, boolean expanded, Context context) {
+                Log.e(TAG, "onItemClickedListener: " + position );
+            }
+        });
         initPresenter();
 //        new OrganLibraryTypePresenter(this);
     }

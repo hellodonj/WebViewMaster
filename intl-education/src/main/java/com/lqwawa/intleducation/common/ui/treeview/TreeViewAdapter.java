@@ -116,6 +116,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
                         viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
+                        if (treeView != null)treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
                     }
                 });
             }
@@ -125,6 +126,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
                     viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
+                    if (treeView != null)treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
                 }
             });
         }

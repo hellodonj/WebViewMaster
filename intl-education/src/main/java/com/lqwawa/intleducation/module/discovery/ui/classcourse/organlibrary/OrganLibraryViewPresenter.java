@@ -34,13 +34,13 @@ public class OrganLibraryViewPresenter implements OrganLibraryTypeContract.View 
 
     @Override
     public void updateCheckPermissionView(@NonNull CheckSchoolPermissionEntity entity, boolean autoRequest) {
-        Log.e(TAG, "updateCheckPermissionView: " );
+//        Log.e(TAG, "updateCheckPermissionView: " );
         if (view != null) view.updateCheckPermissionView(entity, autoRequest);
     }
 
     @Override
     public void updateRequestPermissionView(@NonNull CheckPermissionResponseVo<Void> vo) {
-        Log.e(TAG, "updateRequestPermissionView: " );
+//        Log.e(TAG, "updateRequestPermissionView: " );
         if (view != null) view.updateRequestPermissionView(vo);
     }
 

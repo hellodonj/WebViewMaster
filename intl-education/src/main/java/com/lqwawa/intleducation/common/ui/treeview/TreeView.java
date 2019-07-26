@@ -241,4 +241,17 @@ public class TreeView implements SelectableTreeAction {
         this.itemSelectable = itemSelectable;
     }
 
+    public void onItemClickedListener(int position, TreeNode treeNode, boolean expanded, Context context) {
+        if (onItemClilcedListener!=null) onItemClilcedListener.onItemClickedListener( position, treeNode, expanded, context);
+    }
+
+    private OnItemClilcedListener onItemClilcedListener;
+
+    public interface OnItemClilcedListener {
+        void onItemClickedListener(int position, TreeNode treeNode, boolean expanded, Context context);
+    }
+
+    public void setOnItemClilcedListener(OnItemClilcedListener onItemClilcedListener) {
+        this.onItemClilcedListener = onItemClilcedListener;
+    }
 }
