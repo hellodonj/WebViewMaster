@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.factory.helper;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -330,6 +331,7 @@ public class OrganCourseHelper {
                                                       int pageIndex, int pageSize,
                                                       @Nullable String keyString,
                                                       @NonNull String level,
+                                                      int libraryType,
                                                       @NonNull final DataSource.Callback<List<CourseVo>> callback) {
 
         RequestVo requestVo = new RequestVo();
@@ -350,6 +352,10 @@ public class OrganCourseHelper {
 
         if(EmptyUtil.isNotEmpty(level)){
             requestVo.addParams("level", level);
+        }
+
+        if (libraryType > 0) {
+            requestVo.addParams("type", libraryType);
         }
 
         final RequestParams params = new RequestParams(AppConfig.ServerUrl.GetOrganCourseListResourceUrl + requestVo.getParams());
