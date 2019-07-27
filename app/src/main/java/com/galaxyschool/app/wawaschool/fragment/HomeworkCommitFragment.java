@@ -528,7 +528,6 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 headRightTextV.setVisibility(View.VISIBLE);
             } else {
                 if (task != null
-                        && task.getViewOthersTaskPermisson() == 1
                         && roleType == RoleType.ROLE_TYPE_TEACHER
                         && TextUtils.equals(getMemeberId(),task.getTaskCreateId())){
                     headRightTextV.setVisibility(View.GONE);
@@ -3665,14 +3664,12 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private void popHeadRightPopWindow(){
         View contentView = LayoutInflater.from(getActivity()).inflate(com.lqwawa.apps.R.layout.pop_menu, null);
         //处理popWindow 显示内容
-        if (mPopWindow == null){
-            handleLogic(contentView);
-            mPopWindow = new CustomPopWindow.PopupWindowBuilder(getActivity())
-                    .setView(contentView)//显示的布局，还可以通过设置一个View
-                    .setFocusable(true)//是否获取焦点，默认为ture
-                    .setOutsideTouchable(true)//是否PopupWindow 以外触摸dissmiss
-                    .create();//创建PopupWindow
-        }
+        handleLogic(contentView);
+        mPopWindow = new CustomPopWindow.PopupWindowBuilder(getActivity())
+                .setView(contentView)//显示的布局，还可以通过设置一个View
+                .setFocusable(true)//是否获取焦点，默认为ture
+                .setOutsideTouchable(true)//是否PopupWindow 以外触摸dissmiss
+                .create();//创建PopupWindow
         mPopWindow.showAsDropDown(headRightImageV, -DensityUtils.dp2px(getActivity(), 100),
                         0);
     }
@@ -3690,7 +3687,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         entryBean.id = 0;
         list.add(entryBean);
         entryBean = new EntryBean();
-        entryBean.value = getString(R.string.str_set_can_read);
+        if (task.getViewOthersTaskPermisson() == 1) {
+            entryBean.value = getString(R.string.str_set_can_read);
+        } else {
+            entryBean.value = getString(R.string.str_set_cannot_read);
+        }
         entryBean.id = 1;
         list.add(entryBean);
         ListView listView = (ListView) contentView.findViewById(com.lqwawa.apps.R.id.pop_menu_list);
@@ -3708,11 +3709,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     share();
                 } else if (bean.id == 1) {
                     StudyTaskNetHelper.getInstance().setCallListener(result -> {
-                        if (task != null){
-                            task.setViewOthersTaskPermisson(0);
-                            initRightViewData();
-                        }
-                    }).setViewOthersTaskPermission(TaskId,0);
+                        loadCommonData();
+                    }).setViewOthersTaskPermission(TaskId,task.getViewOthersTaskPermisson());
                 }
             }
         });
