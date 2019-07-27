@@ -445,7 +445,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         int count = 1;
         int type = taskType;
         if (isSuperTask) {
-            count = 5;
+            count = 10;
             type = superTaskType;
             if (superTaskType == StudyTaskType.WATCH_WAWA_COURSE) {
                 type = StudyTaskType.NEW_WATACH_WAWA_COURSE;
