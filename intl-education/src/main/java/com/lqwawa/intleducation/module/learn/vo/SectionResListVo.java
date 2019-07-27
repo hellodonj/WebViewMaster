@@ -84,6 +84,8 @@ public class SectionResListVo extends BaseVo {
     private int viewCount;
 
     private String thumbnail;
+    private String linkCourseName;
+    private int linkCourseId;
 
 
 
@@ -347,6 +349,22 @@ public class SectionResListVo extends BaseVo {
 
     public int getViewCount() {
         return viewCount;
+    }
+
+    public String getLinkCourseName() {
+        return linkCourseName;
+    }
+
+    public void setLinkCourseName(String linkCourseName) {
+        this.linkCourseName = linkCourseName;
+    }
+
+    public int getLinkCourseId() {
+        return linkCourseId;
+    }
+
+    public void setLinkCourseId(int linkCourseId) {
+        this.linkCourseId = linkCourseId;
     }
 
     public SectionResListVo setViewCount(int viewCount) {

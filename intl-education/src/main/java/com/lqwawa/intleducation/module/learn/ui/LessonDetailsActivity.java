@@ -155,6 +155,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private String sectionId;
     private String sectionName;
     private String sectionTitle;
+    private CourseVo courseVo;
 
     // 是否是空中课堂老师过来的
     private boolean isOnlineTeacher;
@@ -209,6 +210,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
+        courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
 
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
@@ -321,7 +323,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                         int taskType = listVo.getTaskType();
                         String taskName = listVo.getTaskName();
                         mTabLists.add(taskName);
-                        LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType, params);
+                        LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType,courseVo.getLibraryType(), params);
                         mTabSourceNavigator.add(fragment);
                         fragments.add(fragment);
                     }

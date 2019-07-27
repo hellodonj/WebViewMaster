@@ -136,6 +136,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String sectionName;
     private String sectionId;
     private int status;
+    private CourseVo courseVo;
     // 课程大纲参数
     private CourseChapterParams mChapterParams;
     private SectionDetailsVo sectionDetailsVo;
@@ -210,7 +211,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
         status = getIntent().getIntExtra(STATUS, -1);
-
+        courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
         if (!mChapterParams.isTeacherVisitor() &&
@@ -316,7 +317,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 mTabLists.add(getResources().getString(R.string.label_sx_practice));
                 mTabLists.add(getResources().getString(R.string.label_sx_review));
                 for (int i = 0; i < mTabLists.size(); i++) {
-                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1, params);
+                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1,courseVo.getLibraryType(), params);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }

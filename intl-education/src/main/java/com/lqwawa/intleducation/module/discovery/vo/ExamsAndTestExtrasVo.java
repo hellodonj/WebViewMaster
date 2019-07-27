@@ -12,11 +12,12 @@ public class ExamsAndTestExtrasVo {
     private boolean mChoiceMode;
     private LessonSourceParams lessonSourceParams;
     private String schoolId;
+    private int libraryType;
 
     public ExamsAndTestExtrasVo() {
     }
 
-    public ExamsAndTestExtrasVo(String schoolId, LessonSourceParams lessonSourceParams, boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode) {
+    public ExamsAndTestExtrasVo(String schoolId, LessonSourceParams lessonSourceParams, boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode,int libraryType) {
         this.schoolId =schoolId;
         this.needFlagRead = needFlagRead;
         this.lessonStatus = lessonStatus;
@@ -25,6 +26,7 @@ public class ExamsAndTestExtrasVo {
         this.isCourseSelect = isCourseSelect;
         this.mChoiceMode = mChoiceMode;
         this.lessonSourceParams = lessonSourceParams;
+        this.libraryType =libraryType;
     }
 
     public boolean isNeedFlagRead() {
@@ -89,5 +91,13 @@ public class ExamsAndTestExtrasVo {
 
     public void setSchoolId(String schoolId) {
         this.schoolId = schoolId;
+    }
+
+    public int getLibraryType() {
+        return libraryType;
+    }
+
+    public void setLibraryType(int libraryType) {
+        this.libraryType = libraryType;
     }
 }

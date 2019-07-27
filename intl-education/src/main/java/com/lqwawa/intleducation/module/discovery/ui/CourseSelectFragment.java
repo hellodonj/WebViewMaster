@@ -274,40 +274,40 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             @Override
             public void onSelect(ChapterVo chapterVo) {
                 if (chapterVo != null) {
+                    CourseVo courseVo = flagCourseData;
+                    String courseId = courseVo.getId();
+                    String chapterId = chapterVo.getId();
+                    String sectionName = chapterVo.getSectionName();
+                    String name = chapterVo.getName();
+                    // 当前节的状态
+                    int status = chapterVo.getStatus();
+                    String memberId = UserHelper.getUserId();
+                    CourseDetailParams courseParams = new CourseDetailParams();
+                    if (courseParams != null && courseVo != null) {
+                        courseParams.setBindSchoolId(courseVo.getBindSchoolId());
+                        courseParams.setBindClassId(courseVo.getBindClassId());
+                        courseParams.setCourseId(courseVo.getId());
+                        courseParams.setCourseName(courseVo.getName());
+                        // 填充参数
+                        courseParams.setSchoolId(mSchoolId);
+                        courseParams.setClassId(mClassId);
+                        courseParams.setCourseEnterType(mEnterType);
+                        courseParams.setLibraryType(courseVo.getLibraryType());
+                        courseParams.setIsVideoCourse(courseVo.getType() == 2);
+                    }
+
+                    int role = UserHelper.MoocRoleType.TEACHER;
+                    int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
+                    CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
+                    params.setCourseParams(courseParams);
+                    params.setChoiceMode(true, true);
+                    LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
+                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+
                     if (initiativeTrigger) {
-                        CourseVo courseVo = flagCourseData;
-                        String courseId = courseVo.getId();
-                        String chapterId = chapterVo.getId();
-                        String sectionName = chapterVo.getSectionName();
-                        String name = chapterVo.getName();
-                        // 当前节的状态
-                        int status = chapterVo.getStatus();
-                        String memberId = UserHelper.getUserId();
-
-                        CourseDetailParams courseParams = new CourseDetailParams();
-                        if (courseParams != null && courseVo != null) {
-                            courseParams.setBindSchoolId(courseVo.getBindSchoolId());
-                            courseParams.setBindClassId(courseVo.getBindClassId());
-                            courseParams.setCourseId(courseVo.getId());
-                            courseParams.setCourseName(courseVo.getName());
-                            // 填充参数
-                            courseParams.setSchoolId(mSchoolId);
-                            courseParams.setClassId(mClassId);
-                            courseParams.setCourseEnterType(mEnterType);
-                            courseParams.setLibraryType(courseVo.getLibraryType());
-                            courseParams.setIsVideoCourse(courseVo.getType() == 2);
-                        }
-
-                        int role = UserHelper.MoocRoleType.TEACHER;
-                        int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
-                        CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
-                        params.setCourseParams(courseParams);
-                        params.setChoiceMode(true, true);
-                        LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
-                        int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
-                                ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), lessonSourceParams);
+                                ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
                                 SxLessonDetailsActivity.start(activity, courseId, chapterId,
@@ -325,29 +325,41 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         mExtras);
                         }
                     } else {
-                        Bundle arguments = getArguments();
+                        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            if (chapterVo.getExamType() == TYPE_EXAM) {
+                                ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
+                            } else if (chapterVo.getExamType() == TYPE_LESSON){
+                                //普通教案详情入口
+                                SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                                        sectionName, name, false, true, true,
+                                        status, memberId, chapterVo.isContainAssistantWork(),
+                                        "", false, courseVo,
+                                        false, false, params, mExtras);
+                            }
+                        }else {
+                            Bundle arguments = getArguments();
+                            CourseVo courseVo1 = flagCourseData;
+                            CourseDetailParams courseParams1 = new CourseDetailParams();
+                            // 填充参数
+                            courseParams1.setSchoolId(mSchoolId);
+                            courseParams1.setClassId(mClassId);
+                            courseParams1.setCourseEnterType(mEnterType);
+                            courseParams1.setLibraryType(courseVo1.getLibraryType());
+                            courseParams1.setIsVideoCourse(courseVo1.getType() == 2);
 
-                        CourseVo courseVo = flagCourseData;
-                        CourseDetailParams courseParams = new CourseDetailParams();
-                        // 填充参数
-                        courseParams.setSchoolId(mSchoolId);
-                        courseParams.setClassId(mClassId);
-                        courseParams.setCourseEnterType(mEnterType);
-                        courseParams.setLibraryType(courseVo.getLibraryType());
-                        courseParams.setIsVideoCourse(courseVo.getType() == 2);
+
+                            int taskType = arguments.getInt("tasktype", 1);
+                            int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
+                            Fragment courseSelectFragment =
+                                    CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams1);
 
 
-                        int taskType = arguments.getInt("tasktype", 1);
-                        int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
-                        Fragment courseSelectFragment =
-                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams);
-
-
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.root_fragment_container, courseSelectFragment);
-                        fragmentTransaction.show(courseSelectFragment);
-                        fragmentTransaction.commit();
-                        fragmentTransaction.addToBackStack(null);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.add(R.id.root_fragment_container, courseSelectFragment);
+                            fragmentTransaction.show(courseSelectFragment);
+                            fragmentTransaction.commit();
+                            fragmentTransaction.addToBackStack(null);
+                        }
                     }
                 }
             }

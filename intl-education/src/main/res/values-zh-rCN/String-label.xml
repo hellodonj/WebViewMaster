@@ -562,5 +562,5 @@
     <string name="label_course_filtrate_video">视频</string>
     <string name="label_course_filtrate_teaching">教案</string>
     <string name="label_join_class_order">付费加入《%s》</string>
-
+    <string name="label_from_course">来自《%s》</string>
 </resources>

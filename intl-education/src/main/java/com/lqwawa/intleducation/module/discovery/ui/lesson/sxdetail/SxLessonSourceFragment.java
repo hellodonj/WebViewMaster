@@ -44,6 +44,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private static final String KEY_EXTRA_SECTION_ID = "KEY_EXTRA_SECTION_ID";
     private static final String KEY_EXTRA_EXERCISE_TYPE = "KEY_EXTRA_EXERCISE_TYPE";
     private static final String KEY_STATUS = "KEY_STATUS";
+    private static final String KEY_LIBRARY_TYPE  = "KEY_LIBRARY_TYPE";
 
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
@@ -53,6 +54,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private SectionDetailsVo mSectionDetailsVo;
     private boolean lessonNeedFlag;
     private int status;
+    private int libraryType;
     private boolean isVideoCourse;
     private boolean mClassTeacher;
     private CourseDetailParams courseParams;
@@ -74,7 +76,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                                                      @NonNull String courseId,
                                                      @NonNull String sectionId,
                                                      int status,
-                                                     int exerciseType,
+                                                     int exerciseType,int libraryType,
                                                      @NonNull LessonSourceParams params) {
         SxLessonSourceFragment fragment = new SxLessonSourceFragment();
         Bundle arguments = new Bundle();
@@ -86,6 +88,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         arguments.putString(KEY_EXTRA_SECTION_ID, sectionId);
         arguments.putInt(KEY_STATUS, status);
         arguments.putInt(KEY_EXTRA_EXERCISE_TYPE, exerciseType);
+        arguments.putInt(KEY_LIBRARY_TYPE,libraryType);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -96,6 +99,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         exerciseType = bundle.getInt(KEY_EXTRA_EXERCISE_TYPE);
+        libraryType = bundle.getInt(KEY_LIBRARY_TYPE);
         if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             lessonSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -172,7 +176,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     }
 
     private void updateViews(SectionDetailsVo sectionDetailsVo) {
-        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
+        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(),libraryType);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
         for (SectionTaskListVo taskListVO : taskList) {
             TreeNode treeNode = new TreeNode(taskListVO);

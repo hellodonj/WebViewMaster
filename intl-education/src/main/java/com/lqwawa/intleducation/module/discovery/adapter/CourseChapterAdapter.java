@@ -515,7 +515,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     if (examType == TYPE_EXAM) {
                                         //courseid,sectionId,token
 //                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
-                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), lessonSourceParams);
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), libraryType,lessonSourceParams);
 //                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
                                     } else if (examType == TYPE_LESSON){
                                         //普通教案详情入口
@@ -772,7 +772,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), lessonSourceParams);
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(),libraryType, lessonSourceParams);
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);
