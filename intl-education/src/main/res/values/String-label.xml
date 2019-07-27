@@ -554,4 +554,5 @@
     <string name="label_course_filtrate_testing">测本</string>
     <string name="label_course_filtrate_video">视频</string>
     <string name="label_course_filtrate_teaching">教案</string>
+    <string name="label_join_class_order">付费加入《%s》</string>
 </resources>

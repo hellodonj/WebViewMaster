@@ -303,29 +303,39 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 holder.course_name.setText(spannableString);
 
                 holder.delete_order_tv.setVisibility(View.GONE);
-                holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                 StringUtil.fillSafeTextView(holder.teacher_name, String.format(UIUtil.getString(R.string.label_commit_placeholder_teacher), vo.getRealName()));
 //                holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
                 holder.status_tv.setText(activity.getResources().getString(orderTuttorStatusResId[vo.getStatus()]));
                 holder.status_tv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
-                holder.rebuy_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setText(activity.getResources().getString(orderTutorStatus[vo.getStatus()]));
                 holder.mTutorStatusTv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
                 //0等待批阅 1交易成功 2交易关闭
                 if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待批阅
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
                 } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    holder.rebuy_tv.setVisibility(View.VISIBLE);
+                    holder.mTutorStatusTv.setVisibility(View.GONE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
                 } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.shape_circle_gray_stroke_h1_radius_18));
                 }
-            } else if (vo.getType()==7){
-                holder.course_name.setText(vo.getClassName());
+            } else if (vo.getType() == 7) {
+                holder.course_name.setText(String.format(UIUtil.getString(R.string.label_join_class_order), vo.getClassName()));
                 holder.organName.setText(vo.getSchoolName());
-                holder.rebuy_tv.setVisibility(View.VISIBLE);
-                holder.rebuy_tv.setText(activity.getResources().getString(R.string.delete_order));
-                holder.delete_order_tv.setVisibility(View.GONE);
-            }else {
+                if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    holder.delete_order_tv.setVisibility(View.GONE);
+                    holder.rebuy_tv.setVisibility(View.VISIBLE);
+                    holder.mTutorStatusTv.setVisibility(View.GONE);
+                } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
+                    holder.delete_order_tv.setVisibility(View.GONE);
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
+                }
+            } else {
                 holder.mTutorStatusTv.setVisibility(View.GONE);
             }
         }
