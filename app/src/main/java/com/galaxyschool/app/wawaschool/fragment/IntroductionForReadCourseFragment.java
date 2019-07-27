@@ -640,7 +640,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         Bundle args = new Bundle();
         args.putString(PersonalPostBarListActivity.EXTRA_MEMBER_ID, getMemeberId());
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
-        args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 5);
+        args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
         Intent intent = new Intent(getActivity(), PersonalPostBarListActivity.class);
         intent.putExtras(args);
         startActivityForResult(intent, REQUEST_CODE_PICKER_RESOURCES);
@@ -830,7 +830,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         args.putBoolean(ActivityUtils.EXTRA_CHOOSE_TASKORDER_DATA, checkAppointTaskOrder);
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
         if (isFromSuperTask) {
-            args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 5);
+            args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
             args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, superTaskType);
             args.putBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK, isFromSuperTask);
         }
