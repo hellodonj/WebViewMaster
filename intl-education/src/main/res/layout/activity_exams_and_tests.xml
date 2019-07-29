@@ -28,6 +28,8 @@
         <!--android:visibility="gone" />-->
 
         <FrameLayout
+            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/new_cart_container"
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -39,7 +41,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/ic_work_cart_shadow"
             android:visibility="gone">
 
