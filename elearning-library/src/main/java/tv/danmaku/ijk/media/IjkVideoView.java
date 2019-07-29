@@ -97,6 +97,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private IMediaController mMediaController;
     private IMediaPlayer.OnCompletionListener mOnCompletionListener;
     private IMediaPlayer.OnPreparedListener mOnPreparedListener;
+    private IMediaPlayer.OnSeekCompleteListener mOnSeekCompleteListener;
+    private IMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
     private int mCurrentBufferPercentage;
     private IMediaPlayer.OnErrorListener mOnErrorListener;
     private IMediaPlayer.OnInfoListener mOnInfoListener;
@@ -395,25 +397,26 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
-    IMediaPlayer.OnVideoSizeChangedListener mSizeChangedListener =
+    private IMediaPlayer.OnVideoSizeChangedListener mSizeChangedListener =
             new IMediaPlayer.OnVideoSizeChangedListener() {
-                public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
-                    mVideoWidth = mp.getVideoWidth();
-                    mVideoHeight = mp.getVideoHeight();
-                    mVideoSarNum = mp.getVideoSarNum();
-                    mVideoSarDen = mp.getVideoSarDen();
-                    if (mVideoWidth != 0 && mVideoHeight != 0) {
-                        if (mRenderView != null) {
-                            mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
-                            mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
-                        }
-                        // REMOVED: getHolder().setFixedSize(mVideoWidth, mVideoHeight);
-                        requestLayout();
-                    }
+        public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sarNum, int sarDen) {
+            mVideoWidth = mp.getVideoWidth();
+            mVideoHeight = mp.getVideoHeight();
+            mVideoSarNum = mp.getVideoSarNum();
+            mVideoSarDen = mp.getVideoSarDen();
+            if (mVideoWidth != 0 && mVideoHeight != 0) {
+                if (mRenderView != null) {
+                    mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
+                    mRenderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
                 }
-            };
+                // REMOVED: getHolder().setFixedSize(mVideoWidth, mVideoHeight);
+                requestLayout();
+            }
+        }
+    };
 
-    IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
+    private IMediaPlayer.OnPreparedListener mPreparedListener =
+            new IMediaPlayer.OnPreparedListener() {
         public void onPrepared(IMediaPlayer mp) {
             mPrepareEndTime = System.currentTimeMillis();
             if (mHudViewHolder != null)
@@ -472,141 +475,149 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     private IMediaPlayer.OnCompletionListener mCompletionListener =
             new IMediaPlayer.OnCompletionListener() {
-                public void onCompletion(IMediaPlayer mp) {
-                    mCurrentState = STATE_PLAYBACK_COMPLETED;
-                    mTargetState = STATE_PLAYBACK_COMPLETED;
-                    if (mMediaController != null) {
-                        mMediaController.hide();
-                    }
-                    if (mOnCompletionListener != null) {
-                        mOnCompletionListener.onCompletion(mMediaPlayer);
-                    }
+        public void onCompletion(IMediaPlayer mp) {
+            mCurrentState = STATE_PLAYBACK_COMPLETED;
+            mTargetState = STATE_PLAYBACK_COMPLETED;
+            if (mMediaController != null) {
+                mMediaController.hide();
+            }
+            if (mOnCompletionListener != null) {
+                mOnCompletionListener.onCompletion(mMediaPlayer);
+            }
 
-                }
-            };
+        }
+    };
 
     private IMediaPlayer.OnInfoListener mInfoListener =
             new IMediaPlayer.OnInfoListener() {
-                public boolean onInfo(IMediaPlayer mp, int arg1, int arg2) {
-                    if (mOnInfoListener != null) {
-                        mOnInfoListener.onInfo(mp, arg1, arg2);
-                    }
-                    switch (arg1) {
-                        case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
-                            Log.d(TAG, "MEDIA_INFO_VIDEO_TRACK_LAGGING:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
-                            Log.d(TAG, "MEDIA_INFO_VIDEO_RENDERING_START:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                            Log.d(TAG, "MEDIA_INFO_BUFFERING_START:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                            Log.d(TAG, "MEDIA_INFO_BUFFERING_END:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
-                            Log.d(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH: " + arg2);
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
-                            Log.d(TAG, "MEDIA_INFO_BAD_INTERLEAVING:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
-                            Log.d(TAG, "MEDIA_INFO_NOT_SEEKABLE:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_METADATA_UPDATE:
-                            Log.d(TAG, "MEDIA_INFO_METADATA_UPDATE:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
-                            Log.d(TAG, "MEDIA_INFO_UNSUPPORTED_SUBTITLE:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
-                            Log.d(TAG, "MEDIA_INFO_SUBTITLE_TIMED_OUT:");
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
-                            mVideoRotationDegree = arg2;
-                            Log.d(TAG, "MEDIA_INFO_VIDEO_ROTATION_CHANGED: " + arg2);
-                            if (mRenderView != null)
-                                mRenderView.setVideoRotation(arg2);
-                            break;
-                        case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
-                            Log.d(TAG, "MEDIA_INFO_AUDIO_RENDERING_START:");
-                            break;
-                    }
-                    return true;
-                }
-            };
+        public boolean onInfo(IMediaPlayer mp, int arg1, int arg2) {
+            if (mOnInfoListener != null) {
+                mOnInfoListener.onInfo(mp, arg1, arg2);
+            }
+            switch (arg1) {
+                case IMediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_TRACK_LAGGING:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_RENDERING_START:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    Log.d(TAG, "MEDIA_INFO_BUFFERING_START:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    Log.d(TAG, "MEDIA_INFO_BUFFERING_END:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
+                    Log.d(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH: " + arg2);
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BAD_INTERLEAVING:
+                    Log.d(TAG, "MEDIA_INFO_BAD_INTERLEAVING:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                    Log.d(TAG, "MEDIA_INFO_NOT_SEEKABLE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_METADATA_UPDATE:
+                    Log.d(TAG, "MEDIA_INFO_METADATA_UPDATE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE:
+                    Log.d(TAG, "MEDIA_INFO_UNSUPPORTED_SUBTITLE:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT:
+                    Log.d(TAG, "MEDIA_INFO_SUBTITLE_TIMED_OUT:");
+                    break;
+                case IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED:
+                    mVideoRotationDegree = arg2;
+                    Log.d(TAG, "MEDIA_INFO_VIDEO_ROTATION_CHANGED: " + arg2);
+                    if (mRenderView != null)
+                        mRenderView.setVideoRotation(arg2);
+                    break;
+                case IMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+                    Log.d(TAG, "MEDIA_INFO_AUDIO_RENDERING_START:");
+                    break;
+            }
+            return true;
+        }
+    };
 
     private IMediaPlayer.OnErrorListener mErrorListener =
             new IMediaPlayer.OnErrorListener() {
-                public boolean onError(IMediaPlayer mp, int framework_err, int impl_err) {
-                    Log.d(TAG, "Error: " + framework_err + "," + impl_err);
-                    mCurrentState = STATE_ERROR;
-                    mTargetState = STATE_ERROR;
-                    if (mMediaController != null) {
-                        mMediaController.hide();
-                    }
+        public boolean onError(IMediaPlayer mp, int framework_err, int impl_err) {
+            Log.d(TAG, "Error: " + framework_err + "," + impl_err);
+            mCurrentState = STATE_ERROR;
+            mTargetState = STATE_ERROR;
+            if (mMediaController != null) {
+                mMediaController.hide();
+            }
 
-                    /* If an error handler has been supplied, use it and finish. */
-                    if (mOnErrorListener != null) {
-                        if (mOnErrorListener.onError(mMediaPlayer, framework_err, impl_err)) {
-                            return true;
-                        }
-                    }
-
-                    /* Otherwise, pop up an error dialog so the user knows that
-                     * something bad has happened. Only try and pop up the dialog
-                     * if we're attached to a window. When we're going away and no
-                     * longer have a window, don't bother showing the user an error.
-                     */
-                    if (getWindowToken() != null) {
-                        Resources r = mAppContext.getResources();
-                        int messageId;
-
-                        if (framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
-                            messageId = R.string.VideoView_error_text_invalid_progressive_playback;
-                        } else {
-                            messageId = R.string.VideoView_error_text_unknown;
-                        }
-
-                        new AlertDialog.Builder(getContext())
-                                .setMessage(messageId)
-                                .setPositiveButton(R.string.VideoView_error_button,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                            /* If we get here, there is no onError listener, so
-                                             * at least inform them that the video is over.
-                                             */
-                                                if (mOnCompletionListener != null) {
-                                                    mOnCompletionListener.onCompletion(mMediaPlayer);
-                                                }
-                                            }
-                                        })
-                                .setCancelable(false)
-                                .show();
-                    }
+            /* If an error handler has been supplied, use it and finish. */
+            if (mOnErrorListener != null) {
+                if (mOnErrorListener.onError(mMediaPlayer, framework_err, impl_err)) {
                     return true;
                 }
-            };
+            }
+
+            /* Otherwise, pop up an error dialog so the user knows that
+             * something bad has happened. Only try and pop up the dialog
+             * if we're attached to a window. When we're going away and no
+             * longer have a window, don't bother showing the user an error.
+             */
+            if (getWindowToken() != null) {
+                Resources r = mAppContext.getResources();
+                int messageId;
+
+                if (framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
+                    messageId = R.string.VideoView_error_text_invalid_progressive_playback;
+                } else {
+                    messageId = R.string.VideoView_error_text_unknown;
+                }
+
+                new AlertDialog.Builder(getContext())
+                        .setMessage(messageId)
+                        .setPositiveButton(R.string.VideoView_error_button,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                    /* If we get here, there is no onError listener, so
+                                     * at least inform them that the video is over.
+                                     */
+                                        if (mOnCompletionListener != null) {
+                                            mOnCompletionListener.onCompletion(mMediaPlayer);
+                                        }
+                                    }
+                                })
+                        .setCancelable(false)
+                        .show();
+            }
+            return true;
+        }
+    };
 
     private IMediaPlayer.OnBufferingUpdateListener mBufferingUpdateListener =
             new IMediaPlayer.OnBufferingUpdateListener() {
-                public void onBufferingUpdate(IMediaPlayer mp, int percent) {
-                    mCurrentBufferPercentage = percent;
-                }
-            };
+        public void onBufferingUpdate(IMediaPlayer mp, int percent) {
+            mCurrentBufferPercentage = percent;
 
-    private IMediaPlayer.OnSeekCompleteListener mSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
+            if (mOnBufferingUpdateListener != null) {
+                mOnBufferingUpdateListener.onBufferingUpdate(mp, percent);
+            }
+        }
+    };
 
+    private IMediaPlayer.OnSeekCompleteListener mSeekCompleteListener =
+            new IMediaPlayer.OnSeekCompleteListener() {
         @Override
         public void onSeekComplete(IMediaPlayer mp) {
             mSeekEndTime = System.currentTimeMillis();
             if (mHudViewHolder != null)
                 mHudViewHolder.updateSeekCost(mSeekEndTime - mSeekStartTime);
 
+            if (mOnSeekCompleteListener != null) {
+                mOnSeekCompleteListener.onSeekComplete(mp);
+            }
         }
     };
 
-    private IMediaPlayer.OnTimedTextListener mOnTimedTextListener = new IMediaPlayer.OnTimedTextListener() {
+    private IMediaPlayer.OnTimedTextListener mOnTimedTextListener =
+            new IMediaPlayer.OnTimedTextListener() {
         @Override
         public void onTimedText(IMediaPlayer mp, IjkTimedText text) {
             if (text != null) {
@@ -633,6 +644,14 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
      */
     public void setOnCompletionListener(IMediaPlayer.OnCompletionListener l) {
         mOnCompletionListener = l;
+    }
+
+    public void setOnSeekCompleteListener(IMediaPlayer.OnSeekCompleteListener l) {
+        mOnSeekCompleteListener = l;
+    }
+
+    public void setOnBufferingUpdateListener(IMediaPlayer.OnBufferingUpdateListener l) {
+        mOnBufferingUpdateListener = l;
     }
 
     /**
