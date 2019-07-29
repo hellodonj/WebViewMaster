@@ -141,19 +141,18 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mClassTeacher = EmptyUtil.isNotEmpty(courseParams) && courseParams.isClassCourseEnter() && EmptyUtil.isNotEmpty(courseParams.getClassId());
+        //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
         choiceModeAndIntiativeTrigger = (lessonSourceParams != null && lessonSourceParams.isChoiceMode()) && lessonSourceParams.isInitiativeTrigger();
-        if (!mTeacherVisitor && courseParams != null &&
-                courseParams.isClassCourseEnter() &&
-                courseParams.isClassTeacher() ||
-                choiceModeAndIntiativeTrigger) {
+        boolean isShowBottomLayout = !mTeacherVisitor && courseParams != null && courseParams.isClassCourseEnter() && courseParams.isClassTeacher() || choiceModeAndIntiativeTrigger;
+        if (isShowBottomLayout) {
             mBottomLayout.setVisibility(View.VISIBLE);
             mNewCartContainer.setVisibility(View.VISIBLE);
         } else {
             mBottomLayout.setVisibility(View.GONE);
             mNewCartContainer.setVisibility(View.GONE);
         }
-        //被动进入选择
-        if (!choiceModeAndIntiativeTrigger) {
+        //被动进入选择,并且是选择模式
+        if (!choiceModeAndIntiativeTrigger && lessonSourceParams != null && lessonSourceParams.isChoiceMode()) {
             topBar.setRightFunctionText1(getString(R.string.ok), v -> {
                 selectedTask.clear();
                 List<TreeNode> selectedNodes = treeView.getSelectedNodes();
@@ -220,7 +219,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
-            if (choiceModeAndIntiativeTrigger && isShowType(taskType, taskListVO)) continue;
+            if (!choiceModeAndIntiativeTrigger && isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
             treeNode.setLevel(0);
             for (SectionResListVo datum : taskListVO.data) {
