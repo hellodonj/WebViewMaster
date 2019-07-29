@@ -300,7 +300,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
                     CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
                     params.setCourseParams(courseParams);
-                    params.setChoiceMode(true, true);
+                    params.setChoiceMode(true, initiativeTrigger);
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
 
@@ -310,7 +310,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                 ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
-                                SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                                if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity, courseId, chapterId,
                                         sectionName, name, false, true, true,
                                         status, memberId, chapterVo.isContainAssistantWork(),
                                         "", false, courseVo,
@@ -325,9 +325,11 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         mExtras);
                         }
                     } else {
+                        Bundle arguments = getArguments();
+                        int taskType = arguments.getInt("tasktype", 1);
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
-                                ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
+                                ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
                                 SxLessonDetailsActivity.start(activity, courseId, chapterId,
@@ -337,7 +339,6 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         false, false, params, mExtras);
                             }
                         }else {
-                            Bundle arguments = getArguments();
                             CourseVo courseVo1 = flagCourseData;
                             CourseDetailParams courseParams1 = new CourseDetailParams();
                             // 填充参数
@@ -348,11 +349,9 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             courseParams1.setIsVideoCourse(courseVo1.getType() == 2);
 
 
-                            int taskType = arguments.getInt("tasktype", 1);
                             int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
                             Fragment courseSelectFragment =
                                     CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams1);
-
 
                             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                             fragmentTransaction.add(R.id.root_fragment_container, courseSelectFragment);
