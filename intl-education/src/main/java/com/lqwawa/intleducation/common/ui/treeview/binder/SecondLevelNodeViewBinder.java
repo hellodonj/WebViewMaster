@@ -337,6 +337,6 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
         SectionTaskDetailsActivity.startForResultEx(context, vo, curMemberId, extras.getSchoolId(), context.getIntent().getBooleanExtra
                         (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
-                null, originalRole, handleRole, null, isAudition, params);
+                null, originalRole, handleRole, null, isAudition, extras.getLibraryType(), params);
     }
 }

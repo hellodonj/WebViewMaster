@@ -1825,6 +1825,7 @@
     <string name="str_no_read">不可查看</string>
     <string name="str_view_other_permission_tips">老师也设定为不可查看</string>
     <string name="str_set_can_read">设置可查看</string>
+    <string name="str_set_cannot_read">设置不可看</string>
     <string name="str_accession_mode">加入方式</string>
     <string name="str_approval_for_accession">审批加入</string>
     <string name="str_pay_to_join">付费加入</string>

@@ -309,8 +309,6 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         mViewPager = (ViewPager) mRootView.findViewById(R.id.view_pager);
 
         if (mSelectResource) {
-            // 隐藏HeaderLayout
-            mHeaderLayout.setVisibility(View.GONE);
             mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
             mTopBar.setVisibility(organCourseFiltrateParams.isHideTopBar() ? View.GONE : View.VISIBLE);
         }
@@ -357,76 +355,8 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         }
         mHeaderLayout.setVisibility(View.GONE);
         mSortTabLayout.setVisibility(View.GONE);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshCartPoint();
-    }
-
-    /**
-     * 刷新红点
-     */
-    private void refreshCartPoint() {
-        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-            mTvCartPoint.setText(Integer.toString(count));
-            if (count == 0) {
-                mTvCartPoint.setVisibility(View.GONE);
-            } else {
-                mTvCartPoint.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-
-        String organId = mEntity.getEntityOrganId();
-        int parentId = mEntity.getId();
-        String level = mEntity.getLevel();
-        mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
-
-        if (!isClassCourseEnter) {
-            if (mSelectResource) {
-                // 选择资源检查授权 自动申请
-                mPresenter.requestCheckSchoolPermission(organId, 0, true);
-            } else {
-                // 手动授权,检查授权
-                mPresenter.requestCheckSchoolPermission(organId, 0, false);
-            }
-        }
-
-        mParams = new OrganCourseFiltratePagerParams(organId, mLibraryType, 2, isClassCourseEnter);
-        mParams.setSelectResource(mSelectResource)
-                .setAuthorized(isAuthorized)
-                .setReallyAuthorized(isReallyAuthorized)
-                .setShopResourceData(mResourceData)
-                .setBundle(organCourseFiltrateParams.getBundle());
-        mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
-        OrganCourseFiltratePagerFragment recentUpdateFragment =
-                OrganCourseFiltratePagerFragment.newInstance(mParams);
-        OrganCourseFiltratePagerFragment hotFragment
-                = OrganCourseFiltratePagerFragment.newInstance(mParams);
-        OrganCourseFiltratePagerFragment priceFragment
-                = OrganCourseFiltratePagerFragment.newInstance(mParams);
-
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(recentUpdateFragment);
-        fragments.add(hotFragment);
-        fragments.add(priceFragment);
-
-        mNavigatorList = new ArrayList<>();
-        mNavigatorList.add(recentUpdateFragment);
-        mNavigatorList.add(hotFragment);
-        mNavigatorList.add(priceFragment);
-
-        TabPagerAdapter mAdapter = new TabPagerAdapter(getChildFragmentManager(), fragments);
-        mViewPager.setAdapter(mAdapter);
-        mSortTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(fragments.size() - 1);
+        initFragments();
 
         // 设置TabLayout最后一个节点有upDown
         TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
@@ -480,6 +410,82 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
                 }
             }
         });
+    }
+
+    private void initFragments() {
+        mParams = new OrganCourseFiltratePagerParams(mEntity.getEntityOrganId(), mLibraryType, 2,
+                isClassCourseEnter);
+        mParams.setSelectResource(mSelectResource)
+                .setAuthorized(isAuthorized)
+                .setReallyAuthorized(isReallyAuthorized)
+                .setShopResourceData(mResourceData)
+                .setBundle(organCourseFiltrateParams.getBundle());
+        mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
+        OrganCourseFiltratePagerFragment recentUpdateFragment =
+                OrganCourseFiltratePagerFragment.newInstance(mParams);
+        OrganCourseFiltratePagerFragment hotFragment
+                = OrganCourseFiltratePagerFragment.newInstance(mParams);
+        OrganCourseFiltratePagerFragment priceFragment
+                = OrganCourseFiltratePagerFragment.newInstance(mParams);
+
+        List<Fragment> fragments = new ArrayList<>();
+        mNavigatorList = new ArrayList<>();
+        fragments.add(recentUpdateFragment);
+        mNavigatorList.add(recentUpdateFragment);
+        if (!mSelectResource) {
+            fragments.add(hotFragment);
+            fragments.add(priceFragment);
+            mNavigatorList.add(hotFragment);
+            mNavigatorList.add(priceFragment);
+        }
+
+        TabPagerAdapter mAdapter = new TabPagerAdapter(getChildFragmentManager(), fragments);
+        mViewPager.setAdapter(mAdapter);
+        mSortTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(fragments.size() - 1);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshCartPoint();
+    }
+
+    /**
+     * 刷新红点
+     */
+    private void refreshCartPoint() {
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            mTvCartPoint.setText(Integer.toString(count));
+            if (count == 0) {
+                mTvCartPoint.setVisibility(View.GONE);
+            } else {
+                mTvCartPoint.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+
+        String organId = mEntity.getEntityOrganId();
+        int parentId = mEntity.getId();
+        String level = mEntity.getLevel();
+        mPresenter.requestOrganCourseLabelData(organId, parentId, level, mLibraryType);
+
+        if (!isClassCourseEnter) {
+            if (mSelectResource) {
+                // 选择资源检查授权 自动申请
+                mPresenter.requestCheckSchoolPermission(organId, 0, true);
+            } else {
+                // 手动授权,检查授权
+                mPresenter.requestCheckSchoolPermission(organId, 0, false);
+            }
+        }
+
+
     }
 
     /**
@@ -591,6 +597,10 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
 //            mRefreshLayout.setVisibility(View.GONE);
 //            mEmptyLayout.setVisibility(View.VISIBLE);
             triggerUpdateData();
+        }
+        if (mSelectResource) {
+            mHeaderLayout.setVisibility(View.GONE);
+            mSortTabLayout.setVisibility(View.GONE);
         }
     }
 

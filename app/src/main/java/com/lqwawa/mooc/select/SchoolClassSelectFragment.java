@@ -24,6 +24,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.pojo.ContactsClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.ContactsSchoolInfo;
 import com.galaxyschool.app.wawaschool.pojo.ContactsSchoolListResult;
+import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -195,8 +196,8 @@ public class SchoolClassSelectFragment extends AdapterFragment
         ClassResourceData data = null;
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
             ArrayList<Integer> selectType = new ArrayList<>();
-            selectType.add(18);
-            selectType.add(19);
+            selectType.add(ResType.RES_TYPE_ONEPAGE);
+            selectType.add(ResType.RES_TYPE_COURSE_SPEAKER);
             data = new ClassResourceData(taskType,checkCount,selectType, LQCourseCourseListActivity
                     .RC_SelectCourseRes);
         } else {

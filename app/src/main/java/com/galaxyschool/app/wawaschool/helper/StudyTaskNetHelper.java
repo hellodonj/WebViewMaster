@@ -49,7 +49,11 @@ public class StudyTaskNetHelper {
         }
         Map<String, Object> params = new HashMap<>();
         params.put("TaskId", Integer.valueOf(taskId));
-        params.put("ViewOthersTaskPermisson", viewOthersTaskPermission);
+        if (viewOthersTaskPermission == 0){
+            params.put("ViewOthersTaskPermisson", 1);
+        } else {
+            params.put("ViewOthersTaskPermisson", 0);
+        }
         RequestHelper.RequestModelResultListener listener =
                 new RequestHelper.RequestModelResultListener<ModelResult>(context, ModelResult.class) {
                     @Override

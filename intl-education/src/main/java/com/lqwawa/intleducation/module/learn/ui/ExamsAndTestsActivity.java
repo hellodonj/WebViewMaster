@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -29,7 +28,6 @@ import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceNavigator;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -42,7 +40,6 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +60,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private String TAG = getClass().getSimpleName();
     private boolean lessonNeedFlag;
     private int status;
+    private int libraryType;
     private boolean isVideoCourse;
     private boolean mClassTeacher;
     private LinearLayout llSelectAction;
@@ -118,6 +116,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 //        courseParams = (CourseDetailParams) intent.getSerializableExtra("courseDetailParams");
         lessonSourceParams = (LessonSourceParams) intent.getSerializableExtra("lessonSourceParams");
         status = intent.getIntExtra("status", -1);
+        libraryType = intent.getIntExtra("libraryType",5);
 //        Log.e(TAG, "getData: " + lessonSourceParams.getRole() + "---courseParams" + courseParams.getSchoolId());
         lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
         if (lessonSourceParams != null) courseParams = lessonSourceParams.getCourseParams();
@@ -141,12 +140,13 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         LQCourseHelper.getSxExamDetail(courseId, sectionId, this);
     }
 
-    public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor, int status, LessonSourceParams lessonSourceParams) {
+    public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor, int status,int libraryType, LessonSourceParams lessonSourceParams) {
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
         intent.putExtra("sectionId", sectionId);
         intent.putExtra("lessonSourceParams", lessonSourceParams);
         intent.putExtra("status", status);
+        intent.putExtra("libraryType",libraryType);
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
 //        intent.putExtra("courseDetailParams", courseDetailParams);
 
@@ -162,7 +162,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     private void formatData(SxExamDetailVo examDetailVo) {
-        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode());
+        extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag, status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(),libraryType);
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {

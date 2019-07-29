@@ -56,6 +56,7 @@ public class OrganCourseFiltratePagerPresenter extends BasePresenter<OrganCourse
         OrganCourseHelper.requestOrganCourseResourceData(params.getOrganId(), pageIndex, pageSize,
                 params.getKeyString(),
                 params.getLevel(),
+                params.getLibraryType(),
                 new DataSource.Callback<List<CourseVo>>() {
                     @Override
                     public void onDataNotAvailable(int strRes) {

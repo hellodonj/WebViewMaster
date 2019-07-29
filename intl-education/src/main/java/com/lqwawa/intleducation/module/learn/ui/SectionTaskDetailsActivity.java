@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +55,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -100,6 +102,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     protected ImageView mResIcon;
     protected TextView mTvTotalGrade;
     protected TextView mResName;
+    private FrameLayout mFromLayout;
+    private TextView mTvFromCourse;
     // protected SlidePagerAdapter tabPagerAdapter;
 
     protected SectionResListVo sectionResListVo;
@@ -125,6 +129,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     protected CourseDetailParams mCourseParams;
     protected PagerArgs pagerArgs = null;
     private int orderByType = 0;
+    private int libraryType;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -133,7 +138,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
 
     public static void startForResultEx(Activity activity, SectionResListVo vo,
                                         String memberId, String schoolId, boolean isFromMyCourse,
-                                        String taskId, int originRoleType, int roleType, String examId,
+                                        String taskId, int originRoleType, int roleType, String examId,int libraryType,
                                         @NonNull SectionTaskParams params) {
         Intent intent = new Intent();
         intent.putExtra("SectionResListVo", vo);
@@ -144,6 +149,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         intent.putExtra("originRoleType", originRoleType);
         intent.putExtra("roleType", roleType);
         intent.putExtra("examId", examId);
+        intent.putExtra("libraryType",libraryType);
         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         intent.setClassName(MainApplication.getInstance().getPackageName(),
                 "com.lqwawa.mooc.modle.MyCourse.ui.SectionTaskDetailsActivityEx");
@@ -167,7 +173,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     public static void startForResultEx(Activity activity, SectionResListVo vo,
                                         String memberId, String schoolId, boolean isFromMyCourse,
                                         String taskId, int originRoleType, int roleType,
-                                        String examId, boolean freeUser,
+                                        String examId, boolean freeUser,int libraryType,
                                         @NonNull SectionTaskParams params) {
         Intent intent = new Intent();
         intent.putExtra("SectionResListVo", vo);
@@ -179,6 +185,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         intent.putExtra("roleType", roleType);
         intent.putExtra("examId", examId);
         intent.putExtra(KEY_ROLE_FREE_USER, freeUser);
+        intent.putExtra("libraryType",libraryType);
         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         intent.setClassName(MainApplication.getInstance().getPackageName(),
                 "com.lqwawa.mooc.modle.MyCourse.ui.SectionTaskDetailsActivityEx");
@@ -226,6 +233,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         mHandleRole = getIntent().getIntExtra("roleType", 0);
         examId = getIntent().getStringExtra("examId");
         isAudition = getIntent().getBooleanExtra(KEY_ROLE_FREE_USER, false);
+        libraryType = getIntent().getIntExtra("libraryType",5);
         if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mTaskParams = (SectionTaskParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
             mCourseParams = mTaskParams.getCourseParams();
@@ -557,6 +565,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         mResIcon = (ImageView) findViewById(R.id.iv_res_icon);
         mTvTotalGrade = (TextView) findViewById(R.id.tv_total_grade);
         mResName = (TextView) findViewById(R.id.tv_res_name);
+        mFromLayout = (FrameLayout) findViewById(R.id.from_layout);
+        mTvFromCourse = (TextView) findViewById(R.id.tv_from_course);
 
         updateData();
     }
@@ -592,6 +602,13 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             mTvTotalGrade.setVisibility(View.GONE);
         }
         mResName.setText(sectionResListVo.getName());
+
+        if (libraryType== OrganLibraryType.TYPE_TEACHING_PLAN){
+            mFromLayout.setVisibility(View.VISIBLE);
+            mTvFromCourse.setText(String.format(UIUtil.getString(R.string.label_from_course), sectionResListVo.getLinkCourseName()));
+        }else {
+            mFromLayout.setVisibility(View.GONE);
+        }
         if (/*sectionTaskDetailsVo.getCommitList() != null &&*/ sectionResListVo != null) {
             String studentId = getStudentId();
             // Mooc大厅的入口，拉取列表，不需要传 机构Id和ClassId,因为要拉所有的已经提交的学习任务

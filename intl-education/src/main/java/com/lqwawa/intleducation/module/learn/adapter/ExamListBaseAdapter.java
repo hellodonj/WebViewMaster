@@ -151,7 +151,7 @@ public class ExamListBaseAdapter extends MyBaseAdapter {
         SectionTaskDetailsActivity.startForResultEx(activity, null, memberId, activity.getIntent
                 ().getStringExtra("schoolId"), activity.getIntent().getBooleanExtra
                 (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false), taskId, originRole,role, vo.getCexam()
-                .getId(),params);
+                .getId(),5,params);
     }
 
 

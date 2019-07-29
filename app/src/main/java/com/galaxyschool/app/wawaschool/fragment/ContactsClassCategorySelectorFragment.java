@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+
+import com.galaxyschool.app.wawaschool.ContactsModifyClassNameActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
@@ -38,6 +40,7 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
     protected ContactsClassCategorySetResult classCategoryResult;
     protected String schoolId;
     protected String schoolName;
+    protected boolean fromModifyClassName;
     private ContactsInputDialog inputBoxDialog;
 
     @Override
@@ -66,6 +69,8 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
         if (args != null) {
             this.schoolId = args.getString(Constants.EXTRA_SCHOOL_ID);
             this.schoolName = args.getString(Constants.EXTRA_SCHOOL_NAME);
+            fromModifyClassName =
+                    args.getBoolean(ContactsModifyClassNameActivity.EXTRA_FROM_MODIFY_CLASS_NAME);
         }
 
 //        if (!TextUtils.isEmpty(this.schoolId)) {
@@ -312,22 +317,24 @@ public class ContactsClassCategorySelectorFragment extends CategorySelectorFragm
             categoryList.add(cat);
         }
 
-        //加入方式
-        cat = new Category();
-        cat.setType(Constants.SCHOOL_CLASS_JOIN_TYPE);
-        cat.setName(getString(R.string.str_accession_mode));
-        cat.setAllValues(new ArrayList());
-        //审批加入
-        value = new CategoryValue();
-        value.setId("0");
-        value.setValue(getString(R.string.str_approval_for_accession));
-        cat.getAllValues().add(value);
-        //付费加入
-        value = new CategoryValue();
-        value.setId("1");
-        value.setValue(getString(R.string.str_pay_to_join));
-        cat.getAllValues().add(value);
-        categoryList.add(cat);
+        if (!fromModifyClassName) {
+            //加入方式
+            cat = new Category();
+            cat.setType(Constants.SCHOOL_CLASS_JOIN_TYPE);
+            cat.setName(getString(R.string.str_accession_mode));
+            cat.setAllValues(new ArrayList());
+            //审批加入
+            value = new CategoryValue();
+            value.setId("0");
+            value.setValue(getString(R.string.str_approval_for_accession));
+            cat.getAllValues().add(value);
+            //付费加入
+            value = new CategoryValue();
+            value.setId("1");
+            value.setValue(getString(R.string.str_pay_to_join));
+            cat.getAllValues().add(value);
+            categoryList.add(cat);
+        }
 
         Category schoolCategory = categoryList.get(0);
         CategoryValue currValue = schoolCategory.getCurrValue();

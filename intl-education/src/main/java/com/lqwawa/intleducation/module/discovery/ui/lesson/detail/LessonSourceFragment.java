@@ -64,7 +64,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_SECTION_ID = "KEY_EXTRA_SECTION_ID";
     private static final String KEY_EXTRA_TASK_TYPE = "KEY_EXTRA_TASK_TYPE";
-
+    private static final String KEY_LIBRARY_TYPE  = "KEY_LIBRARY_TYPE";
 
     public static String SECTION_NAME = "section_name";
     public static String SECTION_TITLE = "section_title";
@@ -78,6 +78,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private String courseId;
     private String sectionId;
     private int mTaskType;
+    private int libraryType;
     private SectionDetailsVo mSectionDetailsVo;
     private LessonSourceParams mSourceParams;
     private ReadWeikeHelper mReadWeikeHelper;
@@ -89,7 +90,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                                    boolean isOnlineTeacher,
                                                    @NonNull String courseId,
                                                    @NonNull String sectionId,
-                                                   int taskType,
+                                                   int taskType,int libraryType,
                                                    @NonNull LessonSourceParams params) {
         LessonSourceFragment fragment = new LessonSourceFragment();
         Bundle arguments = new Bundle();
@@ -100,6 +101,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         arguments.putString(KEY_EXTRA_COURSE_ID, courseId);
         arguments.putString(KEY_EXTRA_SECTION_ID, sectionId);
         arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
+        arguments.putInt(KEY_LIBRARY_TYPE,libraryType);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -117,6 +119,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         mTaskType = bundle.getInt(KEY_EXTRA_TASK_TYPE);
+        libraryType = bundle.getInt(KEY_LIBRARY_TYPE);
         if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -455,7 +458,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         SectionTaskDetailsActivity.startForResultEx(getActivity(), vo, curMemberId, getActivity().getIntent
                         ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
                         (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
-                null, originalRole, handleRole, null, isAudition, params);
+                null, originalRole, handleRole, null, isAudition,libraryType, params);
     }
 
 

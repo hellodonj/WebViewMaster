@@ -161,6 +161,32 @@
                 />
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/from_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorLight"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_from_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="15dp"
+                android:textColor="@color/textGray"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/ic_right_arrow" />
+        </FrameLayout>
+
+
         <!--<RadioGroup
             android:visibility="visible"
             android:id="@+id/rg_tab"

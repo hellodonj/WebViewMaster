@@ -165,8 +165,8 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         headRightTextV = (TextView) findViewById(R.id.contacts_header_right_btn);
         headRightTextV.setOnClickListener(v -> {
             StudyTaskNetHelper.getInstance().setCallListener(result -> {
-                headRightTextV.setVisibility(View.GONE);
-            }).setViewOthersTaskPermission(TaskId,0);
+                loadStudyData(true);
+            }).setViewOthersTaskPermission(TaskId,homeworkListInfo.getViewOthersTaskPermisson());
         });
         if (headTitleView != null) {
             if (lookStudentTaskFinish) {
@@ -289,8 +289,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
     private void updateRightView(){
         //更新右上角的是否可以查看
-        if (homeworkListInfo != null && homeworkListInfo.getViewOthersTaskPermisson() == 1
-                && roleType == RoleType.ROLE_TYPE_TEACHER){
+        if (homeworkListInfo != null && roleType == RoleType.ROLE_TYPE_TEACHER){
             if (TextUtils.equals(getMemeberId(),homeworkListInfo.getTaskCreateId())){
                 //创建者
                 if (isPick || lookStudentTaskFinish || isHistoryClass || isSuperChildTask){
@@ -299,12 +298,14 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                         || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
                         || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
-                    headRightTextV.setText(getString(R.string.str_set_can_read));
                     headRightTextV.setVisibility(View.VISIBLE);
+                    if (homeworkListInfo.getViewOthersTaskPermisson() == 1) {
+                        headRightTextV.setText(getString(R.string.str_set_can_read));
+                    } else {
+                        headRightTextV.setText(getString(R.string.str_set_cannot_read));
+                    }
                 }
             }
-        } else {
-            headRightTextV.setVisibility(View.GONE);
         }
     }
 

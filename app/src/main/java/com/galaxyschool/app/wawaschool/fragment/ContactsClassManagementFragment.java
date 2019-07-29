@@ -422,6 +422,7 @@ public class ContactsClassManagementFragment extends BaseFragment
         args.putString(ContactsModifyClassNameActivity.EXTRA_SCHOOL_NAME, this.schoolName);
         args.putString(ContactsModifyClassNameActivity.EXTRA_CLASS_ID, this.classId);
         args.putString(ContactsModifyClassNameActivity.EXTRA_CLASS_NAME, this.className);
+        args.putBoolean(ContactsModifyClassNameActivity.EXTRA_FROM_MODIFY_CLASS_NAME,true);
         Intent intent = new Intent(getActivity(),
                 ContactsModifyClassNameActivity.class);
         intent.putExtras(args);
