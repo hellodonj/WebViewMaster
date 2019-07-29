@@ -563,4 +563,6 @@
     <string name="label_course_filtrate_teaching">教案</string>
     <string name="label_join_class_order">付费加入《%s》</string>
     <string name="label_from_course">来自《%s》</string>
+    <string name="label_work_cart_add_count_tip">作业库当前最多可添加%s个任务，您选择了过多的任务类型：听说作业、读写作业、讲解课、看课件、参考视频、Q配音。</string>
+    <string name="label_work_cart_choose_count_tip"> 您选择的听说作业、读写作业、讲解课、看课件、参考视频、Q配音下的课件数量过多，最多可选10个。</string>
 </resources>
