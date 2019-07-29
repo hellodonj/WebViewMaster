@@ -364,8 +364,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         int selectMaxCount = getTaskTypeOrSelectCount(false);
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
-            arrayList.add(ResType.RES_TYPE_ONEPAGE);
+            arrayList = getTypeArrayList(taskType);
         }
         return new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
     }
@@ -373,23 +372,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     private void chooseOnlineLqCourseShopRes() {
         int taskType = getTaskTypeOrSelectCount(true);
         int selectMaxCount = getTaskTypeOrSelectCount(false);
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
-            arrayList.add(ResType.RES_TYPE_ONEPAGE);
-        } else if (taskType == StudyTaskType.TASK_ORDER) {
-            arrayList.add(ResType.RES_TYPE_STUDY_CARD);
-        } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
-                taskType == StudyTaskType.WATCH_WAWA_COURSE) {
-            arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
-            arrayList.add(ResType.RES_TYPE_ONEPAGE);
-            arrayList.add(ResType.RES_TYPE_IMG);
-            arrayList.add(ResType.RES_TYPE_PPT);
-            arrayList.add(ResType.RES_TYPE_PDF);
-            arrayList.add(ResType.RES_TYPE_VOICE);
-            arrayList.add(ResType.RES_TYPE_VIDEO);
-            arrayList.add(ResType.RES_TYPE_DOC);
-        }
+        ArrayList<Integer> arrayList = getTypeArrayList(taskType);
         ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
         CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId, true, resourceData);
         CourseShopListActivity.show(getActivity(),
@@ -404,12 +387,29 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     private void enterLqCourseShopSpace() {
         int taskType = getTaskTypeOrSelectCount(true);
         int selectMaxCount = getTaskTypeOrSelectCount(false);
+        ArrayList<Integer> arrayList = getTypeArrayList(taskType);
+        ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
+        // OrganCourseClassifyActivity.show(getActivity(),data.getSchoolId(),true,resourceData);
+        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId, true, resourceData);
+        CourseShopClassifyActivity.show(getActivity(), params);
+    }
+
+    private ArrayList<Integer> getTypeArrayList(int taskType){
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
             arrayList.add(ResType.RES_TYPE_ONEPAGE);
+            arrayList.add(ResType.RES_TYPE_IMG);
+            arrayList.add(ResType.RES_TYPE_PDF);
+            arrayList.add(ResType.RES_TYPE_PPT);
+            arrayList.add(ResType.RES_TYPE_DOC);
+            arrayList.add(ResType.RES_TYPE_EVALUATE);
         } else if (taskType == StudyTaskType.TASK_ORDER) {
             arrayList.add(ResType.RES_TYPE_STUDY_CARD);
+            arrayList.add(ResType.RES_TYPE_IMG);
+            arrayList.add(ResType.RES_TYPE_PDF);
+            arrayList.add(ResType.RES_TYPE_PPT);
+            arrayList.add(ResType.RES_TYPE_DOC);
         } else if (taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE ||
                 taskType == StudyTaskType.WATCH_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
@@ -420,11 +420,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             arrayList.add(ResType.RES_TYPE_VOICE);
             arrayList.add(ResType.RES_TYPE_VIDEO);
             arrayList.add(ResType.RES_TYPE_DOC);
+            arrayList.add(ResType.RES_TYPE_EVALUATE);
         }
-        ShopResourceData resourceData = new ShopResourceData(taskType, selectMaxCount, arrayList, LQCourseCourseListActivity.RC_SelectCourseRes);
-        // OrganCourseClassifyActivity.show(getActivity(),data.getSchoolId(),true,resourceData);
-        CourseShopClassifyParams params = new CourseShopClassifyParams(schoolId, true, resourceData);
-        CourseShopClassifyActivity.show(getActivity(), params);
+        return arrayList;
     }
 
     private void chooseLqConnectCourse() {
@@ -476,9 +474,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
 
     private void loadLqCourseData(String courseId, int taskType, int count) {
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-            ArrayList<Integer> selectType = new ArrayList<>();
-            selectType.add(ResType.RES_TYPE_ONEPAGE);
-            selectType.add(ResType.RES_TYPE_COURSE_SPEAKER);
+            ArrayList<Integer> selectType = getTypeArrayList(taskType);
             CourseResourceParams params = new CourseResourceParams(
                     getString(R.string.label_space_school_relevance_course), courseId, taskType, count);
             params.setFilterArray(selectType);
@@ -509,9 +505,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             ClassCourseParams classCourseParams = new ClassCourseParams(schoolId, classId);
             ClassResourceData data = null;
             if (type == StudyTaskType.RETELL_WAWA_COURSE) {
-                ArrayList<Integer> selectType = new ArrayList<>();
-                selectType.add(ResType.RES_TYPE_ONEPAGE);
-                selectType.add(ResType.RES_TYPE_COURSE_SPEAKER);
+                ArrayList<Integer> selectType = getTypeArrayList(type);
                 data = new ClassResourceData(type, count, selectType, LQCourseCourseListActivity
                         .RC_SelectCourseRes);
             } else {
