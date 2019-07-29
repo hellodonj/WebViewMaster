@@ -192,7 +192,10 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         int id = v.getId();
         if (id == R.id.add_to_cart || id == R.id.cancel_btn) {
             boolean isAddToCart = id == R.id.add_to_cart;
-            updateView(isAddToCart);
+            if (isAddToCart && lessonSourceParams != null && lessonSourceParams.isChoiceMode())
+                addToCart(lessonSourceParams.isChoiceMode());
+            else
+                updateView(isAddToCart);
         } else if (id == R.id.select_all) {
             String selectAllText = getString(R.string.select_all);
             String deselectAll = getString(R.string.deselect_all);
@@ -206,46 +209,51 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 treeView.deselectAll();
             }
         } else if (id == R.id.ok_btn) {
-            List<TreeNode> selectedNodes = treeView.getSelectedNodes();
-            addToCartInDifferentTypes.clear();
-            for (int i = 0; i < selectedNodes.size(); i++) {
-                Object value = selectedNodes.get(i).getValue();
-                if (value instanceof SectionResListVo) {
-                    SectionResListVo vo = (SectionResListVo) value;
-                    int taskType = vo.getTaskType();
-                    List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
-                    if (vos == null) vos = new ArrayList<>();
-                    vos.add(vo);
-                    addToCartInDifferentTypes.put(taskType, vos);
-                }
-            }
-            if (EmptyUtil.isEmpty(selectedNodes)) {
-                UIUtil.showToastSafe(R.string.str_select_tips);
-                return;
-            }
-            if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-                int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                if (count > 6) {
-                    UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
-                    return;
-                }
-            }
-            Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
-            for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
-                List<SectionResListVo> choiceArray = entry.getValue();
-                confirmResourceCart(choiceArray);
-            }
-            updateView(false);
+            addToCart(false);
         } else if (id == R.id.new_cart_container) {
             handleSubjectSettingData(this, UserHelper.getUserId());
         }
+    }
+
+    private void addToCart(boolean isChoiceMode) {
+        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
+        addToCartInDifferentTypes.clear();
+        for (int i = 0; i < selectedNodes.size(); i++) {
+            Object value = selectedNodes.get(i).getValue();
+            if (value instanceof SectionResListVo) {
+                SectionResListVo vo = (SectionResListVo) value;
+                int taskType = vo.getTaskType();
+                List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
+                if (vos == null) vos = new ArrayList<>();
+                vos.add(vo);
+                addToCartInDifferentTypes.put(taskType, vos);
+            }
+        }
+        if (EmptyUtil.isEmpty(selectedNodes)) {
+            UIUtil.showToastSafe(R.string.str_select_tips);
+            return;
+        }
+        if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+            if (count > 6) {
+                UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                return;
+            }
+        }
+        Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
+        for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
+            List<SectionResListVo> choiceArray = entry.getValue();
+            confirmResourceCart(choiceArray);
+        }
+        if (isChoiceMode) treeView.deselectAll();
+        else updateView(false);
     }
 
     private void updateView(boolean isAddToCart) {
         llSelectAction.setVisibility(isAddToCart ? View.VISIBLE : View.GONE);
         mAddCartContainer.setVisibility(isAddToCart ? View.GONE : View.VISIBLE);
 //        treeView.setIsShowCheckBox(isAddToCart);
-        if (extrasVo !=null) extrasVo.setmChoiceMode(isAddToCart);
+        if (extrasVo != null) extrasVo.setmChoiceMode(isAddToCart);
         treeView.notifychanged();
         treeView.deselectAll();
     }
