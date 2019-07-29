@@ -46,6 +46,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.medias.activity.MyLocalPictureListActivity;
 import com.galaxyschool.app.wawaschool.medias.activity.MyRemoteSplitCourseListActivity;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -576,9 +577,13 @@ public class MyRemoteDOCListFragment extends ContactsListFragment implements ISc
             }
             //看课件多类型
             if (watchWawaCourseSupportMultiType && maxCount <= 1){
-                //控制资源最多选多少
-                maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(mediaType,maxCount,false);
+                if (taskType == StudyTaskType.ENGLISH_WRITING){
+                    maxCount = 1;
+                } else {
+                    //控制资源最多选多少
+                    maxCount = WatchWawaCourseResourceSplicingUtils.
+                            controlResourcePickedMaxCount(mediaType, maxCount, false);
+                }
             }
         }
     }

@@ -376,7 +376,7 @@ public class LQCourseConfigEntity extends BaseVo implements Cloneable {
                     entities.add(entity);
                 }
                 if (entities.size() >= 5) return entities;
-            } else if (taskType == LibraryLabelEntity.StudyTaskType.WATCH_WAWA_COURSE) {
+            } else if (taskType == LibraryLabelEntity.StudyTaskType.WATCH_WAWA_COURSE || taskType == LibraryLabelEntity.StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                 if (type == OrganLibraryType.TYPE_LQCOURSE_SHOP || type == OrganLibraryType.TYPE_PRACTICE_LIBRARY || type == OrganLibraryType.TYPE_LIBRARY
                         || type == OrganLibraryType.TYPE_TEACHING_PLAN || type == OrganLibraryType.TYPE_VIDEO_LIBRARY) {
                     entity.setDirectAccessNextPage(true);

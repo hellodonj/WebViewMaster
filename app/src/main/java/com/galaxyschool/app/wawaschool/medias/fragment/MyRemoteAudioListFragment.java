@@ -38,6 +38,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.medias.activity.MyLocalAudioListActivity;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -462,8 +463,12 @@ public class MyRemoteAudioListFragment extends ContactsListFragment implements I
             if (WatchWawaCourseResourceSplicingUtils.
                     watchWawaCourseSupportMultiType(getArguments())){
                 //控制资源最多选多少
-                maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(mediaType,maxCount,false);
+                if (taskType == StudyTaskType.ENGLISH_WRITING){
+                    maxCount = 1;
+                } else {
+                    maxCount = WatchWawaCourseResourceSplicingUtils.
+                            controlResourcePickedMaxCount(mediaType, maxCount, false);
+                }
             }
         }
     }

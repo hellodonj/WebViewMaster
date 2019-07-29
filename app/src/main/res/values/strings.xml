@@ -888,9 +888,9 @@
     <string name="introduction">Introduction course</string>
     <string name="start_date">Start date</string>
     <string name="end_date">Finish date</string>
-    <string name="article_title">Article Title :</string>
-    <string name="article_request">Article Request :</string>
-    <string name="score_formula">Score formula :</string>
+    <string name="article_title">Article Title:</string>
+    <string name="article_request">Article Request:</string>
+    <string name="score_formula">Score formula:</string>
     <string name="article_limited_word">Article limite word</string>
     <string name="date_empty">Please fill in information of date!</string>
     <string name="date_above_cur_date">Date of setting and finishing homework can\'t be earlier
@@ -1838,4 +1838,5 @@
     <string name="str_creating">正在创建...</string>
     <string name="str_repeat_role_info">同一个班级内学生不允许有多重角色</string>
     <string name="str_go_to_pay">前往支付</string>
+    <string name="str_not_required">(非必选)</string>
 </resources>

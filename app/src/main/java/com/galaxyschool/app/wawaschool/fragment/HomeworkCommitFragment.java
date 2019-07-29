@@ -78,6 +78,7 @@ import com.galaxyschool.app.wawaschool.pojo.AutoMarkText;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkTextResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTaskResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
@@ -662,11 +663,23 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean shouldHiddenCover() {
         boolean hidden = false;
         //英文写作、新版看课件隐藏缩略图。
-        if (TaskType == StudyTaskType.ENGLISH_WRITING
-                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+        if (TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
             hidden = true;
+        } else if (TaskType == StudyTaskType.ENGLISH_WRITING){
+            if (!showEnglishWritingCourse()){
+                hidden = true;
+            }
         }
         return hidden;
+    }
+
+    private boolean showEnglishWritingCourse(){
+        boolean showCourseDetail = false;
+        if (homeworkListInfo != null && !TextUtils.isEmpty(homeworkListInfo.getResId())
+                && !TextUtils.isEmpty(homeworkListInfo.getResUrl())){
+            showCourseDetail = true;
+        }
+        return showCourseDetail;
     }
 
     /**
@@ -679,10 +692,28 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         //英文写作、看作业、交作业、新版看课件隐藏“查阅详情”。
         if (TaskType == StudyTaskType.SUBMIT_HOMEWORK
                 || TaskType == StudyTaskType.WATCH_HOMEWORK
-                || TaskType == StudyTaskType.ENGLISH_WRITING
                 || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
                 || TaskType == StudyTaskType.Q_DUBBING) {
             hidden = true;
+        } else if (TaskType == StudyTaskType.ENGLISH_WRITING){
+            if (showEnglishWritingCourse()){
+                String resId = homeworkListInfo.getResId();
+                if (resId.contains("-")){
+                    int mediaType = Integer.valueOf(resId.split("-")[1]);
+                    if (mediaType == MaterialResourceType.PICTURE
+                            || mediaType == MaterialResourceType.PDF
+                            || mediaType == MaterialResourceType.PPT
+                            || mediaType == MaterialResourceType.DOC
+                            || mediaType == MaterialResourceType.AUDIO
+                            || mediaType == MaterialResourceType.VIDEO){
+                        hidden = true;
+                    }
+                } else {
+                    hidden = true;
+                }
+            } else {
+                hidden = true;
+            }
         }
         return hidden;
     }
@@ -1160,7 +1191,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
 
         //如果是复述课件对于多个类型区别对待
-        if (TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER) {
+        if (TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                || TaskType == StudyTaskType.TASK_ORDER
+                || TaskType == StudyTaskType.ENGLISH_WRITING) {
             analysisRetellCourseData();
         }
     }
@@ -1339,6 +1372,12 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 getThumbnailManager().displayThumbnailWithDefault(AppSettings.getFileUrl(
                         newInfoTag.getResourceUrl()), homeworkIcon, R.drawable.default_book_cover);
             }
+        } else if (taskResType == ResType.RES_TYPE_VOICE){
+            //显示音频的缩略图
+            if (homeworkIcon != null) {
+                getThumbnailManager().displayThumbnailWithDefault(AppSettings.getFileUrl(
+                        ""), homeworkIcon, R.drawable.icon_task_audio_thumbnail);
+            }
         }
     }
 
@@ -1399,7 +1438,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 if (!isPlaying) {
                     isPlaying = true;
                     //点击查阅详情直接进入详情页面
-                    if (TaskType == StudyTaskType.ENGLISH_WRITING
+                    if ((TaskType == StudyTaskType.ENGLISH_WRITING && !showEnglishWritingCourse())
                             || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                         //英文写作/新版看课件不跳转
                     } else if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType ==
@@ -1434,19 +1473,23 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
 
         } else if (v.getId() == R.id.iv_icon || v.getId() == R.id.layout_assign_homework) {
-            if (TaskType == StudyTaskType.ENGLISH_WRITING
+            if ((TaskType == StudyTaskType.ENGLISH_WRITING && !showEnglishWritingCourse())
                     || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                 return;
                 //英文写作/新版看课件不跳转
             }
             //点击图片直接打开
-            if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER)
+            if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || TaskType == StudyTaskType.TASK_ORDER
+                    || TaskType == StudyTaskType.ENGLISH_WRITING)
                     && (taskResType == ResType.RES_TYPE_PPT
                     || taskResType == ResType.RES_TYPE_PDF
                     || taskResType == ResType.RES_TYPE_DOC
                     || taskResType == ResType.RES_TYPE_IMG)) {
                 openPptAndPdf();
-            } else if (TaskType == StudyTaskType.Q_DUBBING) {
+            } else if (TaskType == StudyTaskType.Q_DUBBING
+                    || (TaskType == StudyTaskType.ENGLISH_WRITING && (taskResType == ResType.RES_TYPE_VIDEO
+                    || taskResType == ResType.RES_TYPE_VOICE))) {
                 //打开Q配音的视频
                 openQDubbingVideo();
             } else {

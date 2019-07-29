@@ -181,7 +181,8 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             titleName = getString(R.string.appoint_course_no_point);
         } else if (taskType == StudyTaskType.TASK_ORDER) {
             titleName = getString(R.string.pls_add_work_task);
-        } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
+        } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                || taskType == StudyTaskType.ENGLISH_WRITING) {
             boolean isCheckTaskOrderRes = false;
             if (getArguments() != null) {
                 isCheckTaskOrderRes = getArguments().getBoolean(ActivityUtils
@@ -443,7 +444,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         int count = 1;
         int type = taskType;
         if (isSuperTask) {
-            count = 10;
+            if (taskType == StudyTaskType.ENGLISH_WRITING){
+                count = 1;
+            } else {
+                count = 10;
+            }
             type = superTaskType;
             if (superTaskType == StudyTaskType.WATCH_WAWA_COURSE) {
                 type = StudyTaskType.NEW_WATACH_WAWA_COURSE;
@@ -464,6 +469,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             count = 1;
         } else if (taskType == StudyTaskType.TASK_ORDER) {
             type = taskType;
+            count = 1;
+        } else if (taskType == StudyTaskType.ENGLISH_WRITING){
+            type = StudyTaskType.NEW_WATACH_WAWA_COURSE;
             count = 1;
         }
         if (isTaskType) {

@@ -441,17 +441,30 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private void initCourseLayout() {
         courseLayout = findViewById(R.id.layout_course_ware_list);
         if (courseLayout != null) {
-            if (isWatchWawaCourse()) {
+            if (isWatchWawaCourse() || taskType == StudyTaskType.ENGLISH_WRITING) {
                 //看课件显示
                 courseLayout.setVisibility(View.VISIBLE);
             } else {
                 courseLayout.setVisibility(View.GONE);
             }
         }
+        TextView courseTitleView = (TextView) findViewById(R.id.tv_course_ware_title);
+        TextView titleHintView = (TextView) findViewById(R.id.tv_add_course_ware_hint);
+        if (taskType == StudyTaskType.ENGLISH_WRITING){
+            //指定课件(非必选)
+            courseTitleView.setText(getString(R.string.appoint_course_point));
+            titleHintView.setText(getString(R.string.str_not_required));
+        }
         courseGridView = (GridView) findViewById(R.id.common_grid_view);
         if (courseGridView != null) {
             courseGridView.setNumColumns(1);
-            courseListAdapter = new WatchWawaCourseListAdapter(getActivity(), resourceInfoTagList);
+            courseListAdapter = new WatchWawaCourseListAdapter(getActivity(),
+                    resourceInfoTagList,
+                    result -> {
+                if (taskType == StudyTaskType.ENGLISH_WRITING){
+                    addCoursewareImageView.setVisibility(View.VISIBLE);
+                }
+            });
             courseGridView.setAdapter(courseListAdapter);
         }
         addCoursewareImageView = (ImageView) findViewById(R.id.iv_add_course_ware);
@@ -461,7 +474,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         //添加课件的layout
         originAddLayout = findViewById(R.id.layout_origin_add);
         if (originAddLayout != null) {
-            if (isWatchWawaCourse() || taskType == StudyTaskType.LISTEN_READ_AND_WRITE) {
+            if (isWatchWawaCourse()
+                    || taskType == StudyTaskType.LISTEN_READ_AND_WRITE
+                    || taskType == StudyTaskType.ENGLISH_WRITING) {
                 originAddLayout.setVisibility(View.GONE);
             } else {
                 originAddLayout.setVisibility(View.VISIBLE);
@@ -698,6 +713,13 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 limitWordFrom.setText(String.valueOf(wordCountMin));
                 limitWordTo.setText(String.valueOf(wordCountMax));
             }
+            this.resourceInfoTagList.addAll(getResourceData());
+            if (courseListAdapter != null) {
+                courseListAdapter.update(this.resourceInfoTagList);
+            }
+            if (resourceInfoTagList != null && resourceInfoTagList.size() > 0){
+                addCoursewareImageView.setVisibility(View.GONE);
+            }
         } else if (isOtherHomeWork()) {
             setListenData(getResourceData(), true);
             if (uploadParameter.getTaskType() == StudyTaskType.SUBMIT_HOMEWORK) {
@@ -830,8 +852,13 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         args.putBoolean(ActivityUtils.EXTRA_CHOOSE_TASKORDER_DATA, checkAppointTaskOrder);
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
         if (isFromSuperTask) {
-            args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
-            args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, superTaskType);
+            if (taskType == StudyTaskType.ENGLISH_WRITING){
+                args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 1);
+                args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, StudyTaskType.NEW_WATACH_WAWA_COURSE);
+            } else {
+                args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
+                args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, superTaskType);
+            }
             args.putBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK, isFromSuperTask);
         }
         intent.putExtras(args);
@@ -1178,6 +1205,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (!flag) {
                 TipMsgHelper.ShowLMsg(getActivity(), R.string.min_cannot_more_than_max);
                 return;
+            }
+            List<LookResDto> lookResDtoList = Utils.getWatchWawaCourseLookResDtoList(
+                    resourceInfoTagList, isFromSuperTask);
+            if (lookResDtoList != null && lookResDtoList.size() > 0) {
+                uploadParameter.setLookResDtoList(lookResDtoList);
             }
         } else if (taskType == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
             uploadParameter.setWorkOrderId(workOrderId);
@@ -1856,6 +1888,9 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                             this.resourceInfoTagList.addAll(resultList);
                             if (courseListAdapter != null) {
                                 courseListAdapter.update(this.resourceInfoTagList);
+                            }
+                            if (taskType == StudyTaskType.ENGLISH_WRITING){
+                                addCoursewareImageView.setVisibility(View.GONE);
                             }
                         }
                     }

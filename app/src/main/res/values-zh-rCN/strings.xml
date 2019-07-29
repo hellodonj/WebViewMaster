@@ -831,9 +831,9 @@
     <string name="other">其他</string>
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
-    <string name="article_title">作文标题 :</string>
-    <string name="article_request">作文要求 :</string>
-    <string name="score_formula">打分公式 :</string>
+    <string name="article_title">作文标题:</string>
+    <string name="article_request">作文要求:</string>
+    <string name="score_formula">打分公式:</string>
     <string name="article_limited_word">作文字数</string>
 
     <string name="date_empty">请完善日期信息!</string>
@@ -1742,4 +1742,5 @@
     <string name="str_creating">正在创建...</string>
     <string name="str_repeat_role_info">同一个班级内学生不允许有多重角色</string>
     <string name="str_go_to_pay">前往支付</string>
+    <string name="str_not_required">(非必选)</string>
 </resources>

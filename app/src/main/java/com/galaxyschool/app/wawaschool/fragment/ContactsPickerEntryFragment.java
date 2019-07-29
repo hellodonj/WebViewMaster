@@ -1007,12 +1007,17 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         secondObject.put("MarkFormula",parameter.getMarkFormula());
                         secondObject.put("WordCountMin",parameter.getWordCountMin());
                         secondObject.put("WordCountMax",parameter.getWordCountMax());
+                        CourseData englishData = parameter.getCourseData();
+                        if (englishData != null) {
+                            secondObject.put("ResId", englishData.getIdType());
+                            secondObject.put("ResUrl", englishData.resourceurl);
+                        }
                     }
 
                     JSONArray thirdTaskList = new JSONArray();
                     JSONObject thirdObject = null;
                     List<LookResDto> resDtos = parameter.getLookResDtoList();
-                    if (resDtos != null && resDtos.size() > 0){
+                    if (resDtos != null && resDtos.size() > 0 && parameter.getTaskType() != StudyTaskType.ENGLISH_WRITING){
                         for (int j = 0;j < resDtos.size();j++){
                             thirdObject = new JSONObject();
                             LookResDto lookDto = resDtos.get(j);
@@ -1402,7 +1407,7 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             && uploadParameter.getType() == ResType.RES_TYPE_IMG){
                         taskParams.put("ResAuthor", courseData.code);
                         taskParams.put("ResId", courseData.resId);
-                    }else {
+                    } else {
                         taskParams.put("ResId", courseData.getIdType());
                     }
                     taskParams.put("ResUrl", courseData.resourceurl);

@@ -534,9 +534,13 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
                 maxCount = 1;
             } else if (WatchWawaCourseResourceSplicingUtils.
                     watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
-                //控制资源最多选多少
-                maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(mediaType,maxCount,false);
+                if (taskType == StudyTaskType.ENGLISH_WRITING) {
+                    maxCount = 1;
+                } else {
+                    //控制资源最多选多少
+                    maxCount = WatchWawaCourseResourceSplicingUtils.
+                            controlResourcePickedMaxCount(mediaType, maxCount, false);
+                }
             }
         }
     }
