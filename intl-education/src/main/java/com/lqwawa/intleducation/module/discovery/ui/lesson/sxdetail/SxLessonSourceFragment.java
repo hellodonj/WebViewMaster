@@ -28,9 +28,7 @@ import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 描述: 三习教案课程节详情的Fragment
@@ -63,8 +61,6 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private FrameLayout container;
 
     private ReadWeikeHelper mReadWeikeHelper;
-    private List<SectionTaskListVo> chapterList;
-    private Map<String, List<SectionResListVo>> childMap = new HashMap<String, List<SectionResListVo>>();// 子元素数据列表
     private TreeNode root;
     private TreeView treeView;
     private SxNodeViewFactory mNodeViewFactory;

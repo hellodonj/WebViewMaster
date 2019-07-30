@@ -5,16 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
@@ -44,13 +43,11 @@ import com.lqwawa.intleducation.module.discovery.vo.ExamsAndTestExtrasVo;
 import com.lqwawa.intleducation.module.discovery.vo.SxExamDetailVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
-import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +82,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private boolean choiceModeAndIntiativeTrigger;
     private boolean isChoiceMode;
     private boolean isInitiativeTrigger;
+    private static String[] mTypes = UIUtil.getStringArray(R.array.label_lesson_source_type);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -298,10 +296,30 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         }
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-            if (count > 6) {
+            if (count >= 0 && count < 6) {
+                int count1 = chooseResourceSum();
+                if (count + count1 > 6) {
+                    int needCount = 6 - count;
+                    UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_add_count_tip), needCount));
+                    return;
+                } else {
+                    //子任务个数
+                    List<String> taskNameLists = choosedChildResource();
+                    if (EmptyUtil.isNotEmpty(taskNameLists) && taskNameLists != null) {
+                        String nameStr = StringUtils.join(taskNameLists, "、");
+                        UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_choose_count_tip), nameStr));
+                        return;
+                    }
+                }
+            } else if (count >= 6) {
                 UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                 return;
             }
+//            int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+//            if (count > 6) {
+//                UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+//                return;
+//            }
         }
         Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
         for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
@@ -341,6 +359,57 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    /**
+     * @return 选中了几条资源
+     */
+    private int chooseResourceSum() {
+        // 获取指定Tab所有的选中的作业库资源
+        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
+        addToCartInDifferentTypes.clear();
+        for (int i = 0; i < selectedNodes.size(); i++) {
+            Object value = selectedNodes.get(i).getValue();
+            if (value instanceof SectionResListVo) {
+                SectionResListVo vo = (SectionResListVo) value;
+                int taskType = vo.getTaskType();
+                List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
+                if (vos == null) vos = new ArrayList<>();
+                vos.add(vo);
+                addToCartInDifferentTypes.put(taskType, vos);
+            }
+        }
+        Set<Map.Entry<Integer, List<SectionResListVo>>> entries = addToCartInDifferentTypes.entrySet();
+        return entries.size();
+    }
+
+    /**
+     * @return 选中的子任务的超过10的typeName
+     */
+    private  List<String> choosedChildResource() {
+        // 获取指定Tab所有的选中的作业库资源
+        List<TreeNode> selectedNodes =treeView.getSelectedNodes();
+        addToCartInDifferentTypes.clear();
+        for (int i = 0; i < selectedNodes.size(); i++) {
+            Object value = selectedNodes.get(i).getValue();
+            if (value instanceof SectionResListVo) {
+                SectionResListVo vo = (SectionResListVo) value;
+                int taskType = vo.getTaskType();
+                List<SectionResListVo> vos = addToCartInDifferentTypes.get(taskType);
+                if (vos == null) vos = new ArrayList<>();
+                vos.add(vo);
+                addToCartInDifferentTypes.put(taskType, vos);
+            }
+        }
+        List<String> taskNameLists = new ArrayList<>();
+        for (Map.Entry<Integer, List<SectionResListVo>> entry : addToCartInDifferentTypes.entrySet()) {
+            int taskType = entry.getKey();
+            List<SectionResListVo> taskList = entry.getValue();
+            if (taskList.size() > 10) {
+                taskNameLists.add(mTypes[taskType - 1]);
+            }
+        }
+        return taskNameLists;
     }
 
     private int confirmResourceCart(List<SectionResListVo> choiceArray) {
