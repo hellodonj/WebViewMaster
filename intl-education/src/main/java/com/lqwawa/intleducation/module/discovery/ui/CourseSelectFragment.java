@@ -332,7 +332,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                 ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
-                                SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                                SxLessonDetailsActivity.start(activity,taskType, courseId, chapterId,
                                         sectionName, name, false, true, true,
                                         status, memberId, chapterVo.isContainAssistantWork(),
                                         "", false, courseVo,

@@ -25,6 +25,7 @@ import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.widgets.ExpandableTextView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerSelectedAdapter;
@@ -34,12 +35,16 @@ import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.TreeView;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.RefreshUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
+import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.SxLessonSourceFragment;
@@ -56,6 +61,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.util.DensityUtil;
 
 import java.util.ArrayList;
@@ -82,7 +88,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     public static String CAN_EDIT = "can_edit";
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
-
+    private static Activity activitys;
 
     /**
      * @param activity               启动此界面的activity
@@ -107,6 +113,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                              boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
                              boolean isFreeUser, @NonNull CourseChapterParams params,
                              @Nullable Bundle extras) {
+        if (activity instanceof Activity) activitys = activity;
         activity.startActivity(new Intent(activity, SxLessonDetailsActivity.class)
                 .putExtra(COURSE_ID, courseId)
                 .putExtra(SECTION_ID, sectionId)
@@ -127,6 +134,37 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras));
     }
 
+    public static void start(Activity activity,int taskType, String courseId, String sectionId,
+                             String sectionName, String sectionTitle, boolean needFlag,
+                             boolean canRead, boolean canEdit, int status, String memberId,
+                             boolean isContainAssistantWork, String schoolId,
+                             boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
+                             boolean isFreeUser, @NonNull CourseChapterParams params,
+                             @Nullable Bundle extras) {
+        if (activity instanceof Activity) activitys = activity;
+        activity.startActivity(new Intent(activity, SxLessonDetailsActivity.class)
+                .putExtra("taskType", taskType)
+                .putExtra(COURSE_ID, courseId)
+                .putExtra(SECTION_ID, sectionId)
+                .putExtra(SECTION_NAME, sectionName)
+                .putExtra(SECTION_TITLE, sectionTitle)
+                .putExtra(NEED_FLAG, needFlag)
+                .putExtra(CAN_READ, canRead)
+                .putExtra(CAN_EDIT, canEdit)
+                .putExtra(STATUS, status)
+                .putExtra(ISCONTAINASSISTANTWORK, isContainAssistantWork)
+                .putExtra(KEY_EXTRA_ONLINE_TEACHER, isOnlineTeacher)
+                .putExtra("memberId", memberId)
+                .putExtra("schoolId", schoolId)
+                .putExtra(MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, isFromMyCourse)
+                .putExtra(KEY_ROLE_FREE_USER, isFreeUser)
+                .putExtra(CourseVo.class.getSimpleName(), courseVo)
+                .putExtra(ACTIVITY_BUNDLE_OBJECT, params)
+                .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras));
+    }
+
+
+
     private TopBar topBar;
     private ExpandableTextView textViewLessonIntroduction;
     private TabLayout mTabLayout;
@@ -136,7 +174,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String courseId;
     private String sectionName;
     private String sectionId;
-    private int status;
+    private int status,taskType;
     private CourseVo courseVo;
     // 课程大纲参数
     private CourseChapterParams mChapterParams;
@@ -168,6 +206,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
     private List<SxLessonSourceNavigator> mTabSourceNavigator = new ArrayList<>();
     private static String[] mTypes = UIUtil.getStringArray(R.array.label_lesson_source_type);
+    private ArrayList<SectionResListVo> selectedTask = new ArrayList<>();
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -216,6 +255,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
         status = getIntent().getIntExtra(STATUS, -1);
+        taskType =  getIntent().getIntExtra("taskType", -1);
         courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
@@ -234,7 +274,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mSelectContainer.setOnClickListener(this);
             mCartContainer.setOnClickListener(this);
             mAddCartContainer.setOnClickListener(this);
-        } else {
+        }else {
+            mBtnAddHomework.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.GONE);
             mBottomLayout1.setVisibility(View.GONE);
         }
@@ -264,6 +305,40 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         // 刷新数目
         refreshCartPoint();
         getData();
+
+        //被动进入选择,并且是选择模式
+        if (mChapterParams != null && mChapterParams.isChoiceMode()&&
+                !mChapterParams.isInitiativeTrigger()) {
+            mTopLayout.setVisibility(View.GONE);
+            mBottomLayout.setVisibility(View.GONE);
+            mBottomLayout1.setVisibility(View.GONE);
+            mBtnAddHomework.setVisibility(View.GONE);
+            mNewCartContainer.setVisibility(View.GONE);
+            topBar.setRightFunctionText1(getString(R.string.ok), v -> {
+                selectedTask.clear();
+                int currentPosition = mViewPager.getCurrentItem();
+                SxLessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
+                List<TreeNode> selectedNodes = navigator.getChoiceResource();
+                for (TreeNode selectedNode : selectedNodes) {
+                    Object value = selectedNode.getValue();
+                    if (value instanceof SectionResListVo) {
+                        SectionResListVo vo = (SectionResListVo) value;
+                        selectedTask.add(vo);
+                    }
+                }
+                if (selectedTask.size() <= 0) {
+                    ToastUtil.showToast(this, getString(R.string.str_select_tips));
+                } else {
+                    // 学程馆选取资源使用的
+                    EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
+                    //数据回传
+                    setResult(Activity.RESULT_OK, getIntent().putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
+                    RefreshUtil.getInstance().clear();
+                    if (activitys != null) activitys.finish();
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
@@ -332,7 +407,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 mTabLists.add(getResources().getString(R.string.label_sx_practice));
                 mTabLists.add(getResources().getString(R.string.label_sx_review));
                 for (int i = 0; i < mTabLists.size(); i++) {
-                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1, courseVo.getLibraryType(), params);
+                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1, taskType,courseVo.getLibraryType(), params);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }
@@ -742,11 +817,18 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
 
             mBottomLayout1.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.VISIBLE);
-        } else {
-            // 当前是未激活状态,显示作业库和添加到作业库
-            mTvPoint.setVisibility(View.VISIBLE);
-            mBottomLayout1.setVisibility(View.VISIBLE);
-            mBottomLayout.setVisibility(View.GONE);
+        }
+//        else if ( mChapterParams.isChoiceMode()&& !mChapterParams.isInitiativeTrigger()) {
+//            mTopLayout.setVisibility(View.GONE);
+//            mBottomLayout.setVisibility(View.GONE);
+//            mBottomLayout1.setVisibility(View.GONE);
+//            mNewCartContainer.setVisibility(View.GONE);
+//        }
+        else {
+                // 当前是未激活状态,显示作业库和添加到作业库
+                mTvPoint.setVisibility(View.VISIBLE);
+                mBottomLayout1.setVisibility(View.VISIBLE);
+                mBottomLayout.setVisibility(View.GONE);
         }
     }
 

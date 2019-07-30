@@ -50,20 +50,20 @@
                     android:padding="@dimen/com_item_space"
                     android:text="@string/lesson_res" />
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TabLayoutBgStyle"
-                    android:background="@color/com_bg_white"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMode="fixed"
-                    app:tabPaddingEnd="12dp"
-                    app:tabPaddingStart="12dp"
-                    app:tabSelectedTextColor="@color/white"
-                    app:tabTextColor="@color/textPrimary" />
-
             </LinearLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TabLayoutBgStyle"
+                android:background="@color/com_bg_white"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabPaddingEnd="12dp"
+                app:tabPaddingStart="12dp"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/textPrimary" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pager"
