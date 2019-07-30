@@ -227,7 +227,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
-            if (!choiceModeAndIntiativeTrigger && isShowType(taskType, taskListVO)) continue;
+            if (!isInitiativeTrigger && isChoiceMode && isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
             treeNode.setLevel(0);
             for (SectionResListVo datum : taskListVO.data) {
