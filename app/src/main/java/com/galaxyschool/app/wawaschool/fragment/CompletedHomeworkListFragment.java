@@ -1401,14 +1401,14 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
         if (data == null) {
             return;
         }
-        if (roleType == RoleType.ROLE_TYPE_TEACHER) {
-            //老师进入点评记录
-            enterEnglishWritingCommentRecordActivity(data);
-        } else if (roleType == RoleType.ROLE_TYPE_STUDENT
-                || roleType == RoleType.ROLE_TYPE_PARENT) {
+//        if (roleType == RoleType.ROLE_TYPE_TEACHER) {
+//            //老师进入点评记录
+//            enterEnglishWritingCommentRecordActivity(data);
+//        } else if (roleType == RoleType.ROLE_TYPE_STUDENT
+//                || roleType == RoleType.ROLE_TYPE_PARENT) {
             //学生和家长进入评论详情页面
             enterEnglishWritingDetails(data);
-        }
+//        }
     }
 
     /**
@@ -1437,6 +1437,9 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         IS_TASK_BELONGS_TO_CHILDREN_OR_OWNER, isTaskBelongsToChildrenOrOwner);
             }
             bundle.putBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS, isHistoryClass);
+            bundle.putBoolean("isOnlineReporter",
+                    isOnlineReporter || isOnlineHost || (TextUtils.equals(getMemeberId(),task.getCreateId())));
+            bundle.putInt("student_commit_task_id",data.getCommitTaskId());
             intent.putExtras(bundle);
         }
         getActivity().startActivityForResult(intent, CampusPatrolPickerFragment
