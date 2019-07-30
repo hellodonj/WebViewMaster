@@ -83,6 +83,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private ArrayList<SectionResListVo> selectedTask = new ArrayList<>();
     private ExamsAndTestExtrasVo extrasVo;
     private boolean choiceModeAndIntiativeTrigger;
+    private boolean isChoiceMode;
+    private boolean isInitiativeTrigger;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,10 +143,16 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mClassTeacher = EmptyUtil.isNotEmpty(courseParams) && courseParams.isClassCourseEnter() && EmptyUtil.isNotEmpty(courseParams.getClassId());
+        //主动进入
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
-        choiceModeAndIntiativeTrigger = (lessonSourceParams != null && lessonSourceParams.isChoiceMode()) && lessonSourceParams.isInitiativeTrigger();
+        isChoiceMode = lessonSourceParams != null && lessonSourceParams.isChoiceMode();
+        isInitiativeTrigger = lessonSourceParams != null && lessonSourceParams.isInitiativeTrigger();
+        choiceModeAndIntiativeTrigger = isChoiceMode && isInitiativeTrigger;
         boolean isShowBottomLayout = !mTeacherVisitor && courseParams != null && courseParams.isClassCourseEnter() && courseParams.isClassTeacher() || choiceModeAndIntiativeTrigger;
         if (isShowBottomLayout) {
+            llSelectAction.setVisibility(choiceModeAndIntiativeTrigger ? View.VISIBLE : View.GONE);
+            mAddCartContainer.setVisibility(choiceModeAndIntiativeTrigger ? View.GONE : View.VISIBLE);
+            cancelBtn.setVisibility(isChoiceMode ? View.GONE : View.VISIBLE);
             mBottomLayout.setVisibility(View.VISIBLE);
             mNewCartContainer.setVisibility(View.VISIBLE);
         } else {
@@ -247,7 +255,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         if (id == R.id.add_to_cart || id == R.id.cancel_btn) {
             boolean isAddToCart = id == R.id.add_to_cart;
             if (isAddToCart && lessonSourceParams != null && lessonSourceParams.isChoiceMode())
-                addToCart(lessonSourceParams.isChoiceMode());
+                addToCart();
             else
                 updateView(isAddToCart);
         } else if (id == R.id.select_all) {
@@ -263,13 +271,14 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 treeView.deselectAll();
             }
         } else if (id == R.id.ok_btn) {
-            addToCart(false);
+            addToCart();
+            updateView(false);
         } else if (id == R.id.new_cart_container) {
             handleSubjectSettingData(this, UserHelper.getUserId());
         }
     }
 
-    private void addToCart(boolean isChoiceMode) {
+    private void addToCart() {
         List<TreeNode> selectedNodes = treeView.getSelectedNodes();
         addToCartInDifferentTypes.clear();
         for (int i = 0; i < selectedNodes.size(); i++) {
@@ -299,16 +308,18 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             List<SectionResListVo> choiceArray = entry.getValue();
             confirmResourceCart(choiceArray);
         }
-        if (isChoiceMode) treeView.deselectAll();
-        else updateView(false);
+//        if (isChoiceMode) treeView.deselectAll();
+//        else updateView(false);
     }
 
     private void updateView(boolean isAddToCart) {
-        llSelectAction.setVisibility(isAddToCart ? View.VISIBLE : View.GONE);
-        mAddCartContainer.setVisibility(isAddToCart ? View.GONE : View.VISIBLE);
-//        treeView.setIsShowCheckBox(isAddToCart);
-        if (extrasVo != null) extrasVo.setmChoiceMode(isAddToCart);
-        treeView.notifychanged();
+        if (!isChoiceMode) {
+            llSelectAction.setVisibility(isAddToCart ? View.VISIBLE : View.GONE);
+            mAddCartContainer.setVisibility(isAddToCart ? View.GONE : View.VISIBLE);
+            if (extrasVo != null) extrasVo.setmChoiceMode(isAddToCart);
+            treeView.notifychanged();
+        }
+        selectAll.setText(getString(R.string.select_all));
         treeView.deselectAll();
     }
 

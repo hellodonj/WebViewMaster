@@ -307,7 +307,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     if (initiativeTrigger) {
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
-                                ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
+                               ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
                                 if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity, courseId, chapterId,
@@ -339,6 +339,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         false, false, params, mExtras);
                             }
                         }else {
+                            if (!chapterVo.getIsChildren())return;
                             CourseVo courseVo1 = flagCourseData;
                             CourseDetailParams courseParams1 = new CourseDetailParams();
                             // 填充参数

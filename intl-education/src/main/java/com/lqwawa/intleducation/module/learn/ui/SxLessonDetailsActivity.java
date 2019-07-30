@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.widgets.ExpandableTextView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerSelectedAdapter;
@@ -166,7 +167,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private List<String> mTabLists = new ArrayList<>();
     private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
     private List<SxLessonSourceNavigator> mTabSourceNavigator = new ArrayList<>();
-
+    private static String[] mTypes = UIUtil.getStringArray(R.array.label_lesson_source_type);
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -317,8 +318,14 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                         mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger();
                 if (!isDirect) {
                     params.setAddMode(mBottomLayout.isActivated());
+                    mCartContainer.setVisibility(View.VISIBLE);
+                    mBottomLayout.setVisibility(View.GONE);
+                    mBottomLayout1.setVisibility(View.VISIBLE);
                 } else {
                     params.setAddMode(true);
+                    mCartContainer.setVisibility(View.GONE);
+                    mBottomLayout.setVisibility(View.VISIBLE);
+                    mBottomLayout1.setVisibility(View.GONE);
                 }
 
                 mTabLists.add(getResources().getString(R.string.label_sx_preview));
@@ -356,69 +363,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 handleSubjectSettingData(this, UserHelper.getUserId(), false);
             }
         } else if (viewId == R.id.action_container) {
-            boolean originalActivated = mBottomLayout.isActivated();
-//                if (!originalActivated) {
-//                    // 点击添加到作业库,或者确定
-//                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-//                        int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-//                        if (count > 0 && count < 6) {
-//                            int count1 = chooseResourceSum();
-//                            if (count + count1 > 6) {
-//                                int needCount = 6 - count;
-//                                UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_add_count_tip), needCount));
-//                                return;
-//                            }else {
-//                                int count2 = confirmResourceCart();
-//                                if (count2 > 0) {
-//                                    mBottomLayout.setActivated(!originalActivated);
-//                                }
-//                            }
-//                        } else if (count >= 6) {
-//                            UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
-//                            return;
-//                        }
-//                    }
-//                }
-
-            if (originalActivated) {
-                // 点击确定
-                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
-                    //作业库已经选择的
-                    int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                    if (count >= 0 && count < 6) {
-                        //本次选择
-                        int count1 = chooseResourceSum();
-                        if (count + count1 > 6) {
-                            int needCount = 6 - count;
-                            UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_add_count_tip), needCount));
-                            return;
-                        } else {
-                            //子任务个数
-                            if (chooseChildResourceSum() >10){
-                                UIUtil.showToastSafe(UIUtil.getString(R.string.label_work_cart_choose_count_tip));
-                                return;
-                            }else{
-                                int count2 = confirmResourceCart();
-                                if (count2 > 0) {
-                                    mBottomLayout.setActivated(!originalActivated);
-                                }
-                            }
-                        }
-                    } else if (count >= 6) {
-                        UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
-                        return;
-                    }
-                }
-            } else {
-                // triggerToCartAction();
-                // mBottomLayout.setActivated(!originalActivated);
-                handleSubjectSettingData(this, UserHelper.getUserId(), true);
-            }
-
-            initBottomLayout();
-            refreshCartPoint();
-
-        } else if (viewId == R.id.btn_add_homework) {
             // 点击添加到作业库
             if (mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()) {
                 // 直接添加到作业库
@@ -441,8 +385,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                             return;
                         } else {
                             //子任务个数
-                            if (chooseChildResourceSum() >10){
-                                UIUtil.showToastSafe(UIUtil.getString(R.string.label_work_cart_add_count_tip));
+                            List<String> taskNameLists = choosedChildResource();
+                            if (EmptyUtil.isNotEmpty(taskNameLists) && taskNameLists != null) {
+                                String nameStr = StringUtils.join(taskNameLists, "、");
+                                UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_choose_count_tip), nameStr));
                                 return;
                             }
                         }
@@ -453,20 +399,62 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 }
                 // 直接添加到作业库
                 confirmResourceCart(false);
-            } else {
+            }else {
                 boolean originalActivated = mBottomLayout.isActivated();
-                if (!originalActivated) {
+                if (originalActivated) {
+                    // 点击确定
                     if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                        //作业库已经选择的
                         int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-                        if (count >= 6) {
+                        if (count >= 0 && count < 6) {
+                            //本次选择
+                            int count1 = chooseResourceSum();
+                            if (count + count1 > 6) {
+                                int needCount = 6 - count;
+                                UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_add_count_tip), needCount));
+                                return;
+                            } else {
+                                //子任务个数
+                                List<String> taskNameLists = choosedChildResource();
+                                if (EmptyUtil.isNotEmpty(taskNameLists) && taskNameLists != null) {
+                                    String nameStr = StringUtils.join(taskNameLists, "、");
+                                    UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_choose_count_tip), nameStr));
+                                    return;
+                                } else {
+                                    int count2 = confirmResourceCart();
+                                    if (count2 > 0) {
+                                        mBottomLayout.setActivated(!originalActivated);
+                                    }
+                                }
+                            }
+                        } else if (count >= 6) {
                             UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
                             return;
                         }
                     }
+                } else {
+                    // triggerToCartAction();
+                    // mBottomLayout.setActivated(!originalActivated);
+                    handleSubjectSettingData(this, UserHelper.getUserId(), true);
                 }
-                handleSubjectSettingData(this, UserHelper.getUserId(), true);
             }
 
+            initBottomLayout();
+            refreshCartPoint();
+        } else if (viewId == R.id.btn_add_homework) {
+            boolean originalActivated = mBottomLayout.isActivated();
+            if (!originalActivated) {
+                if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                    int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+                    if (count >= 6) {
+                        UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                        return;
+                    }
+                }
+            }
+            handleSubjectSettingData(this, UserHelper.getUserId(), true);
+            initBottomLayout();
+            refreshCartPoint();
         } else if (viewId == R.id.btn_all_select) {
             //全选
             String selectAllText = getString(R.string.select_all);
@@ -607,9 +595,9 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     }
 
     /**
-     * @return 选中的子任务的数量
+     * @return 选中的子任务的超过10的typeName
      */
-    private int chooseChildResourceSum() {
+    private  List<String> choosedChildResource() {
         // 获取指定Tab所有的选中的作业库资源
         int currentPosition = mViewPager.getCurrentItem();
         SxLessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
@@ -626,14 +614,15 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 addToCartInDifferentTypes.put(taskType, vos);
             }
         }
-        List<SectionResListVo> listVos = new ArrayList<SectionResListVo>();
+        List<String> taskNameLists = new ArrayList<>();
         for (Map.Entry<Integer, List<SectionResListVo>> entry : addToCartInDifferentTypes.entrySet()) {
-            listVos = entry.getValue();
-            if (listVos.size()>10){
-                return 11;
+            int taskType = entry.getKey();
+            List<SectionResListVo> taskList = entry.getValue();
+            if (taskList.size() > 10) {
+                taskNameLists.add(mTypes[taskType - 1]);
             }
         }
-        return listVos.size();
+        return taskNameLists;
     }
 
     /**
