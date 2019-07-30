@@ -453,7 +453,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (taskType == StudyTaskType.ENGLISH_WRITING){
             //指定课件(非必选)
             courseTitleView.setText(getString(R.string.appoint_course_point));
-            titleHintView.setText(getString(R.string.str_not_required));
+            String hint = getString(R.string.str_not_required) + getString(R.string.course_ware_list_join_hint);
+            titleHintView.setText(hint);
         }
         courseGridView = (GridView) findViewById(R.id.common_grid_view);
         if (courseGridView != null) {

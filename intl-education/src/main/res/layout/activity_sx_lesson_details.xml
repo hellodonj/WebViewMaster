@@ -110,34 +110,34 @@
 
             </FrameLayout>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/bottom_layout_1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:gravity="center"-->
-                <!--android:padding="8dp"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:weightSum="2">-->
+            <LinearLayout
+                android:id="@+id/bottom_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
 
-                <!--<net.qiujuer.genius.ui.widget.Button-->
-                    <!--android:id="@+id/btn_add_homework"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="38dp"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:background="@drawable/btn_accent_radius_19"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/label_action_to_cart"-->
-                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"-->
-                    <!--android:textColor="@color/textLight"-->
-                    <!--android:textSize="16sp"-->
-                    <!--app:gTouchColor="@color/touch_color"-->
-                    <!--app:gTouchCornerRadius="19dp"-->
-                    <!--app:gTouchEffect="ripple" />-->
-            <!--</LinearLayout>-->
+                <net.qiujuer.genius.ui.widget.Button
+                    android:id="@+id/btn_add_homework"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/btn_accent_radius_19"
+                    android:gravity="center"
+                    android:text="@string/label_action_to_cart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/textLight"
+                    android:textSize="16sp"
+                    app:gTouchColor="@color/touch_color"
+                    app:gTouchCornerRadius="19dp"
+                    app:gTouchEffect="ripple" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/bottom_layout"
@@ -147,7 +147,8 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                android:weightSum="3"
+               android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/select_container"
@@ -155,8 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:padding="8dp"
-                    android:visibility="gone">
+                    android:padding="8dp">
 
                     <net.qiujuer.genius.ui.widget.Button
                         android:id="@+id/btn_all_select"
@@ -169,7 +169,7 @@
                         android:text="@string/select_all"
                         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                         android:textColor="@color/textLight"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         app:gTouchColor="@color/touch_color"
                         app:gTouchCornerRadius="19dp"
                         app:gTouchEffect="ripple" />
@@ -182,8 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:visibility="gone">
+                    android:layout_weight="1">
 
                     <net.qiujuer.genius.ui.widget.Button
                         android:id="@+id/btn_work_cart"
@@ -193,10 +192,10 @@
                         android:layout_margin="8dp"
                         android:background="@drawable/btn_accent_radius_19"
                         android:gravity="center"
-                        android:text="@string/label_work_cart"
+                        android:text="@string/label_cancel"
                         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                         android:textColor="@color/textLight"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         app:gTouchColor="@color/touch_color"
                         app:gTouchCornerRadius="19dp"
                         app:gTouchEffect="ripple" />
@@ -232,10 +231,10 @@
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/btn_accent_radius_19"
                         android:gravity="center"
-                        android:text="@string/label_action_to_cart"
+                        android:text="@string/label_confirm"
                         android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                         android:textColor="@color/textLight"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         app:gTouchColor="@color/touch_color"
                         app:gTouchCornerRadius="19dp"
                         app:gTouchEffect="ripple" />

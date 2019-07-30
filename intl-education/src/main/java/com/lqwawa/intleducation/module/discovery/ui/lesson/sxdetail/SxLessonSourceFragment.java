@@ -26,6 +26,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,6 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private TreeView treeView;
     private SxNodeViewFactory mNodeViewFactory;
     private ExamsAndTestExtrasVo extrasVo;
-    private Map<Integer, List<SectionResListVo>> addToCartInDifferentTypes = new HashMap<>();
 
     public static SxLessonSourceFragment newInstance(boolean needFlag,
                                                      boolean canEdit,
@@ -206,8 +206,16 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     @Override
     public List<TreeNode> getChoiceResource() {
         // 获取已经选中的作业库
-        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
-        return selectedNodes;
+        List<TreeNode> data = treeView.getSelectedNodes();
+        List<TreeNode> choiceArray = new ArrayList<>();
+        if (EmptyUtil.isNotEmpty(data)) {
+            for (TreeNode vo : data) {
+                if (vo.isSelected()) {
+                    choiceArray.add(vo);
+                }
+            }
+        }
+        return choiceArray;
     }
 
     @Override
