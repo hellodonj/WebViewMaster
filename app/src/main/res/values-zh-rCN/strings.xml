@@ -1438,7 +1438,7 @@
     <string name="str_add_new_task">添加新任务:</string>
     <string name="str_add_task">添加任务</string>
     <string name="str_super_homework_total">老师作业-%d个任务</string>
-    <string name="str_max_select_limit">最多选择5个资源</string>
+    <string name="str_max_select_limit">最多选择10个资源</string>
     <string name="str_homework_not_null">作业不能为空</string>
     <string name="add_teacher">添加老师</string>
     <string name="add_teacher_success">添加老师成功</string>

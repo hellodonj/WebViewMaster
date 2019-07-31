@@ -1250,7 +1250,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             } else {
                 lookResDtos = getListenReadAndWriteData(false);
             }
-            if (isFromSuperTask && lookResDtos.size() > 5) {
+            if (isFromSuperTask && lookResDtos.size() > 10) {
                 TipMsgHelper.ShowMsg(getActivity(), R.string.str_max_select_limit);
                 return;
             }

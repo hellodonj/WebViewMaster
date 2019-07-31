@@ -1533,7 +1533,7 @@
     <string name="str_add_new_task">Add task:</string>
     <string name="str_add_task">Add Task</string>
     <string name="str_super_homework_total">Teacher\'s Homework-%d Tasks</string>
-    <string name="str_max_select_limit">Can not select more than 5 files</string>
+    <string name="str_max_select_limit">Can not select more than 10 files</string>
     <string name="str_homework_not_null">Homework cannot be blank</string>
     <string name="add_teacher">Add Teacher</string>
     <string name="add_teacher_success">Teacher added</string>
