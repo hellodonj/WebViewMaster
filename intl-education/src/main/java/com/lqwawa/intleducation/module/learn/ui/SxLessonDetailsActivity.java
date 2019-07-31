@@ -60,6 +60,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.lqwawa.tools.DialogHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.util.DensityUtil;
@@ -207,6 +208,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private List<SxLessonSourceNavigator> mTabSourceNavigator = new ArrayList<>();
     private static String[] mTypes = UIUtil.getStringArray(R.array.label_lesson_source_type);
     private ArrayList<SectionResListVo> selectedTask = new ArrayList<>();
+    private DialogHelper.LoadingDialog loadingDialog;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -359,6 +361,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         if (role == 1 && mChapterParams.getCourseParams().isClassCourseEnter()) {
             classId = mChapterParams.getCourseParams().getClassId();
         }
+        loadingDialog = DialogHelper.getIt(SxLessonDetailsActivity.this).GetLoadingDialog(0);
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, -1, new DataSource.Callback<SectionDetailsVo>() {
@@ -372,6 +375,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 SxLessonDetailsActivity.this.sectionDetailsVo = sectionDetailsVo;
                 if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
                 updateView();
+                loadingDialog.dismiss();
             }
         });
     }

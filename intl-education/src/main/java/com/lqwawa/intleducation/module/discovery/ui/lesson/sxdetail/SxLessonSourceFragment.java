@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.IBaseFragment;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.TreeView;
@@ -59,7 +60,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private boolean mClassTeacher;
     private CourseDetailParams courseParams;
     private FrameLayout container;
-
+    private CourseEmptyView mEmptyLayout;
     private ReadWeikeHelper mReadWeikeHelper;
     private TreeNode root;
     private TreeView treeView;
@@ -128,6 +129,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     protected void initWidget() {
         super.initWidget();
         container = (FrameLayout) mRootView.findViewById(R.id.sx_container);
+        mEmptyLayout = (CourseEmptyView) mRootView.findViewById(R.id.empty_layout);
         root = TreeNode.root();
         mNodeViewFactory = new SxNodeViewFactory();
         treeView = new TreeView(root, getContext(), mNodeViewFactory);
@@ -197,7 +199,15 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         }
         View view = treeView.getView();
         treeView.expandAll();
-        container.addView(view);
+        if (EmptyUtil.isNotEmpty(view)) {
+            container.addView(view);
+            container.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+        } else {
+            container.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
