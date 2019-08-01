@@ -150,8 +150,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private String newlyClassGridViewTag;
     private ChannelView channelView;//可滑动的布局
     private List<ChannelView.ChannelItem> channelItemList = new ArrayList<>();
-    private boolean showChannelView = false; //控制是否显示滑动布局
-    private int showWhich = 0;
+    private int showWhich = 0; //学校各个馆的展示形式
     private boolean isChangeLqCourseTab;
     private String lqCourseSchoolId;
     private String lqCourseClassId;
@@ -236,30 +235,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         }
     }
 
-//    private SchoolInfo loadSchoolInfos() {
-//        Map<String, Object> params = new HashMap();
-//        params.put("MemberId", getUserInfo().getMemberId());
-//        if (schoolInfo != null) {
-//            params.put("SchoolId", schoolInfo.getSchoolId());
-//        }
-//        params.put("VersionCode", 1);
-//        RequestHelper.sendPostRequest(getActivity(),ServerUrl.SUBSCRIBE_SCHOOL_INFO_URL,params,new DefaultListener<SchoolInfoResult>(SchoolInfoResult.class){
-//             @Override
-//             public void onSuccess(String jsonString) {
-//                 if (getActivity() == null) {
-//                     return;
-//                 }
-//                 super.onSuccess(jsonString);
-//                 if (getResult() == null || !getResult().isSuccess()) {
-//                     return;
-//                 }
-//                 schoolInfo = getResult().getModel();
-//             }
-//         });
-//        return schoolInfo;
-//    }
-
-
     @Override
     protected void loadSchoolInfo() {
         Map<String, Object> params = new HashMap();
@@ -317,32 +292,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     // 查询到SchoolInfo，判断显示片段
                     if (schoolInfo.isOnlineSchool()) {
                         // 展示在线课堂功能菜单
-//                        if (showChannelView) {
-//                            channelView.setVisibility(View.GONE);
-//                        } else {
-//                            if (schoolGridView != null) {
-//                                schoolGridView.setVisibility(View.GONE);
-//                            }
-//                        }
-                        if (showWhich==0){
-                            organGridView.setVisibility(View.VISIBLE);
-                            channelView.setVisibility(View.GONE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.GONE);
-                            }
-                        }else if (showWhich==1){
-                            organGridView.setVisibility(View.GONE);
-                            channelView.setVisibility(View.VISIBLE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.GONE);
-                            }
-                        }else if (showWhich==2){
-                            organGridView.setVisibility(View.GONE);
-                            channelView.setVisibility(View.GONE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.VISIBLE);
-                            }
-                        }
+                        showGridView();
                         final String schoolId = schoolInfo.getSchoolId();
                         String schoolName = schoolInfo.getSchoolName();
                         String roles = schoolInfo.getRoles();
@@ -389,34 +339,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
                     } else {
                         // 展示在线课堂功能菜单
-//                        if (showChannelView) {
-//                            channelView.setVisibility(View.VISIBLE);
-//                        } else {
-//                            if (schoolGridView != null) {
-//                                schoolGridView.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-
-                        if (showWhich==0){
-                            organGridView.setVisibility(View.VISIBLE);
-                            channelView.setVisibility(View.GONE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.GONE);
-                            }
-                        }else if (showWhich==1){
-                            organGridView.setVisibility(View.GONE);
-                            channelView.setVisibility(View.VISIBLE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.GONE);
-                            }
-                        }else if (showWhich==2){
-                            organGridView.setVisibility(View.GONE);
-                            channelView.setVisibility(View.GONE);
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.VISIBLE);
-                            }
-                        }
-
+                       showGridView();
                         if (EmptyUtil.isNotEmpty(mSpaceHolderFragment)) {
                             // 取消替换,换成普通的布局
                             FragmentManager fragmentManager = getChildFragmentManager();
@@ -600,6 +523,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
      */
     private void initOrganGridViewHelper() {
         inflater = LayoutInflater.from(getContext());
+        if (EmptyUtil.isNotEmpty(organItemList)){
+            organGridView.setVisibility(View.VISIBLE);
+        }
         //总的页数=总数/每页数量，并取整
         pageCount = (int) Math.ceil(organItemList.size() * 1.0 / pageSize1);
         mPagerList = new ArrayList<View>();
@@ -677,42 +603,12 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private void initChannelView() {
         channelView = (ChannelView) findViewById(R.id.layout_channel_view);
         if (channelView != null) {
-//            if (showChannelView) {
-//                if (schoolGridView != null) {
-//                    schoolGridView.setVisibility(View.GONE);
-//                }
-//                channelView.setVisibility(View.VISIBLE);
-//            } else {
-//                if (schoolGridView != null) {
-//                    schoolGridView.setVisibility(View.VISIBLE);
-//                }
-//                channelView.setVisibility(View.GONE);
-//            }
-            if (showWhich==0){
-                organGridView.setVisibility(View.VISIBLE);
-                channelView.setVisibility(View.GONE);
-                if (schoolGridView != null) {
-                    schoolGridView.setVisibility(View.GONE);
-                }
-            }else if (showWhich==1){
-                organGridView.setVisibility(View.GONE);
-                channelView.setVisibility(View.VISIBLE);
-                if (schoolGridView != null) {
-                    schoolGridView.setVisibility(View.GONE);
-                }
-            }else if (showWhich==2){
-                organGridView.setVisibility(View.GONE);
-                channelView.setVisibility(View.GONE);
-                if (schoolGridView != null) {
-                    schoolGridView.setVisibility(View.VISIBLE);
-                }
-            }
-
+            showGridView();
             //设置item的内边距,可配置left、top、right、bottom的padding
             int itemPadding = (int) (10 * MyApplication.getDensity());
             channelView.setItemTopPadding(2 * itemPadding);
             channelView.setItemBottomPadding(2 * itemPadding);
-//            //设置图片大小为：40 * 40 dp
+           //设置图片大小为：40 * 40 dp
             int imageSize = (int) (40 * MyApplication.getDensity());
             channelView.setImgSize(imageSize);
             //设置图片是否包裹内容显示，true的话，imageSize属性失效。
@@ -728,6 +624,29 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     controlEvent(channelItem.channelId);
                 }
             });
+        }
+    }
+
+    //显示、隐藏GridView的展示方式
+    private void showGridView() {
+        if (showWhich==0){
+            organGridView.setVisibility(View.VISIBLE);
+            channelView.setVisibility(View.GONE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.GONE);
+            }
+        }else if (showWhich==1){
+            organGridView.setVisibility(View.GONE);
+            channelView.setVisibility(View.VISIBLE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.GONE);
+            }
+        }else if (showWhich==2){
+            organGridView.setVisibility(View.GONE);
+            channelView.setVisibility(View.GONE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -1241,7 +1160,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 //        item.title = getString(R.string.subs_school_introduction);
 //        item.resId = R.drawable.icon_school_introduction;
 //        organItemList.add(item);
-//        if(schoolInfo != null && (schoolInfo.isTeacher() ||  VipConfig.isVip(getActivity()))){
 
         //学程馆
         item = new TabEntityPOJO();

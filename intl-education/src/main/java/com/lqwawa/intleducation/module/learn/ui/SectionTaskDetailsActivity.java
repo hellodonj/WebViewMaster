@@ -605,8 +605,10 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
 
         if (libraryType== OrganLibraryType.TYPE_TEACHING_PLAN){
             mFromLayout.setVisibility(View.VISIBLE);
+            mTvFromCourse.setVisibility(View.VISIBLE);
             mTvFromCourse.setText(String.format(UIUtil.getString(R.string.label_from_course), sectionResListVo.getLinkCourseName()));
         }else {
+            mTvFromCourse.setVisibility(View.GONE);
             mFromLayout.setVisibility(View.GONE);
         }
         if (/*sectionTaskDetailsVo.getCommitList() != null &&*/ sectionResListVo != null) {

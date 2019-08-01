@@ -411,7 +411,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 mTabLists.add(getResources().getString(R.string.label_sx_practice));
                 mTabLists.add(getResources().getString(R.string.label_sx_review));
                 for (int i = 0; i < mTabLists.size(); i++) {
-                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1, taskType,courseVo.getLibraryType(), params);
+                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1,courseVo.getLibraryType(), taskType, params);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }
@@ -426,6 +426,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
         }
     }
+
 
     @Override
     public void onClick(View v) {
