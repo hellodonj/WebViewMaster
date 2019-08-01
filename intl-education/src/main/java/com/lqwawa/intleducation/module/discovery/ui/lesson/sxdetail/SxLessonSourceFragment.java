@@ -174,8 +174,15 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
                 //SectionTaskListVo TaskListVO //SectionDetailsVo SxExamDetailVo
                 mSectionDetailsVo = sectionDetailsVo;
-                if (EmptyUtil.isEmpty(sectionDetailsVo)) return;
-                updateViews(sectionDetailsVo);
+                if (EmptyUtil.isEmpty(sectionDetailsVo)){
+                    container.setVisibility(View.GONE);
+                    mEmptyLayout.setVisibility(View.VISIBLE);
+                    return;
+                }else{
+                    container.setVisibility(View.VISIBLE);
+                    mEmptyLayout.setVisibility(View.GONE);
+                    updateViews(sectionDetailsVo);
+                }
             }
         });
     }
@@ -199,15 +206,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         }
         View view = treeView.getView();
         treeView.expandAll();
-        if (EmptyUtil.isNotEmpty(view)) {
-            container.addView(view);
-            container.setVisibility(View.VISIBLE);
-            mEmptyLayout.setVisibility(View.GONE);
-        } else {
-            container.setVisibility(View.GONE);
-            mEmptyLayout.setVisibility(View.VISIBLE);
-        }
-
+        container.addView(view);
     }
 
     @Override
