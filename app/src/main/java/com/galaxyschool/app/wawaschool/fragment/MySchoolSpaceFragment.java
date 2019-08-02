@@ -1195,12 +1195,14 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.resId = R.drawable.ic_brain_library;
         organItemList.add(item);
 
+        if (schoolInfo != null && schoolInfo.isTeacher()) {
         //三习教案馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN;
         item.title = getString(R.string.common_teaching_plan_library);
         item.resId = R.drawable.ic_teaching_plan_library;
         organItemList.add(item);
+        }
 
         if (schoolInfo != null && schoolInfo.isTeacher()) {
             //校本资源库
