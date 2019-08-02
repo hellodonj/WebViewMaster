@@ -127,7 +127,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private GridView schoolGridView;
     private GridView classGridView;
     private String schoolGridViewTag;
-    private boolean loadDot =true;
     // 切换机构
     private TextView moreSchoolTextView;
     private TextView mTvToggleSchool;

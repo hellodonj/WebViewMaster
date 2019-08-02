@@ -567,4 +567,8 @@
         <item>讲解课</item>
         <item>Q配音</item>
     </string-array>
+    <string-array name="label_test_lesson_source_type">
+        <item>读写测试</item>
+        <item>听说测试</item>
+    </string-array>
 </resources>

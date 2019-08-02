@@ -172,17 +172,8 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
 
             @Override
             public void onDataLoaded(SectionDetailsVo sectionDetailsVo) {
-                //SectionTaskListVo TaskListVO //SectionDetailsVo SxExamDetailVo
                 mSectionDetailsVo = sectionDetailsVo;
-                if (EmptyUtil.isEmpty(sectionDetailsVo)){
-                    container.setVisibility(View.GONE);
-                    mEmptyLayout.setVisibility(View.VISIBLE);
-                    return;
-                }else{
-                    container.setVisibility(View.VISIBLE);
-                    mEmptyLayout.setVisibility(View.GONE);
-                    updateViews(sectionDetailsVo);
-                }
+                updateViews(sectionDetailsVo);
             }
         });
     }
@@ -192,7 +183,8 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                 status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
         for (SectionTaskListVo taskListVO : taskList) {
-            if (!isInitiativeTrigger && isChoiceMode && isShowType(taskType, taskListVO)) continue;
+            //不在执行循环体里continue后面的语句而是跳到下一个循环入口处执行下一个循环
+            if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
             treeNode.setLevel(0);
             for (SectionResListVo datum : taskListVO.getData()) {
@@ -206,7 +198,15 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         }
         View view = treeView.getView();
         treeView.expandAll();
-        container.addView(view);
+        if (root.getChildren().size() == 0) {
+            container.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+            return;
+        }else{
+            container.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+            container.addView(view);
+        }
     }
 
     @Override

@@ -822,14 +822,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
 
             mBottomLayout1.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.VISIBLE);
-        }
-//        else if ( mChapterParams.isChoiceMode()&& !mChapterParams.isInitiativeTrigger()) {
-//            mTopLayout.setVisibility(View.GONE);
-//            mBottomLayout.setVisibility(View.GONE);
-//            mBottomLayout1.setVisibility(View.GONE);
-//            mNewCartContainer.setVisibility(View.GONE);
-//        }
-        else {
+        } else {
                 // 当前是未激活状态,显示作业库和添加到作业库
                 mTvPoint.setVisibility(View.VISIBLE);
                 mBottomLayout1.setVisibility(View.VISIBLE);
