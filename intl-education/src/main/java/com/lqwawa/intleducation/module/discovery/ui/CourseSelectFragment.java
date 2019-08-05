@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter.TYPE_EXAM;
 import static com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter.TYPE_LESSON;
 
 /**
@@ -82,6 +81,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
     // 入口类型
     public static final String KEY_EXTRA_ENTER_TYPE = "KEY_EXTRA_ENTER_TYPE";
+    public static final int TYPE_EXAM = 1;
+    public static final int TYPE_TEST = 2;
 
     private SuperGridView listView;
     private FrameLayout mEmptyView;
@@ -307,7 +308,11 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     if (initiativeTrigger) {
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
-                               ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
+                                if (chapterVo.getIsChildren()){ //测试
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
+                                }else { //考试
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
+                                }
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
                                 if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity, courseId, chapterId,
@@ -329,7 +334,11 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         int taskType = arguments.getInt("tasktype", 1);
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
-                                ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,lessonSourceParams);
+                                if (chapterVo.getIsChildren()){ //测试
+                                    ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
+                                }else { //考试
+                                    ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
+                                }
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
                                 SxLessonDetailsActivity.start(activity,taskType, courseId, chapterId,

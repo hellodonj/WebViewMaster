@@ -61,6 +61,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     public static final int TYPE_CEXAM = 11;
     public static final int TYPE_LESSON = 0;
     public static final int TYPE_EXAM = 1;
+    public static final int TYPE_TEST = 2;
     private Activity activity;
     private List<ChapterVo> list;
     private LayoutInflater inflater;
@@ -515,7 +516,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     if (examType == TYPE_EXAM) {
                                         //courseid,sectionId,token
 //                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
-                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), libraryType,lessonSourceParams);
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
 //                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
                                     } else if (examType == TYPE_LESSON){
                                         //普通教案详情入口
@@ -756,7 +757,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             //如果是考试 则隐藏f折叠按钮
 //            int examType = vo.getExamType();
             int examType = list.get(position).getExamType();
-            holder.hideLessonIv.setVisibility(examType == TYPE_EXAM ? View.GONE : View.VISIBLE);
+//            holder.hideLessonIv.setVisibility(examType == TYPE_EXAM ? View.GONE : View.VISIBLE);
+            if (examType == TYPE_EXAM){
+                holder.hideLessonIv.setImageDrawable(activity.getResources()
+                        .getDrawable(R.drawable.ic_right_arrow));
+            }
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -772,7 +777,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(),libraryType, lessonSourceParams);
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(),libraryType, TYPE_EXAM,lessonSourceParams);
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);

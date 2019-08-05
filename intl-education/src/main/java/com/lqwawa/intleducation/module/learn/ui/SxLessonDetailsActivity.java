@@ -90,6 +90,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
     private static Activity activitys;
+    private static final int SOURCE_FROM_SECTION = 0;
 
     /**
      * @param activity               启动此界面的activity
@@ -440,7 +441,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 cancelResource();
             } else {
                 // triggerWatchCart();
-                handleSubjectSettingData(this, UserHelper.getUserId(), false);
+                handleSubjectSettingData(this, UserHelper.getUserId(), courseId, SOURCE_FROM_SECTION,false);
             }
         } else if (viewId == R.id.action_container) {
             // 点击添加到作业库
@@ -515,7 +516,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 } else {
                     // triggerToCartAction();
                     // mBottomLayout.setActivated(!originalActivated);
-                    handleSubjectSettingData(this, UserHelper.getUserId(), true);
+                    handleSubjectSettingData(this, UserHelper.getUserId(),courseId, SOURCE_FROM_SECTION, true);
                 }
             }
 
@@ -532,7 +533,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     }
                 }
             }
-            handleSubjectSettingData(this, UserHelper.getUserId(), true);
+            handleSubjectSettingData(this, UserHelper.getUserId(), courseId, SOURCE_FROM_SECTION,true);
             initBottomLayout();
             refreshCartPoint();
         } else if (viewId == R.id.btn_all_select) {
@@ -554,15 +555,17 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             }
         } else if (viewId == R.id.new_cart_container) {
             //作业库
-            handleSubjectSettingData(this, UserHelper.getUserId(), false);
+            handleSubjectSettingData(this, UserHelper.getUserId(),courseId, SOURCE_FROM_SECTION,false);
         }
     }
 
     public void handleSubjectSettingData(Context context,
                                          String memberId,
+                                         String courseId,
+                                         int sourceType,
                                          final boolean rightAction) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER,courseId,sourceType, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 //没有数据

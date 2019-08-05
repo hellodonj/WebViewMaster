@@ -61,7 +61,7 @@ public class ChapterVo extends BaseVo {
     // 完成了多少任务
     private int finishNum;
 
-    //0,教案，1考试
+    //0普通教案，1考试/测试
     private int examType = -1;
     //记录是否选中
     protected boolean isChoosed;

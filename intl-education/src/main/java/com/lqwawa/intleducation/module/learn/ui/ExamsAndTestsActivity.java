@@ -84,6 +84,9 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private boolean isInitiativeTrigger;
     private static String[] mTypes = UIUtil.getStringArray(R.array.label_test_lesson_source_type);
 
+    private String courseId;
+    private int sourceType;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +127,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
     private void getData() {
         Intent intent = getIntent();
-        String courseId = intent.getStringExtra("courseId");
+        courseId = intent.getStringExtra("courseId");
+        sourceType = intent.getIntExtra("sourceType",1);
         String sectionId = intent.getStringExtra("sectionId");
         mTeacherVisitor = intent.getBooleanExtra("isTeacherVisitor", false);
 //        courseParams = (CourseDetailParams) intent.getSerializableExtra("courseDetailParams");
@@ -186,7 +190,19 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         LQCourseHelper.getSxExamDetail(courseId, sectionId, this);
     }
 
-    public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor, int status, int libraryType, LessonSourceParams lessonSourceParams) {
+    /**
+     *
+     * @param context
+     * @param courseId
+     * @param sectionId
+     * @param mTeacherVisitor
+     * @param status
+     * @param libraryType
+     * @param sourceType 0作业 1考试 2 测试 统计加的参数
+     * @param lessonSourceParams
+     */
+    public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor,
+                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -194,11 +210,13 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         intent.putExtra("lessonSourceParams", lessonSourceParams);
         intent.putExtra("status", status);
         intent.putExtra("libraryType", libraryType);
+        intent.putExtra("sourceType", sourceType);
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
         context.startActivity(intent);
     }
 
-    public static void start(Context context, int taskType, String courseId, String sectionId, boolean mTeacherVisitor, int status, int libraryType, LessonSourceParams lessonSourceParams) {
+    public static void start(Context context, int taskType, String courseId, String sectionId, boolean mTeacherVisitor,
+                             int status, int libraryType,int sourceType,LessonSourceParams lessonSourceParams) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -206,6 +224,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         intent.putExtra("lessonSourceParams", lessonSourceParams);
         intent.putExtra("status", status);
         intent.putExtra("libraryType", libraryType);
+        intent.putExtra("sourceType", sourceType);
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
         intent.putExtra("taskType", taskType);
         context.startActivity(intent);
@@ -272,7 +291,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             addToCart();
             updateView(false);
         } else if (id == R.id.new_cart_container) {
-            handleSubjectSettingData(this, UserHelper.getUserId());
+            handleSubjectSettingData(this, UserHelper.getUserId(),courseId,sourceType);
         }
     }
 
@@ -450,9 +469,11 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     public void handleSubjectSettingData(Context context,
-                                         String memberId) {
+                                         String memberId,
+                                         String courseId,
+                                         int sourceType) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER,courseId,sourceType, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 //没有数据
