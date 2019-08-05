@@ -60,6 +60,8 @@
                 android:background="@color/com_bg_white"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="fixed"
+                app:tabMaxWidth="0dp"
+                app:tabGravity="fill"
                 app:tabPaddingEnd="12dp"
                 app:tabPaddingStart="12dp"
                 app:tabSelectedTextColor="@color/white"
