@@ -73,6 +73,15 @@ public class LQConfigHelper {
         });
     }
 
+    /**
+     * 获取老师已经设置的标签
+     * @param hostId
+     * @param dataType
+     * @param courseId
+     * @param sourceType 教案个人统计添加参数
+     * @param language
+     * @param callback
+     */
     public static void requestSetupConfigData(@Nullable String hostId,
                                               @NonNull @SetupConfigType.SetupConfigRes int dataType,
                                               String courseId,

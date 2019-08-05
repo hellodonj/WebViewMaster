@@ -69,6 +69,15 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="2dp"
                     android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:id="@+id/lesson_audition_tv"
+                    style="@style/text_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/audition"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <ImageView

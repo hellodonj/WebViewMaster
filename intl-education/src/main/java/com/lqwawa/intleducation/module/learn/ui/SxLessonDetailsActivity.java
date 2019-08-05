@@ -90,7 +90,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
     private static Activity activitys;
-    private static final int SOURCE_FROM_SECTION = 0;
+    private static final int TYPE_HOMEWORK = 0;
 
     /**
      * @param activity               启动此界面的activity
@@ -441,7 +441,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 cancelResource();
             } else {
                 // triggerWatchCart();
-                handleSubjectSettingData(this, UserHelper.getUserId(), courseId, SOURCE_FROM_SECTION,false);
+                handleSubjectSettingData(this, UserHelper.getUserId(), courseId, TYPE_HOMEWORK,false);
             }
         } else if (viewId == R.id.action_container) {
             // 点击添加到作业库
@@ -516,7 +516,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 } else {
                     // triggerToCartAction();
                     // mBottomLayout.setActivated(!originalActivated);
-                    handleSubjectSettingData(this, UserHelper.getUserId(),courseId, SOURCE_FROM_SECTION, true);
+                    handleSubjectSettingData(this, UserHelper.getUserId(),courseId, TYPE_HOMEWORK, true);
                 }
             }
 
@@ -533,7 +533,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     }
                 }
             }
-            handleSubjectSettingData(this, UserHelper.getUserId(), courseId, SOURCE_FROM_SECTION,true);
+            handleSubjectSettingData(this, UserHelper.getUserId(), courseId, TYPE_HOMEWORK,true);
             initBottomLayout();
             refreshCartPoint();
         } else if (viewId == R.id.btn_all_select) {
@@ -555,7 +555,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             }
         } else if (viewId == R.id.new_cart_container) {
             //作业库
-            handleSubjectSettingData(this, UserHelper.getUserId(),courseId, SOURCE_FROM_SECTION,false);
+            handleSubjectSettingData(this, UserHelper.getUserId(),courseId, TYPE_HOMEWORK,false);
         }
     }
 

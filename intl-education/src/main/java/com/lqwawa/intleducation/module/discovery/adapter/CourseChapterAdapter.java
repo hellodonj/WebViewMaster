@@ -370,7 +370,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     UIUtil.showToastSafe(R.string.label_please_apply_to_be_tutorial);
                                 } else {
                                     // 直接拦截
-                                    toLessonDetailsActivity(vo, true,false);
+                                    toLessonDetailsActivity(vo, true, false);
                                 }
                                 return;
                             }
@@ -512,33 +512,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     ChapterVo chapterVo = list.get(position);
                                     int examType = chapterVo.getExamType();
                                     //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
-
                                     if (examType == TYPE_EXAM) {
-                                        //courseid,sectionId,token
-//                                        CourseDetailParams courseDetailParams = getCourseDetailParams(courseVo, isFreeUser);
-                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor,vo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
-//                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), role, mTeacherVisitor, params,vo.getStatus());
-                                    } else if (examType == TYPE_LESSON){
+                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                    } else if (examType == TYPE_LESSON) {
                                         //普通教案详情入口
-                                        toLessonDetailsActivity(vo, isFreeUser,true);
+                                        toLessonDetailsActivity(vo, isFreeUser, true);
                                     }
                                 } else {
-                                    toLessonDetailsActivity(vo, isFreeUser,false);
+                                    toLessonDetailsActivity(vo, isFreeUser, false);
                                 }
-                                /*LessonDetailsActivity.start(activity, courseId, vo.getId(),
-                                        vo.getSectionName(), vo.getName(),
-                                        needFlagRead,
-                                        activity.getIntent().getBooleanExtra("isBuy", false)
-                                                || needFlagRead
-                                                || vo.getParentId().equals(list.get(0).getId()) || isAuthorized,
-                                        activity.getIntent().getBooleanExtra("canEdit", false),
-                                        vo.getStatus()
-                                        , activity.getIntent().getStringExtra("memberId"),
-                                        vo.isContainAssistantWork(),
-                                        activity.getIntent().getStringExtra("schoolId"),
-                                        activity.getIntent().getBooleanExtra
-                                                (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE,
-                                                        false), courseVo,isOnlineTeacher,isFreeUser);*/
                             }
                         }
                     });
@@ -755,17 +737,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         .getDrawable(R.drawable.arrow_up_gray_ico));
             }
             //如果是考试 则隐藏f折叠按钮
-//            int examType = vo.getExamType();
             int examType = list.get(position).getExamType();
 //            holder.hideLessonIv.setVisibility(examType == TYPE_EXAM ? View.GONE : View.VISIBLE);
-            if (examType == TYPE_EXAM){
+            if (examType == TYPE_EXAM) {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.ic_right_arrow));
             }
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mOnSelectListener !=null){
+                    if (mOnSelectListener != null) {
                         mOnSelectListener.onSelect(vo);
 //                        return;
                     }
@@ -777,7 +758,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(),libraryType, TYPE_EXAM,lessonSourceParams);
+                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);
@@ -795,6 +776,35 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             });
         }
 
+//        int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+//        boolean isOwner = UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
+//        int examType = list.get(position).getExamType();
+//        List<ChapterVo> children = list.get(position).getChildren();
+//        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+//            if (position == 0 && !vo.isBuyed() && (!isOwner || mTeacherVisitor) && examType == TYPE_EXAM) {//第一行 考试 显示试听字样
+//                holder.auditionTv.setVisibility(View.VISIBLE);
+//                if (!isCourseSelect) {
+//                    holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+//                }
+//            } else {
+//                holder.auditionTv.setVisibility(View.GONE);
+//                holder.chapterTitleTv.setMaxWidth(Integer.MAX_VALUE);
+//            }
+//
+//            for (int i = 0; i < children.size(); i++) {
+//                if (i == 0 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {//子列表 第一行 测试|普通节 显示试听字样
+//                    holder.auditionTv.setVisibility(View.GONE);
+//                    holder.lessonAuditionTv.setVisibility(View.VISIBLE);
+//                    if (!isCourseSelect) {
+//                        holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+//                    }
+//                } else {
+//                    holder.auditionTv.setVisibility(View.GONE);
+//                    holder.lessonAuditionTv.setVisibility(View.GONE);
+//                    holder.lessonNameTv.setMaxWidth(Integer.MAX_VALUE);
+//                }
+//            }
+//        }
 
         if (tutorialMode) {
             // 如果是帮辅模式
@@ -870,6 +880,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         TextView auditionTv;
         TextView tvPrice;
         ImageView hideLessonIv;
+        TextView lessonAuditionTv;
 
         public ViewHolder(View parent) {
             lessonRootLay = (LinearLayout) parent.findViewById(R.id.lesson_root_lay);
@@ -887,6 +898,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             chapterNameTv = (TextView) parent.findViewById(R.id.chapter_name_tv);
             chapterTitleTv = (TextView) parent.findViewById(R.id.chapter_title_tv);
             auditionTv = (TextView) parent.findViewById(R.id.audition_tv);
+            lessonAuditionTv = (TextView) parent.findViewById(R.id.lesson_audition_tv);
             tvPrice = (TextView) parent.findViewById(R.id.tv_price);
             hideLessonIv = (ImageView) parent.findViewById(R.id.hide_lesson_iv);
         }
@@ -1170,7 +1182,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
      *
      * @param vo 章节
      */
-    private void toLessonDetailsActivity(@NonNull ChapterVo vo, boolean isFreeUser,boolean isSxLesson) {
+    private void toLessonDetailsActivity(@NonNull ChapterVo vo, boolean isFreeUser, boolean isSxLesson) {
         // 判空
         if (EmptyUtil.isEmpty(courseVo)) return;
 

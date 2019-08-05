@@ -49,7 +49,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
     private CheckBox checkbox;
-    TextView resName, mTvAutoMask, mViewCount;
+    TextView resName, mTvAutoMask, mViewCount, mTvScore;
     ImageView resIcon, mIvPlayIcon, mIvNeedCommit;
     LinearLayout itemRootLay;
     private int mTaskType = 9;
@@ -69,6 +69,7 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         mTvAutoMask = (TextView) itemView.findViewById(R.id.tv_auto_mark);
         mViewCount = (TextView) itemView.findViewById(R.id.tv_view_count);
         checkbox = (CheckBox) itemView.findViewById(R.id.checkbox);
+        mTvScore = (TextView) itemView.findViewById(R.id.tv_score);
     }
 
     @Override
@@ -107,7 +108,13 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         mIvPlayIcon.setVisibility(extras.isVideoCourse() ? View.VISIBLE : View.GONE);
 
         if (extras.isNeedFlagRead() && vo.isIsRead()) {
-            mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
+            if (EmptyUtil.isNotEmpty(vo.getPoint())){
+                mTvScore.setText(vo.getPoint());
+            }else {
+                mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
+            }
+
+
         } else {
             int resId = extras.isVideoCourse() ? 0 : R.drawable.ic_need_to_commit;
             mIvNeedCommit.setImageResource(resId);
