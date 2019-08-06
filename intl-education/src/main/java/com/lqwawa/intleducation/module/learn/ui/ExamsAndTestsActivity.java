@@ -177,6 +177,11 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                 } else {
                     // 学程馆选取资源使用的
+                    for (int i = 0; i < selectedTask.size(); i++) {
+                        SectionResListVo resListVo = selectedTask.get(i);
+                        resListVo.setCourseId(courseId);
+                        resListVo.setSourceType(sourceType);
+                    }
                     EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
                     //数据回传
                     setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
@@ -291,7 +296,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             addToCart();
             updateView(false);
         } else if (id == R.id.new_cart_container) {
-            handleSubjectSettingData(this, UserHelper.getUserId(),courseId,sourceType);
+            handleSubjectSettingData(this, UserHelper.getUserId());
         }
     }
 
@@ -439,6 +444,11 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;
         }
+        for (int i = 0; i < choiceArray.size(); i++) {
+            SectionResListVo resListVo = choiceArray.get(i);
+            resListVo.setCourseId(courseId);
+            resListVo.setSourceType(sourceType);
+        }
         // 添加到作业库中
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             // 默认看课件
@@ -469,11 +479,9 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     public void handleSubjectSettingData(Context context,
-                                         String memberId,
-                                         String courseId,
-                                         int sourceType) {
+                                         String memberId) {
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER,courseId,sourceType, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
+        LQConfigHelper.requestSetupConfigData(memberId, SetupConfigType.TYPE_TEACHER, languageRes, new DataSource.Callback<List<LQCourseConfigEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 //没有数据
