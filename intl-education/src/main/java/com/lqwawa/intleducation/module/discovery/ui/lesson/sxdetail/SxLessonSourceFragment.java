@@ -47,6 +47,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private static final String KEY_STATUS = "KEY_STATUS";
     private static final String KEY_LIBRARY_TYPE = "KEY_LIBRARY_TYPE";
     private static final String KEY_TASK_TYPE = "KEY_TASK_TYPE";
+    private static final int TYPE_HOMEWORK = 0;
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
     private String sectionId;
@@ -182,13 +183,18 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
                 status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
-        for (SectionTaskListVo taskListVO : taskList) {
+        for (int index = 0; index < taskList.size(); index++) {
+            SectionTaskListVo taskListVO = taskList.get(index);
             //不在执行循环体里continue后面的语句而是跳到下一个循环入口处执行下一个循环
             if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
             treeNode.setLevel(0);
             for (SectionResListVo datum : taskListVO.getData()) {
                 datum.setTaskType(taskListVO.getTaskType());
+                datum.setTaskName(taskListVO.getTaskName());
+                datum.setChapterId(datum.getId());
+                datum.setCourseId(courseId);
+                datum.setSourceType(TYPE_HOMEWORK);
                 TreeNode treeNode1 = new TreeNode(datum);
                 treeNode1.setExtras(extrasVo);
                 treeNode1.setLevel(1);

@@ -90,7 +90,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
     private static Activity activitys;
-    private static final int TYPE_HOMEWORK = 0;
 
     /**
      * @param activity               启动此界面的activity
@@ -333,11 +332,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                 } else {
                     // 学程馆选取资源使用的
-                    for (int i = 0; i < selectedTask.size(); i++) {
-                        SectionResListVo resListVo = selectedTask.get(i);
-                        resListVo.setCourseId(courseId);
-                        resListVo.setSourceType(TYPE_HOMEWORK);
-                    }
                     EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
                     //数据回传
                     setResult(Activity.RESULT_OK, getIntent().putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
@@ -417,7 +411,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 mTabLists.add(getResources().getString(R.string.label_sx_practice));
                 mTabLists.add(getResources().getString(R.string.label_sx_review));
                 for (int i = 0; i < mTabLists.size(); i++) {
-                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status, i + 1,courseVo.getLibraryType(), taskType, params);
+                    SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
+                            i + 1,courseVo.getLibraryType(), taskType, params);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }
@@ -741,11 +736,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         }
         for (Map.Entry<Integer, List<SectionResListVo>> entry : entries) {
             choiceArray = entry.getValue();
-            for (int i = 0; i < choiceArray.size(); i++) {
-                SectionResListVo resListVo = choiceArray.get(i);
-                resListVo.setCourseId(courseId);
-                resListVo.setSourceType(TYPE_HOMEWORK);
-            }
             // 添加到作业库中
             if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                 // 默认看课件
