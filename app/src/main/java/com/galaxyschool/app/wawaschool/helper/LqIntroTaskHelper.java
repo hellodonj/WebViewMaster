@@ -170,6 +170,8 @@ public class LqIntroTaskHelper {
                 //默认按句配音
                 lookResDto.setResPropType(StudyResPropType.DUBBING_BY_SENTENCE);
             }
+            lookResDto.setCourseId(info.getCourseId());
+            lookResDto.setCourseTaskType(info.getCourseTaskType());
             lookResDtoList.add(lookResDto);
         }
         return lookResDtoList;

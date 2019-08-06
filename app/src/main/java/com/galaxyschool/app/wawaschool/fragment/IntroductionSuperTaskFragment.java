@@ -1341,6 +1341,10 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             if (!TextUtils.isEmpty(lookDto.getPoint())) {
                                 thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
                             }
+                            if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
+                                thirdObject.put("CourseId",lookDto.getCourseId());
+                                thirdObject.put("CourseTaskType",lookDto.getCourseTaskType());
+                            }
                             thirdTaskList.put(thirdObject);
                         }
                     }
@@ -1528,6 +1532,11 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
 
+                if (uploadParameter.getCourseId() > 0 && uploadParameter.getCourseTaskType() > 0){
+                    taskParams.put("CourseId",uploadParameter.getCourseId());
+                    taskParams.put("CourseTaskType",uploadParameter.getCourseTaskType());
+                }
+
                 //判断是不是任务单和听说课的多选
                 int taskType = uploadParameter.getTaskType();
                 if (taskType == StudyTaskType.TASK_ORDER
@@ -1547,6 +1556,10 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                                 taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
                             } else if (taskType == StudyTaskType.Q_DUBBING) {
                                 taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
+                            }
+                            if (lookResDtos.get(0).getCourseId() > 0 && lookResDtos.get(0).getCourseTaskType() > 0){
+                                taskParams.put("CourseId",lookResDtos.get(0).getCourseId());
+                                taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
                         } else if (lookResDtos.size() > 1){
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
@@ -1671,6 +1684,10 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         lookObject.put("Deleted", lookDto.isDeleted());
                         lookObject.put("Author", lookDto.getAuthor() == null ? "" : lookDto.getAuthor());
                         lookObject.put("ResCourseId",lookDto.getResCourseId());
+                        if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
+                            lookObject.put("CourseId",lookDto.getCourseId());
+                            lookObject.put("CourseTaskType",lookDto.getCourseTaskType());
+                        }
                         lookResArray.put(lookObject);
                     }
                 }

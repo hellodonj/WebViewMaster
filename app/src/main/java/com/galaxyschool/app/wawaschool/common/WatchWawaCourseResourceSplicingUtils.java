@@ -393,6 +393,14 @@ public class WatchWawaCourseResourceSplicingUtils {
             tag.setResCourseId(Integer.valueOf(vo.getChapterId()));
         }
         tag.setPoint(vo.getPoint());
+        if (!TextUtils.isEmpty(vo.getCourseId())) {
+            tag.setCourseId(Integer.valueOf(vo.getCourseId()));
+            if (vo.getSourceType() == 0){
+                tag.setCourseTaskType(1);
+            } else {
+                tag.setCourseTaskType(vo.getSourceType());
+            }
+        }
         return tag;
     }
 

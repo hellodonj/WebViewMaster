@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_statistic_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <com.lqwawa.apps.views.DrawPointView
+        android:id="@+id/spot_view"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="10dp"
+        app:pointShape="square"
+        app:pointWideth="15dp"/>
+
+    <TextView
+        android:id="@+id/tv_score_range"
+        style="@style/txt_wawa_normal_black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        tools:text="90-100分"/>
+
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginRight="5dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/min_padding"
+        android:singleLine="true"
+        android:textColor="@color/text_dark_gray"
+        android:textSize="14sp"
+        tools:text="90-100分"/>
+
+    <ImageView
+        android:id="@+id/iv_arrow_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/arrow_right"/>
+
+</LinearLayout>

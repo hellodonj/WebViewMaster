@@ -239,6 +239,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
+        <activity android:name=".LearningStatisticActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:hardwareAccelerated="true"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity
             android:name=".ReporterIdentityActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

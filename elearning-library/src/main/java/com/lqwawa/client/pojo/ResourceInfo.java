@@ -32,7 +32,24 @@ public class ResourceInfo implements Parcelable,Serializable{
     private int completionMode = 1;//1 复述课件 2 复述课件+语音评测 3 语音评测
     private int resPropertyMode = 2; //1 自动评测 2 人工评测
     private int ResPropType;//1 任务单自动批阅 2 q配音按句配音 3 q配音通篇配音
+    private int courseId;
+    private int courseTaskType;
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getCourseTaskType() {
+        return courseTaskType;
+    }
+
+    public void setCourseTaskType(int courseTaskType) {
+        this.courseTaskType = courseTaskType;
+    }
     public int getResPropType() {
         return ResPropType;
     }

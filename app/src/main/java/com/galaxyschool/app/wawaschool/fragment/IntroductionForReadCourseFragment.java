@@ -1320,6 +1320,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             courseData.resourceurl = dto.getResUrl();
             uploadParameter.setResPropType(dto.getResPropType());
             uploadParameter.setResCourseId(dto.getResCourseId());
+            uploadParameter.setCourseId(dto.getCourseId());
+            uploadParameter.setCourseTaskType(dto.getCourseTaskType());
             String resId = dto.getResId();
             if (!TextUtils.isEmpty(resId)) {
                 if (resId.contains("-")) {
@@ -1439,6 +1441,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
             lookResDto.setResPropertyMode(info.getResPropertyMode());
             lookResDto.setCompletionMode(info.getCompletionMode());
+            lookResDto.setCourseTaskType(info.getCourseTaskType());
+            lookResDto.setCourseId(info.getCourseId());
             lookResDtos.add(lookResDto);
         }
         for (int i = 0, len = readWriteData.size() - 1; i < len; i++) {
@@ -1468,6 +1472,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             }
             lookResDto.setResPropertyMode(info.getResPropertyMode());
             lookResDto.setCompletionMode(info.getCompletionMode());
+            lookResDto.setCourseTaskType(info.getCourseTaskType());
+            lookResDto.setCourseId(info.getCourseId());
             lookResDtos.add(lookResDto);
         }
         return lookResDtos;
@@ -1498,6 +1504,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 infoTag.setResPropertyMode(info.getResPropertyMode());
                 infoTag.setCompletionMode(info.getCompletionMode());
                 infoTag.setResPropType(info.getResPropType());
+                infoTag.setCourseId(info.getCourseId());
+                infoTag.setCourseTaskType(info.getCourseTaskType());
                 resourceInfoTags.add(infoTag);
             }
         }
@@ -2549,7 +2557,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
-
+                if (uploadParameter.getCourseId() > 0 && uploadParameter.getCourseTaskType() > 0){
+                    taskParams.put("CourseId",uploadParameter.getCourseId());
+                    taskParams.put("CourseTaskType",uploadParameter.getCourseTaskType());
+                }
                 //判断是不是任务单和听说课的多选
                 int taskType = uploadParameter.getTaskType();
                 if (taskType == StudyTaskType.TASK_ORDER
@@ -2567,6 +2578,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                                 taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
                             } else if (taskType == StudyTaskType.Q_DUBBING) {
                                 taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
+                            }
+                            if (lookResDtos.get(0).getCourseId() > 0 && lookResDtos.get(0).getCourseTaskType() > 0){
+                                taskParams.put("CourseId",lookResDtos.get(0).getCourseId());
+                                taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
                         } else if (lookResDtos.size() > 1) {
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
@@ -2689,6 +2704,10 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                         lookObject.put("Deleted", lookDto.isDeleted());
                         lookObject.put("Author", lookDto.getAuthor() == null ? "" : lookDto.getAuthor());
                         lookObject.put("ResCourseId", lookDto.getResCourseId());
+                        if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
+                            lookObject.put("CourseId",lookDto.getCourseId());
+                            lookObject.put("CourseTaskType",lookDto.getCourseTaskType());
+                        }
                         lookResArray.put(lookObject);
                     }
                 }

@@ -1839,4 +1839,39 @@
     <string name="str_repeat_role_info">同一个班级内学生不允许有多重角色</string>
     <string name="str_go_to_pay">前往支付</string>
     <string name="str_not_required">(非必选)</string>
+
+    <string name="str_learning_statistic">学习统计</string>
+    <string name="str_normal_homework_statistic">平时作业统计</string>
+    <string name="str_test_statistic">测试统计</string>
+    <string name="str_exam_statistic">考试统计</string>
+    <string-array name="array_grade_detail">
+        <item>优秀</item>
+        <item>良好</item>
+        <item>及格</item>
+        <item>不及格</item>
+    </string-array>
+
+    <string name="str_homework_intro_rate">作业布置率</string>
+    <string name="str_homework_mark_rate">作业批阅率</string>
+    <string name="str_homework_complete_rate">作业完成率</string>
+    <string-array name="array_intro_detail">
+        <item>已布置</item>
+        <item>未布置</item>
+    </string-array>
+
+    <string-array name="array_mark_detail">
+        <item>已批阅</item>
+        <item>未批阅</item>
+    </string-array>
+
+    <string-array name="array_complete_detail">
+        <item>已完成</item>
+        <item>未完成</item>
+    </string-array>
+
+    <string name="str_total_res">共%d个资源</string>
+    <string name="str_need_mark_homework_count">需批阅%d个作业</string>
+    <string name="str_need_commit_homework_count">需提交%d个作业</string>
+    <string name="str_complete_rate_detail">已布置%1$d个作业,班级人数%2$d个</string>
+    <string name="str_task_num">%d个</string>
 </resources>
