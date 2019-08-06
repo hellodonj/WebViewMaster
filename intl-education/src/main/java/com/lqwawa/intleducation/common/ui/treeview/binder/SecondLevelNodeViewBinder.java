@@ -108,20 +108,22 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         mIvPlayIcon.setVisibility(extras.isVideoCourse() ? View.VISIBLE : View.GONE);
 
         if (extras.isNeedFlagRead() && vo.isIsRead()) {
-            if (EmptyUtil.isNotEmpty(vo.getPoint())){
-                mTvScore.setText(vo.getPoint());
+            if (EmptyUtil.isNotEmpty(vo.getScore())){
+                mTvScore.setText( String.format(UIUtil.getString(R.string.label_exam_test_score), vo.getScore()));
+                mTvScore.setVisibility(View.VISIBLE);
+                mIvNeedCommit.setVisibility(View.GONE);
             }else {
                 mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
+                mTvScore.setVisibility(View.GONE);
+                mIvNeedCommit.setVisibility(View.VISIBLE);
             }
-
-
         } else {
             int resId = extras.isVideoCourse() ? 0 : R.drawable.ic_need_to_commit;
+            mIvNeedCommit.setVisibility(View.VISIBLE);
             mIvNeedCommit.setImageResource(resId);
         }
-//        Log.e(TAG, "bindView: " +  vo.name  + mChoiceMode);
 
-        if (!mChoiceMode) {
+        if (!mChoiceMode && EmptyUtil.isEmpty(vo.getScore())) {
             int taskType = vo.getTaskType();
             if (taskType == 1 || taskType == 4) {
                 // 看课件 视频课

@@ -86,8 +86,8 @@ public class SectionResListVo extends BaseVo {
     private String thumbnail;
     private String linkCourseName;
     private int linkCourseId;
-
-
+    private String score;
+    private int sourceType;
 
     public String getTaskId() {
         return taskId;
@@ -365,6 +365,22 @@ public class SectionResListVo extends BaseVo {
 
     public void setLinkCourseId(int linkCourseId) {
         this.linkCourseId = linkCourseId;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public int getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(int sourceType) {
+        this.sourceType = sourceType;
     }
 
     public SectionResListVo setViewCount(int viewCount) {

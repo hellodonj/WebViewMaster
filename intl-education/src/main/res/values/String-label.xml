@@ -571,4 +571,5 @@
         <item>读写测试</item>
         <item>听说测试</item>
     </string-array>
+    <string name="label_exam_test_score">%s分</string>
 </resources>
