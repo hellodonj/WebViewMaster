@@ -515,12 +515,14 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
                     boolean isTeacher = UserHelper.isTeacher(mRoles);
                     boolean isResult = isTeacher || mClassCourseParams.isHeadMaster();
                     boolean isParent = UserHelper.isParent(mRoles);
+                    boolean isStudent = UserHelper.isStudent(mRoles);
 
                     boolean isAuthorized = checkAuthorizedInfo(entity.getFirstLabelId());
                     CourseDetailParams params = new CourseDetailParams(mSchoolId, mClassId, mClassName, isAuthorized);
                     params.setClassTeacher(isResult);
                     // 优先老师处理
                     params.setClassParent(!isResult && isParent);
+                    params.setClassStudent(!isResult && !isParent && isStudent);
 
                     // CourseDetailsActivity.start(ClassCourseActivity.this , courseId, true, UserHelper.getUserId(),params);
 

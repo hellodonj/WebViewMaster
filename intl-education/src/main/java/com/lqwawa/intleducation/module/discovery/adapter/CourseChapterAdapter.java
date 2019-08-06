@@ -617,7 +617,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             if (isTeacher && !mTeacherVisitor) {
                 holder.tvPrice.setVisibility(View.INVISIBLE);
             } else {
-                if (!(vo.getPrice() == 0) && !isCourseSelect) {
+                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                //三习教案章节上不显示价格，不显示“已购”
+                if (!(vo.getPrice() == 0) && !isCourseSelect && libraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
                     // 是已经加入课程显示的 并且不是免费的
                     // 不是学习任务选择
                     // V5.9后期，未加入也显示价格

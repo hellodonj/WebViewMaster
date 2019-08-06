@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
@@ -45,6 +46,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseIntroduceVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -214,16 +216,29 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             // 学习统计
             // UIUtil.showToastSafe("学习统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
-            String classId = mCourseDetailParams.getClassId();
-            LearningStatisticsActivity.show(getActivity(), UIUtil.getString(R.string.title_learning_statistics), classId, mCourseId, 0, mCourseDetailParams);
+            if (mCourseDetailParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN){
+                if ( mCourseDetailParams.isClassTeacher()){
+                    ToastUtil.showToast(getContext(),"老师 三习教案的学习统计");
+                } else if (!mCourseDetailParams.isClassTeacher() && !mCourseDetailParams.isClassParent() && mCourseDetailParams.isClassStudent()) {
+                    ToastUtil.showToast(getContext(), "学生 三习教案的学习统计");
+                }
+            }else {
+                String classId = mCourseDetailParams.getClassId();
+                LearningStatisticsActivity.show(getActivity(), UIUtil.getString(R.string.title_learning_statistics), classId, mCourseId, 0, mCourseDetailParams);
+            }
         } else if (viewId == R.id.btn_course_statistics) {
             // 课程统计
             // UIUtil.showToastSafe("课程统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
-            String classId = mCourseDetailParams.getClassId();
-            CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
-            params.setCourseParams(mCourseDetailParams);
-            CourseStatisticsActivity.show(getActivity(), params);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+
+                ToastUtil.showToast(getContext(),"三习教案的课程统计");
+            } else {
+                String classId = mCourseDetailParams.getClassId();
+                CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
+                params.setCourseParams(mCourseDetailParams);
+                CourseStatisticsActivity.show(getActivity(), params);
+            }
         }
     }
 
@@ -440,6 +455,13 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
+        } else if (courseParams.isClassCourseEnter() &&
+                courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&
+                !courseParams.isClassParent() && courseParams.isClassStudent()) {
+            //三习教案 班级学程进入，不是家长，是学生；显示学习统计
+            mBottomLayout.setVisibility(View.VISIBLE);
+            mBtnCourseStatistics.setVisibility(View.GONE);
+            LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
         } else {
             LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
         }
