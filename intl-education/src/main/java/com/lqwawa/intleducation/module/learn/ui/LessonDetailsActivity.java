@@ -86,6 +86,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
 
+
     /**
      * @param activity               启动此界面的activity
      * @param courseId               课程id
@@ -522,6 +523,11 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;
         }
+//        for (int i = 0; i < choiceArray.size(); i++) {
+//            SectionResListVo resListVo = choiceArray.get(i);
+//            resListVo.setCourseId(courseId);
+//            resListVo.setSourceType(TYPE_HOMEWORK);
+//        }
         // 添加到作业库中
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             // 默认看课件

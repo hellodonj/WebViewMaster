@@ -30,8 +30,31 @@ public class SxExamDetailVo {
             @SerializedName("data")
             public List<SectionResListVo> data;
 
+            public int getTaskType() {
+                return taskType;
+            }
 
-//            public class DetailVo {
+            public void setTaskType(int taskType) {
+                this.taskType = taskType;
+            }
+
+            public String getTaskName() {
+                return taskName;
+            }
+
+            public void setTaskName(String taskName) {
+                this.taskName = taskName;
+            }
+
+            public List<SectionResListVo> getData() {
+                return data;
+            }
+
+            public void setData(List<SectionResListVo> data) {
+                this.data = data;
+            }
+
+            //            public class DetailVo {
 //
 //                @SerializedName("taskId")
 //                public int taskId;

@@ -69,6 +69,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     public static String SECTION_NAME = "section_name";
     public static String SECTION_TITLE = "section_title";
     public static String STATUS = "status";
+    private static final int TYPE_HOMEWORK = 0;
 
     private GridView mListView;
     private CourseEmptyView mEmptyLayout;
@@ -382,6 +383,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                 vo.setTaskName(getTaskName(index));
                                 vo.setChapterId(vo.getId());
                                 vo.setTaskType(listVo.getTaskType());
+                                vo.setCourseId(courseId);
+                                vo.setSourceType(TYPE_HOMEWORK);
                                 if(mTaskType == 5){
                                     // 讲解课的显示Fragment
                                     // vo.setResProperties("");

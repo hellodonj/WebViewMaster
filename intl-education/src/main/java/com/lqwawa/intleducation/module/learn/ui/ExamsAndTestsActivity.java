@@ -177,11 +177,6 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                 } else {
                     // 学程馆选取资源使用的
-                    for (int i = 0; i < selectedTask.size(); i++) {
-                        SectionResListVo resListVo = selectedTask.get(i);
-                        resListVo.setCourseId(courseId);
-                        resListVo.setSourceType(sourceType);
-                    }
                     EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
                     //数据回传
                     setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
@@ -248,6 +243,25 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
+        for (int index = 0; index < taskList.size(); index++) {
+            SxExamDetailVo.TaskListVO taskListVO = taskList.get(index);
+            //不在执行循环体里continue后面的语句而是跳到下一个循环入口处执行下一个循环
+            if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
+            TreeNode treeNode = new TreeNode(taskListVO);
+            treeNode.setLevel(0);
+            for (SectionResListVo datum : taskListVO.getData()) {
+                datum.setTaskType(taskListVO.getTaskType());
+                datum.setTaskName(taskListVO.getTaskName());
+                datum.setChapterId(datum.getId());
+                datum.setCourseId(courseId);
+                datum.setSourceType(sourceType);
+                TreeNode treeNode1 = new TreeNode(datum);
+                treeNode1.setExtras(extrasVo);
+                treeNode1.setLevel(1);
+                treeNode.addChild(treeNode1);
+            }
+            root.addChild(treeNode);
+        }
         for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
             if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
@@ -437,17 +451,10 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     }
 
     private int confirmResourceCart(List<SectionResListVo> choiceArray) {
-        // UIUtil.showToastSafe("确定所有作业库中的资源");
         // 获取指定Tab所有的选中的作业库资源
-//        Log.e(TAG, "confirmResourceCart: " + choiceArray.size());
         if (EmptyUtil.isEmpty(choiceArray)) {
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;
-        }
-        for (int i = 0; i < choiceArray.size(); i++) {
-            SectionResListVo resListVo = choiceArray.get(i);
-            resListVo.setCourseId(courseId);
-            resListVo.setSourceType(sourceType);
         }
         // 添加到作业库中
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
