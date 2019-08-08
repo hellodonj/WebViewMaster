@@ -1884,4 +1884,9 @@
     <string name="str_already_intro">已布置:</string>
     <string name="str_already_complete">已完成:</string>
     <string name="str_intro_detail">%1$d个作业, %2$d个测试,%3$d个考试</string>
+    <string name="str_activation">激活</string>
+    <string name="str_activation_course_please">请参加或激活课程!</string>
+    <string name="str_no_activation_lqCourse_shop_for_student">此任务来源于《%s》课程，请激活此课程后提交任务。</string>
+    <string name="str_no_activation_lqCourse_shop_for_parent">此任务来源于《%1$s》课程，请使用学生账号%2$s
+        激活此课程后提交学习任务。</string>
 </resources>

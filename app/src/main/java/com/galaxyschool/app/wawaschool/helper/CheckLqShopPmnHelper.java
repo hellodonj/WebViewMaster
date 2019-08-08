@@ -35,6 +35,8 @@ public class CheckLqShopPmnHelper {
     private CallbackListener listener;
     private String classId;
     private String schoolId;
+    private boolean isSanxi;
+    private String courseId;
 
     public interface FromType {
         //学习任务详细
@@ -145,6 +147,8 @@ public class CheckLqShopPmnHelper {
                     JSONObject dataJsonObject = new JSONObject(jsonString);
                     boolean hasPermission = dataJsonObject.optBoolean("permission");
                     lqCourseChapterName = dataJsonObject.getString("courseName");
+                    isSanxi = dataJsonObject.optBoolean("isSanxi");
+                    courseId = dataJsonObject.getString("courseId");
                     if (fromType == FromType.FROM_STUDYTASK_DETAIL) {
                         listener.onBack(!hasPermission);
                     } else if (fromType == FromType.FROM_LQBLOARD_SEND) {
@@ -165,17 +169,31 @@ public class CheckLqShopPmnHelper {
 
     public void popBuyLqCourseShopResource(UserInfo stuUserInfo, final CallbackListener listener) {
         String confirmButtonText = activity.getString(R.string.buy_immediately);
+        if (isSanxi){
+            confirmButtonText = activity.getString(R.string.str_activation);
+        }
         String titleText = activity.getString(R.string.buy_course_please);
+        if (isSanxi){
+            titleText = activity.getString(R.string.str_activation_course_please);
+        }
         if (roleType == RoleType.ROLE_TYPE_PARENT) {
             if (!TextUtils.isEmpty(lqCourseChapterName) && stuUserInfo != null) {
                 titleText = activity.getString(R.string.str_no_buy_lqCourse_shop_for_parent,
                         lqCourseChapterName, stuUserInfo.getNickName());
+                if (isSanxi){
+                    titleText = activity.getString(R.string.str_no_activation_lqCourse_shop_for_parent,
+                            lqCourseChapterName, stuUserInfo.getNickName());
+                }
             }
             confirmButtonText = activity.getString(R.string.str_ok);
         } else {
             if (!TextUtils.isEmpty(lqCourseChapterName)) {
                 titleText = activity.getString(R.string.str_no_buy_lqCourse_shop_for_student,
                         lqCourseChapterName);
+                if (isSanxi){
+                    titleText = activity.getString(R.string.str_no_activation_lqCourse_shop_for_student,
+                            lqCourseChapterName);
+                }
             }
             if (fromType == FromType.FROM_LQBLOARD_SEND) {
                 confirmButtonText = activity.getString(R.string.str_ok);
@@ -198,7 +216,9 @@ public class CheckLqShopPmnHelper {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if (fromType == FromType.FROM_STUDYTASK_DETAIL) {
-                            if (listener != null) {
+                            if (isSanxi){
+                                popActivationPopDialog();
+                            } else if (listener != null){
                                 listener.onBack(true);
                             }
                         }
@@ -206,5 +226,9 @@ public class CheckLqShopPmnHelper {
                 });
         messageDialog.setMessageGravity(Gravity.START);
         messageDialog.show();
+    }
+
+    private void popActivationPopDialog(){
+
     }
 }
