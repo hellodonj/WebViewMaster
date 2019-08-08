@@ -9,28 +9,13 @@ import android.view.View;
 
 public class MultistageProgress extends View {
 
-    private Paint backgroundPaint, progressPaint, linePaint;//背景和进度条画笔
+    private Paint backgroundPaint, progressPaint;//背景和进度条画笔
     private Rect progressRect = new Rect();//进度条;
     private Rect backgroundRects[];//背景矩形区域
-    private float weights[];//每个区域的权重
+    private int weights[];//每个区域的权重
     private int colors[];//颜色
     private float totalWeight;//总的权重
-    public static final int DEF_COLORS[];//默认背景颜色数组
-    public static final float DEF_WEIGHTS[];//每段对应的权重
-    private float progress = 10, maxProgress = 100;//进度和最大进度
-
-    static {
-        DEF_COLORS = new int[]{
-                Color.parseColor("#00B6D0"),
-                Color.parseColor("#0198AE"),
-                Color.parseColor("#008396"),
-                Color.parseColor("#007196"),
-                Color.parseColor("#005672")
-        };
-        DEF_WEIGHTS = new float[]{
-                10, 20, 20, 10, 40
-        };
-    }
+    private float progress = 0, maxProgress = 100;//进度和最大进度
 
     public float getProgress() {
         return progress;
@@ -66,13 +51,7 @@ public class MultistageProgress extends View {
         backgroundPaint.setColor(Color.RED);
         progressPaint = new Paint();
         progressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        progressPaint.setColor(Color.parseColor("#d9d9d9"));
-        linePaint = new Paint();
-        linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        linePaint.setColor(Color.parseColor("#e7eaf0"));
-        linePaint.setStrokeWidth(2);
-        setColors(DEF_COLORS, DEF_WEIGHTS);
-
+        progressPaint.setColor(Color.parseColor("#ffffff"));
     }
 
     /**
@@ -86,11 +65,10 @@ public class MultistageProgress extends View {
 
     /**
      * 设置每一段的颜色以及对应的权重
-     *
-     * @param colors
+     *  @param colors
      * @param weights
      */
-    public void setColors(int[] colors, float weights[]) {
+    public void setColors(int[] colors, int[] weights) {
         if (colors == null || weights == null) {
             throw new NullPointerException("colors And weights must be not null");
         }
@@ -105,6 +83,7 @@ public class MultistageProgress extends View {
             totalWeight += weights[i];
             backgroundRects[i] = new Rect();
         }
+        invalidate();
     }
 
     @Override
@@ -129,16 +108,6 @@ public class MultistageProgress extends View {
         }
         progressRect.set(0, 0, progressX, getHeight());//设置进度条区域
         canvas.drawRect(progressRect, progressPaint);//绘制进度条
-        for (int i = 0, lineX = 0; i < colors.length; i++) {
-            int width = (int) (getWidthForWeight(weights[i], totalWeight));
-            //绘制矩形块之间的分割线
-            lineX = lineX + width;
-            if (lineX < progressX) {//给已经走过了的区域画上竖线
-                canvas.drawLine(lineX, 0, lineX, getHeight(), linePaint);
-            }
-        }
-
-
     }
 
     /**

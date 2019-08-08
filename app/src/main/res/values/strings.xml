@@ -1874,4 +1874,14 @@
     <string name="str_need_commit_homework_count">需提交%d个作业</string>
     <string name="str_complete_rate_detail">已布置%1$d个作业,班级人数%2$d个</string>
     <string name="str_task_num">%d个</string>
+    <string name="str_uncomplete_statistic">未完成统计</string>
+
+    <string name="str_un_mark">未批阅</string>
+    <string name="str_un_complete">未完成</string>
+    <string name="str_detail">详情</string>
+    <string name="str_total_homework_mark">共%d个作业已批阅</string>
+    <string name="str_student_complete_hint">布置任务完成率:</string>
+    <string name="str_already_intro">已布置:</string>
+    <string name="str_already_complete">已完成:</string>
+    <string name="str_intro_detail">%1$d个作业, %2$d个测试,%3$d个考试</string>
 </resources>

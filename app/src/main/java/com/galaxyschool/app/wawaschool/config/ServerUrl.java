@@ -1154,4 +1154,9 @@ public class ServerUrl {
      * 拉取作业完成率统计
      */
     public static final String GET_TASK_COMPLETE_RATE_BASE_URL = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetTaskCompleteRate";
+
+    /**
+     * 拉取详细学习成绩统计
+     */
+    public static final String GET_TASK_DETAIL_STATIS_BASE_URL = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetTaskDetaileStatis";
 }

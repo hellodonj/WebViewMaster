@@ -12,26 +12,102 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_head_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/text_white"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/ll_task_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/shape_white_rectrangle"
         android:orientation="vertical"
+        android:padding="10dp"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/tv_task_detail"
-            android:text=""
-            android:textColor="@color/text_black"
-            android:textSize="16sp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_student_complete_hint"
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_complete_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="0%"
+                android:textColor="@color/text_green"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center|left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_already_intro"
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_already_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center|left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_already_complete"
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_already_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_root_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
