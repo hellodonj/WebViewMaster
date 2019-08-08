@@ -348,36 +348,36 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         });
         switchButton = (SwitchButton) findViewById(R.id.sb_btn);
         switchButton.setOnCheckedChangeListener((view,check) -> {
-            LearningStatisticActivity.start(getActivity(),1228,"课程统计","5035fae2-2f1c-4e23-8f0f" +
-                    "-a99d01132b2b",0,null);
+//            LearningStatisticActivity.start(getActivity(),1228,"课程统计","5035fae2-2f1c-4e23-8f0f" +
+//                    "-a99d01132b2b",0,null);
             //切换模式
-//            HomeActivity activity = null;
-//            if (getActivity() instanceof HomeActivity){
-//                activity = (HomeActivity) getActivity();
-//            }
-//            if (check) {
-//                boolean hasEnabled = DemoApplication.getInstance().getPrefsManager()
-//                        .isAssistantModelTipEnable();
-//                if (hasEnabled) {
-//                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_open_assistant_model);
-//                } else {
-//                    AssistantModelTipsDialog dialog = new AssistantModelTipsDialog(getActivity());
-//                    dialog.setCancelable(true);
-//                    dialog.show();
-//                }
-//                //帮辅模式
-//                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,true);
-//                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
-//                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
-//            } else {
-//                TipMsgHelper.ShowMsg(getActivity(), R.string.str_exit_assistant_model);
-//                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
-//                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
-//                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
-//            }
-//            if (activity != null) {
-//                activity.updateBottomViewText();
-//            }
+            HomeActivity activity = null;
+            if (getActivity() instanceof HomeActivity){
+                activity = (HomeActivity) getActivity();
+            }
+            if (check) {
+                boolean hasEnabled = DemoApplication.getInstance().getPrefsManager()
+                        .isAssistantModelTipEnable();
+                if (hasEnabled) {
+                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_open_assistant_model);
+                } else {
+                    AssistantModelTipsDialog dialog = new AssistantModelTipsDialog(getActivity());
+                    dialog.setCancelable(true);
+                    dialog.show();
+                }
+                //帮辅模式
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,true);
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_TUTORIAL_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            } else {
+                TipMsgHelper.ShowMsg(getActivity(), R.string.str_exit_assistant_model);
+                SPUtil.getInstance().put(SharedConstant.KEY_APPLICATION_MODE,false);
+                EventBus.getDefault().post(new EventWrapper(TutorialSpaceBoxFragment.KEY_COURSE_MODE_ID,
+                        EventConstant.TRIGGER_SWITCH_APPLICATION_MODE));
+            }
+            if (activity != null) {
+                activity.updateBottomViewText();
+            }
         });
     }
 
