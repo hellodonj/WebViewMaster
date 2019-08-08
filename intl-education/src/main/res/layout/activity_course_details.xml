@@ -538,6 +538,17 @@
             android:scaleType="center"
             android:text="@string/buy_immediately"
             android:visibility="gone"/>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/join_tv"
+        style="@style/text_white_xl"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorDarkRed"
+        android:gravity="center"
+        android:text="@string/join_immediately"
+        android:visibility="gone"/>
 
 </LinearLayout>

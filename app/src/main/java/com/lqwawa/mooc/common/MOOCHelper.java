@@ -16,6 +16,7 @@ import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
 import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
+import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
@@ -102,6 +103,7 @@ public class MOOCHelper {
     protected static ProgressDialog progressDialog;
 
     public static void init(UserInfo userInfo) {
+        TaskSliderHelper.onLearnStatisticListener = onLearnStatisticListener;
         TaskSliderHelper.onPlayListListener = onPlayListListener;
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
         TaskSliderHelper.onWorkCartListener = onWorkCartListener;
@@ -184,6 +186,19 @@ public class MOOCHelper {
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             ResourcesPlayUtils.getInstance().onActivityResult(requestCode,resultCode,data);
+        }
+    };
+
+    private static TaskSliderHelper.OnLearnStatisticListener onLearnStatisticListener
+            = new TaskSliderHelper.OnLearnStatisticListener() {
+        @Override
+        public void enterCourseStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull Bundle bundle) {
+            LearningStatisticActivity.start(activity,courseId,courseName,classId,bundle);
+        }
+
+        @Override
+        public void enterLearnStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull int roleType, @NonNull String studentId) {
+            LearningStatisticActivity.start(activity,courseId,courseName,classId,roleType,studentId);
         }
     };
 
