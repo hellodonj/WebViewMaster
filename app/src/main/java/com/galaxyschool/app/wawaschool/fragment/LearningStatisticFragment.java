@@ -2,7 +2,6 @@ package com.galaxyschool.app.wawaschool.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +9,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.ReMarkTaskListActivity;
 import com.galaxyschool.app.wawaschool.StudentMemberListActivity;
 import com.galaxyschool.app.wawaschool.adapter.StatisticDetailAdapter;
 import com.galaxyschool.app.wawaschool.adapter.StudentListAdapter;
@@ -43,7 +43,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
         return fragment;
     }
 
-    private NestedScrollView scrollView;
+    private ScrollView scrollView;
     private PieView pieView;
     private TextView markDetailTextV;
     private TextView completeDetailView;
@@ -123,7 +123,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
         pieView = (PieView) findViewById(R.id.pie_view);
         markDetailTextV = (TextView) findViewById(R.id.tv_mark_detail);
         completeDetailView = (TextView) findViewById(R.id.tv_complete_detail);
-        scrollView = (NestedScrollView) findViewById(R.id.scroll_view);
+        scrollView = (ScrollView) findViewById(R.id.scroll_view);
         studentListRV = (RecyclerView) findViewById(R.id.rv_student_list);
         if (isTeacherLook()) {
             scrollView.setVisibility(View.GONE);
@@ -360,9 +360,14 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
     private void updateAdapter() {
         detailAdapter = new StatisticDetailAdapter(beanList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
-//                DividerItemDecoration.VERTICAL));
+        recyclerView.setNestedScrollingEnabled(false);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            public boolean canScrollVertically() {
+                return super.canScrollVertically();
+            }
+        };
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(detailAdapter);
         detailAdapter.setOnItemClick(this::onItemClick);
     }
@@ -388,7 +393,9 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private void enterMarkDetailActivity(int position) {
-
+        if (position == 1){
+            ReMarkTaskListActivity.start(getActivity());
+        }
     }
 
     private void enterCompleteDetailActivity(int position) {

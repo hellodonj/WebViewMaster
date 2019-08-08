@@ -5,7 +5,7 @@
               android:background="@color/main_bg_color"
               android:orientation="vertical">
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/separate_20dp"
                 android:gravity="center|left"
+                android:layout_marginLeft="@dimen/separate_20dp"
                 android:textColor="@color/text_black"
                 android:textSize="14sp"
                 android:visibility="gone"/>
@@ -55,21 +56,21 @@
                 android:layout_marginRight="@dimen/separate_20dp"
                 android:background="@color/line_gray"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
-                <com.galaxyschool.app.wawaschool.views.MyRecycleView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"/>
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_student_list"
