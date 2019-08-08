@@ -67,7 +67,8 @@ public class ChapterVo extends BaseVo {
     protected boolean isChoosed;
     //教案类型 1：预习 2:练习 3：复习
     private int exerciseType;
-
+    //true 没锁  false锁住了
+    private boolean isUnlock;
 
     public boolean isContainAssistantWork() {
         return containAssistantWork;
@@ -443,5 +444,13 @@ public class ChapterVo extends BaseVo {
 
     public void setExerciseType(int exerciseType) {
         this.exerciseType = exerciseType;
+    }
+
+    public boolean isUnlock() {
+        return isUnlock;
+    }
+
+    public void setUnlock(boolean unlock) {
+        isUnlock = unlock;
     }
 }

@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -10,10 +11,14 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
@@ -21,9 +26,13 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.NumberTool;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
+import com.lqwawa.intleducation.base.vo.RequestVo;
+import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.Common;
+import com.lqwawa.intleducation.common.ui.ContactsMessageDialog;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
@@ -46,10 +55,15 @@ import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.osastudio.common.utils.TipMsgHelper;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.lqwawa.intleducation.common.utils.UIUtil.getString;
 
 /**
  * Created by XChen on 2016/11/14.
@@ -71,6 +85,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     boolean needFlagRead;
     private OnContentChangedListener listener;
     private String courseId;
+    private String classId;
     private boolean isCourseSelect;
     private CourseVo courseVo;
     private CourseDetailParams courseDetailParams;
@@ -102,14 +117,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.mOnSelectListener = selectListener;
     }
 
-    public CourseChapterAdapter(Activity activity, String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
-        this(activity, courseId, needFlagRead, listener);
+    public CourseChapterAdapter(Activity activity, String classId,String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
+        this(activity, classId,courseId, needFlagRead, listener);
         this.isOnlineTeacher = isOnlineTeacher;
     }
 
-    public CourseChapterAdapter(Activity activity, String courseId, boolean needFlagRead, OnContentChangedListener listener) {
+    public CourseChapterAdapter(Activity activity, String classId,String courseId, boolean needFlagRead, OnContentChangedListener listener) {
         this.activity = activity;
         this.courseId = courseId;
+        this.classId = classId;
         this.needFlagRead = needFlagRead;
         this.listener = listener;
         this.inflater = LayoutInflater.from(activity);
@@ -181,6 +197,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.mTvLessonState.setVisibility(View.VISIBLE);
                 holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.textGray));
                 holder.lessonNameTv.setTextSize(TypedValue.COMPLEX_UNIT_PX, DisplayUtil.sp2px(activity, 14));
+                //如果是班级学程进入 三习教案 --测试 则显示锁
+                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    int examType = list.get(position).getExamType();
+                    boolean isUnLock = list.get(position).isUnlock();
+                    holder.lockTestCb.setVisibility(examType == TYPE_EXAM ? View.VISIBLE : View.GONE);
+                    holder.lockTestCb.setChecked(!isUnLock);
+                }
                 if (vo.getType() == TYPE_CWORK) {//测验
                     // @date   :2018/4/24 0024 下午 2:12
                     // @func   :测验缩进
@@ -356,8 +380,29 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             StringUtils.getSectionNumString(activity, vo.getSectionName(), vo.getWeekNum())
                                     + "  " + vo.getName());*/
 
-
                     holder.lessonNameTv.setText(vo.getName());
+                    holder.lockTestCb.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ChapterVo chapterVo = list.get(position);
+                            if (!chapterVo.isUnlock()){
+                                return;
+                            }
+                            if (role == UserHelper.MoocRoleType.STUDENT ||
+                                    role == UserHelper.MoocRoleType.PARENT ) {
+                                //锁住
+                                enterExamOrTestDialog();
+                            }else {
+                                if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
+                                    //解锁
+                                    unLockDialog(classId,courseId,vo.getId());
+                                }else {
+//                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(),
+//                                            mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                                }
+                            }
+                        }
+                    });
                     holder.resRootLay.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -500,7 +545,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     UIUtil.showToastSafe(R.string.join_school_to_learn);
                                     return;
                                 }
-//                                int examType = vo.getExamType();
                                 String memberId = activity.getIntent().getStringExtra("memberId");
                                 int teacherType = handleTeacherType();
                                 CourseChapterParams courseChapterParams = new CourseChapterParams(memberId, role, teacherType, isFreeUser);
@@ -509,16 +553,35 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                                 //点击入口是三习教案馆
                                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                                    ChapterVo chapterVo = list.get(position);
-                                    int examType = chapterVo.getExamType();
-                                    //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
-                                    if (examType == TYPE_EXAM) {
-                                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
-                                    } else if (examType == TYPE_LESSON) {
-                                        //普通教案详情入口
-                                        toLessonDetailsActivity(vo, isFreeUser, true);
+                                    if (role == UserHelper.MoocRoleType.STUDENT ||
+                                            role == UserHelper.MoocRoleType.PARENT) {
+                                        ChapterVo chapterVo = list.get(position);
+                                        int examType = chapterVo.getExamType();
+                                         //锁住
+                                          if (!chapterVo.isUnlock() && examType == TYPE_EXAM){
+                                              enterExamOrTestDialog();
+                                          }else {
+                                              //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
+                                              if (examType == TYPE_EXAM) {
+                                                  ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                              } else if (examType == TYPE_LESSON) {
+                                                  //普通教案详情入口
+                                                  toLessonDetailsActivity(vo, isFreeUser, true);
+                                              }
+                                          }
+
+                                    }else {
+                                        //不是家长或者学生
+                                        ChapterVo chapterVo = list.get(position);
+                                        int examType = chapterVo.getExamType();
+                                        if (examType == TYPE_EXAM) {
+                                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                        } else if (examType == TYPE_LESSON) {
+                                            //普通教案详情入口
+                                            toLessonDetailsActivity(vo, isFreeUser, true);
+                                        }
                                     }
-                                } else {
+                                }else {
                                     toLessonDetailsActivity(vo, isFreeUser, false);
                                 }
                             }
@@ -617,7 +680,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             if (isTeacher && !mTeacherVisitor) {
                 holder.tvPrice.setVisibility(View.INVISIBLE);
             } else {
-                if (!(vo.getPrice() == 0) && !isCourseSelect) {
+                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                //三习教案章节上不显示价格，不显示“已购”
+                if (!(vo.getPrice() == 0) && !isCourseSelect && libraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
                     // 是已经加入课程显示的 并且不是免费的
                     // 不是学习任务选择
                     // V5.9后期，未加入也显示价格
@@ -736,13 +801,43 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.arrow_up_gray_ico));
             }
-            //如果是考试 则隐藏f折叠按钮
+
+            //如果是班级学程进入 三习教案  --考试 显示锁
+            int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
             int examType = list.get(position).getExamType();
-//            holder.hideLessonIv.setVisibility(examType == TYPE_EXAM ? View.GONE : View.VISIBLE);
+            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                boolean isUnLock = list.get(position).isUnlock();
+                holder.lockExamCb.setVisibility(examType == TYPE_EXAM ? View.VISIBLE : View.GONE);
+                holder.lockExamCb.setChecked(!isUnLock);
+            }
+
+            //如果是考试 则显示右箭头
             if (examType == TYPE_EXAM) {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.ic_right_arrow));
             }
+            holder.lockExamCb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ChapterVo chapterVo = list.get(position);
+                    if (!chapterVo.isUnlock()){
+                        return;
+                    }
+                    if (role == UserHelper.MoocRoleType.STUDENT ||
+                            role == UserHelper.MoocRoleType.PARENT ) {
+                        //锁住
+                        enterExamOrTestDialog();
+                    }else {
+                        if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
+                            //解锁
+                            unLockDialog(classId, courseId, vo.getId());
+                        } else {
+//                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(),
+//                                            mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                        }
+                    }
+                }
+            });
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -757,8 +852,16 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     courseChapterParams.setCourseParams(params);
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                    ChapterVo chapterVo = list.get(position);
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                        if (role == UserHelper.MoocRoleType.STUDENT ||
+                                role == UserHelper.MoocRoleType.PARENT &&
+                                        !chapterVo.isUnlock()) {
+                            //锁住
+                            enterExamOrTestDialog();
+                        } else {
+                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                        }
                     } else {
                         boolean hide = !list.get(position).isIsHide();
                         list.get(position).setIsHide(hide);
@@ -825,6 +928,84 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         return convertView;
     }
 
+    //解锁弹框
+    private void unLockDialog(String classId, String courseId, String chapterId) {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                activity, null, getString(R.string.label_exam_test_unlock_dialog)
+                , getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, getString(R.string.confirm),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        requestLockExam(classId,courseId,chapterId);
+                    }
+                }
+        );
+        messageDialog.show();
+    }
+
+    //解锁考试或者测试
+    private void requestLockExam(String classId, String courseId, String chapterId) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("courseId", courseId);
+        requestVo.addParams("chapterId", chapterId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostunlockingCourse);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(CourseChapterAdapter.class, "send request ==== " + params.getUri());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ResponseVo<String> results = JSON.parseObject(result,
+                        new TypeReference<ResponseVo<String>>() {
+                        });
+                if (results.getCode() == 0) {
+                    //开锁
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                UIUtil.showToastSafe(R.string.net_error_tip);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
+    }
+
+    //被锁提示
+    private void enterExamOrTestDialog() {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(
+                activity, null, getString(R.string.label_exam_test_lock_tip)
+                , null, null, getString(R.string.confirm),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        messageDialog.show();
+    }
+
+
     /**
      * 当显示课程小节缩进的时候,需要设置Layout Margin
      *
@@ -881,6 +1062,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         TextView tvPrice;
         ImageView hideLessonIv;
         TextView lessonAuditionTv;
+        CheckBox lockExamCb,lockTestCb;
 
         public ViewHolder(View parent) {
             lessonRootLay = (LinearLayout) parent.findViewById(R.id.lesson_root_lay);
@@ -901,6 +1083,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             lessonAuditionTv = (TextView) parent.findViewById(R.id.lesson_audition_tv);
             tvPrice = (TextView) parent.findViewById(R.id.tv_price);
             hideLessonIv = (ImageView) parent.findViewById(R.id.hide_lesson_iv);
+            lockExamCb = (CheckBox) parent.findViewById(R.id.lock_exam_cb);
+            lockTestCb = (CheckBox) parent.findViewById(R.id.lock_test_cb);
         }
     }
 

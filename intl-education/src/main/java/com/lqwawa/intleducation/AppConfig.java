@@ -987,5 +987,10 @@ public final class AppConfig {
         //六大馆标签
         public static final String GetSixLibraryLabelList =
                 ServerBase + "api/config/getSixLibraryLabelList";
+
+        //老师解锁课程
+        public static final String PostunlockingCourse =
+                ServerBase + "api/class/unlockingCourseTesting";
+
     }
 }

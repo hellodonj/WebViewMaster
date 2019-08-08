@@ -31,6 +31,8 @@ public class CourseDetailParams extends BaseVo{
     private boolean isClassTeacher;
     // 是否是班级家长
     private boolean isClassParent;
+    // 是否是学生
+    private boolean isClassStudent;
     // 是否已经加入过班级
     private boolean isJoin;
 
@@ -158,6 +160,14 @@ public class CourseDetailParams extends BaseVo{
 
     public void setClassParent(boolean classParent) {
         isClassParent = classParent;
+    }
+
+    public boolean isClassStudent() {
+        return isClassStudent;
+    }
+
+    public void setClassStudent(boolean classStudent) {
+        isClassStudent = classStudent;
     }
 
     public String getCourseId() {

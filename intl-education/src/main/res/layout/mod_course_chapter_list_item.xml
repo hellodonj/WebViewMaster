@@ -119,6 +119,16 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"/>
 
+                <CheckBox
+                    android:id="@+id/lock_exam_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/com_checkbox_lock"
+                    android:button="@null"
+                    android:clickable="false"
+                    android:visibility="gone"/>
+
                 <ImageView
                     android:id="@+id/hide_lesson_iv"
                     android:layout_width="wrap_content"
