@@ -80,7 +80,7 @@ public class StatisticNetHelper {
     public static int[] getProgressColorsValue(StatisticBean bean, boolean isWeight){
         int total = bean.getTaskTotalNum();
         if (total == 0){
-            return new int[]{Color.parseColor("#ffffff")};
+            return null;
         }
         List<Integer> allColors = getColorsList();
         ArrayList<Integer> colors = new ArrayList<>();

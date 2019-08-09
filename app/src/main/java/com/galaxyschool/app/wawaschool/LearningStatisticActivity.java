@@ -229,18 +229,20 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
             tabIndicators.add(getString(R.string.str_normal_homework_statistic));
             tabIndicators.add(getString(R.string.str_test_statistic));
             tabIndicators.add(getString(R.string.str_exam_statistic));
-        } else {
+        } else if (statisticType == STATISTIC_TYPE.COURSE_TYPE){
             //课程统计
             tabIndicators.add(getString(R.string.str_homework_intro_rate));
             tabIndicators.add(getString(R.string.str_homework_mark_rate));
-            tabIndicators.add(getString(R.string.str_homework_complete_rate));
+//            tabIndicators.add(getString(R.string.str_homework_complete_rate));
         }
         tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
                 LEARNING_TYPE.NORMAL_STATISTIC : LEARNING_TYPE.HOMEWORK_INTRO_RATE)));
         tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
                 LEARNING_TYPE.TEST_STATISTIC : LEARNING_TYPE.HOMEWORK_MARK_RATE)));
-        tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
-                LEARNING_TYPE.EXAM_STATISTIC : LEARNING_TYPE.HOMEWORK_COMPLETE_RATE)));
+        if (statisticType == STATISTIC_TYPE.LEARNING_TYPE) {
+            tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
+                    LEARNING_TYPE.EXAM_STATISTIC : LEARNING_TYPE.HOMEWORK_COMPLETE_RATE)));
+        }
         ViewCompat.setElevation(mTabTl, 10);
         mTabTl.setupWithViewPager(mContentVp);
         contentAdapter = new ContentPagerAdapter(getSupportFragmentManager());
