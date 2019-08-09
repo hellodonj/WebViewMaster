@@ -992,5 +992,10 @@ public final class AppConfig {
         public static final String PostunlockingCourse =
                 ServerBase + "api/class/unlockingCourseTesting";
 
+        //班级激活码激活三习教案
+        public static final String PostActivateSanxiCourse =
+                ServerBase + "api/courseEx/activateSanxiCourse";
+
+
     }
 }

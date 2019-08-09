@@ -12,6 +12,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
+import com.lqwawa.intleducation.module.discovery.tool.ApplyActivationHelper;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 
 import org.json.JSONException;
@@ -229,6 +230,11 @@ public class CheckLqShopPmnHelper {
     }
 
     private void popActivationPopDialog(){
-
+        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                .setActivity(activity)
+                .setClassId(classId)
+                .setCourseId(courseId)
+                .setSchoolId(schoolId);
+        applyActivationHelper.requestActivationPermission();
     }
 }

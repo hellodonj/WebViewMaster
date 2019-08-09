@@ -62,6 +62,7 @@ import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.tool.ApplyActivationHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -164,7 +165,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private TextView mTvOriginalPrice;
     private TextView textViewAddToCart;
 
-    private TextView textViewPay,textViewJoin;
+    private TextView textViewPay, textViewJoin;
     private TextView mBtnEnterPay;
 
 
@@ -219,11 +220,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     //三习教案tab
     private RadioButton mRbStudy, mRbStudyF;
     //教案评价
-    private RadioButton mRbComment,mRbCommentF;
+    private RadioButton mRbComment, mRbCommentF;
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
     private boolean isHide1;
+    private ImputAuthorizationCodeDialog imputAuthorizationCodeDialog;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -435,8 +437,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         mRbStudyF = (RadioButton) findViewById(R.id.rb_study_plan_f);
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
-        mRbComment= (RadioButton) findViewById(R.id.rb_course_comment);
-        mRbCommentF= (RadioButton) findViewById(R.id.rb_course_comment_f);
+        mRbComment = (RadioButton) findViewById(R.id.rb_course_comment);
+        mRbCommentF = (RadioButton) findViewById(R.id.rb_course_comment_f);
 
         if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
@@ -450,7 +452,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             mRbLiveF.setText(getResources().getText(R.string.label_teaching_assistant));
             mRbComment.setText(getResources().getText(R.string.label_lesson_comment));
             mRbCommentF.setText(getResources().getText(R.string.label_lesson_comment));
-        }else {
+        } else {
             mRbStudy.setText(getResources().getText(R.string.label_tab_course_chapter));
             mRbStudyF.setText(getResources().getText(R.string.label_tab_course_chapter));
             mRbLive.setText(getResources().getText(R.string.label_teach_class));
@@ -473,9 +475,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
         isFromScan = mCourseDetailParams.isFromScan();
-        //立即参加 班级课程进入 三习教案 显示
-        isHide1  = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter() &&
-                mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN ;
+        //立即参加 班级课程进入 三习教案 未激活显示
+        isHide1 = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
+                && !mCourseDetailParams.isAuthorized();
         initViews();
         initData(false);
     }
@@ -484,7 +486,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // canEdit true 代表就是孩子身份,可以看课件，做读写单相关的动作
         // canEdit false 代表就是家长身份，有些学习相关的功能，不能使用
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+//                textViewJoin.setVisibility(isHide1 ? View.VISIBLE : View.GONE);
+                textViewJoin.setVisibility(View.VISIBLE);
+                findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+            } else {
+                textViewJoin.setVisibility(View.GONE);
+                findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            }
             findViewById(R.id.btn_enter_pay).setVisibility(View.GONE);
         }
         //初始化下拉刷新
@@ -501,11 +510,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 /*if(mClassroomFragment.isVisible()){
                     mClassroomFragment.getMore();
                 }*/
-                if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN){
-                    if (mAssistanceFragment.isVisible()){
+                if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (mAssistanceFragment.isVisible()) {
                         mAssistanceFragment.requestSxRelationCourse(true);
                     }
-                }else {
+                } else {
                     if (mOnlineClassFragment.isVisible()) {
                         // @date   :2018/6/8 0008 上午 12:13
                         // @func   :V5.7修改直播为在线课堂列表
@@ -622,6 +631,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         textViewOrganName.setOnClickListener(this);
         mBtnIntro.setOnClickListener(this);
         mSchoolEnter.setOnClickListener(this);
+        textViewJoin.setOnClickListener(this);
         int p_width = getWindowManager().getDefaultDisplay().getWidth();
         int p_height = getWindowManager().getDefaultDisplay().getHeight();
         img_width = p_width / 3 - DisplayUtil.dip2px(activity, 20);
@@ -679,7 +689,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
-        textViewJoin.setVisibility(isHide1 ? View.VISIBLE : View.GONE);
     }
 
     private void initTabAndFragment() {
@@ -721,7 +730,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         courseCommentFragment = new CourseDetailsItemFragment();
         if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
             mAssistanceFragment = RelatedAssistanceFragment.newInstance(courseId);
-        }else {
+        } else {
             mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
         }
         mTutorialGroupFragment = TutorialGroupFragment.newInstance(courseId, mCurMemberId);
@@ -816,7 +825,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // @func   :将直播换成在线课堂
                     if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                         fragmentTransaction.hide(mAssistanceFragment);
-                    }else {
+                    } else {
                         fragmentTransaction.hide(mOnlineClassFragment);
                     }
                     fragmentTransaction.hide(mTutorialGroupFragment);
@@ -835,7 +844,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         // @func   :将直播换成在线课堂
                         if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             fragmentTransaction.show(mAssistanceFragment);
-                        }else {
+                        } else {
                             fragmentTransaction.show(mOnlineClassFragment);
                         }
                         rg_tab_f.check(R.id.rb_live_f);
@@ -860,7 +869,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // fragmentTransaction.hide(mClassroomFragment);
                     if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                         fragmentTransaction.hide(mAssistanceFragment);
-                    }else {
+                    } else {
                         fragmentTransaction.hide(mOnlineClassFragment);
                     }
                     fragmentTransaction.hide(mTutorialGroupFragment);
@@ -878,7 +887,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         // fragmentTransaction.show(mClassroomFragment);
                         if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             fragmentTransaction.show(mAssistanceFragment);
-                        }else {
+                        } else {
                             fragmentTransaction.show(mOnlineClassFragment);
                         }
                         rg_tab.check(R.id.rb_live);
@@ -972,7 +981,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (mAssistanceFragment.isVisible()) {
                 mAssistanceFragment.requestSxRelationCourse(false);
             }
-        }else {
+        } else {
             if (mOnlineClassFragment.isVisible()) {
                 mOnlineClassFragment.onHeaderRefresh();
             }
@@ -1496,13 +1505,28 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
             share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
         } else if (id == R.id.join_tv) {
+            //沿用原先“立即购买”流程，修改文字为“立即参加”。学生或者家长身份只有在班级课程和习课程点击“立即参加”时，
+            // 弹出激活码输入框，其他入口提示获取授权。激活码加绑定班级需要给新接口。
             if (ButtonUtils.isFastDoubleClick()) {
                 return;
             }
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
-
+                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) {
+                    if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
+                        String schoolId = mCourseDetailParams.getSchoolId();
+                        String classId = mCourseDetailParams.getClassId();
+                        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                                .setActivity(activity)
+                                .setClassId(classId)
+                                .setCourseId(courseId)
+                                .setSchoolId(schoolId);
+                        applyActivationHelper.requestActivationPermission();
+                    }
+                } else {
+                    UIUtil.showToastSafe(R.string.imput_authorization_title);
+                }
             }
         }
     }
@@ -1814,11 +1838,23 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     @Override
     public void otherFragmentVisible() {
         // V5.9底部不显示购买
-        findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
+        if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            textViewJoin.setVisibility(View.VISIBLE);
+            findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+        } else {
+            textViewJoin.setVisibility(View.GONE);
+            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+        }
         // 评论区域隐藏
         mCommentLayout.setVisibility(View.GONE);
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                textViewJoin.setVisibility(View.VISIBLE);
+                findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+            } else {
+                textViewJoin.setVisibility(View.GONE);
+                findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -262,19 +262,6 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             }
             root.addChild(treeNode);
         }
-        for (SxExamDetailVo.TaskListVO taskListVO : taskList) {
-            if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
-            TreeNode treeNode = new TreeNode(taskListVO);
-            treeNode.setLevel(0);
-            for (SectionResListVo datum : taskListVO.data) {
-                datum.setTaskType(taskListVO.taskType);
-                TreeNode treeNode1 = new TreeNode(datum);
-                treeNode1.setExtras(extrasVo);
-                treeNode1.setLevel(1);
-                treeNode.addChild(treeNode1);
-            }
-            root.addChild(treeNode);
-        }
         View view = treeView.getView();
         treeView.expandAll();
         container.addView(view);
