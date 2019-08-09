@@ -164,7 +164,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private TextView mTvOriginalPrice;
     private TextView textViewAddToCart;
 
-    private TextView textViewPay;
+    private TextView textViewPay,textViewJoin;
     private TextView mBtnEnterPay;
 
 
@@ -223,6 +223,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
+    private boolean isHide1;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -463,6 +464,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         mTvOriginalPrice = (TextView) findViewById(R.id.tv_original_price);
         textViewPay = (TextView) findViewById(R.id.pay_tv);
         mBtnEnterPay = (TextView) findViewById(R.id.btn_enter_pay);
+        textViewJoin = (TextView) findViewById(R.id.join_tv);
         courseId = getIntent().getStringExtra("id");
         isComment = getIntent().getBooleanExtra("isComment", false);
         initTabIndex = getIntent().getIntExtra("tabIndex", 0);
@@ -471,6 +473,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
         isFromScan = mCourseDetailParams.isFromScan();
+        //立即参加 班级课程进入 三习教案 显示
+        isHide1  = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter() &&
+                mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN ;
         initViews();
         initData(false);
     }
@@ -479,7 +484,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // canEdit true 代表就是孩子身份,可以看课件，做读写单相关的动作
         // canEdit false 代表就是家长身份，有些学习相关的功能，不能使用
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
             findViewById(R.id.btn_enter_pay).setVisibility(View.GONE);
         }
         //初始化下拉刷新
@@ -674,6 +679,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         findViewById(R.id.rb_tutorial_group).setVisibility(isHide ? View.GONE : View.VISIBLE);
         findViewById(R.id.rb_tutorial_group_f).setVisibility(isHide ? View.GONE :
                 View.VISIBLE);
+        textViewJoin.setVisibility(isHide1 ? View.VISIBLE : View.GONE);
     }
 
     private void initTabAndFragment() {
@@ -1489,6 +1495,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             final String thumbnailUrl = courseVo.getThumbnailUrl();
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
             share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
+        } else if (id == R.id.join_tv) {
+            if (ButtonUtils.isFastDoubleClick()) {
+                return;
+            }
+            if (!UserHelper.isLogin()) {
+                LoginHelper.enterLogin(activity);
+            } else {
+
+            }
         }
     }
 
@@ -1799,11 +1814,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     @Override
     public void otherFragmentVisible() {
         // V5.9底部不显示购买
-        findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+        findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
         // 评论区域隐藏
         mCommentLayout.setVisibility(View.GONE);
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            findViewById(R.id.bottom_lay).setVisibility(isHide1 ? View.GONE : View.VISIBLE);
         }
     }
 

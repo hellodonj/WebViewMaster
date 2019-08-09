@@ -1,28 +1,23 @@
 package com.lqwawa.intleducation.module.discovery.ui.lqcourse.course;
 
 import android.app.Activity;
-import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
-import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
-import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.DialogHelper;
@@ -435,7 +430,7 @@ public class CourseRoute {
                     CourseHelper.requestJoinInCourse(memberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
                         @Override
                         public void onDataLoaded(Boolean aBoolean) {
-                            if (aBoolean) {
+                            if (aBoolean && entity.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN) {
                                 listener.route(true, tutorialMode, tutorialTeacher, entity);
                             } else {
                                 listener.route(false, tutorialMode, tutorialTeacher, entity);

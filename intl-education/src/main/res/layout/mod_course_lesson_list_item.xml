@@ -80,16 +80,24 @@
                     android:visibility="gone"/>
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/lock_test_cb"
+            <ImageView
+                android:id="@+id/lock_test_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/com_checkbox_lock"
-                android:button="@null"
-                android:clickable="false"
-                android:paddingRight="10dp"
+                android:paddingRight="@dimen/com_item_space"
+                android:src="@drawable/lock"
                 android:visibility="gone" />
+
+            <!--<CheckBox-->
+                <!--android:id="@+id/lock_test_cb"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@drawable/com_checkbox_lock"-->
+                <!--android:button="@null"-->
+                <!--android:clickable="false"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:visibility="gone" />-->
 
 
             <ImageView
@@ -97,7 +105,7 @@
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/com_item_space"
+                android:paddingRight="@dimen/com_item_space"
                 android:src="@drawable/ic_right_arrow"/>
         </LinearLayout>
     </LinearLayout>

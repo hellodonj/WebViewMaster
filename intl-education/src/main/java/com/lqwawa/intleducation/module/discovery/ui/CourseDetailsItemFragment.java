@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseFragment;
-import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.SuperListView;
 import com.lqwawa.intleducation.common.interfaces.OnLoadStatusChangeListener;
@@ -218,25 +217,38 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             // 学习统计
             // UIUtil.showToastSafe("学习统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
+            String classId = mCourseDetailParams.getClassId();
             if (mCourseDetailParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN){
+                String courseName = mCourseDetailParams.getCourseName();
+                //如果是老师，
                 if ( mCourseDetailParams.isClassTeacher()){
-                    ToastUtil.showToast(getContext(),"老师 三习教案的学习统计");
-                } else if (!mCourseDetailParams.isClassTeacher() && !mCourseDetailParams.isClassParent() && mCourseDetailParams.isClassStudent()) {
-                    ToastUtil.showToast(getContext(), "学生 三习教案的学习统计");
+                    //roleType 0老师 1学生
+                    TaskSliderHelper.onLearnStatisticListener.enterLearnStatisticActivity(getActivity(),Integer.parseInt(mCourseId),
+                            courseName,classId,0,"");
+                } else{ // if (!mCourseDetailParams.isClassTeacher() && !mCourseDetailParams.isClassParent() && mCourseDetailParams.isClassStudent())
+                    String studentId = UserHelper.getUserId();
+                    if (mCourseDetailParams.isClassParent()) {
+                        // 家长身份
+                        studentId = mDetailItemParams.getMemberId();
+                    }
+                    TaskSliderHelper.onLearnStatisticListener.enterLearnStatisticActivity(getActivity(),Integer.parseInt(mCourseId),
+                            courseName,classId,1,studentId);
                 }
             }else {
-                String classId = mCourseDetailParams.getClassId();
                 LearningStatisticsActivity.show(getActivity(), UIUtil.getString(R.string.title_learning_statistics), classId, mCourseId, 0, mCourseDetailParams);
             }
         } else if (viewId == R.id.btn_course_statistics) {
             // 课程统计
             // UIUtil.showToastSafe("课程统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
+            String classId = mCourseDetailParams.getClassId();
             if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
-
-                ToastUtil.showToast(getContext(),"三习教案的课程统计");
+                String courseName = mCourseDetailParams.getCourseName();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,mDetailItemParams);
+                TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
+                        courseName, classId, bundle);
             } else {
-                String classId = mCourseDetailParams.getClassId();
                 CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
                 params.setCourseParams(mCourseDetailParams);
                 CourseStatisticsActivity.show(getActivity(), params);
@@ -362,7 +374,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             listView.setAdapter(mIntroduceAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             // 课程大纲内容发生改变回调监听
-            mCourseChapterAdapter = new CourseChapterAdapter(activity, mClassId,mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
+            mCourseChapterAdapter = new CourseChapterAdapter(activity,courseVo.getLibraryType(), mClassId,mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
             // 已经加入的学程
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
