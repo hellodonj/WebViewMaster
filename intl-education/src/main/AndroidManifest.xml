@@ -60,6 +60,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
+
         <!-- 机构列表 -->
         <activity
             android:name=".module.discovery.ui.OrganListActivity"
@@ -788,6 +789,10 @@
             android:name=".module.learn.ui.ExamsAndTestsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
+
+        <activity android:name=".module.discovery.ui.ArrangementWorkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common"/>
     </application>
 
 </manifest>

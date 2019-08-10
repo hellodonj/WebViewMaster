@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ReMarkTaskListActivity;
@@ -23,6 +24,7 @@ import com.galaxyschool.app.wawaschool.pojo.StatisticBean;
 import com.galaxyschool.app.wawaschool.pojo.StatisticBeanListResult;
 import com.lqwawa.apps.views.charts.PieHelper;
 import com.lqwawa.apps.views.charts.PieView;
+import com.lqwawa.intleducation.module.discovery.ui.ArrangementWorkActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -389,7 +391,14 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private void enterIntroDetailActivity(int position) {
-
+        Bundle bundle = getArguments();
+        if (position == 0) {
+            //已布置
+            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,bundle);
+        } else if (position == 1) {
+            //未布置
+            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,bundle);
+        }
     }
 
     private void enterMarkDetailActivity(int position) {
