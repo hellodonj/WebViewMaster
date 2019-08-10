@@ -193,12 +193,14 @@ public class PickMediasFragment extends LBaseGridFragment implements
 	}
 
 	private void onConfrimBtnClick() {
-		if (mSelectImageInfos.size() >= 0) {
-			if (mPickImageListener != null) {
-				mPickImageListener.onPickFinished(mSelectImageInfos);
-			}
-			goback();
+		if (mSelectImageInfos == null || mSelectImageInfos.size() == 0){
+			TipMsgHelper.ShowMsg(getActivity(),R.string.pls_select_files);
+			return;
 		}
+		if (mPickImageListener != null) {
+			mPickImageListener.onPickFinished(mSelectImageInfos);
+		}
+		goback();
 	}
 
 	public void goback() {

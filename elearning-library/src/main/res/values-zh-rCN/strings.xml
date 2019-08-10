@@ -27,6 +27,7 @@
     <string name="to_shrink_hint_prefix">收</string>
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
+    <string name="pls_select_files">请选择文件！</string>
 
 
 
