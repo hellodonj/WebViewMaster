@@ -224,8 +224,6 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
-    private boolean isHide1;
-    private ImputAuthorizationCodeDialog imputAuthorizationCodeDialog;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -476,8 +474,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
         isFromScan = mCourseDetailParams.isFromScan();
         //立即参加 班级课程进入 三习教案 未激活显示
-        isHide1 = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
-                && !mCourseDetailParams.isAuthorized();
+//        isHide1 = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
+//                && !mCourseDetailParams.isAuthorized();
         initViews();
         initData(false);
     }
@@ -1259,7 +1257,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             textViewPay.setVisibility(View.VISIBLE);
             boolean isHide =
-                    mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                    mCourseDetailParams != null && mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN &&
+                            (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
             if (tutorialMode && isHide) {
@@ -1521,7 +1520,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 .setActivity(activity)
                                 .setClassId(classId)
                                 .setCourseId(courseId)
-                                .setSchoolId(schoolId);
+                                .setSchoolId(schoolId)
+                                .setCallBackListener(new ApplyActivationHelper.CallbackListener() {
+                                    @Override
+                                    public void onBack(int result) {
+                                        if (result==0){
+                                            toJoinCourseDetailsActivity();
+                                        }
+                                    }
+                                });
                         applyActivationHelper.requestActivationPermission();
                     }
                 } else {

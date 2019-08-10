@@ -419,10 +419,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     //解锁
                                     unLockDialog(classId, courseId, vo.getId());
                                 }
-//                                else {
-////                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(),
-////                                            mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
-//                                }
                         }
                     });
 
@@ -827,8 +823,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             //如果是班级学程进入 三习教案  --考试 显示锁
             int examType = list.get(position).getExamType();
+            boolean isUnLock = list.get(position).isUnlock();
             if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                boolean isUnLock = list.get(position).isUnlock();
                 boolean isHideLock = isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                         role == UserHelper.MoocRoleType.PARENT ||
                         (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
@@ -845,7 +841,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.ic_right_arrow));
             }
-            boolean isUnLock = list.get(position).isUnlock();
             if (isUnLock){
                 holder.lockExamIv.setClickable(false);
             }else {
@@ -973,9 +968,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                ResponseVo<String> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<String>>() {
-                        });
+                ResponseVo<String> results = JSON.parseObject(result, new TypeReference<ResponseVo<String>>() {});
                 if (results.getCode() == 0) {
                     //开锁
                     notifyDataSetChanged();

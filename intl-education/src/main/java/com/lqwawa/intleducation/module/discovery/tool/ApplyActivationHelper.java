@@ -30,6 +30,8 @@ public class ApplyActivationHelper {
     private String courseId;
     private String classId;
     private String schoolId;
+    private CallbackListener listener;
+
 
     private static HashMap<String, String> authorizationErrorMapZh =
             new HashMap<>();
@@ -67,6 +69,12 @@ public class ApplyActivationHelper {
         this.schoolId = schoolId;
         return this;
     }
+
+    public ApplyActivationHelper setCallBackListener(CallbackListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
 
     public void requestActivationPermission() {
         String tipInfo = UIUtil.getString(R.string.label_request_authorization_tip);
@@ -112,6 +120,7 @@ public class ApplyActivationHelper {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.getCode() == 0) {
+                    listener.onBack(results.getCode());
                     imputAuthorizationCodeDialog.dismiss();
                 }
                 else {
@@ -142,4 +151,7 @@ public class ApplyActivationHelper {
         });
     }
 
+    public interface CallbackListener {
+        void onBack(int result);
+    }
 }

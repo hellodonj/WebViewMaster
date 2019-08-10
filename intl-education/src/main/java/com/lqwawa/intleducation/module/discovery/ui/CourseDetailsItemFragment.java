@@ -374,7 +374,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             listView.setAdapter(mIntroduceAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             // 课程大纲内容发生改变回调监听
-            mCourseChapterAdapter = new CourseChapterAdapter(activity,courseVo.getLibraryType(), mClassId,mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
+            if (EmptyUtil.isNotEmpty(courseVo)) {
+                mCourseChapterAdapter = new CourseChapterAdapter(activity, courseVo.getLibraryType(), mClassId, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
+            }
             // 已经加入的学程
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
@@ -387,7 +389,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             listView.setAdapter(mCourseCommentAdapter);
         }
 
-        if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN || mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
+        if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN ||
+                mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
             // 课程大纲和课程评价
             if (getActivity() instanceof CourseDetailsNavigator) {
                 CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
