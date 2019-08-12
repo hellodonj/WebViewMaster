@@ -61,6 +61,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
     private StatisticBean taskInfo;
     private String classId;
     private int courseId;
+    private String courseName;
     private int roleType = -1;
     private String studentId;
 
@@ -91,6 +92,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
             learnType = args.getInt(LearningStatisticActivity.Constants.LEARNING_TYPE);
             classId = args.getString(LearningStatisticActivity.Constants.CLASS_ID);
             courseId = args.getInt(LearningStatisticActivity.Constants.COURSE_ID);
+            courseName =args.getString(LearningStatisticActivity.Constants.COURSE_NAME);
             roleType = args.getInt(LearningStatisticActivity.Constants.ROLE_TYPE, -1);
             studentId = args.getString(LearningStatisticActivity.Constants.STUDENT_ID);
         }
@@ -394,10 +396,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
         Bundle bundle = getArguments();
         if (position == 0) {
             //已布置
-            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,bundle);
+            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,courseName,bundle);
         } else if (position == 1) {
             //未布置
-            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,bundle);
+            ArrangementWorkActivity.start(getActivity(),String.valueOf(courseId),classId,courseName,bundle);
         }
     }
 

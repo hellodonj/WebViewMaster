@@ -53,6 +53,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity.ACTIVITY_BUNDLE_OBJECT;
+
 /**
  * Created by XChen on 2016/11/14.
  * email:man0fchina@foxmail.com
@@ -119,6 +121,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
 
     private boolean isFromScan;
 
+    private boolean isArrangementEnter = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_details_item, container, false);
@@ -152,6 +156,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mDataType = mDetailItemParams.getDataType();
         mNeedReadFlag = isJoin && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN;
         mCourseId = mDetailItemParams.getCourseId();
+        isArrangementEnter = getArguments().getBoolean("isArrangementEnter");
         mClassId = mDetailItemParams.getCourseParams().getClassId();
 
         if (mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
@@ -248,8 +253,15 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 arguments.putSerializable(CourseVo.class.getSimpleName(),courseVo);
                 arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
                 arguments.putBoolean("isFromScan", isFromScan);
-                arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, mDetailItemParams);
+                arguments.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, mDetailItemParams);
+                arguments.putSerializable(ACTIVITY_BUNDLE_OBJECT,mCourseDetailParams);
                 arguments.putBoolean("teacherVisitor", mTeacherVisitor);
+                String memberId = UserHelper.getUserId();
+                if (mCourseDetailParams.isClassParent()) {
+                    // 家长身份
+                    memberId = mDetailItemParams.getMemberId();
+                }
+                arguments.putString("memberId",memberId);
                 TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
                         courseName, classId, arguments);
             } else {
@@ -381,6 +393,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             int libraryType = mDetailItemParams.getCourseParams().getLibraryType();
             mCourseChapterAdapter = new CourseChapterAdapter(activity, libraryType, mClassId, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
             // 已经加入的学程
+            mCourseChapterAdapter.setCourseVo(courseVo);
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
             mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);

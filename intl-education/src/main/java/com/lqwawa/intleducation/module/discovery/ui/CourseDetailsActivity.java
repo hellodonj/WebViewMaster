@@ -103,7 +103,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
-import static com.lqwawa.intleducation.base.ui.MyBaseFragment.FRAGMENT_BUNDLE_OBJECT;
 import static com.lqwawa.intleducation.base.utils.StringUtils.languageIsEnglish;
 
 /**
@@ -595,7 +594,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                         Intent intent = new Intent();
                                         intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
                                         Bundle bundle = new Bundle();
-                                        bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT, params1);
+                                        bundle.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
                                         studyPlanFragment.setArguments(bundle);
                                         activity.startActivity(intent);
                                     }
@@ -756,7 +755,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
         // type == 1 课程简介
         Bundle bundle1 = new Bundle();
-        bundle1.putSerializable(FRAGMENT_BUNDLE_OBJECT, params1);
+        bundle1.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params1);
 
         // introductionFragment.setArguments(bundle1);
         Bundle bundle2 = new Bundle();
@@ -770,7 +769,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         CourseDetailItemParams params2 = (CourseDetailItemParams) params1.clone();
         params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
         params2.setCourseParams(mCourseDetailParams);
-        bundle2.putSerializable(FRAGMENT_BUNDLE_OBJECT, params2);
+        bundle2.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params2);
         bundle2.putBoolean("isFromScan", isFromScan);
         bundle2.putStringArrayList("resIds", (ArrayList<String>) resIds);
 
@@ -785,7 +784,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         CourseDetailItemParams params3 = (CourseDetailItemParams) params1.clone();
         params3.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT);
         params3.setComment(true);
-        bundle3.putSerializable(FRAGMENT_BUNDLE_OBJECT, params3);
+        bundle3.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, params3);
         courseCommentFragment.setArguments(bundle3);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
