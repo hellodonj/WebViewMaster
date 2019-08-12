@@ -244,10 +244,14 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             String classId = mCourseDetailParams.getClassId();
             if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                 String courseName = mCourseDetailParams.getCourseName();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(FRAGMENT_BUNDLE_OBJECT,mDetailItemParams);
+                Bundle arguments = new Bundle();
+                arguments.putSerializable(CourseVo.class.getSimpleName(),courseVo);
+                arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
+                arguments.putBoolean("isFromScan", isFromScan);
+                arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, mDetailItemParams);
+                arguments.putBoolean("teacherVisitor", mTeacherVisitor);
                 TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
-                        courseName, classId, bundle);
+                        courseName, classId, arguments);
             } else {
                 CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
                 params.setCourseParams(mCourseDetailParams);
@@ -374,9 +378,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             listView.setAdapter(mIntroduceAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             // 课程大纲内容发生改变回调监听
-            if (EmptyUtil.isNotEmpty(courseVo)) {
-                mCourseChapterAdapter = new CourseChapterAdapter(activity, courseVo.getLibraryType(), mClassId, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
-            }
+            int libraryType = mDetailItemParams.getCourseParams().getLibraryType();
+            mCourseChapterAdapter = new CourseChapterAdapter(activity, libraryType, mClassId, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
             // 已经加入的学程
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);

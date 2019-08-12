@@ -44,6 +44,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.lessontask.missionrequire.MissionRequireFragment;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
+import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -73,7 +74,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SectionTaskDetailsActivity extends AppCompatActivity {
+public class SectionTaskDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String ACTIVITY_BUNDLE_OBJECT = "ACTIVITY_BUNDLE_OBJECT";
     // 是否是游离的身份
@@ -130,6 +131,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     protected PagerArgs pagerArgs = null;
     private int orderByType = 0;
     private int libraryType;
+    private String courseId,memberId;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -214,11 +216,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.section_task_details_head);
         activity = this;
         sectionResListVo = (SectionResListVo) getIntent().getSerializableExtra("SectionResListVo");
-
+        memberId = getIntent().getStringExtra("memberId");
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-
-
         topBar = (TopBar) findViewById(R.id.top_bar);
         // @date   :2018/4/14 0014 下午 1:37
         // @func   :V5.5对批阅页面的更改
@@ -578,7 +578,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         mResName = (TextView) findViewById(R.id.tv_res_name);
         mFromLayout = (FrameLayout) findViewById(R.id.from_layout);
         mTvFromCourse = (TextView) findViewById(R.id.tv_from_course);
-
+        mFromLayout.setOnClickListener(this);
         updateData();
     }
 
@@ -1208,6 +1208,17 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 : (activity.getIntent().getBooleanExtra(SectionTaskDetailsActivity
                 .KEY_IS_FROM_MY, false)
                 ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.from_layout) {
+            boolean canEdit = TextUtils.equals(UserHelper.getUserId(), memberId);
+            if (EmptyUtil.isNotEmpty(sectionResListVo)){
+                courseId = sectionResListVo.getCourseId();
+            }
+            CourseDetailsActivity.start(SectionTaskDetailsActivity.this,courseId,canEdit,memberId,mCourseParams.isAuthorized(),mCourseParams,true);
+        }
     }
 
     // protected TaskCommitListFragment fragment0;

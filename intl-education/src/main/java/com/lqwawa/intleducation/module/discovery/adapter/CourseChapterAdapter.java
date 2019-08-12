@@ -591,7 +591,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                                 }
                                             }
                                         }else {
-                                            UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
+                                            //试听的进入
+                                            if (examType != TYPE_EXAM &&
+                                                    position == 1 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {
+                                                //普通教案详情入口
+                                                toLessonDetailsActivity(vo, isFreeUser, true);
+                                            }else {
+                                                UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
+                                            }
                                         }
                                     }else {
                                         //不是家长或者学生
