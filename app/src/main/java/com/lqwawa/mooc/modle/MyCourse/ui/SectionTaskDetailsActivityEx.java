@@ -112,6 +112,7 @@ import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskOriginVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskInfoVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.libs.filedownloader.DownloadService;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
@@ -645,9 +646,14 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         }
 
         if (!EmptyUtil.isEmpty(TaskSliderHelper.onTaskSliderListener)) {
+            boolean isTempAudition = isAudition;
+            if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN && (
+                    mCourseParams.isOrganCourseEnter() || mCourseParams.isClassCourseEnter())) {
+                isTempAudition = true;
+            }
             itemStudentTask = studentCommit;
             int resultRoleType = transferRoleType(roleType);
-            if (isAudition) {
+            if (isTempAudition) {
                 // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
                 resultRoleType = RoleType.ROLE_TYPE_VISITOR;
             }
@@ -689,7 +695,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             task.setLqwawaType(UserHelper.transferResourceTypeWithMooc(task.getTaskType()));
             task.setEnterType(mCourseParams.getCourseEnterType(false));
             TaskSliderHelper.onTaskSliderListener.checkMarkTaskDetail(activity, resultRoleType,
-                    task, studentCommit, isCheckMark, sourceType, scoringRule, isAudition);
+                    task, studentCommit, isCheckMark, sourceType, scoringRule, isTempAudition);
         }
     }
 

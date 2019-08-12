@@ -324,11 +324,22 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     TaskCommitListFragment.DoWorkListener doWorkListener = new TaskCommitListFragment.DoWorkListener() {
         @Override
         public void onDoWork() {
+            if(mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN &&
+                    (mCourseParams.isClassCourseEnter()  || mCourseParams.isMyCourse())) {
+                ToastUtil.showToast(SectionTaskDetailsActivity.this, R.string.teaching_plan_do_homework_tip);
+                return;
+            }
             doTask();
         }
 
         @Override
         public void onSpeechEvaluation() {
+            if(mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN &&
+                    (mCourseParams.isClassCourseEnter()  || mCourseParams.isMyCourse())) {
+                ToastUtil.showToast(SectionTaskDetailsActivity.this,
+                        R.string.teaching_plan_do_homework_tip);
+                return;
+            }
             doSpeechEvaluation();
         }
 
@@ -342,7 +353,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(vo)) {
                 return;
             }
-
+            
             if (vo.isSpeechEvaluation() || vo.isVideoType()) {
                 // 点击的是语音评测的cell
                 checkSpeechTaskDetail(vo, isCheckMark);
