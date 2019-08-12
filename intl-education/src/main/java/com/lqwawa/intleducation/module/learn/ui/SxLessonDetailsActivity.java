@@ -289,7 +289,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
 
         isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
         if (isContainAssistantWork) {
-            topBar.setRightFunctionText1(getString(R.string.assistant_desk), new View.OnClickListener() {
+            topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //助教工作台
@@ -425,6 +425,23 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
+
+            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    initBottomLayout();
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
     }
 

@@ -118,16 +118,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.mOnSelectListener = selectListener;
     }
 
-    public CourseChapterAdapter(Activity activity,int libraryType, String classId,String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
-        this(activity, classId,courseId, needFlagRead, listener);
+    public CourseChapterAdapter(Activity activity,int libraryType,String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
+        this(activity,courseId, needFlagRead, listener);
         this.isOnlineTeacher = isOnlineTeacher;
         this.libraryType = libraryType;
     }
 
-    public CourseChapterAdapter(Activity activity, String classId,String courseId, boolean needFlagRead, OnContentChangedListener listener) {
+    public CourseChapterAdapter(Activity activity,String courseId, boolean needFlagRead, OnContentChangedListener listener) {
         this.activity = activity;
         this.courseId = courseId;
-        this.classId = classId;
         this.needFlagRead = needFlagRead;
         this.listener = listener;
         this.inflater = LayoutInflater.from(activity);
@@ -204,7 +203,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                     int examType = list.get(position).getExamType();
                     boolean isUnLock = list.get(position).isUnlock();
-                    boolean isHideLock =  isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
+                    boolean isHideLock = courseDetailParams != null && courseDetailParams.isClassCourseEnter() &&
+                            isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                             role == UserHelper.MoocRoleType.PARENT ||
                             (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
                     holder.lockTestIv.setVisibility(isHideLock ? View.VISIBLE : View.GONE);
@@ -417,7 +417,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 enterExamOrTestDialog();
                             } else if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                     //解锁
-                                    unLockDialog(classId, courseId, vo.getId());
+                                    unLockDialog(courseDetailParams.getClassId(), courseId, vo.getId());
                                 }
                         }
                     });
@@ -832,7 +832,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             int examType = list.get(position).getExamType();
             boolean isUnLock = list.get(position).isUnlock();
             if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                boolean isHideLock = isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
+                boolean isHideLock = courseDetailParams != null && courseDetailParams.isClassCourseEnter() &&
+                        isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                         role == UserHelper.MoocRoleType.PARENT ||
                         (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
                 holder.lockExamIv.setVisibility(isHideLock? View.VISIBLE : View.GONE);
@@ -848,9 +849,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.ic_right_arrow));
             }
-            if (isUnLock){
-                holder.lockExamIv.setClickable(false);
-            }else {
+//            if (isUnLock){
+//                holder.lockExamIv.setClickable(false);
+//            }else {  }
                 holder.lockExamIv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -865,12 +866,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         }else {
                             if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                 //解锁
-                                unLockDialog(classId, courseId, vo.getId());
+                                unLockDialog(courseDetailParams.getClassId(), courseId, vo.getId());
                             }
                         }
                     }
                 });
-            }
+
 
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
                 @Override

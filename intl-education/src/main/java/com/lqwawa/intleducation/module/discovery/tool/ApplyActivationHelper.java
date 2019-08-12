@@ -77,7 +77,7 @@ public class ApplyActivationHelper {
 
 
     public void requestActivationPermission() {
-        String tipInfo = UIUtil.getString(R.string.label_request_authorization_tip);
+        String tipInfo = UIUtil.getString(R.string.label_activation_code_tip);
         if (imputAuthorizationCodeDialog == null) {
             imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(activity, tipInfo,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {

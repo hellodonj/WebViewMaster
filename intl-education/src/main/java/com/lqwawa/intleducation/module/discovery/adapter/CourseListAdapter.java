@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.tutorial.teacher.courses.record.AuditType;
 
 import org.xutils.image.ImageOptions;
@@ -163,6 +164,13 @@ public class CourseListAdapter extends MyBaseAdapter {
             holder.priceTitleTv.setVisibility(View.GONE);
             holder.coursePrice.setText(activity.getResources().getString(R.string.free));
         }*/
+        //教案不显示价格
+        if (vo.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN){
+            holder.mOrginalPriceLayout.setVisibility(View.GONE);
+            holder.mOrginalPrice.setVisibility(View.GONE);
+            holder.mPriceLayout.setVisibility(View.GONE);
+            holder.coursePrice.setVisibility(View.GONE);
+        }
         if (vo.getPrice() == 0) {
             // 免费
             holder.mOrginalPriceLayout.setVisibility(View.GONE);

@@ -103,7 +103,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private int mDataType;
     // 已加入课程大纲类型
     private boolean mNeedReadFlag;
-    private String mClassId;
     // 课程ID
     private String mCourseId;
     // 课程评价评分
@@ -157,7 +156,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mNeedReadFlag = isJoin && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN;
         mCourseId = mDetailItemParams.getCourseId();
         isArrangementEnter = getArguments().getBoolean("isArrangementEnter");
-        mClassId = mDetailItemParams.getCourseParams().getClassId();
 
         if (mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             CourseVo vo = (CourseVo) getArguments().getSerializable("CourseVo");
@@ -391,7 +389,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             // 课程大纲内容发生改变回调监听
             int libraryType = mDetailItemParams.getCourseParams().getLibraryType();
-            mCourseChapterAdapter = new CourseChapterAdapter(activity, libraryType, mClassId, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
+            mCourseChapterAdapter = new CourseChapterAdapter(activity, libraryType, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
             // 已经加入的学程
             mCourseChapterAdapter.setCourseVo(courseVo);
             mCourseChapterAdapter.setJoinCourse(isJoin);
