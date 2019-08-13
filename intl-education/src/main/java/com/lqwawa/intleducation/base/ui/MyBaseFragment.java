@@ -11,7 +11,7 @@ import com.lqwawa.tools.DialogHelper;
 
 public abstract class MyBaseFragment extends Fragment {
 
-    public static final String FRAGMENT_BUNDLE_OBJECT = "ACTIVITY_BUNDLE_OBJECT";
+    public static final String FRAGMENT_BUNDLE_OBJECT = "FRAGMENT_BUNDLE_OBJECT";
 
     public boolean isShow = false;
     @Override

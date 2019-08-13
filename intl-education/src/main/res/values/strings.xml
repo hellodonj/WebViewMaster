@@ -564,4 +564,5 @@
     <string name="label_join_teaching_plan_tip">请先参加教案！</string>
     <string name="teaching_plan_do_homework_tip">请前往空中学校-学习任务中完成作业</string>
     <string name="teaching_plan_check_homework_tip">请前往空中学校-学习任务中批阅作业</string>
+    <string name="class_implementation_plan">课中实施方案</string>
 </resources>
