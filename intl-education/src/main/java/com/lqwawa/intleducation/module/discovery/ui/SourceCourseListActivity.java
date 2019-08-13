@@ -17,6 +17,7 @@ import com.lqwawa.intleducation.module.discovery.adapter.CourseListAdapter;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class SourceCourseListActivity extends MyBaseActivity implements View.OnClickListener {
@@ -112,7 +113,25 @@ public class SourceCourseListActivity extends MyBaseActivity implements View.OnC
         } catch (Exception e) {
 
         }
+        
+        filterData(courseList);
+
         courseListAdapter.setData(courseList);
         courseListAdapter.notifyDataSetChanged();
+    }
+
+    private void filterData(List<CourseVo> courseList) {
+        if (courseList == null || courseList.isEmpty()) {
+            return;
+        }
+
+        // 过滤三习学程馆课程
+        Iterator<CourseVo> iterator = courseList.iterator();
+        while (iterator.hasNext()) {
+           CourseVo courseVo =  iterator.next();
+           if (courseVo != null && courseVo.getType() == 3) {
+               iterator.remove();
+           }
+        }
     }
 }
