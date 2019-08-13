@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -365,6 +366,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 if (result != null && result.isSuccess()) {
                     List<HomeworkListInfo> taskData = JSONObject.parseArray(result.getModel().getData()
                             .toString(), HomeworkListInfo.class);
+                    if (isPick){
+                        removeSpeechCourseTask(taskData);
+                    }
                     if (taskData != null && taskData.size() > 0) {
                         updateDataView(taskData, updateData);
                     }
@@ -377,6 +381,19 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             url = ServerUrl.GET_SECOND_TOGETHER_TASK_DETAIL_BASE_URL;
         }
         RequestHelper.sendPostRequest(getActivity(), url, param, listener);
+    }
+
+    private void removeSpeechCourseTask(List<HomeworkListInfo> taskData){
+        if (taskData != null && taskData.size() > 0){
+            Iterator<HomeworkListInfo> it = taskData.iterator();
+            while (it.hasNext()){
+                HomeworkListInfo info = it.next();
+                if (info.getRepeatCourseCompletionMode() == 3){
+                    //语音评测
+                    it.remove();
+                }
+            }
+        }
     }
 
     private void loadStudentFinishData() {

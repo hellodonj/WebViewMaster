@@ -352,7 +352,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
                 //有数据
                 importantPercent = importantNum * 100 / totalNum;
                 pieHelpers.add(new PieHelper(importantPercent, " ", colors.get(0)));
-                pieHelpers.add(new PieHelper(100 - importantNum, " ", colors.get(3)));
+                pieHelpers.add(new PieHelper(100 - importantPercent, " ", colors.get(3)));
             } else {
                 //没有数据
                 pieHelpers.add(new PieHelper(100, " ", Color.parseColor(

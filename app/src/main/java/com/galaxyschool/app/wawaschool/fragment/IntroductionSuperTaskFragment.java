@@ -89,6 +89,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     private RadioButton immediatelyRb;//立即发布
     private RadioButton answerByTimeRb;//按时间作答
     private RadioButton hasReadPerRb;//可以查看
+    private RadioButton noReadPerRb;
     private ConstraintLayout publishTimeAndTypeLayout;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private SlideListView listView;
@@ -251,6 +252,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
         answerByTimeRb = (RadioButton) findViewById(R.id.rb_publish_according_time);
         hasReadPerRb = (RadioButton) findViewById(R.id.rb_can_read);
+        noReadPerRb = (RadioButton) findViewById(R.id.rb_not_read);
         if (isFromMoocIntroTask){
             boolean answerAtAnyTime = LqIntroTaskHelper.getInstance().getAnswerAtAnyTimeValue();
             if (answerAtAnyTime){
@@ -260,7 +262,14 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 immediatelyRb.setChecked(false);
                 answerByTimeRb.setChecked(true);
             }
-            hasReadPerRb.setChecked(LqIntroTaskHelper.getInstance().isHasReadPermission());
+            boolean hasPermission = LqIntroTaskHelper.getInstance().isHasReadPermission();
+            if (hasPermission){
+                hasReadPerRb.setChecked(true);
+                noReadPerRb.setChecked(false);
+            } else {
+                hasReadPerRb.setChecked(false);
+                noReadPerRb.setChecked(true);
+            }
         }
         publishTimeAndTypeLayout = (ConstraintLayout) findViewById(R.id.ll_publish_time_and_type);
         if (isOnlineSuperTaskDetail) {
@@ -854,25 +863,29 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(taskFileName)) {
             fileName = taskFileName;
         }
-        ContactsInputBoxDialog inputBoxDialog = new ContactsInputBoxDialog(
-                getActivity(),
-                getString(R.string.str_pls_input_super_task_title),
-                fileName,
-                null,
-                getString(R.string.cancel),
-                (dialog, which) -> dialog.dismiss(),
-                getString(R.string.confirm), (dialog, which) -> {
-            String title = ((ContactsInputBoxDialog) dialog).getInputText();
-            if (TextUtils.isEmpty(title)) {
-                TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_enter_title);
-                return;
-            }
-            dialog.dismiss();
-            taskFileName = title;
+        if (uploadParameters.size() > 1) {
+            ContactsInputBoxDialog inputBoxDialog = new ContactsInputBoxDialog(
+                    getActivity(),
+                    getString(R.string.str_pls_input_super_task_title),
+                    fileName,
+                    null,
+                    getString(R.string.cancel),
+                    (dialog, which) -> dialog.dismiss(),
+                    getString(R.string.confirm), (dialog, which) -> {
+                String title = ((ContactsInputBoxDialog) dialog).getInputText();
+                if (TextUtils.isEmpty(title)) {
+                    TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_enter_title);
+                    return;
+                }
+                dialog.dismiss();
+                taskFileName = title;
+                confirmSelectTaskData();
+            });
+            inputBoxDialog.setIsAutoDismiss(false);
+            inputBoxDialog.show();
+        } else {
             confirmSelectTaskData();
-        });
-        inputBoxDialog.setIsAutoDismiss(false);
-        inputBoxDialog.show();
+        }
     }
 
     private void confirmSelectTaskData() {
@@ -1491,7 +1504,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
                         || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
-                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING){
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING
+                        || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
                     taskParams.put("ResCourseId",uploadParameter.getResCourseId());
                 }
                 if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
@@ -1561,6 +1575,14 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                                 taskParams.put("CourseId",lookResDtos.get(0).getCourseId());
                                 taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    && courseData == null){
+                                taskParams.put("ResId", lookResDtos.get(0).getResId());
+                                taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());
+                            }
+                            taskParams.put("ResCourseId", lookResDtos.get(0).getResCourseId());
+                            taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
                         } else if (lookResDtos.size() > 1){
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);

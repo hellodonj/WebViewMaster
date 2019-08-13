@@ -704,7 +704,13 @@ public class CompletedHomeworkListFragment extends ContactsListFragment {
                         });
 
                         //任务锁定
-                        RelativeLayout lockRl = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                        RelativeLayout lockRl = null;
+                        if (taskType == StudyTaskType.ENGLISH_WRITING){
+                            //英文写作全屏锁定
+                            lockRl = (RelativeLayout) view.findViewById(R.id.rl_locking_outer);
+                        } else {
+                            lockRl = (RelativeLayout) view.findViewById(R.id.rl_locking);
+                        }
                         if (lockRl != null){
                             if (isLockStudentCommitTask(data.getStudentId())){
                                 lockRl.setVisibility(View.VISIBLE);

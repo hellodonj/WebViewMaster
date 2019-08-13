@@ -1393,7 +1393,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
                         || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
-                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING){
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING
+                        || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
                     taskParams.put("ResCourseId",uploadParameter.getResCourseId());
                 }
                 if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
@@ -1462,6 +1463,14 @@ public class ContactsPickerEntryFragment extends BaseFragment
                                 taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
 
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    && courseData == null){
+                                taskParams.put("ResId", lookResDtos.get(0).getResId());
+                                taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());
+                            }
+                            taskParams.put("ResCourseId", lookResDtos.get(0).getResCourseId());
+                            taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
                         } else if (lookResDtos.size() > 1){
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);

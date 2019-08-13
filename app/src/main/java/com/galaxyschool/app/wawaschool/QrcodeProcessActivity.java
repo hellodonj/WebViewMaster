@@ -434,6 +434,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 }
 
                 @Override
+                public void onFinish() {
+                    super.onFinish();
+                    loadClassInfo();
+                }
+
+                @Override
                 public void onError(NetroidError error) {
                     super.onError(error);
                     String es = error.getMessage();
