@@ -7,4 +7,10 @@
 
     <include layout="@layout/contacts_header"/>
 
+    <include layout="@layout/contacts_search_bar"/>
+
+    <include
+        layout="@layout/resource_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

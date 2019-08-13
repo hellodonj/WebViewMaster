@@ -405,7 +405,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
     private void enterMarkDetailActivity(int position) {
         if (position == 1){
-            ReMarkTaskListActivity.start(getActivity());
+            ReMarkTaskListActivity.start(getActivity(),courseId,classId);
         }
     }
 
