@@ -1,8 +1,9 @@
 package com.lqwawa.intleducation.module.discovery.vo;
 
+import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 
-public class ExamsAndTestExtrasVo {
+public class ExamsAndTestExtrasVo extends BaseVo {
 
     private boolean needFlagRead;
     private int lessonStatus;

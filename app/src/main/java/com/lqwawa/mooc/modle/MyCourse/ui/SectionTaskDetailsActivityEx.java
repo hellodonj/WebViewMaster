@@ -647,8 +647,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
         if (!EmptyUtil.isEmpty(TaskSliderHelper.onTaskSliderListener)) {
             boolean isTempAudition = isAudition;
-            if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN && (
-                    mCourseParams.isOrganCourseEnter() || mCourseParams.isClassCourseEnter())) {
+            if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
                 isTempAudition = true;
             }
             itemStudentTask = studentCommit;

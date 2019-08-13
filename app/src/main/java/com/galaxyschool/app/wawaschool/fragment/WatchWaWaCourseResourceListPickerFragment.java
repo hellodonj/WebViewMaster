@@ -739,7 +739,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             List<LQCourseConfigEntity> list = filteredLabelEntity.getList();
             if (list != null && list.size() > 0) {
                 for (LQCourseConfigEntity libraryLabelEntity : list) {
-                    libraryLabelEntity.setParentId(filteredLabelEntity.getType());
+                    libraryLabelEntity.setType(filteredLabelEntity.getType());
                     TreeNode treeNode1 = new TreeNode(libraryLabelEntity);
                     treeNode1.setItemExpandedEnable(libraryLabelEntity.isDirectAccessNextPage());
                     treeNode1.setLevel(1);

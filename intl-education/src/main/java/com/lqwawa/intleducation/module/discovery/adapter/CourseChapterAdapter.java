@@ -402,7 +402,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     /*holder.lessonNameTv.setText(
                             StringUtils.getSectionNumString(activity, vo.getSectionName(), vo.getWeekNum())
                                     + "  " + vo.getName());*/
-
+                    //测试标志
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
+                        holder.testFlag.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.testFlag.setVisibility(View.GONE);
+                    }
                     holder.lessonNameTv.setText(vo.getName());
                     holder.lockTestIv.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -442,7 +447,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                             if (!isTeacher && !vo.isBuyed() && !vo.getParentId().equals(list.get(0).getId()) && !isAuthorized) {
                                 // 不是从线下机构学程馆进来的，需要购买的还是要购买
-                                if (mTeacherVisitor) {
+                                if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN){
+                                    UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
+                                }else if (mTeacherVisitor) {
                                     UIUtil.showToastSafe(R.string.tip_course_teacher_visitor_not_watch);
                                 } else {
                                     ToastUtil.showToast(activity,
@@ -1074,6 +1081,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         ImageView hideLessonIv;
         TextView lessonAuditionTv;
         ImageView lockExamIv,lockTestIv;
+        TextView testFlag;
 
         @SuppressLint("WrongViewCast")
         public ViewHolder(View parent) {
@@ -1097,6 +1105,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             hideLessonIv = (ImageView) parent.findViewById(R.id.hide_lesson_iv);
             lockExamIv = (ImageView) parent.findViewById(R.id.lock_exam_iv);
             lockTestIv = (ImageView) parent.findViewById(R.id.lock_test_iv);
+            testFlag = (TextView) parent.findViewById(R.id.test_flag_tv);
         }
     }
 

@@ -62,6 +62,16 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/test_flag_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="@string/sx_test_flag"
+                    android:textColor="@color/textAccent"
+                    android:visibility="gone"/>
+
                 <TextView
                     android:id="@+id/lesson_name_tv"
                     style="@style/text_gray"

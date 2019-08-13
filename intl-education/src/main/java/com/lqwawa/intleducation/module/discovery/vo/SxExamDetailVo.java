@@ -1,11 +1,12 @@
 package com.lqwawa.intleducation.module.discovery.vo;
 
 import com.google.gson.annotations.SerializedName;
+import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 
 import java.util.List;
 
-public class SxExamDetailVo {
+public class SxExamDetailVo extends BaseVo {
 
 
         @SerializedName("id")
@@ -21,7 +22,7 @@ public class SxExamDetailVo {
         @SerializedName("taskList")
         public List<TaskListVO> taskList;
 
-        public class TaskListVO {
+        public class TaskListVO extends BaseVo{
 
             @SerializedName("taskType")
             public int taskType;
