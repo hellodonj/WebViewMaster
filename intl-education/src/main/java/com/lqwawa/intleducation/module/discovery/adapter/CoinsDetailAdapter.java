@@ -178,6 +178,9 @@ public class CoinsDetailAdapter extends BaseAdapter {
                 } else if (info.getIsRefunded() == 0) {
                     holder.tvRefund.setVisibility(View.GONE);
                 }
+            }else if (info.getConsumeType() ==7){
+                //付费加入班级
+                holder.tvName.setText(String.format(UIUtil.getString(R.string.join_class_by_money),info.getCourseName()));
             }
         }
 

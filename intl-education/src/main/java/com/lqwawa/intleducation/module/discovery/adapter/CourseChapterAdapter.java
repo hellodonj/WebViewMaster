@@ -413,9 +413,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         @Override
                         public void onClick(View v) {
                             ChapterVo chapterVo = list.get(position);
-                            if (chapterVo.isUnlock()) {
-                                return;
-                            }
+//                            if (chapterVo.isUnlock()) {
+//                                return;
+//                            }
                             if (role == UserHelper.MoocRoleType.STUDENT ||
                                     role == UserHelper.MoocRoleType.PARENT) {
                                 //锁住提示
