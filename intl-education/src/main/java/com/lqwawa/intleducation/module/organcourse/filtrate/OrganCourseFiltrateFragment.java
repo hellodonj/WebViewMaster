@@ -308,11 +308,6 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         mSortTabLayout = (TabLayout) mRootView.findViewById(R.id.tab_layout_sort);
         mViewPager = (ViewPager) mRootView.findViewById(R.id.view_pager);
 
-        if (mSelectResource) {
-            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
-            mTopBar.setVisibility(organCourseFiltrateParams.isHideTopBar() ? View.GONE : View.VISIBLE);
-        }
-
         mBottomLayout = (LinearLayout) mRootView.findViewById(R.id.bottom_layout);
         mSubjectLayout = (LinearLayout) mRootView.findViewById(R.id.subject_layout);
         mAddSubject = (Button) mRootView.findViewById(R.id.btn_add_subject);
@@ -351,8 +346,12 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         }
 
         if (mSelectResource) {
-            mSubjectLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+            mTopBar.setVisibility(organCourseFiltrateParams.isHideTopBar() ? View.GONE : View.VISIBLE);
+            
+            mSubjectLayout.setVisibility(View.VISIBLE);
         }
+
         mHeaderLayout.setVisibility(View.GONE);
         mSortTabLayout.setVisibility(View.GONE);
 
