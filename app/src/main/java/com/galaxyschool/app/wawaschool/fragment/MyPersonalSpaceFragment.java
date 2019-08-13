@@ -348,8 +348,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         });
         switchButton = (SwitchButton) findViewById(R.id.sb_btn);
         switchButton.setOnCheckedChangeListener((view,check) -> {
-//            LearningStatisticActivity.start(getActivity(),1228,"课程统计","5035fae2-2f1c-4e23-8f0f" +
-//                    "-a99d01132b2b",0,null);
+            LearningStatisticActivity.start(getActivity(),1228,"课程统计","5035fae2-2f1c-4e23-8f0f" +
+                    "-a99d01132b2b",null);
             //切换模式
             HomeActivity activity = null;
             if (getActivity() instanceof HomeActivity){

@@ -1159,4 +1159,10 @@ public class ServerUrl {
      * 拉取详细学习成绩统计
      */
     public static final String GET_TASK_DETAIL_STATIS_BASE_URL = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetTaskDetaileStatis";
+
+    /**
+     * 拉取老师未批阅的学生提交列表
+     */
+    public static final String GET_TEACHER_NO_CORRECT_COMMITLIST = BASE_SERVER + "NewApi" +
+            "/CourseStudyTaskStatis/GetTeacherNoCorrectCommitList";
 }

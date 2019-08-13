@@ -1512,7 +1512,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
-                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) {
+                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
+                || isMyCourse) { //班级课程和习课程进入
                     if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
                         String schoolId = mCourseDetailParams.getSchoolId();
                         String classId = mCourseDetailParams.getClassId();

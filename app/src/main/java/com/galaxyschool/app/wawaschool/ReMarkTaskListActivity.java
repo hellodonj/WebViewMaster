@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+
+import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.fragment.ReMarkTaskListFragment;
 
 /**
@@ -17,11 +19,17 @@ public class ReMarkTaskListActivity extends FragmentActivity {
 
     private Fragment fragment = null;
 
-    public static void start(Activity activity){
+    public static void start(Activity activity,
+                             int courseId,
+                             String classId){
         if (activity == null){
             return;
         }
         Intent intent = new Intent(activity,ReMarkTaskListActivity.class);
+        Bundle args = new Bundle();
+        args.putString(LearningStatisticActivity.Constants.CLASS_ID,classId);
+        args.putInt(LearningStatisticActivity.Constants.COURSE_ID,courseId);
+        intent.putExtras(args);
         activity.startActivity(intent);
     }
 
