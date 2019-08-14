@@ -1526,7 +1526,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                     @Override
                                     public void onBack(int result) {
                                         if (result==0){
-                                            toJoinCourseDetailsActivity();
+//                                            toJoinCourseDetailsActivity();
+                                            join(false);
                                         }
                                     }
                                 });

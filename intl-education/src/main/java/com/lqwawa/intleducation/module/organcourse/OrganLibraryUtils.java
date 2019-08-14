@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.organcourse;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
@@ -42,6 +43,26 @@ public class OrganLibraryUtils {
         entity.setLevel(BRAIN_LIBRARY_LEVEL);
         entity.setEntityOrganId(schoolId);
         return entity;
+    }
+
+    public static int getLibraryType(int type, String level, int assortment) {
+        if (type == 0) {
+            if (!TextUtils.isEmpty(level) && level.contains(BRAIN_LIBRARY_LEVEL)) {
+                return OrganLibraryType.TYPE_BRAIN_LIBRARY;
+            }
+            if (assortment == 0 || assortment == 1) {
+                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
+            } else if (assortment == 2 || assortment == 3) {
+                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            }
+        } else if (type == 1) {
+            return OrganLibraryType.TYPE_LIBRARY;
+        } else if (type == 2) {
+            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
+        } else if (type == 3) {
+            return OrganLibraryType.TYPE_TEACHING_PLAN;
+        }
+        return -1;
     }
 
 }

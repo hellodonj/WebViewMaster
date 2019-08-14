@@ -203,7 +203,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                     int examType = list.get(position).getExamType();
                     boolean isUnLock = list.get(position).isUnlock();
-                    boolean isHideLock = courseDetailParams != null && courseDetailParams.isClassCourseEnter() &&
+                    boolean isHideLock = courseDetailParams != null &&(courseDetailParams.isClassCourseEnter() ||
+                            courseDetailParams.isMyCourse()) &&
                             isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                             role == UserHelper.MoocRoleType.PARENT ||
                             (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
@@ -412,17 +413,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.lockTestIv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ChapterVo chapterVo = list.get(position);
-//                            if (chapterVo.isUnlock()) {
-//                                return;
-//                            }
-                            if (role == UserHelper.MoocRoleType.STUDENT ||
-                                    role == UserHelper.MoocRoleType.PARENT) {
+                           ChapterVo chapterVo = list.get(position);
+                            if ((role == UserHelper.MoocRoleType.STUDENT ||
+                                    role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                                 //锁住提示
                                 enterExamOrTestDialog();
                             } else if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                     //解锁
-                                    unLockDialog(courseDetailParams.getClassId(), courseId, vo.getId());
+                                    unLockDialog(chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                                 }
                         }
                     });
@@ -839,7 +837,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             int examType = list.get(position).getExamType();
             boolean isUnLock = list.get(position).isUnlock();
             if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                boolean isHideLock = courseDetailParams != null && courseDetailParams.isClassCourseEnter() &&
+                boolean isHideLock = courseDetailParams != null && (courseDetailParams.isClassCourseEnter() ||
+                        courseDetailParams.isMyCourse()) &&
                         isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                         role == UserHelper.MoocRoleType.PARENT ||
                         (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
@@ -856,28 +855,25 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.hideLessonIv.setImageDrawable(activity.getResources()
                         .getDrawable(R.drawable.ic_right_arrow));
             }
-//            if (isUnLock){
-//                holder.lockExamIv.setClickable(false);
-//            }else {  }
+
+            if (examType == TYPE_EXAM) {
                 holder.lockExamIv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ChapterVo chapterVo = list.get(position);
-                        if (chapterVo.isUnlock()){
-                            return;
-                        }
-                        if (role == UserHelper.MoocRoleType.STUDENT ||
-                                role == UserHelper.MoocRoleType.PARENT ) {
+                        if ((role == UserHelper.MoocRoleType.STUDENT ||
+                                role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                             //锁住提醒
                             enterExamOrTestDialog();
-                        }else {
+                        } else {
                             if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                 //解锁
-                                unLockDialog(courseDetailParams.getClassId(), courseId, vo.getId());
+                                unLockDialog(chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                             }
                         }
                     }
                 });
+            }
 
 
             holder.titleLay.setOnClickListener(new View.OnClickListener() {
@@ -895,7 +891,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
 //                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     ChapterVo chapterVo = list.get(position);
-                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
                         if (role == UserHelper.MoocRoleType.STUDENT ||
                                 role == UserHelper.MoocRoleType.PARENT) {
                             if (isJoinCourse) { //学生或者家长 是否参加对进入有影响
@@ -948,9 +944,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //解锁弹框
-    private void unLockDialog(String classId, String courseId, String chapterId) {
+    private void unLockDialog(boolean isUnLock,String classId, String courseId, String chapterId) {
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                activity, null, getString(R.string.label_exam_test_unlock_dialog)
+                activity, null, (isUnLock ? getString(R.string.label_exam_test_lock_dialog) : getString(R.string.label_exam_test_unlock_dialog))
                 , getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
