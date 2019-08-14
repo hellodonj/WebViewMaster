@@ -197,6 +197,9 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         totalCount = 0;
         for (int i = 0; i < tempChapterList.size(); i++) {
             ChapterVo group = tempChapterList.get(i);
+            if (group.isChoosed()){
+                totalCount++;
+            }
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);
@@ -248,6 +251,13 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < tempChapterList.size(); i++) {
             ChapterVo group = tempChapterList.get(i);
+            if (group.isChoosed()){
+                if (builder.length() == 0) {
+                    builder.append(group.getId());
+                } else {
+                    builder.append(",").append(group.getId());
+                }
+            }
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);
