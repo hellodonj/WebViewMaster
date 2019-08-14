@@ -334,7 +334,8 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
                 if (percentBeans.size() > 0) {
                     for (int i = 0; i < percentBeans.size(); i++) {
-                        pieHelpers.add(new PieHelper(percentBeans.get(i).getPercent(), " ",
+                        pieHelpers.add(new PieHelper(percentBeans.get(i).getPercent(),
+                                getPercentString(percentBeans.get(i).getPercent()),
                                 percentBeans.get(i).getColor()));
                     }
                 }
@@ -351,8 +352,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
             if (totalNum > 0) {
                 //有数据
                 importantPercent = importantNum * 100 / totalNum;
-                pieHelpers.add(new PieHelper(importantPercent, " ", colors.get(0)));
-                pieHelpers.add(new PieHelper(100 - importantNum, " ", colors.get(3)));
+                pieHelpers.add(new PieHelper(importantPercent, getPercentString(importantPercent),
+                        colors.get(0)));
+                pieHelpers.add(new PieHelper(100 - importantPercent, getPercentString(100 - importantPercent),
+                        colors.get(3)));
             } else {
                 //没有数据
                 pieHelpers.add(new PieHelper(100, " ", Color.parseColor(
@@ -360,6 +363,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
             }
         }
         pieView.setDate(pieHelpers);
+    }
+
+    private String getPercentString(int percent){
+        return percent + "%";
     }
 
     private void updateAdapter() {

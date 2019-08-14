@@ -368,7 +368,8 @@ public class MyTaskListFragment extends ContactsListFragment {
             HomeworkListInfo listInfo = list.get(i);
             if ((TextUtils.equals(listInfo.getTaskType(), String.valueOf(StudyTaskType
                     .SUPER_TASK)) && !listInfo.isNeedCommit())
-                    || listInfo.getResPropType() == 1) {
+                    || listInfo.getResPropType() == 1
+                    || listInfo.getRepeatCourseCompletionMode() == 3) {
                 //不需要提交、答题卡类型的任务
             } else {
                 data.add(listInfo);

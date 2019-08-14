@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ResourceUtils;
 import com.lqwawa.intleducation.base.utils.StringUtils;
@@ -33,9 +34,11 @@ import static com.lqwawa.intleducation.module.learn.ui.MyCourseListFragment.TAG;
 public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEntity> {
 
     private int screenWidth, itemWidth;
+    private Context mContext;
 
     public CourseClassifyPagerAdapter(Context context, List<LQCourseConfigEntity> entities, AdapterListener<LQCourseConfigEntity> listener) {
         super(entities, listener);
+        mContext = context;
         screenWidth = ScreenUtils.getScreenWidth(context);
         int size = entities.size();
         if (size > 4 || size < 3) itemWidth = screenWidth / 4;
@@ -65,7 +68,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
         public ViewHolder(View itemView) {
             super(itemView);
             mClassifyRoot = (LinearLayout) itemView.findViewById(R.id.classify_root);
-            if (itemWidth != 0) mClassifyRoot.getLayoutParams().width = itemWidth;
+            if (itemWidth !=0)mClassifyRoot.getLayoutParams().width = itemWidth;
             mAuthorizedLayout = (FrameLayout) itemView.findViewById(R.id.authorized_layout);
             mAuthorizedState = (TextView) itemView.findViewById(R.id.tv_authorized_state);
             mClassifyIcon = (ImageView) itemView.findViewById(R.id.classify_img);
@@ -80,7 +83,8 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
             String thumbnail = entity.getThumbnail();
             if (!EmptyUtil.isEmpty(thumbnail)) {
                 if (StringUtils.isValidWebResString(thumbnail)) {
-                    ImageUtil.fillNormalView(mClassifyIcon, entity.getThumbnail().trim());
+//                    ImageUtil.fillNormalView(mClassifyIcon, entity.getThumbnail().trim());
+                    Glide.with(mContext).load(entity.getThumbnail()).into(mClassifyIcon);
                 } else {
                     mClassifyIcon.setImageResource(ResourceUtils.getDrawableId(UIUtil.getContext(), thumbnail));
                 }

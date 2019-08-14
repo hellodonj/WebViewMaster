@@ -1574,13 +1574,18 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
-
-//        for (ResourceInfoTag tag : listenData) {
-//            if (TextUtils.equals("1", tag.getResProperties())) {
-//                updateScoreView(View.GONE);
-//                break;
-//            }
+        boolean isContain = false;
+        for (ResourceInfoTag tag : listenData) {
+            if (TextUtils.equals("1", tag.getResProperties())) {
+                //评测课件 默认 复述 + 评测
+                tag.setCompletionMode(2);
+                isContain = true;
+            }
+        }
+//        if (isContain) {
+//            updateScoreView(View.GONE);
 //        }
+
         int length = this.listenData.size() - 1;
         this.listenData.addAll(length, listenData);
         boolean flag = true;
@@ -2518,7 +2523,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 //学程馆资源的id
                 if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
                         || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
-                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING) {
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING
+                        || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING) {
                     taskParams.put("ResCourseId", uploadParameter.getResCourseId());
                 }
                 if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER) {
@@ -2583,6 +2589,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                                 taskParams.put("CourseId",lookResDtos.get(0).getCourseId());
                                 taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    && courseData == null){
+                                taskParams.put("ResId", lookResDtos.get(0).getResId());
+                                taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());
+                            }
+                            taskParams.put("ResCourseId", lookResDtos.get(0).getResCourseId());
+                            taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
                         } else if (lookResDtos.size() > 1) {
                             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                                 taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);

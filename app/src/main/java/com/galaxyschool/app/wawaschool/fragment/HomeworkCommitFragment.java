@@ -524,7 +524,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         } else if (TaskType == StudyTaskType.RETELL_WAWA_COURSE
                 || TaskType == StudyTaskType.TASK_ORDER
                 || TaskType == StudyTaskType.Q_DUBBING
-                || TaskType == StudyTaskType.SUBMIT_HOMEWORK) {
+                || TaskType == StudyTaskType.SUBMIT_HOMEWORK
+                || TaskType == StudyTaskType.ENGLISH_WRITING) {
             if (studyTaskType > 0 || isHistoryClass){
                 headRightTextV.setVisibility(View.VISIBLE);
             } else {
@@ -675,8 +676,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
     private boolean showEnglishWritingCourse(){
         boolean showCourseDetail = false;
-        if (homeworkListInfo != null && !TextUtils.isEmpty(homeworkListInfo.getResId())
-                && !TextUtils.isEmpty(homeworkListInfo.getResUrl())){
+        if (homeworkListInfo != null && !TextUtils.isEmpty(homeworkListInfo.getResId())){
             showCourseDetail = true;
         }
         return showCourseDetail;
@@ -1489,7 +1489,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 openPptAndPdf();
             } else if (TaskType == StudyTaskType.Q_DUBBING
                     || (TaskType == StudyTaskType.ENGLISH_WRITING && (taskResType == ResType.RES_TYPE_VIDEO
-                    || taskResType == ResType.RES_TYPE_VOICE))) {
+                    || taskResType == ResType.RES_TYPE_VOICE || taskResType == ResType.RES_TYPE_Q_DUBBING))) {
                 //打开Q配音的视频
                 openQDubbingVideo();
             } else {

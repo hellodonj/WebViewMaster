@@ -33,6 +33,7 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
@@ -516,8 +517,12 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
         int viewId = v.getId();
         // 切换状态
         updateItemDeleteState(false);
+        CourseDetailParams courseParams = mCommitParams.getCourseParams();
         if (EmptyUtil.isNotEmpty(sectionResListVo) && EmptyUtil.isNotEmpty(doWorkListener)) {
-            if (isAudition) {
+            if (courseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN && isAudition) {
+                UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
+                return;
+            } else if (courseParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN &&isAudition) {
                 UIUtil.showToastSafe(R.string.tip_join_or_by_course);
                 return;
             }

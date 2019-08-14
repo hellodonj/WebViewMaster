@@ -331,6 +331,28 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 if (selectedTask.size() <= 0) {
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                 } else {
+                    if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
+                        int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
+                        if (count >= 0 && count < 6) {
+                            int count1 = chooseResourceSum();
+                            if (count + count1 > 6) {
+                                int needCount = 6 - count;
+                                UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_add_count_tip), needCount));
+                                return;
+                            } else {
+                                //子任务个数
+                                List<String> taskNameLists = choosedChildResource();
+                                if (EmptyUtil.isNotEmpty(taskNameLists) && taskNameLists != null) {
+                                    String nameStr = StringUtils.join(taskNameLists, "、");
+                                    UIUtil.showToastSafe(String.format(UIUtil.getString(R.string.label_work_cart_choose_count_tip), nameStr));
+                                    return;
+                                }
+                            }
+                        } else if (count >= 6) {
+                            UIUtil.showToastSafe(R.string.label_work_cart_max_count_tip);
+                            return;
+                        }
+                    }
                     // 学程馆选取资源使用的
                     EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
                     //数据回传
@@ -472,7 +494,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     UIUtil.showToastSafe(R.string.str_select_tips);
                     return;
                 }
-
                 if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
                     int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
                     if (count >= 0 && count < 6) {
@@ -575,6 +596,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             handleSubjectSettingData(this, UserHelper.getUserId(),false);
         }
     }
+
 
     public void handleSubjectSettingData(Context context,
                                          String memberId,
