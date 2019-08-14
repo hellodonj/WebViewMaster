@@ -581,5 +581,6 @@
     <string name="label_exam_test_score">%s分</string>
     <string name="label_exam_test_lock_tip">未到测试/考试时间，待老师解锁</string>
     <string name="label_exam_test_unlock_dialog">确定解锁该测试/考试吗？</string>
+    <string name="label_exam_test_lock_dialog">确定锁定该测试/考试吗？</string>
     <string name="label_activation_code_tip">请输入激活码激活</string>
 </resources>
