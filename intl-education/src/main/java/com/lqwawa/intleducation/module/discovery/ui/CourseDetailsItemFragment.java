@@ -119,8 +119,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private boolean mTeacherVisitor;
 
     private boolean isFromScan;
-
-    private boolean isArrangementEnter = false;
+    //是否作业布置率进入
+    private boolean isArrangementEnter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,7 +146,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER, false);
         isFromScan = getArguments().getBoolean("isFromScan", false);
-
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -382,6 +381,11 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     }
 
     private void initData() {
+        if (isArrangementEnter){
+            mBtnStatisticalLearning.setVisibility(View.GONE);
+            mBtnCourseStatistics.setVisibility(View.GONE);
+            mBottomLayout.setVisibility(View.GONE);
+        }
         if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION) {
             mIntroduceAdapter = new CourseIntroduceAdapter(activity);
             mCourseIntroduceArray = new ArrayList();
@@ -486,15 +490,15 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
-        } else if (courseParams.isClassCourseEnter() &&
+        } else if ((courseParams.isClassCourseEnter() || courseParams.isMyCourse())&&
                 courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&
                 !courseParams.isClassParent() && courseParams.isClassStudent()) {
             //三习教案 班级学程进入，不是家长，是学生；显示学习统计
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnCourseStatistics.setVisibility(View.GONE);
-            LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
+            LQCourseHelper.requestChapterByCourseId(token, courseParams.getClassId(),courseId, schoolIds, new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
+            LQCourseHelper.requestChapterByCourseId(token,courseParams.getClassId(), courseId, schoolIds, new Callback());
         }
     }
 

@@ -1215,7 +1215,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
         if (v.getId() == R.id.from_layout) {
             boolean canEdit = TextUtils.equals(UserHelper.getUserId(), memberId);
             if (EmptyUtil.isNotEmpty(sectionResListVo)){
-                courseId = sectionResListVo.getCourseId();
+                courseId = String.valueOf(sectionResListVo.getLinkCourseId());
             }
             CourseDetailsActivity.start(SectionTaskDetailsActivity.this,courseId,canEdit,memberId,mCourseParams.isAuthorized(),mCourseParams,true);
         }
