@@ -20,6 +20,7 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.module.learn.vo.LiveListVo;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -51,13 +52,8 @@ public class LiveAdapter extends MyBaseAdapter {
         img_width = (p_width - DisplayUtil.dip2px(activity, 60)) / 2;
         img_height = img_width * 9 / 16;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions =  XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null, img_width, img_height);
     }
 
     @Override
@@ -112,7 +108,7 @@ public class LiveAdapter extends MyBaseAdapter {
             JSONObject jsonObject = JSON.parseObject(coverUrl, Feature.AutoCloseSource);
             coverUrl = jsonObject.getString("coverUrl");
         }
-        x.image().bind(holder.courseImg,
+        XImageLoader.loadImage(holder.courseImg,
                 coverUrl,
                 imageOptions);
         holder.courseImg.setLayoutParams(new FrameLayout.LayoutParams(img_width, img_height));

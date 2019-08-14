@@ -13,6 +13,7 @@ import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.tools.DensityUtils;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -44,13 +45,9 @@ public class IndexCourseAdapter extends MyBaseAdapter {
         img_width = p_width / 3;
         img_height = img_width * 297 / 210;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions =  XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null, img_width, img_height);
+
     }
 
     @Override
@@ -83,7 +80,7 @@ public class IndexCourseAdapter extends MyBaseAdapter {
         holder.courseName.setText(vo.getName());
         holder.organName.setText(vo.getOrganName());
         holder.teacherName.setText(vo.getTeachersName());
-        x.image().bind(holder.courseImg,
+        XImageLoader.loadImage(holder.courseImg,
                 vo.getThumbnailUrl().trim(),
                 imageOptions);
         holder.courseImg.setLayoutParams(new FrameLayout.LayoutParams(img_width, img_height));

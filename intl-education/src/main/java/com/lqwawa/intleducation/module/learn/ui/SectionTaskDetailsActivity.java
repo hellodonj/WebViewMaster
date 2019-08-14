@@ -60,6 +60,7 @@ import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -95,9 +96,6 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
     private List<Fragment> mFragments = new ArrayList<>();
     protected TaskCommitListFragment mFragment0, mFragment1;
 
-    protected int img_width;
-    protected int img_height;
-    protected ImageOptions imageOptions;
 
     protected TopBar topBar;
     protected ImageView mResIcon;
@@ -307,7 +305,6 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
                 }
             }
         });*/
-        initImageConfig();
         initViews();
     }
 
@@ -520,21 +517,6 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
                 }
             };
 
-    protected void initImageConfig() {
-        int p_width = Math.min(activity.getWindowManager().getDefaultDisplay().getWidth()
-                , activity.getWindowManager().getDefaultDisplay().getHeight());
-        img_width = (p_width - DisplayUtil.dip2px(activity, 20)) / 2;
-        img_height = img_width * 9 / 16;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setRadius(DisplayUtil.dip2px(activity, 8))
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
-    }
-
     protected void initViews() {
         //初始化顶部工具条
         topBar.setBack(true);
@@ -593,7 +575,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
             if (sectionTaskDetailsVo.getOrigin() != null) {
                 SectionTaskOriginVo originVo = sectionTaskDetailsVo.getOrigin();
                 if (StringUtils.isValidString(originVo.getThumbnail())) {
-                    // x.image().bind(coverIv, originVo.getThumbnail(), imageOptions);
+                    // XImageLoader.loadImage(coverIv, originVo.getThumbnail(), imageOptions);
                 }
 
 

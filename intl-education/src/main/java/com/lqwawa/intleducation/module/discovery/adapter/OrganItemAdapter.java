@@ -12,6 +12,8 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.vo.OrganItemVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -58,13 +60,9 @@ public class OrganItemAdapter extends MyBaseAdapter {
                 break;
         }
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null, img_width, img_height);
+
     }
 
     @Override
@@ -96,7 +94,7 @@ public class OrganItemAdapter extends MyBaseAdapter {
             holder.courseRoot.setPadding(sp4dp, sp4dp, sp4dp, sp4dp);
         }
 
-        x.image().bind(holder.courseImg,
+        XImageLoader.loadImage(holder.courseImg,
                 (type == 1 ? vo.getThumbnailUrl() : vo.getThumbnail() + "").trim(),
                 imageOptions);
         holder.courseImg.setLayoutParams(

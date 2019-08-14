@@ -88,6 +88,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.oosic.apps.share.BaseShareUtils;
 import com.oosic.apps.share.ShareInfo;
+import com.osastudio.common.utils.XImageLoader;
 import com.umeng.socialize.media.UMImage;
 
 import org.greenrobot.eventbus.EventBus;
@@ -635,12 +636,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         int p_height = getWindowManager().getDefaultDisplay().getHeight();
         img_width = p_width / 3 - DisplayUtil.dip2px(activity, 20);
         img_height = img_width * 297 / 210;
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
         //findViewById(R.id.fragment_container).setMinimumHeight(p_height);
         LinearLayout.LayoutParams coverLayParams = (LinearLayout.LayoutParams) imageViewCover.getLayoutParams();
         coverLayParams.width = img_width;
@@ -1115,7 +1112,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
             ratingBarGrade.setRating(score);
-            x.image().bind(imageViewCover,
+            XImageLoader.loadImage(imageViewCover,
                     courseVo.getThumbnailUrl().trim(),
                     imageOptions);
             textViewCourseName.setText(courseVo.getName());

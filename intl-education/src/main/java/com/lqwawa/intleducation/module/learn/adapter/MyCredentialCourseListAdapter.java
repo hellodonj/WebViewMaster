@@ -16,6 +16,8 @@ import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.MyCredentialCourseListVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -30,9 +32,6 @@ public class MyCredentialCourseListAdapter extends MyBaseAdapter {
     private Activity activity;
     private List<MyCredentialCourseListVo> list;
     private LayoutInflater inflater;
-    private int img_width;
-    private int img_height;
-    ImageOptions imageOptions;
     private static final int[] courseStatusResId = new int[]{
             R.string.course_status_0,
             R.string.course_status_1,
@@ -42,18 +41,6 @@ public class MyCredentialCourseListAdapter extends MyBaseAdapter {
         this.activity = activity;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<MyCredentialCourseListVo>();
-
-        int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        img_width = 2 * p_width / 5;
-        img_height = img_width * 10 / 16;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
     }
 
     @Override
@@ -98,7 +85,7 @@ public class MyCredentialCourseListAdapter extends MyBaseAdapter {
                 + vo.getCourse().getWeekCount() + vo.getChapterName());*//*
         holder.course_process_tv.setText(resources.getString(R.string.week_all)
                 + vo.getCourse().getWeekCount() + vo.getChapterName());
-        x.image().bind(holder.course_iv,
+        XImageLoader.loadImage(holder.course_iv,
                 ("" + vo.getCourse().getThumbnailUrl()).trim(),
                 imageOptions);
         holder.course_iv.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));

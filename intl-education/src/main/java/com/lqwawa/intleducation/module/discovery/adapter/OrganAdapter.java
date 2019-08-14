@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.module.discovery.vo.OrganVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -36,14 +38,9 @@ public class OrganAdapter extends MyBaseAdapter {
         img_width = p_width/8;
         img_height = img_width;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCircular(true)
-                .setCrop(false)
-                .setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions =
+                XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                        R.drawable.img_def, false, true, null, img_width, img_height);
     }
 
     @Override
@@ -77,7 +74,7 @@ public class OrganAdapter extends MyBaseAdapter {
 
         holder.organImg.setLayoutParams(
                 new LinearLayout.LayoutParams(img_width,img_height));
-        x.image().bind(holder.organImg,
+        XImageLoader.loadImage(holder.organImg,
                 vo.getThumbnail().trim(),
                 imageOptions);
         return convertView;

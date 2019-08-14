@@ -38,6 +38,7 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.discovery.vo.LiveDetailsVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -272,14 +273,8 @@ public class ConfirmOrderActivity extends MyBaseActivity implements View.OnClick
         img_width = p_width / 4;
         img_height = img_width * 297 / 210;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(isLive ? ImageView.ScaleType.CENTER_CROP
-                        : ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions =  XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null, img_width, img_height);
     }
 
     private void updateView() {
@@ -297,7 +292,7 @@ public class ConfirmOrderActivity extends MyBaseActivity implements View.OnClick
 
             courseIv.setVisibility(View.VISIBLE);
             mOnlineCourse.setVisibility(View.GONE);
-            x.image().bind(courseIv,
+            XImageLoader.loadImage(courseIv,
                     liveDetailsVo.getLive().getCoverUrl().trim(),
                     imageOptions);
 
@@ -321,7 +316,7 @@ public class ConfirmOrderActivity extends MyBaseActivity implements View.OnClick
 
             courseIv.setVisibility(View.VISIBLE);
             mOnlineCourse.setVisibility(View.GONE);
-            x.image().bind(courseIv,
+            XImageLoader.loadImage(courseIv,
                     courseVo.getThumbnailUrl().trim(),
                     imageOptions);
 

@@ -12,6 +12,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -28,28 +29,8 @@ import org.xutils.x;
  */
 public class CommittedTaskAdapter extends RecyclerAdapter<LqTaskCommitVo>{
 
-    private ImageOptions userAvatarImageOptions;
-    private ImageOptions courseImageOptions;
 
     public CommittedTaskAdapter() {
-
-        // 用户头像的ImageOptions
-        userAvatarImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCircular(true)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                .build();
-
-
-        // 课程图片显示的ImageOptions
-        courseImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
 
     }
 

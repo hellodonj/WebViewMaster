@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
 import com.osastudio.apps.BaseActivity;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -56,12 +58,11 @@ public class ImageDetailActivity extends BaseActivity {
 
         titleTv.setText(getIntent().getStringExtra("title"));
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ScaleType.FIT_CENTER)
-                .setCrop(false)
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ScaleType.FIT_CENTER,
+                0, false, false, null);
 
-        x.image().bind(image, getIntent().getStringExtra("image"), imageOptions);
+
+        XImageLoader.loadImage(image, getIntent().getStringExtra("image"), imageOptions);
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
