@@ -14,6 +14,19 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.duowan.mobile.netroid.Listener;
+import com.duowan.mobile.netroid.Request;
+import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
+import com.galaxyschool.app.wawaschool.MyApplication;
+import com.galaxyschool.app.wawaschool.QDubbingActivity;
+import com.galaxyschool.app.wawaschool.TeacherReviewDetailActivity;
+import com.galaxyschool.app.wawaschool.common.WawaCourseUtils;
+import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseUploadResult;
 import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
@@ -33,8 +46,13 @@ import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.tutorial.marking.require.TaskRequirementActivity;
+import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.mooc.common.MOOCHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +186,19 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
                     }
                     ImageView taskImageView = (ImageView) itemView.findViewById(com.lqwawa.intleducation.R.id.iv_task_icon);
                     if (taskImageView != null){
-                        ImageUtil.fillNotificationView(taskImageView, AppSettings.getFileUrl(data.getStudentResThumbnailUrl()));
+                        if (data.isEvalType() || (data.isMarkCard() && !data.isCourseType())) {
+                            if (data.isEvalType()){
+                                MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
+                                        "", taskImageView, R.drawable.icon_student_task_eval);
+                            } else {
+                                //答题卡
+                                MyApplication.getThumbnailManager(getActivity()).displayUserIconWithDefault(
+                                        "", taskImageView, R.drawable.icon_exercise_card);
+                            }
+                        } else {
+                            //显示的缩略图
+                            ImageUtil.fillNotificationView(taskImageView, AppSettings.getFileUrl(data.getStudentResThumbnailUrl()));
+                        }
                     }
                     //显示任务的类型
                     TextView mTaskType =
@@ -250,35 +280,160 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
         } else {
             //进入批阅列表
             updateRedPoint(data);
-            enterCheckMarkDetail(data);
+            if (data.isEvalType()){
+                //语音评测
+                enterTeacherEvalDetail(data);
+            } else if (data.isMarkCard()) {
+                //自动批阅的读写单
+                enterMarkCardDetail(data);
+            } else if (data.isVideoType()) {
+                //q配音
+                enterQDubbingDetail(data);
+            } else {
+                enterCheckMarkDetail(data);
+            }
         }
+    }
+
+    private void enterQDubbingDetail(CommitTask data){
+        WawaCourseUtils wawaCourseUtils = new WawaCourseUtils(getActivity());
+        wawaCourseUtils.loadCourseDetail(data.getTeacherResId());
+        wawaCourseUtils.setOnCourseDetailFinishListener(courseData -> {
+            QDubbingActivity.start(getActivity(),
+                    courseData.resourceurl,
+                    courseData.level,
+                    data,
+                    true,
+                    data.getResPropType());
+        });
+    }
+
+    private void enterMarkCardDetail(CommitTask data){
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("resId", data.getTeacherResId());
+            jsonObject.put("needAnswer", true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("?j=" + jsonObject.toString());
+        String url = ServerUrl.WAWATV_COURSE_DETAIL_URL + builder.toString();
+        showLoadingDialog();
+        ThisStringRequest request = new ThisStringRequest(
+                Request.Method.GET, url, new Listener<String>() {
+            @Override
+            public void onSuccess(String jsonString) {
+                if (getActivity() == null) {
+                    return;
+                }
+                if (jsonString != null) {
+                    CourseUploadResult uploadResult = JSON.parseObject(
+                            jsonString, CourseUploadResult.class);
+                    if (uploadResult != null && uploadResult.code == 0) {
+                        if (uploadResult.getData() != null && uploadResult.getData().size() > 0) {
+                            CourseData courseData = uploadResult.getData().get(0);
+                            if (courseData != null) {
+                                String exerciseTotalScore = courseData.point;
+                                if (!TextUtils.isEmpty(exerciseTotalScore)) {
+                                    ExerciseAnswerCardParam answerCardParam =
+                                            new ExerciseAnswerCardParam();
+                                    answerCardParam.setExerciseTotalScore(exerciseTotalScore);
+                                    answerCardParam.setResId(courseData.id + "-" + courseData.type);
+                                    answerCardParam.setScreenType(courseData.screentype);
+                                    answerCardParam.setExerciseAnswerString(uploadResult.exercise);
+                                    boolean hasSubjectProblem = DoTaskOrderHelper.hasSubjectProblem(uploadResult.exercise);
+                                    answerCardParam.setHasSubjectProblem(hasSubjectProblem);
+                                    answerCardParam.setCommitTaskTitle(data.getStudentResTitle());
+                                    answerCardParam.setIsHeadMaster(true);
+                                    answerCardParam.setIsOnlineHost(true);
+                                    answerCardParam.setRoleType(RoleType.ROLE_TYPE_TEACHER);
+                                    answerCardParam.setStudentName(data.getStudentName());
+                                    answerCardParam.setStudentId(data.getStudentId());
+                                    answerCardParam.setCommitTaskId(data.getCommitTaskId());
+                                    answerCardParam.setTaskScoreRemark(data.getTaskScoreRemark());
+                                    answerCardParam.setCommitTask(data);
+                                    StudyTask task = new StudyTask();
+                                    task.setTaskCreateId(getMemeberId());
+                                    answerCardParam.setStudyTask(task);
+                                    AnswerCardDetailActivity.start(getActivity(), answerCardParam);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                dismissLoadingDialog();
+            }
+        });
+        request.addHeader("Accept-Encoding", "*");
+        request.start(getActivity());
+    }
+
+    private void enterTeacherEvalDetail(CommitTask commitTask) {
+        WawaCourseUtils wawaCourseUtils = new WawaCourseUtils(getActivity());
+        String resId = commitTask.getTeacherResId();
+        if (TextUtils.isEmpty(resId)){
+            return;
+        }
+        if (resId.contains(",")) {
+            resId = resId.split(",")[0];
+        }
+        wawaCourseUtils.loadCourseDetail(resId);
+        wawaCourseUtils.setOnCourseDetailFinishListener(new WawaCourseUtils.OnCourseDetailFinishListener() {
+            @Override
+            public void onCourseDetailFinish(CourseData courseData) {
+                if (getActivity() == null) {
+                    return;
+                }
+                if (courseData != null) {
+                    int taskCourseOrientation = courseData.screentype;
+                    TeacherReviewDetailActivity.start(getActivity(),
+                            commitTask.isHasVoiceReview(),
+                            true,
+                            getPageScoreList(commitTask.getAutoEvalContent()),
+                            commitTask.getTaskScore(),
+                            commitTask.getTaskScoreRemark(),
+                            2,
+                            taskCourseOrientation,
+                            commitTask.getStudentResUrl(),
+                            "",
+                            String.valueOf(commitTask.getCommitTaskId()));
+                }
+            }
+        });
+    }
+
+    private ArrayList<Integer> getPageScoreList(String pageArray) {
+        ArrayList<Integer> pageList = new ArrayList<>();
+        if (TextUtils.isEmpty(pageArray)) {
+            return pageList;
+        }
+
+        JSONArray jsonArray = JSONArray.parseArray(pageArray);
+        if (jsonArray != null && jsonArray.size() > 0) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                pageList.add((Integer) jsonArray.get(i));
+            }
+        }
+        return pageList;
     }
 
     /**
      * 查看批阅
      */
     private void enterCheckMarkDetail(CommitTask data) {
-        String taskScore = data.getTaskScore();
-        if (TextUtils.isEmpty(taskScore)) {
-            taskScore = "";
-        }
         StudyTask task = new StudyTask();
         task.setType(data.getType());
-        CheckMarkFragment checkMarkFragment = CheckMarkFragment
-                .newInstance(data,
-                        taskScore,
-                        task,
-                        RoleType.ROLE_TYPE_TEACHER,
-                        false,
-                        true,
-                        true,
-                        false,
-                        true);
-        getFragmentManager().beginTransaction()
-                .add(R.id.activity_body, checkMarkFragment, CheckMarkFragment.TAG)
-                .hide(this)
-                .addToBackStack(CheckMarkFragment.TAG)
-                .commit();
+        task.setTaskCreateId(getMemeberId());
+        //mooc都是百分制
+        task.setScoringRule(2);
+        MOOCHelper.enterCheckMarkDetail(getActivity(),data,task,RoleType.ROLE_TYPE_TEACHER,false,
+                false);
     }
 
     private void loadCommonData() {

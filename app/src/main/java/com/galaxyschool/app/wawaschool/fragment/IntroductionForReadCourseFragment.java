@@ -1574,13 +1574,18 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
-
-//        for (ResourceInfoTag tag : listenData) {
-//            if (TextUtils.equals("1", tag.getResProperties())) {
-//                updateScoreView(View.GONE);
-//                break;
-//            }
+        boolean isContain = false;
+        for (ResourceInfoTag tag : listenData) {
+            if (TextUtils.equals("1", tag.getResProperties())) {
+                //评测课件 默认 复述 + 评测
+                tag.setCompletionMode(2);
+                isContain = true;
+            }
+        }
+//        if (isContain) {
+//            updateScoreView(View.GONE);
 //        }
+
         int length = this.listenData.size() - 1;
         this.listenData.addAll(length, listenData);
         boolean flag = true;
