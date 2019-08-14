@@ -33,10 +33,7 @@ import java.util.Map;
 public class PersonalCommentTabsFragment extends ContactsListFragment {
     public static String TAG = PersonalCommentTabsFragment.class.getSimpleName();
     private GridView listView;
-    private boolean isOnlineReporter;//判断是不是直播的主持人和小编
-    private boolean isHistoryClass;
     private ContainsEmojiEditText commentEditText;
-    private LinearLayout bottomLayout;
     private int commitTaskId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,31 +52,24 @@ public class PersonalCommentTabsFragment extends ContactsListFragment {
     private void loadIntentData(){
         Bundle args = getArguments();
         if (args != null){
-            isOnlineReporter = args.getBoolean("isOnlineReporter",false);
-            isHistoryClass = args.getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
             commitTaskId = args.getInt("student_commit_task_id");
         }
     }
 
     private void initViews() {
         //输入框
-        commentEditText = (ContainsEmojiEditText) findViewById(R.id.edit_btn);
+        commentEditText = (ContainsEmojiEditText) getActivity().findViewById(R.id.edit_btn);
         if (commentEditText != null) {
             //设置背景色
             commentEditText.setBackgroundResource(R.drawable.gray_10dp_line_gray_color);
             commentEditText.setMaxlen(40);
         }
         //发送按钮
-        TextView sendTextView = (TextView) findViewById(R.id.send_btn);
+        TextView sendTextView = (TextView) getActivity().findViewById(R.id.send_btn);
         if (sendTextView != null) {
             sendTextView.setOnClickListener(this);
         }
-        bottomLayout = (LinearLayout) findViewById(R.id.ll_bottom_layout);
-        if (isOnlineReporter && !isHistoryClass){
-            bottomLayout.setVisibility(View.VISIBLE);
-        } else {
-            bottomLayout.setVisibility(View.GONE);
-        }
+
         listView = (GridView) findViewById(R.id.resource_list_view);
         listView.setNumColumns(1);
         listView.setHorizontalSpacing(0);

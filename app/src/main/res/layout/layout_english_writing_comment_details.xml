@@ -120,35 +120,53 @@
         </ScrollView>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <!-- tab滑动 -->
-
-        <com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip
-            android:id="@+id/pager_sliding_tab_strip"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/item_height"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            app:pstsIndicatorColor="@color/green"
-            app:pstsIndicatorHeight="0dp"
-            app:pstsShouldExpand="true"
-            app:pstsTabPaddingLeftRight="15dp"
-            app:pstsTabTextColor="@color/selector_color_tab_task"
-            />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_bottom_layout"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <com.galaxyschool.app.wawaschool.views.MyViewPager
-            android:id="@+id/view_pager"
+            <com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip
+                android:id="@+id/pager_sliding_tab_strip"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_height"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                app:pstsIndicatorColor="@color/green"
+                app:pstsIndicatorHeight="0dp"
+                app:pstsShouldExpand="true"
+                app:pstsTabPaddingLeftRight="15dp"
+                app:pstsTabTextColor="@color/selector_color_tab_task"
+                />
+
+            <com.galaxyschool.app.wawaschool.views.MyViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <!-- 发送评论布局 -->
+        <LinearLayout
+            android:id="@+id/ll_bottom_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <include layout="@layout/include_bottom_send_layout"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </LinearLayout>
