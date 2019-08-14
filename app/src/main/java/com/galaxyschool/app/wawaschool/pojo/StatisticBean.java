@@ -35,12 +35,22 @@ public class StatisticBean implements Serializable {
     private int StudentCompletedNum;
     private String StudentCompletedRate;
     private int percent;
+    private int [] weights;
+
     public int getTaskTotalNum() {
         return ExcellentNum + GoodNum + FairNum + FailNum + NoCorrectNum + NotCompletedNum;
     }
 
     public int getTotalMarkNum(){
         return ExcellentNum + GoodNum + FairNum + FailNum;
+    }
+
+    public int[] getWeights() {
+        return weights;
+    }
+
+    public void setWeights(int[] weights) {
+        this.weights = weights;
     }
 
     public int getPercent() {

@@ -54,6 +54,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
     private TextView wordsCountTextView;
     private TextView scoreTextView;
     private TextView contentTextView;
+    private LinearLayout bottomLayout;
 
     private int roleType = -1;
     private String studentId, sortStudentId, taskId;
@@ -131,7 +132,20 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
         //内容
         contentTextView = (TextView) findViewById(R.id.tv_content);
+        bottomLayout = (LinearLayout) findViewById(R.id.ll_bottom_layout);
         initViewPager();
+    }
+
+    private void showBottomLayout(boolean isVisible){
+        if (isVisible){
+            if (isOnlineReporter && !isHistoryClass){
+                bottomLayout.setVisibility(View.VISIBLE);
+            } else {
+                bottomLayout.setVisibility(View.GONE);
+            }
+        } else {
+            bottomLayout.setVisibility(View.GONE);
+        }
     }
 
     private void initViewPager() {
@@ -175,6 +189,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
             @Override
             public void onPageSelected(int position) {
+                showBottomLayout(position == 1);
             }
 
             @Override
