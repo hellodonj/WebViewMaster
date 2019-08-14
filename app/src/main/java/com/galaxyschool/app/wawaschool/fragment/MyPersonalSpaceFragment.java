@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.AccountActivity;
 import com.galaxyschool.app.wawaschool.ActClassroomActivity;
@@ -23,7 +22,6 @@ import com.galaxyschool.app.wawaschool.CaptureActivity;
 import com.galaxyschool.app.wawaschool.ClassContactsActivity;
 import com.galaxyschool.app.wawaschool.DeviceManagementActivity;
 import com.galaxyschool.app.wawaschool.HomeActivity;
-import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.MediaMainActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.MyCollectionListActivity;
@@ -348,8 +346,6 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
         });
         switchButton = (SwitchButton) findViewById(R.id.sb_btn);
         switchButton.setOnCheckedChangeListener((view,check) -> {
-            LearningStatisticActivity.start(getActivity(),1228,"课程统计","5035fae2-2f1c-4e23-8f0f" +
-                    "-a99d01132b2b",null);
             //切换模式
             HomeActivity activity = null;
             if (getActivity() instanceof HomeActivity){
