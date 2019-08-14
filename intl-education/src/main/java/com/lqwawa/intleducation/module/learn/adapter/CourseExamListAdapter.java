@@ -13,6 +13,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.learn.vo.ExamListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 
@@ -30,7 +31,6 @@ public class CourseExamListAdapter extends ExamListBaseAdapter{
     private LayoutInflater inflater;
     private int img_width;
     private int img_height;
-    ImageOptions imageOptions;
     private boolean needFlagRead = false;
     private boolean canEdit = false;
 
@@ -46,13 +46,7 @@ public class CourseExamListAdapter extends ExamListBaseAdapter{
 
         canEdit = activity.getIntent().getBooleanExtra("canEdit", false);
         needFlagRead= activity.getIntent().getBooleanExtra("needFlag", false);
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+
     }
 
     @Override

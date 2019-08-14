@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.module.learn.ui.TaskCommitListFragment;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -108,30 +109,17 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
         }
 
         // 用户头像的ImageOptions
-        userAvatarImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCircular(true)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                .build();
+        userAvatarImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                        R.drawable.user_header_def, false, true, null);
 
 
         // 课程图片显示的ImageOptions
-        courseImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        courseImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                R.drawable.img_def, false, false, null);
 
         // 课程图片显示的ImageOptions
-        autoMarkImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.ic_auto_mark_task_order)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_auto_mark_task_order)//加载失败后默认显示图片
-                .build();
+        autoMarkImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                R.drawable.ic_auto_mark_task_order, false, false, null);
     }
 
     public CommittedTasksAdapter(@NonNull Activity activity) {
@@ -292,9 +280,9 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
             // 显示用户提交课程缩略图
             if(vo.isAutoMark()){
                 // 自动批阅的读写单
-                x.image().bind(holder.mCourseIcon, vo.getStudentResThumbnailUrl(), autoMarkImageOptions);
+                XImageLoader.loadImage(holder.mCourseIcon, vo.getStudentResThumbnailUrl(), autoMarkImageOptions);
             }else{
-                x.image().bind(holder.mCourseIcon, vo.getStudentResThumbnailUrl(), courseImageOptions);
+                XImageLoader.loadImage(holder.mCourseIcon, vo.getStudentResThumbnailUrl(), courseImageOptions);
             }
 
             /* 更改,自动批阅的读写单,显示批阅
@@ -318,7 +306,7 @@ public class CommittedTasksAdapter extends MyBaseAdapter {
         }
 
         // 显示用户头像
-        x.image().bind(holder.mStudentAvatar, vo.getHeadPicUrl(), userAvatarImageOptions);
+        XImageLoader.loadImage(holder.mStudentAvatar, vo.getHeadPicUrl(), userAvatarImageOptions);
         // 显示用户姓名
         holder.mStudentName.setText(vo.getStudentName());
         if(EmptyUtil.isNotEmpty(vo.getStudentResTitle())){

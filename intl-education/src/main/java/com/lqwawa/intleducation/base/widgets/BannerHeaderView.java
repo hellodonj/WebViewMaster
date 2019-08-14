@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -64,12 +65,9 @@ public class BannerHeaderView extends FrameLayout implements OnPageChangeListene
         View.inflate(mContext, R.layout.widgets_banner, this);
         mViewPager = (ViewPager) findViewById(R.id.vp);
         mDotLl = (LinearLayout) findViewById(R.id.ll_dot);
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ScaleType.FIT_XY)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.lq_bannner_thum)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.lq_bannner_thum)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                R.drawable.lq_bannner_thum, false, false, null);
+
         //让banner的高度是屏幕的1/4
         /*ViewGroup.LayoutParams vParams = mViewPager.getLayoutParams();
         vParams.height = (int) (DisplayUtil.getMobileWidth(mContext) * 11 / 25);
@@ -244,7 +242,7 @@ public class BannerHeaderView extends FrameLayout implements OnPageChangeListene
             });
 
             ((ViewPager) container).addView(iv);
-            x.image().bind(iv,
+            XImageLoader.loadImage(iv,
                     mUrlList.get(position % mUrlList.size()).trim(),
                     imageOptions);
 
