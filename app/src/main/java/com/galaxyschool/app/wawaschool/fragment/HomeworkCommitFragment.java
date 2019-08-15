@@ -1047,6 +1047,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                         StudyTaskUtils.isStudentFinishStudyTask(StudentId, homeworkCommitObjectInfo.getListCommitTask(), true);
                 if (isFistIn) {
                     isFistIn = false;
+                    if (isHistoryClass){
+                        return;
+                    }
                     //没有完成给于toast提示
                     if (studyTask.getRepeatCourseCompletionMode() == 1 && propertiesType == 1){
                         if (!isStudentFinishRetellTask){
@@ -1510,6 +1513,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     }
 
     private boolean showTaskFinishDialogCondition() {
+        if (isHistoryClass){
+            return false;
+        }
         if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
             if (task != null) {
                 if (task.getRepeatCourseCompletionMode() == 1 && propertiesType == 1 && !isStudentFinishRetellTask) {
