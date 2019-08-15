@@ -54,11 +54,9 @@ import com.lqwawa.intleducation.module.learn.ui.UnitExamListActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.osastudio.common.utils.TipMsgHelper;
-import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
-import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -406,7 +404,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 enterExamOrTestDialog();
                             } else if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                     //解锁
-                                    unLockDialog(chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                    unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                                 }
                         }
                     });
@@ -854,7 +852,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         } else {
                             if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                 //解锁
-                                unLockDialog(chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                             }
                         }
                     }
@@ -930,7 +928,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //解锁弹框
-    private void unLockDialog(boolean isUnLock,String classId, String courseId, String chapterId) {
+    private void unLockDialog(int position,boolean isUnLock,String classId, String courseId, String chapterId) {
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
                 activity, null, (isUnLock ? getString(R.string.label_exam_test_lock_dialog) : getString(R.string.label_exam_test_unlock_dialog))
                 , getString(R.string.cancel),
@@ -944,7 +942,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        requestLockExam(classId,courseId,chapterId);
+                        requestLockExam(position,isUnLock,classId,courseId,chapterId);
                     }
                 }
         );
@@ -952,7 +950,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //解锁考试或者测试
-    private void requestLockExam(String classId, String courseId, String chapterId) {
+    private void requestLockExam(int position,boolean isUnLock,String classId, String courseId, String chapterId) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("classId", classId);
         requestVo.addParams("courseId", courseId);
@@ -967,6 +965,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             public void onSuccess(String result) {
                 ResponseVo<String> results = JSON.parseObject(result, new TypeReference<ResponseVo<String>>() {});
                 if (results.getCode() == 0) {
+                    list.get(position).setUnlock(!isUnLock);
                     notifyDataSetChanged();
                 }
             }
