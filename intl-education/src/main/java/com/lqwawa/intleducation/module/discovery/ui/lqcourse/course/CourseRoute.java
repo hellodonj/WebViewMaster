@@ -178,7 +178,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) || isOnlineCounselor) {
+        if ((!entity.isExpire() && entity.isCourseTeacher(memberId, UserHelper.getUserId())) || isOnlineCounselor) {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
@@ -350,9 +350,9 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
+        if ((!entity.isExpire() && (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
                 courseParams.isClassParent() ||
-                courseParams.isClassTeacher() ||
+                courseParams.isClassTeacher())) ||
                 isOnlineCounselor) {
 
             // 如果是机构辅导老师
@@ -472,6 +472,8 @@ public class CourseRoute {
             if (params.isClassCourseEnter()) {
                 // 班级学程进来的
                 return CourseDetailType.COURSE_DETAIL_CLASS_ENTER;
+            } else if (params.isMyCourse()) {
+                return CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
             } else {
                 // 从机构学程进来的
                 return CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER;

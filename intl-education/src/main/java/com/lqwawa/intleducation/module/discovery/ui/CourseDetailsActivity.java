@@ -255,6 +255,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final CourseDetailParams params,
                              final boolean isFromScan) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
+        if (params != null) {
+            params.setMyCourse(isMyCourse);
+        }
         route.navigation(activity, courseId, memberId, params,
                 isFromScan, new CourseRoute.NavigationListener() {
                     @Override
