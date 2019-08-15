@@ -58,6 +58,7 @@ import static com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity.SUB
 
 public class ExamsAndTestsActivity extends AppCompatActivity implements DataSource.Callback<ResponseVo<SxExamDetailVo>>, View.OnClickListener {
 
+    private static final String KEY_EXTRA_MULTIPLE_CHOICE_COUNT = "KEY_EXTRA_MULTIPLE_CHOICE_COUNT";
     private static Activity activity;
     private TopBar topBar;
     private FrameLayout mNewCartContainer, mBottomLayout, container;
@@ -86,6 +87,9 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
     private String courseId;
     private int sourceType;
+    // 可以选择的最大条目
+    private int mMultipleChoiceCount;
+    private int maxSelect = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,6 +140,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         status = intent.getIntExtra("status", -1);
         libraryType = intent.getIntExtra("libraryType", 5);
         taskType = intent.getIntExtra("taskType", -1);
+        mMultipleChoiceCount = getIntent().getIntExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,10);
 
         lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
         if (lessonSourceParams != null) courseParams = lessonSourceParams.getCourseParams();
@@ -165,6 +170,11 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         //被动进入选择,并且是选择模式
         if (!choiceModeAndIntiativeTrigger && lessonSourceParams != null && lessonSourceParams.isChoiceMode()) {
             topBar.setRightFunctionText1(getString(R.string.ok), v -> {
+                if (taskType == 9) {
+                    maxSelect = 1;
+                } else {
+                    maxSelect = mMultipleChoiceCount;
+                }
                 selectedTask.clear();
                 List<TreeNode> selectedNodes = treeView.getSelectedNodes();
                 for (TreeNode selectedNode : selectedNodes) {
@@ -176,15 +186,27 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 }
                 if (selectedTask.size() <= 0) {
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
+                    return;
                 } else {
-                    // 学程馆选取资源使用的
-                    EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
-                    //数据回传
-                    setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
-                    RefreshUtil.getInstance().clear();
-                    if (activity != null) activity.finish();
-                    finish();
+                    if (taskType == 9) {
+                        if (selectedTask.size() > 1) {
+                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    } else {
+                        if (selectedTask.size() > mMultipleChoiceCount) {
+                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    }
                 }
+                // 学程馆选取资源使用的
+                EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
+                //数据回传
+                setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
+                RefreshUtil.getInstance().clear();
+                if (activity != null) activity.finish();
+                finish();
             });
         }
         refreshCartPoint();
@@ -216,7 +238,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         context.startActivity(intent);
     }
 
-    public static void start(Context context, int taskType, String courseId, String sectionId, boolean mTeacherVisitor,
+    public static void start(Context context, int taskType,int multipleChoiceCount, String courseId, String sectionId, boolean mTeacherVisitor,
                              int status, int libraryType,int sourceType,LessonSourceParams lessonSourceParams) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
@@ -228,6 +250,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         intent.putExtra("sourceType", sourceType);
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
         intent.putExtra("taskType", taskType);
+        intent.putExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multipleChoiceCount);
         context.startActivity(intent);
     }
 
@@ -241,7 +264,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
     private void formatData(SxExamDetailVo examDetailVo) {
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
-                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
+                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType, mMultipleChoiceCount);
 
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (int index = 0; index < taskList.size(); index++) {

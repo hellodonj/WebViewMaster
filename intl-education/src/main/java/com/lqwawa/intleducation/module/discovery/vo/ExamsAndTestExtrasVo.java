@@ -14,11 +14,14 @@ public class ExamsAndTestExtrasVo extends BaseVo {
     private LessonSourceParams lessonSourceParams;
     private String schoolId;
     private int libraryType;
+    private int multipleChoiceCount;
 
     public ExamsAndTestExtrasVo() {
     }
 
-    public ExamsAndTestExtrasVo(String schoolId, LessonSourceParams lessonSourceParams, boolean needFlagRead, int lessonStatus, boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode,int libraryType) {
+    public ExamsAndTestExtrasVo(String schoolId, LessonSourceParams lessonSourceParams, boolean needFlagRead, int lessonStatus,
+                                boolean isVideoCourse, boolean mClassTeacher, boolean isCourseSelect, boolean mChoiceMode,
+                                int libraryType,int multipleChoiceCount) {
         this.schoolId =schoolId;
         this.needFlagRead = needFlagRead;
         this.lessonStatus = lessonStatus;
@@ -28,6 +31,7 @@ public class ExamsAndTestExtrasVo extends BaseVo {
         this.mChoiceMode = mChoiceMode;
         this.lessonSourceParams = lessonSourceParams;
         this.libraryType =libraryType;
+        this.multipleChoiceCount = multipleChoiceCount;
     }
 
     public boolean isNeedFlagRead() {
@@ -100,5 +104,13 @@ public class ExamsAndTestExtrasVo extends BaseVo {
 
     public void setLibraryType(int libraryType) {
         this.libraryType = libraryType;
+    }
+
+    public int getMultipleChoiceCount() {
+        return multipleChoiceCount;
+    }
+
+    public void setMultipleChoiceCount(int multipleChoiceCount) {
+        this.multipleChoiceCount = multipleChoiceCount;
     }
 }

@@ -14,6 +14,7 @@
 
 package com.lqwawa.intleducation.common.ui.treeview.base;
 
+import android.content.Context;
 import android.view.View;
 
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
@@ -42,7 +43,7 @@ public abstract class CheckableNodeViewBinder extends BaseNodeViewBinder {
      * @param treeNode
      * @param selected
      */
-    public void onNodeSelectedChanged(TreeNode treeNode, boolean selected) {
+    public void onNodeSelectedChanged(Context context,TreeNode treeNode, boolean selected) {
         /*empty*/
     }
 }

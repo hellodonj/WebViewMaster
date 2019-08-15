@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ResIconUtils;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -41,6 +42,9 @@ import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 描述: 第二级别
@@ -54,6 +58,8 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     ImageView resIcon, mIvPlayIcon, mIvNeedCommit;
     LinearLayout itemRootLay;
     private int mTaskType = 9;
+    // 可以选择的最大条目
+    private int maxSelect = 1;
 
     private SparseArray<ResIconUtils.ResIcon> resIconSparseArray = ResIconUtils.resIconSparseArray;
     //    private boolean mChoiceMode;
@@ -222,7 +228,7 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                 // 是已经加入的课程
                 // 或者是试听身份
-                enterSectionTaskDetail(activity, resVo, mSourceParams,examsAndTestExtrasVo);
+                enterSectionTaskDetail(activity, resVo, mSourceParams, examsAndTestExtrasVo);
             } else {
                 // 其它情况，只能看微课
                 mReadWeikeHelper.readWeike(resVo);
@@ -245,6 +251,40 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
                 }
             }
         }
+    }
+
+    @Override
+    public void onNodeSelectedChanged(Context context, TreeNode treeNode, boolean selected) {
+        super.onNodeSelectedChanged(context, treeNode, selected);
+        SectionResListVo resListVo = (SectionResListVo) treeNode.getValue();
+        ExamsAndTestExtrasVo extrasVo = (ExamsAndTestExtrasVo) treeNode.getExtras();
+        if (resListVo.getTaskType() == 9) {
+            maxSelect = 1;
+        } else {
+            maxSelect = extrasVo.getMultipleChoiceCount();
+        }
+        // 获取已经选中的作业库
+        List<TreeNode> data = treeView.getSelectedNodes();
+        List<TreeNode> choiceArray = new ArrayList<>();
+        if (EmptyUtil.isNotEmpty(data)) {
+            for (TreeNode vo : data) {
+                if (vo.isSelected()) {
+                    choiceArray.add(vo);
+                    if (resListVo.getTaskType() == 9) {
+                        if (choiceArray.size() > 1) {
+                            ToastUtil.showToast(context, context.getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    } else {
+                        if (choiceArray.size() > extrasVo.getMultipleChoiceCount()) {
+                            ToastUtil.showToast(context, context.getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private void setResIcon(ImageView imageView, SectionResListVo vo, int resType, ExamsAndTestExtrasVo examsAndTestExtrasVo) {

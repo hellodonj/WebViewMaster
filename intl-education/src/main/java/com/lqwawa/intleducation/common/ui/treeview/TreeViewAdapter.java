@@ -26,7 +26,6 @@ import com.lqwawa.intleducation.common.ui.treeview.base.BaseNodeViewBinder;
 import com.lqwawa.intleducation.common.ui.treeview.base.BaseNodeViewFactory;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
 import com.lqwawa.intleducation.common.ui.treeview.helper.TreeHelper;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +151,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     boolean checked = checkableView.isChecked();
                     selectNode(checked, treeNode);
-                    viewBinder.onNodeSelectedChanged(treeNode, checked);
+                    viewBinder.onNodeSelectedChanged(context,treeNode, checked);
                 }
             });
         } else {

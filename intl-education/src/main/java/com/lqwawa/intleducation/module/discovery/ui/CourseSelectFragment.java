@@ -305,6 +305,9 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
                     lessonSourceParams.setFilterArray(mFilterArray);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                    Bundle arguments = getArguments();
+                    int taskType = arguments.getInt("tasktype", 1);
+                    int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
 
                     if (initiativeTrigger) {
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
@@ -331,18 +334,18 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         mExtras);
                         }
                     } else {
-                        Bundle arguments = getArguments();
-                        int taskType = arguments.getInt("tasktype", 1);
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
                                 if (chapterVo.getIsChildren()){ //测试
-                                    ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,courseId,
+                                            chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
                                 }else { //考试
-                                    ExamsAndTestsActivity.start(activity, taskType,courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,
+                                            courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
                                 }
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
-                                if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity,taskType, courseId, chapterId,
+                                if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity,taskType,multipleChoiceCount, courseId, chapterId,
                                         sectionName, name, false, true, true,
                                         status, memberId, chapterVo.isContainAssistantWork(),
                                         "", false, courseVo,
@@ -359,8 +362,6 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             courseParams1.setLibraryType(courseVo1.getLibraryType());
                             courseParams1.setIsVideoCourse(courseVo1.getType() == 2);
 
-
-                            int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
                             Fragment courseSelectFragment =
                                     CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams1);
 

@@ -48,6 +48,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private static final String KEY_STATUS = "KEY_STATUS";
     private static final String KEY_LIBRARY_TYPE = "KEY_LIBRARY_TYPE";
     private static final String KEY_TASK_TYPE = "KEY_TASK_TYPE";
+    private static final String KEY_EXTRA_MULTIPLE_CHOICE_COUNT = "KEY_EXTRA_MULTIPLE_CHOICE_COUNT";
     private static final int TYPE_HOMEWORK = 0;
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
@@ -72,6 +73,8 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private boolean isInitiativeTrigger;
     private ArrayList<Integer> filterArray;
     private SparseIntArray typeTable = new SparseIntArray();
+    // 可以选择的最大条目
+    private int mMultipleChoiceCount;
 
     public static SxLessonSourceFragment newInstance(boolean needFlag,
                                                      boolean canEdit,
@@ -81,6 +84,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                                                      @NonNull String sectionId,
                                                      int status,
                                                      int exerciseType, int libraryType, int taskType,
+                                                     int multipleChoiceCount,
                                                      @NonNull LessonSourceParams params) {
         SxLessonSourceFragment fragment = new SxLessonSourceFragment();
         Bundle arguments = new Bundle();
@@ -94,6 +98,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         arguments.putInt(KEY_EXTRA_EXERCISE_TYPE, exerciseType);
         arguments.putInt(KEY_LIBRARY_TYPE, libraryType);
         arguments.putInt(KEY_TASK_TYPE, taskType);
+        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -117,6 +122,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         mClassTeacher =(courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         taskType = bundle.getInt(KEY_TASK_TYPE, -1);
+        mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
         isChoiceMode = lessonSourceParams != null && lessonSourceParams.isChoiceMode();
         isInitiativeTrigger = lessonSourceParams != null && lessonSourceParams.isInitiativeTrigger();
@@ -196,7 +202,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
 
     private void updateViews(SectionDetailsVo sectionDetailsVo) {
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
-                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
+                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType,mMultipleChoiceCount);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
         for (int index = 0; index < taskList.size(); index++) {
             SectionTaskListVo taskListVO = taskList.get(index);

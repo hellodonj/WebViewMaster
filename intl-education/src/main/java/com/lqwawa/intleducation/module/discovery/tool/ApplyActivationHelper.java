@@ -39,10 +39,10 @@ public class ApplyActivationHelper {
             new HashMap<>();
 
     static {
-        authorizationErrorMapZh.put("1001", "授权码错误，请重新输入");
-        authorizationErrorMapZh.put("1002", "授权码已过期，请重新输入");
-        authorizationErrorMapZh.put("1003", "授权码尚未生效，请重新输入");
-        authorizationErrorMapZh.put("1004", "授权码已被使用，请重新输入");
+        authorizationErrorMapZh.put("1001", "激活码错误，请重新输入");
+        authorizationErrorMapZh.put("1002", "激活码已过期，请重新输入");
+        authorizationErrorMapZh.put("1003", "激活码尚未生效，请重新输入");
+        authorizationErrorMapZh.put("1004", "激活码已被使用，请重新输入");
         authorizationErrorMapEn.put("1001", "Incorrect authorization code, please re-enter");
         authorizationErrorMapEn.put("1002", "Authorization code expired，please re-enter");
         authorizationErrorMapEn.put("1003", "Invalid authorization code, please re-enter");
