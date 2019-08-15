@@ -172,6 +172,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         int role = UserHelper.getCourseAuthorRole(activity.getIntent()
                 .getStringExtra("memberId"), courseVo);
 
+
         if (vo.getIsChildren()) {
             //课程
             Drawable drawableFlagHere = activity.getResources().getDrawable(R.drawable.ic_flag_here);
@@ -193,7 +194,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             courseDetailParams.isMyCourse()) &&
                             isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                             role == UserHelper.MoocRoleType.PARENT ||
-                            (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
+                            (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
+                            || courseDetailParams.isClassParent());
                     holder.lockTestIv.setVisibility(isHideLock ? View.VISIBLE : View.GONE);
                     holder.lockTestIv.setImageDrawable(isUnLock ? activity.getResources()
                             .getDrawable(R.drawable.unlock) : activity.getResources()
@@ -827,7 +829,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         courseDetailParams.isMyCourse()) &&
                         isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
                         role == UserHelper.MoocRoleType.PARENT ||
-                        (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
+                        (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
+                        || courseDetailParams.isClassParent());
                 holder.lockExamIv.setVisibility(isHideLock? View.VISIBLE : View.GONE);
                 holder.lockExamIv.setImageDrawable(isUnLock ? activity.getResources()
                         .getDrawable(R.drawable.unlock) : activity.getResources()
