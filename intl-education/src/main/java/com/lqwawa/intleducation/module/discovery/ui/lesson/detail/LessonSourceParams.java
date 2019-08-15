@@ -7,6 +7,8 @@ import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailPar
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
+
 /**
  * @author mrmedici
  * @desc 节资源显示列表片段参数
@@ -37,6 +39,8 @@ public class LessonSourceParams extends BaseVo{
 
     // 是否添加到作业库状态
     private boolean isAddMode;
+
+    private ArrayList<Integer> filterArray;
 
     private LessonSourceParams(){}
 
@@ -139,6 +143,14 @@ public class LessonSourceParams extends BaseVo{
     public LessonSourceParams setAddMode(boolean addMode) {
         isAddMode = addMode;
         return this;
+    }
+
+    public ArrayList<Integer> getFilterArray() {
+        return filterArray;
+    }
+
+    public void setFilterArray(ArrayList<Integer> filterArray) {
+        this.filterArray = filterArray;
     }
 
     /**

@@ -141,6 +141,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                              boolean isContainAssistantWork, String schoolId,
                              boolean isFromMyCourse, CourseVo courseVo, boolean isOnlineTeacher,
                              boolean isFreeUser, @NonNull CourseChapterParams params,
+                             LessonSourceParams lessonSourceParams,
                              @Nullable Bundle extras) {
         if (activity instanceof Activity) activitys = activity;
         activity.startActivity(new Intent(activity, SxLessonDetailsActivity.class)
@@ -161,6 +162,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 .putExtra(KEY_ROLE_FREE_USER, isFreeUser)
                 .putExtra(CourseVo.class.getSimpleName(), courseVo)
                 .putExtra(ACTIVITY_BUNDLE_OBJECT, params)
+                .putExtra(LessonSourceParams.class.getSimpleName(), lessonSourceParams)
                 .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras));
     }
 
@@ -179,6 +181,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private CourseVo courseVo;
     // 课程大纲参数
     private CourseChapterParams mChapterParams;
+    private LessonSourceParams lessonSourceParams;
     private SectionDetailsVo sectionDetailsVo;
     // 是否是空中课堂老师过来的
     private boolean isOnlineTeacher;
@@ -256,6 +259,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
+        lessonSourceParams =
+                (LessonSourceParams)getIntent().getSerializableExtra(LessonSourceParams.class.getSimpleName());
         status = getIntent().getIntExtra(STATUS, -1);
         taskType =  getIntent().getIntExtra("taskType", -1);
         courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
@@ -415,6 +420,9 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             if (EmptyUtil.isNotEmpty(taskList)) {
 
                 LessonSourceParams params = LessonSourceParams.buildParams(mChapterParams);
+                if (lessonSourceParams != null) {
+                    params.setFilterArray(lessonSourceParams.getFilterArray());
+                }
                 boolean isDirect =
                         mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger();
                 if (!isDirect) {

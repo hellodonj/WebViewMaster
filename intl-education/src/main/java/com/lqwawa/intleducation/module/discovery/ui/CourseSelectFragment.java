@@ -303,6 +303,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     params.setCourseParams(courseParams);
                     params.setChoiceMode(true, initiativeTrigger);
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
+                    lessonSourceParams.setFilterArray(mFilterArray);
                     int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
 
                     if (initiativeTrigger) {
@@ -345,7 +346,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                                         sectionName, name, false, true, true,
                                         status, memberId, chapterVo.isContainAssistantWork(),
                                         "", false, courseVo,
-                                        false, false, params, mExtras);
+                                        false, false, params, lessonSourceParams, mExtras);
                             }
                         }else {
                             if (!chapterVo.getIsChildren())return;
