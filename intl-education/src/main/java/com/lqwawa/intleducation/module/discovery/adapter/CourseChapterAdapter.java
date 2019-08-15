@@ -54,6 +54,7 @@ import com.lqwawa.intleducation.module.learn.ui.UnitExamListActivity;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.osastudio.common.utils.TipMsgHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -79,9 +80,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     private Activity activity;
     private List<ChapterVo> list;
     private LayoutInflater inflater;
-    private int img_width;
-    private int img_height;
-    ImageOptions imageOptions;
     boolean needFlagRead;
     private OnContentChangedListener listener;
     private String courseId;
@@ -133,18 +131,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         list = new ArrayList<ChapterVo>();
         // 是否获取到授权
         isAuthorized = activity.getIntent().getBooleanExtra("isAuthorized", false);
-
-        int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        img_width = 2 * p_width / 5;
-        img_height = img_width * 10 / 16;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
 
         tutorialMode = MainApplication.isTutorialMode();
         CourseDetailParams params = getCourseDetailParams();
@@ -981,7 +967,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             public void onSuccess(String result) {
                 ResponseVo<String> results = JSON.parseObject(result, new TypeReference<ResponseVo<String>>() {});
                 if (results.getCode() == 0) {
-                    //开锁
                     notifyDataSetChanged();
                 }
             }

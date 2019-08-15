@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.module.learn.vo.ExamVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -41,13 +43,8 @@ public class TaskChapterListAdapter extends BaseAdapter {
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
         img_width = p_width / 4;
         img_height = img_width * 3 / 4;
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null);
     }
 
     @Override
@@ -78,7 +75,7 @@ public class TaskChapterListAdapter extends BaseAdapter {
         }
         if (neetShowCourse(position)) {
             holder.course_info_root_lay.setVisibility(View.VISIBLE);
-            x.image().bind(holder.course_iv,
+            XImageLoader.loadImage(holder.course_iv,
                     vo.getCourseThumbnail().trim(),
                     imageOptions);
             holder.course_iv.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.example.root.robot_pen_sdk.BleConnectActivity;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
@@ -51,7 +50,6 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
-import com.lqwawa.intleducation.module.discovery.ui.lqcourse.classifylist.ClassifyListContract;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.CourseFiltrateActivity;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.state.GroupFiltrateState;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
@@ -396,7 +394,7 @@ public class CaptureActivity extends ScanActivity {
                     if ("id".equals(paramStrings[0])) {
                         String id = paramStrings[1];
                         CourseDetailsActivity.start(this, id, true, UserHelper.getUserId(), false
-                                , true);
+                                , true,null);
                     }
                 }
             }

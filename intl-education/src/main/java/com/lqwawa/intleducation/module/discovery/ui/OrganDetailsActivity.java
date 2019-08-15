@@ -34,6 +34,8 @@ import com.lqwawa.intleducation.module.discovery.vo.OrganVo;
 import com.lqwawa.intleducation.base.ui.MyBaseFragmentActivity;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
@@ -118,12 +120,9 @@ public class OrganDetailsActivity extends MyBaseFragmentActivity implements View
         int p_height = getWindowManager().getDefaultDisplay().getHeight();
         img_width = p_width;
         img_height = img_width * 315 / 720;
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null);
+
         findViewById(R.id.fragment_container).setMinimumHeight(p_height);
         imageViewCover.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
         btnReload.setOnClickListener(this);
@@ -357,7 +356,7 @@ public class OrganDetailsActivity extends MyBaseFragmentActivity implements View
 
     private void updateInfo() {
         if (organVo != null) {
-            x.image().bind(imageViewCover,
+            XImageLoader.loadImage(imageViewCover,
                     organVo.getPublicizeImg().trim(),
                     imageOptions);
             textViewOrganInfo.setText(organVo.getName() + " " + organVo.getIntroduction());

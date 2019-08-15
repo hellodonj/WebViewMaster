@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.lqwawa.intleducation.R;
 import com.osastudio.common.utils.LQImageLoader;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
@@ -25,80 +26,6 @@ import org.xutils.x;
  */
 public class ImageUtil {
     /**
-     * 用于加载分类数据图片Icon的ImageOptions配置
-     */
-    private static ImageOptions CLASSIFY_IMAGE_OPTIONS = null;
-    /**
-     * 加载一些默认配置的图片
-     */
-    private static ImageOptions DEFAULT_IMAGE_OPTIONS = null;
-    /**
-     * 加载一些什么都不需要配置的图片
-     */
-    private static ImageOptions NORMAL_IMAGE_OPTIONS = null;
-    /**
-     * 加载圆形图片的View
-     */
-    private static ImageOptions CROP_IMAGE_OPTIONS = null;
-    /**
-     * 用于加载课程图片的ImaageOptions配置
-     */
-    private static ImageOptions COURSE_IMAGE_OPTIONS = null;
-
-    /**
-     * 解决重定向builder
-     */
-    private static ImageOptions.ParamsBuilder PARAMS_BUILDER = null;
-
-    static {
-        CLASSIFY_IMAGE_OPTIONS = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setConfig(Bitmap.Config.ARGB_8888)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
-
-        DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setConfig(Bitmap.Config.ARGB_8888)
-                .build();
-
-        COURSE_IMAGE_OPTIONS = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
-
-        NORMAL_IMAGE_OPTIONS = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setConfig(Bitmap.Config.ARGB_8888)
-                .build();
-
-        CROP_IMAGE_OPTIONS = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(true)
-                .setCircular(true)
-                .setConfig(Bitmap.Config.ARGB_8888)
-                .build();
-
-        PARAMS_BUILDER = (requestParams, imageOptions) -> {
-            requestParams.setRedirectHandler(uriRequest -> {
-                RequestParams uriRequestParams = uriRequest.getParams();
-                String location = uriRequest.getResponseHeader("Location"); //协定的重定向地址
-                if (!TextUtils.isEmpty(location)) {
-                    uriRequestParams.setUri(location);
-                }
-                return uriRequestParams;
-            });
-            return requestParams;
-        };
-    }
-
-    /**
      * 填充图片
      *
      * @param view 图片控件
@@ -106,13 +33,19 @@ public class ImageUtil {
      */
     public static void fillClassifyIcon(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-            x.image().bind(view, url, CLASSIFY_IMAGE_OPTIONS);
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                            R.drawable.img_def, false, false, Bitmap.Config.ARGB_8888, 0, 0);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 
     public static void fillCourseIcon(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-            x.image().bind(view, url, COURSE_IMAGE_OPTIONS);
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                            R.drawable.default_cover_h, false, false, null, 0, 0);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 
@@ -124,13 +57,10 @@ public class ImageUtil {
      */
     public static void fillDefaultView(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-            // 每一次都实例化OPTIONS 避免缓存
-            ImageOptions DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
-                    .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                    .setCrop(false)
-                    .setConfig(Bitmap.Config.ARGB_8888)
-                    .build();
-            x.image().bind(view, url, DEFAULT_IMAGE_OPTIONS);
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY, 0, false, false,
+                            Bitmap.Config.ARGB_8888);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 
@@ -142,19 +72,13 @@ public class ImageUtil {
      */
     public static void fillNotificationView(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-
-            // 每一次都实例化OPTIONS 避免缓存
-            ImageOptions DEFAULT_IMAGE_OPTIONS = new ImageOptions.Builder()
-                    .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                    .setCrop(false)
-                    .setConfig(Bitmap.Config.ARGB_8888)
-                    .setParamsBuilder(PARAMS_BUILDER)
-                    .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                    .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                    .build();
-            x.image().bind(view, url, DEFAULT_IMAGE_OPTIONS);
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY, R.drawable.img_def, false, false,
+                            Bitmap.Config.ARGB_8888);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
+
 
     /**
      * 填充默认设置图片,没有placeholder，errorholder
@@ -164,7 +88,27 @@ public class ImageUtil {
      */
     public static void fillNormalView(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-            x.image().bind(view, url, NORMAL_IMAGE_OPTIONS);
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY, 0, false, false,
+                            Bitmap.Config.ARGB_8888);
+            XImageLoader.loadImage(view, url, imageOptions);
+        }
+    }
+
+    /**
+     * 填充LQ学程首页关于分类的相关图片
+     *
+     * @param view   显示的View
+     * @param url    图片资源地址
+     * @param width  宽度 如果传0，就加载高清图
+     * @param height 高度 如果传0，就加载高清图
+     */
+    public static void fillClassifyDetailsView(@NonNull ImageView view, String url, int width, int height) {
+        if (verificationUrl(url)) {
+            ImageOptions imageOptions =
+                    XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                            0, false, false, Bitmap.Config.ARGB_8888, width, height);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 
@@ -176,7 +120,9 @@ public class ImageUtil {
      */
     public static void fillCircleView(@NonNull ImageView view, String url) {
         if (verificationUrl(url)) {
-            x.image().bind(view, url, CROP_IMAGE_OPTIONS);
+            ImageOptions imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                    0, true, true, Bitmap.Config.ARGB_8888, 0, 0);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 
@@ -188,14 +134,9 @@ public class ImageUtil {
      */
     public static void fillUserAvatar(@NonNull ImageView view, String url, @DrawableRes int defaultDrawableId) {
         if (verificationUrl(url)) {
-            ImageOptions options = new ImageOptions.Builder()
-                    .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                    .setCrop(true)
-                    .setCircular(true)
-                    .setFailureDrawableId(defaultDrawableId)
-                    .setConfig(Bitmap.Config.ARGB_8888)
-                    .build();
-            x.image().bind(view, url, options);
+            ImageOptions imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                    defaultDrawableId, true, true, Bitmap.Config.ARGB_8888, 0, 0);
+            XImageLoader.loadImage(view, url, imageOptions);
         }
     }
 

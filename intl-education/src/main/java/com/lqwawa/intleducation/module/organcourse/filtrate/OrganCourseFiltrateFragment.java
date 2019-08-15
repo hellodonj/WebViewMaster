@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -199,7 +200,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
     private boolean isExist;
     private OrganCourseFiltrateParams organCourseFiltrateParams;
 
-    private String[] mTabTitles;
+    private List<String> tabTitleList;
     private boolean priceTabVisible;
     private int mPosition = 0;
     private OrganCourseFiltratePagerParams mParams;
@@ -357,33 +358,45 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
 
         initFragments();
 
-        // 设置TabLayout最后一个节点有upDown
-        TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
-        PriceArrowView view = new PriceArrowView(getActivity());
-        view.setTabTitle(mTabTitles[mSortTabLayout.getTabCount() - 1]);
-        tabAt.setCustomView(view.getRootView());
-        mPriceArrowView = view;
+        if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+            // 设置TabLayout最后一个节点有upDown
+            TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
+            PriceArrowView view = new PriceArrowView(getActivity());
+            view.setTabTitle(tabTitleList.get(tabTitleList.size() - 1));
+            tabAt.setCustomView(view.getRootView());
+            mPriceArrowView = view;
 
-        mPriceArrowView.setOnTouchListener((v, event) -> {
-            if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
-                int state = mPriceArrowView.triggerSwitch();
-                triggerPriceSwitch(state);
-                return true;
-            }
-            return false;
-        });
+            mPriceArrowView.setOnTouchListener((v, event) -> {
+                if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
+                    int state = mPriceArrowView.triggerSwitch();
+                    triggerPriceSwitch(state);
+                    return true;
+                }
+                return false;
+            });
+        }
 
         mSortTabLayout.addOnTabSelectedListener(new TabSelectedAdapter() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
                 mPosition = tab.getPosition();
-                if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
-                    priceTabVisible = true;
-                    // 价格被选中
-                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
-                        int state = mPriceArrowView.triggerSwitch();
-                        triggerPriceSwitch(state);
+                if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
+                        priceTabVisible = true;
+                        // 价格被选中
+                        if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
+                            int state = mPriceArrowView.triggerSwitch();
+                            triggerPriceSwitch(state);
+                        }
+                    } else {
+                        int position = tab.getPosition();
+                        if (position == 0) {
+                            mParams.setSort(2);
+                        } else if (position == 1) {
+                            mParams.setSort(1);
+                        }
+                        mNavigatorList.get(mPosition).triggerUpdateData(mParams);
                     }
                 } else {
                     int position = tab.getPosition();
@@ -399,12 +412,14 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 super.onTabUnselected(tab);
-                if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
-                    priceTabVisible = false;
-                    // 价格被选中
-                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
-                        // 状态重置
-                        mPriceArrowView.reset();
+                if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
+                        priceTabVisible = false;
+                        // 价格被选中
+                        if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
+                            // 状态重置
+                            mPriceArrowView.reset();
+                        }
                     }
                 }
             }
@@ -419,7 +434,9 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
                 .setReallyAuthorized(isReallyAuthorized)
                 .setShopResourceData(mResourceData)
                 .setBundle(organCourseFiltrateParams.getBundle());
-        mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
+        String[] tabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
+        tabTitleList = new ArrayList<>();
+        Collections.addAll(tabTitleList, tabTitles);
         OrganCourseFiltratePagerFragment recentUpdateFragment =
                 OrganCourseFiltratePagerFragment.newInstance(mParams);
         OrganCourseFiltratePagerFragment hotFragment
@@ -433,9 +450,13 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         mNavigatorList.add(recentUpdateFragment);
         if (!mSelectResource) {
             fragments.add(hotFragment);
-            fragments.add(priceFragment);
             mNavigatorList.add(hotFragment);
-            mNavigatorList.add(priceFragment);
+            if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                fragments.add(priceFragment);
+                mNavigatorList.add(priceFragment);
+            } else {
+                tabTitleList.remove(tabTitleList.size() - 1);
+            }
         }
 
         TabPagerAdapter mAdapter = new TabPagerAdapter(getChildFragmentManager(), fragments);
@@ -1355,7 +1376,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mTabTitles[position];
+            return tabTitleList.get(position);
         }
     }
 

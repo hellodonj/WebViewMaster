@@ -30,6 +30,7 @@ import com.osastudio.common.popmenu.EntryBean;
 import com.osastudio.common.popmenu.PopMenuAdapter;
 import com.osastudio.common.utils.LQImageLoader;
 import com.osastudio.common.utils.Utils;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -458,13 +459,9 @@ public class ImageBrowserActivity extends BaseActivity {
                         resourceUrl = "file://" + resourceUrl;
                     }
                 }
-                ImageOptions imageOptions = new ImageOptions.Builder()
-                        .setImageScaleType(ImageView.ScaleType.CENTER_INSIDE)
-                        .setCrop(false)
-                        .setLoadingDrawableId(R.drawable.default_photo)//加载中默认显示图片
-                        .setFailureDrawableId(R.drawable.default_photo)//加载失败后默认显示图片
-                        .build();
-                x.image().bind(img, resourceUrl, imageOptions);
+                ImageOptions imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_INSIDE,
+                        R.drawable.default_photo, false, false, null);
+                XImageLoader.loadImage(img, resourceUrl, imageOptions);
             } else {
                 LQImageLoader.displayImage(resourceUrl, img, param);
 //                ImageLoader.getInstance().displayImage(resourceUrl, img, options);

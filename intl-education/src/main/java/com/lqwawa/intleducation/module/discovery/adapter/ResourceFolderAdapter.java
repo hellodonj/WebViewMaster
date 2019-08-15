@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.module.discovery.vo.ResourceFolderVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,19 +25,11 @@ public class ResourceFolderAdapter extends MyBaseAdapter {
     private Activity activity;
     private List<ResourceFolderVo> list;
     private LayoutInflater inflater;
-    private ImageOptions imageOptions;
 
     public ResourceFolderAdapter(Activity activity) {
         this.activity = activity;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<ResourceFolderVo>();
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
     }
 
     @Override

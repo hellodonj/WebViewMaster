@@ -1403,7 +1403,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         // @date   :2018/4/14 0014 上午 10:58
                         // @func   :V5.5 Mooc改版 批阅页面更改优化
                         /*if (coverIv != null) {
-                            x.image().bind(coverIv,AppSettings.getFileUrl(
+                            XImageLoader.loadImage(coverIv,AppSettings.getFileUrl(
                                     newInfoTag.getResourceUrl()), imageOptions);
                         }*/
                     }
@@ -1421,7 +1421,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             //更新缩略图
             // @func   :V5.5 Mooc改版 批阅页面更改优化
            /* if (coverIv != null && newInfoTag != null) {
-                x.image().bind(coverIv,AppSettings.getFileUrl(
+                XImageLoader.loadImage(coverIv,AppSettings.getFileUrl(
                         newInfoTag.getResourceUrl()), imageOptions);
             }*/
         } else if (sectionResListVo.getResType() == ResType.RES_TYPE_IMG) {
@@ -1463,7 +1463,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             //更新缩略图
             // @func   :V5.5 Mooc改版 批阅页面更改优化
             /*if (coverIv != null) {
-                x.image().bind(coverIv,AppSettings.getFileUrl(
+                XImageLoader.loadImage(coverIv,AppSettings.getFileUrl(
                         newInfoTag.getResourceUrl()), imageOptions);
             }*/
         }

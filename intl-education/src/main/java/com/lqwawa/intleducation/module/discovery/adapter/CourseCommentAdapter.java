@@ -32,6 +32,7 @@ import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -62,13 +63,8 @@ public class CourseCommentAdapter extends MyBaseAdapter {
         list = new ArrayList<CommentVo>();
         this.onContentChangedListener = listener;
         p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setCircular(true)//圆形
-                .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.user_header_def, false, true, null);
     }
 
     @Override
@@ -154,9 +150,7 @@ public class CourseCommentAdapter extends MyBaseAdapter {
         if (vo.getType() == 0) {
             // @date   :2018/4/11 0011 上午 10:59
             // @func   :评论类型
-            x.image().bind(holder.userHeadIv
-                    , (vo.getThumbnail() + "").trim()
-                    , imageOptions);
+            XImageLoader.loadImage(holder.userHeadIv, (vo.getThumbnail() + "").trim(), imageOptions);
             holder.gradeRatingBar.setRating(Float.parseFloat(vo.getStarLevel()));
             holder.nickNameTv.setText(createName);
             holder.commentPraiseTv.setText(vo.getPraiseNum());

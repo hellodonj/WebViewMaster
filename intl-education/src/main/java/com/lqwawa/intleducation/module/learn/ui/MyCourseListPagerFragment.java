@@ -244,9 +244,11 @@ public class MyCourseListPagerFragment extends MyBaseFragment implements View.On
                                 , curMemberId, curSchoolId,params);
                     } else {
                         // 学生或家长，需要更新状态
+                        CourseDetailParams params = new CourseDetailParams(CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER);
+//                        params.setClassId();
                         CourseDetailsActivity.start(activity, vo.getCourseId(),
                                 TextUtils.equals(UserHelper.getUserId(), curMemberId)
-                                , curMemberId, true, false);
+                                , curMemberId, true, false,params);
                     }
                 }
             }

@@ -23,6 +23,7 @@ import com.lqwawa.intleducation.module.discovery.adapter.LiveAdapter;
 import com.lqwawa.intleducation.module.learn.vo.EmceeListVo;
 import com.lqwawa.intleducation.module.learn.vo.LiveListVo;
 import com.lqwawa.intleducation.module.learn.vo.LiveVo;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -57,12 +58,9 @@ public class LiveRoomAdapter extends MyBaseAdapter {
         this.showTopBar = showTopBar;
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<>();
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.live_list_default)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.live_list_default)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.live_list_default, false, false, null);
+                
         dp8 = DisplayUtil.dip2px(activity, 8);
     }
 
@@ -108,7 +106,7 @@ public class LiveRoomAdapter extends MyBaseAdapter {
 
         // 直接用coverUrl
         coverUrl = data.getCoverUrlSrc();
-        x.image().bind(holder.resource_thumbnail,
+        XImageLoader.loadImage(holder.resource_thumbnail,
                 coverUrl,
                 imageOptions);
         //直播时间 以区间的形式来显示

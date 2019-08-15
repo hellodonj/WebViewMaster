@@ -11,6 +11,8 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.module.discovery.vo.ResourceVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -46,20 +48,14 @@ public class TeacherResListAdapter extends MyBaseAdapter {
         img_widthPic = p_width / 3 - 30;
         img_heighPict = img_width * 9 / 16;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
-        imageOptionsPic = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setSize(img_widthPic, img_heighPict)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions =  XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null, img_width, img_height);
+
+        imageOptionsPic =
+
+                XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                        R.drawable.img_def, false, false, null, img_widthPic, img_heighPict);
+
     }
 
     @Override
@@ -155,7 +151,7 @@ public class TeacherResListAdapter extends MyBaseAdapter {
             holder.courseRoot.setVisibility(View.VISIBLE);
             switch (vo.getType()) {
                 case 1://图片
-                    x.image().bind(holder.courseImg,
+                    XImageLoader.loadImage(holder.courseImg,
                             (vo.getResourceUrl() + "").trim(),
                             imageOptionsPic);
                     break;
@@ -184,7 +180,7 @@ public class TeacherResListAdapter extends MyBaseAdapter {
                 case 17:
                 case 18:
                 case 19:
-                    x.image().bind(holder.courseImg,
+                    XImageLoader.loadImage(holder.courseImg,
                             (vo.getThumbnailUrl() + "").trim(),
                             imageOptions);
                     break;

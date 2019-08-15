@@ -34,6 +34,7 @@ public class ArrangementWorkActivity extends BaseFragmentActivity {
         args.putString("classId", classId);
         args.putString("courseId", courseId);
         args.putString("courseName", courseName);
+        args.putBoolean("isArrangementEnter",true);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
@@ -48,13 +49,11 @@ public class ArrangementWorkActivity extends BaseFragmentActivity {
         Fragment fragment = new CourseDetailsItemFragment();
         Bundle args = getIntent().getExtras();
 
-
-
         if (args != null) {
             String courseName = args.getString("courseName");
             topBar.setTitle(courseName);
             topBar.setTitleWide(DensityUtil.dip2px(120));
-            
+
             fragment.setArguments(args);
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
