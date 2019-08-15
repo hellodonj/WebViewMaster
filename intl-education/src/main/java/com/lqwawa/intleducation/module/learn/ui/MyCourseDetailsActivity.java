@@ -958,9 +958,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 //            mOnlineClassFragment.onHeaderRefresh();
 //        }
         else if (mTutorialGroupFragment.isVisible()) {
-            // 下拉刷新
-            mOnlineClassFragment.onHeaderRefresh();
-        } else if (mTutorialGroupFragment.isVisible()) {
             // 帮辅群显示
             mTutorialGroupFragment.onHeaderRefresh();
         }else if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {

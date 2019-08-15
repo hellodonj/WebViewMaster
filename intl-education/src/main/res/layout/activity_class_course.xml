@@ -341,6 +341,7 @@
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/textLight"
+                android:visibility="gone"
                 android:textSize="12sp" />
         </FrameLayout>
 
