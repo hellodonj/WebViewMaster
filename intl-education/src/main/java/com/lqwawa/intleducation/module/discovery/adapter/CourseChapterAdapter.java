@@ -967,7 +967,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             public void onSuccess(String result) {
                 ResponseVo<String> results = JSON.parseObject(result, new TypeReference<ResponseVo<String>>() {});
                 if (results.getCode() == 0) {
-                    //开锁
                     notifyDataSetChanged();
                 }
             }

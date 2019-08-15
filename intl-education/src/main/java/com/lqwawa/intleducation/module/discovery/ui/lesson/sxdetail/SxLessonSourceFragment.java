@@ -107,9 +107,12 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         }
         status = bundle.getInt(KEY_STATUS);
         lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
+        CourseDetailParams courseParams = lessonSourceParams.getCourseParams();
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
-        mClassTeacher = EmptyUtil.isNotEmpty(courseParams) && courseParams.isClassCourseEnter() && EmptyUtil.isNotEmpty(courseParams.getClassId());
+
+        mClassTeacher =(courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+                (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         taskType = bundle.getInt(KEY_TASK_TYPE, -1);
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
         isChoiceMode = lessonSourceParams != null && lessonSourceParams.isChoiceMode();

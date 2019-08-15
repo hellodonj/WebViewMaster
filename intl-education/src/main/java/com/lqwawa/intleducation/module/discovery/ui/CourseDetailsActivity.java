@@ -332,16 +332,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final boolean canEdit,
                              final String memberId,
                              final boolean isMyCourse,
-                             final boolean isFromScan) {
+                             final boolean isFromScan,
+                             CourseDetailParams params) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, isMyCourse, -1, null, null, isFromScan);
+                false, false, isMyCourse, -1, null, params, isFromScan);
     }
 
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        start(activity, courseId, canEdit, memberId, false, false);
+        start(activity, courseId, canEdit, memberId, false, false,null);
     }
 
     public static void start(final Activity activity,

@@ -388,7 +388,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             LQCourseHelper.requestChapterByCourseId(mClassId, flagCourseData.getId(),
                     new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(), flagCourseData.getId(),
+            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(),null, flagCourseData.getId(),
                     mSchoolId, new Callback());
         }
     }

@@ -111,7 +111,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         }
 
         showLoadingDialog();
-        LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
+        LQCourseHelper.requestChapterByCourseId(token,null, courseId, schoolIds, new Callback());
     }
 
     /**
