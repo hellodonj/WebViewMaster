@@ -750,6 +750,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         }
         View view = treeView.getView();
         treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
+        treeView.expandAll();
         container.addView(view);
     }
 
