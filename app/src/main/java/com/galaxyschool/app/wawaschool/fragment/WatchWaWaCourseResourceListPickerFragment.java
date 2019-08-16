@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.BookDetailActivity;
 import com.galaxyschool.app.wawaschool.BookStoreListActivity;
@@ -66,6 +67,7 @@ import com.lqwawa.mooc.select.SchoolClassSelectActivity;
 import com.lqwawa.mooc.select.SchoolClassSelectFragment;
 import com.osastudio.apps.Config;
 import com.osastudio.common.utils.LogUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,8 +144,8 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             hideSoftKeyboard(getActivity());
         }
         initViews();
-        if (isOnlineClass){
-         //直接填充数据
+        if (isOnlineClass) {
+            //直接填充数据
             handleTreeView();
         } else {
             loadGetStudyTaskResControl();
@@ -200,7 +202,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         ((TextView) findViewById(R.id.contacts_header_title)).setText(titleName);
         rightBtn = (TextView) findViewById(R.id.contacts_header_right_btn);
         rightBtn.setText(getString(R.string.label_request_authorization));
-        if (isOnlineClass){
+        if (isOnlineClass) {
             rightBtn.setVisibility(View.GONE);
         } else {
             rightBtn.setVisibility(View.VISIBLE);
@@ -221,37 +223,37 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         treeView = new TreeView(root, getActivity(), new WatchCourseResourceBinderFactory());
         treeView.setOnItemClilcedListener((position, treeNode, expanded, context) -> {
             LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
-            if (entity == null){
+            if (entity == null) {
                 return;
             }
-            if (treeNode.getLevel() == 0){
+            if (treeNode.getLevel() == 0) {
                 //一级界面
                 if (entity.isDirectAccessNextPage()) {
                     //展开
                     return;
                 }
-                onClickTreeViewItem(entity,true);
+                onClickTreeViewItem(entity, true);
             } else {
                 //二级界面
-                onClickTreeViewItem(entity,false);
+                onClickTreeViewItem(entity, false);
             }
         });
         initPresenter();
     }
 
-    private void onClickTreeViewItem(LQCourseConfigEntity entity,boolean isGroupView){
-        if (isGroupView){
-            if (entity.getType() == OrganLibraryType.TYPE_SCHOOL_LIBRARY){
+    private void onClickTreeViewItem(LQCourseConfigEntity entity, boolean isGroupView) {
+        if (isGroupView) {
+            if (entity.getType() == OrganLibraryType.TYPE_SCHOOL_LIBRARY) {
                 enterPickTypeDetail(TAB_SCHOOL_COURSE);
-            } else if (entity.getType() == OrganLibraryType.TPYE_CHOICE_LIBRARY){
+            } else if (entity.getType() == OrganLibraryType.TPYE_CHOICE_LIBRARY) {
                 enterPickTypeDetail(TAB_SCHOOL_PICTUREBOOK);
-            } else if (entity.getType() == OrganLibraryType.TYPE_CLASS_COURSE){
+            } else if (entity.getType() == OrganLibraryType.TYPE_CLASS_COURSE) {
                 enterPickTypeDetail(TAB_CLASS_LESSON);
-            } else if (entity.getType() == OrganLibraryType.TYPE_CONNECT_COURSE){
+            } else if (entity.getType() == OrganLibraryType.TYPE_CONNECT_COURSE) {
                 enterPickTypeDetail(TAB_LQ_PROGRAM);
-            } else if (entity.getType() == OrganLibraryType.TYPE_ONLINE_COMMON_LIBRARY){
+            } else if (entity.getType() == OrganLibraryType.TYPE_ONLINE_COMMON_LIBRARY) {
                 enterPickTypeDetail(TAB_LQCOURSE_SHOP);
-            } else if (entity.getType() == OrganLibraryType.TYPE_LIBRARY){
+            } else if (entity.getType() == OrganLibraryType.TYPE_LIBRARY) {
                 if (!entity.isAuthorized()) {
                     UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_please_request_authorization);
                     return;
@@ -259,7 +261,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
                 // 只选择图书馆下Q配音
                 entity = OrganLibraryUtils.getEntityForQDubbing(getActivity(), schoolId);
                 chooseCommonLibraryResource(entity);
-            } else if (entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY){
+            } else if (entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
                 //右脑潜能开发，等同学程馆二级页面
                 if (!entity.isAuthorized()) {
                     UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_please_request_authorization);
@@ -291,7 +293,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     }
 
     private void initPresenter() {
-        if (isOnlineClass){
+        if (isOnlineClass) {
             return;
         }
         if (organLibraryViewPresenter == null)
@@ -395,7 +397,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         CourseShopClassifyActivity.show(getActivity(), params);
     }
 
-    private ArrayList<Integer> getTypeArrayList(int taskType){
+    private ArrayList<Integer> getTypeArrayList(int taskType) {
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
             arrayList.add(ResType.RES_TYPE_COURSE_SPEAKER);
@@ -444,7 +446,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         int count = 1;
         int type = taskType;
         if (isSuperTask) {
-            if (taskType == StudyTaskType.ENGLISH_WRITING){
+            if (taskType == StudyTaskType.ENGLISH_WRITING) {
                 count = 1;
             } else {
                 count = 10;
@@ -470,7 +472,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         } else if (taskType == StudyTaskType.TASK_ORDER) {
             type = taskType;
             count = 1;
-        } else if (taskType == StudyTaskType.ENGLISH_WRITING){
+        } else if (taskType == StudyTaskType.ENGLISH_WRITING) {
             type = StudyTaskType.NEW_WATACH_WAWA_COURSE;
             count = 1;
         }
@@ -729,7 +731,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         handleTreeView();
     }
 
-    private void handleTreeView(){
+    private void handleTreeView() {
         //增加local Entity
         putLocalEntity();
         for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
@@ -747,19 +749,24 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
                 }
             }
             root.addChild(treeNode);
+
         }
         View view = treeView.getView();
         treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
-        treeView.expandAll();
+        List<TreeNode> allNodes = treeView.getAllNodes();
+        for (TreeNode node : allNodes) {
+            LQCourseConfigEntity entity = (LQCourseConfigEntity) node.getValue();
+            if (entity.isDirectAccessNextPage())treeView.expandNode(node);
+        }
         container.addView(view);
     }
 
-    private void putLocalEntity(){
-        if (filteredLabelEntities == null){
+    private void putLocalEntity() {
+        if (filteredLabelEntities == null) {
             filteredLabelEntities = new ArrayList<>();
         }
         LQCourseConfigEntity configEntity = null;
-        if (isOnlineClass){
+        if (isOnlineClass) {
             if (!TextUtils.isEmpty(classId)) {
                 // 关联学程
                 configEntity = new LQCourseConfigEntity();
