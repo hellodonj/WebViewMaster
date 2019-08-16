@@ -132,7 +132,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private void getData() {
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
-        sourceType = intent.getIntExtra("sourceType",1);
+        sourceType = intent.getIntExtra("sourceType", 1);
         String sectionId = intent.getStringExtra("sectionId");
         mTeacherVisitor = intent.getBooleanExtra("isTeacherVisitor", false);
 //        courseParams = (CourseDetailParams) intent.getSerializableExtra("courseDetailParams");
@@ -140,7 +140,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         status = intent.getIntExtra("status", -1);
         libraryType = intent.getIntExtra("libraryType", 5);
         taskType = intent.getIntExtra("taskType", -1);
-        mMultipleChoiceCount = getIntent().getIntExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,10);
+        mMultipleChoiceCount = getIntent().getIntExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, 10);
 
         lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
         if (lessonSourceParams != null) courseParams = lessonSourceParams.getCourseParams();
@@ -149,7 +149,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         CourseDetailParams courseParams = lessonSourceParams.getCourseParams();
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
-        mClassTeacher =(courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+        mClassTeacher = (courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         //主动进入
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
@@ -210,18 +210,18 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             });
         }
         refreshCartPoint();
-        LQCourseHelper.getSxExamDetail(courseId, sectionId, this);
+        LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(),
+                lessonSourceParams == null?-1:lessonSourceParams.getRole(), this);
     }
 
     /**
-     *
      * @param context
      * @param courseId
      * @param sectionId
      * @param mTeacherVisitor
      * @param status
      * @param libraryType
-     * @param sourceType 0作业 1考试 2 测试 统计加的参数
+     * @param sourceType         0作业 1考试 2 测试 统计加的参数
      * @param lessonSourceParams
      */
     public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor,
@@ -238,8 +238,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         context.startActivity(intent);
     }
 
-    public static void start(Context context, int taskType,int multipleChoiceCount, String courseId, String sectionId, boolean mTeacherVisitor,
-                             int status, int libraryType,int sourceType,LessonSourceParams lessonSourceParams) {
+    public static void start(Context context, int taskType, int multipleChoiceCount, String courseId, String sectionId, boolean mTeacherVisitor,
+                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -435,9 +435,9 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     /**
      * @return 选中的子任务的超过10的typeName
      */
-    private  List<String> choosedChildResource() {
+    private List<String> choosedChildResource() {
         // 获取指定Tab所有的选中的作业库资源
-        List<TreeNode> selectedNodes =treeView.getSelectedNodes();
+        List<TreeNode> selectedNodes = treeView.getSelectedNodes();
         addToCartInDifferentTypes.clear();
         for (int i = 0; i < selectedNodes.size(); i++) {
             Object value = selectedNodes.get(i).getValue();

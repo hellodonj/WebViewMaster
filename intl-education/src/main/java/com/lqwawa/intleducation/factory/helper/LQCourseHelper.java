@@ -793,10 +793,12 @@ public class LQCourseHelper {
     }
 
 
-    public static void getSxExamDetail(String courseId, String sectionId, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
+    public static void getSxExamDetail(String courseId, String sectionId,String classId,int role,DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
+        requestVo.addParams("classId", classId);
+        requestVo.addParams("role", role);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSxExamDetail);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
