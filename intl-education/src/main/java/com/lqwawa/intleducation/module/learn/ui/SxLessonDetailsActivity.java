@@ -309,7 +309,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.CampusOnlineWebActivity");
                     intent.putExtra("url", url);
                     intent.putExtra("isMooc", true);
-                    intent.putExtra("title", getString(R.string.assistant_desk));
+                    intent.putExtra("title", getString(R.string.class_implementation_plan));
                     startActivity(intent);
                 }
             });

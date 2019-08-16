@@ -54,6 +54,8 @@ public class OrganLibraryUtils {
                 return OrganLibraryType.TYPE_LQCOURSE_SHOP;
             } else if (assortment == 2 || assortment == 3) {
                 return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
+            } else if (assortment == 5) {
+                return OrganLibraryType.TYPE_TEACHING_PLAN;
             }
         } else if (type == 1) {
             return OrganLibraryType.TYPE_LIBRARY;
