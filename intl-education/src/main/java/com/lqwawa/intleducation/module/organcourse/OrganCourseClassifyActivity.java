@@ -575,11 +575,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         final String finalOrganId = organId;
 
         if (libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
-            LQCourseConfigEntity lqCourseConfigEntity = new LQCourseConfigEntity();
-            lqCourseConfigEntity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
-            lqCourseConfigEntity.setLevel(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL);
-            lqCourseConfigEntity.setEntityOrganId(finalOrganId);
-            lqCourseConfigEntity.setConfigValue(activity.getString(R.string.common_brain_library));
+            LQCourseConfigEntity lqCourseConfigEntity =
+                    OrganLibraryUtils.getEntityForBrainLibrary(activity, finalOrganId);
             enterOrganCourseFiltrate(activity, lqCourseConfigEntity, libraryType,
                     selectResource, data, roles);
             return;

@@ -25,8 +25,8 @@ import com.galaxyschool.app.wawaschool.pojo.StatisticBeanListResult;
 import com.lqwawa.apps.views.charts.PieHelper;
 import com.lqwawa.apps.views.charts.PieView;
 import com.lqwawa.intleducation.module.discovery.ui.ArrangementWorkActivity;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -169,6 +169,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private void loadLearningData() {
+        if (isTeacherLook() && beanList != null && beanList.size() > 0){
+            //老师查看学生统计表面数据重复加载
+            return;
+        }
         StatisticNetHelper netHelper = new StatisticNetHelper();
         netHelper.setCallListener(this::updateViewData).getTaskDetailStatistic(courseId, classId,
                 learnType + 1, isTeacherLook() ? "" : studentId);
@@ -252,6 +256,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
     private void updateStudentListAdapter() {
         if (adapter == null) {
+            sortData();
             adapter = new StudentListAdapter(beanList);
             studentListRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             studentListRV.addItemDecoration(new DividerItemDecoration(getActivity(),
@@ -262,6 +267,46 @@ public class LearningStatisticFragment extends ContactsListFragment {
                         classId, roleType, beanList.get(position).getStudentId());
             });
         }
+    }
+
+    private void sortData(){
+        if (beanList == null || beanList.size() == 0){
+            return;
+        }
+        //组装百分比
+        int [] weights = null;
+        for (int i = 0; i < beanList.size(); i++){
+            StatisticBean bean = beanList.get(i);
+            if (bean.getTaskTotalNum() == 0) {
+                weights = new int[]{0,0,0,0,0,0};
+            } else {
+                int excell = bean.getExcellentNum() * 100 / bean.getTaskTotalNum();
+                int good = bean.getGoodNum() * 100 / bean.getTaskTotalNum();
+                int fair = bean.getFairNum() * 100 / bean.getTaskTotalNum();
+                int fail = bean.getFailNum() * 100 / bean.getTaskTotalNum();
+                int unReMark = bean.getNoCorrectNum() * 100 / bean.getTaskTotalNum();
+                int unComplete = bean.getNotCompletedNum() * 100 / bean.getTaskTotalNum();
+                weights = new int[]{excell, good, fair, fail, unReMark, unComplete};
+            }
+            bean.setWeights(weights);
+        }
+
+        Collections.sort(beanList, (o1, o2) -> {
+            int [] o1Array = o1.getWeights();
+            int [] o2Array = o2.getWeights();
+            for (int i = 0; i < o1Array.length; i++){
+                int o1Value = o1Array[i];
+                int o2Value = o2Array[i];
+                if (o1Value == o2Value) {
+
+                } else if (o2Value - o1Value > 0){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+            return 0;
+        });
     }
 
     private void updateChartData() {

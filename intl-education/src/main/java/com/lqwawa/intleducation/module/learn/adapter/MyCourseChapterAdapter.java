@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseChapterVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +25,6 @@ public class MyCourseChapterAdapter extends MyBaseAdapter {
     private Activity activity;
     private List<MyCourseChapterVo> list;
     private LayoutInflater inflater;
-    private int img_width;
-    private int img_height;
-    ImageOptions imageOptions;
     private static final int[] introductionStringResId = new int[]{
             R.string.introduction_str0,
             R.string.introduction_str1,
@@ -40,17 +39,6 @@ public class MyCourseChapterAdapter extends MyBaseAdapter {
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<MyCourseChapterVo>();
 
-        int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        img_width = 2 * p_width / 5;
-        img_height = img_width * 10 / 16;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
     }
 
     @Override

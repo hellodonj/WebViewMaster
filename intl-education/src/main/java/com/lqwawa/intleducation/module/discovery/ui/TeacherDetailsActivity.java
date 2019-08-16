@@ -31,6 +31,8 @@ import com.lqwawa.intleducation.module.discovery.vo.TeacherVo;
 import com.lqwawa.intleducation.base.ui.MyBaseFragmentActivity;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
@@ -124,13 +126,8 @@ public class TeacherDetailsActivity extends MyBaseFragmentActivity implements Vi
         img_height = img_width * 315 / 720;
         findViewById(R.id.fragment_container).setMinimumHeight(p_height);
         imageViewCover.setLayoutParams(new FrameLayout.LayoutParams(img_width, img_height));
-        imageOptionsAvatar = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setCircular(true)
-                .setLoadingDrawableId(R.drawable.ic_avatar_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_avatar_def)//加载失败后默认显示图片
-                .build();
+        imageOptionsAvatar = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.ic_avatar_def, false, true, null);
 
         btnReload.setOnClickListener(this);
         scrollView.setScrollViewListener(this);
@@ -368,7 +365,7 @@ public class TeacherDetailsActivity extends MyBaseFragmentActivity implements Vi
             return;
         }
         topBar.setTitle(teacherVo.getName() + "");
-        x.image().bind(imageViewTeacherAvatar,
+        XImageLoader.loadImage(imageViewTeacherAvatar,
                 teacherVo.getThumbnail().trim(),
                 imageOptionsAvatar);
         String teacherIntroduction = teacherVo.getIntroduction();

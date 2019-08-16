@@ -354,7 +354,7 @@ public class OrganCourseHelper {
             requestVo.addParams("level", level);
         }
 
-        if (libraryType > 0) {
+        if (libraryType >= 0) {
             requestVo.addParams("type", libraryType);
         }
 

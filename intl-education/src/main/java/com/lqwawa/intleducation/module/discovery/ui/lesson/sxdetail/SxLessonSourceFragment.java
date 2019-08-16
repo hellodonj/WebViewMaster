@@ -2,6 +2,7 @@ package com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -47,6 +48,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private static final String KEY_STATUS = "KEY_STATUS";
     private static final String KEY_LIBRARY_TYPE = "KEY_LIBRARY_TYPE";
     private static final String KEY_TASK_TYPE = "KEY_TASK_TYPE";
+    private static final String KEY_EXTRA_MULTIPLE_CHOICE_COUNT = "KEY_EXTRA_MULTIPLE_CHOICE_COUNT";
     private static final int TYPE_HOMEWORK = 0;
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
@@ -69,6 +71,10 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private ExamsAndTestExtrasVo extrasVo;
     private boolean isChoiceMode;
     private boolean isInitiativeTrigger;
+    private ArrayList<Integer> filterArray;
+    private SparseIntArray typeTable = new SparseIntArray();
+    // 可以选择的最大条目
+    private int mMultipleChoiceCount;
 
     public static SxLessonSourceFragment newInstance(boolean needFlag,
                                                      boolean canEdit,
@@ -78,6 +84,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                                                      @NonNull String sectionId,
                                                      int status,
                                                      int exerciseType, int libraryType, int taskType,
+                                                     int multipleChoiceCount,
                                                      @NonNull LessonSourceParams params) {
         SxLessonSourceFragment fragment = new SxLessonSourceFragment();
         Bundle arguments = new Bundle();
@@ -91,6 +98,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         arguments.putInt(KEY_EXTRA_EXERCISE_TYPE, exerciseType);
         arguments.putInt(KEY_LIBRARY_TYPE, libraryType);
         arguments.putInt(KEY_TASK_TYPE, taskType);
+        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -107,13 +115,18 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         }
         status = bundle.getInt(KEY_STATUS);
         lessonNeedFlag = lessonSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER;
+        CourseDetailParams courseParams = lessonSourceParams.getCourseParams();
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
-        mClassTeacher = EmptyUtil.isNotEmpty(courseParams) && courseParams.isClassCourseEnter() && EmptyUtil.isNotEmpty(courseParams.getClassId());
+
+        mClassTeacher =(courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+                (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         taskType = bundle.getInt(KEY_TASK_TYPE, -1);
+        mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
         isChoiceMode = lessonSourceParams != null && lessonSourceParams.isChoiceMode();
         isInitiativeTrigger = lessonSourceParams != null && lessonSourceParams.isInitiativeTrigger();
+        filterArray = lessonSourceParams.getFilterArray();
 
         if (EmptyUtil.isEmpty(courseId) ||
                 EmptyUtil.isEmpty(sectionId) ||
@@ -134,12 +147,20 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         root = TreeNode.root();
         mNodeViewFactory = new SxNodeViewFactory();
         treeView = new TreeView(root, getContext(), mNodeViewFactory);
-
     }
 
     @Override
     protected void initData() {
         super.initData();
+
+        typeTable.append(1, CourseSelectItemFragment.KEY_WATCH_COURSE);
+        typeTable.append(2, CourseSelectItemFragment.KEY_RELL_COURSE);
+        typeTable.append(3, CourseSelectItemFragment.KEY_TASK_ORDER);
+        typeTable.append(4, CourseSelectItemFragment.KEY_TEXT_BOOK);
+        // 讲解课类型
+        typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
+        typeTable.append(6, CourseSelectItemFragment.KEY_TEXT_BOOK);
+        
         getData();
     }
 
@@ -181,7 +202,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
 
     private void updateViews(SectionDetailsVo sectionDetailsVo) {
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
-                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType);
+                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType,mMultipleChoiceCount);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
         for (int index = 0; index < taskList.size(); index++) {
             SectionTaskListVo taskListVO = taskList.get(index);
@@ -189,7 +210,11 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             if (!isInitiativeTrigger && isChoiceMode && !isShowType(taskType, taskListVO)) continue;
             TreeNode treeNode = new TreeNode(taskListVO);
             treeNode.setLevel(0);
-            for (SectionResListVo datum : taskListVO.getData()) {
+            List<SectionResListVo> dataList = taskListVO.getData();
+            if (!isInitiativeTrigger && isChoiceMode) {
+                dataList = getDataList(taskListVO, dataList);
+            }
+            for (SectionResListVo datum : dataList) {
                 datum.setTaskType(taskListVO.getTaskType());
                 datum.setTaskName(taskListVO.getTaskName());
                 datum.setChapterId(datum.getId());
@@ -213,6 +238,61 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             mEmptyLayout.setVisibility(View.GONE);
             container.addView(view);
         }
+    }
+
+    private List<SectionResListVo> getDataList(SectionTaskListVo taskListVO,
+                                               List<SectionResListVo> dataList) {
+        if (taskListVO == null || dataList == null || dataList.isEmpty()) {
+            return null;
+        }
+        List<SectionResListVo> list = new ArrayList<>();
+        for (SectionResListVo sectionResListVo : dataList) {
+            int resType = sectionResListVo.getResType();
+            if (taskType != CourseSelectItemFragment.KEY_WATCH_COURSE) {
+                if (resType > 10000) {
+                    resType -= 10000;
+                }
+
+                // 原本不是看课件类型，是读写单和听读课类型，需要过滤视频音频
+                if (resType == 2 || resType == 3) {
+                    // 过滤视频 和 音频
+                    continue;
+                }
+
+                if (taskType == CourseSelectItemFragment.KEY_TASK_ORDER) {
+                    // 如果显示的是读写单类型，那就需要过滤看课件中的听读课课件
+                    if (resType == 18 || resType == 19) {
+                        // 过滤18,19
+                        continue;
+                    }
+                }
+            }
+
+            if (taskType == CourseSelectItemFragment.KEY_TEXT_BOOK) {
+                // Q配音的选择
+                if (resType != 30) {
+                    continue;
+                }
+            }
+
+            if (taskType == CourseSelectItemFragment.KEY_RELL_COURSE
+                    && typeTable.get(sectionResListVo.getTaskType())
+                    == CourseSelectItemFragment.KEY_LECTURE_COURSE) {
+                // 选择复述课件，讲解课的显示
+                // sectionResListVo.setResProperties("");
+            }
+
+            if (!sectionResListVo.isIsShield()) {
+                if (typeTable.get(sectionResListVo.getTaskType())  == CourseSelectItemFragment.KEY_RELL_COURSE && taskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
+                    if (EmptyUtil.isNotEmpty(filterArray) && filterArray.contains(resType)) {
+                        list.add(sectionResListVo);
+                    }
+                } else {
+                    list.add(sectionResListVo);
+                }
+            }
+        }
+        return list;
     }
 
     @Override
@@ -271,8 +351,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                 return true;
             }
         } else if (realTaskType == CourseSelectItemFragment.KEY_TASK_ORDER) {
-            if (taskType == 3
-                    || taskType == 4) {
+            if (taskType == 3 || taskType == 4) {
                 // 读写作业 看课件
                 return true;
             }

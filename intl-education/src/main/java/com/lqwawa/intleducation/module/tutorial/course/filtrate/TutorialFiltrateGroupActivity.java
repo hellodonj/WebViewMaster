@@ -59,6 +59,9 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
     // LQEnglishPrimary
     private static final int ENGLISH_INTERNATIONAL_COURSE_PRIMARYID = 2011;
 
+    // 右脑潜能开发
+    public static final int RIGHT_BRAIN_ID = 2351;
+
     private static final int CONFIG_TYPE_1 = 1;
     private static final int CONFIG_TYPE_2 = 2;
     private static final int CONFIG_TYPE_3 = 3;
@@ -296,6 +299,11 @@ public class TutorialFiltrateGroupActivity extends PresenterActivity<TutorialFil
             // 类型 学段
             mTabLabel1.setText(getString(R.string.label_colon_type));
             mTabLabel2.setText(getString(R.string.label_colon_period));
+            mTabLabel3.setText(getString(R.string.label_colon_subject));
+        } else if (rootId == RIGHT_BRAIN_ID){
+            mTabVector3.setVisibility(View.VISIBLE);
+            // 类型 分类
+            mTabLabel2.setText(getString(R.string.label_colon_type));
             mTabLabel3.setText(getString(R.string.label_colon_subject));
         }
     }

@@ -123,16 +123,17 @@
                 <ImageView
                     android:id="@+id/lock_exam_iv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/com_item_space"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/com_item_space"
                     android:src="@drawable/lock"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/hide_lesson_iv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/com_item_space"
+                    android:layout_height="match_parent"
+                    android:paddingRight="@dimen/com_item_space"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/arrow_up_gray_ico"/>
 
             </LinearLayout>

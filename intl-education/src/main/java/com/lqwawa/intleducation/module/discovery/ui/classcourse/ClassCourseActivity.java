@@ -138,10 +138,8 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private LinearLayout mBottomActionLayout;
     private FrameLayout mCartContainer, mActionContainer;
     private Button mWorkCart, mAddCourse;
-    private TextView mTvPoint;
 
     private FrameLayout mNewCartContainer;
-    private TextView mTvWorkCart;
     private TextView mTvCartPoint;
     private TextView mTvAction;
 
@@ -253,7 +251,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
         super.initWidget();
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mNewCartContainer = (FrameLayout) findViewById(R.id.new_cart_container);
-        mTvWorkCart = (TextView) findViewById(R.id.tv_work_cart);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
         mTvAction = (TextView) findViewById(R.id.tv_action);
 
@@ -340,7 +337,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         mCartContainer = (FrameLayout) findViewById(R.id.cart_container);
         mActionContainer = (FrameLayout) findViewById(R.id.action_container);
-        mTvPoint = (TextView) findViewById(R.id.tv_point);
         mWorkCart = (Button) findViewById(R.id.btn_work_cart);
         mAddCourse = (Button) findViewById(R.id.btn_add_course);
         mWorkCart.setOnClickListener(this);
@@ -348,7 +344,6 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
 
         int color = UIUtil.getColor(R.color.colorPink);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 8);
-        mTvPoint.setBackground(DrawableUtil.createDrawable(color, color, radius));
 
         /*FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mTvCartPoint.getLayoutParams();
         float density = UIUtil.getApp().getResources().getDisplayMetrics().density;
@@ -610,14 +605,11 @@ public class ClassCourseActivity extends PresenterActivity<ClassCourseContract.P
     private void refreshCartPoint() {
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             int count = TaskSliderHelper.onWorkCartListener.takeTaskCount();
-            mTvPoint.setText(Integer.toString(count));
             mTvCartPoint.setText(Integer.toString(count));
             if (count == 0 || mBottomLayout.isActivated()) {
-                mTvPoint.setVisibility(View.GONE);
                 mTvCartPoint.setVisibility(View.GONE);
             } else {
                 // 旧作业库不显示角标
-                mTvPoint.setVisibility(View.GONE);
                 mTvCartPoint.setVisibility(View.VISIBLE);
             }
         }

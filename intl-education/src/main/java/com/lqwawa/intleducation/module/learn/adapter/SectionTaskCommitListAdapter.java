@@ -18,6 +18,7 @@ import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -47,24 +48,17 @@ public class SectionTaskCommitListAdapter extends MyBaseAdapter {
 
         characterParser = CharacterParser.getInstance();
 
-        userHeadImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCircular(true)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                .build();
+        userHeadImageOptions =
+                XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                        R.drawable.user_header_def, false, true, null);
 
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
         img_width = p_width / 4;
         img_height = 3 * img_width / 4;
 
-        coverImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        coverImageOptions =
+                XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_XY,
+                        R.drawable.img_def, false, false, null);
     }
 
     @Override
@@ -95,12 +89,12 @@ public class SectionTaskCommitListAdapter extends MyBaseAdapter {
         }
         if (UserHelper.isLogin()) {
             holder.nameTv.setText("" + vo.getCreatName());
-            x.image().bind(holder.userHeadIv,
+            XImageLoader.loadImage(holder.userHeadIv,
                     "" + vo.getHeaderPic(),
                     this.userHeadImageOptions);
         }
 
-        x.image().bind(holder.coverIv,
+        XImageLoader.loadImage(holder.coverIv,
                 "" + vo.getThumbnail(),
                 this.coverImageOptions);
         holder.coverIv.setOnClickListener(new View.OnClickListener() {

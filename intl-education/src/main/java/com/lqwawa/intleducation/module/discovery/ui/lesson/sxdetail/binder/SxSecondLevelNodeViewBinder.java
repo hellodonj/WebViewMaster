@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.ButtonUtils;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ResIconUtils;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.base.CheckableNodeViewBinder;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
@@ -41,6 +42,9 @@ import com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 描述: 第二级别
@@ -54,6 +58,8 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     ImageView resIcon, mIvPlayIcon, mIvNeedCommit;
     LinearLayout itemRootLay;
     private int mTaskType = 9;
+    // 可以选择的最大条目
+    private int maxSelect = 1;
 
     private SparseArray<ResIconUtils.ResIcon> resIconSparseArray = ResIconUtils.resIconSparseArray;
     //    private boolean mChoiceMode;
@@ -91,26 +97,26 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     public void bindView(final TreeNode treeNode, Context context) {
         //SectionTaskListVo TaskListVO //SectionDetailsVo SxExamDetailVo
         SectionResListVo vo = (SectionResListVo) treeNode.getValue();
-        ExamsAndTestExtrasVo extras = (ExamsAndTestExtrasVo) treeNode.getExtras();
-        if (extras == null) extras = new ExamsAndTestExtrasVo();
-        boolean mChoiceMode =extras.ismChoiceMode();
+        ExamsAndTestExtrasVo examsAndTestExtrasVo = (ExamsAndTestExtrasVo) treeNode.getExtras();
+        if (examsAndTestExtrasVo == null) examsAndTestExtrasVo = new ExamsAndTestExtrasVo();
+        boolean mChoiceMode = examsAndTestExtrasVo.ismChoiceMode();
         itemRootLay.setVisibility(View.VISIBLE);
         int resType = vo.getResType();
         if (resType > 10000) resType -= 10000;
-        if (extras.isVideoCourse()) {
+        if (examsAndTestExtrasVo.isVideoCourse()) {
             resIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
             LQwawaImageUtil.loadCourseThumbnail(UIUtil.getContext(), resIcon, vo.getThumbnail());
         } else {
             resIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            setResIcon(resIcon, vo, resType, extras);
+            setResIcon(resIcon, vo, resType, examsAndTestExtrasVo);
         }
-        setResIconLayout(resIcon, extras.isVideoCourse());
-        mIvPlayIcon.setVisibility(extras.isVideoCourse() ? View.VISIBLE : View.GONE);
+        setResIconLayout(resIcon, examsAndTestExtrasVo.isVideoCourse());
+        mIvPlayIcon.setVisibility(examsAndTestExtrasVo.isVideoCourse() ? View.VISIBLE : View.GONE);
 
-        if (extras.isNeedFlagRead() && vo.isIsRead()) {
+        if (examsAndTestExtrasVo.isNeedFlagRead() && vo.isIsRead()) {
             mIvNeedCommit.setImageResource(R.drawable.ic_task_completed);
         } else {
-            int resId = extras.isVideoCourse() ? 0 : R.drawable.ic_need_to_commit;
+            int resId = examsAndTestExtrasVo.isVideoCourse() ? 0 : R.drawable.ic_need_to_commit;
             mIvNeedCommit.setImageResource(resId);
         }
 
@@ -118,10 +124,10 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             int taskType = vo.getTaskType();
             if (taskType == 1 || taskType == 4) {
                 // 看课件 视频课
-                mIvNeedCommit.setVisibility(extras.isVideoCourse() ? View.VISIBLE : View.GONE);
+                mIvNeedCommit.setVisibility(examsAndTestExtrasVo.isVideoCourse() ? View.VISIBLE : View.GONE);
             } else {
                 // 听读课,读写单
-                mIvNeedCommit.setVisibility(!extras.isCourseSelect() ? View.VISIBLE : View.GONE);
+                mIvNeedCommit.setVisibility(!examsAndTestExtrasVo.isCourseSelect() ? View.VISIBLE : View.GONE);
             }
         } else {
             mIvNeedCommit.setVisibility(View.GONE);
@@ -130,7 +136,7 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         checkbox.setVisibility(mChoiceMode ? View.VISIBLE : View.GONE);
 
         String assigned = context.getString(R.string.label_assigned);
-        if (extras.ismClassTeacher() && vo.isAssigned()) {
+        if (examsAndTestExtrasVo.ismClassTeacher() && vo.isAssigned()) {
             SpannableString spannableString = new SpannableString(assigned + vo.getName().trim());
             ForegroundColorSpan colorSpan =
                     new ForegroundColorSpan(context.getResources().getColor(R.color.textAccent));
@@ -142,7 +148,7 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         }
         if (((mTaskType == CourseSelectItemFragment.KEY_RELL_COURSE || vo.getTaskType() == 2) ||
                 (mTaskType == CourseSelectItemFragment.KEY_LECTURE_COURSE
-                        || vo.getTaskType() == 5 && (extras.isCourseSelect() || extras.ismChoiceMode())) || vo.getTaskType() == 1) &&
+                        || vo.getTaskType() == 5 && (examsAndTestExtrasVo.isCourseSelect() || examsAndTestExtrasVo.ismChoiceMode())) || vo.getTaskType() == 1) &&
                 SectionResListVo.EXTRAS_AUTO_READ_OVER.equals(vo.getResProperties())) {
             // 只有听说课,才显示语音评测  参考视屏也显示
             mTvAutoMask.setVisibility(View.VISIBLE);
@@ -167,10 +173,10 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
     @Override
     public void onNodeToggled(int position, TreeNode treeNode, boolean expand, Context context) {
         SectionResListVo resVo = (SectionResListVo) treeNode.getValue();
-        ExamsAndTestExtrasVo extras = (ExamsAndTestExtrasVo) treeNode.getExtras();
+        ExamsAndTestExtrasVo examsAndTestExtrasVo = (ExamsAndTestExtrasVo) treeNode.getExtras();
         ReadWeikeHelper mReadWeikeHelper = (ReadWeikeHelper) treeView.getExtras();
-        boolean mChoiceMode = treeNode.isShowCheckBox();
-        LessonSourceParams mSourceParams = extras.getLessonSourceParams();
+        boolean mChoiceMode = examsAndTestExtrasVo.ismChoiceMode();
+        LessonSourceParams mSourceParams = examsAndTestExtrasVo.getLessonSourceParams();
 
         if (ButtonUtils.isFastDoubleClick()) return;
         if (resVo.isIsShield()) {
@@ -197,9 +203,9 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             }
             return;
         }
-        boolean needFlag = extras.isNeedFlagRead();
+        boolean needFlag = examsAndTestExtrasVo.isNeedFlagRead();
         if (resVo.getTaskType() == 1 || resVo.getTaskType() == 4) {
-            if (extras.isVideoCourse()) {
+            if (examsAndTestExtrasVo.isVideoCourse()) {
                 VideoDetailActivity.start(context, resVo, null);
 //                VideoDetailActivity.start(context, resVo, mSourceParams);
             } else {
@@ -222,7 +228,7 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                 // 是已经加入的课程
                 // 或者是试听身份
-                enterSectionTaskDetail(activity, resVo, mSourceParams,extras);
+                enterSectionTaskDetail(activity, resVo, mSourceParams, examsAndTestExtrasVo);
             } else {
                 // 其它情况，只能看微课
                 mReadWeikeHelper.readWeike(resVo);
@@ -232,12 +238,12 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
             if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {
                 // 是已经加入的课程
                 // 或者是试听身份
-                enterSectionTaskDetail(activity, resVo, mSourceParams, extras);
+                enterSectionTaskDetail(activity, resVo, mSourceParams, examsAndTestExtrasVo);
             } else {
                 if (TaskSliderHelper.onTaskSliderListener != null) {
                     TaskSliderHelper.onTaskSliderListener.viewCourse(activity,
                             resVo.getResId(), resVo.getResType(),
-                            extras.getSchoolId(),
+                            examsAndTestExtrasVo.getSchoolId(),
                             activity.getIntent().getBooleanExtra("isPublic", false),
                             activity.getIntent().getBooleanExtra(MyCourseDetailsActivity
                                     .KEY_IS_FROM_MY_COURSE, false)
@@ -247,13 +253,47 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         }
     }
 
-    private void setResIcon(ImageView imageView, SectionResListVo vo, int resType, ExamsAndTestExtrasVo extras) {
+    @Override
+    public void onNodeSelectedChanged(Context context, TreeNode treeNode, boolean selected) {
+        super.onNodeSelectedChanged(context, treeNode, selected);
+        SectionResListVo resListVo = (SectionResListVo) treeNode.getValue();
+        ExamsAndTestExtrasVo extrasVo = (ExamsAndTestExtrasVo) treeNode.getExtras();
+        if (resListVo.getTaskType() == 9) {
+            maxSelect = 1;
+        } else {
+            maxSelect = extrasVo.getMultipleChoiceCount();
+        }
+        // 获取已经选中的作业库
+        List<TreeNode> data = treeView.getSelectedNodes();
+        List<TreeNode> choiceArray = new ArrayList<>();
+        if (EmptyUtil.isNotEmpty(data)) {
+            for (TreeNode vo : data) {
+                if (vo.isSelected()) {
+                    choiceArray.add(vo);
+                    if (resListVo.getTaskType() == 9) {
+                        if (choiceArray.size() > 1) {
+                            ToastUtil.showToast(context, context.getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    } else {
+                        if (choiceArray.size() > extrasVo.getMultipleChoiceCount()) {
+                            ToastUtil.showToast(context, context.getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void setResIcon(ImageView imageView, SectionResListVo vo, int resType, ExamsAndTestExtrasVo examsAndTestExtrasVo) {
         if (vo.isIsShield()) {
             imageView.setImageResource(resIconSparseArray.get(resType).shieldResId);
         } else {
-            if (extras.isNeedFlagRead() && vo.isIsRead()) {
+            if (examsAndTestExtrasVo.isNeedFlagRead() && vo.isIsRead()) {
                 imageView.setImageResource(resIconSparseArray.get(resType).readResId);
-            } else if (extras.isNeedFlagRead() && !vo.isIsRead() && extras.getLessonStatus() == 1 && (resType != 24
+            } else if (examsAndTestExtrasVo.isNeedFlagRead() && !vo.isIsRead() && examsAndTestExtrasVo.getLessonStatus() == 1 && (resType != 24
                     || resType != 25)) {
                 // txt word 不设置
                 imageView.setImageResource(resIconSparseArray.get(resType).newResId);
@@ -293,12 +333,12 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         });
     }
 
-    protected void enterSectionTaskDetail(Activity context, SectionResListVo vo, LessonSourceParams mSourceParams, ExamsAndTestExtrasVo extras) {
-        String curMemberId = mSourceParams.getMemberId();
-        int originalRole = mSourceParams.getRole();
-        if (mSourceParams.isTeacherVisitor()) {
+    protected void enterSectionTaskDetail(Activity context, SectionResListVo vo, LessonSourceParams lessonSourceParams, ExamsAndTestExtrasVo examsAndTestExtrasVo) {
+        String curMemberId = lessonSourceParams.getMemberId();
+        int originalRole = lessonSourceParams.getRole();
+        if (lessonSourceParams.isTeacherVisitor()) {
             // 这才是真实的角色身份
-            originalRole = mSourceParams.getRealRole();
+            originalRole = lessonSourceParams.getRealRole();
         }
 
 
@@ -310,8 +350,8 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
         // 处理需要转换的角色
         int handleRole = originalRole;
-        boolean isAudition = mSourceParams.isAudition();
-        if (mSourceParams.isCounselor() || mSourceParams.isAudition()) {
+        boolean isAudition = lessonSourceParams.isAudition();
+        if (lessonSourceParams.isCounselor() || lessonSourceParams.isAudition()) {
             // 如果是辅导老师身份 或者试听
             // 角色按照浏览者，家长身份处理
             handleRole = UserHelper.MoocRoleType.PARENT;
@@ -324,7 +364,7 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
                 handleRole = UserHelper.MoocRoleType.TEACHER;
             }
 
-            if (mSourceParams.isLecturer()) {
+            if (lessonSourceParams.isLecturer()) {
                 // 如果是讲师身份 主编身份处理
                 handleRole = UserHelper.MoocRoleType.EDITOR;
             }
@@ -333,10 +373,10 @@ public class SxSecondLevelNodeViewBinder extends CheckableNodeViewBinder {
 
         // 生成任务详情参数
         SectionTaskParams params = new SectionTaskParams(originalRole, handleRole);
-        params.fillParams(mSourceParams);
+        params.fillParams(lessonSourceParams);
 
-        SectionTaskDetailsActivity.startForResultEx(context, vo, curMemberId, extras.getSchoolId(), context.getIntent().getBooleanExtra
+        SectionTaskDetailsActivity.startForResultEx(context, vo, curMemberId, examsAndTestExtrasVo.getSchoolId(), context.getIntent().getBooleanExtra
                         (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
-                null, originalRole, handleRole, null, isAudition, extras.getLibraryType(), params);
+                null, originalRole, handleRole, null, isAudition, examsAndTestExtrasVo.getLibraryType(), params);
     }
 }

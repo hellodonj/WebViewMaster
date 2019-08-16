@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 
 import java.util.List;
@@ -97,9 +98,23 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
             gholder.mCbTitleSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    group.setChoosed(((CheckBox) v).isChecked());
-                    // 暴露组选接口
-                    checkInterface.checkGroup(groupPosition, ((CheckBox) v).isChecked());
+                    //没锁并且有子选项
+                    if (group.isUnlock()){
+                        List<ChapterVo> chapterVos = group.getChildren();
+                        for (int i = 0; i < chapterVos.size(); i++) {
+                             if(!chapterVos.get(i).isUnlock()){
+                                 gholder.mCbTitleSelect.setChecked(false);
+                                 UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                                 return;
+                             }
+                        }
+                        group.setChoosed(((CheckBox) v).isChecked());
+                        // 暴露组选接口
+                        checkInterface.checkGroup(groupPosition, ((CheckBox) v).isChecked());
+                    }else {
+                        gholder.mCbTitleSelect.setChecked(false);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                    }
                 }
             });
         }
@@ -125,10 +140,15 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
             cholder.mCbChildSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    detailResponse.setChoosed(((CheckBox) v).isChecked());
-                    cholder.mCbChildSelect.setChecked(((CheckBox) v).isChecked());
-                    // 暴露子选接口
-                    checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
+                    if (detailResponse.isUnlock()){
+                        detailResponse.setChoosed(((CheckBox) v).isChecked());
+                        cholder.mCbChildSelect.setChecked(((CheckBox) v).isChecked());
+                        // 暴露子选接口
+                        checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
+                    }else {
+                        cholder.mCbChildSelect.setChecked(false);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                    }
                 }
             });
         }

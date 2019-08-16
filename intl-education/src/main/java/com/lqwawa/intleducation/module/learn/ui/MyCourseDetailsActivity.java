@@ -83,6 +83,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.ui.course.notice.CourseNoticeListActivity;
 import com.oosic.apps.share.BaseShareUtils;
 import com.oosic.apps.share.ShareInfo;
+import com.osastudio.common.utils.XImageLoader;
 import com.umeng.socialize.media.UMImage;
 
 import org.greenrobot.eventbus.EventBus;
@@ -478,12 +479,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         int p_width = getWindowManager().getDefaultDisplay().getWidth();
         img_width = p_width / 3 - DisplayUtil.dip2px(activity, 20);
         img_height = img_width * 297 / 210;
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null);
         imageViewCover.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
 
         // @date   :2018/4/11 0011 上午 11:31
@@ -961,9 +958,6 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
 //            mOnlineClassFragment.onHeaderRefresh();
 //        }
         else if (mTutorialGroupFragment.isVisible()) {
-            // 下拉刷新
-            mOnlineClassFragment.onHeaderRefresh();
-        } else if (mTutorialGroupFragment.isVisible()) {
             // 帮辅群显示
             mTutorialGroupFragment.onHeaderRefresh();
         }else if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
@@ -1274,7 +1268,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
         float score = courseVo.getCommentNum() == 0 ? 0 :
                 1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
         ratingBarGrade.setRating(score);
-        x.image().bind(imageViewCover,
+        XImageLoader.loadImage(imageViewCover,
                 courseVo.getThumbnailUrl().trim(),
                 imageOptions);
         textViewCourseName.setText(courseVo.getName());

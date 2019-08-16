@@ -18,7 +18,6 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.LQBasicsOuterEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
-import com.lqwawa.intleducation.factory.data.entity.LibraryLabelEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.LQConfigResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.response.LQRmResponseVo;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.CourseDetailItemParams;
@@ -690,11 +689,13 @@ public class LQCourseHelper {
      *                  获取LQ学程的课程基本信息
      */
     public static void requestChapterByCourseId(@NonNull String token,
+                                                String classId,
                                                 @NonNull String courseId,
                                                 @NonNull String schoolIds,
                                                 @NonNull DataSource.Callback<CourseDetailsVo> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("token", token);
+        requestVo.addParams("classId", classId);
         requestVo.addParams("courseId", courseId);
         if (EmptyUtil.isNotEmpty(schoolIds))
             requestVo.addParams("schoolIds", schoolIds);

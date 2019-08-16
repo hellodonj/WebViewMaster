@@ -83,8 +83,7 @@ public class CourseClassifyPagerAdapter extends RecyclerAdapter<LQCourseConfigEn
             String thumbnail = entity.getThumbnail();
             if (!EmptyUtil.isEmpty(thumbnail)) {
                 if (StringUtils.isValidWebResString(thumbnail)) {
-//                    ImageUtil.fillNormalView(mClassifyIcon, entity.getThumbnail().trim());
-                    Glide.with(mContext).load(entity.getThumbnail()).into(mClassifyIcon);
+                    ImageUtil.fillNormalView(mClassifyIcon, entity.getThumbnail().trim());
                 } else {
                     mClassifyIcon.setImageResource(ResourceUtils.getDrawableId(UIUtil.getContext(), thumbnail));
                 }

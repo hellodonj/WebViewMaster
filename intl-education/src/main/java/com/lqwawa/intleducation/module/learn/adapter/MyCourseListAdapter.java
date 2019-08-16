@@ -29,6 +29,7 @@ import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.MyCourseVo;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -95,13 +96,8 @@ public class MyCourseListAdapter extends MyBaseAdapter {
         img_width = p_width / 4;
         img_height = img_width * 297 / 210;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
 
         courseTypeNames =
                 activity.getResources().getStringArray(R.array.course_type_names);
@@ -182,7 +178,7 @@ public class MyCourseListAdapter extends MyBaseAdapter {
         // holder.course_process_tv.append(builder);
         // holder.course_process_tv.append(vo.getChapterName());
 
-        x.image().bind(holder.course_iv,
+        XImageLoader.loadImage(holder.course_iv,
                 ("" + vo.getThumbnailUrl()).trim(),
                 imageOptions);
         holder.coverLay.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));
