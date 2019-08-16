@@ -12,6 +12,15 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/test_flag_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/sx_test_flag"
+            android:textColor="@color/textAccent"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/tv_child_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
