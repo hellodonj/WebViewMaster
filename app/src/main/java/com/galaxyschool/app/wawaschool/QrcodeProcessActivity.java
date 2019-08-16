@@ -1270,7 +1270,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     }
 
     private void applyPayJoinClass(){
-        if (classDetailInfo == null){
+        if (classDetailInfo == null || userInfo == null){
             return;
         }
         if (classDetailInfo.isStudentByRoles()){
@@ -1279,6 +1279,10 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         }
         if (classDetailInfo.isTeacherByRoles() || classDetailInfo.isParentByRoles()){
             TipMsgHelper.ShowMsg(this,R.string.str_repeat_role_info);
+            return;
+        }
+        if (TextUtils.isEmpty(userInfo.getRealName())) {
+            showonsummateDialog();
             return;
         }
         PayActivity.newInstance(this,
