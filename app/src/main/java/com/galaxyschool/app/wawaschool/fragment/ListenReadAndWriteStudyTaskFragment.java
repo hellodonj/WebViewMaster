@@ -318,6 +318,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
     private void refreshData() {
         if (HomeworkCommitFragment.hasCommented()) {
+            if (taskType == StudyTaskType.MULTIPLE_OTHER && roleType == RoleType.ROLE_TYPE_STUDENT){
+                return;
+            }
             loadStudyData(true);
         }
     }

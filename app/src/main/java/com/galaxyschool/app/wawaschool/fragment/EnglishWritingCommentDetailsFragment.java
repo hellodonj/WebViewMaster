@@ -156,7 +156,11 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
         //初始化标题
         titleList.add(getString(R.string.auto_comment));
-        titleList.add(getString(R.string.str_teacher_review));
+        if (isOnlineReporter) {
+            titleList.add(getString(R.string.str_teacher_review));
+        } else {
+            titleList.add(getString(R.string.personal_comment));
+        }
 //        titleList.add(getString(R.string.task_requirements));
 
         //初始化fragment
