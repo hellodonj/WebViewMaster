@@ -482,7 +482,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
             if (WatchWawaCourseResourceSplicingUtils.
                     watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
                 if (taskType == StudyTaskType.ENGLISH_WRITING){
-                    maxCount = 1;
+                    maxCount = 10;
                 } else {
                     //控制资源最多选多少
                     maxCount = WatchWawaCourseResourceSplicingUtils.

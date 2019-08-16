@@ -699,6 +699,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (showEnglishWritingCourse()){
                 String resId = homeworkListInfo.getResId();
                 if (resId.contains("-")){
+                    if (resId.contains(",")){
+                        return true;
+                    }
                     int mediaType = Integer.valueOf(resId.split("-")[1]);
                     if (mediaType == MaterialResourceType.PICTURE
                             || mediaType == MaterialResourceType.PDF
@@ -1353,7 +1356,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                         tempInfo.setResourceUrl(AppSettings.getFileUrl(resUrlArray[i]));
                         tempInfo.setResourceId(resIdArray[i]);
                         tempInfo.setResourceType(taskResType);
-                        tempInfo.setAuthorId(authorIdArray[i]);
+                        if (i < authorIdArray.length) {
+                            tempInfo.setAuthorId(authorIdArray[i]);
+                        }
                         resourceInfoList.add(tempInfo);
                     }
                 } else {

@@ -1326,18 +1326,25 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             if (!TextUtils.isEmpty(resId)) {
                 if (resId.contains("-")) {
                     String[] array = resId.split("-");
-                    courseData.id = Integer.valueOf(array[0]);
-                    courseData.type = Integer.valueOf(array[1]);
-                    uploadParameter.setType(courseData.type);
-                    if (courseData.type == ResType.RES_TYPE_IMG) {
-                        List<ResourceInfo> SplitInfoList = dto.getSplitInfoList();
-                        if (SplitInfoList != null && SplitInfoList.size() > 0) {
-                            courseData.resId = StudyTaskUtils.getPicResourceData(SplitInfoList, false,
-                                    false, true);
-                            courseData.resourceurl = StudyTaskUtils.getPicResourceData(SplitInfoList,
-                                    true, false, false);
-                            courseData.code = StudyTaskUtils.getPicResourceData(SplitInfoList,
-                                    false, true, false);
+                    if (resId.contains(",") && taskType == StudyTaskType.ENGLISH_WRITING){
+                        //已经包含了逗号
+                        courseData.resId = resId;
+                        courseData.resourceurl = dto.getResUrl();
+                        uploadParameter.setType(ResType.RES_TYPE_IMG);
+                    } else {
+                        courseData.id = Integer.valueOf(array[0]);
+                        courseData.type = Integer.valueOf(array[1]);
+                        uploadParameter.setType(courseData.type);
+                        if (courseData.type == ResType.RES_TYPE_IMG) {
+                            List<ResourceInfo> SplitInfoList = dto.getSplitInfoList();
+                            if (SplitInfoList != null && SplitInfoList.size() > 0) {
+                                courseData.resId = StudyTaskUtils.getPicResourceData(SplitInfoList, false,
+                                        false, true);
+                                courseData.resourceurl = StudyTaskUtils.getPicResourceData(SplitInfoList,
+                                        true, false, false);
+                                courseData.code = StudyTaskUtils.getPicResourceData(SplitInfoList,
+                                        false, true, false);
+                            }
                         }
                     }
                 }
@@ -2508,7 +2515,8 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 if (courseData != null) {
                     if ((uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                            || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER)
+                            || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                            || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING)
                             && uploadParameter.getType() == ResType.RES_TYPE_IMG) {
                         taskParams.put("ResAuthor", courseData.code);
                         taskParams.put("ResId", courseData.resId);
