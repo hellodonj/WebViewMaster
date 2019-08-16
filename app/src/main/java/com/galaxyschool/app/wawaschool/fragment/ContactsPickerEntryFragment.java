@@ -1009,7 +1009,11 @@ public class ContactsPickerEntryFragment extends BaseFragment
                         secondObject.put("WordCountMax",parameter.getWordCountMax());
                         CourseData englishData = parameter.getCourseData();
                         if (englishData != null) {
-                            secondObject.put("ResId", englishData.getIdType());
+                            if (parameter.getType() == ResType.RES_TYPE_IMG){
+                                secondObject.put("ResId", englishData.resId);
+                            } else {
+                                secondObject.put("ResId", englishData.getIdType());
+                            }
                             secondObject.put("ResUrl", englishData.resourceurl);
                         }
                     }
@@ -1378,7 +1382,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                 taskParams.put("TaskTitle", uploadParameter.getFileName());
                 if (courseData != null) {
                     if ((uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
-                    || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER)
+                    || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                            || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING)
                             && uploadParameter.getType() == ResType.RES_TYPE_IMG){
                         taskParams.put("ResAuthor", courseData.code);
                         taskParams.put("ResId", courseData.resId);
