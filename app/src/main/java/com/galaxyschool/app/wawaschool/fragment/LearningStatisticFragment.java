@@ -169,6 +169,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private void loadLearningData() {
+        if (isTeacherLook() && beanList != null && beanList.size() > 0){
+            //老师查看学生统计表面数据重复加载
+            return;
+        }
         StatisticNetHelper netHelper = new StatisticNetHelper();
         netHelper.setCallListener(this::updateViewData).getTaskDetailStatistic(courseId, classId,
                 learnType + 1, isTeacherLook() ? "" : studentId);
