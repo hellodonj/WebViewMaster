@@ -9,26 +9,17 @@ import java.util.List;
 public class SxExamDetailVo extends BaseVo {
 
 
-        @SerializedName("id")
         public int id;
-        @SerializedName("status")
         public int status;
-        @SerializedName("sectionName")
         public String sectionName;
-        @SerializedName("introduction")
         public String introduction;
-        @SerializedName("isOpen")
         public boolean isOpen;
-        @SerializedName("taskList")
         public List<TaskListVO> taskList;
 
         public class TaskListVO extends BaseVo{
 
-            @SerializedName("taskType")
             public int taskType;
-            @SerializedName("taskName")
             public String taskName;
-            @SerializedName("data")
             public List<SectionResListVo> data;
 
             public int getTaskType() {
