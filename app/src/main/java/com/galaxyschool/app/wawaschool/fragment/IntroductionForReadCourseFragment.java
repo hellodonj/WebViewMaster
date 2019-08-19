@@ -657,10 +657,19 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     private void chooseOtherHomeWork() {
+        int remainCount = 10;
+        if (listenData != null){
+            remainCount = 11 - listenData.size();
+        }
+        if (remainCount <= 0){
+            TipsHelper.showToast(getActivity(),getString(R.string.str_max_select_limit));
+            return;
+        }
         Bundle args = new Bundle();
         args.putString(PersonalPostBarListActivity.EXTRA_MEMBER_ID, getMemeberId());
         args.putBoolean(ActivityUtils.EXTRA_IS_PICK, true);
-        args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
+        args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, remainCount);
+        args.putInt(ActivityUtils.EXTRA_TASK_TYPE,superTaskType);
         Intent intent = new Intent(getActivity(), PersonalPostBarListActivity.class);
         intent.putExtras(args);
         startActivityForResult(intent, REQUEST_CODE_PICKER_RESOURCES);
@@ -861,7 +870,21 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 1);
                 args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, StudyTaskType.NEW_WATACH_WAWA_COURSE);
             } else {
-                args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 10);
+                int remainCount = 10;
+                if (superTaskType == StudyTaskType.TASK_ORDER){
+                    if (readWriteData != null){
+                        remainCount = 11 - readWriteData.size();
+                    }
+                } else {
+                    if (listenData != null){
+                        remainCount = 11 - listenData.size();
+                    }
+                }
+                if (remainCount <= 0){
+                    TipsHelper.showToast(getActivity(),getString(R.string.str_max_select_limit));
+                    return;
+                }
+                args.putInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT, remainCount);
                 args.putInt(ActivityUtils.EXTRA_SUPER_TASK_TYPE, superTaskType);
             }
             args.putBoolean(ActivityUtils.EXTRA_FROM_SUPER_TASK, isFromSuperTask);
@@ -1586,13 +1609,15 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
     public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
         boolean isContain = false;
-        for (ResourceInfoTag tag : listenData) {
-            if (TextUtils.equals("1", tag.getResProperties())) {
-                //评测课件 默认 复述 + 评测
-                if (!isSuperTask) {
-                    tag.setCompletionMode(2);
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            for (ResourceInfoTag tag : listenData) {
+                if (TextUtils.equals("1", tag.getResProperties())) {
+                    //评测课件 默认 复述 + 评测
+                    if (!isSuperTask) {
+                        tag.setCompletionMode(2);
+                    }
+                    isContain = true;
                 }
-                isContain = true;
             }
         }
         int length = this.listenData.size() - 1;
@@ -1626,6 +1651,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             updateScoreView(View.GONE);
             mRbTenSystem.setVisibility(View.VISIBLE);
         }
+
         if (listenAdapter != null) {
             listenAdapter.notifyDataSetChanged();
             updateGridViewHeight(true);
@@ -1633,24 +1659,26 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     private void updateEvalCourseViewData(){
-        if (listenData != null && listenData.size() > 0){
-            boolean isSelect = false;
-            boolean isEval = false;
-            for (ResourceInfoTag tag : listenData) {
-                if (tag.isSelected()){
-                    isSelect = true;
+        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+            if (listenData != null && listenData.size() > 0) {
+                boolean isSelect = false;
+                boolean isEval = false;
+                for (ResourceInfoTag tag : listenData) {
+                    if (tag.isSelected()) {
+                        isSelect = true;
+                    }
+                    if (TextUtils.equals("1", tag.getResProperties()) && (tag.getCompletionMode() == 3
+                            || tag.getCompletionMode() == 2)) {
+                        isEval = true;
+                    }
                 }
-                if (TextUtils.equals("1", tag.getResProperties()) && (tag.getCompletionMode() == 3
-                        || tag.getCompletionMode() == 2)) {
-                    isEval = true;
-                }
-            }
-            if (!isSelect){
-                if (isEval){
-                    mRbMarkYes.setChecked(true);
-                    mRbMarkNo.setVisibility(View.INVISIBLE);
-                } else {
-                    mRbMarkNo.setVisibility(View.VISIBLE);
+                if (!isSelect) {
+                    if (isEval) {
+                        mRbMarkYes.setChecked(true);
+                        mRbMarkNo.setVisibility(View.INVISIBLE);
+                    } else {
+                        mRbMarkNo.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }
