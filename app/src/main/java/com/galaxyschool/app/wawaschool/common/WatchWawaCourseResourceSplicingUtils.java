@@ -396,10 +396,19 @@ public class WatchWawaCourseResourceSplicingUtils {
         if (!TextUtils.isEmpty(vo.getCourseId())) {
             tag.setCourseId(Integer.valueOf(vo.getCourseId()));
             if (vo.getSourceType() == 0){
+                //普通
                 tag.setCourseTaskType(1);
-            } else {
-                tag.setCourseTaskType(vo.getSourceType());
+            } else if (vo.getSourceType() == 1){
+                //考试
+                tag.setCourseTaskType(3);
+            } else if (vo.getSourceType() == 2){
+                //测试
+                tag.setCourseTaskType(2);
             }
+        }
+        if (TextUtils.equals("1", tag.getResProperties())) {
+            //语音评测课件
+            tag.setCompletionMode(2);
         }
         return tag;
     }
