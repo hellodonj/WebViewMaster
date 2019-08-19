@@ -520,6 +520,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             //删除
             int position = (int) result;
             listenData.remove(position);
+            addCourseAddButton();
             listenAdapter.notifyDataSetChanged();
             updateGridViewHeight(true);
             boolean flag = showScoreView(true);
@@ -558,6 +559,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 result -> {
                     int position = (int) result;
                     readWriteData.remove(position);
+                    addCourseAddButton();
                     readAndWriteAdapter.notifyDataSetChanged();
 //                    updateGridViewHeight(false);
                     boolean flag = showScoreView(false);
@@ -1447,68 +1449,72 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     private List<LookResDto> getListenReadAndWriteData(boolean isOtherHomeWork) {
         List<LookResDto> lookResDtos = new ArrayList<>();
         LookResDto lookResDto;
-        for (int i = 0, len = listenData.size() - 1; i < len; i++) {
+        for (int i = 0, len = listenData.size(); i < len; i++) {
             ResourceInfoTag info = listenData.get(i);
-            lookResDto = new LookResDto();
-            lookResDto.setResId(info.getResId());
-            lookResDto.setCourseResType(info.getResourceType());
-            lookResDto.setResTitle(info.getTitle());
-            lookResDto.setAuthor(info.getAuthorId());
-            lookResDto.setResUrl(info.getResourcePath());
-            lookResDto.setResProperties(info.getResProperties());
-            if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
-                lookResDto.setTaskId(superTaskType);
-            } else {
-                lookResDto.setTaskId(5);
+            if (!TextUtils.isEmpty(info.getResId())) {
+                lookResDto = new LookResDto();
+                lookResDto.setResId(info.getResId());
+                lookResDto.setCourseResType(info.getResourceType());
+                lookResDto.setResTitle(info.getTitle());
+                lookResDto.setAuthor(info.getAuthorId());
+                lookResDto.setResUrl(info.getResourcePath());
+                lookResDto.setResProperties(info.getResProperties());
+                if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
+                    lookResDto.setTaskId(superTaskType);
+                } else {
+                    lookResDto.setTaskId(5);
+                }
+                lookResDto.setImgPath(info.getImgPath());
+                lookResDto.setSplitInfoList(info.getSplitInfoList());
+                lookResDto.setAuthorName(info.getAuthorName());
+                lookResDto.setCreateTime(info.getCreateTime());
+                lookResDto.setResCourseId(info.getResCourseId());
+                lookResDto.setIsSelect(info.isSelected());
+                lookResDto.setPoint(info.getPoint());
+                if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
+                    lookResDto.setResPropType(1);
+                } else if (superTaskType == StudyTaskType.Q_DUBBING) {
+                    lookResDto.setResPropType(info.getResPropType());
+                }
+                lookResDto.setResPropertyMode(info.getResPropertyMode());
+                lookResDto.setCompletionMode(info.getCompletionMode());
+                lookResDto.setCourseTaskType(info.getCourseTaskType());
+                lookResDto.setCourseId(info.getCourseId());
+                lookResDtos.add(lookResDto);
             }
-            lookResDto.setImgPath(info.getImgPath());
-            lookResDto.setSplitInfoList(info.getSplitInfoList());
-            lookResDto.setAuthorName(info.getAuthorName());
-            lookResDto.setCreateTime(info.getCreateTime());
-            lookResDto.setResCourseId(info.getResCourseId());
-            lookResDto.setIsSelect(info.isSelected());
-            lookResDto.setPoint(info.getPoint());
-            if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
-                lookResDto.setResPropType(1);
-            } else if (superTaskType == StudyTaskType.Q_DUBBING){
-                lookResDto.setResPropType(info.getResPropType());
-            }
-            lookResDto.setResPropertyMode(info.getResPropertyMode());
-            lookResDto.setCompletionMode(info.getCompletionMode());
-            lookResDto.setCourseTaskType(info.getCourseTaskType());
-            lookResDto.setCourseId(info.getCourseId());
-            lookResDtos.add(lookResDto);
         }
-        for (int i = 0, len = readWriteData.size() - 1; i < len; i++) {
+        for (int i = 0, len = readWriteData.size(); i < len; i++) {
             ResourceInfoTag info = readWriteData.get(i);
-            lookResDto = new LookResDto();
-            lookResDto.setResId(info.getResId());
-            lookResDto.setCourseResType(info.getResourceType());
-            lookResDto.setResTitle(info.getTitle());
-            lookResDto.setAuthor(info.getAuthorId());
-            lookResDto.setResUrl(info.getResourcePath());
-            if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
-                lookResDto.setTaskId(superTaskType);
-            } else {
-                lookResDto.setTaskId(8);
+            if (!TextUtils.isEmpty(info.getResId())) {
+                lookResDto = new LookResDto();
+                lookResDto.setResId(info.getResId());
+                lookResDto.setCourseResType(info.getResourceType());
+                lookResDto.setResTitle(info.getTitle());
+                lookResDto.setAuthor(info.getAuthorId());
+                lookResDto.setResUrl(info.getResourcePath());
+                if (isOtherHomeWork || superTaskType == StudyTaskType.Q_DUBBING) {
+                    lookResDto.setTaskId(superTaskType);
+                } else {
+                    lookResDto.setTaskId(8);
+                }
+                lookResDto.setImgPath(info.getImgPath());
+                lookResDto.setSplitInfoList(info.getSplitInfoList());
+                lookResDto.setAuthorName(info.getAuthorName());
+                lookResDto.setCreateTime(info.getCreateTime());
+                lookResDto.setResCourseId(info.getResCourseId());
+                lookResDto.setIsSelect(info.isSelected());
+                lookResDto.setPoint(info.getPoint());
+                if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
+                    lookResDto.setResPropType(1);
+                } else if (superTaskType == StudyTaskType.Q_DUBBING) {
+                    lookResDto.setResPropType(info.getResPropType());
+                }
+                lookResDto.setResPropertyMode(info.getResPropertyMode());
+                lookResDto.setCompletionMode(info.getCompletionMode());
+                lookResDto.setCourseTaskType(info.getCourseTaskType());
+                lookResDto.setCourseId(info.getCourseId());
+                lookResDtos.add(lookResDto);
             }
-            lookResDto.setImgPath(info.getImgPath());
-            lookResDto.setSplitInfoList(info.getSplitInfoList());
-            lookResDto.setAuthorName(info.getAuthorName());
-            lookResDto.setCreateTime(info.getCreateTime());
-            lookResDto.setResCourseId(info.getResCourseId());
-            lookResDto.setIsSelect(info.isSelected());
-            lookResDto.setPoint(info.getPoint());
-            if (!TextUtils.isEmpty(info.getPoint()) && info.getResPropertyMode() == 1) {
-                lookResDto.setResPropType(1);
-            } else if (superTaskType == StudyTaskType.Q_DUBBING){
-                lookResDto.setResPropType(info.getResPropType());
-            }
-            lookResDto.setResPropertyMode(info.getResPropertyMode());
-            lookResDto.setCompletionMode(info.getCompletionMode());
-            lookResDto.setCourseTaskType(info.getCourseTaskType());
-            lookResDto.setCourseId(info.getCourseId());
-            lookResDtos.add(lookResDto);
         }
         return lookResDtos;
     }
@@ -1602,6 +1608,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
 
         if (readAndWriteAdapter != null) {
+            removeCourseAddButton();
             readAndWriteAdapter.notifyDataSetChanged();
 //            updateGridViewHeight(false);
         }
@@ -1653,8 +1660,65 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         }
 
         if (listenAdapter != null) {
+            removeCourseAddButton();
             listenAdapter.notifyDataSetChanged();
             updateGridViewHeight(true);
+        }
+    }
+
+    private void removeCourseAddButton(){
+        if (listenData != null && listenData.size() > 0){
+            boolean isContain = false;
+            for (int i = 0; i < listenData.size();i++){
+                ResourceInfoTag infoTag = listenData.get(i);
+                if (TextUtils.isEmpty(infoTag.getResId())){
+                    isContain = true;
+                }
+            }
+            if (isContain && listenData.size() >= 11){
+                listenData.remove(listenData.size()-1);
+            }
+        }
+
+        if (readWriteData != null && readWriteData.size() > 0){
+            boolean isContain = false;
+            for (int i = 0; i < readWriteData.size();i++){
+                ResourceInfoTag infoTag = readWriteData.get(i);
+                if (TextUtils.isEmpty(infoTag.getResId())){
+                    isContain = true;
+                }
+            }
+            if (isContain && readWriteData.size() >= 11){
+                readWriteData.remove(readWriteData.size()-1);
+            }
+        }
+    }
+
+    private void addCourseAddButton(){
+        if (listenData != null && listenData.size() > 0){
+            boolean isContain = false;
+            for (int i = 0; i < listenData.size();i++){
+                ResourceInfoTag infoTag = listenData.get(i);
+                if (TextUtils.isEmpty(infoTag.getResId())){
+                    isContain = true;
+                }
+            }
+            if (!isContain && listenData.size() <= 9){
+                listenData.add(new ResourceInfoTag());
+            }
+        }
+
+        if (readWriteData != null && readWriteData.size() > 0){
+            boolean isContain = false;
+            for (int i = 0; i < readWriteData.size();i++){
+                ResourceInfoTag infoTag = readWriteData.get(i);
+                if (TextUtils.isEmpty(infoTag.getResId())){
+                    isContain = true;
+                }
+            }
+            if (!isContain && readWriteData.size() <= 9){
+                readWriteData.add(new ResourceInfoTag());
+            }
         }
     }
 
