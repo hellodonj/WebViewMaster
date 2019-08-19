@@ -204,6 +204,7 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
                     TextView mTaskType =
                             (TextView) itemView.findViewById(com.lqwawa.intleducation.R.id.tv_task_type);
                     if (mTaskType != null){
+                        mTaskType.setVisibility(View.GONE);
                         if (data.getType() == StudyTaskType.RETELL_WAWA_COURSE) {
                             // 听读课
                             String typeName = String.format(UIUtil.getString(R.string.label_task_type_template), UIUtil.getString(R.string.label_tutorial_task_type_listen_read_course));

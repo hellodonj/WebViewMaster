@@ -1609,7 +1609,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
     public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
         boolean isContain = false;
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
             for (ResourceInfoTag tag : listenData) {
                 if (TextUtils.equals("1", tag.getResProperties())) {
                     //评测课件 默认 复述 + 评测
@@ -1659,7 +1659,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     private void updateEvalCourseViewData(){
-        if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+        if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
             if (listenData != null && listenData.size() > 0) {
                 boolean isSelect = false;
                 boolean isEval = false;
