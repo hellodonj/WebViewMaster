@@ -54,6 +54,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private Map<String, List<ChapterVo>> childMap = new HashMap<String, List<ChapterVo>>();// 子元素数据列表
 
     private List<CourseResourceEntity> playListVo;
+    private int libraryType;
 
 
     @Override
@@ -78,7 +79,9 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         Bundle arguments = getArguments();
         if (arguments != null && arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
+            libraryType = mDetailItemParams.getCourseParams().getLibraryType();
         }
+
     }
 
     /**
@@ -146,7 +149,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     //更新UI
     private void updateList() {
-        mMoreAdapter = new SelectMoreAdapter(getActivity(), tempChapterList, childMap);
+        mMoreAdapter = new SelectMoreAdapter(getActivity(), tempChapterList, childMap, libraryType );
         mMoreAdapter.setCheckInterface(PlayListViewFragment.this);
         mExpandableListView.setAdapter(mMoreAdapter);
         for (int j = 0; j < mMoreAdapter.getGroupCount(); j++) {

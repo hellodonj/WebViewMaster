@@ -615,6 +615,8 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                             // 生成参数
                             CourseDetailItemParams params1 = new CourseDetailItemParams(false, mCurMemberId, !mCanEdit, ids);
                             params1.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+                            // 设置课程详情参数
+                            params1.setCourseParams(mCourseDetailParams);
                             Intent intent = new Intent();
                             intent.setClassName(activity.getPackageName(), "com.lqwawa.mooc.select.PlayListViewActivity");
                             Bundle bundle = new Bundle();
