@@ -293,11 +293,11 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             if(taskType == 1 || taskType == 6){
                 return true;
             }
-        }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
+        } else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
             // 看课本类型
-            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5) {
+            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5 || taskType == 6) {
                 // 看课件 视频课
-                // 新增选择讲解课 听说作业
+                // 新增选择讲解课 听说作业 Q配音
                 return true;
             }
         }
