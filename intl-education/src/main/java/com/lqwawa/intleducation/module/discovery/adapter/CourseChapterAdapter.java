@@ -564,8 +564,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 //                                int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                                 //点击入口是三习教案馆
                                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                                    if (role == UserHelper.MoocRoleType.STUDENT ||
-                                            role == UserHelper.MoocRoleType.PARENT) {
+                                    if (role == UserHelper.MoocRoleType.STUDENT
+                                            || role == UserHelper.MoocRoleType.PARENT
+                                            || courseDetailParams.isClassParent()) {
                                         ChapterVo chapterVo = list.get(position);
                                         int examType = chapterVo.getExamType();
                                         if(isJoinCourse){ //已经参加
@@ -880,8 +881,9 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 //                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     ChapterVo chapterVo = list.get(position);
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
-                        if (role == UserHelper.MoocRoleType.STUDENT ||
-                                role == UserHelper.MoocRoleType.PARENT) {
+                        if (role == UserHelper.MoocRoleType.STUDENT
+                                || role == UserHelper.MoocRoleType.PARENT
+                                || courseDetailParams.isClassParent()) {
                             if (isJoinCourse) { //学生或者家长 是否参加对进入有影响
                                 //锁住 提示
                                 if (!chapterVo.isUnlock()) { //锁住提示
