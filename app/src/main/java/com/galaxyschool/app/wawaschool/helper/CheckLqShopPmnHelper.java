@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.Gravity;
+
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.R;
@@ -12,6 +13,7 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.tool.ApplyActivationHelper;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 
@@ -230,11 +232,15 @@ public class CheckLqShopPmnHelper {
     }
 
     private void popActivationPopDialog(){
-        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
-                .setActivity(activity)
-                .setClassId(classId)
-                .setCourseId(courseId)
-                .setSchoolId(schoolId);
-        applyActivationHelper.requestActivationPermission();
+        if (roleType == RoleType.ROLE_TYPE_PARENT && !TextUtils.isEmpty(studentId)) {
+            ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                    .setActivity(activity)
+                    .setClassId(classId)
+                    .setCourseId(courseId)
+                    .setSchoolId(schoolId);
+            applyActivationHelper.requestActivationPermission();
+        }else {
+            UIUtil.showToastSafe("请登录学生身份激活");
+        }
     }
 }

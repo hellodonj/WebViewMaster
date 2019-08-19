@@ -259,7 +259,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        courseChapterAdapter = new CourseChapterAdapter(activity, flagCourseData.getCourseId(), false,
+        courseChapterAdapter = new CourseChapterAdapter(activity,flagCourseData.getLibraryType(), flagCourseData.getCourseId(), false,
                 new MyBaseAdapter.OnContentChangedListener() {
                     @Override
                     public void OnContentChanged() {

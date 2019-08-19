@@ -33,20 +33,22 @@ public class ApplyActivationHelper {
     private CallbackListener listener;
 
 
-    private static HashMap<String, String> authorizationErrorMapZh =
+    private static HashMap<String, String> activationErrorMapZh =
             new HashMap<>();
-    private static HashMap<String, String> authorizationErrorMapEn =
+    private static HashMap<String, String> activationErrorMapEn =
             new HashMap<>();
 
     static {
-        authorizationErrorMapZh.put("1001", "激活码错误，请重新输入");
-        authorizationErrorMapZh.put("1002", "激活码已过期，请重新输入");
-        authorizationErrorMapZh.put("1003", "激活码尚未生效，请重新输入");
-        authorizationErrorMapZh.put("1004", "激活码已被使用，请重新输入");
-        authorizationErrorMapEn.put("1001", "Incorrect authorization code, please re-enter");
-        authorizationErrorMapEn.put("1002", "Authorization code expired，please re-enter");
-        authorizationErrorMapEn.put("1003", "Invalid authorization code, please re-enter");
-        authorizationErrorMapEn.put("1004", "Authorization code has been used, please re-enter");
+        activationErrorMapZh.put("-1", "该激活码已被使用");
+        activationErrorMapZh.put("1001", "激活码错误，请重新输入");
+        activationErrorMapZh.put("1002", "激活码已过期，请重新输入");
+        activationErrorMapZh.put("1003", "激活码尚未生效，请重新输入");
+        activationErrorMapZh.put("1004", "激活码已被使用，请重新输入");
+        activationErrorMapEn.put("-1", "The activation code has been used");
+        activationErrorMapEn.put("1001", "Incorrect activation code, please re-enter");
+        activationErrorMapEn.put("1002", "Activation code expired，please re-enter");
+        activationErrorMapEn.put("1003", "Invalid activation code, please re-enter");
+        activationErrorMapEn.put("1004", "Activation code has been used, please re-enter");
     }
 
 
@@ -120,13 +122,15 @@ public class ApplyActivationHelper {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.getCode() == 0) {
-                    listener.onBack(results.getCode());
+                    if (listener != null) {
+                        listener.onBack(results.getCode());
+                    }
                     imputAuthorizationCodeDialog.dismiss();
                 }
                 else {
                     String language = Locale.getDefault().getLanguage();
                     //提示授权码错误原因然后退出
-                    UIUtil.showToastSafe(language.equals("zh") ? authorizationErrorMapZh.get("" + results.getCode()) : authorizationErrorMapEn.get("" + results.getCode()));
+                    UIUtil.showToastSafe(language.equals("zh") ? activationErrorMapZh.get("" + results.getCode()) : activationErrorMapEn.get("" + results.getCode()));
 
                     if (imputAuthorizationCodeDialog != null) {
                         imputAuthorizationCodeDialog.clearPassword();

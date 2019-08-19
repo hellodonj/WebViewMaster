@@ -29,7 +29,6 @@ import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.LqResponseDataVo;
 import com.lqwawa.intleducation.base.vo.PagerArgs;
@@ -60,11 +59,9 @@ import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
-import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
-import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.io.File;
@@ -129,7 +126,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
     protected PagerArgs pagerArgs = null;
     private int orderByType = 0;
     private int libraryType;
-    private String courseId,memberId;
+    private String courseId,memberId,createId;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -1198,8 +1195,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
             boolean canEdit = TextUtils.equals(UserHelper.getUserId(), memberId);
             if (EmptyUtil.isNotEmpty(sectionResListVo)){
                 courseId = String.valueOf(sectionResListVo.getLinkCourseId());
+                createId = sectionResListVo.getCreateId();
             }
-            CourseDetailsActivity.start(SectionTaskDetailsActivity.this,courseId,canEdit,memberId,mCourseParams.isAuthorized(),mCourseParams,true);
+            CourseDetailsActivity.start(SectionTaskDetailsActivity.this,courseId,canEdit,createId,mCourseParams.isAuthorized(),mCourseParams,true);
         }
     }
 
