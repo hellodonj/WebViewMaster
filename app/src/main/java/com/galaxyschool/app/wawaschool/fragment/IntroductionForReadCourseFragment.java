@@ -524,10 +524,14 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             updateGridViewHeight(true);
             boolean flag = showScoreView(true);
             updateScoreView(flag ? View.GONE : View.VISIBLE);
+            updateEvalCourseViewData();
         }, result -> {
             //打开
             int position = (int) result;
             openListenData(listenAdapter.getItem(position));
+        });
+        listenAdapter.setCallListener(result -> {
+            updateEvalCourseViewData();
         });
         listenGridView.setAdapter(listenAdapter);
         View readWriteLayout = getActivity().getLayoutInflater().inflate(R.layout
@@ -1585,14 +1589,12 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         for (ResourceInfoTag tag : listenData) {
             if (TextUtils.equals("1", tag.getResProperties())) {
                 //评测课件 默认 复述 + 评测
-                tag.setCompletionMode(2);
+                if (!isSuperTask) {
+                    tag.setCompletionMode(2);
+                }
                 isContain = true;
             }
         }
-//        if (isContain) {
-//            updateScoreView(View.GONE);
-//        }
-
         int length = this.listenData.size() - 1;
         this.listenData.addAll(length, listenData);
         boolean flag = true;
@@ -1616,9 +1618,41 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 updateScoreView(View.GONE);
             }
         }
+
+        if (flag){
+            //没有学程的资源
+            updateEvalCourseViewData();
+        } else if (isContain){
+            updateScoreView(View.GONE);
+            mRbTenSystem.setVisibility(View.VISIBLE);
+        }
         if (listenAdapter != null) {
             listenAdapter.notifyDataSetChanged();
             updateGridViewHeight(true);
+        }
+    }
+
+    private void updateEvalCourseViewData(){
+        if (listenData != null && listenData.size() > 0){
+            boolean isSelect = false;
+            boolean isEval = false;
+            for (ResourceInfoTag tag : listenData) {
+                if (tag.isSelected()){
+                    isSelect = true;
+                }
+                if (TextUtils.equals("1", tag.getResProperties()) && (tag.getCompletionMode() == 3
+                        || tag.getCompletionMode() == 2)) {
+                    isEval = true;
+                }
+            }
+            if (!isSelect){
+                if (isEval){
+                    mRbMarkYes.setChecked(true);
+                    mRbMarkNo.setVisibility(View.INVISIBLE);
+                } else {
+                    mRbMarkNo.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 

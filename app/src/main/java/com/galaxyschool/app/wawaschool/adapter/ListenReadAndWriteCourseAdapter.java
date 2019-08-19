@@ -29,6 +29,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
     private HashMap<Integer, View> viewMap = new HashMap<>();
     private int taskType;
     private boolean showCheckType = false;
+    private CallbackListener listener;
 
     public ListenReadAndWriteCourseAdapter(Context context,
                                            List<ResourceInfoTag> list,
@@ -241,6 +242,14 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
+        //更新下标
+        if (listener != null){
+            listener.onBack(true);
+        }
+    }
+
+    public void setCallListener(CallbackListener listener){
+        this.listener = listener;
     }
 
     /**

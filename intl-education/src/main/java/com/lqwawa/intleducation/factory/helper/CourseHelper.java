@@ -10,6 +10,7 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
@@ -25,10 +26,14 @@ import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.vo.MyCourseVo;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -824,6 +829,37 @@ public class CourseHelper {
                 if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
+            }
+        });
+    }
+
+    public static void exitCourse(String courseId) {
+        if (TextUtils.isEmpty(courseId)) {
+            return;
+        }
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId", courseId);
+        RequestParams params =
+                new RequestParams(AppConfig.ServerUrl.courseDelete + requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException e) {
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+
+            }
+
+            @Override
+            public void onFinished() {
             }
         });
     }

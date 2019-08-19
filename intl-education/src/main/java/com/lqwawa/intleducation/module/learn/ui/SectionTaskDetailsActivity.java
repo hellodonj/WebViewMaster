@@ -126,7 +126,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
     protected PagerArgs pagerArgs = null;
     private int orderByType = 0;
     private int libraryType;
-    private String courseId,memberId,createId;
+    private String courseId,memberId;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -1195,9 +1195,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
             boolean canEdit = TextUtils.equals(UserHelper.getUserId(), memberId);
             if (EmptyUtil.isNotEmpty(sectionResListVo)){
                 courseId = String.valueOf(sectionResListVo.getLinkCourseId());
-                createId = sectionResListVo.getCreateId();
             }
-            CourseDetailsActivity.start(SectionTaskDetailsActivity.this,courseId,canEdit,createId,mCourseParams.isAuthorized(),mCourseParams,true);
+            // 等同大厅打开课程详情
+            CourseDetailsActivity.start(activity, courseId, canEdit, memberId);
         }
     }
 
