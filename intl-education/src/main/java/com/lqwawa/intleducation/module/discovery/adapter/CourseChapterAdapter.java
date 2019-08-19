@@ -115,13 +115,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     public CourseChapterAdapter(Activity activity,int libraryType,String courseId, boolean needFlagRead, boolean isOnlineTeacher, OnContentChangedListener listener) {
-        this(activity,courseId, needFlagRead, listener);
+        this(activity,libraryType,courseId, needFlagRead, listener);
         this.isOnlineTeacher = isOnlineTeacher;
-        this.libraryType = libraryType;
+
     }
 
-    public CourseChapterAdapter(Activity activity,String courseId, boolean needFlagRead, OnContentChangedListener listener) {
+    public CourseChapterAdapter(Activity activity,int libraryType,String courseId, boolean needFlagRead, OnContentChangedListener listener) {
         this.activity = activity;
+        this.libraryType = libraryType;
         this.courseId = courseId;
         this.needFlagRead = needFlagRead;
         this.listener = listener;

@@ -449,7 +449,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             if (taskType == StudyTaskType.ENGLISH_WRITING) {
                 count = 1;
             } else {
-                count = 10;
+                count = selectMaxCount;
             }
             type = superTaskType;
             if (superTaskType == StudyTaskType.WATCH_WAWA_COURSE) {

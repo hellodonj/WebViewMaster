@@ -51,7 +51,7 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
     public void bindView(TreeNode treeNode, Context context) {
         LQCourseConfigEntity entity = (LQCourseConfigEntity) treeNode.getValue();
         name.setText(entity.getName());
-        arrowRight.setRotation(entity.isDirectAccessNextPage() ? 0 : -90);
+        arrowRight.setRotation(entity.isDirectAccessNextPage() ? 180 : -90);
         //false是无法展开，然后直接进入下一个页面
         List<LQCourseConfigEntity> entityList = entity.getList();
         if (entityList != null && entityList.size() == 1) {

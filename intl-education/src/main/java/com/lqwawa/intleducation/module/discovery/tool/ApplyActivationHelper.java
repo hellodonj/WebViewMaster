@@ -1,6 +1,7 @@
 package com.lqwawa.intleducation.module.discovery.tool;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -19,6 +20,8 @@ import org.xutils.x;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static com.lqwawa.intleducation.factory.role.LQwawaRoleType.ROLE_TYPE_PARENT;
+
 /**
  * 描述: 申请激活的帮助类
  * 作者|时间: djj on 2019/8/9 0009 下午 5:06
@@ -30,28 +33,48 @@ public class ApplyActivationHelper {
     private String courseId;
     private String classId;
     private String schoolId;
+    private String memberId;
+    private int roleType = -1;
+    private String studentId;
     private CallbackListener listener;
 
 
-    private static HashMap<String, String> authorizationErrorMapZh =
+    private static HashMap<String, String> activationErrorMapZh =
             new HashMap<>();
-    private static HashMap<String, String> authorizationErrorMapEn =
+    private static HashMap<String, String> activationErrorMapEn =
             new HashMap<>();
 
     static {
-        authorizationErrorMapZh.put("1001", "激活码错误，请重新输入");
-        authorizationErrorMapZh.put("1002", "激活码已过期，请重新输入");
-        authorizationErrorMapZh.put("1003", "激活码尚未生效，请重新输入");
-        authorizationErrorMapZh.put("1004", "激活码已被使用，请重新输入");
-        authorizationErrorMapEn.put("1001", "Incorrect authorization code, please re-enter");
-        authorizationErrorMapEn.put("1002", "Authorization code expired，please re-enter");
-        authorizationErrorMapEn.put("1003", "Invalid authorization code, please re-enter");
-        authorizationErrorMapEn.put("1004", "Authorization code has been used, please re-enter");
+        activationErrorMapZh.put("-1", "该激活码已被使用");
+        activationErrorMapZh.put("1001", "激活码错误，请重新输入");
+        activationErrorMapZh.put("1002", "激活码已过期，请重新输入");
+        activationErrorMapZh.put("1003", "激活码尚未生效，请重新输入");
+        activationErrorMapZh.put("1004", "激活码已被使用，请重新输入");
+        activationErrorMapEn.put("-1", "The activation code has been used");
+        activationErrorMapEn.put("1001", "Incorrect activation code, please re-enter");
+        activationErrorMapEn.put("1002", "Activation code expired，please re-enter");
+        activationErrorMapEn.put("1003", "Invalid activation code, please re-enter");
+        activationErrorMapEn.put("1004", "Activation code has been used, please re-enter");
     }
 
 
     public ApplyActivationHelper setActivity(Activity activity) {
         this.activity = activity;
+        return this;
+    }
+
+    public ApplyActivationHelper setRoleType(int roleType) {
+        this.roleType = roleType;
+        return this;
+    }
+
+    public ApplyActivationHelper setStudentId(String studentId) {
+        this.studentId = studentId;
+        return this;
+    }
+
+    public ApplyActivationHelper setMemberId(String memberId) {
+        this.memberId = memberId;
         return this;
     }
 
@@ -105,6 +128,11 @@ public class ApplyActivationHelper {
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("schoolId", schoolId);
         requestVo.addParams("classId", classId);
+        if (roleType == ROLE_TYPE_PARENT && !TextUtils.isEmpty(studentId)) {
+            requestVo.addParams("token",studentId);
+        } else {
+            requestVo.addParams("token",memberId);
+        }
         requestVo.addParams("activeCode", code);
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.PostActivateSanxiCourse);
@@ -120,13 +148,15 @@ public class ApplyActivationHelper {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.getCode() == 0) {
-                    listener.onBack(results.getCode());
+                    if (listener != null) {
+                        listener.onBack(results.getCode());
+                    }
                     imputAuthorizationCodeDialog.dismiss();
                 }
                 else {
                     String language = Locale.getDefault().getLanguage();
                     //提示授权码错误原因然后退出
-                    UIUtil.showToastSafe(language.equals("zh") ? authorizationErrorMapZh.get("" + results.getCode()) : authorizationErrorMapEn.get("" + results.getCode()));
+                    UIUtil.showToastSafe(language.equals("zh") ? activationErrorMapZh.get("" + results.getCode()) : activationErrorMapEn.get("" + results.getCode()));
 
                     if (imputAuthorizationCodeDialog != null) {
                         imputAuthorizationCodeDialog.clearPassword();

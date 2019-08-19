@@ -69,6 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:text="@string/sx_test_flag"
+                    android:layout_gravity="center_vertical"
                     android:textColor="@color/textAccent"
                     android:textSize="12sp"
                     android:visibility="gone" />
