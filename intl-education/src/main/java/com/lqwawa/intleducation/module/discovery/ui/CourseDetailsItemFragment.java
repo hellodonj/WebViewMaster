@@ -433,6 +433,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                                                 (mDetailItemParams.getCourseParams());
                                     }
                                 }
+                                getData(false);
                             }
                         }
                     });
@@ -496,9 +497,9 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             //三习教案 班级学程进入，不是家长，是学生；显示学习统计
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnCourseStatistics.setVisibility(View.GONE);
-            LQCourseHelper.requestChapterByCourseId(token, courseParams.getClassId(),courseId, schoolIds, new Callback());
+            LQCourseHelper.requestChapterByCourseId(token, courseParams.getBindClassId(),courseId, schoolIds, new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(token,courseParams.getClassId(), courseId, schoolIds, new Callback());
+            LQCourseHelper.requestChapterByCourseId(token,courseParams.getBindClassId(), courseId, schoolIds, new Callback());
         }
     }
 

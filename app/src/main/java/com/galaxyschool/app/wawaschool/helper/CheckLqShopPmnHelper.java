@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.Gravity;
+
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.R;
@@ -230,11 +231,14 @@ public class CheckLqShopPmnHelper {
     }
 
     private void popActivationPopDialog(){
-        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
-                .setActivity(activity)
-                .setClassId(classId)
-                .setCourseId(courseId)
-                .setSchoolId(schoolId);
-        applyActivationHelper.requestActivationPermission();
+            ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                    .setActivity(activity)
+                    .setClassId(classId)
+                    .setCourseId(courseId)
+                    .setSchoolId(schoolId)
+                    .setMemberId(memberId)
+                    .setRoleType(roleType)
+                    .setStudentId(studentId);
+            applyActivationHelper.requestActivationPermission();
     }
 }
