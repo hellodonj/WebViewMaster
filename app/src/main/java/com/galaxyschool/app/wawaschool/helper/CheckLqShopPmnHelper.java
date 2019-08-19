@@ -13,7 +13,6 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.tool.ApplyActivationHelper;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 
@@ -232,15 +231,14 @@ public class CheckLqShopPmnHelper {
     }
 
     private void popActivationPopDialog(){
-        if (roleType == RoleType.ROLE_TYPE_PARENT && !TextUtils.isEmpty(studentId)) {
             ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
                     .setActivity(activity)
                     .setClassId(classId)
                     .setCourseId(courseId)
-                    .setSchoolId(schoolId);
+                    .setSchoolId(schoolId)
+                    .setMemberId(memberId)
+                    .setRoleType(roleType)
+                    .setStudentId(studentId);
             applyActivationHelper.requestActivationPermission();
-        }else {
-            UIUtil.showToastSafe("请登录学生身份激活");
-        }
     }
 }
