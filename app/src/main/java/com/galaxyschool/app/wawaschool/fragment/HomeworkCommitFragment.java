@@ -526,7 +526,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 || TaskType == StudyTaskType.Q_DUBBING
                 || TaskType == StudyTaskType.SUBMIT_HOMEWORK
                 || TaskType == StudyTaskType.ENGLISH_WRITING) {
-            if (studyTaskType > 0 || isHistoryClass){
+            if (studyTaskType > 0 || isHistoryClass || isSuperChildTask){
                 headRightTextV.setVisibility(View.VISIBLE);
             } else {
                 if (task != null

@@ -229,6 +229,7 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
                     TextView classNameView =
                             (TextView) itemView.findViewById(com.lqwawa.intleducation.R.id.tv_task_chapter);
                     if (classNameView != null){
+                        classNameView.setVisibility(View.GONE);
                         //一年级五班
                         classNameView.setText(data.getClassName());
                     }
