@@ -149,8 +149,12 @@ public class CheckLqShopPmnHelper {
                     JSONObject dataJsonObject = new JSONObject(jsonString);
                     boolean hasPermission = dataJsonObject.optBoolean("permission");
                     lqCourseChapterName = dataJsonObject.getString("courseName");
-                    isSanxi = dataJsonObject.optBoolean("isSanxi");
-                    courseId = dataJsonObject.getString("courseId");
+                    if (dataJsonObject.has("isSanxi")) {
+                        isSanxi = dataJsonObject.optBoolean("isSanxi");
+                    }
+                    if (dataJsonObject.has("courseId")) {
+                        courseId = dataJsonObject.getString("courseId");
+                    }
                     if (fromType == FromType.FROM_STUDYTASK_DETAIL) {
                         listener.onBack(!hasPermission);
                     } else if (fromType == FromType.FROM_LQBLOARD_SEND) {
