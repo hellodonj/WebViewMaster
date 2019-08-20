@@ -1642,8 +1642,8 @@
     <!--5.11.y-->
     <string name="str_start_time_point">开始时间</string>
     <string name="str_publish_task_time">学生作答时间</string>
-    <string name="str_publish_right_now">随时作答</string>
-    <string name="str_publish_according_to_time">按开始时间作答</string>
+    <string name="str_publish_right_now">学生可随时作答</string>
+    <string name="str_publish_according_to_time">学生按开始时间作答</string>
     <string name="str_look_student_finish_task_detail">共%1$d个任务，已完成%2$d个</string>
     <string name="str_taste_task_start_time">未到任务开始时间</string>
     <string name="str_make_up_study_task">【补交】</string>
@@ -1725,8 +1725,8 @@
     <string name="str_teacher_assistant_tip">已完成批阅,批阅金额发放中，请稍后到个人空间-我的账户中查看，入账可能有延时</string>
     <string name="str_save_statistic_unuser">还没有使用过云空间哟</string>
     <string name="str_student_look_other_work">学生查看他人作业</string>
-    <string name="str_can_read">可查看</string>
-    <string name="str_no_read">不可查看</string>
+    <string name="str_can_read">学生可查看他人作业</string>
+    <string name="str_no_read">学生不可查看他人作业</string>
     <string name="str_view_other_permission_tips">老师已设定为不可查看</string>
     <string name="str_set_can_read">设置可查看</string>
     <string name="str_set_cannot_read">设置不可看</string>

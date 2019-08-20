@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -71,7 +72,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SxLessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class SxLessonDetailsActivity extends AppCompatActivity implements View.OnClickListener, SxLessonSourceFragment.OnItemCheckBoxSelectedChanged {
 
     private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
     // 是否是空中课堂老师
@@ -91,6 +92,9 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
     private static Activity activitys;
+    private SxLessonSourceFragment currentSelectedFragment;
+    private List<Fragment> fragments = new ArrayList<>();
+    ;
 
     /**
      * @param activity               启动此界面的activity
@@ -136,7 +140,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 .putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras));
     }
 
-    public static void start(Activity activity,int taskType,int multipleChoiceCount, String courseId, String sectionId,
+    public static void start(Activity activity, int taskType, int multipleChoiceCount, String courseId, String sectionId,
                              String sectionName, String sectionTitle, boolean needFlag,
                              boolean canRead, boolean canEdit, int status, String memberId,
                              boolean isContainAssistantWork, String schoolId,
@@ -147,7 +151,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         if (activity instanceof Activity) activitys = activity;
         activity.startActivity(new Intent(activity, SxLessonDetailsActivity.class)
                 .putExtra("taskType", taskType)
-                .putExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount)
+                .putExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multipleChoiceCount)
                 .putExtra(COURSE_ID, courseId)
                 .putExtra(SECTION_ID, sectionId)
                 .putExtra(SECTION_NAME, sectionName)
@@ -169,7 +173,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     }
 
 
-
     private TopBar topBar;
     private ExpandableTextView textViewLessonIntroduction;
     private TabLayout mTabLayout;
@@ -179,7 +182,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String courseId;
     private String sectionName;
     private String sectionId;
-    private int status,taskType;
+    private int status, taskType;
     private CourseVo courseVo;
     // 课程大纲参数
     private CourseChapterParams mChapterParams;
@@ -265,11 +268,11 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
         lessonSourceParams =
-                (LessonSourceParams)getIntent().getSerializableExtra(LessonSourceParams.class.getSimpleName());
+                (LessonSourceParams) getIntent().getSerializableExtra(LessonSourceParams.class.getSimpleName());
         status = getIntent().getIntExtra(STATUS, -1);
-        taskType =  getIntent().getIntExtra("taskType", -1);
+        taskType = getIntent().getIntExtra("taskType", -1);
         courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
-        mMultipleChoiceCount = getIntent().getIntExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,10);
+        mMultipleChoiceCount = getIntent().getIntExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, 10);
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
         if (!mChapterParams.isTeacherVisitor() &&
@@ -287,7 +290,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mSelectContainer.setOnClickListener(this);
             mCartContainer.setOnClickListener(this);
             mAddCartContainer.setOnClickListener(this);
-        }else {
+        } else {
             mBtnAddHomework.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.GONE);
             mBottomLayout1.setVisibility(View.GONE);
@@ -320,7 +323,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         getData();
 
         //被动进入选择,并且是选择模式
-        if (mChapterParams != null && mChapterParams.isChoiceMode()&&
+        if (mChapterParams != null && mChapterParams.isChoiceMode() &&
                 !mChapterParams.isInitiativeTrigger()) {
             mTopLayout.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.GONE);
@@ -417,7 +420,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             getIntent().putExtra("isPublic", sectionDetailsVo.isIsOpen());
             List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
 
-            List<Fragment> fragments = new ArrayList<>();
+            fragments.clear();
             if (EmptyUtil.isNotEmpty(taskList)) {
 
                 LessonSourceParams params = LessonSourceParams.buildParams(mChapterParams);
@@ -443,10 +446,12 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 mTabLists.add(getResources().getString(R.string.label_sx_review));
                 for (int i = 0; i < mTabLists.size(); i++) {
                     SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
-                            i + 1,courseVo.getLibraryType(), taskType,mMultipleChoiceCount, params);
+                            i + 1, courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
+                    fragment.setOnItemCheckBoxSelectedChanged(this);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }
+                if (!fragments.isEmpty())currentSelectedFragment = (SxLessonSourceFragment) fragments.get(0);
             }
 
             mViewPager.setAdapter(new SxLessonSourcePagerAdapter(getSupportFragmentManager(), fragments));
@@ -527,7 +532,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 }
                 // 直接添加到作业库
                 confirmResourceCart(false);
-            }else {
+            } else {
                 boolean originalActivated = mBottomLayout.isActivated();
                 if (originalActivated) {
                     // 点击确定
@@ -580,7 +585,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     }
                 }
             }
-            handleSubjectSettingData(this, UserHelper.getUserId(),true);
+            handleSubjectSettingData(this, UserHelper.getUserId(), true);
             initBottomLayout();
             refreshCartPoint();
         } else if (viewId == R.id.btn_all_select) {
@@ -602,7 +607,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             }
         } else if (viewId == R.id.new_cart_container) {
             //作业库
-            handleSubjectSettingData(this, UserHelper.getUserId(),false);
+            handleSubjectSettingData(this, UserHelper.getUserId(), false);
         }
     }
 
@@ -726,7 +731,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     /**
      * @return 选中的子任务的超过10的typeName
      */
-    private  List<String> choosedChildResource() {
+    private List<String> choosedChildResource() {
         // 获取指定Tab所有的选中的作业库资源
         int currentPosition = mViewPager.getCurrentItem();
         SxLessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
@@ -872,13 +877,14 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mBottomLayout1.setVisibility(View.GONE);
             mBottomLayout.setVisibility(View.VISIBLE);
         } else {
-                // 当前是未激活状态,显示作业库和添加到作业库
-                mTvPoint.setVisibility(View.VISIBLE);
-                mBottomLayout1.setVisibility(View.VISIBLE);
-                mBottomLayout.setVisibility(View.GONE);
+            // 当前是未激活状态,显示作业库和添加到作业库
+            mTvPoint.setVisibility(View.VISIBLE);
+            mBottomLayout1.setVisibility(View.VISIBLE);
+            mBottomLayout.setVisibility(View.GONE);
         }
     }
 
+    private String TAG = getClass().getSimpleName();
     /**
      * 当前显示在哪一页面
      */
@@ -893,8 +899,27 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mChapterParams.isChoiceMode()) {
                 clearAllResource();
             }
+            currentSelectedFragment = (SxLessonSourceFragment) fragments.get(position);
         }
     };
+
+    @Override
+    public void onItemCheckBoxSelectedChanged(Context context, TreeNode treeNode, boolean checked) {
+        if (!checked) mSelectAll.setText(getString(R.string.select_all));
+        else {
+            if (currentSelectedFragment != null && currentSelectedFragment.getTreeView() != null) {
+                boolean isAllSelected = true;
+                List<TreeNode> allNodes = currentSelectedFragment.getTreeView().getAllNodes();
+                for (TreeNode allNode : allNodes) {
+                    if (!allNode.isSelected()) {
+                        isAllSelected = false;
+                        break;
+                    }
+                }
+                if (isAllSelected) mSelectAll.setText(getString(R.string.deselect_all));
+            }
+        }
+    }
 
     class SxLessonSourcePagerAdapter extends FragmentPagerAdapter {
 

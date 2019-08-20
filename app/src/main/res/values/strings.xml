@@ -1735,8 +1735,6 @@
     <!--5.11.y-->
     <string name="str_start_time_point">Start Time</string>
     <string name="str_publish_task_time">Submission Time</string>
-    <string name="str_publish_right_now">Anytime</string>
-    <string name="str_publish_according_to_time">After Start</string>
     <string name="str_look_student_finish_task_detail">Total %1$d, finished %2$d</string>
     <string name="str_taste_task_start_time">Start time not come</string>
     <string name="str_make_up_study_task">【Late】</string>
@@ -1821,8 +1819,8 @@
     <string name="str_save_statistic_unuser">Cloud space is empty</string>
 
     <string name="str_student_look_other_work">学生查看他人作业</string>
-    <string name="str_can_read">可查看</string>
-    <string name="str_no_read">不可查看</string>
+    <string name="str_can_read">学生可查看他人作业</string>
+    <string name="str_no_read">学生不可查看他人作业</string>
     <string name="str_view_other_permission_tips">老师已设定为不可查看</string>
     <string name="str_set_can_read">设置可查看</string>
     <string name="str_set_cannot_read">设置不可看</string>
@@ -1890,4 +1888,6 @@
     <string name="str_no_activation_lqCourse_shop_for_parent">此任务来源于《%1$s》课程，请使用学生账号%2$s
         激活此课程后提交学习任务。</string>
     <string name="str_un_remark_homework">未批作业</string>
+    <string name="str_publish_right_now">学生可随时作答</string>
+    <string name="str_publish_according_to_time">学生按开始时间作答</string>
 </resources>

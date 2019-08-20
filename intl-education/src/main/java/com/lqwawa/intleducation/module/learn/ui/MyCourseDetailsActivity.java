@@ -1045,6 +1045,10 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                         courseVo.setCounselorId(counselorId);
                     }
 
+                    if (mCourseDetailParams.isMyCourse()) {
+                        mCourseDetailParams.setClassId(courseVo.getBindClassId());
+                    }
+
                     // 加载到courseVo
                     initMenu();
 

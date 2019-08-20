@@ -114,6 +114,21 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         root = TreeNode.root();
         myNodeViewFactory = new MyNodeViewFactory();
         treeView = new TreeView(root, this, myNodeViewFactory);
+        treeView.setOnItemCheckBoxSelectedChanged((context, treeNode, isChecked) -> {
+            if (!isChecked) selectAll.setText(getString(R.string.select_all));
+            else {
+                List<TreeNode> allNodes = treeView.getAllNodes();
+                boolean isAllSelected = true;
+                for (TreeNode allNode : allNodes) {
+                    if (!allNode.isSelected()) {
+                        isAllSelected = false;
+                        break;
+                    }
+                }
+                if (isAllSelected) selectAll.setText(getString(R.string.deselect_all));
+            }
+        });
+
         topBar.setBack(true);
 
         mNewCartContainer.setOnClickListener(this);
@@ -211,7 +226,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         }
         refreshCartPoint();
         LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(),
-                lessonSourceParams == null?-1:lessonSourceParams.getRole(), this);
+                lessonSourceParams == null ? -1 : lessonSourceParams.getRole(), this);
     }
 
     /**
