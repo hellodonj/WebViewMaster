@@ -164,6 +164,9 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
             isFromStudyTask = getArguments().getBoolean(MediaListFragment.EXTRA_SUPPORT_MULTI_TYPE_WATCH_WAWA_COURSE);
             if (isFromStudyTask) {
                 maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
+                if (taskType == StudyTaskType.ENGLISH_WRITING){
+                    maxCount = 10;
+                }
             }
         }
     }
@@ -480,14 +483,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
 
             //看课件多类型
             if (WatchWawaCourseResourceSplicingUtils.
-                    watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
-                if (taskType == StudyTaskType.ENGLISH_WRITING){
-                    maxCount = 10;
-                } else {
-                    //控制资源最多选多少
-                    maxCount = WatchWawaCourseResourceSplicingUtils.
-                            controlResourcePickedMaxCount(mediaType, maxCount, false);
-                }
+                    watchWawaCourseSupportMultiType(getArguments()) && maxCount == 0){
             }
         }
     }

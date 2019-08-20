@@ -695,7 +695,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             intent.putExtra(ActivityUtils.IS_FROM_CHOICE_LIB, true);
         } else if (type == TAB_LQCOURSE_SHOP) {
             intent.putExtra(ActivityUtils.EXTRA_LQCOURSE_SHOP, true);
-            intent.putExtra(ActivityUtils.EXTRA_SELECT_MAX_COUNT, getTaskTypeOrSelectCount(false));
+            if (getTaskTypeOrSelectCount(true) == StudyTaskType.NEW_WATACH_WAWA_COURSE){
+                intent.putExtra(ActivityUtils.EXTRA_SELECT_MAX_COUNT, 0);
+            } else {
+                intent.putExtra(ActivityUtils.EXTRA_SELECT_MAX_COUNT, getTaskTypeOrSelectCount(false));
+            }
             intent.putExtra(ActivityUtils.EXTRA_TASK_TYPE, getTaskTypeOrSelectCount(true));
         }
         intent.putExtra(BookDetailActivity.SCHOOL_ID, schoolId);
