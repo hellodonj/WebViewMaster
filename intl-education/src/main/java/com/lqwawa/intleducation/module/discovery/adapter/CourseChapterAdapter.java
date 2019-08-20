@@ -892,7 +892,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                     ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
                                 }
                             } else {
-                                UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
+                                if (!isCourseSelect) UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
                             }
                         } else {
                             ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
