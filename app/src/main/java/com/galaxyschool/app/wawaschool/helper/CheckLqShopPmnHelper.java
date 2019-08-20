@@ -231,14 +231,16 @@ public class CheckLqShopPmnHelper {
     }
 
     private void popActivationPopDialog(){
-            ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
-                    .setActivity(activity)
-                    .setClassId(classId)
-                    .setCourseId(courseId)
-                    .setSchoolId(schoolId)
-                    .setMemberId(memberId)
-                    .setRoleType(roleType)
-                    .setStudentId(studentId);
-            applyActivationHelper.requestActivationPermission();
+        String token = memberId;
+        if (roleType == RoleType.ROLE_TYPE_PARENT && !TextUtils.isEmpty(studentId)) {
+            token = studentId;
+        }
+        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                .setActivity(activity)
+                .setClassId(classId)
+                .setCourseId(courseId)
+                .setSchoolId(schoolId)
+                .setMemberId(token);
+        applyActivationHelper.requestActivationPermission();
     }
 }

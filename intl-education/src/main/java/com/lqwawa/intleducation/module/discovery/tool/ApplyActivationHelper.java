@@ -34,8 +34,6 @@ public class ApplyActivationHelper {
     private String classId;
     private String schoolId;
     private String memberId;
-    private int roleType = -1;
-    private String studentId;
     private CallbackListener listener;
 
 
@@ -60,16 +58,6 @@ public class ApplyActivationHelper {
 
     public ApplyActivationHelper setActivity(Activity activity) {
         this.activity = activity;
-        return this;
-    }
-
-    public ApplyActivationHelper setRoleType(int roleType) {
-        this.roleType = roleType;
-        return this;
-    }
-
-    public ApplyActivationHelper setStudentId(String studentId) {
-        this.studentId = studentId;
         return this;
     }
 
@@ -128,12 +116,10 @@ public class ApplyActivationHelper {
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("schoolId", schoolId);
         requestVo.addParams("classId", classId);
-        if (roleType == ROLE_TYPE_PARENT && !TextUtils.isEmpty(studentId)) {
-            requestVo.addParams("token",studentId);
-        } else {
+        requestVo.addParams("activeCode", code);
+        if (!TextUtils.isEmpty(memberId)) {
             requestVo.addParams("token",memberId);
         }
-        requestVo.addParams("activeCode", code);
         RequestParams params =
                 new RequestParams(AppConfig.ServerUrl.PostActivateSanxiCourse);
         params.setAsJsonContent(true);
