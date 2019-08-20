@@ -1,5 +1,6 @@
 package com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
@@ -98,7 +99,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         arguments.putInt(KEY_EXTRA_EXERCISE_TYPE, exerciseType);
         arguments.putInt(KEY_LIBRARY_TYPE, libraryType);
         arguments.putInt(KEY_TASK_TYPE, taskType);
-        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT,multipleChoiceCount);
+        arguments.putInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multipleChoiceCount);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -119,7 +120,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
 
-        mClassTeacher =(courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+        mClassTeacher = (courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
                 (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         taskType = bundle.getInt(KEY_TASK_TYPE, -1);
         mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
@@ -147,6 +148,20 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         root = TreeNode.root();
         mNodeViewFactory = new SxNodeViewFactory();
         treeView = new TreeView(root, getContext(), mNodeViewFactory);
+        treeView.setOnItemCheckBoxSelectedChanged((context, treeNode, checked) -> {
+            if (onItemCheckBoxSelectedChanged !=null)
+                onItemCheckBoxSelectedChanged.onItemCheckBoxSelectedChanged(context, treeNode, checked);
+        });
+    }
+
+    public interface OnItemCheckBoxSelectedChanged{
+        void onItemCheckBoxSelectedChanged(Context context,TreeNode treeNode,boolean checked);
+    }
+
+    private OnItemCheckBoxSelectedChanged onItemCheckBoxSelectedChanged;
+
+    public void setOnItemCheckBoxSelectedChanged(OnItemCheckBoxSelectedChanged onItemCheckBoxSelectedChanged) {
+        this.onItemCheckBoxSelectedChanged = onItemCheckBoxSelectedChanged;
     }
 
     @Override
@@ -160,7 +175,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         // 讲解课类型
         typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
         typeTable.append(6, CourseSelectItemFragment.KEY_TEXT_BOOK);
-        
+
         getData();
     }
 
@@ -202,7 +217,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
 
     private void updateViews(SectionDetailsVo sectionDetailsVo) {
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
-                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType,mMultipleChoiceCount);
+                status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType, mMultipleChoiceCount);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
         for (int index = 0; index < taskList.size(); index++) {
             SectionTaskListVo taskListVO = taskList.get(index);
@@ -233,7 +248,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             container.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
             return;
-        }else{
+        } else {
             container.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
             container.addView(view);
@@ -283,7 +298,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             }
 
             if (!sectionResListVo.isIsShield()) {
-                if (typeTable.get(sectionResListVo.getTaskType())  == CourseSelectItemFragment.KEY_RELL_COURSE && taskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
+                if (typeTable.get(sectionResListVo.getTaskType()) == CourseSelectItemFragment.KEY_RELL_COURSE && taskType == CourseSelectItemFragment.KEY_RELL_COURSE) {
                     if (EmptyUtil.isNotEmpty(filterArray) && filterArray.contains(resType)) {
                         list.add(sectionResListVo);
                     }
