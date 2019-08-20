@@ -1523,12 +1523,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                 .setClassId(classId)
                                 .setCourseId(courseId)
                                 .setSchoolId(schoolId)
+                                .setMemberId(mCurMemberId)
+//                                .setRoleType(roleType)
+//                                .setStudentId(studentId)
                                 .setCallBackListener(new ApplyActivationHelper.CallbackListener() {
                                     @Override
                                     public void onBack(int result) {
                                         if (result==0){
-//                                            toJoinCourseDetailsActivity();
-                                            join(false);
+                                            toJoinCourseDetailsActivity();
+//                                            join(false);
                                         }
                                     }
                                 });
