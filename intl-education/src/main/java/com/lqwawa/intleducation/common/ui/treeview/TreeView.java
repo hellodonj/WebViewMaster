@@ -242,7 +242,8 @@ public class TreeView implements SelectableTreeAction {
     }
 
     public void onItemClickedListener(int position, TreeNode treeNode, boolean expanded, Context context) {
-        if (onItemClilcedListener!=null) onItemClilcedListener.onItemClickedListener( position, treeNode, expanded, context);
+        if (onItemClilcedListener != null)
+            onItemClilcedListener.onItemClickedListener(position, treeNode, expanded, context);
     }
 
     private OnItemClilcedListener onItemClilcedListener;
@@ -253,5 +254,20 @@ public class TreeView implements SelectableTreeAction {
 
     public void setOnItemClilcedListener(OnItemClilcedListener onItemClilcedListener) {
         this.onItemClilcedListener = onItemClilcedListener;
+    }
+
+    public interface OnItemCheckBoxSelectedChanged {
+        void onItemCheckBoxSelectedChanged(Context context, TreeNode treeNode, boolean checked);
+    }
+
+    private OnItemCheckBoxSelectedChanged onItemCheckBoxSelectedChanged;
+
+    public void setOnItemCheckBoxSelectedChanged(OnItemCheckBoxSelectedChanged onItemCheckBoxSelectedChanged) {
+        this.onItemCheckBoxSelectedChanged = onItemCheckBoxSelectedChanged;
+    }
+
+    public void onItemCheckBoxSelectedChanged(Context context, TreeNode treeNode, boolean checked) {
+        if (onItemCheckBoxSelectedChanged != null)
+            onItemCheckBoxSelectedChanged.onItemCheckBoxSelectedChanged(context, treeNode, checked);
     }
 }

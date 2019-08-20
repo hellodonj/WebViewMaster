@@ -115,7 +115,8 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
                         viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
-                        if (treeView != null)treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
+                        if (treeView != null)
+                            treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
                     }
                 });
             }
@@ -125,7 +126,8 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (treeNode.isItemExpandedEnable()) onNodeToggled(treeNode);
                     viewBinder.onNodeToggled(position, treeNode, treeNode.isExpanded(), context);
-                    if (treeView != null)treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
+                    if (treeView != null)
+                        treeView.onItemClickedListener(position, treeNode, treeNode.isExpanded(), context);
                 }
             });
         }
@@ -151,7 +153,8 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     boolean checked = checkableView.isChecked();
                     selectNode(checked, treeNode);
-                    viewBinder.onNodeSelectedChanged(context,treeNode, checked);
+                    viewBinder.onNodeSelectedChanged(context, treeNode, checked);
+                    treeView.onItemCheckBoxSelectedChanged(context, treeNode, checked);
                 }
             });
         } else {
@@ -283,4 +286,6 @@ public class TreeViewAdapter extends RecyclerView.Adapter {
     public void setIsShowCheckBox(boolean isShowCheckBox) {
         this.isShowCheckBox = isShowCheckBox;
     }
+
+
 }
