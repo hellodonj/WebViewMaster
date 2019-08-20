@@ -217,15 +217,15 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
                 mReadWeikeHelper.readWeike(resVo);
             }
 
-            if ((needFlag && !mSourceParams.isParentRole())) {
-                // 是已经加入的课程, 并且不是家长身份
-                if (mSourceParams.getRole() != UserHelper.MoocRoleType.EDITOR &&
-                        mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER) {
-                    // 如果不是主编或者小编
-                    // 看课件才FlagRead
-                    flagRead(resVo, position, context);
-                }
-            }
+//            if ((needFlag && !mSourceParams.isParentRole())) {
+//                // 是已经加入的课程, 并且不是家长身份
+//                if (mSourceParams.getRole() != UserHelper.MoocRoleType.EDITOR &&
+//                        mSourceParams.getRole() != UserHelper.MoocRoleType.TEACHER) {
+//                    // 如果不是主编或者小编
+//                    // 看课件才FlagRead
+//                    flagRead(resVo, position, context);
+//                }
+//            }
         } else if (resVo.getTaskType() == 2 || resVo.getTaskType() == 5) {
             //复述微课
             if ((needFlag || !mSourceParams.isParentRole()) || mSourceParams.isAudition()) {

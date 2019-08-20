@@ -660,7 +660,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
 
     private void chooseOtherHomeWork() {
         int remainCount = 10;
-        if (listenData != null){
+        if (listenData != null && listenData.size() > 0){
             remainCount = 11 - listenData.size();
         }
         if (remainCount <= 0){
@@ -874,11 +874,11 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
             } else {
                 int remainCount = 10;
                 if (superTaskType == StudyTaskType.TASK_ORDER){
-                    if (readWriteData != null){
+                    if (readWriteData != null && listenData.size() > 0){
                         remainCount = 11 - readWriteData.size();
                     }
                 } else {
-                    if (listenData != null){
+                    if (listenData != null && listenData.size() > 0){
                         remainCount = 11 - listenData.size();
                     }
                 }
@@ -1615,7 +1615,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
     }
 
     public void setListenData(List<ResourceInfoTag> listenData, boolean isSuperTask) {
-        boolean isContain = false;
         if (superTaskType == StudyTaskType.RETELL_WAWA_COURSE) {
             for (ResourceInfoTag tag : listenData) {
                 if (TextUtils.equals("1", tag.getResProperties())) {
@@ -1623,7 +1622,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     if (!isSuperTask) {
                         tag.setCompletionMode(2);
                     }
-                    isContain = true;
                 }
             }
         }
@@ -1654,9 +1652,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (flag){
             //没有学程的资源
             updateEvalCourseViewData();
-        } else if (isContain){
-            updateScoreView(View.GONE);
-            mRbTenSystem.setVisibility(View.VISIBLE);
         }
 
         if (listenAdapter != null) {
@@ -1737,12 +1732,15 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                     }
                 }
                 if (!isSelect) {
+                    mRbTenSystem.setVisibility(View.VISIBLE);
                     if (isEval) {
                         mRbMarkYes.setChecked(true);
                         mRbMarkNo.setVisibility(View.INVISIBLE);
                     } else {
                         mRbMarkNo.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    mRbTenSystem.setVisibility(View.INVISIBLE);
                 }
             }
         }

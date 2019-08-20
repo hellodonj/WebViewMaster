@@ -708,7 +708,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                             || mediaType == MaterialResourceType.PPT
                             || mediaType == MaterialResourceType.DOC
                             || mediaType == MaterialResourceType.AUDIO
-                            || mediaType == MaterialResourceType.VIDEO){
+                            || mediaType == MaterialResourceType.VIDEO
+                            || mediaType == MaterialResourceType.Q_DUBBING_VIDEO){
                         hidden = true;
                     }
                 } else {
