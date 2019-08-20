@@ -76,6 +76,7 @@ public class PersonalPostBarListFragment extends ContactsListFragment {
     private String itemId = null;//标识当前选中的条目id
     private boolean isPick;
     private int maxSelectCount = 1;
+    private int taskType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,6 +123,7 @@ public class PersonalPostBarListFragment extends ContactsListFragment {
                     CAMPUS_PATROL_SCREENING_END_DATE);
             isPick = getArguments().getBoolean(ActivityUtils.EXTRA_IS_PICK);
             maxSelectCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
+            taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
 
         }
         initViews();
@@ -336,7 +338,7 @@ public class PersonalPostBarListFragment extends ContactsListFragment {
     }
 
     private void selectData(NewResourceInfo data){
-        if (maxSelectCount > 1) {
+        if (taskType == StudyTaskType.SUBMIT_HOMEWORK || taskType == StudyTaskType.WATCH_HOMEWORK) {
             if (!data.isSelect()) {
                 int count = getSelectedDataCount();
                 if (count > 0 && count >= maxSelectCount) {
@@ -385,7 +387,7 @@ public class PersonalPostBarListFragment extends ContactsListFragment {
     }
 
     public void getSelectTaskData() {
-        if (maxSelectCount > 1){
+        if (taskType == StudyTaskType.WATCH_HOMEWORK || taskType == StudyTaskType.SUBMIT_HOMEWORK){
             List<MediaInfo> mediaInfoList = getSelectedData();
             if (mediaInfoList == null || mediaInfoList.size() == 0){
                 TipMsgHelper.ShowMsg(getActivity(),R.string.pls_select_files);

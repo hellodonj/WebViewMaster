@@ -135,7 +135,7 @@ public class MyTaskOrderFragment extends ContactsListFragment implements ISchool
             maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
             if (watchWawaCourseSupportMultiType) {
                 maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
-                if (maxCount <= 1){
+                if (maxCount <= 0){
                     //控制资源最多选多少
                     maxCount = WatchWawaCourseResourceSplicingUtils.
                             controlResourcePickedMaxCount(MediaType.MICROCOURSE,maxCount,false);

@@ -580,14 +580,10 @@ public class MyRemotePDFListFragment extends ContactsListFragment implements ISc
                 maxCount = MAX_ONEPAGE_UPLOAD_COUNT;
             }
             //看课件多类型
-            if (watchWawaCourseSupportMultiType && maxCount <= 1){
-                if (taskType == StudyTaskType.ENGLISH_WRITING){
-                    maxCount = 1;
-                } else {
-                    //控制资源最多选多少
-                    maxCount = WatchWawaCourseResourceSplicingUtils.
-                            controlResourcePickedMaxCount(mediaType, maxCount, false);
-                }
+            if (watchWawaCourseSupportMultiType && maxCount == 0){
+                //控制资源最多选多少
+                maxCount = WatchWawaCourseResourceSplicingUtils.
+                        controlResourcePickedMaxCount(mediaType, maxCount, false);
             }
         }
     }

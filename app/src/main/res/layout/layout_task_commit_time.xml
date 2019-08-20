@@ -63,12 +63,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/str_publish_task_time"/>
 
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -79,7 +79,7 @@
                     android:checked="true"
                     android:padding="10dp"
                     android:text="@string/str_publish_right_now"
-                    android:textColor="@color/text_normal"
+                    android:textColor="@color/text_black"
                     android:textSize="14sp"/>
 
                 <RadioButton
@@ -90,7 +90,7 @@
                     android:button="@drawable/com_checkbox"
                     android:padding="10dp"
                     android:text="@string/str_publish_according_to_time"
-                    android:textColor="@color/text_normal"
+                    android:textColor="@color/text_black"
                     android:textSize="14sp"/>
             </RadioGroup>
 
@@ -109,12 +109,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/str_student_look_other_work"/>
 
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -125,7 +125,7 @@
                     android:checked="true"
                     android:padding="10dp"
                     android:text="@string/str_can_read"
-                    android:textColor="@color/text_normal"
+                    android:textColor="@color/text_black"
                     android:textSize="14sp"/>
 
                 <RadioButton
@@ -136,7 +136,7 @@
                     android:button="@drawable/com_checkbox"
                     android:padding="10dp"
                     android:text="@string/str_no_read"
-                    android:textColor="@color/text_normal"
+                    android:textColor="@color/text_black"
                     android:textSize="14sp"/>
             </RadioGroup>
 

@@ -143,14 +143,10 @@ public class MyRemoteLQCourseListFragment extends ContactsListFragment
         //看课件多类型
         watchWawaCourseSupportMultiType = WatchWawaCourseResourceSplicingUtils.
                 watchWawaCourseSupportMultiType(getArguments());
-        if (watchWawaCourseSupportMultiType && maxCount <= 1){
-            if (taskType == StudyTaskType.ENGLISH_WRITING){
-                maxCount = 1;
-            } else {
-                //控制资源最多选多少
-                maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(MediaType.MICROCOURSE, maxCount, false);
-            }
+        if (watchWawaCourseSupportMultiType && maxCount == 0){
+            //控制资源最多选多少
+            maxCount = WatchWawaCourseResourceSplicingUtils.
+                    controlResourcePickedMaxCount(MediaType.MICROCOURSE, maxCount, false);
         }
         //如果是复述课件 课件只能够选择一个
         if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
