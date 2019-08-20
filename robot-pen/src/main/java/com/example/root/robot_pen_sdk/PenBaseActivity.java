@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import cn.robotpen.pen.model.RemoteState;
 import com.codingmaster.slib.S;
 import com.osastudio.apps.BaseActivity;
 import com.osastudio.common.utils.TipMsgHelper;
@@ -286,7 +287,13 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
 
     @Override
     public void onStateChanged(int i, String s) {
-
+        if (i == RemoteState.STATE_CONNECTED) {
+            try {
+                this.robotService.requestNewData(2);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
