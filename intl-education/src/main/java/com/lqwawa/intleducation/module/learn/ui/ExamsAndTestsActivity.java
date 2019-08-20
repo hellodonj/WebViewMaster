@@ -185,11 +185,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         //被动进入选择,并且是选择模式
         if (!choiceModeAndIntiativeTrigger && lessonSourceParams != null && lessonSourceParams.isChoiceMode()) {
             topBar.setRightFunctionText1(getString(R.string.ok), v -> {
-                if (taskType == 9) {
-                    maxSelect = 1;
-                } else {
-                    maxSelect = mMultipleChoiceCount;
-                }
+                maxSelect = mMultipleChoiceCount;
                 selectedTask.clear();
                 List<TreeNode> selectedNodes = treeView.getSelectedNodes();
                 for (TreeNode selectedNode : selectedNodes) {
@@ -203,17 +199,11 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                     return;
                 } else {
-                    if (taskType == 9) {
-                        if (selectedTask.size() > 1) {
-                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
-                            return;
-                        }
-                    } else {
-                        if (selectedTask.size() > mMultipleChoiceCount) {
-                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
-                            return;
-                        }
+                    if (selectedTask.size() > mMultipleChoiceCount) {
+                        ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                        return;
                     }
+
                 }
                 // 学程馆选取资源使用的
                 EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
