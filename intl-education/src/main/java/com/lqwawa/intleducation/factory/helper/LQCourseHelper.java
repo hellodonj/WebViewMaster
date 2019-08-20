@@ -695,7 +695,8 @@ public class LQCourseHelper {
                                                 @NonNull DataSource.Callback<CourseDetailsVo> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("token", token);
-        requestVo.addParams("classId", classId);
+        if (EmptyUtil.isNotEmpty(classId))
+            requestVo.addParams("classId", classId);
         requestVo.addParams("courseId", courseId);
         if (EmptyUtil.isNotEmpty(schoolIds))
             requestVo.addParams("schoolIds", schoolIds);

@@ -355,6 +355,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                         if (!isCourseSelect) {
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+                        }else {
+                            holder.lessonAuditionTv.setVisibility(View.GONE);
                         }
                     } else {
                         holder.lessonAuditionTv.setVisibility(View.GONE);
@@ -633,6 +635,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.auditionTv.setVisibility(View.VISIBLE);
                 if (!isCourseSelect) {
                     holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+                }else {
+                    holder.auditionTv.setVisibility(View.GONE);
                 }
             } else {
                 holder.auditionTv.setVisibility(View.GONE);
