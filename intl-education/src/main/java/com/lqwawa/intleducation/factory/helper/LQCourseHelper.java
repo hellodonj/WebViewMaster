@@ -793,11 +793,11 @@ public class LQCourseHelper {
     }
 
 
-    public static void getSxExamDetail(String courseId, String sectionId,String classId,int role,DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
+    public static void getSxExamDetail(String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
-        requestVo.addParams("classId", classId);
+        if (!TextUtils.isEmpty(classId)) requestVo.addParams("classId", classId);
         requestVo.addParams("role", role);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSxExamDetail);
         params.setAsJsonContent(true);
@@ -829,7 +829,7 @@ public class LQCourseHelper {
     }
 
 
-    public static void loadSixlLibraryLabelData(String organId,DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
+    public static void loadSixlLibraryLabelData(String organId, DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("organId", organId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSixLibraryLabelList);
@@ -853,7 +853,7 @@ public class LQCourseHelper {
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(LQCourseHelper.class, "request " + params.getUri() + " failed---" +throwable.getMessage());
+                LogUtil.w(LQCourseHelper.class, "request " + params.getUri() + " failed---" + throwable.getMessage());
                 if (!EmptyUtil.isEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
                 }
