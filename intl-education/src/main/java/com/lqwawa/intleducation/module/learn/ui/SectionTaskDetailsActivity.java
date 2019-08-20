@@ -1197,7 +1197,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity implements Vie
                 courseId = String.valueOf(sectionResListVo.getLinkCourseId());
             }
             // 等同大厅打开课程详情
-            CourseDetailsActivity.start(activity, courseId, canEdit, memberId);
+            CourseDetailsActivity.start(activity, courseId, canEdit, UserHelper.getUserId());
         }
     }
 

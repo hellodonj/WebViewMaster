@@ -15,6 +15,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
+import com.galaxyschool.app.wawaschool.chat.utils.UserUtils;
 import com.galaxyschool.app.wawaschool.common.*;
 import com.galaxyschool.app.wawaschool.common.DialogHelper.LoadingDialog;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
@@ -1281,7 +1282,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
             TipMsgHelper.ShowMsg(this,R.string.str_repeat_role_info);
             return;
         }
-        if (TextUtils.isEmpty(userInfo.getRealName())) {
+        if (TextUtils.isEmpty(userInfo.getRealName()) && TextUtils.isEmpty(mRealnameEditText.getText().toString())) {
             showonsummateDialog();
             return;
         }
@@ -1312,13 +1313,15 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     public void onMessageEvent(EventWrapper event){
         if (EventWrapper.isMatch(event,EventConstant.CREATE_CLASS_ORDER)){
             //支付成功加入班级
-            String memberId = DemoApplication.getInstance().getMemberId();
-            if (TextUtils.isEmpty(memberId)){
-                return;
-            }
             List<String> studentIds = new ArrayList<>();
-            studentIds.add(memberId);
-            addStudentToClass(studentIds);
+            studentIds.add(userInfo.getMemberId());
+            if (TextUtils.isEmpty(userInfo.getRealName())){
+                //没有填写真实姓名
+                userInfo.setRealName(mRealnameEditText.getText().toString());
+                UserUtils.modifyBasicUserInfo(this,userInfo,result -> addStudentToClass(studentIds));
+            } else {
+                addStudentToClass(studentIds);
+            }
         }
     }
 
