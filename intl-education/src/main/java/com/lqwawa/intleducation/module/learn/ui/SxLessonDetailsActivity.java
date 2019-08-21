@@ -450,23 +450,24 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
+            if (mChapterParams != null && !mChapterParams.isChoiceMode()) {
+                mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        initBottomLayout();
+                    }
 
-            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    initBottomLayout();
-                }
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+                    }
 
-                }
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
@@ -559,9 +560,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     // mBottomLayout.setActivated(!originalActivated);
                     handleSubjectSettingData(this, UserHelper.getUserId(), true);
                 }
+                initBottomLayout();
             }
-
-            initBottomLayout();
             refreshCartPoint();
         } else if (viewId == R.id.btn_add_homework) {
             boolean originalActivated = mBottomLayout.isActivated();
