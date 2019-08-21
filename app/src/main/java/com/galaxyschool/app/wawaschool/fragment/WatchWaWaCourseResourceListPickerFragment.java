@@ -756,7 +756,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
 
         }
         View view = treeView.getView();
-        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
+//        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
         List<TreeNode> allNodes = treeView.getAllNodes();
         for (TreeNode node : allNodes) {
             LQCourseConfigEntity entity = (LQCourseConfigEntity) node.getValue();
