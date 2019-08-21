@@ -90,7 +90,7 @@ public class ApplyActivationHelper {
     public void requestActivationPermission() {
         String tipInfo = UIUtil.getString(R.string.label_activation_code_tip);
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(activity, tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(activity, tipInfo,2,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {
