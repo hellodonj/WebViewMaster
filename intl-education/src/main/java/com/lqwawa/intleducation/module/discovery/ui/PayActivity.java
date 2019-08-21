@@ -123,6 +123,8 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     //是否加入班级跳转
     private boolean isJoinClassEnter;
     private String mMemberId, mClassName, mClassThuilImage, mSchoolId, mSchoolName;
+    private boolean useWawaCoin = true;
+    private String orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,7 +215,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             mPaywayActivationCode.setVisibility(View.VISIBLE);
         }
 
-        if (isTutorChoiceEnter || isJoinClassEnter) {
+        if (isTutorChoiceEnter) {
             //帮辅选择老师支付
             mPaywayWechatpay.setVisibility(View.GONE);
             mPaywayAlipay.setVisibility(View.GONE);
@@ -227,16 +229,30 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.commit_tv) {//立即支付
-            doPay();
+            if (isJoinClassEnter){
+                if (useWawaCoin){
+                    //蛙蛙币支付
+                    getWaWaCoins();
+                }else {
+                    joinClassRequest();
+                }
+            }else {
+                doPay(mOrderId);
+            }
         } else if (i == R.id.payway_alipay) {
+            useWawaCoin = false;
             updateView(true, false, false, false, false, PayWay.ALiPay);
         } else if (i == R.id.payway_wechatpay) {
+            useWawaCoin = false;
             updateView(false, true, false, false, false, PayWay.WechatPay);
         } else if (i == R.id.payway_uppay) {
+            useWawaCoin = false;
             updateView(false, false, true, false, false, PayWay.UPPay);
         } else if (i == R.id.payway_activation_code) {
+            useWawaCoin = false;
             updateView(false, false, false, true, false, PayWay.Code);
         } else if (i == R.id.payway_wawa) {
+            useWawaCoin = true;
             updateView(false, false, false, false, true, PayWay.WaWa);
         }
     }
@@ -253,7 +269,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     /**
      * 支付请求
      */
-    private void doPay() {
+    private void doPay(String orderId) {
 
         if (mPayWay == PayWay.Code) {
             ActiveCodeActivity.newInstance(mOrderId, mPrice, getIntent().getStringExtra(KEY_COURSENAME),
@@ -273,13 +289,13 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             params = new PayParams.Builder(this)
                     .wechatAppID(AppConfig.WEIXIN_APPID)
                     .payWay(mPayWay)
-                    .orderId(mOrderId)
+                    .orderId(orderId)
                     .memberId(UserHelper.getUserId())
                     .build();
         } else {
             params = new PayParams.Builder(this)
                     .payWay(mPayWay)
-                    .orderId(mOrderId)
+                    .orderId(orderId)
                     .memberId(UserHelper.getUserId())
                     .build();
         }
@@ -311,6 +327,9 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                 if (isOnline) {
                     // 在线班级支付成功
                     EventBus.getDefault().post(new EventWrapper(null, EventConstant.JOIN_IN_CLASS_EVENT));
+                }else if (isJoinClassEnter){
+                    //加入班级支付成功
+                    EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
                 }
             }
 
@@ -723,42 +742,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                     });
         }else if (isJoinClassEnter){
             //{"memberId":"","classId":"","className":"","classThuilImage":"","schoolId":"","schoolName":"","price":2s}
-            RequestVo requestVo = new RequestVo();
-            requestVo.addParams("memberId",mMemberId);
-            requestVo.addParams("classId",mClassId);
-            requestVo.addParams("className",mClassName);
-            requestVo.addParams("classThuilImage",mClassThuilImage);
-            requestVo.addParams("schoolId",mSchoolId);
-            requestVo.addParams("schoolName",mSchoolName);
-            requestVo.addParams("price",mPrice);
-            requestVo.addParams("consumeSource", 2);
-            RequestParams params = new RequestParams(AppConfig.ServerUrl.PostCreateClassOrder);
-            params.setAsJsonContent(true);
-            params.setBodyContent(requestVo.getParams());
-            params.setConnectTimeout(10000);
-            LogUtil.i(PayActivity.class, "send CreateClassOrder ==== " + params.getUri());
-            x.http().post(params, new StringCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    if (TextUtils.isEmpty(result)) {
-                        return;
-                    }
-                    JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(result);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    int code = jsonObject.optInt("code");
-                    if (code == 0) {
-                        // 通过EventBus通知
-                        EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
-                        finish();
-                    } else {
-                        UIUtil.showToastSafe(R.string.pay_failure);
-                    }
-                }
-            });
+            joinClassRequest();
         } else {
             String memberId = UserHelper.getUserId();
             RequestVo requestVo = new RequestVo();
@@ -809,6 +793,52 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             });
         }
     }
+
+    private void joinClassRequest() {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("useWawaCoin",useWawaCoin);
+        requestVo.addParams("memberId",mMemberId);
+        requestVo.addParams("classId",mClassId);
+        requestVo.addParams("className",mClassName);
+        requestVo.addParams("classThuilImage",mClassThuilImage);
+        requestVo.addParams("schoolId",mSchoolId);
+        requestVo.addParams("schoolName",mSchoolName);
+        requestVo.addParams("price",mPrice);
+        requestVo.addParams("consumeSource", 2);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostCreateClassOrder);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(PayActivity.class, "send CreateClassOrder ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (TextUtils.isEmpty(result)) {
+                    return;
+                }
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                int code = jsonObject.optInt("code");
+                if (code == 0) {
+                    // 通过EventBus通知
+                    orderId = jsonObject.optString("id");
+                    if (useWawaCoin) {
+                        EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
+                        finish();
+                    }else {
+                        doPay(orderId);
+                    }
+                } else {
+                    UIUtil.showToastSafe(R.string.pay_failure);
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {

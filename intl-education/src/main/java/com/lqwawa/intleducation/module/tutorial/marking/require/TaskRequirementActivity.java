@@ -20,6 +20,7 @@ import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.BaseUtils;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LetvVodHelperNew;
 import com.lqwawa.intleducation.common.utils.image.LQwawaImageUtil;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TaskEntity;
 import com.lqwawa.intleducation.module.discovery.lessontask.missionrequire.MissionRequireFragment;
@@ -184,7 +185,7 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
     }
 
     private boolean isShowCourseDetail(int resType) {
-        if (resType == 1 || resType == 6 || resType == 20 || resType == 24) {
+        if (resType == 1 || resType == 6 || resType == 20 || resType == 24 || resType == 30) {
             return false;
         }
         return true;
@@ -257,6 +258,8 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                             TaskSliderHelper.onTaskSliderListener.viewPdfOrPPT(this, resId,
                                     resType, mTaskInfoVo.getTaskTitle(),
                                     mTaskInfoVo.getTaskCreateId(), SourceFromType.STUDY_TASK);
+                        } else if (resType == 30) {
+                            openMediaPlay();
                         } else {
                             TaskSliderHelper.onTaskSliderListener.viewCourse(this, resId, resType, "", SourceFromType.STUDY_TASK);
                         }
@@ -264,6 +267,23 @@ public class TaskRequirementActivity extends PresenterActivity<TaskRequirementCo
                 }
             }
         }
+    }
+
+    private void openMediaPlay(){
+        new LetvVodHelperNew.VodVideoBuilder(this)
+                .setNewUI(true)//使用自定义UI
+                .setTitle(mTaskInfoVo.getTaskTitle())//视频标题
+                .setAuthorId(mTaskInfoVo.getTaskCreateId())
+                .setResId(mTaskInfoVo.getResId())
+                .setResourceType(3)
+                .setVuid(null)
+                .setUrl(mTaskInfoVo.getResUrl())
+                .setMediaType(30)//设置媒体类型
+                .setPackageName(MainApplication.getInstance().getPackageName())
+                .setClassName("com.galaxyschool.app.wawaschool.medias.activity.VodPlayActivity")
+                .setHideBtnMore(true)
+                .setLeStatus(-1)
+                .create();
     }
 
     private void openImageList(String resUrl, String resId, String createId) {

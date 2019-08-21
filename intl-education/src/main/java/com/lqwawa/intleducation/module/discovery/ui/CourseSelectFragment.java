@@ -267,6 +267,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     }
                 });
         courseChapterAdapter.setCourseSelect(true);
+        courseChapterAdapter.setCourseVo(flagCourseData);
         courseChapterAdapter.setIsClassCourseEnter(mEnterType == CourseDetailType.COURSE_DETAIL_CLASS_ENTER);
         courseChapterList = new ArrayList<ChapterVo>();
         listView.setAdapter(courseChapterAdapter);
@@ -390,7 +391,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             LQCourseHelper.requestChapterByCourseId(mClassId, flagCourseData.getId(),
                     new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(),null, flagCourseData.getId(),
+            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(),mClassId, flagCourseData.getId(),
                     mSchoolId, new Callback());
         }
     }
