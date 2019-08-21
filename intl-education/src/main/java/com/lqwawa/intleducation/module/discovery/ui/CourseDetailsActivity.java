@@ -1258,8 +1258,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             textViewPay.setVisibility(View.VISIBLE);
             boolean isHide =
-                    mCourseDetailParams != null && mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN &&
-                            (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                    mCourseDetailParams != null
+                            && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
             if (tutorialMode && isHide) {
