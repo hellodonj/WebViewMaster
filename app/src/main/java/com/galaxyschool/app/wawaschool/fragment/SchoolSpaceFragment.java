@@ -187,13 +187,6 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
         item.resId = R.drawable.campus_live_show;
         itemList.add(item);
 
-        //校园动态
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
-        item.title = getString(R.string.school_message);
-        item.resId = R.drawable.icon_campus_dynamics;
-        itemList.add(item);
-
         if (schoolInfo.isSchoolInspector() || VipConfig.isVip(getActivity())) {
             //校园巡查
             item = new TabEntityPOJO();
@@ -209,6 +202,13 @@ public class SchoolSpaceFragment extends SchoolSpaceBaseFragment implements Scho
             }
             itemList.add(item);
         }
+
+        //校园动态
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
+        item.title = getString(R.string.school_message);
+        item.resId = R.drawable.icon_campus_dynamics;
+        itemList.add(item);
 
         //学校介绍
         item = new TabEntityPOJO();
