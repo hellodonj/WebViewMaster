@@ -1620,7 +1620,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 if (TextUtils.equals("1", tag.getResProperties())) {
                     //评测课件 默认 复述 + 评测
                     if (!isSuperTask) {
-                        tag.setCompletionMode(2);
+                        tag.setCompletionMode(3);
                     }
                 }
             }
