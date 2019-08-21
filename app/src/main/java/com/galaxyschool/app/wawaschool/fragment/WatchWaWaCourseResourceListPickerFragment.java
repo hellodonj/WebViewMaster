@@ -254,11 +254,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             } else if (entity.getType() == OrganLibraryType.TYPE_ONLINE_COMMON_LIBRARY) {
                 enterPickTypeDetail(TAB_LQCOURSE_SHOP);
             } else if (entity.getType() == OrganLibraryType.TYPE_LIBRARY) {
-                if (!entity.isAuthorized()) {
-                    UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_please_request_authorization);
-                    return;
-                }
-                // 只选择图书馆下Q配音
                 entity = OrganLibraryUtils.getEntityForQDubbing(getActivity(), schoolId);
                 chooseCommonLibraryResource(entity);
             } else if (entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
@@ -725,8 +720,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         }
         filteredLabelEntities = LQCourseConfigEntity.generateData(
                 superTaskType > 0, superTaskType, libraryLabelEntities);
-        //给子item权限
+
         if (filteredLabelEntities != null) {
+//            //给父item权限判断
+//            if (entity != null)entity.assembleAuthorizedInClassify(filteredLabelEntities);
+            //给子item权限
             for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
                 if (entity != null)
                     entity.assembleAuthorizedInClassify(filteredLabelEntity.getList());
@@ -756,7 +754,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
 
         }
         View view = treeView.getView();
-//        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
+        treeView.addItemDecoration(new RecyclerItemDecoration(getActivity(), RecyclerItemDecoration.VERTICAL_LIST));
         List<TreeNode> allNodes = treeView.getAllNodes();
         for (TreeNode node : allNodes) {
             LQCourseConfigEntity entity = (LQCourseConfigEntity) node.getValue();
