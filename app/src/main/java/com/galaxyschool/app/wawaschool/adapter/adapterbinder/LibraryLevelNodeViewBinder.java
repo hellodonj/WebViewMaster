@@ -66,8 +66,8 @@ public class LibraryLevelNodeViewBinder extends CheckableNodeViewBinder {
             Glide.with(context).load(entity.getDrawableId()).into(thumbnail);
         } else {
             Glide.with(context).load(entity.getThumbnail()).into(thumbnail);
-            subTitle.setVisibility(entity.isDirectAccessNextPage() ? View.GONE : View.VISIBLE);
-            subTitle.setText(entity.isAuthorized() ? context.getString(R.string.label_be_authorized_container) :
+            subTitle.setVisibility(entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY ? View.VISIBLE : View.GONE);
+            subTitle.setText((entity.isAuthorized()&& entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY )? context.getString(R.string.label_be_authorized_container) :
                     context.getString(R.string.label_unauthorized_container));
             subTitle.setTextColor(entity.isAuthorized() ? UIUtil.getColor(R.color.textBlue) : UIUtil.getColor(R.color.textSecond));
         }

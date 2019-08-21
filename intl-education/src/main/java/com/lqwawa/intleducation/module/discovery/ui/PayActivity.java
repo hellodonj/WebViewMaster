@@ -24,6 +24,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -826,11 +827,14 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                 if (code == 0) {
                     // 通过EventBus通知
                     orderId = jsonObject.optString("id");
+                    LogUtil.i(PayActivity.class, "orderId ==== " + orderId);
                     if (useWawaCoin) {
                         EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
                         finish();
                     }else {
-                        doPay(orderId);
+                        if (EmptyUtil.isNotEmpty(orderId)){
+                            doPay(orderId);
+                        }
                     }
                 } else {
                     UIUtil.showToastSafe(R.string.pay_failure);
