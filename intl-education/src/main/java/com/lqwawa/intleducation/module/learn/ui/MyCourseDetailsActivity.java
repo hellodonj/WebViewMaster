@@ -1052,6 +1052,9 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                     // 加载到courseVo
                     initMenu();
 
+                    if(!TextUtils.isEmpty(courseVo.getBindClassId())) {
+                        mCourseDetailParams.setBindClassId(courseVo.getBindClassId());
+                    }
 
                     updateView();
                     initTabAndFragment();
