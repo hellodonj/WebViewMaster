@@ -60,7 +60,7 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
         list = new ArrayList<CourseVo>();
 
         int p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        img_width = p_width / 8;
+        img_width = p_width / 4;
         img_height = img_width * 297 / 210;
 
         imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,

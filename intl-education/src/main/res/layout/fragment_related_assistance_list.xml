@@ -5,14 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp">
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+    </RelativeLayout>
 
     <com.lqwawa.intleducation.base.CourseEmptyView
         android:id="@+id/empty_layout"
