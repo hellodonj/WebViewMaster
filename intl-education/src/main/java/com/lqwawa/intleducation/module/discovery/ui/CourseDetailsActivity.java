@@ -1513,8 +1513,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
-                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
-                || isMyCourse) { //班级课程和习课程进入
+                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) { //班级课程进入 isMyCourse 习课程进入提示“请联系班级老师”
                     if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
                         String schoolId = mCourseDetailParams.getSchoolId();
                         String classId = mCourseDetailParams.getClassId();
@@ -1535,7 +1534,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         applyActivationHelper.requestActivationPermission();
                     }
                 } else {
-                    UIUtil.showToastSafe(R.string.imput_authorization_title);
+                    UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
                 }
             }
         }

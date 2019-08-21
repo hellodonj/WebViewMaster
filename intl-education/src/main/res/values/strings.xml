@@ -567,4 +567,5 @@
     <string name="class_implementation_plan">课中实施方案</string>
     <string name="join_class_by_money">付费加入《%s》</string>
     <string name="label_unlock_tip">测试/考试未解锁，不可添加</string>
+    <string name="label_teaching_plan_expire_tip">请联系班级老师</string>
 </resources>
