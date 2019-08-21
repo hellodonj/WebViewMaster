@@ -225,8 +225,15 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             });
         }
         refreshCartPoint();
-        LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(),
-                lessonSourceParams == null ? -1 : lessonSourceParams.getRole(), this);
+        int invertRole = invertRole(lessonSourceParams == null ? -1 : lessonSourceParams.getRole());
+        LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
+    }
+
+    private int invertRole(int role) {
+        if (role == UserHelper.MoocRoleType.TEACHER)
+            return role;
+        else if (role < 0) return role;
+        else return 2;
     }
 
     /**
