@@ -236,7 +236,7 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
             tipInfo = UIUtil.getString(R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {

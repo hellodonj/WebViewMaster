@@ -30,11 +30,13 @@ public class ImputAuthorizationCodeDialog extends Dialog {
     private Button positiveButton;
     private Button negativeButton;
     private boolean isCommited = false;
+    private int codeType; //1 授权码 2激活码
 
-    public ImputAuthorizationCodeDialog(Context context, String tipInfo, CommitCallBack callback) {
+    public ImputAuthorizationCodeDialog(Context context, String tipInfo,int codeType, CommitCallBack callback) {
         super(context);
         this.context = context;
         this.tipInfo = tipInfo;
+        this.codeType = codeType;
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.callback = callback;
     }
@@ -100,9 +102,15 @@ public class ImputAuthorizationCodeDialog extends Dialog {
                 String code = gridPasswordView.getPassWord().toString();
                 if (!StringUtils.isValidString(code)
                         || code.length() != 6) {
-                    ToastUtil.showToast(context,
-                            context.getResources().getString(
-                                    R.string.imput_authorization_please));
+                    if (codeType == 1) {
+                        ToastUtil.showToast(context,
+                                context.getResources().getString(
+                                        R.string.imput_authorization_please));
+                    } else if (codeType == 2) {
+                        ToastUtil.showToast(context,
+                                context.getResources().getString(
+                                        R.string.input_activation_please));
+                    }
                     return;
                 }
                 if (callback != null) {
