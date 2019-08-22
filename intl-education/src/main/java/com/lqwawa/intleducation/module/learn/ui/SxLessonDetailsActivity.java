@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -331,11 +330,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mBtnAddHomework.setVisibility(View.GONE);
             mNewCartContainer.setVisibility(View.GONE);
             topBar.setRightFunctionText1(getString(R.string.ok), v -> {
-                if (taskType == 9) {
-                    maxSelect = 1;
-                } else {
-                    maxSelect = mMultipleChoiceCount;
-                }
+                maxSelect = mMultipleChoiceCount;
                 selectedTask.clear();
                 int currentPosition = mViewPager.getCurrentItem();
                 SxLessonSourceNavigator navigator = mTabSourceNavigator.get(currentPosition);
@@ -351,17 +346,11 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     ToastUtil.showToast(this, getString(R.string.str_select_tips));
                     return;
                 } else {
-                    if (taskType == 9) {
-                        if (selectedTask.size() > 1) {
-                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
-                            return;
-                        }
-                    } else {
-                        if (selectedTask.size() > mMultipleChoiceCount) {
-                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
-                            return;
-                        }
+                    if (selectedTask.size() > mMultipleChoiceCount) {
+                        ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                        return;
                     }
+
                 }
                 // 学程馆选取资源使用的
                 EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
@@ -461,23 +450,24 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
+            if (mChapterParams != null && !mChapterParams.isChoiceMode()) {
+                mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        initBottomLayout();
+                    }
 
-            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    initBottomLayout();
-                }
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+                    }
 
-                }
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
@@ -570,9 +560,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     // mBottomLayout.setActivated(!originalActivated);
                     handleSubjectSettingData(this, UserHelper.getUserId(), true);
                 }
+                initBottomLayout();
             }
-
-            initBottomLayout();
             refreshCartPoint();
         } else if (viewId == R.id.btn_add_homework) {
             boolean originalActivated = mBottomLayout.isActivated();

@@ -254,11 +254,6 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             } else if (entity.getType() == OrganLibraryType.TYPE_ONLINE_COMMON_LIBRARY) {
                 enterPickTypeDetail(TAB_LQCOURSE_SHOP);
             } else if (entity.getType() == OrganLibraryType.TYPE_LIBRARY) {
-                if (!entity.isAuthorized()) {
-                    UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_please_request_authorization);
-                    return;
-                }
-                // 只选择图书馆下Q配音
                 entity = OrganLibraryUtils.getEntityForQDubbing(getActivity(), schoolId);
                 chooseCommonLibraryResource(entity);
             } else if (entity.getType() == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
@@ -725,8 +720,11 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
         }
         filteredLabelEntities = LQCourseConfigEntity.generateData(
                 superTaskType > 0, superTaskType, libraryLabelEntities);
-        //给子item权限
+
         if (filteredLabelEntities != null) {
+//            //给父item权限判断
+//            if (entity != null)entity.assembleAuthorizedInClassify(filteredLabelEntities);
+            //给子item权限
             for (LQCourseConfigEntity filteredLabelEntity : filteredLabelEntities) {
                 if (entity != null)
                     entity.assembleAuthorizedInClassify(filteredLabelEntity.getList());
@@ -949,7 +947,7 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
             tipInfo = UIUtil.getString(com.lqwawa.intleducation.R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {

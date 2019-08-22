@@ -55,7 +55,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     private List<CourseResourceEntity> playListVo;
     private int libraryType;
-
+    private String classId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +80,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         if (arguments != null && arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
             libraryType = mDetailItemParams.getCourseParams().getLibraryType();
+            classId = mDetailItemParams.getCourseParams().getClassId();
         }
 
     }
@@ -114,7 +115,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         }
 
         showLoadingDialog();
-        LQCourseHelper.requestChapterByCourseId(token,null, courseId, schoolIds, new Callback());
+        LQCourseHelper.requestChapterByCourseId(token,classId, courseId, schoolIds, new Callback());
     }
 
     /**

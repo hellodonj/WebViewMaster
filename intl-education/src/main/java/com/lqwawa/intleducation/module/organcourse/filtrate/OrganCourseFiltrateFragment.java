@@ -1110,7 +1110,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
             tipInfo = UIUtil.getString(R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {

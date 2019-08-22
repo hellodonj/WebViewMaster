@@ -408,7 +408,7 @@ public class WatchWawaCourseResourceSplicingUtils {
         }
         if (TextUtils.equals("1", tag.getResProperties())) {
             //语音评测课件
-            tag.setCompletionMode(2);
+            tag.setCompletionMode(3);
         }
         return tag;
     }

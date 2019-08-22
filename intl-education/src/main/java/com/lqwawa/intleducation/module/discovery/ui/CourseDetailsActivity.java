@@ -1258,8 +1258,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             textViewPay.setVisibility(View.VISIBLE);
             boolean isHide =
-                    mCourseDetailParams != null && mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN &&
-                            (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                    mCourseDetailParams != null
+                            && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
             if (tutorialMode && isHide) {
@@ -1490,10 +1490,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 teachers = teachers.substring(0,7) + "...";
             }
             descriptionBuilder.append(teachers + "\n");*/
-            if (courseVo.getPrice() == 0) {
-                descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
-            } else {
-                descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+            if (mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                if (courseVo.getPrice() == 0) {
+                    descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
+                } else {
+                    descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+                }
             }
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
@@ -1513,8 +1515,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
-                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
-                || isMyCourse) { //班级课程和习课程进入
+                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) { //班级课程进入 isMyCourse 习课程进入提示“请联系班级老师”
                     if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
                         String schoolId = mCourseDetailParams.getSchoolId();
                         String classId = mCourseDetailParams.getClassId();
@@ -1535,7 +1536,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         applyActivationHelper.requestActivationPermission();
                     }
                 } else {
-                    UIUtil.showToastSafe(R.string.imput_authorization_title);
+                    UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
                 }
             }
         }

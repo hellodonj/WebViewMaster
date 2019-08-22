@@ -1,6 +1,9 @@
 package com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
@@ -19,6 +22,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.factory.SxNodeViewFactory;
@@ -176,6 +180,8 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
         typeTable.append(5, CourseSelectItemFragment.KEY_LECTURE_COURSE);
         typeTable.append(6, CourseSelectItemFragment.KEY_TEXT_BOOK);
 
+        registerBroadcastReceiver();
+
         getData();
     }
 
@@ -216,6 +222,10 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     }
 
     private void updateViews(SectionDetailsVo sectionDetailsVo) {
+        container.removeAllViews();
+        if (root != null) {
+            root.getChildren().clear();
+        }
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
                 status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType, mMultipleChoiceCount);
         List<SectionTaskListVo> taskList = sectionDetailsVo.getTaskList();
@@ -386,4 +396,35 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
 
         return false;
     }
+
+    /**
+     * 注册广播事件,接收事件刷新
+     */
+    protected void registerBroadcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION);//作业库发布的刷新
+        //注册广播
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(EmptyUtil.isNotEmpty(getActivity())){
+            getActivity().unregisterReceiver(mBroadcastReceiver);
+        }
+    }
+
+    /**
+     * 数据刷新广播的处理
+     */
+    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION)) {// 读写单
+                getData();
+            }
+        }
+    };
 }

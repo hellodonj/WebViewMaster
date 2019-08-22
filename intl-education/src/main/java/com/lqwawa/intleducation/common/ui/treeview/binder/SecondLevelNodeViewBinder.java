@@ -178,7 +178,7 @@ public class SecondLevelNodeViewBinder extends CheckableNodeViewBinder {
         SectionResListVo resVo = (SectionResListVo) treeNode.getValue();
         ExamsAndTestExtrasVo extras = (ExamsAndTestExtrasVo) treeNode.getExtras();
         ReadWeikeHelper mReadWeikeHelper = (ReadWeikeHelper) treeView.getExtras();
-        boolean mChoiceMode = treeNode.isShowCheckBox();
+        boolean mChoiceMode = extras.ismChoiceMode();
         LessonSourceParams mSourceParams = extras.getLessonSourceParams();
 
         if (ButtonUtils.isFastDoubleClick()) return;

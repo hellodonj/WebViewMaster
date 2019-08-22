@@ -77,12 +77,6 @@ public class MediaPlayerActivity extends BaseActivity implements UniversalVideoV
         }
         setVideoAreaSize();
         mVideoView.setVideoViewCallback(this);
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                LogUtils.logd(TAG, "onCompletion ");
-            }
-        });
 
         if (mSeekPosition > 0) {
             mVideoView.seekTo(mSeekPosition);

@@ -82,10 +82,12 @@ public class NetworkClient implements NetworkClientInterf {
                     }
                 }
 
-                try {
-                    requestVo.addParams("realName", URLEncoder.encode(payParams.getRealName().trim(), "utf-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                if (EmptyUtil.isNotEmpty(payParams.getRealName())) {
+                    try {
+                        requestVo.addParams("realName", URLEncoder.encode(payParams.getRealName().trim(), "utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 url = AppConfig.ServerUrl.COMMIT_ORDER;
             } else {
@@ -240,12 +242,14 @@ public class NetworkClient implements NetworkClientInterf {
                     requestVo.addParams("fromOrganId", payParams.getSchoolId());
                 }
             }
-
-            try {
-                requestVo.addParams("realName", URLEncoder.encode(payParams.getRealName().trim(), "utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            if (EmptyUtil.isNotEmpty(payParams.getRealName())) {
+                try {
+                    requestVo.addParams("realName", URLEncoder.encode(payParams.getRealName().trim(), "utf-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
+
         } else {
             requestVo.addParams("id", payParams.getOrderId());
         }

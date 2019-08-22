@@ -1238,13 +1238,6 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.resId = R.drawable.xiaoyuandianshitai;
         organItemList.add(item);
 
-        //校园动态
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
-        item.title = getString(R.string.school_message);
-        item.resId = R.drawable.xuexiaodongtai;
-        organItemList.add(item);
-
         //校园巡查/校长助手
         if (isCampusPatrol || VipConfig.isVip(getActivity())) {
             item = new TabEntityPOJO();
@@ -1261,6 +1254,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             }
             organItemList.add(item);
         }
+
+        //校园动态
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
+        item.title = getString(R.string.school_message);
+        item.resId = R.drawable.xuexiaodongtai;
+        organItemList.add(item);
 
         if (getAdapterViewHelper(schoolGridViewTag).hasData()) {
             getAdapterViewHelper(schoolGridViewTag).clearData();

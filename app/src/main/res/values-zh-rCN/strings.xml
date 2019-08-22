@@ -1793,4 +1793,5 @@
     <string name="str_no_activation_lqCourse_shop_for_parent">此任务来源于《%1$s》课程，请使用学生账号%2$s
         激活此课程后提交学习任务。</string>
     <string name="str_un_remark_homework">未批作业</string>
+    <string name="str_invite_join_class">邀请您加入《%s》</string>
 </resources>

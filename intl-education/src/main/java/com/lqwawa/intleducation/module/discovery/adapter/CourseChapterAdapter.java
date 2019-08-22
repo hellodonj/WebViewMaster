@@ -355,6 +355,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                         if (!isCourseSelect) {
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+                        }else {
+                            holder.lessonAuditionTv.setVisibility(View.GONE);
                         }
                     } else {
                         holder.lessonAuditionTv.setVisibility(View.GONE);
@@ -566,7 +568,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                                     if (role == UserHelper.MoocRoleType.STUDENT
                                             || role == UserHelper.MoocRoleType.PARENT
-                                            || courseDetailParams.isClassParent()) {
+                                            || (courseDetailParams != null && courseDetailParams.isClassParent())) {
                                         ChapterVo chapterVo = list.get(position);
                                         int examType = chapterVo.getExamType();
                                         if(isJoinCourse){ //已经参加
@@ -633,6 +635,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.auditionTv.setVisibility(View.VISIBLE);
                 if (!isCourseSelect) {
                     holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+                }else {
+                    holder.auditionTv.setVisibility(View.GONE);
                 }
             } else {
                 holder.auditionTv.setVisibility(View.GONE);
@@ -880,10 +884,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(courseChapterParams);
 //                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
                     ChapterVo chapterVo = list.get(position);
-                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM) {
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM && !isCourseSelect) {
                         if (role == UserHelper.MoocRoleType.STUDENT
                                 || role == UserHelper.MoocRoleType.PARENT
-                                || courseDetailParams.isClassParent()) {
+                                || (courseDetailParams != null && courseDetailParams.isClassParent())) {
                             if (isJoinCourse) { //学生或者家长 是否参加对进入有影响
                                 //锁住 提示
                                 if (!chapterVo.isUnlock()) { //锁住提示

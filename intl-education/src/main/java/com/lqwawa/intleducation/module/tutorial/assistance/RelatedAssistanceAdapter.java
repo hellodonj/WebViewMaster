@@ -20,7 +20,6 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +37,6 @@ public class RelatedAssistanceAdapter extends RecyclerView.Adapter<RelatedAssist
     private int img_width;
     private int img_height;
     ImageOptions imageOptions;
-
-    // 是否是班级学程入口，用来选择课程的
-//    private boolean isClassCourseEnter;
-//    private boolean tutorialMode;
-//    private int type;
 
     private static final int[] courseStatusResId = new int[]{
             R.string.course_status_0,

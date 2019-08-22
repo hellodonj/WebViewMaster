@@ -496,7 +496,12 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             //三习教案 班级学程进入，不是家长，是学生；显示学习统计
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnCourseStatistics.setVisibility(View.GONE);
-            LQCourseHelper.requestChapterByCourseId(token, courseParams.getBindClassId(),courseId, schoolIds, new Callback());
+            String classId = courseParams.getClassId();
+            if (TextUtils.isEmpty(classId)) {
+                classId = courseParams.getBindClassId();
+            }
+            LQCourseHelper.requestChapterByCourseId(token, classId, courseId, schoolIds,
+                    new Callback());
         } else {
             LQCourseHelper.requestChapterByCourseId(token,courseParams.getBindClassId(), courseId, schoolIds, new Callback());
         }
