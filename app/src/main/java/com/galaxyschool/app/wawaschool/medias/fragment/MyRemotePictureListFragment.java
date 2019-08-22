@@ -163,10 +163,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             isFromStudyTask = getArguments().getBoolean(MediaListFragment.EXTRA_SUPPORT_MULTI_TYPE_WATCH_WAWA_COURSE);
             if (isFromStudyTask) {
-                maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
-                if (taskType == StudyTaskType.ENGLISH_WRITING){
-                    maxCount = 10;
-                }
+                maxCount = 10;
             }
         }
     }
