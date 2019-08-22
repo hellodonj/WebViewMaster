@@ -1890,4 +1890,5 @@
     <string name="str_un_remark_homework">未批作业</string>
     <string name="str_publish_right_now">学生可随时作答</string>
     <string name="str_publish_according_to_time">学生按开始时间作答</string>
+    <string name="str_invite_join_class">邀请您加入《%s》</string>
 </resources>
