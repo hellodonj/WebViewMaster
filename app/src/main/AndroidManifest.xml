@@ -996,7 +996,8 @@
             android:name=".AirClassroomDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:theme="@style/AppTheme.Common"/>
         <activity
             android:name=".AirClassroomAddHostActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
