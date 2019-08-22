@@ -434,9 +434,6 @@ public class CourseRoute {
                                 boolean isNeedToLearn = false;
                                 if (aBoolean && entity.isLabelAuthorized()) {
                                     isNeedToLearn = true;
-                                } else {
-                                    // 未加入，从习课程移除该课程
-                                    CourseHelper.exitCourse(courseId);
                                 }
                                 listener.route(isNeedToLearn, tutorialMode, tutorialTeacher, entity);
                             } else {
