@@ -491,8 +491,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
-        } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN && (courseParams.isMyCourse() || (courseParams.isClassCourseEnter() &&
-                !courseParams.isClassParent() && courseParams.isClassStudent()))) {
+        } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&  (courseParams.isClassCourseEnter() &&
+                !courseParams.isClassParent() && courseParams.isClassStudent())) {
             //三习教案 班级学程进入，不是家长，是学生；显示学习统计
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnCourseStatistics.setVisibility(View.GONE);
