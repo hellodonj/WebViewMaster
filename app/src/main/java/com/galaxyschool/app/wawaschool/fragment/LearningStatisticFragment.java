@@ -335,21 +335,21 @@ public class LearningStatisticFragment extends ContactsListFragment {
             if (totalNum > 0) {
                 List<StatisticBean> percentBeans = new ArrayList<>();
                 StatisticBean perBean = null;
-                int excell = taskInfo.getExcellentNum() * 100 / totalNum;
+                int excell =  Math.round((float)taskInfo.getExcellentNum() * 100 / totalNum);
                 if (excell > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(excell);
                     perBean.setColor(colors.get(0));
                     percentBeans.add(perBean);
                 }
-                int good = taskInfo.getGoodNum() * 100 / totalNum;
+                int good =  Math.round((float)taskInfo.getGoodNum() * 100 / totalNum);
                 if (good > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(good);
                     perBean.setColor(colors.get(1));
                     percentBeans.add(perBean);
                 }
-                int fair = taskInfo.getFairNum() * 100 / totalNum;
+                int fair =  Math.round((float)taskInfo.getFairNum() * 100 / totalNum);
                 if (fair > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(fair);
@@ -357,7 +357,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
                     percentBeans.add(perBean);
                 }
 
-                int fail = taskInfo.getFailNum() * 100 / totalNum;
+                int fail =  Math.round((float)taskInfo.getFailNum() * 100 / totalNum);
                 if (fail > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(fail);
@@ -396,7 +396,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
             int importantPercent = 0;
             if (totalNum > 0) {
                 //有数据
-                importantPercent = importantNum * 100 / totalNum;
+                importantPercent = Math.round((float) importantNum * 100 / totalNum);
                 pieHelpers.add(new PieHelper(importantPercent, getPercentString(importantPercent),
                         colors.get(0)));
                 pieHelpers.add(new PieHelper(100 - importantPercent, getPercentString(100 - importantPercent),
@@ -411,6 +411,9 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private String getPercentString(int percent){
+        if (percent == 0){
+            return " ";
+        }
         return percent + "%";
     }
 
