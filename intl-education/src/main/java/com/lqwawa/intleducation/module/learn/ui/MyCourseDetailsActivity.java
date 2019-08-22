@@ -1412,10 +1412,12 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
                 teachers = teachers.substring(0,7) + "...";
             }
             descriptionBuilder.append(teachers + "\n");*/
-            if (courseVo.getPrice() == 0) {
-                descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
-            } else {
-                descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+            if (mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                if (courseVo.getPrice() == 0) {
+                    descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
+                } else {
+                    descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+                }
             }
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
