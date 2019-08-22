@@ -240,7 +240,7 @@ public class WholeClassGradeDetailFragment extends ContactsListFragment {
             }
             if (isPercentageSystem){
                 //百分制
-                return Integer.valueOf(o2.getTaskScore()) - Integer.valueOf(o1.getTaskScore());
+                return (int) (Double.valueOf(o2.getTaskScore()) - Double.valueOf(o1.getTaskScore()));
             } else {
                 //十分制
                 return o1.getSortPositionId() - o2.getSortPositionId();
