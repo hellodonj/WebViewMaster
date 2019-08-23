@@ -513,7 +513,11 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             LQCourseHelper.requestChapterByCourseId(token, classId, courseId, schoolIds,
                     new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(token,courseParams.getBindClassId(), courseId, schoolIds, new Callback());
+            String classId = courseParams.getClassId();
+            if (TextUtils.isEmpty(classId)) {
+                classId = courseParams.getBindClassId();
+            }
+            LQCourseHelper.requestChapterByCourseId(token,classId, courseId, schoolIds, new Callback());
         }
     }
 
