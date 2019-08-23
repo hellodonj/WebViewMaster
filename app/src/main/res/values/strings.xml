@@ -1889,5 +1889,5 @@
     <string name="str_un_remark_homework">Unmarked Task</string>
     <string name="str_publish_right_now">Answer at Any Time</string>
     <string name="str_publish_according_to_time">Answer After Start</string>
-    <string name="str_invite_join_class">Invitation to 《%s》</string>
+    <string name="str_invite_join_class">invite you to join 《%s》</string>
 </resources>
