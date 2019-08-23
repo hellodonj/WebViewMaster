@@ -529,7 +529,7 @@
         <item>Exercise</item>
         <item>Test</item>
         <item>Video</item>
-        <item>教案</item>
+        <item>Plan</item>
     </string-array>
 
     <string name="user_comment">Comment</string>
@@ -556,17 +556,17 @@
     <string name="student_evaluation">Comment</string>
     <string name="select_all">select all</string>
     <string name="deselect_all">deselect all</string>
-    <string name="str_class_price_not_null">请输入有效的班级价格</string>
-    <string name="label_sx_preview">预习</string>
-    <string name="label_sx_practice">练习</string>
-    <string name="label_sx_review">复习</string>
-    <string name="join_immediately">立即参加</string>
-    <string name="label_join_teaching_plan_tip">请先参加教案！</string>
-    <string name="teaching_plan_do_homework_tip">请前往空中学校-学习任务中完成作业</string>
-    <string name="teaching_plan_check_homework_tip">请前往空中学校-学习任务中批阅作业</string>
-    <string name="class_implementation_plan">课中实施方案</string>
-    <string name="join_class_by_money">付费加入《%s》</string>
-    <string name="label_unlock_tip">测试/考试未解锁，不可添加</string>
-    <string name="label_teaching_plan_expire_tip">请联系班级老师</string>
-    <string name="input_activation_please">请输入激活码!</string>
+    <string name="str_class_price_not_null">Please enter a valid price</string>
+    <string name="label_sx_preview">Preview</string>
+    <string name="label_sx_practice">Exercise</string>
+    <string name="label_sx_review">Review</string>
+    <string name="join_immediately">Attend</string>
+    <string name="label_join_teaching_plan_tip">Please attend course!</string>
+    <string name="teaching_plan_do_homework_tip">Please do task in Online School > Learning Tasks</string>
+    <string name="teaching_plan_check_homework_tip">Please correct homework in Online School > Learning Tasks</string>
+    <string name="class_implementation_plan">Implementation Plan</string>
+    <string name="join_class_by_money">Pay to join %s</string>
+    <string name="label_unlock_tip">Unable to add locked test/exam</string>
+    <string name="label_teaching_plan_expire_tip">Please contact teacher</string>
+    <string name="input_activation_please">Please enter activation code!</string>
 </resources>
