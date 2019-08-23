@@ -67,31 +67,32 @@
                 android:text="@string/str_publish_task_time"/>
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rb_publish_right_now"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:button="@drawable/com_checkbox"
                     android:checked="true"
                     android:padding="10dp"
                     android:text="@string/str_publish_right_now"
                     android:textColor="@color/text_black"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
                 <RadioButton
                     android:id="@+id/rb_publish_according_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:button="@drawable/com_checkbox"
                     android:padding="10dp"
                     android:text="@string/str_publish_according_to_time"
                     android:textColor="@color/text_black"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
             </RadioGroup>
 
 
@@ -113,31 +114,32 @@
                 android:text="@string/str_student_look_other_work"/>
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rb_can_read"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:button="@drawable/com_checkbox"
                     android:checked="true"
                     android:padding="10dp"
                     android:text="@string/str_can_read"
                     android:textColor="@color/text_black"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
 
                 <RadioButton
                     android:id="@+id/rb_not_read"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:button="@drawable/com_checkbox"
                     android:padding="10dp"
                     android:text="@string/str_no_read"
                     android:textColor="@color/text_black"
-                    android:textSize="14sp"/>
+                    android:textSize="12sp"/>
             </RadioGroup>
 
 
