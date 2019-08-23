@@ -259,6 +259,12 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                     memberId = mDetailItemParams.getMemberId();
                 }
                 arguments.putString("memberId",memberId);
+
+
+//                CourseDetailItemParams params2 = new CourseDetailItemParams(true, mCurMemberId, !mCanEdit, mCourseId);
+//                params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+//                params2.setCourseParams(mCourseDetailParams);
+
                 TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
                         courseName, classId, arguments);
             } else {
@@ -399,6 +405,10 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
             mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);
+            if (mDetailItemParams != null) {
+                mCourseChapterAdapter.setCourseDetailParams
+                        (mDetailItemParams.getCourseParams());
+            }
             mCourseChapterArray = new ArrayList();
             listView.setAdapter(mCourseChapterAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
