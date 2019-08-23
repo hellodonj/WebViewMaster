@@ -428,11 +428,15 @@ public class CompletedHomeworkListTabFragment extends ContactsListFragment{
             if (list == null || list.size() <= 0) {
                 if (getPageHelper().isFetchingFirstPage()) {
                     getCurrAdapterViewHelper().clearData();
-                    TipsHelper.showToast(getActivity(),
-                            getString(R.string.no_data));
+                    if (getUserVisibleHint()) {
+                        TipsHelper.showToast(getActivity(),
+                                getString(R.string.no_data));
+                    }
                 } else {
-                    TipsHelper.showToast(getActivity(),
-                            getString(R.string.no_more_data));
+                    if (getUserVisibleHint()) {
+                        TipsHelper.showToast(getActivity(),
+                                getString(R.string.no_more_data));
+                    }
                 }
                 return;
             }
