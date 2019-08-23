@@ -222,6 +222,7 @@ public class StatisticNetHelper {
                         }
                     }
                 };
+        listener.setShowLoading(true);
         RequestHelper.sendPostRequest(context, ServerUrl.GET_TASK_CORRECT_RATE_BASE_URL, params, listener);
     }
 
@@ -262,6 +263,7 @@ public class StatisticNetHelper {
                         }
                     }
                 };
+        listener.setShowLoading(true);
         RequestHelper.sendPostRequest(context, ServerUrl.GET_TASK_COMPLETE_RATE_BASE_URL, params, listener);
     }
 
@@ -294,6 +296,7 @@ public class StatisticNetHelper {
                         }
                     }
                 };
+        listener.setShowLoading(true);
         RequestHelper.sendPostRequest(context, ServerUrl.GET_TASK_DETAIL_STATIS_BASE_URL, params, listener);
     }
 }
