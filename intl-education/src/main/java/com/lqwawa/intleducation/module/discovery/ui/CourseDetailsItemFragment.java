@@ -259,6 +259,12 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                     memberId = mDetailItemParams.getMemberId();
                 }
                 arguments.putString("memberId",memberId);
+
+
+//                CourseDetailItemParams params2 = new CourseDetailItemParams(true, mCurMemberId, !mCanEdit, mCourseId);
+//                params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+//                params2.setCourseParams(mCourseDetailParams);
+
                 TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
                         courseName, classId, arguments);
             } else {
@@ -399,6 +405,10 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
             mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);
+            if (mDetailItemParams != null) {
+                mCourseChapterAdapter.setCourseDetailParams
+                        (mDetailItemParams.getCourseParams());
+            }
             mCourseChapterArray = new ArrayList();
             listView.setAdapter(mCourseChapterAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
@@ -491,8 +501,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
-        } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN && (courseParams.isMyCourse() || (courseParams.isClassCourseEnter() &&
-                !courseParams.isClassParent() && courseParams.isClassStudent()))) {
+        } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&  (courseParams.isClassCourseEnter() &&
+                !courseParams.isClassParent() && courseParams.isClassStudent())) {
             //三习教案 班级学程进入，不是家长，是学生；显示学习统计
             mBottomLayout.setVisibility(View.VISIBLE);
             mBtnCourseStatistics.setVisibility(View.GONE);
