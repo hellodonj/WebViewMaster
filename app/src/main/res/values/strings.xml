@@ -1818,77 +1818,76 @@
     <string name="str_teacher_assistant_tip">Marking completed, please check your account via Me > My Account, entry may be delayed</string>
     <string name="str_save_statistic_unuser">Cloud space is empty</string>
 
-    <string name="str_student_look_other_work">学生查看他人作业</string>
-    <string name="str_can_read">学生可查看他人作业</string>
-    <string name="str_no_read">学生不可查看他人作业</string>
-    <string name="str_view_other_permission_tips">老师已设定为不可查看</string>
-    <string name="str_set_can_read">设为可查看</string>
-    <string name="str_set_cannot_read">设为不可查看</string>
-    <string name="str_accession_mode">加入方式</string>
-    <string name="str_approval_for_accession">审批加入</string>
-    <string name="str_pay_to_join">付费加入</string>
-    <string name="str_click_change">(点击修改)</string>
-    <string name="str_pls_input_class_price">请输入班级价格</string>
-    <string name="str_class_price_not_null">请输入有效的班级价格</string>
-    <string name="str_charge_class_tips">本班级为付费班级,需支付:</string>
-    <string name="str_pay_join_class_tip">不可重复加入同一个班级</string>
-    <string name="str_join_success">加入班级成功</string>
-    <string name="str_creating">正在创建...</string>
-    <string name="str_repeat_role_info">同一个班级内学生不允许有多重角色</string>
-    <string name="str_go_to_pay">前往支付</string>
-    <string name="str_not_required">(非必选)</string>
+    <string name="str_student_look_other_work">Visible to others</string>
+    <string name="str_can_read">Visible to Students</string>
+    <string name="str_no_read">Invisible to Students</string>
+    <string name="str_view_other_permission_tips">Teacher has set homework as invisible</string>
+    <string name="str_set_can_read">Set as Visible</string>
+    <string name="str_set_cannot_read">Set as Invisible</string>
+    <string name="str_accession_mode">Join Method</string>
+    <string name="str_approval_for_accession">Approval</string>
+    <string name="str_pay_to_join">Pay</string>
+    <string name="str_click_change">(Touch to modify)</string>
+    <string name="str_pls_input_class_price">Please enter price</string>
+    <string name="str_class_price_not_null">Please enter a valid price</string>
+    <string name="str_charge_class_tips">Class not free, price:</string>
+    <string name="str_pay_join_class_tip">Class joined already</string>
+    <string name="str_join_success">Joined successfully</string>
+    <string name="str_creating">Creating...</string>
+    <string name="str_repeat_role_info">Student cannot have multiple roles in one class</string>
+    <string name="str_go_to_pay">Pay</string>
+    <string name="str_not_required">(Optional)</string>
 
-    <string name="str_learning_statistic">学习统计</string>
-    <string name="str_normal_homework_statistic">平时作业统计</string>
-    <string name="str_test_statistic">测试统计</string>
-    <string name="str_exam_statistic">考试统计</string>
+    <string name="str_learning_statistic">Learning Statistics</string>
+    <string name="str_normal_homework_statistic">Homework</string>
+    <string name="str_test_statistic">Test</string>
+    <string name="str_exam_statistic">Exam</string>
     <string-array name="array_grade_detail">
-        <item>优秀</item>
-        <item>良好</item>
-        <item>及格</item>
-        <item>不及格</item>
+        <item>Excellent</item>
+        <item>Good</item>
+        <item>Pass</item>
+        <item>Fail</item>
     </string-array>
 
-    <string name="str_homework_intro_rate">作业布置率</string>
-    <string name="str_homework_mark_rate">作业批阅率</string>
-    <string name="str_homework_complete_rate">作业完成率</string>
+    <string name="str_homework_intro_rate">Task Assignment Rate</string>
+    <string name="str_homework_mark_rate">Task Marking Rate</string>
+    <string name="str_homework_complete_rate">Task Completion Rate</string>
     <string-array name="array_intro_detail">
-        <item>已布置</item>
-        <item>未布置</item>
+        <item>Assigned</item>
+        <item>Unassigned</item>
     </string-array>
 
     <string-array name="array_mark_detail">
-        <item>已批阅</item>
-        <item>未批阅</item>
+        <item>Marked</item>
+        <item>Unmarked</item>
     </string-array>
 
     <string-array name="array_complete_detail">
-        <item>已完成</item>
-        <item>未完成</item>
+        <item>Completed</item>
+        <item>Uncompleted</item>
     </string-array>
 
-    <string name="str_total_res">共%d个资源</string>
-    <string name="str_need_mark_homework_count">需批阅%d个作业</string>
-    <string name="str_need_commit_homework_count">需提交%d个作业</string>
-    <string name="str_complete_rate_detail">已布置%1$d个作业,班级人数%2$d个</string>
-    <string name="str_task_num">%d个</string>
-    <string name="str_uncomplete_statistic">未完成统计</string>
+    <string name="str_total_res">%d Resources in Total</string>
+    <string name="str_need_mark_homework_count">%d Tasks Need Correction</string>
+    <string name="str_need_commit_homework_count">%d Tasks Need Submission</string>
+    <string name="str_complete_rate_detail">%1$d tasks assigned, %2$d students in class</string>
+    <string name="str_task_num">%d</string>
+    <string name="str_uncomplete_statistic">Incompletion Statistics</string>
 
-    <string name="str_un_mark">未批阅</string>
-    <string name="str_un_complete">未完成</string>
-    <string name="str_detail">详情</string>
-    <string name="str_total_homework_mark">共%d个作业已批阅</string>
-    <string name="str_student_complete_hint">布置任务完成率:</string>
-    <string name="str_already_intro">已布置:</string>
-    <string name="str_already_complete">已完成:</string>
-    <string name="str_intro_detail">%1$d个作业, %2$d个测试,%3$d个考试</string>
-    <string name="str_activation">激活</string>
-    <string name="str_activation_course_please">请参加或激活课程!</string>
-    <string name="str_no_activation_lqCourse_shop_for_student">此任务来源于《%s》课程，请激活此课程后提交任务。</string>
-    <string name="str_no_activation_lqCourse_shop_for_parent">此任务来源于《%1$s》课程，请使用学生账号%2$s
-        激活此课程后提交学习任务。</string>
-    <string name="str_un_remark_homework">未批作业</string>
-    <string name="str_publish_right_now">学生可随时作答</string>
-    <string name="str_publish_according_to_time">学生按开始时间作答</string>
-    <string name="str_invite_join_class">邀请您加入《%s》</string>
+    <string name="str_un_mark">Unmarked</string>
+    <string name="str_un_complete">Uncompleted</string>
+    <string name="str_detail">Details</string>
+    <string name="str_total_homework_mark">%d tasks marked</string>
+    <string name="str_student_complete_hint">Task completion rate:</string>
+    <string name="str_already_intro">Assigned:</string>
+    <string name="str_already_complete">Completed:</string>
+    <string name="str_intro_detail">%1$d Tasks, %2$d Tests, %3$d Exams</string>
+    <string name="str_activation">Activate</string>
+    <string name="str_activation_course_please">Please attend or activate course!</string>
+    <string name="str_no_activation_lqCourse_shop_for_student">Task came from course %s, please activate the course first.</string>
+    <string name="str_no_activation_lqCourse_shop_for_parent">Task came from course %1$s, please use student account %2$s to activate course first.</string>
+    <string name="str_un_remark_homework">Unmarked Task</string>
+    <string name="str_publish_right_now">Answer at Any Time</string>
+    <string name="str_publish_according_to_time">Answer After Start</string>
+    <string name="str_invite_join_class">Invitation to 《%s》</string>
 </resources>
