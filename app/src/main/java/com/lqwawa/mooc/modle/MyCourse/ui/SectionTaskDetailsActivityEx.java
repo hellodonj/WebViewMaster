@@ -69,7 +69,6 @@ import com.galaxyschool.app.wawaschool.pojo.PPTAndPDFCourseInfoCode;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTask;
-import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
 import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
@@ -97,7 +96,6 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.response.LQResourceDetailVo;
-import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.helper.LearningTaskHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -118,7 +116,6 @@ import com.lqwawa.libs.filedownloader.DownloadService;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
-import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.share.ShareInfo;
@@ -126,7 +123,6 @@ import com.oosic.apps.share.SharedResource;
 import com.osastudio.common.utils.TimerUtils;
 import com.umeng.socialize.media.UMImage;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -991,6 +987,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
      */
     private void openTeacherReview(@NonNull LqTaskCommitVo vo) {
         if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(mLqTaskCommitListVo)) return;
+        if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            UIUtil.showToastSafe(R.string.label_immediate_comment_tip);
+            return;
+        }
         int taskId = vo.getId();
         if (EmptyUtil.isEmpty(mLqTaskCommitListVo.getTaskInfo())) return;
         // 打分规则
@@ -1008,8 +1008,6 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
      */
     private void openTeacherReviewDetail(@NonNull LqTaskCommitVo vo) {
         if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(mLqTaskCommitListVo)) return;
-
-
         // 是否老师点评
         boolean isHasVoiceReview = vo.isHasVoiceReview();
         int handleRole = mTaskParams.getHandleRole();
@@ -1018,6 +1016,10 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         boolean isReviewPermission = handleRole == UserHelper.MoocRoleType.TEACHER
                 || handleRole == UserHelper.MoocRoleType.EDITOR
                 || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
+        //如果三习教案，不显示立即参加的参数
+        if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            isReviewPermission = false;
+        }
         // 自动测评每页的分数
         ArrayList<Integer> autoEvalArray = vo.buildAutoEvalList();
         // 老师点评的分数,老师点评的评语
@@ -1045,6 +1047,15 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             return;
         }
         // 处理过的角色
+        boolean isTempAudition = isAudition;
+        if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            isTempAudition = true;
+        }
+        if (isTempAudition) {
+            // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
+            mHandleRole = RoleType.ROLE_TYPE_VISITOR;
+        }
+
         int resultRoleType = transferRoleType(mHandleRole);
         if (isAudition) {
             // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者

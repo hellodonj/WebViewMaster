@@ -545,4 +545,6 @@
     <string name="label_unlock_tip">测试/考试未解锁，不可添加</string>
     <string name="label_teaching_plan_expire_tip">请联系班级老师</string>
     <string name="input_activation_please">请输入激活码!</string>
+
+    <string name="label_immediate_comment_tip">请前往空中学校-学习任务中完成点评</string>
 </resources>
