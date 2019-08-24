@@ -794,8 +794,9 @@ public class LQCourseHelper {
     }
 
 
-    public static void getSxExamDetail(String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
+    public static void getSxExamDetail(@NonNull String token,String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
         RequestVo requestVo = new RequestVo();
+        requestVo.addParams("token",token);
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
         if (!TextUtils.isEmpty(classId)) requestVo.addParams("classId", classId);

@@ -216,7 +216,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         }
         refreshCartPoint();
         int invertRole = invertRole(lessonSourceParams == null ? -1 : lessonSourceParams.getRole());
-        LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
+        LQCourseHelper.getSxExamDetail(lessonSourceParams.getMemberId(),courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
     }
 
     private int invertRole(int role) {
