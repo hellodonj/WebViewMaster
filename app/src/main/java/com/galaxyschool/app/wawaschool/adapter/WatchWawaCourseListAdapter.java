@@ -12,6 +12,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceOpenUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 
 import java.util.List;
 
@@ -23,11 +24,14 @@ public class WatchWawaCourseListAdapter extends BaseAdapter {
     private Context context;
     private List<ResourceInfoTag> list;
     private CallbackListener callbackListener;
+    private int taskType;
     public WatchWawaCourseListAdapter(Context context,
                                       List<ResourceInfoTag> list,
+                                      int taskType,
                                       CallbackListener callbackListener) {
         this.context = context;
         this.list = list;
+        this.taskType = taskType;
         this.callbackListener = callbackListener;
     }
 
@@ -94,7 +98,11 @@ public class WatchWawaCourseListAdapter extends BaseAdapter {
                     }
                 });
                 //分割线
-                holder.dividerLineView.setVisibility(View.VISIBLE);
+                if (taskType == StudyTaskType.ENGLISH_WRITING){
+                    holder.dividerLineView.setVisibility(View.GONE);
+                } else {
+                    holder.dividerLineView.setVisibility(View.VISIBLE);
+                }
             }
         }
         return convertView;

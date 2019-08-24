@@ -460,7 +460,7 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
         if (courseGridView != null) {
             courseGridView.setNumColumns(1);
             courseListAdapter = new WatchWawaCourseListAdapter(getActivity(),
-                    resourceInfoTagList,
+                    resourceInfoTagList,superTaskType,
                     result -> {
                 if (taskType == StudyTaskType.ENGLISH_WRITING){
                     addCoursewareImageView.setVisibility(View.VISIBLE);
