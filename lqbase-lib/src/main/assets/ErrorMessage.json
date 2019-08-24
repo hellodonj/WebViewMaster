@@ -1090,6 +1090,18 @@
     {
       "errorCode": "00277",
       "errorMessage": "统计天数超出限制！"
+    },
+    {
+      "errorCode": "00278",
+      "errorMessage": "Email格式不正确！"
+    },
+    {
+      "errorCode": "00279",
+      "errorMessage": "课程ID为空！"
+    },
+    {
+      "errorCode": "00280",
+      "errorMessage": "课程资源类别不正确！"
     }
   ]
 }
