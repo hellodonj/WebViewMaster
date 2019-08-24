@@ -1,9 +1,11 @@
 package com.lqwawa.intleducation.module.learn.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +36,7 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -90,6 +93,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     // 可以选择的最大条目
     private int mMultipleChoiceCount;
     private int maxSelect = 1;
+    private String sectionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,6 +140,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         mAddCartContainer.setOnClickListener(this);
         selectAll.setOnClickListener(this);
         okBtn.setOnClickListener(this);
+
+        registerBroadcastReceiver();
     }
 
     @Override
@@ -148,7 +154,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         Intent intent = getIntent();
         courseId = intent.getStringExtra("courseId");
         sourceType = intent.getIntExtra("sourceType", 1);
-        String sectionId = intent.getStringExtra("sectionId");
+        sectionId = intent.getStringExtra("sectionId");
         mTeacherVisitor = intent.getBooleanExtra("isTeacherVisitor", false);
 //        courseParams = (CourseDetailParams) intent.getSerializableExtra("courseDetailParams");
         lessonSourceParams = (LessonSourceParams) intent.getSerializableExtra("lessonSourceParams");
@@ -161,7 +167,6 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         if (lessonSourceParams != null) courseParams = lessonSourceParams.getCourseParams();
         mReadWeikeHelper = new ReadWeikeHelper(this);
         treeView.setExtras(mReadWeikeHelper);
-        CourseDetailParams courseParams = lessonSourceParams.getCourseParams();
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mClassTeacher = (courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
@@ -214,6 +219,10 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
                 finish();
             });
         }
+        updateUi();
+    }
+
+    private void updateUi() {
         refreshCartPoint();
         int invertRole = invertRole(lessonSourceParams == null ? -1 : lessonSourceParams.getRole());
         LQCourseHelper.getSxExamDetail(courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
@@ -278,6 +287,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         extrasVo = new ExamsAndTestExtrasVo(courseParams == null ? "" : courseParams.getSchoolId(), lessonSourceParams, lessonNeedFlag,
                 status, isVideoCourse, mClassTeacher, false, lessonSourceParams.isChoiceMode(), libraryType, mMultipleChoiceCount);
 
+        container.removeAllViews();
+        if (root != null) root.getChildren().clear();
         List<SxExamDetailVo.TaskListVO> taskList = examDetailVo.taskList;
         for (int index = 0; index < taskList.size(); index++) {
             SxExamDetailVo.TaskListVO taskListVO = taskList.get(index);
@@ -606,4 +617,33 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
         return false;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+    /**
+     * 注册广播事件,接收事件刷新
+     */
+    protected void registerBroadcastReceiver() {
+        IntentFilter myIntentFilter = new IntentFilter();
+        myIntentFilter.addAction(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION);//作业库发布的刷新
+        //注册广播
+        registerReceiver(mBroadcastReceiver, myIntentFilter);
+    }
+
+    /**
+     * 数据刷新广播的处理
+     */
+    protected BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(LessonSourceFragment.LESSON_RESOURCE_CHOICE_PUBLISH_ACTION)) {// 读写单
+                updateUi();
+            }
+        }
+    };
 }

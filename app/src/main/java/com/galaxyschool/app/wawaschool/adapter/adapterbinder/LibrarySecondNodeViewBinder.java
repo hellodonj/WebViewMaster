@@ -56,8 +56,8 @@ public class LibrarySecondNodeViewBinder extends CheckableNodeViewBinder {
                 context.getString(R.string.label_unauthorized_container));
         subTitle.setTextColor(entity.isAuthorized() ? UIUtil.getColor(R.color.textBlue) : UIUtil.getColor(R.color.textSecond));
         arrowRight.setRotation(-90);
-        int size = treeNode.getParent().getChildren().size();
-        if (treeNode.getIndex() == size ) leftLine.setVisibility(View.GONE);
+//        int size = treeNode.getParent().getChildren().size();
+//        if (treeNode.getIndex() == size ) leftLine.setVisibility(View.GONE);
     }
 
     //item的点击事件
