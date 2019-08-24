@@ -532,7 +532,13 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                             // 成绩统计没有主编概念
                             resultRoleType = RoleType.ROLE_TYPE_TEACHER;
                         }
-                        if (isAudition && !mTaskParams.isTeacherVisitor()) {
+
+                        //如果三习教案，强制设置权限 试听模式
+                        boolean isTempAudition = isAudition;
+                        if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            isTempAudition = true;
+                        }
+                        if (isTempAudition && !mTaskParams.isTeacherVisitor()) {
                             // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
                             resultRoleType = RoleType.ROLE_TYPE_VISITOR;
                         }
@@ -540,7 +546,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         int commitTaskId = studentCommit.getId();
 
                         String taskScoreReMark = studentCommit.getTaskScoreRemark();
-                        String courseId = mCourseParams.getCourseId();
+                         String courseId = mCourseParams.getCourseId();
                         String courseName = mCourseParams.getCourseName();
 
                         String classId = mCourseParams.getClassId();
