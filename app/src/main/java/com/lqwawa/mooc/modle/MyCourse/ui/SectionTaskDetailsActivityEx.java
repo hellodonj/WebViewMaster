@@ -522,17 +522,6 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
 
                         // 处理过的角色
                         int resultRoleType = transferRoleType(mHandleRole);
-                        // 是否是主编
-                        boolean isOnlineReporter = resultRoleType == RoleType.ROLE_TYPE_EDITOR;
-                        // 是否是小编
-                        boolean isOnlineHost = resultRoleType == RoleType.ROLE_TYPE_TEACHER;
-
-                        // 成绩统计 主编
-                        if (resultRoleType == RoleType.ROLE_TYPE_EDITOR) {
-                            // 成绩统计没有主编概念
-                            resultRoleType = RoleType.ROLE_TYPE_TEACHER;
-                        }
-
                         //如果三习教案，强制设置权限 试听模式
                         boolean isTempAudition = isAudition;
                         if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
@@ -541,6 +530,15 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         if (isTempAudition && !mTaskParams.isTeacherVisitor()) {
                             // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
                             resultRoleType = RoleType.ROLE_TYPE_VISITOR;
+                        }
+                        // 是否是主编
+                        boolean isOnlineReporter = resultRoleType == RoleType.ROLE_TYPE_EDITOR;
+                        // 是否是小编
+                        boolean isOnlineHost = resultRoleType == RoleType.ROLE_TYPE_TEACHER;
+                        // 成绩统计 主编
+                        if (resultRoleType == RoleType.ROLE_TYPE_EDITOR) {
+                            // 成绩统计没有主编概念
+                            resultRoleType = RoleType.ROLE_TYPE_TEACHER;
                         }
 
                         int commitTaskId = studentCommit.getId();
