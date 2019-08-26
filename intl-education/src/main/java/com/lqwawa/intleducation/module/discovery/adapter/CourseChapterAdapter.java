@@ -406,10 +406,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             if ((role == UserHelper.MoocRoleType.STUDENT ||
                                     role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                                 //锁住提示
-                                enterExamOrTestDialog();
+                                enterExamOrTestDialog(TYPE_TEST);
                             } else if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                     //解锁
-                                    unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                    unLockDialog(position,TYPE_TEST,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                                 }
                         }
                     });
@@ -574,7 +574,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         if(isJoinCourse){ //已经参加
                                             //锁住 提示
                                             if (!chapterVo.isUnlock() && examType == TYPE_EXAM) {
-                                                enterExamOrTestDialog();
+                                                enterExamOrTestDialog(TYPE_TEST);
                                             } else {
                                                 //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
                                                 //未锁 就进入
@@ -857,11 +857,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         if ((role == UserHelper.MoocRoleType.STUDENT ||
                                 role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                             //锁住提醒
-                            enterExamOrTestDialog();
+                            enterExamOrTestDialog(TYPE_EXAM);
                         } else {
                             if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                 //解锁
-                                unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                unLockDialog(position,TYPE_EXAM,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                             }
                         }
                     }
@@ -891,7 +891,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             if (isJoinCourse) { //学生或者家长 是否参加对进入有影响
                                 //锁住 提示
                                 if (!chapterVo.isUnlock()) { //锁住提示
-                                    enterExamOrTestDialog();
+                                    enterExamOrTestDialog(TYPE_EXAM);
                                 } else { //没锁直接进入
                                     ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams,null);
                                 }
@@ -938,9 +938,21 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //解锁弹框
-    private void unLockDialog(int position,boolean isUnLock,String classId, String courseId, String chapterId) {
+    private void unLockDialog(int position,int type,boolean isUnLock,String classId, String courseId, String chapterId) {
+        String lockMessage;
+        if (type == TYPE_EXAM) {
+            lockMessage = getString(R.string.label_exam_lock_dialog);
+        } else {
+            lockMessage = getString(R.string.label_test_lock_dialog);
+        }
+        String unLockMessage;
+        if (type == TYPE_EXAM) {
+            unLockMessage = getString(R.string.label_exam_unlock_dialog);
+        } else {
+            unLockMessage = getString(R.string.label_test_unlock_dialog);
+        }
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                activity, null, (isUnLock ? getString(R.string.label_exam_test_lock_dialog) : getString(R.string.label_exam_test_unlock_dialog))
+                activity, null, (isUnLock ? lockMessage : unLockMessage)
                 , getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -999,9 +1011,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //被锁提示
-    private void enterExamOrTestDialog() {
+    private void enterExamOrTestDialog(int type) {
+        String message;
+        if (type == TYPE_EXAM) {
+            message = getString(R.string.label_exam_lock_tip);
+        } else {
+            message = getString(R.string.label_test_lock_tip);
+        }
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                activity, null, getString(R.string.label_exam_test_lock_tip)
+                activity, null,message
                 , null, null, getString(R.string.confirm),
                 new DialogInterface.OnClickListener() {
                     @Override
