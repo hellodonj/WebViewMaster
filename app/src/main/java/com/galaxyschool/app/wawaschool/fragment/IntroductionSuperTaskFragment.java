@@ -541,7 +541,12 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                         }
                         if (lookStudentTaskFinish) {
-                            enterStudentFinishedHomeworkListActivity(data);
+                            if (data.getType() == StudyTaskType.ENGLISH_WRITING
+                                    && !data.isStudentDoneTask()){
+                                //英文写作未完成不给进入下个界面
+                            } else {
+                                enterStudentFinishedHomeworkListActivity(data);
+                            }
                         } else if (isPick) {
                             enterListenReadAndWriteDetail(data);
                         } else {
