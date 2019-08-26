@@ -569,6 +569,5 @@
     <string name="label_unlock_tip">Unable to add locked test/exam</string>
     <string name="label_teaching_plan_expire_tip">Please contact teacher</string>
     <string name="input_activation_please">Please enter activation code!</string>
-
-    <string name="label_immediate_comment_tip">请前往空中学校-学习任务中完成点评</string>
+    <string name="label_immediate_comment_tip">Please correct homework in Online School>Learning Tasks</string>
 </resources>
