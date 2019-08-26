@@ -572,8 +572,11 @@
         <item>Listen &#038; Speak Test</item>
     </string-array>
     <string name="label_exam_test_score">%s Points</string>
-    <string name="label_exam_test_lock_tip">Not time to do test/exam, please await unlocking</string>
-    <string name="label_exam_test_unlock_dialog">Unlock Test/Exam?</string>
-    <string name="label_exam_test_lock_dialog">Lock Test/Exam?</string>
+    <string name="label_test_lock_tip">Not time to do test, please await unlocking</string>
+    <string name="label_exam_lock_tip">Not time to do exam, please await unlocking</string>
+    <string name="label_exam_unlock_dialog">Unlock Exam?</string>
+    <string name="label_test_unlock_dialog">Unlock Test?</string>
+    <string name="label_exam_lock_dialog">Lock Exam?</string>
+    <string name="label_test_lock_dialog">Lock Test?</string>
     <string name="label_activation_code_tip">Please enter activation code</string>
 </resources>
