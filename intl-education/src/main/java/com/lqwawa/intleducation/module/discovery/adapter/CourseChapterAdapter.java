@@ -579,7 +579,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                                 //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
                                                 //未锁 就进入
                                                 if (examType == TYPE_EXAM) {
-                                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams,null);
                                                 } else if (examType == TYPE_LESSON) {
                                                     //普通教案详情入口
                                                     toLessonDetailsActivity(vo, isFreeUser, true);
@@ -600,7 +600,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         ChapterVo chapterVo = list.get(position);
                                         int examType = chapterVo.getExamType();
                                         if (examType == TYPE_EXAM) {
-                                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams,null);
                                         } else if (examType == TYPE_LESSON) {
                                             //普通教案详情入口
                                             toLessonDetailsActivity(vo, isFreeUser, true);
@@ -893,13 +893,13 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                 if (!chapterVo.isUnlock()) { //锁住提示
                                     enterExamOrTestDialog();
                                 } else { //没锁直接进入
-                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams,null);
                                 }
                             } else {
                                 if (!isCourseSelect) UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
                             }
                         } else {
-                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams,null);
                         }
                     } else {
                         boolean hide = !list.get(position).isIsHide();

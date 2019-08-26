@@ -1566,6 +1566,7 @@ public class Utils {
                     }
                     lookResDto.setCourseId(tag.getCourseId());
                     lookResDto.setCourseTaskType(tag.getCourseTaskType());
+                    lookResDto.setResCourseType(tag.getResourceType());
                     resultList.add(lookResDto);
                 } else {
 //					{
@@ -1587,6 +1588,7 @@ public class Utils {
                     }
                     lookResDto.setCourseId(tag.getCourseId());
                     lookResDto.setCourseTaskType(tag.getCourseTaskType());
+                    lookResDto.setResCourseType(tag.getResourceType());
                     resultList.add(lookResDto);
                 }
             }

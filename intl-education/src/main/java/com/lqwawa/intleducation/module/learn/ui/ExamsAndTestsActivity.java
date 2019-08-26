@@ -225,7 +225,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private void updateUi() {
         refreshCartPoint();
         int invertRole = invertRole(lessonSourceParams == null ? -1 : lessonSourceParams.getRole());
-        LQCourseHelper.getSxExamDetail(lessonSourceParams.getMemberId(),courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
+        LQCourseHelper.getSxExamDetail(lessonSourceParams.getMemberId(), courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
     }
 
     private int invertRole(int role) {
@@ -246,7 +246,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
      * @param lessonSourceParams
      */
     public static void start(Context context, String courseId, String sectionId, boolean mTeacherVisitor,
-                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams) {
+                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams,Bundle extras) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -256,11 +256,12 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         intent.putExtra("libraryType", libraryType);
         intent.putExtra("sourceType", sourceType);
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
+        intent.putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras);
         context.startActivity(intent);
     }
 
     public static void start(Context context, int taskType, int multipleChoiceCount, String courseId, String sectionId, boolean mTeacherVisitor,
-                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams) {
+                             int status, int libraryType, int sourceType, LessonSourceParams lessonSourceParams,Bundle extras) {
         if (context instanceof Activity) activity = (Activity) context;
         Intent intent = new Intent(context, ExamsAndTestsActivity.class);
         intent.putExtra("courseId", courseId);
@@ -272,6 +273,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         intent.putExtra("mTeacherVisitor", mTeacherVisitor);
         intent.putExtra("taskType", taskType);
         intent.putExtra(KEY_EXTRA_MULTIPLE_CHOICE_COUNT, multipleChoiceCount);
+        intent.putExtra(Common.Constance.KEY_EXTRAS_STUDY_TASK, extras);
         context.startActivity(intent);
     }
 
