@@ -1,7 +1,6 @@
 package com.galaxyschool.app.wawaschool.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +17,7 @@ import com.galaxyschool.app.wawaschool.BookDetailActivity;
 import com.galaxyschool.app.wawaschool.BookStoreListActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.ShellActivity;
+import com.galaxyschool.app.wawaschool.adapter.adapterbinder.factory.WatchCourseResourceBinderFactory;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceSplicingUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -31,9 +31,9 @@ import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.recycler.RecyclerItemDecoration;
 import com.lqwawa.intleducation.common.ui.treeview.TreeNode;
 import com.lqwawa.intleducation.common.ui.treeview.TreeView;
-import com.galaxyschool.app.wawaschool.adapter.adapterbinder.factory.WatchCourseResourceBinderFactory;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
@@ -52,6 +52,7 @@ import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.Cou
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.courseselect.CourseShopClassifyParams;
 import com.lqwawa.intleducation.module.discovery.ui.classcourse.organlibrary.OrganLibraryViewPresenter;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.filtrate.HideSortType;
+import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryUtils;
@@ -153,7 +154,9 @@ public class WatchWaWaCourseResourceListPickerFragment extends AdapterFragment i
     }
 
     private void loadSixlLibraryLabelData() {
-        LQCourseHelper.loadSixlLibraryLabelData(schoolId, this);
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQCourseHelper.loadSixlLibraryLabelData(languageRes,schoolId, this);
     }
 
     public void initViews() {
