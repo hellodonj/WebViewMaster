@@ -1509,7 +1509,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         } else if (id == R.id.join_tv) {
             //沿用原先“立即购买”流程，修改文字为“立即参加”。学生或者家长身份只有在班级课程和习课程点击“立即参加”时，
             // 弹出激活码输入框，其他入口提示获取授权。激活码加绑定班级需要给新接口。
-            if (!isAuthorized) {
+            if (!isAuthorized &&( mCourseDetailParams != null && !mCourseDetailParams.isClassCourseEnter())) {
                 UIUtil.showToastSafe(R.string.label_request_authorization_tip);
                 return;
             }
