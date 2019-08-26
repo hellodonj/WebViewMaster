@@ -1155,7 +1155,8 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                 CommitTask commitTask = CommitTask.buildVo(vo);
                 commitTask.setCommitTaskId(commitTask.getId());
                 if (EmptyUtil.isEmpty(commitTask.getTaskScore())) {
-                    commitTask.setTaskScore("0");
+//                    commitTask.setTaskScore("0");
+                    continue;
                 }
                 String studentId = vo.getStudentId();
                 if (vo.isSpeechEvaluation()) {
@@ -1165,8 +1166,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         evalFilterMap.put(studentId, commitTask);
                     } else {
                         // 不是第一次提交,需要进行比较分数高低
-                        if (EmptyUtil.isEmpty(commitTask.getTaskScore()) ||
-                                EmptyUtil.isEmpty(maxCommit.getTaskScore())) {
+                        if (EmptyUtil.isEmpty(maxCommit.getTaskScore())) {
                             continue;
                         }
                         if ((Double.parseDouble(commitTask.getTaskScore()) >
@@ -1190,8 +1190,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
                         }
                     } else {
                         // 不是第一次提交,需要进行比较分数高低
-                        if (EmptyUtil.isEmpty(commitTask.getTaskScore()) ||
-                                EmptyUtil.isEmpty(maxCommit.getTaskScore())) {
+                        if (EmptyUtil.isEmpty(maxCommit.getTaskScore())) {
                             continue;
                         }
                         if ((Double.parseDouble(commitTask.getTaskScore()) >
