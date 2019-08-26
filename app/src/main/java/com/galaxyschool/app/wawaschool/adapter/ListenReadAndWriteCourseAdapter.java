@@ -122,7 +122,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         ResourceInfoTag info = getItem(position);
         holder.deleteImage.setOnClickListener(v -> {
             //删除
-            ImageLoader.getInstance().clearMemoryCache();
+            viewMap.clear();
             deleteListener.onBack(position);
         });
         holder.courseImageView.setOnClickListener(v -> {
