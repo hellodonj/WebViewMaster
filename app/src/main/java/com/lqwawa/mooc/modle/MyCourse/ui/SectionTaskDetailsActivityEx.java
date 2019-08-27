@@ -706,17 +706,33 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         commitTask.setHasVoiceReview(studentCommit.isHasVoiceReview());
         commitTask.setTaskScore(studentCommit.getTaskScore());
         commitTask.setTaskScoreRemark(studentCommit.getTaskScoreRemark());
-        boolean isHasReviewPermission =
-                mHandleRole == UserHelper.MoocRoleType.TEACHER
-                        || mHandleRole == UserHelper.MoocRoleType.EDITOR
-                        || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
-        if (isHasReviewPermission) {
+        boolean isHasReviewPermission;
+        if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            // 处理过的角色
+            int resultRoleType = transferRoleType(mHandleRole);
+            isHasReviewPermission= isHasReviewPermission(resultRoleType);
             if (!studentCommit.isHasVoiceReview() && isCheckImmediate) {
                 openTeacherReview(studentCommit);
                 return;
             }
+        }else {
+            isHasReviewPermission = isHasReviewPermission(mHandleRole);
+            if (isHasReviewPermission){
+                if (!studentCommit.isHasVoiceReview() && isCheckImmediate) {
+                    openTeacherReview(studentCommit);
+                    return;
+                }
+            }
         }
         getVideoInfo(commitTask, isHasReviewPermission);
+    }
+
+    private boolean isHasReviewPermission(int resultRoleType) {
+        boolean isHasReviewPermission =
+                resultRoleType == UserHelper.MoocRoleType.TEACHER
+                        || resultRoleType == UserHelper.MoocRoleType.EDITOR
+                        || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
+        return isHasReviewPermission;
     }
 
     private void share(TaskInfoVo vo) {
@@ -1017,9 +1033,7 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
         int handleRole = mTaskParams.getHandleRole();
         // 是否有点评的权限
         // 主编小编,任务的创建者
-        boolean isReviewPermission = handleRole == UserHelper.MoocRoleType.TEACHER
-                || handleRole == UserHelper.MoocRoleType.EDITOR
-                || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
+        boolean isReviewPermission = isHasReviewPermission(handleRole);
         //如果三习教案，不显示立即参加的参数
         if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
             isReviewPermission = false;
@@ -1046,10 +1060,6 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
     protected void checkSpeechTaskDetail(@NonNull LqTaskCommitVo vo, boolean isCheckImmediate) {
         super.checkSpeechTaskDetail(vo, isCheckImmediate);
 
-        if (vo.isVideoType()) {
-            openDubbingTask(vo, isCheckImmediate);
-            return;
-        }
         // 处理过的角色
         boolean isTempAudition = isAudition;
         if (mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
@@ -1060,16 +1070,12 @@ public class SectionTaskDetailsActivityEx extends SectionTaskDetailsActivity {
             mHandleRole = RoleType.ROLE_TYPE_VISITOR;
         }
 
-        int resultRoleType = transferRoleType(mHandleRole);
-        if (isAudition) {
-            // 如果是试听,点击批阅cell或者查看批阅的时候 都是浏览者
-            resultRoleType = RoleType.ROLE_TYPE_VISITOR;
+        if (vo.isVideoType()) {
+            openDubbingTask(vo, isCheckImmediate);
+            return;
         }
 
-        boolean isReviewPermission =
-                mHandleRole == UserHelper.MoocRoleType.TEACHER
-                        || mHandleRole == UserHelper.MoocRoleType.EDITOR
-                        || TextUtils.equals(sectionResListVo.getCreateId(), UserHelper.getUserId());
+        boolean isReviewPermission = isHasReviewPermission(mHandleRole);
 
         if (isReviewPermission) {
             // 老师
