@@ -1477,7 +1477,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             }
 
                             if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    || taskType == StudyTaskType.TASK_ORDER
+                                    || taskType == StudyTaskType.Q_DUBBING)
                                     && courseData == null){
                                 taskParams.put("ResId", lookResDtos.get(0).getResId());
                                 taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());

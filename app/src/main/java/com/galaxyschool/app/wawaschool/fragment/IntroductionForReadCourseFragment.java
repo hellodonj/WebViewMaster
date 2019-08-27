@@ -1480,7 +1480,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 lookResDto.setCompletionMode(info.getCompletionMode());
                 lookResDto.setCourseTaskType(info.getCourseTaskType());
                 lookResDto.setCourseId(info.getCourseId());
-                lookResDto.setResCourseType(info.getResourceType());
                 lookResDtos.add(lookResDto);
             }
         }
@@ -1514,7 +1513,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 lookResDto.setCompletionMode(info.getCompletionMode());
                 lookResDto.setCourseTaskType(info.getCourseTaskType());
                 lookResDto.setCourseId(info.getCourseId());
-                lookResDto.setResCourseType(info.getResourceType());
                 lookResDtos.add(lookResDto);
             }
         }
@@ -1548,7 +1546,6 @@ public class IntroductionForReadCourseFragment extends ContactsListFragment
                 infoTag.setResPropType(info.getResPropType());
                 infoTag.setCourseId(info.getCourseId());
                 infoTag.setCourseTaskType(info.getCourseTaskType());
-                infoTag.setResourceType(info.getResCourseType());
                 resourceInfoTags.add(infoTag);
             }
         }
