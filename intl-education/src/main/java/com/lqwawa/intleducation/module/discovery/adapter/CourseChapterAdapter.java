@@ -351,7 +351,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     int examType = vo.getExamType();
                     // TODO 加判断逻辑 老师看孩子
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType != TYPE_EXAM &&
-                            position == 1 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
+                            position == 1 && !vo.isBuyed() ) {// 三习教案不显示 发现页面 第一张 显示试听字样 && (!isOwner || mTeacherVisitor)
                         holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                         if (!isCourseSelect) {
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
@@ -588,7 +588,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         }else {
                                             //试听的进入
                                             if (examType != TYPE_EXAM &&
-                                                    position == 1 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {
+                                                    position == 1 && !vo.isBuyed() ) {//&& (!isOwner || mTeacherVisitor)
                                                 //普通教案详情入口
                                                 toLessonDetailsActivity(vo, isFreeUser, true);
                                             }else {

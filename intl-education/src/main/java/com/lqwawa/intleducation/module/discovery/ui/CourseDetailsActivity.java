@@ -1509,16 +1509,16 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         } else if (id == R.id.join_tv) {
             //沿用原先“立即购买”流程，修改文字为“立即参加”。学生或者家长身份只有在班级课程和习课程点击“立即参加”时，
             // 弹出激活码输入框，其他入口提示获取授权。激活码加绑定班级需要给新接口。
-            if (!isAuthorized && isSchoolEnter) {
-                UIUtil.showToastSafe(R.string.label_request_authorization_tip);
-                return;
-            }
             if (ButtonUtils.isFastDoubleClick()) {
                 return;
             }
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
+                if (!isAuthorized && isSchoolEnter) {
+                    UIUtil.showToastSafe(R.string.label_request_authorization_tip);
+                    return;
+                }
                 if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) { //班级课程进入 isMyCourse 习课程进入提示“请联系班级老师”
                     if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
                         String schoolId = mCourseDetailParams.getSchoolId();
@@ -1540,7 +1540,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         applyActivationHelper.requestActivationPermission();
                     }
                 } else {
-                    UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
+                    if (isSelfCourse(courseVo)){
+                        UIUtil.showToastSafe(R.string.join_self_course_tip);
+                    }else {
+                        UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
+                    }
                 }
             }
         }
