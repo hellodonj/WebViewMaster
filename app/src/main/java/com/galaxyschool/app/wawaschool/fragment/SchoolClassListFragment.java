@@ -288,12 +288,15 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
 
                     LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
                     TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    ImageView wawaIconImageView = (ImageView) view.findViewById(R.id.iv_wawa_icon);
                     if (payLayout != null && wawaPayNumView != null){
+                        payLayout.setVisibility(View.VISIBLE);
                         if (data.getPrice() > 0){
-                            payLayout.setVisibility(View.VISIBLE);
+                            wawaIconImageView.setVisibility(View.VISIBLE);
                             wawaPayNumView.setText(String.valueOf(data.getPrice()));
                         } else {
-                            payLayout.setVisibility(View.GONE);
+                            wawaIconImageView.setVisibility(View.GONE);
+                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
                         }
                     }
 
@@ -466,12 +469,15 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
 
                     LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
                     TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    ImageView wawaIconImageView = (ImageView) view.findViewById(R.id.iv_wawa_icon);
                     if (payLayout != null && wawaPayNumView != null){
+                        payLayout.setVisibility(View.VISIBLE);
                         if (data.getPrice() > 0){
-                            payLayout.setVisibility(View.VISIBLE);
+                            wawaIconImageView.setVisibility(View.VISIBLE);
                             wawaPayNumView.setText(String.valueOf(data.getPrice()));
                         } else {
-                            payLayout.setVisibility(View.GONE);
+                            wawaIconImageView.setVisibility(View.GONE);
+                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
                         }
                     }
 
