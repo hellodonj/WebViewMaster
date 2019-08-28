@@ -38,6 +38,8 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.CheckLqShopPmnHelper;
+import com.galaxyschool.app.wawaschool.helper.RecordHomeWorkLocalHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
@@ -61,6 +63,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +79,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private TextView finishStudyTaskStatus;
     private TextView headTitleView;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
+    private TextView headRightTextV;
     private int roleType = -1;
     private String TaskId;
     private HomeworkListInfo homeworkListInfo;
@@ -159,6 +163,12 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private void initView() {
         //标题
         headTitleView = (TextView) findViewById(R.id.contacts_header_title);
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_btn);
+        headRightTextV.setOnClickListener(v -> {
+            StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                loadStudyData(true);
+            }).setViewOthersTaskPermission(TaskId,homeworkListInfo.getViewOthersTaskPermisson());
+        });
         if (headTitleView != null) {
             if (lookStudentTaskFinish) {
                 if (!TextUtils.isEmpty(studentName)) {
@@ -176,6 +186,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 headTitleView.setText(getString(R.string.make_task));
             } else if (taskType == StudyTaskType.MULTIPLE_Q_DUBBING) {
                 headTitleView.setText(getString(R.string.str_q_dubbing));
+            } else if (taskType == StudyTaskType.MULTIPLE_OTHER
+                    || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT) {
+                headTitleView.setText(getString(R.string.other));
             } else {
                 headTitleView.setText(getString(R.string.str_listen_read_and_write));
             }
@@ -194,7 +207,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     || isSuperChildTask
                     || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                     || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
-                    || taskType == StudyTaskType.MULTIPLE_Q_DUBBING) {
+                    || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                    || taskType == StudyTaskType.MULTIPLE_OTHER
+                    || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT) {
                 textView.setVisibility(View.INVISIBLE);
             } else {
                 textView.setText(getString(R.string.share));
@@ -273,6 +288,28 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
         }
     }
 
+    private void updateRightView(){
+        //更新右上角的是否可以查看
+        if (homeworkListInfo != null && roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (TextUtils.equals(getMemeberId(),homeworkListInfo.getTaskCreateId())){
+                //创建者
+                if (isPick || lookStudentTaskFinish || isHistoryClass || isSuperChildTask){
+
+                } else if (taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT
+                        || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                        || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
+                        || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE){
+                    headRightTextV.setVisibility(View.VISIBLE);
+                    if (homeworkListInfo.getViewOthersTaskPermisson() == 1) {
+                        headRightTextV.setText(getString(R.string.str_set_can_read));
+                    } else {
+                        headRightTextV.setText(getString(R.string.str_set_cannot_read));
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -281,6 +318,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
 
     private void refreshData() {
         if (HomeworkCommitFragment.hasCommented()) {
+            if (taskType == StudyTaskType.MULTIPLE_OTHER && roleType == RoleType.ROLE_TYPE_STUDENT){
+                return;
+            }
             loadStudyData(true);
         }
     }
@@ -329,6 +369,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 if (result != null && result.isSuccess()) {
                     List<HomeworkListInfo> taskData = JSONObject.parseArray(result.getModel().getData()
                             .toString(), HomeworkListInfo.class);
+                    if (isPick){
+                        removeSpeechCourseTask(taskData);
+                    }
                     if (taskData != null && taskData.size() > 0) {
                         updateDataView(taskData, updateData);
                     }
@@ -341,6 +384,19 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             url = ServerUrl.GET_SECOND_TOGETHER_TASK_DETAIL_BASE_URL;
         }
         RequestHelper.sendPostRequest(getActivity(), url, param, listener);
+    }
+
+    private void removeSpeechCourseTask(List<HomeworkListInfo> taskData){
+        if (taskData != null && taskData.size() > 0){
+            Iterator<HomeworkListInfo> it = taskData.iterator();
+            while (it.hasNext()){
+                HomeworkListInfo info = it.next();
+                if (info.getRepeatCourseCompletionMode() == 3){
+                    //语音评测
+                    it.remove();
+                }
+            }
+        }
     }
 
     private void loadStudentFinishData() {
@@ -395,22 +451,24 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
             if ((info.getType() == StudyTaskType.LISTEN_READ_AND_WRITE
                     || info.getType() == StudyTaskType.MULTIPLE_RETELL_COURSE
                     || info.getType() == StudyTaskType.MULTIPLE_TASK_ORDER
-                    || info.getType() == StudyTaskType.MULTIPLE_Q_DUBBING)
+                    || info.getType() == StudyTaskType.MULTIPLE_Q_DUBBING
+                    || info.getType() == StudyTaskType.MULTIPLE_OTHER
+                    || info.getType() == StudyTaskType.MULTIPLE_OTHER_SUBMIT)
                     && !lookStudentTaskFinish) {
                 //听说 + 读写 任务对象
                 homeworkListInfo = info;
                 updateFinishStatus();
+                updateRightView();
             } else if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
-                    || (isSuperChildTask && (info.getType() == StudyTaskType.WATCH_HOMEWORK
-                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))
-                    || (lookStudentTaskFinish && (info.getType() == StudyTaskType.WATCH_HOMEWORK
-                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK))
+                    || info.getType() == StudyTaskType.WATCH_HOMEWORK
+                    || info.getType() == StudyTaskType.SUBMIT_HOMEWORK
                     || info.getType() == StudyTaskType.Q_DUBBING) {
                 //听说课
                 if (isSuperChildTask) {
                     if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
+                        updateRightView();
                     } else {
                         listenData.add(info);
                     }
@@ -423,6 +481,7 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                     if (TextUtils.equals(info.getId() + "", TaskId)) {
                         homeworkListInfo = info;
                         updateFinishStatus();
+                        updateRightView();
                     } else {
                         readAndWriteData.add(info);
                     }
@@ -649,6 +708,9 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
                 }
             };
             addAdapterViewHelper(LISTEN_DATA_TAG, listenGridViewHelper);
+            if (taskType == StudyTaskType.MULTIPLE_OTHER){
+                RecordHomeWorkLocalHelper.updateToLocal(listenData,getMemeberId(),TaskId);
+            }
             getAdapterViewHelper(LISTEN_DATA_TAG).setData(listenData);
             parentLayout.addView(listenChildView);
         }
@@ -828,12 +890,27 @@ public class ListenReadAndWriteStudyTaskFragment extends ContactsListFragment {
     private void enterStudyTaskDetail(HomeworkListInfo data) {
         data.setOnlineReporter(isReporter);
         data.setOnlineHost(isHost);
-        data.setStudyTaskType(StudyTaskType.LISTEN_READ_AND_WRITE);
+        if (taskType == StudyTaskType.MULTIPLE_OTHER){
+            data.setStudyTaskType(StudyTaskType.MULTIPLE_OTHER);
+        } else {
+            data.setStudyTaskType(StudyTaskType.LISTEN_READ_AND_WRITE);
+        }
         data.setIsSuperChildTask(isSuperChildTask);
         data.setIsHistoryClass(isHistoryClass);
         data.setAirClassId(airClassId);
         CourseOpenUtils.openStudyTask(getActivity(), data, roleType, isHeadMaster,
                 getMemeberId(), sortStudentId, childId, userInfo, false);
+        if (taskType == StudyTaskType.MULTIPLE_OTHER){
+            if (roleType == RoleType.ROLE_TYPE_STUDENT && !isHistoryClass){
+                if (!data.isStudentDoneTask()){
+                    data.setIsStudentDoneTask(true);
+                    getAdapterViewHelper(LISTEN_DATA_TAG).update();
+                    RecordHomeWorkLocalHelper.updateLocalData(TaskId,getMemeberId(),
+                            getAdapterViewHelper(LISTEN_DATA_TAG).getData());
+                }
+            }
+            return;
+        }
         if (roleType == RoleType.ROLE_TYPE_STUDENT
                 && !data.isStudentDoneTask()
                 && TextUtils.equals(data.getTaskType(), String.valueOf(StudyTaskType.WATCH_HOMEWORK))) {

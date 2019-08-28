@@ -23,11 +23,12 @@ public class ContactsModifyClassNameFragment extends ContactsClassCategorySelect
     public static final String TAG = ContactsModifyClassNameFragment.class.getSimpleName();
 
     public interface Constants extends ContactsClassCategorySelectorFragment.Constants {
-        public static final int REQUEST_CODE_MODIFY_CLASS_NAME = 10011;
+        int REQUEST_CODE_MODIFY_CLASS_NAME = 10011;
 
-        public static final String EXTRA_CLASS_NAME_CHANGED = "classNameChanged";
-        public static final String EXTRA_CLASS_ID = "classId";
-        public static final String EXTRA_CLASS_NAME = "className";
+        String EXTRA_CLASS_NAME_CHANGED = "classNameChanged";
+        String EXTRA_CLASS_ID = "classId";
+        String EXTRA_CLASS_NAME = "className";
+        String EXTRA_FROM_MODIFY_CLASS_NAME = "from_modify_class_name";
     }
 
     private String classId;

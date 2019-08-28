@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +29,6 @@ import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.LqResponseDataVo;
 import com.lqwawa.intleducation.base.vo.PagerArgs;
@@ -43,6 +43,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.lessontask.missionrequire.MissionRequireFragment;
 import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
+import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsActivity;
 import com.lqwawa.intleducation.module.discovery.ui.CourseDetailsItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -54,13 +55,13 @@ import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.TaskUploadBackVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.DialogHelper;
 import com.oosic.apps.iemaker.base.BaseUtils;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
-import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.io.File;
@@ -71,7 +72,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SectionTaskDetailsActivity extends AppCompatActivity {
+public class SectionTaskDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String ACTIVITY_BUNDLE_OBJECT = "ACTIVITY_BUNDLE_OBJECT";
     // 是否是游离的身份
@@ -92,14 +93,13 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     private List<Fragment> mFragments = new ArrayList<>();
     protected TaskCommitListFragment mFragment0, mFragment1;
 
-    protected int img_width;
-    protected int img_height;
-    protected ImageOptions imageOptions;
 
     protected TopBar topBar;
     protected ImageView mResIcon;
     protected TextView mTvTotalGrade;
     protected TextView mResName;
+    private FrameLayout mFromLayout;
+    private TextView mTvFromCourse;
     // protected SlidePagerAdapter tabPagerAdapter;
 
     protected SectionResListVo sectionResListVo;
@@ -125,6 +125,8 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     protected CourseDetailParams mCourseParams;
     protected PagerArgs pagerArgs = null;
     private int orderByType = 0;
+    private int libraryType;
+    private String courseId,memberId;
 
     public static void startForResult(Activity activity, SectionResListVo vo) {
         activity.startActivityForResult(new Intent(activity, SectionTaskDetailsActivity.class)
@@ -133,7 +135,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
 
     public static void startForResultEx(Activity activity, SectionResListVo vo,
                                         String memberId, String schoolId, boolean isFromMyCourse,
-                                        String taskId, int originRoleType, int roleType, String examId,
+                                        String taskId, int originRoleType, int roleType, String examId,int libraryType,
                                         @NonNull SectionTaskParams params) {
         Intent intent = new Intent();
         intent.putExtra("SectionResListVo", vo);
@@ -144,6 +146,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         intent.putExtra("originRoleType", originRoleType);
         intent.putExtra("roleType", roleType);
         intent.putExtra("examId", examId);
+        intent.putExtra("libraryType",libraryType);
         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         intent.setClassName(MainApplication.getInstance().getPackageName(),
                 "com.lqwawa.mooc.modle.MyCourse.ui.SectionTaskDetailsActivityEx");
@@ -167,7 +170,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     public static void startForResultEx(Activity activity, SectionResListVo vo,
                                         String memberId, String schoolId, boolean isFromMyCourse,
                                         String taskId, int originRoleType, int roleType,
-                                        String examId, boolean freeUser,
+                                        String examId, boolean freeUser,int libraryType,
                                         @NonNull SectionTaskParams params) {
         Intent intent = new Intent();
         intent.putExtra("SectionResListVo", vo);
@@ -179,6 +182,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         intent.putExtra("roleType", roleType);
         intent.putExtra("examId", examId);
         intent.putExtra(KEY_ROLE_FREE_USER, freeUser);
+        intent.putExtra("libraryType",libraryType);
         intent.putExtra(ACTIVITY_BUNDLE_OBJECT, params);
         intent.setClassName(MainApplication.getInstance().getPackageName(),
                 "com.lqwawa.mooc.modle.MyCourse.ui.SectionTaskDetailsActivityEx");
@@ -207,11 +211,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.section_task_details_head);
         activity = this;
         sectionResListVo = (SectionResListVo) getIntent().getSerializableExtra("SectionResListVo");
-
+        memberId = getIntent().getStringExtra("memberId");
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-
-
         topBar = (TopBar) findViewById(R.id.top_bar);
         // @date   :2018/4/14 0014 下午 1:37
         // @func   :V5.5对批阅页面的更改
@@ -226,6 +228,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         mHandleRole = getIntent().getIntExtra("roleType", 0);
         examId = getIntent().getStringExtra("examId");
         isAudition = getIntent().getBooleanExtra(KEY_ROLE_FREE_USER, false);
+        libraryType = getIntent().getIntExtra("libraryType",5);
         if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mTaskParams = (SectionTaskParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
             mCourseParams = mTaskParams.getCourseParams();
@@ -299,7 +302,6 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 }
             }
         });*/
-        initImageConfig();
         initViews();
     }
 
@@ -316,11 +318,22 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
     TaskCommitListFragment.DoWorkListener doWorkListener = new TaskCommitListFragment.DoWorkListener() {
         @Override
         public void onDoWork() {
+            if(mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN &&
+                    (mCourseParams.isClassCourseEnter()  || mCourseParams.isMyCourse())) {
+                ToastUtil.showToast(SectionTaskDetailsActivity.this, R.string.teaching_plan_do_homework_tip);
+                return;
+            }
             doTask();
         }
 
         @Override
         public void onSpeechEvaluation() {
+            if(mCourseParams != null && mCourseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN &&
+                    (mCourseParams.isClassCourseEnter()  || mCourseParams.isMyCourse())) {
+                ToastUtil.showToast(SectionTaskDetailsActivity.this,
+                        R.string.teaching_plan_do_homework_tip);
+                return;
+            }
             doSpeechEvaluation();
         }
 
@@ -334,7 +347,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             if (EmptyUtil.isEmpty(sectionResListVo) || EmptyUtil.isEmpty(vo)) {
                 return;
             }
-
+            
             if (vo.isSpeechEvaluation() || vo.isVideoType()) {
                 // 点击的是语音评测的cell
                 checkSpeechTaskDetail(vo, isCheckMark);
@@ -501,21 +514,6 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 }
             };
 
-    protected void initImageConfig() {
-        int p_width = Math.min(activity.getWindowManager().getDefaultDisplay().getWidth()
-                , activity.getWindowManager().getDefaultDisplay().getHeight());
-        img_width = (p_width - DisplayUtil.dip2px(activity, 20)) / 2;
-        img_height = img_width * 9 / 16;
-
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_XY)
-                .setCrop(false)
-                .setRadius(DisplayUtil.dip2px(activity, 8))
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
-    }
-
     protected void initViews() {
         //初始化顶部工具条
         topBar.setBack(true);
@@ -557,7 +555,9 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
         mResIcon = (ImageView) findViewById(R.id.iv_res_icon);
         mTvTotalGrade = (TextView) findViewById(R.id.tv_total_grade);
         mResName = (TextView) findViewById(R.id.tv_res_name);
-
+        mFromLayout = (FrameLayout) findViewById(R.id.from_layout);
+        mTvFromCourse = (TextView) findViewById(R.id.tv_from_course);
+        mFromLayout.setOnClickListener(this);
         updateData();
     }
 
@@ -572,7 +572,7 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             if (sectionTaskDetailsVo.getOrigin() != null) {
                 SectionTaskOriginVo originVo = sectionTaskDetailsVo.getOrigin();
                 if (StringUtils.isValidString(originVo.getThumbnail())) {
-                    // x.image().bind(coverIv, originVo.getThumbnail(), imageOptions);
+                    // XImageLoader.loadImage(coverIv, originVo.getThumbnail(), imageOptions);
                 }
 
 
@@ -592,6 +592,15 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
             mTvTotalGrade.setVisibility(View.GONE);
         }
         mResName.setText(sectionResListVo.getName());
+
+        if (libraryType== OrganLibraryType.TYPE_TEACHING_PLAN){
+            mFromLayout.setVisibility(View.VISIBLE);
+            mTvFromCourse.setVisibility(View.VISIBLE);
+            mTvFromCourse.setText(String.format(UIUtil.getString(R.string.label_from_course), sectionResListVo.getLinkCourseName()));
+        }else {
+            mTvFromCourse.setVisibility(View.GONE);
+            mFromLayout.setVisibility(View.GONE);
+        }
         if (/*sectionTaskDetailsVo.getCommitList() != null &&*/ sectionResListVo != null) {
             String studentId = getStudentId();
             // Mooc大厅的入口，拉取列表，不需要传 机构Id和ClassId,因为要拉所有的已经提交的学习任务
@@ -1178,6 +1187,18 @@ public class SectionTaskDetailsActivity extends AppCompatActivity {
                 : (activity.getIntent().getBooleanExtra(SectionTaskDetailsActivity
                 .KEY_IS_FROM_MY, false)
                 ? SourceFromType.LQ_MY_COURSE : SourceFromType.LQ_COURSE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.from_layout) {
+            boolean canEdit = TextUtils.equals(UserHelper.getUserId(), memberId);
+            if (EmptyUtil.isNotEmpty(sectionResListVo)){
+                courseId = String.valueOf(sectionResListVo.getLinkCourseId());
+            }
+            // 等同大厅打开课程详情
+            CourseDetailsActivity.start(activity, courseId, canEdit, UserHelper.getUserId());
+        }
     }
 
     // protected TaskCommitListFragment fragment0;

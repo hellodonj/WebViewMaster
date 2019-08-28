@@ -27,6 +27,7 @@ import com.lqwawa.intleducation.common.utils.LqServerHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommentVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -55,13 +56,9 @@ public class LqTaskCommentAdapter extends MyBaseAdapter {
         list = new ArrayList<LqTaskCommentVo>();
         this.onContentChangedListener = listener;
         p_width = activity.getWindowManager().getDefaultDisplay().getWidth();
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setCircular(true)//圆形
-                .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                .build();
+        imageOptions =
+                XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                        R.drawable.user_header_def, false, true, null);
     }
 
     @Override
@@ -100,9 +97,7 @@ public class LqTaskCommentAdapter extends MyBaseAdapter {
             convertView.setTag(holder);
         }
         if (vo.getType() == 0) {
-            x.image().bind(holder.userHeadIv
-                    , LqServerHelper.getFullImgUrl((vo.getCommentHeadPicUrl() + "").trim())
-                    , imageOptions);
+            XImageLoader.loadImage(holder.userHeadIv, LqServerHelper.getFullImgUrl((vo.getCommentHeadPicUrl() + "").trim()), imageOptions);
             holder.gradeRatingBar.setVisibility(View.GONE);
             holder.nickNameTv.setText("" + vo.getCommentName());
             holder.commentPraiseTv.setText("" + vo.getPraiseCount());

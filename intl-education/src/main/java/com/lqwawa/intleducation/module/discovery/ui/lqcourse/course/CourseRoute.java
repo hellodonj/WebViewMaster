@@ -1,28 +1,23 @@
 package com.lqwawa.intleducation.module.discovery.ui.lqcourse.course;
 
 import android.app.Activity;
-import android.support.annotation.AnyRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.SPUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.intleducation.factory.constant.SharedConstant;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
 import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
-import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
-import com.lqwawa.intleducation.module.discovery.tool.CourseDetails;
-import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.lqwawa.tools.DialogHelper;
@@ -183,7 +178,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) || isOnlineCounselor) {
+        if ((!entity.isExpire() && entity.isCourseTeacher(memberId, UserHelper.getUserId())) || isOnlineCounselor) {
             // 如果是课程的老师
             // 并且是空中课堂的老师(空中课堂老师辅导老师身份处理)
             if (EmptyUtil.isNotEmpty(listener)) {
@@ -260,7 +255,7 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
+        if ((!entity.isExpire() && entity.isCourseTeacher(memberId, UserHelper.getUserId())) ||
                 courseParams.isOrganCounselor() ||
                 isOnlineCounselor) {
             // 如果是机构辅导老师
@@ -355,9 +350,9 @@ public class CourseRoute {
         isOnlineCounselor = isOnlineCounselor(entity, isOnlineTeacher);
 
         // 判断是否是学程的老师身份
-        if (entity.isCourseTeacher(memberId, UserHelper.getUserId()) ||
+        if ((!entity.isExpire() && (entity.isCourseTeacher(memberId, UserHelper.getUserId())) ||
                 courseParams.isClassParent() ||
-                courseParams.isClassTeacher() ||
+                courseParams.isClassTeacher()) ||
                 isOnlineCounselor) {
 
             // 如果是机构辅导老师
@@ -435,10 +430,14 @@ public class CourseRoute {
                     CourseHelper.requestJoinInCourse(memberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
                         @Override
                         public void onDataLoaded(Boolean aBoolean) {
-                            if (aBoolean) {
-                                listener.route(true, tutorialMode, tutorialTeacher, entity);
+                            if (entity.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                                boolean isNeedToLearn = false;
+                                if (aBoolean && entity.isLabelAuthorized()) {
+                                    isNeedToLearn = true;
+                                }
+                                listener.route(isNeedToLearn, tutorialMode, tutorialTeacher, entity);
                             } else {
-                                listener.route(false, tutorialMode, tutorialTeacher, entity);
+                                listener.route(aBoolean, tutorialMode, tutorialTeacher, entity);
                             }
                         }
                     });
@@ -477,6 +476,8 @@ public class CourseRoute {
             if (params.isClassCourseEnter()) {
                 // 班级学程进来的
                 return CourseDetailType.COURSE_DETAIL_CLASS_ENTER;
+            } else if (params.isMyCourse()) {
+                return CourseDetailType.COURSE_DETAIL_MOOC_ENTER;
             } else {
                 // 从机构学程进来的
                 return CourseDetailType.COURSE_DETAIL_SCHOOL_ENTER;

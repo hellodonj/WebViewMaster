@@ -1,4 +1,5 @@
 package ca.uol.aig.fftpack;
+
 /**
   * sine FFT transform of a real odd sequence.
   * @author Baoshe Zhang

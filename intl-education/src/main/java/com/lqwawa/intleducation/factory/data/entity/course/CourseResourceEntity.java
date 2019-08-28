@@ -27,6 +27,15 @@ public class CourseResourceEntity extends BaseVo {
     private int screenType;
     private boolean selected;
     private int taskType;
+    private boolean fromSXCourse;
+
+    public boolean isFromSXCourse() {
+        return fromSXCourse;
+    }
+
+    public void setFromSXCourse(boolean fromSXCourse) {
+        this.fromSXCourse = fromSXCourse;
+    }
 
     public int getTaskType() {
         return taskType;

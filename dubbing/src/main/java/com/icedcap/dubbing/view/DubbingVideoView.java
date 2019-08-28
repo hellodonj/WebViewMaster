@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,12 +14,12 @@ import android.widget.LinearLayout;
 import com.icedcap.dubbing.DubbingActivity;
 import com.icedcap.dubbing.DubbingPreviewActivity;
 import com.icedcap.dubbing.R;
+import tv.danmaku.ijk.media.IjkVideoView;
 import com.icedcap.dubbing.utils.AudioMedia;
 import com.icedcap.dubbing.utils.DimenUtil;
 import com.icedcap.dubbing.utils.MediaUtil;
 import com.osastudio.common.utils.LogUtils;
 
-import tv.danmaku.ijk.media.IjkVideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 

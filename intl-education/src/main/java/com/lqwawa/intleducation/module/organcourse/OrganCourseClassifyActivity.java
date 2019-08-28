@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.PresenterActivity;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
-import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.NoPermissionView;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.base.widgets.adapter.PagerChangedAdapter;
@@ -50,7 +49,6 @@ import com.lqwawa.intleducation.module.organcourse.filtrate.NewOrganCourseFiltra
 import com.lqwawa.intleducation.module.organcourse.pager.CourseClassifyPagerFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.watchcourse.WatchCourseResourceActivity;
-import com.nostra13.universalimageloader.utils.L;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -180,8 +178,8 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         mTopBar.setBack(true);
         if (mLibraryType >= OrganLibraryType.TYPE_LQCOURSE_SHOP
-                && mLibraryType <= OrganLibraryType.TYPE_VIDEO_LIBRARY) {
-            mTopBar.setTitle(mLibraryNames[mLibraryType]);
+                && mLibraryType <= OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mTopBar.setTitle(mLibraryNames[mLibraryType] );
         }
         mTopBar.setTitleColor(R.color.colorDark);
         mContentLayout = (ScrollView) findViewById(R.id.lay_content);
@@ -274,6 +272,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                     // 进入课程详情
                     // 线下机构学程馆,是从空中学校进入的 isSchoolEnter = true;
                     // String roles = UserHelper.getUserInfo().getRoles();
+//                    mSchoolId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
                     SchoolHelper.requestSchoolInfo(UserHelper.getUserId(), mSchoolId, new DataSource.Callback<SchoolInfoEntity>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
@@ -440,7 +439,7 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
             tipInfo = UIUtil.getString(R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {
@@ -572,14 +571,12 @@ public class OrganCourseClassifyActivity extends PresenterActivity<OrganCourseCl
                             @NonNull final String roles,
                             int libraryType) {
 
-//        final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
+        //final String finalOrganId = "5e069b1a-9d90-49ed-956c-946e9f934b68";
         final String finalOrganId = organId;
+
         if (libraryType == OrganLibraryType.TYPE_BRAIN_LIBRARY) {
-            LQCourseConfigEntity lqCourseConfigEntity = new LQCourseConfigEntity();
-            lqCourseConfigEntity.setId(OrganLibraryUtils.BRAIN_LIBRARY_ID);
-            lqCourseConfigEntity.setLevel(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL);
-            lqCourseConfigEntity.setEntityOrganId(finalOrganId);
-            lqCourseConfigEntity.setConfigValue(activity.getString(R.string.common_brain_library));
+            LQCourseConfigEntity lqCourseConfigEntity =
+                    OrganLibraryUtils.getEntityForBrainLibrary(activity, finalOrganId);
             enterOrganCourseFiltrate(activity, lqCourseConfigEntity, libraryType,
                     selectResource, data, roles);
             return;

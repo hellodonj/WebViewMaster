@@ -1095,6 +1095,18 @@
     {
       "errorCode": "00277",
       "errorMessage": "Statistical number of days exceeds limit！"
+    },
+    {
+      "errorCode": "00278",
+      "errorMessage": "Invalid email address！"
+    },
+    {
+      "errorCode": "00279",
+      "errorMessage": "Course id is blank！"
+    },
+    {
+      "errorCode": "00280",
+      "errorMessage": "Incorrect resource type！"
     }
   ]
 }

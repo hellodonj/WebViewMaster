@@ -2,9 +2,7 @@ package com.lqwawa.intleducation.factory.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -23,7 +21,6 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.BaseModelDataEntity;
-import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseEntity;
 import com.lqwawa.intleducation.factory.data.entity.LQwawaBaseResponse;
 import com.lqwawa.intleducation.factory.data.entity.online.OnlineStudyOrganEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CheckPermissionResponseVo;
@@ -39,7 +36,6 @@ import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
-
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -222,7 +218,7 @@ public class SchoolHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostAddSubscribeSchool);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -268,7 +264,7 @@ public class SchoolHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRemoveSubscribeSchool);
         params.setAsJsonContent(true);
         params.setBodyContent(jsonObject.toJSONString());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -408,7 +404,7 @@ public class SchoolHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestFilterOrganUrl);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -478,7 +474,7 @@ public class SchoolHelper {
         RequestParams params = new RequestParams(AppConfig.ServerUrl.PostRequestTutorialOrgan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParamsWithoutToken());
-        params.setConnectTimeout(1000);
+        params.setConnectTimeout(10000);
         LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
         x.http().post(params, new StringCallback<String>() {
 
@@ -501,6 +497,51 @@ public class SchoolHelper {
                 }
             }
 
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");
+                if (null != callback) {
+                    callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 三习关联教辅
+     * @param courseId
+     * @param pageIndex
+     * @param pageSize
+     * @param callback
+     */
+    public static void requestSxRelationCourseList(@Nullable String courseId,
+                                                   int pageIndex,int pageSize,
+                                                   @NonNull DataSource.Callback<List<CourseVo>> callback){
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("courseId",courseId);
+        requestVo.addParams("pageIndex",pageIndex);
+        requestVo.addParams("pageSize",pageSize);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostGetSxRelationCourseList);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParamsWithoutToken());
+        params.setConnectTimeout(10000);
+        LogUtil.i(SchoolHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String str) {
+                LogUtil.i(SchoolHelper.class, "request " + params.getUri() + " result :" + str);
+                TypeReference<ResponseVo<List<CourseVo>>> typeReference =
+                        new TypeReference<ResponseVo<List<CourseVo>>>() {};
+                ResponseVo<List<CourseVo>> result = JSON.parseObject(str, typeReference);
+                if (result.isSucceed()) {
+                    List<CourseVo> data = result.getData();
+                    if (!EmptyUtil.isEmpty(callback)) {
+                        callback.onDataLoaded(data);
+                    }
+                } else {
+                    Factory.decodeRspCode(result.getCode(), callback);
+                }
+            }
             @Override
             public void onError(Throwable throwable, boolean b) {
                 LogUtil.w(SchoolHelper.class, "request " + params.getUri() + " failed");

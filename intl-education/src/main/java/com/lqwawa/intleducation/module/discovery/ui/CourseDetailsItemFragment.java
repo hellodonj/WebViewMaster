@@ -45,12 +45,15 @@ import com.lqwawa.intleducation.module.discovery.vo.CourseIntroduceVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.lqwawa.intleducation.module.learn.ui.SectionTaskDetailsActivity.ACTIVITY_BUNDLE_OBJECT;
 
 /**
  * Created by XChen on 2016/11/14.
@@ -116,6 +119,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     private boolean mTeacherVisitor;
 
     private boolean isFromScan;
+    //是否作业布置率进入
+    private boolean isArrangementEnter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,7 +146,6 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         courseVo = (CourseVo) arguments.getSerializable(CourseVo.class.getSimpleName());
         isOnlineTeacher = getArguments().getBoolean(KEY_EXTRA_ONLINE_TEACHER, false);
         isFromScan = getArguments().getBoolean("isFromScan", false);
-
         if (arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -150,6 +154,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         mDataType = mDetailItemParams.getDataType();
         mNeedReadFlag = isJoin && mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN;
         mCourseId = mDetailItemParams.getCourseId();
+        isArrangementEnter = getArguments().getBoolean("isArrangementEnter");
 
         if (mDetailItemParams.getDataType() == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             CourseVo vo = (CourseVo) getArguments().getSerializable("CourseVo");
@@ -215,15 +220,58 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             // UIUtil.showToastSafe("学习统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
             String classId = mCourseDetailParams.getClassId();
-            LearningStatisticsActivity.show(getActivity(), UIUtil.getString(R.string.title_learning_statistics), classId, mCourseId, 0, mCourseDetailParams);
+            if (mCourseDetailParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN){
+                String courseName = mCourseDetailParams.getCourseName();
+                //如果是老师，
+                if ( mCourseDetailParams.isClassTeacher()){
+                    //roleType 0老师 1学生
+                    TaskSliderHelper.onLearnStatisticListener.enterLearnStatisticActivity(getActivity(),Integer.parseInt(mCourseId),
+                            courseName,classId,0,"");
+                } else{ // if (!mCourseDetailParams.isClassTeacher() && !mCourseDetailParams.isClassParent() && mCourseDetailParams.isClassStudent())
+                    String studentId = UserHelper.getUserId();
+                    if (mCourseDetailParams.isClassParent()) {
+                        // 家长身份
+                        studentId = mDetailItemParams.getMemberId();
+                    }
+                    TaskSliderHelper.onLearnStatisticListener.enterLearnStatisticActivity(getActivity(),Integer.parseInt(mCourseId),
+                            courseName,classId,1,studentId);
+                }
+            }else {
+                LearningStatisticsActivity.show(getActivity(), UIUtil.getString(R.string.title_learning_statistics), classId, mCourseId, 0, mCourseDetailParams);
+            }
         } else if (viewId == R.id.btn_course_statistics) {
             // 课程统计
             // UIUtil.showToastSafe("课程统计");
             CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
             String classId = mCourseDetailParams.getClassId();
-            CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
-            params.setCourseParams(mCourseDetailParams);
-            CourseStatisticsActivity.show(getActivity(), params);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                String courseName = mCourseDetailParams.getCourseName();
+                Bundle arguments = new Bundle();
+                arguments.putSerializable(CourseVo.class.getSimpleName(),courseVo);
+                arguments.putBoolean(KEY_EXTRA_ONLINE_TEACHER,isOnlineTeacher);
+                arguments.putBoolean("isFromScan", isFromScan);
+                arguments.putSerializable(CourseDetailsItemFragment.FRAGMENT_BUNDLE_OBJECT, mDetailItemParams);
+                arguments.putSerializable(ACTIVITY_BUNDLE_OBJECT,mCourseDetailParams);
+                arguments.putBoolean("teacherVisitor", mTeacherVisitor);
+                String memberId = UserHelper.getUserId();
+                if (mCourseDetailParams.isClassParent()) {
+                    // 家长身份
+                    memberId = mDetailItemParams.getMemberId();
+                }
+                arguments.putString("memberId",memberId);
+
+
+//                CourseDetailItemParams params2 = new CourseDetailItemParams(true, mCurMemberId, !mCanEdit, mCourseId);
+//                params2.setDataType(CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN);
+//                params2.setCourseParams(mCourseDetailParams);
+
+                TaskSliderHelper.onLearnStatisticListener.enterCourseStatisticActivity(getActivity(), Integer.parseInt(mCourseId),
+                        courseName, classId, arguments);
+            } else {
+                CourseStatisticsParams params = new CourseStatisticsParams(classId, mCourseId, courseVo.getName());
+                params.setCourseParams(mCourseDetailParams);
+                CourseStatisticsActivity.show(getActivity(), params);
+            }
         }
     }
 
@@ -339,17 +387,28 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     }
 
     private void initData() {
+        if (isArrangementEnter){
+            mBtnStatisticalLearning.setVisibility(View.GONE);
+            mBtnCourseStatistics.setVisibility(View.GONE);
+            mBottomLayout.setVisibility(View.GONE);
+        }
         if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_INTRODUCTION) {
             mIntroduceAdapter = new CourseIntroduceAdapter(activity);
             mCourseIntroduceArray = new ArrayList();
             listView.setAdapter(mIntroduceAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN) {
             // 课程大纲内容发生改变回调监听
-            mCourseChapterAdapter = new CourseChapterAdapter(activity, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
+            int libraryType = mDetailItemParams.getCourseParams().getLibraryType();
+            mCourseChapterAdapter = new CourseChapterAdapter(activity, libraryType, mCourseId, mNeedReadFlag, isOnlineTeacher, () -> getData(false));
             // 已经加入的学程
+            mCourseChapterAdapter.setCourseVo(courseVo);
             mCourseChapterAdapter.setJoinCourse(isJoin);
             mCourseChapterAdapter.setIsFromScan(isFromScan);
             mCourseChapterAdapter.setTeacherVisitor(mTeacherVisitor);
+            if (mDetailItemParams != null) {
+                mCourseChapterAdapter.setCourseDetailParams
+                        (mDetailItemParams.getCourseParams());
+            }
             mCourseChapterArray = new ArrayList();
             listView.setAdapter(mCourseChapterAdapter);
         } else if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
@@ -358,7 +417,8 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
             listView.setAdapter(mCourseCommentAdapter);
         }
 
-        if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN || mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
+        if (mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_STUDY_PLAN ||
+                mDataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
             // 课程大纲和课程评价
             if (getActivity() instanceof CourseDetailsNavigator) {
                 CourseDetailsNavigator navigator = (CourseDetailsNavigator) getActivity();
@@ -383,6 +443,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                                                 (mDetailItemParams.getCourseParams());
                                     }
                                 }
+                                getData(false);
                             }
                         }
                     });
@@ -440,8 +501,23 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
+        } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&  (courseParams.isClassCourseEnter() &&
+                !courseParams.isClassParent() && courseParams.isClassStudent())) {
+            //三习教案 班级学程进入，不是家长，是学生；显示学习统计
+            mBottomLayout.setVisibility(View.VISIBLE);
+            mBtnCourseStatistics.setVisibility(View.GONE);
+            String classId = courseParams.getClassId();
+            if (TextUtils.isEmpty(classId)) {
+                classId = courseParams.getBindClassId();
+            }
+            LQCourseHelper.requestChapterByCourseId(token, classId, courseId, schoolIds,
+                    new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
+            String classId = courseParams.getClassId();
+            if (TextUtils.isEmpty(classId)) {
+                classId = courseParams.getBindClassId();
+            }
+            LQCourseHelper.requestChapterByCourseId(token,classId, courseId, schoolIds, new Callback());
         }
     }
 

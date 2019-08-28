@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/linearLayout"
-    android:background="@color/main_bg_color">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_bg_color"
+              android:orientation="vertical">
 
     <com.galaxyschool.app.wawaschool.views.ToolbarTopView
         android:id="@+id/toolbar_top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <ImageView
-        style="@style/line_gray"/>
+    <ImageView style="@style/line_gray"/>
+
     <View
+        android:id="@+id/ten_background"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/main_bg_color"
-        android:id="@+id/ten_background"
         android:visibility="gone"/>
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
         android:dividerHeight="1dp"
-        android:listSelector="@android:color/transparent"/>
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"/>
 
 </LinearLayout>

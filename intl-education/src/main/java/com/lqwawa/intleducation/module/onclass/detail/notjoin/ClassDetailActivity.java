@@ -4,44 +4,29 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
-import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.R;
-import com.lqwawa.intleducation.base.utils.DisplayUtil;
-import com.lqwawa.intleducation.common.Common;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
-import com.lqwawa.intleducation.common.utils.ImageUtil;
-import com.lqwawa.intleducation.common.utils.TimeUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
-import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.OnlineCourseHelper;
-import com.lqwawa.intleducation.factory.helper.SchoolHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.ConfirmOrderActivity;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.pay.PayCourseDialogFragment;
@@ -58,13 +43,10 @@ import com.lqwawa.intleducation.module.onclass.related.RelatedCourseListFragment
 import com.lqwawa.intleducation.module.onclass.related.RelatedCourseParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.tools.DensityUtils;
-import com.osastudio.common.popmenu.CustomPopWindow;
 import com.osastudio.common.popmenu.EntryBean;
-import com.osastudio.common.popmenu.PopMenuAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +55,7 @@ import java.util.List;
  * @desc 在线课堂班级详情，未加入
  */
 public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailContract.Presenter>
-        implements ClassDetailContract.View ,ClassDetailNavigator{
+        implements ClassDetailContract.View, ClassDetailNavigator{
 
     public static final String LQWAWA_PAY_RESULT_ACTION = "android.lqwawa.action.payresult";
 
@@ -86,37 +68,9 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
     protected void initWidget() {
         super.initWidget();
 
-        mBtnPay.setVisibility(View.VISIBLE);
         mBtnPay.setOnClickListener(v -> payClass());
 
-        // setToolBar();
-    }
-
-    /*protected void setToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        initToolbar(toolbar);
-        toolbar.setNavigationIcon(null);
-        mToolbar.setBackgroundColor(Color.parseColor("#77545454"));
-        Button leftButton = (Button) findViewById(R.id.btn_toolbar_left);
-        Button rightButton = (Button) findViewById(R.id.btn_toolbar_right);
-        setToolbarButton(leftButton, R.drawable.ic_back, 20);
-        setToolbarButton(rightButton, R.drawable.all_classify, 32);
-        if (leftButton != null) {
-            leftButton.setOnClickListener(v -> finish());
-        }
-        if (rightButton != null) {
-            rightButton.setOnClickListener(v -> showPop(v));
-        }
-    }*/
-
-    private void setToolbarButton(Button button, int resId, int iconSize) {
-        if (button != null) {
-            ViewGroup.LayoutParams linearParams = button.getLayoutParams();
-            linearParams.height = DensityUtils.dp2px(this, iconSize);
-            linearParams.width = DensityUtils.dp2px(this, iconSize);
-            button.setLayoutParams(linearParams);
-            button.setBackgroundResource(resId);
-        }
+        mJoinClassDetailBottomLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -261,10 +215,22 @@ public class ClassDetailActivity extends BaseClassDetailActivity<ClassDetailCont
     @Override
     public void onCommentChanged(boolean hidden) {
         if (hidden) {
-            // 评论区域隐藏,显示购买布局
+            // 评论区域隐藏, 显示购买布局
+            mClassDetailBottomLayout.setVisibility(View.VISIBLE);
+            mCommentLayout.setVisibility(View.GONE);
         } else {
-            // 评论区域隐藏,隐藏购买布局
+            // 评论区域显示,隐藏购买布局
+            mClassDetailBottomLayout.setVisibility(View.GONE);
+            mCommentLayout.setVisibility(View.VISIBLE);
         }
+
+        boolean isHide =
+                mClassDetailBottomLayout.getVisibility() == View.GONE
+                        && mCommentLayout.getVisibility() == View.GONE;
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mCoordinatorLayout.getLayoutParams();
+        layoutParams.bottomMargin = isHide ? 0 :
+                getResources().getDimensionPixelSize(R.dimen.class_detail_bottom_height);
+        mCoordinatorLayout.setLayoutParams(layoutParams);
     }
 
     @Override

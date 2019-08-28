@@ -219,6 +219,12 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
         entity.setThumbnail("ic_brain_library_circle");
         entity.setConfigValue(getString(R.string.common_brain_library));
         mEntityList.add(entity);
+
+        entity = new LQCourseConfigEntity();
+        entity.setLibraryType(OrganLibraryType.TYPE_TEACHING_PLAN);
+        entity.setThumbnail("ic_teaching_plan_library_circle");
+        entity.setConfigValue(getString(R.string.common_teaching_plan_library));
+        mEntityList.add(entity);
     }
 
     /**
@@ -230,7 +236,7 @@ public class OrganLibraryTypeActivity extends PresenterActivity<OrganLibraryType
             tipInfo = UIUtil.getString(R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(this, tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {

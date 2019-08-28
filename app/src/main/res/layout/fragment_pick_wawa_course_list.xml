@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/text_white"
+              android:orientation="vertical">
+
+    <include layout="@layout/contacts_header"/>
+
+    <ImageView style="@style/line_gray"/>
+
+    <View
+        android:id="@+id/ten_background"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_bg_color"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

@@ -24,8 +24,11 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.ActivityUtil;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
+import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.factory.data.entity.JoinClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorOrderEntity;
@@ -112,6 +115,17 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     //帮辅老师选中的参数
     private TutorChoiceEntity mChoiceEntity;
     private TutorChoiceParams mParams;
+    private static final String KEY_JOIN_CLASS_ENTER = "KEY_JOIN_CLASS_ENTER";
+    private static final String KEY_MEMBER_ID = "KEY_MEMBER_ID";
+    private static final String KEY_CLASS_NAME = "KEY_CLASS_NAME";
+    private static final String KEY_CLASS_THUILIMAGE = "KEY_CLASS_THUILIMAGE";
+    private static final String KEY_SCHOOL_ID = "KEY_SCHOOL_ID";
+    private static final String KEY_SCHOOL_NAME = "KEY_SCHOOL_NAME";
+    //是否加入班级跳转
+    private boolean isJoinClassEnter;
+    private String mMemberId, mClassName, mClassThuilImage, mSchoolId, mSchoolName;
+    private boolean useWawaCoin = true;
+    private String orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +153,14 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         if (getIntent().hasExtra(ACTIVITY_BUNDLE_OBJECT2)) {
             mParams = (TutorChoiceParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT2);
         }
+
+        isJoinClassEnter = getIntent().getBooleanExtra(KEY_JOIN_CLASS_ENTER, false);
+        mMemberId =  getIntent().getStringExtra(KEY_MEMBER_ID);
+        mClassName =  getIntent().getStringExtra(KEY_CLASS_NAME);
+        mClassThuilImage =  getIntent().getStringExtra(KEY_CLASS_THUILIMAGE);
+        mSchoolId =  getIntent().getStringExtra(KEY_SCHOOL_ID);
+        mSchoolName =  getIntent().getStringExtra(KEY_SCHOOL_NAME);
+
         mTopBar = (TopBar) findViewById(R.id.top_bar);
         // mTopBar.setBack(true);
         mTopBar.setTitle(getResources().getString(R.string.pay_way));
@@ -187,7 +209,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         mCommitTv.setOnClickListener(this);
         mNeedPayTv.setText(new StringBuffer().append("¥").append(mPrice));
 
-        if (isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId) || isTutorChoiceEnter) {
+        if (isOnline || isChapterBuy || !TextUtils.equals(UserHelper.getUserId(), mBuyerMemberId) || isTutorChoiceEnter || isJoinClassEnter) {
             // 在线课堂和LQ学程章节购买,替别人购买都关闭激活码购买 帮辅选择老师支付
             mPaywayActivationCode.setVisibility(View.GONE);
         } else {
@@ -208,16 +230,30 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.commit_tv) {//立即支付
-            doPay();
+            if (isJoinClassEnter){
+                if (useWawaCoin){
+                    //蛙蛙币支付
+                    getWaWaCoins();
+                }else {
+                    joinClassRequest();
+                }
+            }else {
+                doPay(mOrderId);
+            }
         } else if (i == R.id.payway_alipay) {
+            useWawaCoin = false;
             updateView(true, false, false, false, false, PayWay.ALiPay);
         } else if (i == R.id.payway_wechatpay) {
+            useWawaCoin = false;
             updateView(false, true, false, false, false, PayWay.WechatPay);
         } else if (i == R.id.payway_uppay) {
+            useWawaCoin = false;
             updateView(false, false, true, false, false, PayWay.UPPay);
         } else if (i == R.id.payway_activation_code) {
+            useWawaCoin = false;
             updateView(false, false, false, true, false, PayWay.Code);
         } else if (i == R.id.payway_wawa) {
+            useWawaCoin = true;
             updateView(false, false, false, false, true, PayWay.WaWa);
         }
     }
@@ -234,7 +270,7 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
     /**
      * 支付请求
      */
-    private void doPay() {
+    private void doPay(String orderId) {
 
         if (mPayWay == PayWay.Code) {
             ActiveCodeActivity.newInstance(mOrderId, mPrice, getIntent().getStringExtra(KEY_COURSENAME),
@@ -254,13 +290,13 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             params = new PayParams.Builder(this)
                     .wechatAppID(AppConfig.WEIXIN_APPID)
                     .payWay(mPayWay)
-                    .orderId(mOrderId)
+                    .orderId(orderId)
                     .memberId(UserHelper.getUserId())
                     .build();
         } else {
             params = new PayParams.Builder(this)
                     .payWay(mPayWay)
-                    .orderId(mOrderId)
+                    .orderId(orderId)
                     .memberId(UserHelper.getUserId())
                     .build();
         }
@@ -292,6 +328,9 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                 if (isOnline) {
                     // 在线班级支付成功
                     EventBus.getDefault().post(new EventWrapper(null, EventConstant.JOIN_IN_CLASS_EVENT));
+                }else if (isJoinClassEnter){
+                    //加入班级支付成功
+                    EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
                 }
             }
 
@@ -599,6 +638,24 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
         context.startActivity(starter);
     }
 
+    /**
+     * @des 加入班级入口
+     */
+    public static void newInstance(Context context, boolean isJoinClassEnter, @NonNull String memberId, @NonNull String classId,
+                                   String className, String classThuilImage, @NonNull String schoolId, String schoolName,
+                                   @NonNull String price) {
+        Intent starter = new Intent(context, PayActivity.class);
+        starter.putExtra(KEY_JOIN_CLASS_ENTER, isJoinClassEnter);
+        starter.putExtra(KEY_MEMBER_ID, memberId);
+        starter.putExtra(KEY_CLASSID, classId);
+        starter.putExtra(KEY_CLASS_NAME, className);
+        starter.putExtra(KEY_CLASS_THUILIMAGE, classThuilImage);
+        starter.putExtra(KEY_SCHOOL_ID, schoolId);
+        starter.putExtra(KEY_SCHOOL_NAME, schoolName);
+        starter.putExtra(KEY_PRICE, price);
+        context.startActivity(starter);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -684,6 +741,9 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
                             }
                         }
                     });
+        }else if (isJoinClassEnter){
+            //{"memberId":"","classId":"","className":"","classThuilImage":"","schoolId":"","schoolName":"","price":2s}
+            joinClassRequest();
         } else {
             String memberId = UserHelper.getUserId();
             RequestVo requestVo = new RequestVo();
@@ -734,6 +794,55 @@ public class PayActivity extends MyBaseActivity implements View.OnClickListener,
             });
         }
     }
+
+    private void joinClassRequest() {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("useWawaCoin",useWawaCoin);
+        requestVo.addParams("memberId",mMemberId);
+        requestVo.addParams("classId",mClassId);
+        requestVo.addParams("className",mClassName);
+        requestVo.addParams("classThuilImage",mClassThuilImage);
+        requestVo.addParams("schoolId",mSchoolId);
+        requestVo.addParams("schoolName",mSchoolName);
+        requestVo.addParams("price",mPrice);
+        requestVo.addParams("consumeSource", 2);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostCreateClassOrder);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(PayActivity.class, "send CreateClassOrder ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (TextUtils.isEmpty(result)) {
+                    return;
+                }
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                int code = jsonObject.optInt("code");
+                if (code == 0) {
+                    // 通过EventBus通知
+                    orderId = jsonObject.optString("id");
+                    LogUtil.i(PayActivity.class, "orderId ==== " + orderId);
+                    if (useWawaCoin) {
+                        EventBus.getDefault().post(new EventWrapper("success", EventConstant.CREATE_CLASS_ORDER));
+                        finish();
+                    }else {
+                        if (EmptyUtil.isNotEmpty(orderId)){
+                            doPay(orderId);
+                        }
+                    }
+                } else {
+                    UIUtil.showToastSafe(R.string.pay_failure);
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {

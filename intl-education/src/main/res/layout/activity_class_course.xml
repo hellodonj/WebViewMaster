@@ -123,6 +123,39 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/tab_vector_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tab_label_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/textAccent"
+                android:textSize="16sp" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@android:color/transparent"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingStart="4dp">
+
+            </android.support.design.widget.TabLayout>
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/horizontalDividerHeight"
@@ -169,11 +202,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
+            app:empty_text_remind="@string/label_empty_content"
             app:call_show="true"
             app:empty_icon_drawable="@drawable/ic_course_empty"
             app:empty_text_loading="@string/label_course_empty_info_2"
             app:empty_text_loading_visible="false"
-            app:empty_text_remind="@string/label_empty_content"
             app:empty_text_remind_visible="true">
 
         </com.lqwawa.intleducation.base.CourseEmptyView>
@@ -197,7 +230,8 @@
                 android:textColor="@color/textLight"
                 android:textSize="14sp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:paddingRight="6dp"/>
 
             <TextView
                 android:id="@+id/tv_cart_point"
@@ -308,6 +342,7 @@
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/textLight"
+                android:visibility="gone"
                 android:textSize="12sp" />
         </FrameLayout>
 

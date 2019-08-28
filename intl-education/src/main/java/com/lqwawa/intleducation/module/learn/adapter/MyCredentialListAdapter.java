@@ -13,6 +13,8 @@ import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.module.discovery.ui.CredentialDetailsActivity;
 import com.lqwawa.intleducation.module.learn.ui.MyCredentialCourseListActivity;
 import com.lqwawa.intleducation.module.learn.vo.MyCredentialListVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -40,13 +42,9 @@ public class MyCredentialListAdapter extends MyBaseAdapter {
         img_width = p_width / 3;
         img_height = img_width * 3 / 4;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null);
+
     }
 
     @Override
@@ -80,7 +78,7 @@ public class MyCredentialListAdapter extends MyBaseAdapter {
                 DateUtils.YYYYMMDDCH));
         holder.credential_name.setText(vo.getCertification().getCertificationName());
         holder.organ_name.setText("" + vo.getOrganName());
-        x.image().bind(holder.credential_iv,
+        XImageLoader.loadImage(holder.credential_iv,
                 vo.getThumbnail().toString().trim(),
                 imageOptions);
         holder.credential_iv.setLayoutParams(new LinearLayout.LayoutParams(img_width, img_height));

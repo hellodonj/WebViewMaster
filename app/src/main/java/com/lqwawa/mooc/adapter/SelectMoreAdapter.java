@@ -8,7 +8,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.galaxyschool.app.wawaschool.R;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,8 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<ChapterVo> group;
     private Map<String, List<ChapterVo>> children;
-
+    private int libraryType;
+    public static final int TYPE_EXAM = 1;
     /**
      * 构造函数
      *
@@ -31,10 +34,11 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
      * @param children 子元素列表
      * @param context
      */
-    public SelectMoreAdapter(Context context, List<ChapterVo> group, Map<String, List<ChapterVo>> children) {
+    public SelectMoreAdapter(Context context, List<ChapterVo> group, Map<String, List<ChapterVo>> children,int  libraryType) {
         mContext = context;
         this.group = group;
         this.children = children;
+        this.libraryType = libraryType;
     }
 
     @Override
@@ -97,9 +101,23 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
             gholder.mCbTitleSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    group.setChoosed(((CheckBox) v).isChecked());
-                    // 暴露组选接口
-                    checkInterface.checkGroup(groupPosition, ((CheckBox) v).isChecked());
+                    //没锁并且有子选项
+                    if (group.isUnlock()){
+                        List<ChapterVo> chapterVos = group.getChildren();
+                        for (int i = 0; i < chapterVos.size(); i++) {
+                             if(!chapterVos.get(i).isUnlock()){
+                                 gholder.mCbTitleSelect.setChecked(false);
+                                 UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_exam_unlock_tip);
+                                 return;
+                             }
+                        }
+                        group.setChoosed(((CheckBox) v).isChecked());
+                        // 暴露组选接口
+                        checkInterface.checkGroup(groupPosition, ((CheckBox) v).isChecked());
+                    }else {
+                        gholder.mCbTitleSelect.setChecked(false);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_exam_unlock_tip);
+                    }
                 }
             });
         }
@@ -122,13 +140,24 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
         if (detailResponse != null ) {
             cholder.mTvChildTitle.setText(detailResponse.getName());
             cholder.mCbChildSelect.setChecked(detailResponse.isChoosed());
+            //测试标志
+            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && detailResponse.getExamType() == TYPE_EXAM) {
+                cholder.mTestFlag.setVisibility(View.VISIBLE);
+            } else {
+                cholder.mTestFlag.setVisibility(View.GONE);
+            }
             cholder.mCbChildSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    detailResponse.setChoosed(((CheckBox) v).isChecked());
-                    cholder.mCbChildSelect.setChecked(((CheckBox) v).isChecked());
-                    // 暴露子选接口
-                    checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
+                    if (detailResponse.isUnlock()){
+                        detailResponse.setChoosed(((CheckBox) v).isChecked());
+                        cholder.mCbChildSelect.setChecked(((CheckBox) v).isChecked());
+                        // 暴露子选接口
+                        checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
+                    }else {
+                        cholder.mCbChildSelect.setChecked(false);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_test_unlock_tip);
+                    }
                 }
             });
         }
@@ -160,10 +189,12 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
     public static class ChildViewHolder {
         private CheckBox mCbChildSelect;
         private TextView mTvChildTitle;
+        private TextView mTestFlag;
 
         public ChildViewHolder(View view) {
             mCbChildSelect = (CheckBox) view.findViewById(R.id.cb_child_select);
             mTvChildTitle = (TextView) view.findViewById(R.id.tv_child_title);
+            mTestFlag = (TextView) view.findViewById(R.id.test_flag_tv);
         }
     }
 

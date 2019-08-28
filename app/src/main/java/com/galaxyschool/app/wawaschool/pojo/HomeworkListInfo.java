@@ -73,6 +73,24 @@ public class HomeworkListInfo implements Serializable {
     private int UnDoneThirdTaskCount;
     private int SubmitType;
     private String ServerNowTime;
+    private int ViewOthersTaskPermisson;
+    private int RepeatCourseCompletionMode;
+
+    public int getRepeatCourseCompletionMode() {
+        return RepeatCourseCompletionMode;
+    }
+
+    public void setRepeatCourseCompletionMode(int repeatCourseCompletionMode) {
+        RepeatCourseCompletionMode = repeatCourseCompletionMode;
+    }
+
+    public int getViewOthersTaskPermisson() {
+        return ViewOthersTaskPermisson;
+    }
+
+    public void setViewOthersTaskPermisson(int viewOthersTaskPermisson) {
+        ViewOthersTaskPermisson = viewOthersTaskPermisson;
+    }
 
     public int getSubmitType() {
         return SubmitType;

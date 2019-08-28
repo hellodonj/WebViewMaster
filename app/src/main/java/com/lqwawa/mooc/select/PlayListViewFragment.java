@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.Cours
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.mooc.adapter.SelectMoreAdapter;
 import com.lqwawa.mooc.view.CustomExpandableListView;
@@ -54,7 +55,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
     private Map<String, List<ChapterVo>> childMap = new HashMap<String, List<ChapterVo>>();// 子元素数据列表
 
     private List<CourseResourceEntity> playListVo;
-
+    private int libraryType;
+    private String classId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +80,10 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         Bundle arguments = getArguments();
         if (arguments != null && arguments.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mDetailItemParams = (CourseDetailItemParams) arguments.getSerializable(FRAGMENT_BUNDLE_OBJECT);
+            libraryType = mDetailItemParams.getCourseParams().getLibraryType();
+            classId = mDetailItemParams.getCourseParams().getClassId();
         }
+
     }
 
     /**
@@ -111,7 +116,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         }
 
         showLoadingDialog();
-        LQCourseHelper.requestChapterByCourseId(token, courseId, schoolIds, new Callback());
+        LQCourseHelper.requestChapterByCourseId(token,classId, courseId, schoolIds, new Callback());
     }
 
     /**
@@ -146,7 +151,7 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
 
     //更新UI
     private void updateList() {
-        mMoreAdapter = new SelectMoreAdapter(getActivity(), tempChapterList, childMap);
+        mMoreAdapter = new SelectMoreAdapter(getActivity(), tempChapterList, childMap, libraryType );
         mMoreAdapter.setCheckInterface(PlayListViewFragment.this);
         mExpandableListView.setAdapter(mMoreAdapter);
         for (int j = 0; j < mMoreAdapter.getGroupCount(); j++) {
@@ -197,6 +202,9 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         totalCount = 0;
         for (int i = 0; i < tempChapterList.size(); i++) {
             ChapterVo group = tempChapterList.get(i);
+            if (group.isChoosed()){
+                totalCount++;
+            }
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);
@@ -229,6 +237,12 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                     if (responseVo.isSucceed()) {
                         dismissLoadingDialog();
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
+                        for (int i = 0; i < playListVo.size(); i++) {
+                            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN){
+                                CourseResourceEntity resourceEntity = playListVo.get(i);
+                                resourceEntity.setFromSXCourse(true);
+                            }
+                        }
                         if (EmptyUtil.isNotEmpty(playListVo) && playListVo.size() > 0) {
                             // 通过EventBus通知
                             EventBus.getDefault().post(new EventWrapper(playListVo, EventConstant.GENERATE_PLAY_LIST_EVENT));
@@ -248,6 +262,13 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < tempChapterList.size(); i++) {
             ChapterVo group = tempChapterList.get(i);
+            if (group.isChoosed()){
+                if (builder.length() == 0) {
+                    builder.append(group.getId());
+                } else {
+                    builder.append(",").append(group.getId());
+                }
+            }
             List<ChapterVo> childs = childMap.get(group.getId());
             for (int j = 0; j < childs.size(); j++) {
                 ChapterVo project = childs.get(j);

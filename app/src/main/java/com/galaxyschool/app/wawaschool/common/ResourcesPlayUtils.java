@@ -209,7 +209,7 @@ public class ResourcesPlayUtils {
     }
 
     private void updateTaskReadState(CourseResourceEntity playInfo){
-        if (playInfo.getId() > 0){
+        if (playInfo.getId() > 0 && !playInfo.isFromSXCourse()){
             if (playInfo.getTaskType() == 1
                     || playInfo.getTaskType() == 4){
                 LqCourseHelper.updateReadState(activity,playInfo.getId(),playInfo.getResId()+"",

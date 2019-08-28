@@ -49,6 +49,7 @@ import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassDetailActivit
 import com.lqwawa.intleducation.module.onclass.detail.notjoin.ClassInfoParams;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.MyOrderVo;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -74,6 +75,7 @@ public class MyOrderListAdapter extends MyBaseAdapter {
     ImageOptions onlineImageOptions;
     ImageOptions orderImageOptions;
     ImageOptions courseImageOptions;
+    ImageOptions classImageOptions;
     private static final int[] orderStatusResId = new int[]{
             R.string.order_status_0,
             R.string.order_status_1,
@@ -121,43 +123,23 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         img_width = p_width / 4;
         img_height = img_width * 297 / 210;
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
-        onlineImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
-        liveImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
 
-        orderImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.ic_task_not_flag_l)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_task_not_flag_l)//加载失败后默认显示图片
-                .build();
+        onlineImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
 
-        courseImageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width, img_height)
-                .setLoadingDrawableId(R.drawable.ic_lqc_l)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.ic_lqc_l)//加载失败后默认显示图片
-                .build();
+        liveImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
+
+        orderImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                        R.drawable.ic_task_not_flag_l, false, false, null);
+
+        courseImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.ic_lqc_l, false, false, null);
+
+        classImageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.FIT_CENTER,
+                R.drawable.default_group_icon, false, false, null, img_width, img_height);
 
         mCourseTypeNames =
                 activity.getResources().getStringArray(R.array.course_type_names);
@@ -294,21 +276,37 @@ public class MyOrderListAdapter extends MyBaseAdapter {
                 holder.course_name.setText(spannableString);
 
                 holder.delete_order_tv.setVisibility(View.GONE);
-                holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                 StringUtil.fillSafeTextView(holder.teacher_name, String.format(UIUtil.getString(R.string.label_commit_placeholder_teacher), vo.getRealName()));
 //                holder.teacher_name.setText("提交给" + vo.getRealName() + "老师");
                 holder.status_tv.setText(activity.getResources().getString(orderTuttorStatusResId[vo.getStatus()]));
                 holder.status_tv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
-                holder.rebuy_tv.setVisibility(View.GONE);
                 holder.mTutorStatusTv.setText(activity.getResources().getString(orderTutorStatus[vo.getStatus()]));
                 holder.mTutorStatusTv.setTextColor(activity.getResources().getColor(orderTutorStatusColor[vo.getStatus()]));
                 //0等待批阅 1交易成功 2交易关闭
                 if (vo.getStatus() == PayStatus.PAY_CANCEL) {//等待批阅
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
                 } else if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    holder.rebuy_tv.setVisibility(View.VISIBLE);
+                    holder.mTutorStatusTv.setVisibility(View.GONE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.btn_green_stroke_bg_selector));
                 } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                     holder.mTutorStatusTv.setBackground(activity.getResources().getDrawable(R.drawable.shape_circle_gray_stroke_h1_radius_18));
+                }
+            } else if (vo.getType() == 7) {
+                holder.course_name.setText(String.format(UIUtil.getString(R.string.label_join_class_order), vo.getClassName()));
+                holder.organName.setText(vo.getSchoolName());
+                if (vo.getStatus() == PayStatus.PAY_OK) {//交易成功
+                    holder.delete_order_tv.setVisibility(View.GONE);
+                    holder.rebuy_tv.setVisibility(View.VISIBLE);
+                    holder.mTutorStatusTv.setVisibility(View.GONE);
+                } else if (vo.getStatus() == PayStatus.PAY_FAILURE) {//交易关闭
+                    holder.delete_order_tv.setVisibility(View.GONE);
+                    holder.rebuy_tv.setVisibility(View.GONE);
+                    holder.mTutorStatusTv.setVisibility(View.VISIBLE);
                 }
             } else {
                 holder.mTutorStatusTv.setVisibility(View.GONE);
@@ -702,30 +700,35 @@ public class MyOrderListAdapter extends MyBaseAdapter {
         if (vo.getType() == 1) {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 直播
-            x.image().bind(holder.course_iv,
+            XImageLoader.loadImage(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
         } else if (vo.getType() == 0) {
             holder.teacher_name.setVisibility(View.GONE);
             // 课程
-            x.image().bind(holder.course_iv,
+            XImageLoader.loadImage(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
         } else if (vo.getType() == 6) {
             // 帮辅订单
             if (vo.getTaskType() == 5) {
-                x.image().bind(holder.course_iv,
+                XImageLoader.loadImage(holder.course_iv,
                         vo.getThumbnailUrl(),
                         courseImageOptions);
             } else if (vo.getTaskType() == 8) {
-                x.image().bind(holder.course_iv,
+                XImageLoader.loadImage(holder.course_iv,
                         vo.getThumbnailUrl(),
                         orderImageOptions);
             }
+        } else if (vo.getType() == 7) {
+            // 加入班级
+            XImageLoader.loadImage(holder.course_iv,
+                    vo.getThumbnailUrl(),
+                    classImageOptions);
         } else {
             holder.teacher_name.setVisibility(View.VISIBLE);
             // 空中课堂
-            x.image().bind(holder.course_iv,
+            XImageLoader.loadImage(holder.course_iv,
                     vo.getThumbnailUrl(),
                     imageOptions);
         }

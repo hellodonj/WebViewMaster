@@ -1564,6 +1564,9 @@ public class Utils {
                     if (!TextUtils.isEmpty(tag.getPoint())) {
                         lookResDto.setResPropType(1);
                     }
+                    lookResDto.setCourseId(tag.getCourseId());
+                    lookResDto.setCourseTaskType(tag.getCourseTaskType());
+                    lookResDto.setCourseResType(tag.getResourceType());
                     resultList.add(lookResDto);
                 } else {
 //					{
@@ -1583,6 +1586,9 @@ public class Utils {
                     if (!TextUtils.isEmpty(tag.getPoint())) {
                         lookResDto.setResPropType(1);
                     }
+                    lookResDto.setCourseId(tag.getCourseId());
+                    lookResDto.setCourseTaskType(tag.getCourseTaskType());
+                    lookResDto.setCourseResType(tag.getResourceType());
                     resultList.add(lookResDto);
                 }
             }

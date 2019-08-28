@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/join_class_detail_bottom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontalDividerHeight"
+        android:background="@color/colorGrayDark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_new_class"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_accent_radius_19"
+            android:gravity="center"
+            android:text="@string/label_new_class"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+        <net.qiujuer.genius.ui.widget.Button
+            android:id="@+id/btn_complete_give_lessons"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_pink_radius_selector"
+            android:gravity="center"
+            android:text="@string/label_complete_give_lessons"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            android:textColor="@color/textLight"
+            android:textSize="16sp"
+            app:gTouchColor="@color/touch_color"
+            app:gTouchCornerRadius="19dp"
+            app:gTouchEffect="ripple" />
+
+    </LinearLayout>
+</LinearLayout>

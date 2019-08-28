@@ -53,9 +53,10 @@ public class HistoryClassCoursePresenter extends BasePresenter<HistoryClassCours
     }
 
     @Override
-    public void requestHistoryClassCourseData(@NonNull String classId, int role, @NonNull String name, @NonNull String level, int paramOneId, int paramTwoId, int pageIndex) {
+    public void requestHistoryClassCourseData(@NonNull String classId, int role, @NonNull String name, @NonNull String level, int paramOneId, int paramTwoId, int pageIndex,int courseType) {
         int status = 1;
-        ClassCourseHelper.requestClassCourseData(classId,status, role, name, level,paramOneId,paramTwoId,pageIndex, AppConfig.PAGE_SIZE,new DataSource.Callback<List<ClassCourseEntity>>() {
+        ClassCourseHelper.requestClassCourseData(classId, status, role, name, level, paramOneId, paramTwoId, pageIndex, AppConfig.PAGE_SIZE,
+                courseType, new DataSource.Callback<List<ClassCourseEntity>>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 final HistoryClassCourseContract.View view = getView();

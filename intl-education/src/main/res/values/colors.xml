@@ -38,5 +38,6 @@
     <color name="com_text_yellow_small">#F9D300</color>
     <color name="com_text_blue_small">#7ED6C2</color>
     <color name="translation">#00000000</color>
+    <color name="light_gray">#eeeeee</color>
 
 </resources>

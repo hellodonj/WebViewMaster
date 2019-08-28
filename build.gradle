@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         google()
-        jcenter(){url 'http://jcenter.bintray.com/'}
+        jcenter() { url 'http://jcenter.bintray.com/' }
         mavenCentral()
     }
 
@@ -14,7 +14,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter(){url 'http://jcenter.bintray.com/'}
+        jcenter() { url 'http://jcenter.bintray.com/' }
         flatDir {
             dirs 'libs'
         }
@@ -25,7 +25,10 @@ allprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/repositories/releases/' }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
         //华为
-        maven{url'http://developer.huawei.com/repo/'}
+        maven { url 'http://developer.huawei.com/repo/' }
+
+        //私有Maven
+        maven { url 'http://121.42.140.60:8081/repository/nexus-releases/' }
     }
 }
 

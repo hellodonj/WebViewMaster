@@ -226,6 +226,7 @@ public class RequestHelper {
         private Class resultClass;
         private T result;
         private int timeOutMs;
+        private String loadingContent;
 
         public RequestListener(Context context, Class resultClass) {
             this.context = context;
@@ -293,6 +294,9 @@ public class RequestHelper {
                 if (this.loadingDialog == null) {
                     this.loadingDialog = new ContactsLoadingDialog(this.context);
                 }
+                if (!TextUtils.isEmpty(loadingContent)){
+                    this.loadingDialog.setContent(loadingContent);
+                }
                 this.loadingDialog.setCancelable(false);
                 this.loadingDialog.show();
             }
@@ -312,6 +316,10 @@ public class RequestHelper {
                     this.loadingDialog = null;
                 }
             }
+        }
+
+        public void setLoadingContent(String loadingContent){
+            this.loadingContent = loadingContent;
         }
 
         @Override

@@ -4,4 +4,14 @@
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="TabLayoutText_Mid_Size_Style" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TabLayoutBgStyle" parent="TextAppearance.Design.Tab">
+        <item name="tabBackground">@drawable/bg_tab_selector</item>
+    </style>
+
 </resources>

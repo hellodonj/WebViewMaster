@@ -45,15 +45,18 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.helper.LqIntroTaskHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkListInfo;
 import com.galaxyschool.app.wawaschool.pojo.LookResDto;
+import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.galaxyschool.app.wawaschool.pojo.ShortSchoolClassInfo;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.galaxyschool.app.wawaschool.pojo.UploadCourseType;
 import com.galaxyschool.app.wawaschool.pojo.UploadParameter;
 import com.galaxyschool.app.wawaschool.pojo.UserInfo;
+import com.galaxyschool.app.wawaschool.pojo.weike.CourseData;
 import com.galaxyschool.app.wawaschool.views.ContactsInputBoxDialog;
 import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.slidelistview.SlideListView;
@@ -79,11 +82,14 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
     public static final String TAG = IntroductionSuperTaskFragment.class.getSimpleName();
     private LinearLayout addNewTaskLayout;
     private LinearLayout superTaskHeaderLayout;
+    private TextView headRightTextV;
     private TextView taskTitleTextV;
     private TextView finishStudyTaskStatus;
     private TextView taskStartTimeTextV;//开始时间
     private RadioButton immediatelyRb;//立即发布
     private RadioButton answerByTimeRb;//按时间作答
+    private RadioButton hasReadPerRb;//可以查看
+    private RadioButton noReadPerRb;
     private ConstraintLayout publishTimeAndTypeLayout;
     private TextView showTaskFinishView;//显示任务完成的状态（已完成/未完成）
     private SlideListView listView;
@@ -222,6 +228,12 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskTitleTextV.setText(headTitle);
             }
         }
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_btn);
+        headRightTextV.setOnClickListener(v -> {
+            StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                loadData();
+            }).setViewOthersTaskPermission(TaskId,homeworkListInfo.getViewOthersTaskPermisson());
+        });
         //底部的确实btn
         TextView confirmTextV = (TextView) findViewById(R.id.tv_bottom_confirm);
         if (confirmTextV != null) {
@@ -239,6 +251,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         taskStartTimeTextV = (TextView) findViewById(R.id.tv_publish_start_time);
         immediatelyRb = (RadioButton) findViewById(R.id.rb_publish_right_now);
         answerByTimeRb = (RadioButton) findViewById(R.id.rb_publish_according_time);
+        hasReadPerRb = (RadioButton) findViewById(R.id.rb_can_read);
+        noReadPerRb = (RadioButton) findViewById(R.id.rb_not_read);
         if (isFromMoocIntroTask){
             boolean answerAtAnyTime = LqIntroTaskHelper.getInstance().getAnswerAtAnyTimeValue();
             if (answerAtAnyTime){
@@ -247,6 +261,14 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             } else {
                 immediatelyRb.setChecked(false);
                 answerByTimeRb.setChecked(true);
+            }
+            boolean hasPermission = LqIntroTaskHelper.getInstance().isHasReadPermission();
+            if (hasPermission){
+                hasReadPerRb.setChecked(true);
+                noReadPerRb.setChecked(false);
+            } else {
+                hasReadPerRb.setChecked(false);
+                noReadPerRb.setChecked(true);
             }
         }
         publishTimeAndTypeLayout = (ConstraintLayout) findViewById(R.id.ll_publish_time_and_type);
@@ -330,6 +352,25 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 }
                 StudyTaskUtils.setTaskFinishBackgroundDetail(getActivity(),finishStudyTaskStatus,
                         taskFinishCount,taskNum);
+            }
+        }
+    }
+
+    private void updateRightView(){
+        //更新右上角的是否可以查看
+        if (homeworkListInfo != null && roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (TextUtils.equals(getMemeberId(),homeworkListInfo.getTaskCreateId())){
+                //创建者
+                if (isPick || lookStudentTaskFinish || isHistoryClass){
+
+                } else {
+                    headRightTextV.setVisibility(View.VISIBLE);
+                    if (homeworkListInfo.getViewOthersTaskPermisson() == 1){
+                        headRightTextV.setText(getString(R.string.str_set_can_read));
+                    } else {
+                        headRightTextV.setText(getString(R.string.str_set_cannot_read));
+                    }
+                }
             }
         }
     }
@@ -500,7 +541,12 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                         }
                         if (lookStudentTaskFinish) {
-                            enterStudentFinishedHomeworkListActivity(data);
+                            if (data.getType() == StudyTaskType.ENGLISH_WRITING
+                                    && !data.isStudentDoneTask()){
+                                //英文写作未完成不给进入下个界面
+                            } else {
+                                enterStudentFinishedHomeworkListActivity(data);
+                            }
                         } else if (isPick) {
                             enterListenReadAndWriteDetail(data);
                         } else {
@@ -782,6 +828,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             //同步更新数据
             LqIntroTaskHelper.getInstance().updateUploadParameters(uploadParameters);
             LqIntroTaskHelper.getInstance().setAnswerAtAnyTime(immediatelyRb.isChecked());
+            LqIntroTaskHelper.getInstance().setHasReadPermission(hasReadPerRb.isChecked());
         }
     }
 
@@ -821,25 +868,29 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(taskFileName)) {
             fileName = taskFileName;
         }
-        ContactsInputBoxDialog inputBoxDialog = new ContactsInputBoxDialog(
-                getActivity(),
-                getString(R.string.str_pls_input_super_task_title),
-                fileName,
-                null,
-                getString(R.string.cancel),
-                (dialog, which) -> dialog.dismiss(),
-                getString(R.string.confirm), (dialog, which) -> {
-            String title = ((ContactsInputBoxDialog) dialog).getInputText();
-            if (TextUtils.isEmpty(title)) {
-                TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_enter_title);
-                return;
-            }
-            dialog.dismiss();
-            taskFileName = title;
+        if (uploadParameters.size() > 1) {
+            ContactsInputBoxDialog inputBoxDialog = new ContactsInputBoxDialog(
+                    getActivity(),
+                    getString(R.string.str_pls_input_super_task_title),
+                    fileName,
+                    null,
+                    getString(R.string.cancel),
+                    (dialog, which) -> dialog.dismiss(),
+                    getString(R.string.confirm), (dialog, which) -> {
+                String title = ((ContactsInputBoxDialog) dialog).getInputText();
+                if (TextUtils.isEmpty(title)) {
+                    TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_enter_title);
+                    return;
+                }
+                dialog.dismiss();
+                taskFileName = title;
+                confirmSelectTaskData();
+            });
+            inputBoxDialog.setIsAutoDismiss(false);
+            inputBoxDialog.show();
+        } else {
             confirmSelectTaskData();
-        });
-        inputBoxDialog.setIsAutoDismiss(false);
-        inputBoxDialog.show();
+        }
     }
 
     private void confirmSelectTaskData() {
@@ -859,8 +910,9 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         uploadParameter.setStartDate(getIntroductionDate(true));
         uploadParameter.setEndDate(getIntroductionDate(false));
         uploadParameter.setSubmitType(immediatelyRb.isChecked() ? 0 : 1);
+        uploadParameter.setViewOtherPermissionType(hasReadPerRb.isChecked() ? 0 : 1);
         if (onlineRes != null) {
-            publishSuperTask(uploadParameter, schoolClassInfos);
+            autoDistinguishStudyType(uploadParameter, schoolClassInfos);
         } else {
             enterContactsPicker(uploadParameter);
         }
@@ -1041,6 +1093,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
             if (info.getType() == StudyTaskType.SUPER_TASK) {
                 homeworkListInfo = info;
                 updateFinishStatus();
+                updateRightView();
             } else {
                 if (isPick) {
                     if (info.getType() == StudyTaskType.RETELL_WAWA_COURSE
@@ -1144,6 +1197,41 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_CHECK_TEACHING_PLAN_BASE_URL, params, listener);
     }
 
+    public void autoDistinguishStudyType(UploadParameter uploadParameter,
+                                         List<ShortSchoolClassInfo> schoolClassInfos){
+        List<UploadParameter> uploadParameters = uploadParameter.getUploadParameters();
+        if (uploadParameters != null && uploadParameters.size() > 0){
+            if (uploadParameters.size() == 1){
+                //拆分学习任务具体的类型
+                UploadParameter parameter = uploadParameters.get(0);
+                parameter.setMemberId(uploadParameter.getMemberId());
+                parameter.setCreateName(uploadParameter.getCreateName());
+                parameter.setSubmitType(uploadParameter.getSubmitType());
+                parameter.setViewOtherPermissionType(uploadParameter.getViewOtherPermissionType());
+                int taskType = parameter.getTaskType();
+                if (taskType == StudyTaskType.WATCH_WAWA_COURSE
+                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE){
+                    //看课件
+                    publishWatchWawaCourseStudyTask(parameter,schoolClassInfos);
+                } else {
+                    List<LookResDto> dtos = parameter.getLookResDtoList();
+                    if (dtos != null && dtos.size() > 1){
+                        if (taskType == StudyTaskType.WATCH_HOMEWORK){
+                            parameter.setTaskType(StudyTaskType.MULTIPLE_OTHER);
+                        } else if (taskType == StudyTaskType.SUBMIT_HOMEWORK){
+                            parameter.setTaskType(StudyTaskType.MULTIPLE_OTHER_SUBMIT);
+                        }
+                    }
+                    //其他任务类型
+                    publishStudyTask(parameter,parameter.getCourseData(),schoolClassInfos);
+                }
+            } else {
+                publishSuperTask(uploadParameter, schoolClassInfos);
+            }
+        }
+    }
+
+
     /**
      * 发送综合任务到班级和小组
      *
@@ -1201,6 +1289,7 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                 taskParams.put("EndTime", uploadParameter.getEndDate());
                 //提交时间类型
                 taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
                 //空中课堂的布置任务新增字段
                 taskParams.put("TaskFlag", currentStudyType);
                 taskParams.put("ExtId", onlineRes.getId());
@@ -1230,42 +1319,63 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                         secondObject.put("MarkFormula", parameter.getMarkFormula());
                         secondObject.put("WordCountMin", parameter.getWordCountMin());
                         secondObject.put("WordCountMax", parameter.getWordCountMax());
+                        CourseData englishData = parameter.getCourseData();
+                        if (englishData != null) {
+                            if (parameter.getType() == ResType.RES_TYPE_IMG){
+                                secondObject.put("ResId", englishData.resId);
+                            } else {
+                                secondObject.put("ResId", englishData.getIdType());
+                            }
+                            secondObject.put("ResUrl", englishData.resourceurl);
+                        }
                     }
 
                     JSONArray thirdTaskList = new JSONArray();
                     org.json.JSONObject thirdObject = null;
                     List<LookResDto> resDtos = parameter.getLookResDtoList();
                     if (resDtos != null && resDtos.size() > 0) {
-                        for (int j = 0; j < resDtos.size(); j++) {
-                            thirdObject = new org.json.JSONObject();
-                            LookResDto lookDto = resDtos.get(j);
-                            thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
-                            String resUrl = lookDto.getResUrl();
-                            String resId = lookDto.getResId();
-                            String authorId = lookDto.getAuthor();
-                            List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
-                            int taskType = parameter.getTaskType();
-                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
-                                    && splitInfo != null && splitInfo.size() > 0) {
-                                resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
-                                        false, false);
-                                resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
-                                        false, true);
-                                authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
-                                        true, false);
+                        if (parameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
+                            if (resDtos.get(0).getCourseId() > 0 && resDtos.get(0).getCourseTaskType() > 0){
+                                secondObject.put("CourseId",resDtos.get(0).getCourseId());
+                                secondObject.put("CourseTaskType",resDtos.get(0).getCourseTaskType());
+                                secondObject.put("ResCourseId", resDtos.get(0).getResCourseId());
                             }
-                            thirdObject.put("ResUrl", resUrl);
-                            thirdObject.put("ResId", resId);
-                            thirdObject.put("Author", authorId == null ? "" : authorId);
-                            //学程馆资源的id
-                            thirdObject.put("ResCourseId", lookDto.getResCourseId());
-                            thirdObject.put("ResPropType", lookDto.getResPropType());
-                            thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
-                            if (!TextUtils.isEmpty(lookDto.getPoint())) {
-                                thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                        } else {
+                            for (int j = 0; j < resDtos.size(); j++) {
+                                thirdObject = new org.json.JSONObject();
+                                LookResDto lookDto = resDtos.get(j);
+                                thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
+                                String resUrl = lookDto.getResUrl();
+                                String resId = lookDto.getResId();
+                                String authorId = lookDto.getAuthor();
+                                List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
+                                int taskType = parameter.getTaskType();
+                                if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                        || taskType == StudyTaskType.TASK_ORDER)
+                                        && splitInfo != null && splitInfo.size() > 0) {
+                                    resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
+                                            false, false);
+                                    resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            false, true);
+                                    authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            true, false);
+                                }
+                                thirdObject.put("ResUrl", resUrl);
+                                thirdObject.put("ResId", resId);
+                                thirdObject.put("Author", authorId == null ? "" : authorId);
+                                //学程馆资源的id
+                                thirdObject.put("ResCourseId", lookDto.getResCourseId());
+                                thirdObject.put("ResPropType", lookDto.getResPropType());
+                                thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
+                                if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                                    thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                                }
+                                if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0) {
+                                    thirdObject.put("CourseId", lookDto.getCourseId());
+                                    thirdObject.put("CourseTaskType", lookDto.getCourseTaskType());
+                                }
+                                thirdTaskList.put(thirdObject);
                             }
-                            thirdTaskList.put(thirdObject);
                         }
                     }
                     secondObject.put("ThirdTaskList", thirdTaskList);
@@ -1367,6 +1477,308 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
         unRegistResultBroadcast();
     }
 
+
+
+    //空中课堂学习任务在当前界面发送
+    private void publishStudyTask(final UploadParameter uploadParameter, CourseData courseData,
+                                  List<ShortSchoolClassInfo> schoolClassInfos) {
+        showLoadingDialog();
+        org.json.JSONObject taskParams = new org.json.JSONObject();
+        if (uploadParameter != null) {
+            try {
+                taskParams.put("TaskType", uploadParameter.getTaskType());
+                taskParams.put("TaskCreateId", uploadParameter.getMemberId());
+                taskParams.put("TaskCreateName", uploadParameter.getCreateName());
+                JSONArray schoolArray = new JSONArray();
+                org.json.JSONObject schoolObject = null;
+                if (schoolClassInfos != null && schoolClassInfos.size() > 0) {
+                    for (int i = 0; i < schoolClassInfos.size(); i++) {
+                        schoolObject = new org.json.JSONObject();
+                        ShortSchoolClassInfo info = schoolClassInfos.get(i);
+                        schoolObject.put("ClassName", info.getClassName());
+                        schoolObject.put("ClassId", info.getClassId());
+                        schoolObject.put("SchoolName", info.getSchoolName());
+                        schoolObject.put("SchoolId", info.getSchoolId());
+                        schoolArray.put(schoolObject);
+                    }
+                }
+                taskParams.put("SchoolClassList", schoolArray);
+                taskParams.put("TaskTitle", uploadParameter.getFileName());
+                if (courseData != null) {
+                    if ((uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
+                            || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                            || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING)
+                            && uploadParameter.getType() == ResType.RES_TYPE_IMG) {
+                        taskParams.put("ResAuthor", courseData.code);
+                        taskParams.put("ResId", courseData.resId);
+                    } else {
+                        taskParams.put("ResId", courseData.getIdType());
+                    }
+                    taskParams.put("ResUrl", courseData.resourceurl);
+                } else {
+                    taskParams.put("ResId", "");
+                    taskParams.put("ResUrl", "");
+                }
+                //学程馆资源的id
+                if (uploadParameter.getTaskType() == StudyTaskType.RETELL_WAWA_COURSE
+                        || uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER
+                        || uploadParameter.getTaskType() == StudyTaskType.Q_DUBBING
+                        || uploadParameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
+                    taskParams.put("ResCourseId",uploadParameter.getResCourseId());
+                }
+                if (uploadParameter.getTaskType() == StudyTaskType.TASK_ORDER){
+                    taskParams.put("ResPropType",uploadParameter.getResPropType());
+                }
+                if (uploadParameter.getWorkOrderId() != null) {
+                    taskParams.put("WorkOrderId", uploadParameter.getWorkOrderId());
+                }
+                if (uploadParameter.getWorkOrderUrl() != null) {
+                    taskParams.put("WorkOrderUrl", uploadParameter.getWorkOrderUrl());
+                }
+                taskParams.put("StartTime", uploadParameter.getStartDate());
+                taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("ViewOthersTaskPermisson", uploadParameter.getViewOtherPermissionType());
+                if (uploadParameter.getTaskType() == StudyTaskType.INTRODUCTION_WAWA_COURSE) {
+                    taskParams.put("DiscussContent", uploadParameter.getDisContent());
+                } else {
+                    taskParams.put("DiscussContent", uploadParameter.getDescription());
+                }
+                //布置任务之英文写作相关的字段
+                //作文要求
+                taskParams.put("WritingRequire", uploadParameter.getWritingRequire());
+                //打分公式
+                taskParams.put("MarkFormula", uploadParameter.getMarkFormula());
+                //作业字数最小值
+                taskParams.put("WordCountMin", uploadParameter.getWordCountMin());
+                //作业字数最大值
+                taskParams.put("WordCountMax", uploadParameter.getWordCountMax());
+
+                //打分
+                if (uploadParameter.NeedScore) {
+                    taskParams.put("NeedScore", true);
+                    taskParams.put("ScoringRule", uploadParameter.ScoringRule);
+                }
+                //空中课堂的布置任务新增字段
+                taskParams.put("TaskFlag", currentStudyType);
+                taskParams.put("ExtId", onlineRes.getId());
+
+                if (uploadParameter.getCourseId() > 0 && uploadParameter.getCourseTaskType() > 0){
+                    taskParams.put("CourseId",uploadParameter.getCourseId());
+                    taskParams.put("CourseTaskType",uploadParameter.getCourseTaskType());
+                }
+
+                //判断是不是任务单和听说课的多选
+                int taskType = uploadParameter.getTaskType();
+                if (taskType == StudyTaskType.TASK_ORDER
+                        || taskType == StudyTaskType.RETELL_WAWA_COURSE
+                        || taskType == StudyTaskType.Q_DUBBING
+                        || taskType == StudyTaskType.MULTIPLE_OTHER
+                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT){
+                    List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
+                    if (lookResDtos != null){
+                        if (lookResDtos.size() == 1){
+                            String point = lookResDtos.get(0).getPoint();
+                            if (uploadParameter.NeedScore && !TextUtils.isEmpty(point)) {
+                                taskParams.put("ScoringRule", StudyTaskUtils.getScoringRule(point));
+                            }
+                            //完成方式
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                taskParams.put("RepeatCourseCompletionMode", lookResDtos.get(0).getCompletionMode());
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
+                            }
+                            if (lookResDtos.get(0).getCourseId() > 0 && lookResDtos.get(0).getCourseTaskType() > 0){
+                                taskParams.put("CourseId",lookResDtos.get(0).getCourseId());
+                                taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
+                            }
+                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                    || taskType == StudyTaskType.TASK_ORDER
+                                    || taskType == StudyTaskType.Q_DUBBING)
+                                    && courseData == null){
+                                taskParams.put("ResId", lookResDtos.get(0).getResId());
+                                taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());
+                            }
+                            taskParams.put("ResCourseId", lookResDtos.get(0).getResCourseId());
+                            taskParams.put("ResPropType",lookResDtos.get(0).getResPropType());
+                        } else if (lookResDtos.size() > 1){
+                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_RETELL_COURSE);
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_Q_DUBBING);
+                            } else if (taskType == StudyTaskType.TASK_ORDER){
+                                taskParams.put("TaskType", StudyTaskType.MULTIPLE_TASK_ORDER);
+                            }
+                            StudyTaskUtils.addMultipleTaskParams(taskParams, lookResDtos);
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        RequestHelper.RequestDataResultListener listener = new RequestHelper
+                .RequestDataResultListener(getActivity(), DataResult.class) {
+            @Override
+            public void onSuccess(String json) {
+                if (getActivity() == null || TextUtils.isEmpty(json)) return;
+                try {
+                    dismissLoadingDialog();
+                    DataResult result = JSON.parseObject(json, DataResult.class);
+                    if (result != null && result.isSuccess()) {
+                        //布置完成刷新布置任务页面
+                        CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
+                        EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS));
+                        TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
+                        finish();
+                    } else {
+                        TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_error);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                dismissLoadingDialog();
+                finish();
+            }
+
+            @Override
+            public void onError(NetroidError error) {
+                super.onError(error);
+                CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                dismissLoadingDialog();
+            }
+        };
+        RequestHelper.postRequest(getActivity(), ServerUrl.ADD_AIRCLASS_STUDY_TASK_LIST_BASE_URL, taskParams.toString(),
+                listener);
+    }
+
+    /**
+     * 看课件多类型上传
+     *
+     * @param uploadParameter
+     * @param schoolClassInfos
+     */
+    private void publishWatchWawaCourseStudyTask(UploadParameter uploadParameter,
+                                                 List<ShortSchoolClassInfo> schoolClassInfos) {
+        showLoadingDialog();
+        org.json.JSONObject taskParams = new org.json.JSONObject();
+        if (uploadParameter != null) {
+            try {
+                taskParams.put("TaskCreateId", uploadParameter.getMemberId());
+                taskParams.put("TaskCreateName", uploadParameter.getCreateName());
+                JSONArray schoolArray = new JSONArray();
+                org.json.JSONObject schoolObject = null;
+                if (schoolClassInfos != null && schoolClassInfos.size() > 0) {
+                    for (int i = 0; i < schoolClassInfos.size(); i++) {
+                        schoolObject = new org.json.JSONObject();
+                        ShortSchoolClassInfo info = schoolClassInfos.get(i);
+                        schoolObject.put("ClassName", info.getClassName());
+                        schoolObject.put("ClassId", info.getClassId());
+                        schoolObject.put("SchoolName", info.getSchoolName());
+                        schoolObject.put("SchoolId", info.getSchoolId());
+                        schoolArray.put(schoolObject);
+                    }
+                }
+                taskParams.put("SchoolClassList", schoolArray);
+
+                taskParams.put("TaskTitle", uploadParameter.getFileName());
+                taskParams.put("StartTime", uploadParameter.getStartDate());
+                taskParams.put("EndTime", uploadParameter.getEndDate());
+                //提交时间类型
+                taskParams.put("SubmitType",uploadParameter.getSubmitType());
+                taskParams.put("DiscussContent", uploadParameter.getDisContent());
+                //空中课堂的布置任务新增字段
+                taskParams.put("TaskFlag", currentStudyType);
+                taskParams.put("ExtId", onlineRes.getId());
+
+                List<LookResDto> lookResDtos = uploadParameter.getLookResDtoList();
+                JSONArray lookResArray = new JSONArray();
+                org.json.JSONObject lookObject = null;
+                if (lookResDtos != null && lookResDtos.size() > 0) {
+                    for (int i = 0; i < lookResDtos.size(); i++) {
+                        lookObject = new org.json.JSONObject();
+                        LookResDto lookDto = lookResDtos.get(i);
+                        lookObject.put("Id", lookDto.getId());
+                        lookObject.put("TaskId", lookDto.getTaskId());
+                        lookObject.put("ResId", lookDto.getResId());
+                        lookObject.put("ResUrl", lookDto.getResUrl());
+                        lookObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto
+                                .getResTitle());
+                        lookObject.put("CreateId", lookDto.getCreateId() == null ? "" : lookDto
+                                .getCreateId());
+                        lookObject.put("CreateName", lookDto.getCreateName() == null ? "" :
+                                lookDto.getCreateName());
+                        lookObject.put("CreateTime", lookDto.getCreateTime() == null ? "" :
+                                lookDto.getCreateTime());
+                        lookObject.put("UpdateId", lookDto.getUpdateId() == null ? "" : lookDto
+                                .getUpdateName());
+                        lookObject.put("UpdateName", lookDto.getCreateName() == null ? "" :
+                                lookDto.getCreateName());
+                        lookObject.put("Deleted", lookDto.isDeleted());
+                        lookObject.put("Author", lookDto.getAuthor() == null ? "" : lookDto.getAuthor());
+                        lookObject.put("ResCourseId",lookDto.getResCourseId());
+                        if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
+                            lookObject.put("CourseId",lookDto.getCourseId());
+                            lookObject.put("CourseTaskType",lookDto.getCourseTaskType());
+                        }
+                        lookResArray.put(lookObject);
+                    }
+                }
+                taskParams.put("LookResList", lookResArray);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        RequestHelper.RequestDataResultListener listener = new RequestHelper
+                .RequestDataResultListener(getActivity(), DataResult.class) {
+            @Override
+            public void onSuccess(String json) {
+                if (getActivity() == null) {
+                    return;
+                }
+                if (TextUtils.isEmpty(json)) return;
+                dismissLoadingDialog();
+                try {
+                    DataResult result = JSON.parseObject(json, DataResult.class);
+                    if (result != null && result.isSuccess()) {
+                        CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                        LqIntroTaskHelper.getInstance().clearTaskList();
+                        EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.SEND_HOME_WORK_LIB_SUCCESS));
+                        TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_ok);
+                        finish();
+                    } else {
+                        TipMsgHelper.ShowLMsg(getActivity(), R.string.publish_course_error);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                CampusPatrolUtils.setHasStudyTaskAssigned(true);
+                dismissLoadingDialog();
+                finish();
+            }
+
+            @Override
+            public void onError(NetroidError error) {
+                super.onError(error);
+                dismissLoadingDialog();
+            }
+        };
+        RequestHelper.postRequest(getActivity(),
+                ServerUrl.ADD_AIRCLASS_LOOK_STUDY_TASK_BASE_URL, taskParams.toString(), listener);
+    }
 
 }
 

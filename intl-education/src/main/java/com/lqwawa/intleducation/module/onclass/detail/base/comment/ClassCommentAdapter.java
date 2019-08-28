@@ -30,6 +30,7 @@ import com.lqwawa.intleducation.factory.data.entity.ClassDetailEntity;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.vo.CommentVo;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -127,16 +128,9 @@ public class ClassCommentAdapter extends RecyclerAdapter<CommentVo> {
         public CommentViewHolder(View itemView) {
             super(itemView);
 
-            imageOptions = new ImageOptions.Builder()
-                    .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                    .setCrop(false)
-                    .setCircular(true)//圆形
-                    .setLoadingDrawableId(R.drawable.user_header_def)//加载中默认显示图片
-                    .setFailureDrawableId(R.drawable.user_header_def)//加载失败后默认显示图片
-                    .build();
+            imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                    R.drawable.user_header_def, false, true, null);
 
-            commentContentTv = (TextView) itemView.findViewById(R.id.comment_content_tv);
-            commentTimeTv = (TextView) itemView.findViewById(R.id.comment_time_tv);
             userHeadIv = (ImageView) itemView.findViewById(R.id.user_head_iv);
             nickNameTv = (TextView) itemView.findViewById(R.id.nick_name_tv);
             gradeRatingBar = (RatingBar) itemView.findViewById(R.id.grade_rating_bar);
@@ -152,7 +146,7 @@ public class ClassCommentAdapter extends RecyclerAdapter<CommentVo> {
             String nickName = anonymityNickName(vo);
 
 
-            x.image().bind(userHeadIv
+            XImageLoader.loadImage(userHeadIv
                     , (vo.getThumbnail() + "").trim()
                     , imageOptions);
 

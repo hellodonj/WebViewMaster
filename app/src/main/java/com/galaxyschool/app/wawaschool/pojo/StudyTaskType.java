@@ -27,4 +27,8 @@ public interface StudyTaskType {
     int Q_DUBBING = 14;
     //多选配音
     int MULTIPLE_Q_DUBBING = 15;
+    //其他多选
+    int MULTIPLE_OTHER = 17;
+    //其他多选(需提交)
+    int MULTIPLE_OTHER_SUBMIT = 18;
 }

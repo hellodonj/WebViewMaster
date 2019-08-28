@@ -550,4 +550,40 @@
     <string name="label_chapter_tip">请选择要添加的章节资源</string>
     <string name="btn_tutor_agreement">我知道了</string>
 
+
+    <string name="label_lesson_plan">教案大纲</string>
+    <string name="label_teaching_assistant">关联教辅</string>
+    <string name="label_lesson_comment">教案评价</string>
+    <string name="label_colon_category1">类别：</string>
+    <string name="label_course_filtrate_readers">读本</string>
+    <string name="label_course_filtrate_schoolbook">学本</string>
+    <string name="label_course_filtrate_exercises">练本</string>
+    <string name="label_course_filtrate_testing">测本</string>
+    <string name="label_course_filtrate_video">视频</string>
+    <string name="label_course_filtrate_teaching">教案</string>
+    <string name="label_join_class_order">付费加入《%s》</string>
+    <string name="label_from_course">来自《%s》</string>
+    <string name="label_work_cart_add_count_tip">作业库当前最多可添加%s个任务，您选择了过多的任务类型：听说作业、读写作业、讲解课、看课件、参考视频、Q配音。</string>
+    <string name="label_work_cart_choose_count_tip"> 您选择的%s下的课件数量过多，最多可选10个。</string>
+    <string name="label_work_cart_choose_count_tip1"> 您选择的听说作业、读写作业、讲解课、看课件、参考视频、Q配音下的课件数量过多，最多可选10个。</string>
+    <string-array name="label_lesson_source_type">
+        <item>参考视频</item>
+        <item>听说作业</item>
+        <item>读写作业</item>
+        <item>看课件</item>
+        <item>讲解课</item>
+        <item>Q配音</item>
+    </string-array>
+    <string-array name="label_test_lesson_source_type">
+        <item>读写测试</item>
+        <item>听说测试</item>
+    </string-array>
+    <string name="label_exam_test_score">%s分</string>
+    <string name="label_test_lock_tip">未到测试时间，待老师解锁</string>
+    <string name="label_exam_lock_tip">未到考试时间，待老师解锁</string>
+    <string name="label_exam_unlock_dialog">确定解锁该考试吗？</string>
+    <string name="label_test_unlock_dialog">确定解锁该测试吗？</string>
+    <string name="label_exam_lock_dialog">确定锁定该考试吗？</string>
+    <string name="label_test_lock_dialog">确定锁定该测试吗？</string>
+    <string name="label_activation_code_tip">请输入激活码激活</string>
 </resources>

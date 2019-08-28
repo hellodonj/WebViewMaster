@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_bar_valid_height"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/lesson_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/introduction_title_tv"
+                    style="@style/text_gray_xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/com_bg_light_white"
+                    android:padding="@dimen/com_item_space"
+                    android:text="@string/lesson_introduction" />
+
+                <com.lqwawa.intleducation.base.widgets.ExpandableTextView
+                    android:id="@+id/lesson_introduction_tv"
+                    style="@style/text_gray_l"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/com_bg_white"
+                    android:padding="@dimen/com_item_space_l"
+                    app:etv_ArrowType="true"
+                    app:etv_MaxLinesOnShrink="2" />
+
+                <TextView
+                    android:id="@+id/res_title_tv"
+                    style="@style/text_gray_xl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/com_bg_light_white"
+                    android:padding="@dimen/com_item_space"
+                    android:text="@string/lesson_res" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TabLayoutBgStyle"
+                android:background="@color/com_bg_white"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabMaxWidth="0dp"
+                app:tabGravity="fill"
+                app:tabPaddingEnd="12dp"
+                app:tabPaddingStart="12dp"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/textPrimary" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+            <!--作业库功能-->
+            <FrameLayout
+                android:id="@+id/new_cart_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/ic_work_cart_shadow"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_work_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/label_work_cart"
+                    android:textColor="@color/textLight"
+                    android:textSize="14sp"
+                    android:paddingRight="6dp"/>
+
+                <TextView
+                    android:id="@+id/tv_cart_point"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_red_circle_point"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/textLight"
+                    android:textSize="12sp" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+
+                <net.qiujuer.genius.ui.widget.Button
+                    android:id="@+id/btn_add_homework"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/btn_accent_radius_19"
+                    android:gravity="center"
+                    android:text="@string/label_action_to_cart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                    android:textColor="@color/textLight"
+                    android:textSize="16sp"
+                    app:gTouchColor="@color/touch_color"
+                    app:gTouchCornerRadius="19dp"
+                    app:gTouchEffect="ripple" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3"
+               android:visibility="gone">
+
+                <FrameLayout
+                    android:id="@+id/select_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:padding="8dp">
+
+                    <net.qiujuer.genius.ui.widget.Button
+                        android:id="@+id/btn_all_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_accent_radius_19"
+                        android:gravity="center"
+                        android:text="@string/select_all"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                        android:textColor="@color/textLight"
+                        android:textSize="16sp"
+                        app:gTouchColor="@color/touch_color"
+                        app:gTouchCornerRadius="19dp"
+                        app:gTouchEffect="ripple" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/cart_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1">
+
+                    <net.qiujuer.genius.ui.widget.Button
+                        android:id="@+id/btn_work_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/btn_accent_radius_19"
+                        android:gravity="center"
+                        android:text="@string/label_cancel"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                        android:textColor="@color/textLight"
+                        android:textSize="16sp"
+                        app:gTouchColor="@color/touch_color"
+                        app:gTouchCornerRadius="19dp"
+                        app:gTouchEffect="ripple" />
+
+                    <TextView
+                        android:id="@+id/tv_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|right"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/textLight"
+                        android:textSize="12sp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/action_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:padding="8dp">
+
+                    <net.qiujuer.genius.ui.widget.Button
+                        android:id="@+id/btn_action"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/btn_accent_radius_19"
+                        android:gravity="center"
+                        android:text="@string/label_confirm"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+                        android:textColor="@color/textLight"
+                        android:textSize="16sp"
+                        app:gTouchColor="@color/touch_color"
+                        app:gTouchCornerRadius="19dp"
+                        app:gTouchEffect="ripple" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.lqwawa.intleducation.base.widgets.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

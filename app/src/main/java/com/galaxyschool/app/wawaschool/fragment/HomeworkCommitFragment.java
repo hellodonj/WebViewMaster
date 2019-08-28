@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,11 +72,13 @@ import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
 import com.galaxyschool.app.wawaschool.helper.CheckLqShopPmnHelper;
 import com.galaxyschool.app.wawaschool.helper.DoTaskOrderHelper;
+import com.galaxyschool.app.wawaschool.helper.StudyTaskNetHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkText;
 import com.galaxyschool.app.wawaschool.pojo.AutoMarkTextResult;
 import com.galaxyschool.app.wawaschool.pojo.CommitTaskResult;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
+import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
@@ -122,12 +125,16 @@ import com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.client.pojo.SourceFromType;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
+import com.lqwawa.tools.DensityUtils;
 import com.lqwawa.tools.FileZipHelper;
 import com.oosic.apps.iemaker.base.PlaybackActivity;
 import com.oosic.apps.iemaker.base.SlideManager;
 import com.oosic.apps.iemaker.base.data.NormalProperty;
 import com.oosic.apps.share.ShareInfo;
 import com.oosic.apps.share.SharedResource;
+import com.osastudio.common.popmenu.CustomPopWindow;
+import com.osastudio.common.popmenu.EntryBean;
+import com.osastudio.common.popmenu.PopMenuAdapter;
 import com.osastudio.common.utils.TimerUtils;
 import com.umeng.socialize.media.UMImage;
 
@@ -143,6 +150,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static cn.easyar.engine.EasyAR.getApplicationContext;
 
 /**
  * 作业提交
@@ -161,6 +170,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private String StudentId = "";
     private int TaskType;
     private StudyTask studyTask;
+    private ImageView headRightImageV;
+    private TextView headRightTextV;
     private TextView rightTextView;
     private ImageView homeworkIcon;
     private ImageView mediaCover;//播放按钮
@@ -226,6 +237,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean isStudentFinishEValTask;
     private boolean isFistIn = true;
     public CourseData taskData;
+    private CustomPopWindow mPopWindow;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -255,14 +267,18 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     //听说+读写只有两个tab
                     fragment = fragmentList.get(0);
                 }
-                if (fragment != null && fragment instanceof CompletedHomeworkListFragment) {
+                if (fragment instanceof CompletedHomeworkListFragment) {
                     //刷新提交列表
                     ((CompletedHomeworkListFragment) fragment).refreshData();
                 }
 
+                if (fragment instanceof EvalHomeworkListFragment){
+                    ((EvalHomeworkListFragment) fragment).refreshData();
+                }
+
                 if (propertiesType == 1) {
                     fragment = fragmentList.get(2);
-                    if (fragment != null && fragment instanceof EvalHomeworkListFragment) {
+                    if (fragment instanceof EvalHomeworkListFragment) {
                         //刷新提交按钮
                         ((EvalHomeworkListFragment) fragment).refreshData();
                     }
@@ -281,20 +297,24 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
             Fragment fragment = null;
             fragment = fragmentList.get(0);
-            if (fragment != null && fragment instanceof TaskRequirementFragment) {
+            if (fragment instanceof TaskRequirementFragment) {
                 //刷新提交按钮
                 ((TaskRequirementFragment) fragment).refreshData();
             }
 
             fragment = fragmentList.get(1);
-            if (fragment != null && fragment instanceof CompletedHomeworkListFragment) {
+            if (fragment instanceof CompletedHomeworkListFragment) {
                 //刷新提交按钮
                 ((CompletedHomeworkListFragment) fragment).refreshData();
             }
 
+            if (fragment instanceof EvalHomeworkListFragment){
+                ((EvalHomeworkListFragment) fragment).refreshData();
+            }
+
             if (propertiesType == 1) {
                 fragment = fragmentList.get(2);
-                if (fragment != null && fragment instanceof EvalHomeworkListFragment) {
+                if (fragment instanceof EvalHomeworkListFragment) {
                     //刷新提交按钮
                     ((EvalHomeworkListFragment) fragment).refreshData();
                 }
@@ -403,23 +423,17 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
 
         //分享
-        textView = (TextView) findViewById(R.id.contacts_header_right_text_view);
-        if (textView != null) {
-            //老看课件和其他（不需提交）的任务暂时隐藏分享
-            if (TaskType == StudyTaskType.WATCH_WAWA_COURSE
-                    || TaskType == StudyTaskType.WATCH_HOMEWORK) {
-                textView.setVisibility(View.GONE);
-            }
-//            else if (studyTaskType == StudyTaskType.LISTEN_READ_AND_WRITE){
-//                textView.setVisibility(View.GONE);
-//            }
-            else {
-                textView.setVisibility(View.VISIBLE);
-            }
-            textView.setText(getString(R.string.share));
-            textView.setOnClickListener(this);
+        headRightTextV = (TextView) findViewById(R.id.contacts_header_right_text_view);
+        if (headRightTextV != null) {
+            headRightTextV.setText(getString(R.string.share));
+            headRightTextV.setOnClickListener(this);
         }
 
+        headRightImageV = (ImageView) findViewById(R.id.contacts_header_right_ico);
+        if (headRightImageV != null){
+            headRightImageV.setImageResource(R.drawable.icon_more_green);
+            headRightImageV.setOnClickListener(v -> popHeadRightPopWindow());
+        }
         headView = findViewById(R.id.layout_assign_homework);
         headView.setOnClickListener(this);
 
@@ -502,17 +516,47 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         }
     }
 
+    private void initRightViewData(){
+        //老看课件和其他（不需提交）的任务暂时隐藏分享
+        if (TaskType == StudyTaskType.WATCH_WAWA_COURSE
+                || TaskType == StudyTaskType.WATCH_HOMEWORK) {
+            headRightTextV.setVisibility(View.GONE);
+        } else if (TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                || TaskType == StudyTaskType.TASK_ORDER
+                || TaskType == StudyTaskType.Q_DUBBING
+                || TaskType == StudyTaskType.SUBMIT_HOMEWORK
+                || TaskType == StudyTaskType.ENGLISH_WRITING) {
+            if (studyTaskType > 0 || isHistoryClass || isSuperChildTask){
+                headRightTextV.setVisibility(View.VISIBLE);
+            } else {
+                if (task != null
+                        && roleType == RoleType.ROLE_TYPE_TEACHER
+                        && TextUtils.equals(getMemeberId(),task.getTaskCreateId())){
+                    headRightTextV.setVisibility(View.GONE);
+                    headRightImageV.setVisibility(View.VISIBLE);
+                } else {
+                    headRightImageV.setVisibility(View.GONE);
+                    headRightTextV.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            headRightTextV.setVisibility(View.VISIBLE);
+        }
+    }
+
     /**
      * 进入成绩统计
      */
     public void enterAchievementStatistics() {
-        if (completedHomeworkListFragment != null) {
+        if (completedHomeworkListFragment != null || evalHomeworkListFragment != null) {
             ArrayList<CommitTask> data = new ArrayList<>();
-            ArrayList<CommitTask> commitTasks = (ArrayList<CommitTask>) completedHomeworkListFragment.getData();
-            if (commitTasks != null && commitTasks.size() > 0) {
-                data.addAll(commitTasks);
+            if (completedHomeworkListFragment != null) {
+                ArrayList<CommitTask> commitTasks = (ArrayList<CommitTask>) completedHomeworkListFragment.getData();
+                if (commitTasks != null && commitTasks.size() > 0) {
+                    data.addAll(commitTasks);
+                }
             }
-            if (propertiesType == 1 && evalHomeworkListFragment != null) {
+            if ((propertiesType == 1 || studyTask.getRepeatCourseCompletionMode() == 3) && evalHomeworkListFragment != null) {
                 ArrayList<CommitTask> evalTaskList = (ArrayList<CommitTask>) evalHomeworkListFragment.getData();
                 if (evalTaskList != null && evalTaskList.size() > 0) {
                     data.addAll(evalTaskList);
@@ -563,6 +607,11 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                     }
                 }
                 answerCardParam.setRoleType(roleType);
+            }
+            if (TaskType == StudyTaskType.RETELL_WAWA_COURSE){
+                if (studyTask.getRepeatCourseCompletionMode() == 3){
+                    list = evalList;
+                }
             }
             ScoreStatisticsActivity.start(
                     getActivity(),
@@ -615,11 +664,22 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     private boolean shouldHiddenCover() {
         boolean hidden = false;
         //英文写作、新版看课件隐藏缩略图。
-        if (TaskType == StudyTaskType.ENGLISH_WRITING
-                || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+        if (TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
             hidden = true;
+        } else if (TaskType == StudyTaskType.ENGLISH_WRITING){
+            if (!showEnglishWritingCourse()){
+                hidden = true;
+            }
         }
         return hidden;
+    }
+
+    private boolean showEnglishWritingCourse(){
+        boolean showCourseDetail = false;
+        if (homeworkListInfo != null && !TextUtils.isEmpty(homeworkListInfo.getResId())){
+            showCourseDetail = true;
+        }
+        return showCourseDetail;
     }
 
     /**
@@ -632,10 +692,32 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         //英文写作、看作业、交作业、新版看课件隐藏“查阅详情”。
         if (TaskType == StudyTaskType.SUBMIT_HOMEWORK
                 || TaskType == StudyTaskType.WATCH_HOMEWORK
-                || TaskType == StudyTaskType.ENGLISH_WRITING
                 || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
                 || TaskType == StudyTaskType.Q_DUBBING) {
             hidden = true;
+        } else if (TaskType == StudyTaskType.ENGLISH_WRITING){
+            if (showEnglishWritingCourse()){
+                String resId = homeworkListInfo.getResId();
+                if (resId.contains("-")){
+                    if (resId.contains(",")){
+                        return true;
+                    }
+                    int mediaType = Integer.valueOf(resId.split("-")[1]);
+                    if (mediaType == MaterialResourceType.PICTURE
+                            || mediaType == MaterialResourceType.PDF
+                            || mediaType == MaterialResourceType.PPT
+                            || mediaType == MaterialResourceType.DOC
+                            || mediaType == MaterialResourceType.AUDIO
+                            || mediaType == MaterialResourceType.VIDEO
+                            || mediaType == MaterialResourceType.Q_DUBBING_VIDEO){
+                        hidden = true;
+                    }
+                } else {
+                    hidden = true;
+                }
+            } else {
+                hidden = true;
+            }
         }
         return hidden;
     }
@@ -729,7 +811,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.pager_sliding_tab_strip);
 
         //初始化标题
-        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE) {
+        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE
+                && studyTaskType != StudyTaskType.MULTIPLE_OTHER) {
             titleList.add(getString(R.string.task_requirements));
         }
         //看课件和看作业不显示提交列表
@@ -746,7 +829,8 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         //初始化fragment
         Fragment fragment = null;
         //任务要求
-        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE) {
+        if (studyTaskType != StudyTaskType.LISTEN_READ_AND_WRITE
+                && studyTaskType != StudyTaskType.MULTIPLE_OTHER) {
             fragment = new TaskRequirementFragment();
             fragment.setArguments(getHomeworkListBundleInfo());
             fragmentList.add(fragment);
@@ -759,15 +843,28 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (shouldShowCommitedList()) {
             fragment = new CompletedHomeworkListFragment();
             fragment.setArguments(getHomeworkListBundleInfo());
-            fragmentList.add(fragment);
-            //赋值
-            this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
-            if (propertiesType == 1) {
-                fragment = new EvalHomeworkListFragment();
-                fragment.setArguments(getHomeworkListBundleInfo());
+            if (TaskType == StudyTaskType.RETELL_WAWA_COURSE){
+                if (studyTask.getRepeatCourseCompletionMode() == 3){
+                    //评测
+                    fragment = new EvalHomeworkListFragment();
+                    fragment.setArguments(getHomeworkListBundleInfo());
+                    fragmentList.add(fragment);
+                    //赋值
+                    this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                } else {
+                    fragmentList.add(fragment);
+                    this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
+                    if (propertiesType == 1) {
+                        fragment = new EvalHomeworkListFragment();
+                        fragment.setArguments(getHomeworkListBundleInfo());
+                        fragmentList.add(fragment);
+                        //赋值
+                        this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                    }
+                }
+            } else {
                 fragmentList.add(fragment);
-                //赋值
-                this.evalHomeworkListFragment = (EvalHomeworkListFragment) fragment;
+                this.completedHomeworkListFragment = (CompletedHomeworkListFragment) fragment;
             }
         }
 
@@ -954,6 +1051,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                         StudyTaskUtils.isStudentFinishStudyTask(StudentId, homeworkCommitObjectInfo.getListCommitTask(), true);
                 if (isFistIn) {
                     isFistIn = false;
+                    if (isHistoryClass){
+                        return;
+                    }
                     //没有完成给于toast提示
                     if (studyTask.getRepeatCourseCompletionMode() == 1 && propertiesType == 1){
                         if (!isStudentFinishRetellTask){
@@ -1032,7 +1132,13 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         if (task == null) {
             return;
         }
-
+        initRightViewData();
+        if (studyTaskType == StudyTaskType.MULTIPLE_OTHER && homeworkListInfo != null){
+            task.setResId(homeworkListInfo.getResId());
+            task.setResThumbnailUrl(homeworkListInfo.getResThumbnailUrl());
+            task.setResUrl(homeworkListInfo.getResUrl());
+            task.setTaskTitle(homeworkListInfo.getTaskTitle());
+        }
         String resId = task.getResId();
         if (!TextUtils.isEmpty(resId)) {
             if (resId.contains(",")) {
@@ -1092,7 +1198,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
 
 
         //如果是复述课件对于多个类型区别对待
-        if (TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER) {
+        if (TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                || TaskType == StudyTaskType.TASK_ORDER
+                || TaskType == StudyTaskType.ENGLISH_WRITING) {
             analysisRetellCourseData();
         }
     }
@@ -1249,7 +1357,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                         tempInfo.setResourceUrl(AppSettings.getFileUrl(resUrlArray[i]));
                         tempInfo.setResourceId(resIdArray[i]);
                         tempInfo.setResourceType(taskResType);
-                        tempInfo.setAuthorId(authorIdArray[i]);
+                        if (i < authorIdArray.length) {
+                            tempInfo.setAuthorId(authorIdArray[i]);
+                        }
                         resourceInfoList.add(tempInfo);
                     }
                 } else {
@@ -1270,6 +1380,12 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             if (homeworkIcon != null) {
                 getThumbnailManager().displayThumbnailWithDefault(AppSettings.getFileUrl(
                         newInfoTag.getResourceUrl()), homeworkIcon, R.drawable.default_book_cover);
+            }
+        } else if (taskResType == ResType.RES_TYPE_VOICE){
+            //显示音频的缩略图
+            if (homeworkIcon != null) {
+                getThumbnailManager().displayThumbnailWithDefault(AppSettings.getFileUrl(
+                        ""), homeworkIcon, R.drawable.icon_task_audio_thumbnail);
             }
         }
     }
@@ -1331,7 +1447,7 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 if (!isPlaying) {
                     isPlaying = true;
                     //点击查阅详情直接进入详情页面
-                    if (TaskType == StudyTaskType.ENGLISH_WRITING
+                    if ((TaskType == StudyTaskType.ENGLISH_WRITING && !showEnglishWritingCourse())
                             || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                         //英文写作/新版看课件不跳转
                     } else if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType ==
@@ -1366,19 +1482,23 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
             }
 
         } else if (v.getId() == R.id.iv_icon || v.getId() == R.id.layout_assign_homework) {
-            if (TaskType == StudyTaskType.ENGLISH_WRITING
+            if ((TaskType == StudyTaskType.ENGLISH_WRITING && !showEnglishWritingCourse())
                     || TaskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
                 return;
                 //英文写作/新版看课件不跳转
             }
             //点击图片直接打开
-            if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE || TaskType == StudyTaskType.TASK_ORDER)
+            if ((TaskType == StudyTaskType.RETELL_WAWA_COURSE
+                    || TaskType == StudyTaskType.TASK_ORDER
+                    || TaskType == StudyTaskType.ENGLISH_WRITING)
                     && (taskResType == ResType.RES_TYPE_PPT
                     || taskResType == ResType.RES_TYPE_PDF
                     || taskResType == ResType.RES_TYPE_DOC
                     || taskResType == ResType.RES_TYPE_IMG)) {
                 openPptAndPdf();
-            } else if (TaskType == StudyTaskType.Q_DUBBING) {
+            } else if (TaskType == StudyTaskType.Q_DUBBING
+                    || (TaskType == StudyTaskType.ENGLISH_WRITING && (taskResType == ResType.RES_TYPE_VIDEO
+                    || taskResType == ResType.RES_TYPE_VOICE || taskResType == ResType.RES_TYPE_Q_DUBBING))) {
                 //打开Q配音的视频
                 openQDubbingVideo();
             } else {
@@ -1399,6 +1519,9 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
     }
 
     private boolean showTaskFinishDialogCondition() {
+        if (isHistoryClass){
+            return false;
+        }
         if (roleType == RoleType.ROLE_TYPE_STUDENT || roleType == RoleType.ROLE_TYPE_PARENT) {
             if (task != null) {
                 if (task.getRepeatCourseCompletionMode() == 1 && propertiesType == 1 && !isStudentFinishRetellTask) {
@@ -3351,8 +3474,10 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
                 if (courseData != null) {
                     String resproperties = courseData.getResproperties();
                     taskCourseOrientation = courseData.screentype;
-                    if (!TextUtils.isEmpty(resproperties)) {
-                        propertiesType = Integer.valueOf(resproperties);
+                    if (studyTask.getRepeatCourseCompletionMode() == 2) {
+                        if (!TextUtils.isEmpty(resproperties)) {
+                            propertiesType = Integer.valueOf(resproperties);
+                        }
                     }
                     if (viewPager == null) {
                         initViewPager();
@@ -3589,6 +3714,62 @@ public class HomeworkCommitFragment extends ResourceBaseFragment {
         filter.addAction(BUG_LQ_COURSE_SHOP_SUCCESS);
         filter.addAction(REFRESH_COMMIT_LIST_DATA);
         getActivity().registerReceiver(receiver, filter);
+    }
+
+    private void popHeadRightPopWindow(){
+        View contentView = LayoutInflater.from(getActivity()).inflate(com.lqwawa.apps.R.layout.pop_menu, null);
+        //处理popWindow 显示内容
+        handleLogic(contentView);
+        mPopWindow = new CustomPopWindow.PopupWindowBuilder(getActivity())
+                .setView(contentView)//显示的布局，还可以通过设置一个View
+                .setFocusable(true)//是否获取焦点，默认为ture
+                .setOutsideTouchable(true)//是否PopupWindow 以外触摸dissmiss
+                .create();//创建PopupWindow
+        mPopWindow.showAsDropDown(headRightImageV, -DensityUtils.dp2px(getActivity(), 100),
+                        0);
+    }
+
+    /**
+     * 处理弹出显示内容、点击事件等逻辑
+     *
+     * @param contentView
+     */
+    protected void handleLogic(View contentView) {
+        EntryBean entryBean = null;
+        final List<EntryBean> list = new ArrayList<>();
+        entryBean = new EntryBean();
+        entryBean.value = getString(R.string.share);
+        entryBean.id = 0;
+        list.add(entryBean);
+        entryBean = new EntryBean();
+        if (task.getViewOthersTaskPermisson() == 1) {
+            entryBean.value = getString(R.string.str_set_can_read);
+        } else {
+            entryBean.value = getString(R.string.str_set_cannot_read);
+        }
+        entryBean.id = 1;
+        list.add(entryBean);
+        ListView listView = (ListView) contentView.findViewById(com.lqwawa.apps.R.id.pop_menu_list);
+        PopMenuAdapter adapter = new PopMenuAdapter(getActivity(), list);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mPopWindow != null) {
+                    mPopWindow.dissmiss();
+                }
+                EntryBean bean = list.get(i);
+                if (bean.id == 0) {
+                    //分享
+                    share();
+                } else if (bean.id == 1) {
+                    StudyTaskNetHelper.getInstance().setCallListener(result -> {
+                        loadCommonData();
+                    }).setViewOthersTaskPermission(TaskId,task.getViewOthersTaskPermisson());
+                }
+            }
+        });
+
     }
 
     @Override

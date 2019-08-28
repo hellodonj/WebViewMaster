@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -2662,6 +2663,7 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
 
     @Override
     public void onScaleChange(boolean isFullscreen) {
+        LogUtils.log("screenType","screenType=" + getResources().getConfiguration().orientation);
         if (isFullscreen) {
             findViewById(R.id.bottom_layout_airclass).setVisibility(View.GONE);
             mIntrolayout.setVisibility(View.GONE);
@@ -2669,8 +2671,15 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
             mLiveBack.setVisibility(View.GONE);
             mMediaController.hideTitleLayout(false);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) videoContainer.getLayoutParams();
-            layoutParams.width = getScreenWidth(getActivity());
-            layoutParams.height = ScreenUtils.getScreenHeight(getActivity());
+            int width = getScreenWidth(getActivity());
+            int height = ScreenUtils.getScreenHeight(getActivity());
+            if (width > height){
+                layoutParams.width = width;
+                layoutParams.height = height;
+            } else {
+                layoutParams.width = height;
+                layoutParams.height = width;
+            }
             videoContainer.setLayoutParams(layoutParams);
         } else {
             findViewById(R.id.bottom_layout_airclass).setVisibility(View.VISIBLE);
@@ -2679,8 +2688,15 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
             mLiveBack.setVisibility(View.VISIBLE);
             mMediaController.hideTitleLayout(true);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) videoContainer.getLayoutParams();
-            layoutParams.width = getScreenWidth(getActivity());
-            layoutParams.height = getScreenWidth(getActivity()) * 9 / 16;
+            int width = getScreenWidth(getActivity());
+            int height = ScreenUtils.getScreenHeight(getActivity());
+            if (width > height){
+                layoutParams.width = height;
+                layoutParams.height = height * 9 / 16;
+            } else {
+                layoutParams.width = width;
+                layoutParams.height = width * 9 / 16;
+            }
             videoContainer.setLayoutParams(layoutParams);
         }
     }

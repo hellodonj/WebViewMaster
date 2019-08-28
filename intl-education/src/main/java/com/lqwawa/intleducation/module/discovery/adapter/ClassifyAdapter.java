@@ -14,6 +14,8 @@ import com.lqwawa.intleducation.base.ui.MyBaseAdapter;
 import com.lqwawa.intleducation.base.utils.ResourceUtils;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.module.discovery.vo.ClassifyVo;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 import java.util.ArrayList;
@@ -35,13 +37,8 @@ public class ClassifyAdapter extends MyBaseAdapter {
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<>();
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setConfig(Bitmap.Config.ARGB_8888)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions =  XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, Bitmap.Config.ARGB_8888);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class ClassifyAdapter extends MyBaseAdapter {
             String thumbnail = vo.getThumbnail();
             if (StringUtils.isValidString(thumbnail)) {
                 if (StringUtils.isValidWebResString(thumbnail)) {
-                    x.image().bind(holder.classifyImg,
+                    XImageLoader.loadImage(holder.classifyImg,
                             vo.getThumbnail().trim(),
                             imageOptions);
                 } else {

@@ -444,6 +444,7 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                                     || type.equals("13")
                                     || type.equals("14")
                                     || type.equals("15")
+                                    || type.equals("18")
                                     || (type.equals("11") && data.isNeedCommit())) {
                                 imageView.setVisibility(View.VISIBLE);
                             } else {
@@ -464,11 +465,11 @@ public class StudyTaskFragment extends ContactsExpandListFragment implements Vie
                                 textView.setBackgroundResource(R.drawable.scan_class_course);
                             } else if (type.equals("1")) {
                                 textView.setBackgroundResource(R.drawable.scan_class_course);
-                            } else if (type.equals("2")) {
+                            } else if (type.equals("2")
+                                    || type.equals("3")
+                                    || type.equals("17")
+                                    || type.equals("18")) {
                                 //看作业
-                                textView.setBackgroundResource(R.drawable.icon_other);
-                            } else if (type.equals("3")) {
-                                //交作业，目前看作业和交作业背景图片是一致的，只是用“需提交”来区分。
                                 textView.setBackgroundResource(R.drawable.icon_other);
                             } else if (type.equals("4")) {
                                 textView.setBackgroundResource(R.drawable.discuss_topic);

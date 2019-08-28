@@ -55,7 +55,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     public static final String LESSON_RESOURCE_CHOICE_PUBLISH_ACTION = "LESSON_RESOURCE_CHOICE_PUBLISH_ACTION";
 
     // 选择资源支持的最大数
-    private static final int MAX_CHOICE_COUNT = 5;
+    private static final int MAX_CHOICE_COUNT = 10;
 
     private static final String KEY_EXTRA_NEED_FLAG = "KEY_EXTRA_NEED_FLAG";
     private static final String KEY_EXTRA_CAN_READ = "KEY_EXTRA_CAN_READ";
@@ -64,11 +64,12 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     private static final String KEY_EXTRA_SECTION_ID = "KEY_EXTRA_SECTION_ID";
     private static final String KEY_EXTRA_TASK_TYPE = "KEY_EXTRA_TASK_TYPE";
-
+    private static final String KEY_LIBRARY_TYPE  = "KEY_LIBRARY_TYPE";
 
     public static String SECTION_NAME = "section_name";
     public static String SECTION_TITLE = "section_title";
     public static String STATUS = "status";
+    private static final int TYPE_HOMEWORK = 0;
 
     private GridView mListView;
     private CourseEmptyView mEmptyLayout;
@@ -78,6 +79,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     private String courseId;
     private String sectionId;
     private int mTaskType;
+    private int libraryType;
     private SectionDetailsVo mSectionDetailsVo;
     private LessonSourceParams mSourceParams;
     private ReadWeikeHelper mReadWeikeHelper;
@@ -89,7 +91,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                                    boolean isOnlineTeacher,
                                                    @NonNull String courseId,
                                                    @NonNull String sectionId,
-                                                   int taskType,
+                                                   int taskType,int libraryType,
                                                    @NonNull LessonSourceParams params) {
         LessonSourceFragment fragment = new LessonSourceFragment();
         Bundle arguments = new Bundle();
@@ -100,6 +102,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         arguments.putString(KEY_EXTRA_COURSE_ID, courseId);
         arguments.putString(KEY_EXTRA_SECTION_ID, sectionId);
         arguments.putInt(KEY_EXTRA_TASK_TYPE, taskType);
+        arguments.putInt(KEY_LIBRARY_TYPE,libraryType);
         arguments.putSerializable(FRAGMENT_BUNDLE_OBJECT, params);
         fragment.setArguments(arguments);
         return fragment;
@@ -117,6 +120,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
         sectionId = bundle.getString(KEY_EXTRA_SECTION_ID);
         mTaskType = bundle.getInt(KEY_EXTRA_TASK_TYPE);
+        libraryType = bundle.getInt(KEY_LIBRARY_TYPE);
         if (bundle.containsKey(FRAGMENT_BUNDLE_OBJECT)) {
             mSourceParams = (LessonSourceParams) bundle.getSerializable(FRAGMENT_BUNDLE_OBJECT);
         }
@@ -344,7 +348,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
+        //exerciseType 不传或者-1 全部
+        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role,-1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -378,6 +383,8 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
                                 vo.setTaskName(getTaskName(index));
                                 vo.setChapterId(vo.getId());
                                 vo.setTaskType(listVo.getTaskType());
+                                vo.setCourseId(courseId);
+                                vo.setSourceType(TYPE_HOMEWORK);
                                 if(mTaskType == 5){
                                     // 讲解课的显示Fragment
                                     // vo.setResProperties("");
@@ -454,7 +461,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
         SectionTaskDetailsActivity.startForResultEx(getActivity(), vo, curMemberId, getActivity().getIntent
                         ().getStringExtra("schoolId"), getActivity().getIntent().getBooleanExtra
                         (MyCourseDetailsActivity.KEY_IS_FROM_MY_COURSE, false),
-                null, originalRole, handleRole, null, isAudition, params);
+                null, originalRole, handleRole, null, isAudition,libraryType, params);
     }
 
 

@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 public interface IDType {
-    int ID_TYPE_IDENTITY_CARD = 0;
-    int ID_TYPE_PASSPORT = 1;
+    int ID_TYPE_IDENTITY_CARD = 1;
+    int ID_TYPE_PASSPORT = 2;
 
     @Target(ElementType.PARAMETER)
     @Retention(RetentionPolicy.SOURCE)

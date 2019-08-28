@@ -92,7 +92,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/tv_study_number"
@@ -128,47 +129,6 @@
                 android:textColor="@color/textSecond"
                 android:textSize="12sp" />
         </RelativeLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp">
-
-            <TextView
-                android:id="@+id/tv_class_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@color/colorPink"
-                android:textSize="12sp" />
-            <!--立即购买-->
-            <net.qiujuer.genius.ui.widget.Button xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/btn_enter_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:background="@drawable/btn_pink_radius_selector"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="2dp"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/colorLight"
-                android:textSize="14sp"
-                android:visibility="gone"
-                app:gTouchColor="@color/touch_color"
-                app:gTouchCornerRadius="19dp"
-                app:gTouchEffect="ripple"
-                tools:text="@string/app_name" />
-        </FrameLayout>
-
     </LinearLayout>
 
     <FrameLayout

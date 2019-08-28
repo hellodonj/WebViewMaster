@@ -35,8 +35,6 @@ import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseResListAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
-import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
@@ -48,7 +46,6 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CourseSelectItemOuterFragment extends MyBaseFragment implements ResourceSelectListener {
@@ -197,7 +194,8 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes, token, null, courseId, sectionId, 1, new DataSource.Callback<SectionDetailsVo>() {
+        //exerciseType 不传或者-1 全部
+        LessonHelper.requestChapterStudyTask(languageRes, token, null, courseId, sectionId, 1,-1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -295,11 +293,11 @@ public class CourseSelectItemOuterFragment extends MyBaseFragment implements Res
             if(taskType == 1 || taskType == 6){
                 return true;
             }
-        }else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
+        } else if(realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE){
             // 看课本类型
-            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5) {
+            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5 || taskType == 6) {
                 // 看课件 视频课
-                // 新增选择讲解课 听说作业
+                // 新增选择讲解课 听说作业 Q配音
                 return true;
             }
         }

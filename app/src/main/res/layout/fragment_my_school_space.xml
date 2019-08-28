@@ -1,127 +1,138 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/school_space_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/main_bg_color">
+        android:background="@color/main_bg_color"
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                layout="@layout/layout_school_space_online_header"/>
+            <include layout="@layout/layout_school_space_online_header" />
 
-            <include
-                layout="@layout/school_space_header"/>
+            <include layout="@layout/school_space_header" />
 
         </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:visibility="gone"
-            android:background="@color/white">
-        </LinearLayout>
         <com.galaxyschool.app.wawaschool.views.PullToRefreshView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contacts_pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/function_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorLight">
-
-                <com.galaxyschool.app.wawaschool.views.ChannelView
-                    android:id="@+id/layout_channel_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"/>
-            </RelativeLayout>
-
-
-            <com.galaxyschool.app.wawaschool.views.MyGridView
-                android:id="@+id/school_grid_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:listSelector="@android:color/transparent"
-                android:cacheColorHint="@android:color/transparent"
-                android:background="@color/white"
-                android:numColumns="5"
-                android:horizontalSpacing="0dp"
-                android:scrollingCache="false"
-                android:verticalSpacing="0dp"
-                android:visibility="gone"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/resource_layout"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/main_bg_color"
                 android:orientation="vertical">
 
-                <include
-                    layout="@layout/include_schoolspace_toggle_class"/>
-
-                <com.galaxyschool.app.wawaschool.views.MyGridView
-                    android:id="@+id/class_grid_view"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:listSelector="@android:color/transparent"
-                    android:cacheColorHint="@android:color/transparent"
-                    android:background="@color/white"
-                    android:numColumns="4"
-                    android:horizontalSpacing="0dp"
-                    android:scrollingCache="false"
-                    android:verticalSpacing="0dp"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                <com.galaxyschool.app.wawaschool.views.MyGridView
-                    android:id="@+id/newly_class_grid_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:listSelector="@android:color/transparent"
-                    android:cacheColorHint="@android:color/transparent"
-                    android:background="@color/white"
-                    android:numColumns="1"
-                    android:horizontalSpacing="0dp"
-                    android:visibility="visible"
-                    android:scrollingCache="false"
-                    android:verticalSpacing="0dp"/>
-            </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/organ_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@color/white"
+                        android:visibility="gone">
 
-            <include layout="@layout/include_schoolspace_noclass"/>
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-        </FrameLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_dot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:orientation="horizontal" />
+                    </RelativeLayout>
 
-            </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/function_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorLight">
+
+                        <com.galaxyschool.app.wawaschool.views.ChannelView
+                            android:id="@+id/layout_channel_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white" />
+                    </RelativeLayout>
+
+                    <com.galaxyschool.app.wawaschool.views.MyGridView
+                        android:id="@+id/school_grid_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:cacheColorHint="@android:color/transparent"
+                        android:horizontalSpacing="0dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="5"
+                        android:scrollingCache="false"
+                        android:verticalSpacing="0dp"
+                        android:visibility="gone" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/resource_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/main_bg_color"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/include_schoolspace_toggle_class" />
+
+                            <com.galaxyschool.app.wawaschool.views.MyGridView
+                                android:id="@+id/class_grid_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:cacheColorHint="@android:color/transparent"
+                                android:horizontalSpacing="0dp"
+                                android:listSelector="@android:color/transparent"
+                                android:numColumns="4"
+                                android:scrollingCache="false"
+                                android:verticalSpacing="0dp" />
+
+                            <com.galaxyschool.app.wawaschool.views.MyGridView
+                                android:id="@+id/newly_class_grid_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:cacheColorHint="@android:color/transparent"
+                                android:horizontalSpacing="0dp"
+                                android:listSelector="@android:color/transparent"
+                                android:numColumns="1"
+                                android:scrollingCache="false"
+                                android:verticalSpacing="0dp"
+                                android:visibility="visible" />
+                        </LinearLayout>
+
+                        <include layout="@layout/include_schoolspace_noclass" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
             </ScrollView>
         </com.galaxyschool.app.wawaschool.views.PullToRefreshView>
     </LinearLayout>
 
-    <include
-        layout="@layout/subscribe_school_tips"/>
+    <include layout="@layout/subscribe_school_tips" />
 
 </FrameLayout>

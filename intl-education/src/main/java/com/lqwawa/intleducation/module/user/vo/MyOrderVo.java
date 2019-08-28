@@ -70,6 +70,9 @@ public class MyOrderVo extends BaseVo{
     private int taskType;
     private String taskName;
 
+    private String className;
+    private String schoolName;
+
     public int getPayType() {
         return payType;
     }
@@ -296,21 +299,23 @@ public class MyOrderVo extends BaseVo{
         this.taskName = taskName;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
     public int getLibraryType() {
-        if (!TextUtils.isEmpty(level) && level.contains(OrganLibraryUtils.BRAIN_LIBRARY_LEVEL)) {
-            return OrganLibraryType.TYPE_BRAIN_LIBRARY;
-        }
-        if (type == 0) {
-            if (assortment == 0 || assortment == 1) {
-                return OrganLibraryType.TYPE_LQCOURSE_SHOP;
-            } else if (assortment == 2 || assortment == 3) {
-                return OrganLibraryType.TYPE_PRACTICE_LIBRARY;
-            }
-        } else if (type == 1) {
-            return OrganLibraryType.TYPE_LIBRARY;
-        } else if (type == 2) {
-            return OrganLibraryType.TYPE_VIDEO_LIBRARY;
-        }
-        return -1;
+        return OrganLibraryUtils.getLibraryType(type, level, assortment);
     }
 }

@@ -299,7 +299,7 @@ public class SlideManagerHornForPhone extends SlideManagerForHorn
     @Override
     protected void showSaveResourceDialog() {
         // TODO Auto-generated method stub
-        stopPageAudio(mCurrentPageIndex);
+        stopPageAudio(getCurrPageIndex());
 
         String saveName = mSaveTitle;
         String saveContent = mSaveContent;

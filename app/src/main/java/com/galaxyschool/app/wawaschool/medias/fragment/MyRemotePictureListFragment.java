@@ -40,6 +40,7 @@ import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
 import com.galaxyschool.app.wawaschool.medias.activity.MyLocalPictureListActivity;
+import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -162,7 +163,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
             taskType = getArguments().getInt(ActivityUtils.EXTRA_TASK_TYPE);
             isFromStudyTask = getArguments().getBoolean(MediaListFragment.EXTRA_SUPPORT_MULTI_TYPE_WATCH_WAWA_COURSE);
             if (isFromStudyTask) {
-                maxCount = getArguments().getInt(ActivityUtils.EXTRA_SELECT_MAX_COUNT);
+                maxCount = 10;
             }
         }
     }
@@ -479,10 +480,7 @@ public class MyRemotePictureListFragment extends ContactsListFragment implements
 
             //看课件多类型
             if (WatchWawaCourseResourceSplicingUtils.
-                    watchWawaCourseSupportMultiType(getArguments())){
-                //控制资源最多选多少
-                maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(mediaType,maxCount,false);
+                    watchWawaCourseSupportMultiType(getArguments()) && maxCount == 0){
             }
         }
     }

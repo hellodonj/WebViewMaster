@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.galaxyschool.app.wawaschool.ContactsCreateClassActivity;
 import com.galaxyschool.app.wawaschool.QrcodeProcessActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
+import com.galaxyschool.app.wawaschool.common.MessageEventConstantUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
@@ -46,6 +48,10 @@ import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.galaxyschool.app.wawaschool.views.PopupMenu;
 import com.galaxyschool.app.wawaschool.views.PullToRefreshView;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.lqbaselib.pojo.MessageEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +99,7 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
         init();
         refreshData();
         loadSchoolInfo();
+        addEventBusReceiver();
     }
 
     private void refreshData() {
@@ -145,7 +152,7 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
         }
     }
 
-    /**
+    /**etView
      * 进入老师通讯录
      *
      * @param classInfo
@@ -276,6 +283,20 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                             textView.setBackgroundResource(R.drawable.button_bg_with_round_sides);
 //                            textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
                             textView.setOnClickListener(SchoolClassListFragment.this);
+                        }
+                    }
+
+                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    ImageView wawaIconImageView = (ImageView) view.findViewById(R.id.iv_wawa_icon);
+                    if (payLayout != null && wawaPayNumView != null){
+                        payLayout.setVisibility(View.VISIBLE);
+                        if (data.getPrice() > 0){
+                            wawaIconImageView.setVisibility(View.VISIBLE);
+                            wawaPayNumView.setText(String.valueOf(data.getPrice()));
+                        } else {
+                            wawaIconImageView.setVisibility(View.GONE);
+                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
                         }
                     }
 
@@ -444,6 +465,20 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                         textView.setText(data.getGradeName() != null ?
                                 data.getGradeName() + data.getClassName() :
                                 data.getClassName());
+                    }
+
+                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+                    ImageView wawaIconImageView = (ImageView) view.findViewById(R.id.iv_wawa_icon);
+                    if (payLayout != null && wawaPayNumView != null){
+                        payLayout.setVisibility(View.VISIBLE);
+                        if (data.getPrice() > 0){
+                            wawaIconImageView.setVisibility(View.VISIBLE);
+                            wawaPayNumView.setText(String.valueOf(data.getPrice()));
+                        } else {
+                            wawaIconImageView.setVisibility(View.GONE);
+                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
+                        }
                     }
 
                     ViewHolder holder = (ViewHolder) view.getTag();
@@ -1102,6 +1137,13 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                     refreshData();
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent){
+        if (TextUtils.equals(messageEvent.getUpdateAction(), MessageEventConstantUtils.JOIN_CHARGE_CLASS_SUCCESS)){
+            refreshData();
         }
     }
 

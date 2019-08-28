@@ -188,19 +188,5 @@ public class RelatedCourseListFragment extends PresenterFragment<RelatedCourseLi
             ClassDetailNavigator navigator = (ClassDetailNavigator) activity;
             navigator.onCommentChanged(getUserVisibleHint());
         }
-
-        if (getUserVisibleHint()) {
-            // 显示了课堂简介
-            if (getActivity() instanceof BaseClassDetailActivity) {
-                BaseClassDetailActivity parentActivity = (BaseClassDetailActivity) getActivity();
-                parentActivity.addRefreshView(mNestedView);
-                parentActivity.getRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        parentActivity.refreshData();
-                    }
-                });
-            }
-        }
     }
 }

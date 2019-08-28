@@ -94,8 +94,18 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:textColor="@color/com_text_red"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/iv_need_commit"

@@ -18,6 +18,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.MyFragmentPagerTitleAdapter;
+import com.galaxyschool.app.wawaschool.pojo.RoleType;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.CommitTask;
 import com.galaxyschool.app.wawaschool.pojo.HomeworkCommitObjectInfo;
@@ -28,6 +29,7 @@ import com.galaxyschool.app.wawaschool.pojo.StudyTaskCommentDiscussPersonResult;
 import com.galaxyschool.app.wawaschool.pojo.StudytaskComment;
 import com.galaxyschool.app.wawaschool.views.MyViewPager;
 import com.galaxyschool.app.wawaschool.views.PagerSlidingTabStrip;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,9 +54,10 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
     private TextView wordsCountTextView;
     private TextView scoreTextView;
     private TextView contentTextView;
+    private LinearLayout bottomLayout;
 
     private int roleType = -1;
-    private String studentId,sortStudentId,taskId;
+    private String studentId, sortStudentId, taskId;
     //学生提交的作业
     private CommitTask commitTask;
     //任务
@@ -69,6 +72,8 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private boolean isHistoryClass;
+    private boolean isOnlineReporter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +90,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
     @Override
     public void onResume() {
         super.onResume();
-            refreshData();
+        refreshData();
     }
 
     private void refreshData() {
@@ -103,16 +108,17 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
             isTaskBelongsToChildrenOrOwner = getArguments().getBoolean(
                     EnglishWritingCompletedFragment.Constant.IS_TASK_BELONGS_TO_CHILDREN_OR_OWNER);
             isHistoryClass = getArguments().getBoolean(ActivityUtils.EXTRA_IS_HISTORY_CLASS);
+            isOnlineReporter = getArguments().getBoolean("isOnlineReporter", false);
         }
         //标题
         commonHeaderTitleTextView = (TextView) findViewById(R.id.contacts_header_title);
         //编辑图标
         commonHeaderRightImageView = (ImageView) findViewById(R.id.contacts_header_right_ico);
         if (commonHeaderRightImageView != null) {
-                    commonHeaderRightImageView.setVisibility(View.INVISIBLE);
-                    commonHeaderRightImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    commonHeaderRightImageView.setBackgroundResource(R.drawable.english_writing_new);
-                    commonHeaderRightImageView.setOnClickListener(this);
+            commonHeaderRightImageView.setVisibility(View.INVISIBLE);
+            commonHeaderRightImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            commonHeaderRightImageView.setBackgroundResource(R.drawable.english_writing_new);
+            commonHeaderRightImageView.setOnClickListener(this);
         }
 
         //改统计
@@ -126,7 +132,20 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
         //内容
         contentTextView = (TextView) findViewById(R.id.tv_content);
+        bottomLayout = (LinearLayout) findViewById(R.id.ll_bottom_layout);
         initViewPager();
+    }
+
+    private void showBottomLayout(boolean isVisible){
+        if (isVisible){
+            if (isOnlineReporter && !isHistoryClass){
+                bottomLayout.setVisibility(View.VISIBLE);
+            } else {
+                bottomLayout.setVisibility(View.GONE);
+            }
+        } else {
+            bottomLayout.setVisibility(View.GONE);
+        }
     }
 
     private void initViewPager() {
@@ -137,7 +156,11 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
         //初始化标题
         titleList.add(getString(R.string.auto_comment));
-        titleList.add(getString(R.string.personal_comment));
+        if (isOnlineReporter) {
+            titleList.add(getString(R.string.str_teacher_review));
+        } else {
+            titleList.add(getString(R.string.personal_comment));
+        }
 //        titleList.add(getString(R.string.task_requirements));
 
         //初始化fragment
@@ -159,7 +182,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 //        fragmentList.add(fragment);
 
         //适配器
-        adapter = new MyFragmentPagerTitleAdapter(getChildFragmentManager(),titleList,fragmentList);
+        adapter = new MyFragmentPagerTitleAdapter(getChildFragmentManager(), titleList, fragmentList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(titleList.size());
@@ -170,6 +193,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
             @Override
             public void onPageSelected(int position) {
+                showBottomLayout(position == 1);
             }
 
             @Override
@@ -183,9 +207,10 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
     /**
      * 获得Bundle信息
+     *
      * @return
      */
-    private Bundle getEnglishWritingBundleInfo(){
+    private Bundle getEnglishWritingBundleInfo() {
         Bundle args = getArguments();
         return args;
     }
@@ -233,26 +258,27 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
      * 拉取数据
      */
     private void loadCommonData() {
-       loadCommitDetails();
+        loadCommitDetails();
     }
 
     /**
      * 拉取点评记录
+     *
      * @param taskId
      */
     private void loadCommentRecords(String taskId) {
-        if (TextUtils.isEmpty(taskId)){
+        if (TextUtils.isEmpty(taskId)) {
             return;
         }
         Map<String, Object> params = new HashMap();
         params.put("TaskId", taskId);
         //视情况:当不传或传0的时候为任务讨论，当传1时为英文写作的老师点评
-        params.put("Type",1);
+        params.put("Type", 1);
 
         RequestHelper.sendPostRequest(getActivity(),
                 ServerUrl.GET_TASK_COMMENT_LIST_URL, params,
                 new RequestHelper.RequestDataResultListener<StudyTaskCommentDiscussPersonResult>
-                        (getActivity(),StudyTaskCommentDiscussPersonResult.class) {
+                        (getActivity(), StudyTaskCommentDiscussPersonResult.class) {
                     @Override
                     public void onSuccess(String jsonString) {
                         if (getActivity() == null) {
@@ -268,7 +294,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
                         StudyTaskCommentDiscussPerson personData = result.getModel().getData();
                         //判断是否可以编辑
                         judgeCanEdit(personData);
-                        if (personData != null){
+                        if (personData != null) {
                             List<StudytaskComment> data = personData.getCommentList();
                             if (data != null) {
 //                                getCurrAdapterViewHelper().setData(data);
@@ -281,30 +307,34 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
     /**
      * 根据条件判断是否可以编辑
+     *
      * @param personData
      */
-    private void judgeCanEdit(StudyTaskCommentDiscussPerson personData){
+    private void judgeCanEdit(StudyTaskCommentDiscussPerson personData) {
         boolean isCommentRecordExists = false;//是否有点评记录
-        if(personData!=null){
+        if (personData != null) {
             List<StudytaskComment> data = personData.getCommentList();
-           if (data!=null&&data.size()>0){
-               //有点评记录
-               isCommentRecordExists = true;
-           }
+            if (data != null && data.size() > 0) {
+                //有点评记录
+                isCommentRecordExists = true;
+            }
         }
         //判断是否允许修改
         shouldShowModifyButton = !isCommentRecordExists && isTaskBelongsToChildrenOrOwner;
-        if (shouldShowModifyButton && !isHistoryClass){
+        if (roleType == RoleType.ROLE_TYPE_TEACHER || isOnlineReporter){
+            shouldShowModifyButton = false;
+        }
+        if (shouldShowModifyButton && !isHistoryClass) {
             commonHeaderRightImageView.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             commonHeaderRightImageView.setVisibility(View.INVISIBLE);
         }
     }
+
     /**
      * 拉取提交详情数据
      */
     private void loadCommitDetails() {
-
         Map<String, Object> params = new HashMap();
         //任务Id，必填
         if (!TextUtils.isEmpty(taskId)) {
@@ -341,19 +371,20 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
     private void updateViews(HomeworkCommitObjectResult result) {
         HomeworkCommitObjectInfo info = result.getModel().getData();
-        if (info != null){
+        if (info != null) {
             studyTask = info.getTaskInfo();
             List<CommitTask> list = info.getListCommitTask();
             if (list == null || list.size() <= 0) {
                 return;
             } else {
-                updateHeaderView(studyTask,list);
+                updateHeaderView(studyTask, list);
             }
         }
     }
 
     /**
-     **更新头部内容
+     * *更新头部内容
+     *
      * @param task
      * @param result
      */
@@ -363,12 +394,12 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
         }
         //截取第一个
         commitTask = result.get(0);
-        if (commitTask == null){
+        if (commitTask == null) {
             return;
         }
 
         //更新头部内容
-        if (commonHeaderTitleTextView!=null) {
+        if (commonHeaderTitleTextView != null) {
             commonHeaderTitleTextView.setText(task.getTaskTitle());
         }
         //改
@@ -381,7 +412,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
         contentTextView.setText(commitTask.getWritingContent());
         //自动点评
         String correctResult = commitTask.getCorrectResult();
-        if (!TextUtils.isEmpty(correctResult)){
+        if (!TextUtils.isEmpty(correctResult)) {
             parseCorrectResultJSON(correctResult);
         }
         //调用点评记录
@@ -392,7 +423,7 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
 
         try {
             JSONObject root = new JSONObject(correctResult);
-            if (root != null){
+            if (root != null) {
                 JSONObject data = root.optJSONObject("data");
                 if (data != null) {
                     String comment = data.optString("comment");
@@ -415,10 +446,10 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
             //编辑按钮 当前的编辑可以对当前的已经提交的作文重新的提交
             enterArticleDetails();
 
-        }else if (v.getId()==R.id.contacts_header_left_btn){
-            Intent intent=new Intent();
-            intent.putExtra("isNeedRefresh",true);
-            getActivity().setResult(Activity.RESULT_OK,intent);
+        } else if (v.getId() == R.id.contacts_header_left_btn) {
+            Intent intent = new Intent();
+            intent.putExtra("isNeedRefresh", true);
+            getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
         }
     }
@@ -426,27 +457,28 @@ public class EnglishWritingCommentDetailsFragment extends ContactsListFragment {
     /**
      * 进入学生写作的详情界面
      */
-    private void enterArticleDetails(){
-        Intent intent=new Intent(getActivity(), EnglishWritingBuildActivity.class);
-        Bundle bundle=new Bundle();
-        if (commitTask!=null){
-            bundle.putSerializable(EnglishWritingCompletedFragment.Constant.COMMITTASK,commitTask);
+    private void enterArticleDetails() {
+        Intent intent = new Intent(getActivity(), EnglishWritingBuildActivity.class);
+        Bundle bundle = new Bundle();
+        if (commitTask != null) {
+            bundle.putSerializable(EnglishWritingCompletedFragment.Constant.COMMITTASK, commitTask);
         }
-        if (studyTask != null){
-            bundle.putSerializable("studyTask",studyTask);
+        if (studyTask != null) {
+            bundle.putSerializable("studyTask", studyTask);
         }
-        bundle.putString(EnglishWritingCompletedFragment.Constant.TASKID,taskId);
-        bundle.putString(EnglishWritingCompletedFragment.Constant.STUDENTID,studentId);
-        bundle.putString(EnglishWritingCompletedFragment.Constant.SORTSTUDENTID,sortStudentId);
+        bundle.putString(EnglishWritingCompletedFragment.Constant.TASKID, taskId);
+        bundle.putString(EnglishWritingCompletedFragment.Constant.STUDENTID, studentId);
+        bundle.putString(EnglishWritingCompletedFragment.Constant.SORTSTUDENTID, sortStudentId);
         intent.putExtras(bundle);
-        getActivity().startActivityForResult(intent,CampusPatrolPickerFragment
+        getActivity().startActivityForResult(intent, CampusPatrolPickerFragment
                 .REQUEST_CODE_ENGLISH_WRITING_COMMIT);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null){
+        if (data == null) {
             if (requestCode == CampusPatrolPickerFragment
-                    .REQUEST_CODE_ENGLISH_WRITING_COMMENT_DETAILS){
+                    .REQUEST_CODE_ENGLISH_WRITING_COMMENT_DETAILS) {
                 if (EnglishWritingCommentBySentenceFragment.hasContentChanged()) {
                     EnglishWritingCommentBySentenceFragment.setHasContentChanged(false);
                     //刷新数据

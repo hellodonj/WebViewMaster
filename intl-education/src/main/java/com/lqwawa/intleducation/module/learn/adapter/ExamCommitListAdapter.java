@@ -12,6 +12,7 @@ import com.lqwawa.intleducation.base.utils.DateUtils;
 import com.lqwawa.intleducation.module.learn.ui.ExamDetailActivity;
 import com.lqwawa.intleducation.module.learn.vo.ExamCommitVo;
 import com.lqwawa.intleducation.module.learn.vo.ExamListVo;
+import com.osastudio.common.utils.XImageLoader;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -33,13 +34,9 @@ public class ExamCommitListAdapter extends ExamListBaseAdapter {
         this.inflater = LayoutInflater.from(activity);
         list = new ArrayList<ExamCommitVo>();
 
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                //.setSize(img_width,img_height)
-                .setLoadingDrawableId(R.drawable.img_def)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.img_def)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.img_def, false, false, null);
+
     }
 
     @Override
@@ -70,7 +67,7 @@ public class ExamCommitListAdapter extends ExamListBaseAdapter {
         }
 
         if (vo != null) {
-            x.image().bind(holder.resIcon,
+            XImageLoader.loadImage(holder.resIcon,
                     vo.getHeadPic().trim(), imageOptions);
             holder.resName.setText(vo.getCreateName());
             String time = DateUtils.getFormatByStringDate(vo.getCreateTime() + "",

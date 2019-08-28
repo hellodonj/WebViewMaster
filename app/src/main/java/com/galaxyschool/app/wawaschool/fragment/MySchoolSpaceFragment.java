@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
 import com.galaxyschool.app.wawaschool.SubscribeSearchActivity;
+import com.galaxyschool.app.wawaschool.adapter.GridViewAdapter;
+import com.galaxyschool.app.wawaschool.adapter.ViewPagerAdapter;
 import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.AnimationUtil;
@@ -118,6 +121,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private TextView moreResourceTextView;
     private PopupMenu popupMenuSchools;
     private PopupMenu popupMenuClasses;
+    private RelativeLayout organGridView;
+    private ViewPager viewPager;
+    private LinearLayout llDot;
     private GridView schoolGridView;
     private GridView classGridView;
     private String schoolGridViewTag;
@@ -143,10 +149,26 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     private String newlyClassGridViewTag;
     private ChannelView channelView;//可滑动的布局
     private List<ChannelView.ChannelItem> channelItemList = new ArrayList<>();
-    private boolean showChannelView = false; //控制是否显示滑动布局
+    private int showWhich = 0; //学校各个馆的展示形式
     private boolean isChangeLqCourseTab;
     private String lqCourseSchoolId;
     private String lqCourseClassId;
+    private  List<TabEntityPOJO> organItemList;
+    private List<View> mPagerList;
+    private LayoutInflater inflater;
+    /**
+     * 总的页数
+     */
+    private int pageCount;
+    /**
+     * 每一页显示的个数
+     */
+    private int pageSize1 = 10;
+    /**
+     * 当前显示的是第几页
+     */
+    private int curIndex = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -269,13 +291,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                     // 查询到SchoolInfo，判断显示片段
                     if (schoolInfo.isOnlineSchool()) {
                         // 展示在线课堂功能菜单
-                        if (showChannelView) {
-                            channelView.setVisibility(View.GONE);
-                        } else {
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.GONE);
-                            }
-                        }
+                        showGridView();
                         final String schoolId = schoolInfo.getSchoolId();
                         String schoolName = schoolInfo.getSchoolName();
                         String roles = schoolInfo.getRoles();
@@ -322,14 +338,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
                     } else {
                         // 展示在线课堂功能菜单
-                        if (showChannelView) {
-                            channelView.setVisibility(View.VISIBLE);
-                        } else {
-                            if (schoolGridView != null) {
-                                schoolGridView.setVisibility(View.VISIBLE);
-                            }
-                        }
-
+                       showGridView();
                         if (EmptyUtil.isNotEmpty(mSpaceHolderFragment)) {
                             // 取消替换,换成普通的布局
                             FragmentManager fragmentManager = getChildFragmentManager();
@@ -394,6 +403,9 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 
 
     private void initViews() {
+        organGridView = (RelativeLayout) findViewById(R.id.organ_grid_view);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        llDot = (LinearLayout) findViewById(R.id.ll_dot);
         moreSchoolTextView = (TextView) findViewById(R.id.user_more);
         mTvToggleSchool = (TextView) findViewById(R.id.tv_toggle_school);
 
@@ -506,27 +518,96 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
     }
 
     /**
+     * 初始化两行滑动布局
+     */
+    private void initOrganGridViewHelper() {
+        inflater = LayoutInflater.from(getContext());
+        if (EmptyUtil.isNotEmpty(organItemList)){
+            organGridView.setVisibility(View.VISIBLE);
+        }
+        //总的页数=总数/每页数量，并取整
+        pageCount = (int) Math.ceil(organItemList.size() * 1.0 / pageSize1);
+        mPagerList = new ArrayList<View>();
+        for (int i = 0; i < pageCount; i++) {
+            // 每个页面都是inflate出一个新实例
+            GridView gridView = (GridView) inflater.inflate(R.layout.gridview, viewPager, false);
+            GridViewAdapter adapter = new GridViewAdapter(getContext(),organItemList,i,pageSize1);
+            gridView.setAdapter(adapter);
+            mPagerList.add(gridView);
+
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int pos = position + curIndex * pageSize1;
+                    TabEntityPOJO data = organItemList.get(pos);
+                    if (data != null) {
+                        controlEvent(data.getType());
+                    }
+                }
+            });
+        }
+        //设置适配器
+        viewPager.setAdapter(new ViewPagerAdapter(mPagerList));
+        //设置圆点
+        if (pageCount > 1 ) {
+            llDot.setVisibility(View.VISIBLE);
+            if (llDot.getRootView() != null) {
+                llDot.removeAllViews();
+            }
+            setOvalLayout();
+        }else{
+            llDot.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 设置圆点
+     */
+    public void setOvalLayout() {
+        for (int i = 0; i < pageCount; i++) {
+            llDot.addView(inflater.inflate(R.layout.dot, null));
+        }
+        // 默认显示第一页
+        llDot.getChildAt(0).findViewById(R.id.v_dot)
+                .setBackgroundResource(R.drawable.dot_selected);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // 取消圆点选中
+                llDot.getChildAt(curIndex)
+                        .findViewById(R.id.v_dot)
+                        .setBackgroundResource(R.drawable.btn_green_indicator_bg);
+                // 圆点选中
+                llDot.getChildAt(position)
+                        .findViewById(R.id.v_dot)
+                        .setBackgroundResource(R.drawable.dot_selected);
+                curIndex = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    /**
      * 初始化滑动布局
      */
     private void initChannelView() {
         channelView = (ChannelView) findViewById(R.id.layout_channel_view);
         if (channelView != null) {
-            if (showChannelView) {
-                if (schoolGridView != null) {
-                    schoolGridView.setVisibility(View.GONE);
-                }
-                channelView.setVisibility(View.VISIBLE);
-            } else {
-                if (schoolGridView != null) {
-                    schoolGridView.setVisibility(View.VISIBLE);
-                }
-                channelView.setVisibility(View.GONE);
-            }
+            showGridView();
             //设置item的内边距,可配置left、top、right、bottom的padding
             int itemPadding = (int) (10 * MyApplication.getDensity());
             channelView.setItemTopPadding(2 * itemPadding);
             channelView.setItemBottomPadding(2 * itemPadding);
-//            //设置图片大小为：40 * 40 dp
+           //设置图片大小为：40 * 40 dp
             int imageSize = (int) (40 * MyApplication.getDensity());
             channelView.setImgSize(imageSize);
             //设置图片是否包裹内容显示，true的话，imageSize属性失效。
@@ -545,11 +626,35 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         }
     }
 
+    //显示、隐藏GridView的展示方式
+    private void showGridView() {
+        if (showWhich==0){
+            organGridView.setVisibility(View.VISIBLE);
+            channelView.setVisibility(View.GONE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.GONE);
+            }
+        }else if (showWhich==1){
+            organGridView.setVisibility(View.GONE);
+            channelView.setVisibility(View.VISIBLE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.GONE);
+            }
+        }else if (showWhich==2){
+            organGridView.setVisibility(View.GONE);
+            channelView.setVisibility(View.GONE);
+            if (schoolGridView != null) {
+                schoolGridView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     private void loadData() {
         if (!isAdded()) {
             return;
         }
         loadSchoolEntityData();
+        initOrganGridViewHelper();
         loadClassEntityData();
         loadNewlyClassEntityData();
     }
@@ -920,12 +1025,13 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 UIUtils.currentSourceFromType = SourceFromType.CHOICE_LIBRARY;
                 ActivityUtils.enterBookStoreListActivity(getActivity(), schoolInfo, true);
                 break;
-            //习课程馆, 视频馆，图书馆, 练测馆
+            //习课程馆, 视频馆，图书馆, 练测馆,三习教案馆
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY:
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY:
+            case ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN:
                 enterLqCourseShop(getActivity(), schoolInfo, type);
                 break;
             //校园巡查
@@ -1044,51 +1150,59 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         if (!isAdded()) {
             return;
         }
-
-        List<TabEntityPOJO> itemList = new ArrayList<TabEntityPOJO>();
+        organItemList = new ArrayList<TabEntityPOJO>();
         TabEntityPOJO item = null;
+
         //学校介绍
 //        TabEntityPOJO item = new TabEntityPOJO();
 //        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_INTRODUCTION;
 //        item.title = getString(R.string.subs_school_introduction);
 //        item.resId = R.drawable.icon_school_introduction;
-//        itemList.add(item);
-//        if(schoolInfo != null && (schoolInfo.isTeacher() ||  VipConfig.isVip(getActivity()))){
+//        organItemList.add(item);
 
         //学程馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LQCOURSE_SHOP;
         item.title = getString(R.string.common_course_library);
         item.resId = R.drawable.icon_lqcourse_lib;
-        itemList.add(item);
+        organItemList.add(item);
 
         //视频馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_VIDEO_LIBRARY;
         item.title = getString(R.string.common_video_library);
         item.resId = R.drawable.ic_video_library;
-        itemList.add(item);
+        organItemList.add(item);
 
         //图书馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_LIBRARY;
         item.title = getString(R.string.common_library);
         item.resId = R.drawable.ic_library;
-        itemList.add(item);
+        organItemList.add(item);
 
         //练测馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_PRACTICE_LIBRARY;
         item.title = getString(R.string.common_practice_library);
         item.resId = R.drawable.ic_practice_library;
-        itemList.add(item);
+        organItemList.add(item);
 
         //全脑馆
         item = new TabEntityPOJO();
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_BRAIN_LIBRARY;
         item.title = getString(R.string.common_brain_library);
         item.resId = R.drawable.ic_brain_library;
-        itemList.add(item);
+        organItemList.add(item);
+
+        if (schoolInfo != null && schoolInfo.isTeacher()) {
+        //三习教案馆
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_TEACHING_PLAN;
+        item.title = getString(R.string.common_teaching_plan_library);
+        item.resId = R.drawable.ic_teaching_plan_library;
+        organItemList.add(item);
+        }
 
         if (schoolInfo != null && schoolInfo.isTeacher()) {
             //校本资源库
@@ -1096,7 +1210,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
             item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_BASED_CURRICULUM;
             item.title = getString(R.string.public_course);
             item.resId = R.drawable.xiaobenziyuanku;
-            itemList.add(item);
+            organItemList.add(item);
         }
 
 
@@ -1105,7 +1219,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CLASS;
         item.title = getString(R.string.school_and_class);
         item.resId = R.drawable.xuexiaobanji;
-        itemList.add(item);
+        organItemList.add(item);
 
 //        if (schoolInfo != null && schoolInfo.isTeacher()) {
 //            //新版的精品资源库
@@ -1113,7 +1227,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
 //            item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CHOICE_BOOKS;
 //            item.title = getString(R.string.choice_books);
 //            item.resId = R.drawable.lqyinheguoji;
-//            itemList.add(item);
+//            organItemList.add(item);
 //        }
 
 
@@ -1122,14 +1236,7 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
         item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_CAMPUS_DIRECT;
         item.title = getString(R.string.campus_now_direct);
         item.resId = R.drawable.xiaoyuandianshitai;
-        itemList.add(item);
-
-        //校园动态
-        item = new TabEntityPOJO();
-        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
-        item.title = getString(R.string.school_message);
-        item.resId = R.drawable.xuexiaodongtai;
-        itemList.add(item);
+        organItemList.add(item);
 
         //校园巡查/校长助手
         if (isCampusPatrol || VipConfig.isVip(getActivity())) {
@@ -1145,15 +1252,22 @@ public class MySchoolSpaceFragment extends SchoolSpaceBaseFragment implements Sc
                 item.title = getString(R.string.campus_patrol);
                 item.resId = R.drawable.icon_campus_patrol;
             }
-            itemList.add(item);
+            organItemList.add(item);
         }
+
+        //校园动态
+        item = new TabEntityPOJO();
+        item.type = ITabEntityTypeInfo.TAB_ENTITY_TYPE_SCHOOL_CAMPUS_DYNAMICS;
+        item.title = getString(R.string.school_message);
+        item.resId = R.drawable.xuexiaodongtai;
+        organItemList.add(item);
 
         if (getAdapterViewHelper(schoolGridViewTag).hasData()) {
             getAdapterViewHelper(schoolGridViewTag).clearData();
         }
-        getAdapterViewHelper(schoolGridViewTag).setData(itemList);
+        getAdapterViewHelper(schoolGridViewTag).setData(organItemList);
         //组装ViewPager页卡
-        toChannelList(itemList);
+        toChannelList(organItemList);
     }
 
     /**

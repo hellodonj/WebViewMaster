@@ -33,6 +33,7 @@ import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
+import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.select.CourseSelectItemOuterFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.course.chapter.CourseChapterParams;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
@@ -42,12 +43,17 @@ import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
+import com.lqwawa.intleducation.module.learn.ui.ExamsAndTestsActivity;
 import com.lqwawa.intleducation.module.learn.ui.LessonDetailsActivity;
+import com.lqwawa.intleducation.module.learn.ui.SxLessonDetailsActivity;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.lqwawa.intleducation.module.discovery.adapter.CourseChapterAdapter.TYPE_LESSON;
 
 /**
  * ================================================
@@ -75,6 +81,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
     // 入口类型
     public static final String KEY_EXTRA_ENTER_TYPE = "KEY_EXTRA_ENTER_TYPE";
+    public static final int TYPE_EXAM = 1;
+    public static final int TYPE_TEST = 2;
 
     private SuperGridView listView;
     private FrameLayout mEmptyView;
@@ -251,7 +259,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
         });
         pullToRefresh.setLoadMoreEnable(false);
 
-        courseChapterAdapter = new CourseChapterAdapter(activity, flagCourseData.getCourseId(), false,
+        courseChapterAdapter = new CourseChapterAdapter(activity,flagCourseData.getLibraryType(), flagCourseData.getCourseId(), false,
                 new MyBaseAdapter.OnContentChangedListener() {
                     @Override
                     public void OnContentChanged() {
@@ -259,6 +267,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     }
                 });
         courseChapterAdapter.setCourseSelect(true);
+        courseChapterAdapter.setCourseVo(flagCourseData);
         courseChapterAdapter.setIsClassCourseEnter(mEnterType == CourseDetailType.COURSE_DETAIL_CLASS_ENTER);
         courseChapterList = new ArrayList<ChapterVo>();
         listView.setAdapter(courseChapterAdapter);
@@ -267,66 +276,102 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             @Override
             public void onSelect(ChapterVo chapterVo) {
                 if (chapterVo != null) {
-                    if (initiativeTrigger) {
-                        CourseVo courseVo = flagCourseData;
-                        String courseId = courseVo.getId();
-                        String chapterId = chapterVo.getId();
-                        String sectionName = chapterVo.getSectionName();
-                        String name = chapterVo.getName();
-                        // 当前节的状态
-                        int status = chapterVo.getStatus();
-                        String memberId = UserHelper.getUserId();
-
-                        CourseDetailParams courseParams = new CourseDetailParams();
-                        if (courseParams != null && courseVo != null) {
-                            courseParams.setBindSchoolId(courseVo.getBindSchoolId());
-                            courseParams.setBindClassId(courseVo.getBindClassId());
-                            courseParams.setCourseId(courseVo.getId());
-                            courseParams.setCourseName(courseVo.getName());
-                            // 填充参数
-                            courseParams.setSchoolId(mSchoolId);
-                            courseParams.setClassId(mClassId);
-                            courseParams.setCourseEnterType(mEnterType);
-                            courseParams.setLibraryType(courseVo.getLibraryType());
-                            courseParams.setIsVideoCourse(courseVo.getType() == 2);
-                        }
-
-                        int role = UserHelper.MoocRoleType.TEACHER;
-                        int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
-                        CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
-                        params.setCourseParams(courseParams);
-                        params.setChoiceMode(true, true);
-
-                        LessonDetailsActivity.start(activity, courseId, chapterId,
-                                sectionName, name, false, true, true,
-                                status, memberId, chapterVo.isContainAssistantWork(),
-                                "", false, courseVo,
-                                false, false, params,
-                                mExtras);
-                    } else {
-                        Bundle arguments = getArguments();
-
-                        CourseVo courseVo = flagCourseData;
-                        CourseDetailParams courseParams = new CourseDetailParams();
+                    CourseVo courseVo = flagCourseData;
+                    String courseId = courseVo.getId();
+                    String chapterId = chapterVo.getId();
+                    String sectionName = chapterVo.getSectionName();
+                    String name = chapterVo.getName();
+                    // 当前节的状态
+                    int status = chapterVo.getStatus();
+                    String memberId = UserHelper.getUserId();
+                    CourseDetailParams courseParams = new CourseDetailParams();
+                    if (courseParams != null && courseVo != null) {
+                        courseParams.setBindSchoolId(courseVo.getBindSchoolId());
+                        courseParams.setBindClassId(courseVo.getBindClassId());
+                        courseParams.setCourseId(courseVo.getId());
+                        courseParams.setCourseName(courseVo.getName());
                         // 填充参数
                         courseParams.setSchoolId(mSchoolId);
                         courseParams.setClassId(mClassId);
                         courseParams.setCourseEnterType(mEnterType);
                         courseParams.setLibraryType(courseVo.getLibraryType());
                         courseParams.setIsVideoCourse(courseVo.getType() == 2);
+                    }
 
+                    int role = UserHelper.MoocRoleType.TEACHER;
+                    int teacherType = UserHelper.TeacherType.TEACHER_LECTURER;
+                    CourseChapterParams params = new CourseChapterParams(memberId, role, teacherType, false);
+                    params.setCourseParams(courseParams);
+                    params.setChoiceMode(true, initiativeTrigger);
+                    LessonSourceParams lessonSourceParams = LessonSourceParams.buildParams(params);
+                    lessonSourceParams.setFilterArray(mFilterArray);
+                    int libraryType = courseVo == null ? -1 : courseVo.getLibraryType();
+                    Bundle arguments = getArguments();
+                    int taskType = arguments.getInt("tasktype", 1);
+                    int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
 
-                        int taskType = arguments.getInt("tasktype", 1);
-                        int multipleChoiceCount = arguments.getInt(CourseSelectItemFragment.KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
-                        Fragment courseSelectFragment =
-                                CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams);
+                    if (initiativeTrigger) {
+                        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            if (chapterVo.getExamType() == TYPE_EXAM) {
+                                if (chapterVo.getIsChildren()){ //测试
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams,mExtras);
+                                }else { //考试
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams,mExtras);
+                                }
+                            } else if (chapterVo.getExamType() == TYPE_LESSON){
+                                //普通教案详情入口
+                                if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity, courseId, chapterId,
+                                        sectionName, name, false, true, true,
+                                        status, memberId, chapterVo.isContainAssistantWork(),
+                                        "", false, courseVo,
+                                        false, false, params, mExtras);
+                            }
+                        } else {
+                            if (chapterVo.getIsChildren()) LessonDetailsActivity.start(activity, courseId, chapterId,
+                                        sectionName, name, false, true, true,
+                                        status, memberId, chapterVo.isContainAssistantWork(),
+                                        "", false, courseVo,
+                                        false, false, params,
+                                        mExtras);
+                        }
+                    } else {
+                        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            if (chapterVo.getExamType() == TYPE_EXAM) {
+                                if (chapterVo.getIsChildren()){ //测试
+                                    ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,courseId,
+                                            chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams,mExtras);
+                                }else { //考试
+                                    ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,
+                                            courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams,mExtras);
+                                }
+                            } else if (chapterVo.getExamType() == TYPE_LESSON){
+                                //普通教案详情入口
+                                if (chapterVo.getIsChildren()) SxLessonDetailsActivity.start(activity,taskType,multipleChoiceCount, courseId, chapterId,
+                                        sectionName, name, false, true, true,
+                                        status, memberId, chapterVo.isContainAssistantWork(),
+                                        "", false, courseVo,
+                                        false, false, params, lessonSourceParams, mExtras);
+                            }
+                        }else {
+                            if (!chapterVo.getIsChildren())return;
+                            CourseVo courseVo1 = flagCourseData;
+                            CourseDetailParams courseParams1 = new CourseDetailParams();
+                            // 填充参数
+                            courseParams1.setSchoolId(mSchoolId);
+                            courseParams1.setClassId(mClassId);
+                            courseParams1.setCourseEnterType(mEnterType);
+                            courseParams1.setLibraryType(courseVo1.getLibraryType());
+                            courseParams1.setIsVideoCourse(courseVo1.getType() == 2);
 
+                            Fragment courseSelectFragment =
+                                    CourseSelectItemOuterFragment.newInstance(chapterVo, taskType, multipleChoiceCount, mFilterArray, isOnlineRelevance, courseParams1);
 
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.add(R.id.root_fragment_container, courseSelectFragment);
-                        fragmentTransaction.show(courseSelectFragment);
-                        fragmentTransaction.commit();
-                        fragmentTransaction.addToBackStack(null);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.add(R.id.root_fragment_container, courseSelectFragment);
+                            fragmentTransaction.show(courseSelectFragment);
+                            fragmentTransaction.commit();
+                            fragmentTransaction.addToBackStack(null);
+                        }
                     }
                 }
             }
@@ -346,7 +391,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             LQCourseHelper.requestChapterByCourseId(mClassId, flagCourseData.getId(),
                     new Callback());
         } else {
-            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(), flagCourseData.getId(),
+            LQCourseHelper.requestChapterByCourseId(UserHelper.getUserId(),mClassId, flagCourseData.getId(),
                     mSchoolId, new Callback());
         }
     }

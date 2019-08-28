@@ -28,6 +28,25 @@ public class SubscribeClassInfo implements Serializable {
     private boolean isInClass;
     //用来区分在班级中进行跳转---通知、秀秀等等具体跳转细节区分
     private boolean isTempData;
+    private int Price;
+    private String HeadMasterId;
+
+    public String getHeadMasterId() {
+        return HeadMasterId;
+    }
+
+    public void setHeadMasterId(String headMasterId) {
+        HeadMasterId = headMasterId;
+    }
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
+    }
+
     public void setIsTempData(boolean  isTempData){
         this.isTempData=isTempData;
     }
@@ -57,6 +76,9 @@ public class SubscribeClassInfo implements Serializable {
         return (Roles != null && Roles.contains(String.valueOf(RoleType.ROLE_TYPE_PARENT)));
     }
 
+    public boolean isStudentByRoles(){
+        return (Roles != null && Roles.contains(String.valueOf(RoleType.ROLE_TYPE_STUDENT)));
+    }
 
     public String getClassName() {
         return ClassName;

@@ -77,6 +77,9 @@ public class CommitTask implements Serializable, Parcelable {
     private int scoreColor;
     private boolean hasAlreadyCommit;
     private int sortPositionId;
+    private String ClassName;
+    private int Type;
+
     /**
      * @return 是否是语音评测类型
      */
@@ -128,6 +131,22 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public String getClassName() {
+        return ClassName;
+    }
+
+    public void setClassName(String className) {
+        ClassName = className;
+    }
+
+    public int getType() {
+        return Type;
+    }
+
+    public void setType(int type) {
+        Type = type;
     }
 
     public int getSortPositionId() {

@@ -45,6 +45,11 @@ public abstract class EventConstant {
 	public static final String CREATE_TUTOR_ORDER = "CREATE_TUTOR_ORDER";
 
 	/**
+	 * 创建班级付费订单的Event
+	 */
+	public static final String CREATE_CLASS_ORDER = "CREATE_CLASS_ORDER";
+
+	/**
 	 * 触发更新第一章,或者全本
 	 */
 	public static final String TRIGGER_UPDATE_COURSE = "TRIGGER_UPDATE_COURSE";
@@ -80,4 +85,9 @@ public abstract class EventConstant {
 	 * 加帮辅（班级帮辅）
 	 */
 	public static final String TRIGGER_ADD_TUTOR_UPDATE = "TRIGGER_ADD_TUTOR_UPDATE";
+
+	/**
+	 * 空中课堂发表评论后更新评论列表
+	 */
+	public static final String TRIGGER_CLASS_DETAIL_COMMENTS_UPDATE = "TRIGGER_CLASS_DETAIL_COMMENTS_UPDATE";
 }

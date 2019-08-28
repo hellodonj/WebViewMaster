@@ -62,6 +62,18 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/test_flag_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/sx_test_flag"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/textAccent"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/lesson_name_tv"
                     style="@style/text_gray"
@@ -69,13 +81,43 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="2dp"
                     android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:id="@+id/lesson_audition_tv"
+                    style="@style/text_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/audition"
+                    android:visibility="gone"/>
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/lock_test_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/com_item_space"
+                android:src="@drawable/lock"
+                android:visibility="gone" />
+
+            <!--<CheckBox-->
+                <!--android:id="@+id/lock_test_cb"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@drawable/com_checkbox_lock"-->
+                <!--android:button="@null"-->
+                <!--android:clickable="false"-->
+                <!--android:paddingRight="10dp"-->
+                <!--android:visibility="gone" />-->
+
 
             <ImageView
                 android:scaleType="center"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingRight="@dimen/com_item_space"
                 android:src="@drawable/ic_right_arrow"/>
         </LinearLayout>
     </LinearLayout>

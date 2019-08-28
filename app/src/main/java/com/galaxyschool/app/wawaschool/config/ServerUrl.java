@@ -1132,4 +1132,37 @@ public class ServerUrl {
      * 查询mooc看课件更新已读未读的权限
      */
     public static final String GET_TASKTYPE_BY_CHAPTERID_BASE_URL = LQMOOC_BASE_SERVER + "api/chapter/getTaskTypeByChapterId";
+
+    /**
+     * 设置学生查看其他学生的作业权限
+     */
+    public static final String GET_VIEW_OTHERS_PERMISSION_BASE_URL = BASE_SERVER + "Api/Mobile/ST/StudyTask/SetStudentViewOthersTaskPermisson";
+
+    /**
+     * 拉取作业批改率统计
+     */
+    public static final String GET_TASK_CORRECT_RATE_BASE_URL = BASE_SERVER + "NewApi" +
+            "/CourseStudyTaskStatis/GetTaskCorrectRate";
+
+    /**
+     * 拉取作业布置率统计
+     */
+    public static final String GET_COURSE_RESSET_RATE_BASE_URL = BASE_SERVER + "NewApi" +
+            "/CourseStudyTaskStatis/GetCourseResSetRate";
+
+    /**
+     * 拉取作业完成率统计
+     */
+    public static final String GET_TASK_COMPLETE_RATE_BASE_URL = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetTaskCompleteRate";
+
+    /**
+     * 拉取详细学习成绩统计
+     */
+    public static final String GET_TASK_DETAIL_STATIS_BASE_URL = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetTaskDetaileStatis";
+
+    /**
+     * 拉取老师未批阅的学生提交列表
+     */
+    public static final String GET_TEACHER_NO_CORRECT_COMMITLIST = BASE_SERVER + "NewApi" +
+            "/CourseStudyTaskStatis/GetTeacherNoCorrectCommitList";
 }

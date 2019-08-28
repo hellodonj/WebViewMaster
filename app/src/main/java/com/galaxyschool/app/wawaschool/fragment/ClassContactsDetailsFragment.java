@@ -1350,8 +1350,17 @@ public class ClassContactsDetailsFragment extends GroupContactsListFragment {
 		String url = serverUrl + String.format(
 				ServerUrl.SHARE_CLASS_INVITATION_PARAMS, memberId, classContactId);
 		ShareInfo shareInfo = new ShareInfo();
-		shareInfo.setTitle(getString(R.string.app_name));
-		shareInfo.setContent(getString(R.string.invite_parents_to_join_class));
+		shareInfo.setTitle(getString(R.string.invite_parents_to_join_class));
+		String content = getString(R.string.str_invite_join_class,classInfo.getClassName());
+		UserInfo userInfo = getUserInfo();
+		if (userInfo != null){
+			if (TextUtils.isEmpty(userInfo.getRealName())){
+				content = userInfo.getNickName() + content;
+			} else {
+				content = userInfo.getRealName() + content;
+			}
+		}
+		shareInfo.setContent(content);
 		shareInfo.setTargetUrl(url);
 
 		SharedResource resource = new SharedResource();

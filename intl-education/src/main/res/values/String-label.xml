@@ -543,4 +543,40 @@
     <string name="label_play_tip">No recording courseware in selected chapter</string>
     <string name="label_chapter_tip">Please select chapter</string>
     <string name="btn_tutor_agreement">I See</string>
+
+    <string name="label_lesson_plan">Syllabus</string>
+    <string name="label_teaching_assistant">Textbook</string>
+    <string name="label_lesson_comment">Comment</string>
+    <string name="label_colon_category1">Category:</string>
+    <string name="label_course_filtrate_readers">Reader</string>
+    <string name="label_course_filtrate_schoolbook">Study</string>
+    <string name="label_course_filtrate_exercises">Exercise</string>
+    <string name="label_course_filtrate_testing">Test</string>
+    <string name="label_course_filtrate_video">Video</string>
+    <string name="label_course_filtrate_teaching">Plan</string>
+    <string name="label_join_class_order">Pay to join %s</string>
+    <string name="label_from_course">From %s</string>
+    <string name="label_work_cart_add_count_tip">Cannot add more than %s tasks, you have too many task types (Listen &#038; Speak/Read &#038; Write/Explanation/Courseware/Reference Video/Q Dubbing) selected.</string>
+    <string name="label_work_cart_choose_count_tip">Please do not select more than 10 files under %s.</string>
+    <string name="label_work_cart_choose_count_tip1">Please do not select more than 10 files under Listen &#038; Speak/Read &#038; Write/Explaination/Courseware/Reference Video/Q Dubbing.</string>
+    <string-array name="label_lesson_source_type">
+        <item>Reference Video</item>
+        <item>Listen &#038; Speak</item>
+        <item>Read &#038; Write</item>
+        <item>Courseware</item>
+        <item>Explanation</item>
+        <item>Q Dubbing</item>
+    </string-array>
+    <string-array name="label_test_lesson_source_type">
+        <item>Read &#038; Write Test</item>
+        <item>Listen &#038; Speak Test</item>
+    </string-array>
+    <string name="label_exam_test_score">%s Points</string>
+    <string name="label_test_lock_tip">Not time to do test, please await unlocking</string>
+    <string name="label_exam_lock_tip">Not time to do exam, please await unlocking</string>
+    <string name="label_exam_unlock_dialog">Unlock Exam?</string>
+    <string name="label_test_unlock_dialog">Unlock Test?</string>
+    <string name="label_exam_lock_dialog">Lock Exam?</string>
+    <string name="label_test_lock_dialog">Lock Test?</string>
+    <string name="label_activation_code_tip">Please enter activation code</string>
 </resources>

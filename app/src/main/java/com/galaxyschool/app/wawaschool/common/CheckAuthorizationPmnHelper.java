@@ -2,6 +2,7 @@ package com.galaxyschool.app.wawaschool.common;
 
 import android.app.Activity;
 import android.content.Context;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.R;
@@ -9,7 +10,6 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
-import com.lqwawa.intleducation.lqpay.widget.GridPasswordView;
 import com.lqwawa.intleducation.module.discovery.ui.ImputAuthorizationCodeDialog;
 import com.lqwawa.intleducation.module.discovery.vo.AuthorizationVo;
 import com.lqwawa.tools.DialogHelper;
@@ -142,7 +142,7 @@ public class CheckAuthorizationPmnHelper {
     private void showAuthorizationImputDialog(String tipInfo){
         if(imputAuthorizationCodeDialog == null) {
             imputAuthorizationCodeDialog =
-                    new ImputAuthorizationCodeDialog(mContext, tipInfo,
+                    new ImputAuthorizationCodeDialog(mContext, tipInfo,1,
                             new ImputAuthorizationCodeDialog.CommitCallBack() {
                                 @Override
                                 public void onCommit(String code) {

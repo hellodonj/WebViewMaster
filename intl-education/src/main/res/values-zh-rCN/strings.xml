@@ -505,6 +505,7 @@
         <item>练本</item>
         <item>测本</item>
         <item>视频</item>
+        <item>教案</item>
     </string-array>
 
     <string name="user_comment">用户评论</string>
@@ -529,4 +530,22 @@
     <string name="join_school_to_learn">加入该机构才可以学习此课程</string>
     <string name="modify_success_tip">修改成功</string>
     <string name="student_evaluation">添加评价</string>
+    <string name="select_all">全选</string>
+    <string name="deselect_all">取消全选</string>
+    <string name="str_class_price_not_null">请输入有效的班级价格</string>
+    <string name="label_sx_preview">预习</string>
+    <string name="label_sx_practice">练习</string>
+    <string name="label_sx_review">复习</string>
+    <string name="join_immediately">立即参加</string>
+    <string name="label_join_teaching_plan_tip">请先参加教案！</string>
+    <string name="teaching_plan_do_homework_tip">请前往空中学校-学习任务中完成作业</string>
+    <string name="teaching_plan_check_homework_tip">请前往空中学校-学习任务中批阅作业</string>
+    <string name="class_implementation_plan">课中实施方案</string>
+    <string name="join_class_by_money">付费加入《%s》</string>
+    <string name="label_test_unlock_tip">测试未解锁，不可添加</string>
+    <string name="label_exam_unlock_tip">考试未解锁，不可添加</string>
+    <string name="label_teaching_plan_expire_tip">请联系班级老师</string>
+    <string name="input_activation_please">请输入激活码!</string>
+
+    <string name="label_immediate_comment_tip">请前往空中学校-学习任务中完成点评</string>
 </resources>

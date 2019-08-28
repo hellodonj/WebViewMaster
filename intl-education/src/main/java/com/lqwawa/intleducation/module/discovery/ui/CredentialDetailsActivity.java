@@ -30,6 +30,8 @@ import com.lqwawa.intleducation.module.discovery.vo.CredentialDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CredentialVo;
 import com.lqwawa.intleducation.module.login.ui.LoginActivity;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
+import com.osastudio.common.utils.XImageLoader;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
@@ -104,13 +106,8 @@ public class CredentialDetailsActivity extends MyBaseActivity implements View.On
         img_width = p_width;
         img_height = img_width * 315 / 720;
         coverIv.setLayoutParams(new FrameLayout.LayoutParams(img_width, img_height));
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setCircular(true)
-                .setLoadingDrawableId(R.drawable.ic_avatar_def)//
-                .setFailureDrawableId(R.drawable.ic_avatar_def)//
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.ic_avatar_def, false, true, null);
 
         //初始化顶部工具条
         topBar.setBack(true);
@@ -475,9 +472,8 @@ public class CredentialDetailsActivity extends MyBaseActivity implements View.On
                     credentialDetailsVo.getCertification().size() > 0) {
                 CredentialVo credentialVo = credentialDetailsVo.getCertification().get(0);
                 if (credentialVo != null) {
-                    x.image().bind(coverIv,
-                            credentialVo.getThumbnail().trim(),
-                            imageOptions);
+                    XImageLoader.loadImage(coverIv,
+                            credentialVo.getThumbnail().trim(), imageOptions);
                     credentialNameTv.setText(credentialVo.getName() + "");
                     credentialIntroductionTv.setText(credentialVo.getIntroduction() + "");
                     credentialCostTv.setText("¥" + credentialVo.getFee());

@@ -888,9 +888,9 @@
     <string name="introduction">Introduction course</string>
     <string name="start_date">Start date</string>
     <string name="end_date">Finish date</string>
-    <string name="article_title">Article Title :</string>
-    <string name="article_request">Article Request :</string>
-    <string name="score_formula">Score formula :</string>
+    <string name="article_title">Article Title:</string>
+    <string name="article_request">Article Request:</string>
+    <string name="score_formula">Score formula:</string>
     <string name="article_limited_word">Article limite word</string>
     <string name="date_empty">Please fill in information of date!</string>
     <string name="date_above_cur_date">Date of setting and finishing homework can\'t be earlier
@@ -1533,7 +1533,7 @@
     <string name="str_add_new_task">Add task:</string>
     <string name="str_add_task">Add Task</string>
     <string name="str_super_homework_total">Teacher\'s Homework-%d Tasks</string>
-    <string name="str_max_select_limit">Can not select more than 5 files</string>
+    <string name="str_max_select_limit">Can not select more than 10 files</string>
     <string name="str_homework_not_null">Homework cannot be blank</string>
     <string name="add_teacher">Add Teacher</string>
     <string name="add_teacher_success">Teacher added</string>
@@ -1735,8 +1735,6 @@
     <!--5.11.y-->
     <string name="str_start_time_point">Start Time</string>
     <string name="str_publish_task_time">Submission Time</string>
-    <string name="str_publish_right_now">Anytime</string>
-    <string name="str_publish_according_to_time">After Start</string>
     <string name="str_look_student_finish_task_detail">Total %1$d, finished %2$d</string>
     <string name="str_taste_task_start_time">Start time not come</string>
     <string name="str_make_up_study_task">【Late】</string>
@@ -1820,4 +1818,76 @@
     <string name="str_teacher_assistant_tip">Marking completed, please check your account via Me > My Account, entry may be delayed</string>
     <string name="str_save_statistic_unuser">Cloud space is empty</string>
 
+    <string name="str_student_look_other_work">Visible to others</string>
+    <string name="str_can_read">Visible to Students</string>
+    <string name="str_no_read">Invisible to Students</string>
+    <string name="str_view_other_permission_tips">Teacher has set homework as invisible</string>
+    <string name="str_set_can_read">Set as Visible</string>
+    <string name="str_set_cannot_read">Set as Invisible</string>
+    <string name="str_accession_mode">Join Method</string>
+    <string name="str_approval_for_accession">Approval</string>
+    <string name="str_pay_to_join">Pay</string>
+    <string name="str_click_change">(Touch to modify)</string>
+    <string name="str_pls_input_class_price">Please enter price</string>
+    <string name="str_class_price_not_null">Please enter a valid price</string>
+    <string name="str_charge_class_tips">This class is not free, price:</string>
+    <string name="str_pay_join_class_tip">Class joined already</string>
+    <string name="str_join_success">Joined successfully</string>
+    <string name="str_creating">Creating...</string>
+    <string name="str_repeat_role_info">Student cannot have multiple roles in one class</string>
+    <string name="str_go_to_pay">Pay</string>
+    <string name="str_not_required">(Optional)</string>
+
+    <string name="str_learning_statistic">Learning Statistics</string>
+    <string name="str_normal_homework_statistic">Homework</string>
+    <string name="str_test_statistic">Test</string>
+    <string name="str_exam_statistic">Exam</string>
+    <string-array name="array_grade_detail">
+        <item>Excellent</item>
+        <item>Good</item>
+        <item>Pass</item>
+        <item>Fail</item>
+    </string-array>
+
+    <string name="str_homework_intro_rate">Task Assignment Rate</string>
+    <string name="str_homework_mark_rate">Task Marking Rate</string>
+    <string name="str_homework_complete_rate">Task Completion Rate</string>
+    <string-array name="array_intro_detail">
+        <item>Assigned</item>
+        <item>Unassigned</item>
+    </string-array>
+
+    <string-array name="array_mark_detail">
+        <item>Marked</item>
+        <item>Unmarked</item>
+    </string-array>
+
+    <string-array name="array_complete_detail">
+        <item>Completed</item>
+        <item>Uncompleted</item>
+    </string-array>
+
+    <string name="str_total_res">%d Resources in Total</string>
+    <string name="str_need_mark_homework_count">%d Tasks Need Correction</string>
+    <string name="str_need_commit_homework_count">%d Tasks Need Submission</string>
+    <string name="str_complete_rate_detail">%1$d tasks assigned, %2$d students in class</string>
+    <string name="str_task_num">%d</string>
+    <string name="str_uncomplete_statistic">Incompletion Statistics</string>
+
+    <string name="str_un_mark">Unmarked</string>
+    <string name="str_un_complete">Uncompleted</string>
+    <string name="str_detail">Details</string>
+    <string name="str_total_homework_mark">%d tasks marked</string>
+    <string name="str_student_complete_hint">Task completion rate:</string>
+    <string name="str_already_intro">Assigned:</string>
+    <string name="str_already_complete">Completed:</string>
+    <string name="str_intro_detail">%1$d Tasks, %2$d Tests, %3$d Exams</string>
+    <string name="str_activation">Activate</string>
+    <string name="str_activation_course_please">Please attend or activate course!</string>
+    <string name="str_no_activation_lqCourse_shop_for_student">Task came from course %s, please activate the course first.</string>
+    <string name="str_no_activation_lqCourse_shop_for_parent">Task came from course %1$s, please use student account %2$s to activate course first.</string>
+    <string name="str_un_remark_homework">Unmarked Task</string>
+    <string name="str_publish_right_now">Answer at Any Time</string>
+    <string name="str_publish_according_to_time">Answer After Start</string>
+    <string name="str_invite_join_class">invites you to join 《%s》</string>
 </resources>

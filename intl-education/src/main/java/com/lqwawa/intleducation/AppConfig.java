@@ -971,5 +971,34 @@ public final class AppConfig {
         //查询帮辅价格
         public static final String PostGetTutorPrice =
                 ServerBase+"api/tutor/getTutorPriceByMemberId";
+
+        //三习教案关联教辅
+        public static final String PostGetSxRelationCourseList =
+                ServerBase+"api/courseEx/getSxRelationCourseList";
+
+        // 三习教案考试测试
+        public static final String GetSxExamDetail = ServerBase +
+                "api/student/getSxExamDetail";
+
+        //创建班级付费订单
+        public static final String PostCreateClassOrder =
+                PayBase + "api/order/createClassOrder";
+
+        //六大馆标签
+        public static final String GetSixLibraryLabelList =
+                ServerBase + "api/config/getSixLibraryLabelList";
+
+        //老师解锁课程
+        public static final String PostunlockingCourse =
+                ServerBase + "api/class/unlockingCourseTesting";
+
+        //班级激活码激活三习教案
+        public static final String PostActivateSanxiCourse =
+                ServerBase + "api/courseEx/activateSanxiCourse";
+
+        //获取三习课时是否包含预习、复习、练习
+        public static final String PostExerciseTypeListBySectionId =
+                ServerBase + "api/student/getExerciseTypeListBySectionId";
+
     }
 }

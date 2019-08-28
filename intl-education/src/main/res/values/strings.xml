@@ -529,6 +529,7 @@
         <item>Exercise</item>
         <item>Test</item>
         <item>Video</item>
+        <item>Plan</item>
     </string-array>
 
     <string name="user_comment">Comment</string>
@@ -553,4 +554,21 @@
     <string name="join_school_to_learn">Please join school before learning course</string>
     <string name="modify_success_tip">Price updated</string>
     <string name="student_evaluation">Comment</string>
+    <string name="select_all">select all</string>
+    <string name="deselect_all">deselect all</string>
+    <string name="str_class_price_not_null">Please enter a valid price</string>
+    <string name="label_sx_preview">Preview</string>
+    <string name="label_sx_practice">Exercise</string>
+    <string name="label_sx_review">Review</string>
+    <string name="join_immediately">Attend</string>
+    <string name="label_join_teaching_plan_tip">Please attend course!</string>
+    <string name="teaching_plan_do_homework_tip">Please do task in Online School > Learning Tasks</string>
+    <string name="teaching_plan_check_homework_tip">Please correct homework in Online School > Learning Tasks</string>
+    <string name="class_implementation_plan">Implementation Plan</string>
+    <string name="join_class_by_money">Pay to join %s</string>
+    <string name="label_test_unlock_tip">Unable to add locked test</string>
+    <string name="label_exam_unlock_tip">Unable to add locked exam</string>
+    <string name="label_teaching_plan_expire_tip">Please contact teacher</string>
+    <string name="input_activation_please">Please enter activation code!</string>
+    <string name="label_immediate_comment_tip">Please correct homework in Online School>Learning Tasks</string>
 </resources>

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.duowan.mobile.netroid.NetroidError;
@@ -182,12 +183,27 @@ public class GroupExpandListFragment extends ContactsExpandListFragment {
                                 }
                             }
                         });
-
                     }
+
                     TextView textView = (TextView) view.findViewById(R.id.contacts_item_title);
                     if (textView != null) {
                         textView.setText(data.getClassMailName());
                     }
+
+//                    LinearLayout payLayout = (LinearLayout) view.findViewById(R.id.ll_pay_detail);
+//                    TextView wawaPayNumView = (TextView) view.findViewById(R.id.tv_wawa_coin_count);
+//                    if (payLayout != null && wawaPayNumView != null){
+//                        if (data.getPrice() > 0){
+//                            payLayout.setVisibility(View.VISIBLE);
+//                            wawaPayNumView.setText(String.valueOf(data.getPrice()));
+//                            textView.setSingleLine(true);
+//                            textView.setEllipsize(TextUtils.TruncateAt.END);
+//                        } else {
+//                            textView.setSingleLine(false);
+//                            payLayout.setVisibility(View.GONE);
+//                        }
+//                    }
+
                     textView = (TextView) view.findViewById(R.id.contacts_item_status);
                     if (textView != null) {
                         if (data.isHeadTeacher()) {

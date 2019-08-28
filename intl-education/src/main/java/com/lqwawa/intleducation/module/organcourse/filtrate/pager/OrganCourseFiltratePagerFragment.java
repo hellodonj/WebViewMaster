@@ -179,13 +179,8 @@ public class OrganCourseFiltratePagerFragment extends PresenterFragment<OrganCou
             mRefreshLayout.showRefresh();
         }
         if (mParams.isSelectResource()) {
-            if (mParams.getLevel().equals(OrganLibraryUtils.LIBRARY_QDUBBING_LEVEL)) {
-                mPresenter.requestCourseData(isMoreLoaded, mPageIndex,
+            mPresenter.requestCourseResourceData(isMoreLoaded, mPageIndex,
                         AppConfig.PAGE_SIZE, mParams);
-            } else {
-                mPresenter.requestCourseResourceData(isMoreLoaded, mPageIndex,
-                        AppConfig.PAGE_SIZE, mParams);
-            }
         } else {
             mPresenter.requestCourseData(isMoreLoaded, mPageIndex,
                     AppConfig.PAGE_SIZE, mParams);

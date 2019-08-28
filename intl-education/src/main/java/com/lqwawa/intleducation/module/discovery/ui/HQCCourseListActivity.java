@@ -304,7 +304,7 @@ public class HQCCourseListActivity extends MyBaseFragmentActivity{
     private void showAuthorizationImputDialog(String tipInfo){
         if(imputAuthorizationCodeDialog == null) {
             imputAuthorizationCodeDialog =
-                    new ImputAuthorizationCodeDialog(activity, tipInfo,
+                    new ImputAuthorizationCodeDialog(activity, tipInfo,1,
                             new ImputAuthorizationCodeDialog.CommitCallBack() {
                                 @Override
                                 public void onCommit(String code) {

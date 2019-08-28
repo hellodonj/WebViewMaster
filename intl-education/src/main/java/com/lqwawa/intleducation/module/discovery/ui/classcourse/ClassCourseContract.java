@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
-import com.lqwawa.intleducation.factory.presenter.BaseContract;
 import com.lqwawa.intleducation.module.organcourse.base.SchoolPermissionContract;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class ClassCourseContract {
                                     int role, @NonNull String name,
                                     @NonNull String level,
                                     int paramOneId,int paramTwoId,
-                                    int pageIndex);
+                                    int pageIndex,int courseType);
         // 班主任从班级中删除课程
         void requestDeleteCourseFromClass(@NonNull String token, @NonNull String classId, @NonNull String ids);
         // 老师添加课程

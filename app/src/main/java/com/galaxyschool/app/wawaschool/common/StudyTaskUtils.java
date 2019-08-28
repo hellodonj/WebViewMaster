@@ -242,6 +242,10 @@ public class StudyTaskUtils {
                     if (!TextUtils.isEmpty(lookDto.getPoint())) {
                         thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
                     }
+                    if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
+                        thirdObject.put("CourseId",lookDto.getCourseId());
+                        thirdObject.put("CourseTaskType",lookDto.getCourseTaskType());
+                    }
                     jsonArray.put(thirdObject);
                 }
                 taskParams.put("TSDXResList", jsonArray);

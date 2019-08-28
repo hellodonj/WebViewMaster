@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
-import com.icedcap.dubbing.R;
+import com.lqwawa.apps.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

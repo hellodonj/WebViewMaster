@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -199,7 +200,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
     private boolean isExist;
     private OrganCourseFiltrateParams organCourseFiltrateParams;
 
-    private String[] mTabTitles;
+    private List<String> tabTitleList;
     private boolean priceTabVisible;
     private int mPosition = 0;
     private OrganCourseFiltratePagerParams mParams;
@@ -308,13 +309,6 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         mSortTabLayout = (TabLayout) mRootView.findViewById(R.id.tab_layout_sort);
         mViewPager = (ViewPager) mRootView.findViewById(R.id.view_pager);
 
-        if (mSelectResource) {
-            // 隐藏HeaderLayout
-            mHeaderLayout.setVisibility(View.GONE);
-            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
-            mTopBar.setVisibility(organCourseFiltrateParams.isHideTopBar() ? View.GONE : View.VISIBLE);
-        }
-
         mBottomLayout = (LinearLayout) mRootView.findViewById(R.id.bottom_layout);
         mSubjectLayout = (LinearLayout) mRootView.findViewById(R.id.subject_layout);
         mAddSubject = (Button) mRootView.findViewById(R.id.btn_add_subject);
@@ -353,10 +347,122 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
         }
 
         if (mSelectResource) {
-            mSubjectLayout.setVisibility(View.GONE);
+            mTopBar.findViewById(R.id.right_function1_image).setVisibility(View.GONE);
+            mTopBar.setVisibility(organCourseFiltrateParams.isHideTopBar() ? View.GONE : View.VISIBLE);
+            
+            mSubjectLayout.setVisibility(View.VISIBLE);
         }
+
         mHeaderLayout.setVisibility(View.GONE);
         mSortTabLayout.setVisibility(View.GONE);
+
+        initFragments();
+
+        if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+            // 设置TabLayout最后一个节点有upDown
+            TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
+            PriceArrowView view = new PriceArrowView(getActivity());
+            view.setTabTitle(tabTitleList.get(tabTitleList.size() - 1));
+            tabAt.setCustomView(view.getRootView());
+            mPriceArrowView = view;
+
+            mPriceArrowView.setOnTouchListener((v, event) -> {
+                if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
+                    int state = mPriceArrowView.triggerSwitch();
+                    triggerPriceSwitch(state);
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        mSortTabLayout.addOnTabSelectedListener(new TabSelectedAdapter() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                mPosition = tab.getPosition();
+                if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
+                        priceTabVisible = true;
+                        // 价格被选中
+                        if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
+                            int state = mPriceArrowView.triggerSwitch();
+                            triggerPriceSwitch(state);
+                        }
+                    } else {
+                        int position = tab.getPosition();
+                        if (position == 0) {
+                            mParams.setSort(2);
+                        } else if (position == 1) {
+                            mParams.setSort(1);
+                        }
+                        mNavigatorList.get(mPosition).triggerUpdateData(mParams);
+                    }
+                } else {
+                    int position = tab.getPosition();
+                    if (position == 0) {
+                        mParams.setSort(2);
+                    } else if (position == 1) {
+                        mParams.setSort(1);
+                    }
+                    mNavigatorList.get(mPosition).triggerUpdateData(mParams);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
+                        priceTabVisible = false;
+                        // 价格被选中
+                        if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
+                            // 状态重置
+                            mPriceArrowView.reset();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void initFragments() {
+        mParams = new OrganCourseFiltratePagerParams(mEntity.getEntityOrganId(), mLibraryType, 2,
+                isClassCourseEnter);
+        mParams.setSelectResource(mSelectResource)
+                .setAuthorized(isAuthorized)
+                .setReallyAuthorized(isReallyAuthorized)
+                .setShopResourceData(mResourceData)
+                .setBundle(organCourseFiltrateParams.getBundle());
+        String[] tabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
+        tabTitleList = new ArrayList<>();
+        Collections.addAll(tabTitleList, tabTitles);
+        OrganCourseFiltratePagerFragment recentUpdateFragment =
+                OrganCourseFiltratePagerFragment.newInstance(mParams);
+        OrganCourseFiltratePagerFragment hotFragment
+                = OrganCourseFiltratePagerFragment.newInstance(mParams);
+        OrganCourseFiltratePagerFragment priceFragment
+                = OrganCourseFiltratePagerFragment.newInstance(mParams);
+
+        List<Fragment> fragments = new ArrayList<>();
+        mNavigatorList = new ArrayList<>();
+        fragments.add(recentUpdateFragment);
+        mNavigatorList.add(recentUpdateFragment);
+        if (!mSelectResource) {
+            fragments.add(hotFragment);
+            mNavigatorList.add(hotFragment);
+            if (mLibraryType != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                fragments.add(priceFragment);
+                mNavigatorList.add(priceFragment);
+            } else {
+                tabTitleList.remove(tabTitleList.size() - 1);
+            }
+        }
+
+        TabPagerAdapter mAdapter = new TabPagerAdapter(getChildFragmentManager(), fragments);
+        mViewPager.setAdapter(mAdapter);
+        mSortTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(fragments.size() - 1);
     }
 
     @Override
@@ -399,87 +505,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
             }
         }
 
-        mParams = new OrganCourseFiltratePagerParams(organId, mLibraryType, 2, isClassCourseEnter);
-        mParams.setSelectResource(mSelectResource)
-                .setAuthorized(isAuthorized)
-                .setReallyAuthorized(isReallyAuthorized)
-                .setShopResourceData(mResourceData)
-                .setBundle(organCourseFiltrateParams.getBundle());
-        mTabTitles = UIUtil.getStringArray(R.array.label_course_shop_tabs);
-        OrganCourseFiltratePagerFragment recentUpdateFragment =
-                OrganCourseFiltratePagerFragment.newInstance(mParams);
-        OrganCourseFiltratePagerFragment hotFragment
-                = OrganCourseFiltratePagerFragment.newInstance(mParams);
-        OrganCourseFiltratePagerFragment priceFragment
-                = OrganCourseFiltratePagerFragment.newInstance(mParams);
 
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(recentUpdateFragment);
-        fragments.add(hotFragment);
-        fragments.add(priceFragment);
-
-        mNavigatorList = new ArrayList<>();
-        mNavigatorList.add(recentUpdateFragment);
-        mNavigatorList.add(hotFragment);
-        mNavigatorList.add(priceFragment);
-
-        TabPagerAdapter mAdapter = new TabPagerAdapter(getChildFragmentManager(), fragments);
-        mViewPager.setAdapter(mAdapter);
-        mSortTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(fragments.size() - 1);
-
-        // 设置TabLayout最后一个节点有upDown
-        TabLayout.Tab tabAt = mSortTabLayout.getTabAt(mSortTabLayout.getTabCount() - 1);
-        PriceArrowView view = new PriceArrowView(getActivity());
-        view.setTabTitle(mTabTitles[mSortTabLayout.getTabCount() - 1]);
-        tabAt.setCustomView(view.getRootView());
-        mPriceArrowView = view;
-
-        mPriceArrowView.setOnTouchListener((v, event) -> {
-            if (priceTabVisible && event.getAction() == MotionEvent.ACTION_DOWN) {
-                int state = mPriceArrowView.triggerSwitch();
-                triggerPriceSwitch(state);
-                return true;
-            }
-            return false;
-        });
-
-        mSortTabLayout.addOnTabSelectedListener(new TabSelectedAdapter() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                super.onTabSelected(tab);
-                mPosition = tab.getPosition();
-                if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
-                    priceTabVisible = true;
-                    // 价格被选中
-                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
-                        int state = mPriceArrowView.triggerSwitch();
-                        triggerPriceSwitch(state);
-                    }
-                } else {
-                    int position = tab.getPosition();
-                    if (position == 0) {
-                        mParams.setSort(2);
-                    } else if (position == 1) {
-                        mParams.setSort(1);
-                    }
-                    mNavigatorList.get(mPosition).triggerUpdateData(mParams);
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                super.onTabUnselected(tab);
-                if (tab.getPosition() == mSortTabLayout.getTabCount() - 1) {
-                    priceTabVisible = false;
-                    // 价格被选中
-                    if (EmptyUtil.isNotEmpty(mPriceArrowView)) {
-                        // 状态重置
-                        mPriceArrowView.reset();
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -591,6 +617,10 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
 //            mRefreshLayout.setVisibility(View.GONE);
 //            mEmptyLayout.setVisibility(View.VISIBLE);
             triggerUpdateData();
+        }
+        if (mSelectResource) {
+            mHeaderLayout.setVisibility(View.GONE);
+            mSortTabLayout.setVisibility(View.GONE);
         }
     }
 
@@ -1080,7 +1110,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
             tipInfo = UIUtil.getString(R.string.authorization_out_time_tip);
         }
         if (imputAuthorizationCodeDialog == null) {
-            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,
+            imputAuthorizationCodeDialog = new ImputAuthorizationCodeDialog(getActivity(), tipInfo,1,
                     new ImputAuthorizationCodeDialog.CommitCallBack() {
                         @Override
                         public void onCommit(String code) {
@@ -1346,7 +1376,7 @@ public class OrganCourseFiltrateFragment extends PresenterFragment<OrganCourseFi
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mTabTitles[position];
+            return tabTitleList.get(position);
         }
     }
 

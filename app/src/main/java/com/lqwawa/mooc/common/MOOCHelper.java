@@ -16,6 +16,7 @@ import com.duowan.mobile.netroid.Request;
 import com.galaxyschool.app.wawaschool.AnswerCardDetailActivity;
 import com.galaxyschool.app.wawaschool.CheckMarkActivity;
 import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
+import com.galaxyschool.app.wawaschool.LearningStatisticActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.SchoolSpaceActivity;
@@ -102,6 +103,7 @@ public class MOOCHelper {
     protected static ProgressDialog progressDialog;
 
     public static void init(UserInfo userInfo) {
+        TaskSliderHelper.onLearnStatisticListener = onLearnStatisticListener;
         TaskSliderHelper.onPlayListListener = onPlayListListener;
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
         TaskSliderHelper.onWorkCartListener = onWorkCartListener;
@@ -184,6 +186,19 @@ public class MOOCHelper {
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             ResourcesPlayUtils.getInstance().onActivityResult(requestCode,resultCode,data);
+        }
+    };
+
+    private static TaskSliderHelper.OnLearnStatisticListener onLearnStatisticListener
+            = new TaskSliderHelper.OnLearnStatisticListener() {
+        @Override
+        public void enterCourseStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull Bundle bundle) {
+            LearningStatisticActivity.start(activity,courseId,courseName,classId,bundle);
+        }
+
+        @Override
+        public void enterLearnStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull int roleType, @NonNull String studentId) {
+            LearningStatisticActivity.start(activity,courseId,courseName,classId,roleType,studentId);
         }
     };
 
@@ -895,6 +910,15 @@ public class MOOCHelper {
                                             final StudyTask task,
                                             final int roleType,
                                             boolean isAudition) {
+        enterCheckMarkDetail(activity,data,task,roleType,isAudition,true);
+    }
+
+    public static void enterCheckMarkDetail(final Activity activity,
+                                            final CommitTask data,
+                                            final StudyTask task,
+                                            final int roleType,
+                                            boolean isAudition,
+                                            boolean isFromOnline) {
         String taskScore = data.getTaskScore();
         if (TextUtils.isEmpty(taskScore)) {
             taskScore = "";
@@ -904,7 +928,7 @@ public class MOOCHelper {
             isNeedMark = false;
         }
         Bundle bundle = new Bundle();
-        bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_IS_FROM_MOOC, true);
+        bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_IS_FROM_MOOC, isFromOnline);
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_IS_AUDITION, isAudition);
         bundle.putString(CheckMarkFragment.Constants.COMMITTASK_ID, data.getCommitTaskId() + "");
         bundle.putString(CheckMarkFragment.Constants.STUDENT_ID, data.getStudentId());
@@ -917,9 +941,7 @@ public class MOOCHelper {
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEREPORTER, roleType == RoleType.ROLE_TYPE_TEACHER);
         bundle.putBoolean(CheckMarkFragment.Constants.EXTRA_ISONLINEHOST, roleType == RoleType
                 .ROLE_TYPE_EDITOR);
-        if (data != null) {
-            bundle.putSerializable(CheckMarkFragment.Constants.COMMIT_TASK, data);
-        }
+        bundle.putSerializable(CheckMarkFragment.Constants.COMMIT_TASK, data);
         if (!(roleType == RoleType.ROLE_TYPE_VISITOR)) {
             bundle.putSerializable(CheckMarkFragment.Constants.ACTION_TASKMARKPARAM,
                     new TaskMarkParam(
@@ -929,13 +951,16 @@ public class MOOCHelper {
                             data.getCommitTaskId() + "",
                             false,
                             isNeedMark,
-                            data.getTaskScore(), true));
+                            data.getTaskScore(),
+                            isFromOnline));
         }
         Intent intent = new Intent(activity, CommonFragmentActivity.class);
         bundle.putSerializable(CommonFragmentActivity.EXTRA_CLASS_OBJECT, CheckMarkFragment.class);
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
+
+
 
     /**
      * 拉取最新批阅提问数据

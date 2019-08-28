@@ -200,7 +200,8 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                                 int taskType = data.getTaskType();
                                 if (taskType == StudyTaskType.WATCH_WAWA_COURSE
                                         || taskType == StudyTaskType.WATCH_HOMEWORK
-                                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE) {
+                                        || taskType == StudyTaskType.NEW_WATACH_WAWA_COURSE
+                                        || taskType == StudyTaskType.MULTIPLE_OTHER) {
                                     //目前看作业和看课件没有完成情况
                                     return;
                                 } else if (taskType == StudyTaskType.LISTEN_READ_AND_WRITE
@@ -208,6 +209,7 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
                                         || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
                                         || taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                                         || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                                        || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT
                                         || isSuperChildTask) {
                                     //听说+读写
                                     enterStudentListenReadAndWriteListActivity(data);
@@ -293,7 +295,8 @@ public class HomeworkFinishStatusFragment extends ContactsListFragment {
         }
         if (taskType == StudyTaskType.MULTIPLE_TASK_ORDER
                 || taskType == StudyTaskType.MULTIPLE_RETELL_COURSE
-                || taskType == StudyTaskType.MULTIPLE_Q_DUBBING){
+                || taskType == StudyTaskType.MULTIPLE_Q_DUBBING
+                || taskType == StudyTaskType.MULTIPLE_OTHER_SUBMIT){
             args.putString("TaskId", taskId);
         } else {
             args.putString("TaskId", String.valueOf(data.getTaskId()));

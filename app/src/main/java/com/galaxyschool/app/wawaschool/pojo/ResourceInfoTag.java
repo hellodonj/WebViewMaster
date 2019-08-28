@@ -102,6 +102,8 @@ public class ResourceInfoTag extends ResourceInfo {
         resourceInfo.setVuid(getVuid());
         resourceInfo.setLeStatus(getLeStatus());
         resourceInfo.setPoint(getPoint());
+        resourceInfo.setCourseId(getCourseId());
+        resourceInfo.setCourseTaskType(getCourseTaskType());
         return resourceInfo;
     }
 

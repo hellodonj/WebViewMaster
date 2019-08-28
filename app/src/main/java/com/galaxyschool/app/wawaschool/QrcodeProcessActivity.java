@@ -1,9 +1,11 @@
 package com.galaxyschool.app.wawaschool;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,28 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
+import com.galaxyschool.app.wawaschool.chat.DemoApplication;
+import com.galaxyschool.app.wawaschool.chat.utils.UserUtils;
 import com.galaxyschool.app.wawaschool.common.*;
 import com.galaxyschool.app.wawaschool.common.DialogHelper.LoadingDialog;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
+import com.galaxyschool.app.wawaschool.fragment.BaseFragment;
+import com.galaxyschool.app.wawaschool.fragment.ClassDetailsFragment;
+import com.galaxyschool.app.wawaschool.fragment.ContactsPickerFragment;
+import com.galaxyschool.app.wawaschool.fragment.MySchoolSpaceFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.lqwawa.intleducation.factory.data.DataSource;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
+import com.lqwawa.intleducation.factory.event.EventConstant;
+import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.ui.PayActivity;
 import com.lqwawa.intleducation.module.discovery.vo.DiscoveryItemVo;
+import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.net.NetErrorResult;
 import com.lqwawa.lqbaselib.net.PostByMapParamsModelRequest;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.*;
@@ -30,9 +46,13 @@ import com.galaxyschool.app.wawaschool.views.ToolbarTopView;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +78,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     private ViewGroup mRealnameLayout, mSubjectLayout, mRelationLayout;
     private LoadingDialog loadingDialog;
     private WheelPopupView wheelPopupView;
-
+    private LinearLayout chargeDetailLayout;
+    private TextView wawaPayNumTextV;
     private String[] qrcodeAddInfos;
     private String qrcodeStr;
     private int qrcode_process_type;
@@ -83,7 +104,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     private int position = 0;
     private String studentId = null;
     private boolean isFromMooc;
-
+    private SubscribeClassInfo classDetailInfo;
+    private boolean needPayJoinClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +119,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         }
         initData();
         initViews();
+        registerEventBus();
     }
 
     private void initData() {
@@ -162,6 +185,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
         classExtra.setOnClickListener(this);
         radioGroup.setOnCheckedChangeListener(this);
 
+        chargeDetailLayout = (LinearLayout) findViewById(R.id.ll_charge_detail);
+        wawaPayNumTextV = (TextView) findViewById(R.id.tv_charge_count);
         if (qrcodeClassInfo == null && qrcodeSchoolInfo == null) {
             getQrcodeInfo();
         } else {
@@ -181,6 +206,7 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                             null, null, null, null);
                     classExtra.setEnabled(false);
                 }
+                loadClassInfo();
             }
 
             if (qrcodeSchoolInfo != null) {
@@ -409,6 +435,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 }
 
                 @Override
+                public void onFinish() {
+                    super.onFinish();
+                    loadClassInfo();
+                }
+
+                @Override
                 public void onError(NetroidError error) {
                     super.onError(error);
                     String es = error.getMessage();
@@ -541,12 +573,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
     }
 
     private void addStudentToClass() {
-        String verifyStr = mRealnameEditText.getText().toString().trim();
-//        if (TextUtils.isEmpty(verifyStr)) {
-//            TipMsgHelper.ShowMsg(QrcodeProcessActivity.this, getString(R.string.pls_input_name));
-//            return;
-//        }
-        addToClass(RoleType.ROLE_TYPE_STUDENT, verifyStr);
+        if (needPayJoinClass){
+            applyPayJoinClass();
+        } else {
+            String verifyStr = mRealnameEditText.getText().toString().trim();
+            addToClass(RoleType.ROLE_TYPE_STUDENT, verifyStr);
+        }
     }
 
     private void addParentToClass() {
@@ -1105,6 +1137,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSubjectLayout.setVisibility(View.VISIBLE);
                 mRelationLayout.setVisibility(View.GONE);
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
+                chargeDetailLayout.setVisibility(View.GONE);
+                addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.getRealName())) {
@@ -1126,6 +1160,12 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mSubjectLayout.setVisibility(View.GONE);
                 mRelationLayout.setVisibility(View.GONE);
                 mSelectStudentAccountLayout.setVisibility(View.GONE);
+                if (needPayJoinClass){
+                    chargeDetailLayout.setVisibility(View.VISIBLE);
+                    addBtn.setText(getString(R.string.str_go_to_pay));
+                } else {
+                    addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
+                }
                 classInfo.setText(R.string.name);
                 mRealnameEditText.setHint(R.string.pls_input_name);
                 if (userInfo != null && !TextUtils.isEmpty(userInfo.getRealName())) {
@@ -1146,6 +1186,8 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 mRealnameLayout.setVisibility(View.VISIBLE);
                 mSubjectLayout.setVisibility(View.GONE);
                 mRelationLayout.setVisibility(View.VISIBLE);
+                chargeDetailLayout.setVisibility(View.GONE);
+                addBtn.setText(qrcodeAddInfos[qrcode_process_type]);
                 //如果存在重名学生才显示
                 classInfo.setText(R.string.stu_name);
                 mRealnameEditText.setHint(R.string.pls_input_student_name);
@@ -1196,5 +1238,125 @@ public class QrcodeProcessActivity extends BaseActivity implements View.OnClickL
                 initLayout(qrcode_process_type);
             }
         }
+    }
+
+    private void loadClassInfo() {
+        if (TextUtils.isEmpty(DemoApplication.getInstance().getMemberId()) || qrcodeClassInfo == null){
+            return;
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("MemberId", DemoApplication.getInstance().getMemberId());
+        params.put("ClassId", qrcodeClassInfo.getClassId());
+        RequestHelper.RequestDataResultListener listener =
+                new RequestHelper.RequestDataResultListener<SubscribeClassInfoResult>(this,
+                        SubscribeClassInfoResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        super.onSuccess(jsonString);
+                        SubscribeClassInfoResult result = getResult();
+                        if (result == null || !result.isSuccess()
+                                || result.getModel() == null) {
+                            return;
+                        }
+                        classDetailInfo = result.getModel().getData();
+                        if (classDetailInfo != null && classDetailInfo.getPrice() > 0){
+                            if (wawaPayNumTextV != null){
+                                wawaPayNumTextV.setText(String.valueOf(classDetailInfo.getPrice()));
+                            }
+                            needPayJoinClass = true;
+                        }
+                    }
+                };
+        RequestHelper.sendPostRequest(this, ServerUrl.CONTACTS_CLASS_INFO_URL, params, listener);
+    }
+
+    private void applyPayJoinClass(){
+        if (classDetailInfo == null || userInfo == null){
+            return;
+        }
+        if (classDetailInfo.isStudentByRoles()){
+            TipMsgHelper.ShowMsg(this,R.string.str_pay_join_class_tip);
+            return;
+        }
+        if (classDetailInfo.isTeacherByRoles() || classDetailInfo.isParentByRoles()){
+            TipMsgHelper.ShowMsg(this,R.string.str_repeat_role_info);
+            return;
+        }
+        if (TextUtils.isEmpty(userInfo.getRealName()) && TextUtils.isEmpty(mRealnameEditText.getText().toString())) {
+            showonsummateDialog();
+            return;
+        }
+        PayActivity.newInstance(this,
+                true,
+                DemoApplication.getInstance().getMemberId(),
+                classDetailInfo.getClassId(),
+                classDetailInfo.getClassName(),
+                classDetailInfo.getHeadPicUrl(),
+                classDetailInfo.getSchoolId(),
+                classDetailInfo.getSchoolName(),
+                String.valueOf(classDetailInfo.getPrice()));
+    }
+
+    private void registerEventBus(){
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    private void unRegisterEventBus(){
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventWrapper event){
+        if (EventWrapper.isMatch(event,EventConstant.CREATE_CLASS_ORDER)){
+            //支付成功加入班级
+            List<String> studentIds = new ArrayList<>();
+            studentIds.add(userInfo.getMemberId());
+            if (TextUtils.isEmpty(userInfo.getRealName())){
+                //没有填写真实姓名
+                userInfo.setRealName(mRealnameEditText.getText().toString());
+                UserUtils.modifyBasicUserInfo(this,userInfo,result -> addStudentToClass(studentIds));
+            } else {
+                addStudentToClass(studentIds);
+            }
+        }
+    }
+
+    private void addStudentToClass(List<String> studentIds) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        //班主任的memberId
+        params.put("MemberId", classDetailInfo.getHeadMasterId());
+        //班级的classId
+        params.put("ClassId", classDetailInfo.getClassId());
+        params.put("StudentList", studentIds);
+        RequestHelper.RequestListener listener =
+                new RequestHelper.RequestDataResultListener<DataModelResult>(
+                        QrcodeProcessActivity.this, DataModelResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        super.onSuccess(jsonString);
+                        if (getResult() == null || !getResult().isSuccess()) {
+
+                        } else {
+                            //刷新前面界面的数据
+                            MySchoolSpaceFragment.sendBrocast(QrcodeProcessActivity.this);
+                            EventBus.getDefault().post(new MessageEvent(MessageEventConstantUtils.JOIN_CHARGE_CLASS_SUCCESS));
+                            TipsHelper.showToast(QrcodeProcessActivity.this, R.string.str_join_success);
+                            finish();
+                        }
+                    }
+                };
+        listener.setShowLoading(true);
+        RequestHelper.sendPostRequest(QrcodeProcessActivity.this, ServerUrl.ADD_STUDENT_TO_CLASS_URL,
+                params, listener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unRegisterEventBus();
+        super.onDestroy();
     }
 }

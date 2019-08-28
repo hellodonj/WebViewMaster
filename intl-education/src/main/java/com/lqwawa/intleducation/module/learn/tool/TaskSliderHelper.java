@@ -50,6 +50,7 @@ public class TaskSliderHelper {
     private static OnCommitTaskListener onCommitTaskListener = null;
     public static OnWorkCartListener onWorkCartListener = null;
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
+    public static OnLearnStatisticListener onLearnStatisticListener = null;
 
     public interface OnPlayListListener {
         Object setPlayListInfo(List<CourseResourceEntity> playListVo);
@@ -65,6 +66,22 @@ public class TaskSliderHelper {
         void showPlayListDialog(Activity activity);
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
+    }
+
+    public interface OnLearnStatisticListener{
+
+        void enterCourseStatisticActivity(@NonNull Activity activity,
+                                          @NonNull int courseId,
+                                          @NonNull String courseName,
+                                          @NonNull String classId,
+                                          @NonNull Bundle bundle);
+
+        void enterLearnStatisticActivity(@NonNull Activity activity,
+                                         @NonNull int courseId,
+                                         @NonNull String courseName,
+                                         @NonNull String classId,
+                                         @NonNull int roleType,
+                                         @NonNull String studentId);
     }
 
     public interface OnTutorialMarkingListener {

@@ -14,9 +14,7 @@ import com.lqwawa.intleducation.common.utils.LogUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
-import com.lqwawa.intleducation.factory.data.entity.OnlineClassEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.ClassCourseEntity;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -45,7 +43,7 @@ public class ClassCourseHelper {
                                               int role,@NonNull String name,
                                               @NonNull String level,
                                               int paramOneId,int paramTwoId,
-                                              int pageIndex,int pageSize,
+                                              int pageIndex,int pageSize,int courseType,
                                                @NonNull final DataSource.Callback<List<ClassCourseEntity>> callback){
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("classId",classId);
@@ -56,6 +54,7 @@ public class ClassCourseHelper {
         requestVo.addParams("paramTwoId",paramTwoId);
         requestVo.addParams("pageIndex",pageIndex);
         requestVo.addParams("pageSize",pageSize);
+        requestVo.addParams("courseType",courseType);
         if(EmptyUtil.isNotEmpty(name)){
             try{
                 requestVo.addParams("name", URLEncoder.encode(name, "UTF-8"));

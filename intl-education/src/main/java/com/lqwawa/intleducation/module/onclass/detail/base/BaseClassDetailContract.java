@@ -31,6 +31,16 @@ public interface BaseClassDetailContract {
                    @NonNull String description,
                    @NonNull String thumbnailUrl,
                    @NonNull String url);
+        /**
+         * 提交评论
+         * @param type 0评论 1回复
+         * @param courseId 班级Id
+         * @param commentId 回复人的id
+         * @param content 评论内容
+         * @param starLevel 评星
+         */
+        void requestCommitComment(int type, int courseId, @NonNull String commentId,
+                                  @NonNull String content, int starLevel);
     }
 
     interface View<T extends Presenter> extends BaseContract.View<T>{
@@ -38,6 +48,8 @@ public interface BaseClassDetailContract {
         void updateClassDetailView(boolean refreshHeader, @NonNull ClassDetailEntity entity);
         // 获取机构详情,UI回调
         void updateSchoolInfoView(@NonNull SchoolInfoEntity entity);
+        // 提交评论，返回评论结果
+        void commitCommentResult(boolean isSucceed);
     }
 
 }

@@ -360,4 +360,5 @@
     <string name="easemob_transfer_msg_received">You have received the transfer</string>
     <string name="msg_transfer_to_you">[Transfer]Transfer to you %1$s yuan</string>
     <string name="msg_transfer_from_you">[Transfer]Transfer%1$syuan</string>
+    <string name="sx_test_flag">[Test]</string>
 </resources>

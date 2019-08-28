@@ -13,6 +13,7 @@ public class SectionTaskListVo extends BaseVo {
     private int taskType;
     private String taskName;
     private List<SectionResListVo> data;
+    private boolean isChecked;//课件选取
 
     public int getTaskType() {
         return taskType;
@@ -36,5 +37,13 @@ public class SectionTaskListVo extends BaseVo {
 
     public void setData(List<SectionResListVo> data) {
         this.data = data;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

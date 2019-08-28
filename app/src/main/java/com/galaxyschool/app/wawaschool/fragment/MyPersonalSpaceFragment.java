@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.AccountActivity;
 import com.galaxyschool.app.wawaschool.ActClassroomActivity;

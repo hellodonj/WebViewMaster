@@ -1,4 +1,5 @@
 package ca.uol.aig.fftpack;
+
 /**
   * FFT transform of a real periodic sequence.
   * @author Baoshe Zhang
@@ -42,7 +43,7 @@ public class RealDoubleFFT extends RealDoubleFFT_Mixed
   * <em>x</em> contains the transform coeffients used to construct <em>n</em> complex FFT coeffients.
   * <br>
   * The real part of the first complex FFT coeffients is <em>x</em>[0]; its imaginary part
-  * is 0. If <em>n</em> is even set <em>m</em> = <em>n</em>/2, if <em>n</em> is odd set 
+  * is 0. If <em>n</em> is even set <em>m</em> = <em>n</em>/2, if <em>n</em> is odd set
   * <em>m</em> = <em>n</em>/2, then for
   * <br>
   * <em>k</em> = 1, ..., <em>m</em>-1 <br>
@@ -69,7 +70,7 @@ public class RealDoubleFFT extends RealDoubleFFT_Mixed
   * @param x an array which contains the sequence to be transformed. After FFT,
   * <em>x</em> contains the transform coeffients used to construct <em>n</em> complex FFT coeffients.
   * <br>
-  * @param y the first complex (<em>n</em>+1)/2 (when <em>n</em> is odd) or (<em>n</em>/2+1) (when 
+  * @param y the first complex (<em>n</em>+1)/2 (when <em>n</em> is odd) or (<em>n</em>/2+1) (when
   * <em>n</em> is even) FFT coeffients.
   * The remaining complex FFT coeffients can be obtained by the symmetry relation:
   * the (<em>n</em>-<em>k</em>)-th complex FFT coeffient is the conjugate of <em>n</em>-th complex FFT coeffient.

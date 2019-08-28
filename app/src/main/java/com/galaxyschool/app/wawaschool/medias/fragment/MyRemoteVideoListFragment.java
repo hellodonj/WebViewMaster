@@ -533,10 +533,10 @@ public class MyRemoteVideoListFragment extends ContactsListFragment implements I
             if (isGetAppointResource){
                 maxCount = 1;
             } else if (WatchWawaCourseResourceSplicingUtils.
-                    watchWawaCourseSupportMultiType(getArguments()) && maxCount <= 1){
+                    watchWawaCourseSupportMultiType(getArguments()) && maxCount == 0){
                 //控制资源最多选多少
                 maxCount = WatchWawaCourseResourceSplicingUtils.
-                        controlResourcePickedMaxCount(mediaType,maxCount,false);
+                        controlResourcePickedMaxCount(mediaType, maxCount, false);
             }
         }
     }

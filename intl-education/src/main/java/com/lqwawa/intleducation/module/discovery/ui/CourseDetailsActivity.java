@@ -62,6 +62,7 @@ import com.lqwawa.intleducation.factory.event.EventWrapper;
 import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.factory.helper.SchoolHelper;
+import com.lqwawa.intleducation.module.discovery.tool.ApplyActivationHelper;
 import com.lqwawa.intleducation.module.discovery.tool.LoginHelper;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
@@ -81,11 +82,13 @@ import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.ui.MyCourseDetailsActivity;
 import com.lqwawa.intleducation.module.onclass.OnlineClassListFragment;
 import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
+import com.lqwawa.intleducation.module.tutorial.assistance.RelatedAssistanceFragment;
 import com.lqwawa.intleducation.module.tutorial.course.TutorialGroupFragment;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.lqbaselib.pojo.MessageEvent;
 import com.oosic.apps.share.BaseShareUtils;
 import com.oosic.apps.share.ShareInfo;
+import com.osastudio.common.utils.XImageLoader;
 import com.umeng.socialize.media.UMImage;
 
 import org.greenrobot.eventbus.EventBus;
@@ -163,7 +166,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     private TextView mTvOriginalPrice;
     private TextView textViewAddToCart;
 
-    private TextView textViewPay;
+    private TextView textViewPay, textViewJoin;
     private TextView mBtnEnterPay;
 
 
@@ -199,6 +202,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     OnLoadStatusChangeListener onLoadStatusChangeListener;
     // private ClassroomFragment mClassroomFragment;
     private OnlineClassListFragment mOnlineClassFragment;
+    //关联教辅
+    private RelatedAssistanceFragment mAssistanceFragment;
     private TutorialGroupFragment mTutorialGroupFragment;
 
     // 是否是机构主页进来的
@@ -211,16 +216,15 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     // 是否是学程馆进来的，并且获取到授权
     private boolean isAuthorized;
     private boolean isFromScan;
-
-
     // 在线课堂Tab
     private RadioButton mRbLive, mRbLiveF;
+    //三习教案tab
+    private RadioButton mRbStudy, mRbStudyF;
+    //教案评价
+    private RadioButton mRbComment, mRbCommentF;
     //播放列表返回的resId
     private List<String> resIds;
     public static final int RESOURCE_PLAY_COMPLETED_REQUEST_CODE = 168;
-    //播放列表
-    private Button mBtnPlayList;
-    private LinearLayout mLLPlayList;
 
     /**
      * 跳转到课程详情页 支持从学程中的课程列表 首页 跳转
@@ -251,6 +255,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final CourseDetailParams params,
                              final boolean isFromScan) {
         final CourseRoute route = new CourseRoute(isOnlineTeacher);
+        if (params != null) {
+            params.setMyCourse(isMyCourse);
+        }
         route.navigation(activity, courseId, memberId, params,
                 isFromScan, new CourseRoute.NavigationListener() {
                     @Override
@@ -273,8 +280,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                             }
                             final boolean isOnlineCounselor = route.isOnlineCounselor();
                             MyCourseDetailsActivity.start(activity, courseId, false,
-                                    true, memberId, isSchoolEnter, isOnlineClassEnter, isOnlineCounselor,
-                                    isAuthorized, courseDetailParams, vo);
+                                    canEdit, memberId, isSchoolEnter, isOnlineClassEnter,
+                                    isOnlineCounselor, isAuthorized, courseDetailParams, vo);
                         } else {
                             // 去未加入页面
                             boolean isAuth = isAuthorized;
@@ -328,16 +335,17 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                              final boolean canEdit,
                              final String memberId,
                              final boolean isMyCourse,
-                             final boolean isFromScan) {
+                             final boolean isFromScan,
+                             CourseDetailParams params) {
         start(activity, courseId, canEdit, memberId, false, false,
-                false, false, isMyCourse, -1, null, null, isFromScan);
+                false, false, isMyCourse, -1, null, params, isFromScan);
     }
 
     public static void start(final Activity activity,
                              final String courseId,
                              final boolean canEdit,
                              final String memberId) {
-        start(activity, courseId, canEdit, memberId, false, false);
+        start(activity, courseId, canEdit, memberId, false, false,null);
     }
 
     public static void start(final Activity activity,
@@ -428,22 +436,40 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         rg_tab = (RadioGroup) findViewById(R.id.rg_tab);
         rg_tab_f = (RadioGroup) findViewById(R.id.rg_tab_f);
 
+        mRbStudy = (RadioButton) findViewById(R.id.rb_study_plan);
+        mRbStudyF = (RadioButton) findViewById(R.id.rb_study_plan_f);
         mRbLive = (RadioButton) findViewById(R.id.rb_live);
         mRbLiveF = (RadioButton) findViewById(R.id.rb_live_f);
+        mRbComment = (RadioButton) findViewById(R.id.rb_course_comment);
+        mRbCommentF = (RadioButton) findViewById(R.id.rb_course_comment_f);
 
         if (isOnlineClassEnter) {
             mRbLive.setVisibility(View.GONE);
             mRbLiveF.setVisibility(View.GONE);
         }
 
-        mBtnPlayList = (Button) findViewById(R.id.btn_play_list);
-        mLLPlayList = (LinearLayout) findViewById(R.id.ll_play_list);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mRbStudy.setText(getResources().getText(R.string.label_lesson_plan));
+            mRbStudyF.setText(getResources().getText(R.string.label_lesson_plan));
+            mRbLive.setText(getResources().getText(R.string.label_teaching_assistant));
+            mRbLiveF.setText(getResources().getText(R.string.label_teaching_assistant));
+            mRbComment.setText(getResources().getText(R.string.label_lesson_comment));
+            mRbCommentF.setText(getResources().getText(R.string.label_lesson_comment));
+        } else {
+            mRbStudy.setText(getResources().getText(R.string.label_tab_course_chapter));
+            mRbStudyF.setText(getResources().getText(R.string.label_tab_course_chapter));
+            mRbLive.setText(getResources().getText(R.string.label_teach_class));
+            mRbLiveF.setText(getResources().getText(R.string.label_teach_class));
+            mRbComment.setText(getResources().getText(R.string.label_course_evaluation));
+            mRbCommentF.setText(getResources().getText(R.string.label_course_evaluation));
+        }
 
         textViewAddToCart = (TextView) findViewById(R.id.add_to_cart_tv);
         mTvPrice = (TextView) findViewById(R.id.tv_price);
         mTvOriginalPrice = (TextView) findViewById(R.id.tv_original_price);
         textViewPay = (TextView) findViewById(R.id.pay_tv);
         mBtnEnterPay = (TextView) findViewById(R.id.btn_enter_pay);
+        textViewJoin = (TextView) findViewById(R.id.join_tv);
         courseId = getIntent().getStringExtra("id");
         isComment = getIntent().getBooleanExtra("isComment", false);
         initTabIndex = getIntent().getIntExtra("tabIndex", 0);
@@ -452,6 +478,9 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         isLqExcellent = getIntent().getBooleanExtra("isLqExcellent", false);
         isAuthorized = getIntent().getBooleanExtra("isAuthorized", false);
         isFromScan = mCourseDetailParams.isFromScan();
+        //立即参加 班级课程进入 三习教案 未激活显示
+//        isHide1 = mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()
+//                && !mCourseDetailParams.isAuthorized();
         initViews();
         initData(false);
     }
@@ -460,7 +489,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         // canEdit true 代表就是孩子身份,可以看课件，做读写单相关的动作
         // canEdit false 代表就是家长身份，有些学习相关的功能，不能使用
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+//                textViewJoin.setVisibility(isHide1 ? View.VISIBLE : View.GONE);
+                textViewJoin.setVisibility(View.VISIBLE);
+                findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+            } else {
+                textViewJoin.setVisibility(View.GONE);
+                findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            }
             findViewById(R.id.btn_enter_pay).setVisibility(View.GONE);
         }
         //初始化下拉刷新
@@ -477,11 +513,16 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 /*if(mClassroomFragment.isVisible()){
                     mClassroomFragment.getMore();
                 }*/
-
-                if (mOnlineClassFragment.isVisible()) {
-                    // @date   :2018/6/8 0008 上午 12:13
-                    // @func   :V5.7修改直播为在线课堂列表
-                    mOnlineClassFragment.getMore();
+                if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                    if (mAssistanceFragment.isVisible()) {
+                        mAssistanceFragment.requestSxRelationCourse(true);
+                    }
+                } else {
+                    if (mOnlineClassFragment.isVisible()) {
+                        // @date   :2018/6/8 0008 上午 12:13
+                        // @func   :V5.7修改直播为在线课堂列表
+                        mOnlineClassFragment.getMore();
+                    }
                 }
 
                 if (mTutorialGroupFragment.isVisible()) {
@@ -593,16 +634,13 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         textViewOrganName.setOnClickListener(this);
         mBtnIntro.setOnClickListener(this);
         mSchoolEnter.setOnClickListener(this);
+        textViewJoin.setOnClickListener(this);
         int p_width = getWindowManager().getDefaultDisplay().getWidth();
         int p_height = getWindowManager().getDefaultDisplay().getHeight();
         img_width = p_width / 3 - DisplayUtil.dip2px(activity, 20);
         img_height = img_width * 297 / 210;
-        imageOptions = new ImageOptions.Builder()
-                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
-                .setCrop(false)
-                .setLoadingDrawableId(R.drawable.default_cover_h)//加载中默认显示图片
-                .setFailureDrawableId(R.drawable.default_cover_h)//加载失败后默认显示图片
-                .build();
+        imageOptions = XImageLoader.buildImageOptions(ImageView.ScaleType.CENTER_CROP,
+                R.drawable.default_cover_h, false, false, null);
         //findViewById(R.id.fragment_container).setMinimumHeight(p_height);
         LinearLayout.LayoutParams coverLayParams = (LinearLayout.LayoutParams) imageViewCover.getLayoutParams();
         coverLayParams.width = img_width;
@@ -689,12 +727,20 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         };
         studyPlanFragment = new CourseDetailsItemFragment();
         courseCommentFragment = new CourseDetailsItemFragment();
-        mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mAssistanceFragment = RelatedAssistanceFragment.newInstance(courseId);
+        } else {
+            mOnlineClassFragment = OnlineClassListFragment.newInstance(courseId);
+        }
         mTutorialGroupFragment = TutorialGroupFragment.newInstance(courseId, mCurMemberId);
 
         studyPlanFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
         courseCommentFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
-        mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            mAssistanceFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+        } else {
+            mOnlineClassFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
+        }
         mTutorialGroupFragment.setOnLoadStatusChangeListener(onLoadStatusChangeListener);
 
         String id = courseId;
@@ -745,15 +791,24 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // 习课程(课程大纲)
         fragmentTransaction.add(R.id.fragment_container, studyPlanFragment);
-        // 空中课堂
-        fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            //关联教辅
+            fragmentTransaction.add(R.id.fragment_container, mAssistanceFragment);
+        } else {
+            // 空中课堂
+            fragmentTransaction.add(R.id.fragment_container, mOnlineClassFragment);
+        }
         // 帮辅群
         fragmentTransaction.add(R.id.fragment_container, mTutorialGroupFragment);
         // 课程评价
         fragmentTransaction.add(R.id.fragment_container, courseCommentFragment);
         fragmentTransaction.show(studyPlanFragment);
         fragmentTransaction.hide(courseCommentFragment);
-        fragmentTransaction.hide(mOnlineClassFragment);
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            fragmentTransaction.hide(mAssistanceFragment);
+        } else {
+            fragmentTransaction.hide(mOnlineClassFragment);
+        }
         fragmentTransaction.hide(mTutorialGroupFragment);
         fragmentTransaction.commit();
 
@@ -767,7 +822,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     fragmentTransaction.hide(courseCommentFragment);
                     // @date   :2018/6/8 0008 上午 12:23
                     // @func   :将直播换成在线课堂
-                    fragmentTransaction.hide(mOnlineClassFragment);
+                    if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                        fragmentTransaction.hide(mAssistanceFragment);
+                    } else {
+                        fragmentTransaction.hide(mOnlineClassFragment);
+                    }
                     fragmentTransaction.hide(mTutorialGroupFragment);
                     // fragmentTransaction.hide(mClassroomFragment);
                     pullToRefreshView.setLoadMoreEnable(false);
@@ -782,7 +841,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         // fragmentTransaction.show(mClassroomFragment);
                         // @date   :2018/6/8 0008 上午 12:23
                         // @func   :将直播换成在线课堂
-                        fragmentTransaction.show(mOnlineClassFragment);
+                        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            fragmentTransaction.show(mAssistanceFragment);
+                        } else {
+                            fragmentTransaction.show(mOnlineClassFragment);
+                        }
                         rg_tab_f.check(R.id.rb_live_f);
                     } else if (checkedId == R.id.rb_course_comment) {
                         fragmentTransaction.show(courseCommentFragment);
@@ -803,7 +866,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                     // @date   :2018/6/8 0008 上午 12:23
                     // @func   :V5.7将直播换成在线课堂
                     // fragmentTransaction.hide(mClassroomFragment);
-                    fragmentTransaction.hide(mOnlineClassFragment);
+                    if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                        fragmentTransaction.hide(mAssistanceFragment);
+                    } else {
+                        fragmentTransaction.hide(mOnlineClassFragment);
+                    }
                     fragmentTransaction.hide(mTutorialGroupFragment);
                     pullToRefreshView.setLoadMoreEnable(false);
                     /*if (checkedId == R.id.rb_course_introduction_f) {
@@ -817,7 +884,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         // @date   :2018/6/8 0008 上午 12:24
                         // @func   :V5.7 将直播换成在线课堂
                         // fragmentTransaction.show(mClassroomFragment);
-                        fragmentTransaction.show(mOnlineClassFragment);
+                        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                            fragmentTransaction.show(mAssistanceFragment);
+                        } else {
+                            fragmentTransaction.show(mOnlineClassFragment);
+                        }
                         rg_tab.check(R.id.rb_live);
                     } else if (checkedId == R.id.rb_course_comment_f) {
                         fragmentTransaction.show(courseCommentFragment);
@@ -905,8 +976,14 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         /*if(mClassroomFragment.isVisible()){
             mClassroomFragment.updateData();
         }*/
-        if (mOnlineClassFragment.isVisible()) {
-            mOnlineClassFragment.onHeaderRefresh();
+        if (mCourseDetailParams != null && mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            if (mAssistanceFragment.isVisible()) {
+                mAssistanceFragment.requestSxRelationCourse(false);
+            }
+        } else {
+            if (mOnlineClassFragment.isVisible()) {
+                mOnlineClassFragment.onHeaderRefresh();
+            }
         }
 
         if (mTutorialGroupFragment.isVisible()) {
@@ -1038,7 +1115,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
             ratingBarGrade.setRating(score);
-            x.image().bind(imageViewCover,
+            XImageLoader.loadImage(imageViewCover,
                     courseVo.getThumbnailUrl().trim(),
                     imageOptions);
             textViewCourseName.setText(courseVo.getName());
@@ -1181,7 +1258,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
 
             textViewPay.setVisibility(View.VISIBLE);
             boolean isHide =
-                    mCourseDetailParams != null && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
+                    mCourseDetailParams != null
+                            && (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_LIBRARY
                             || mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY);
             if (tutorialMode && isHide) {
@@ -1289,7 +1367,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                                     UIUtil.showToastSafe(R.string.join_school_to_learn);
                                     return;
                                 }
-                                
+
                                 String schoolId = mCourseDetailParams.getSchoolId();
                                 String classId = mCourseDetailParams.getClassId();
                                 CourseHelper.requestJoinInCourse(mCurMemberId, courseId, schoolId, classId, new DataSource.SucceedCallback<Boolean>() {
@@ -1412,10 +1490,12 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                 teachers = teachers.substring(0,7) + "...";
             }
             descriptionBuilder.append(teachers + "\n");*/
-            if (courseVo.getPrice() == 0) {
-                descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
-            } else {
-                descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+            if (mCourseDetailParams.getLibraryType() != OrganLibraryType.TYPE_TEACHING_PLAN) {
+                if (courseVo.getPrice() == 0) {
+                    descriptionBuilder.append(UIUtil.getString(R.string.label_class_gratis) + "\n");
+                } else {
+                    descriptionBuilder.append(Common.Constance.MOOC_MONEY_MARK + " " + courseVo.getPrice() + "\n");
+                }
             }
             float score = courseVo.getCommentNum() == 0 ? 0 :
                     1.0f * courseVo.getTotalScore() / courseVo.getCommentNum();
@@ -1426,6 +1506,47 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             final String thumbnailUrl = courseVo.getThumbnailUrl();
             final String url = AppConfig.ServerUrl.CourseDetailShareUrl.replace("{id}", courseVo.getId());
             share(titleBuilder.toString(), descriptionBuilder.toString(), thumbnailUrl, url);
+        } else if (id == R.id.join_tv) {
+            //沿用原先“立即购买”流程，修改文字为“立即参加”。学生或者家长身份只有在班级课程和习课程点击“立即参加”时，
+            // 弹出激活码输入框，其他入口提示获取授权。激活码加绑定班级需要给新接口。
+            if (ButtonUtils.isFastDoubleClick()) {
+                return;
+            }
+            if (!UserHelper.isLogin()) {
+                LoginHelper.enterLogin(activity);
+            } else {
+                if (!isAuthorized && isSchoolEnter) {
+                    UIUtil.showToastSafe(R.string.label_request_authorization_tip);
+                    return;
+                }
+                if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) { //班级课程进入 isMyCourse 习课程进入提示“请联系班级老师”
+                    if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
+                        String schoolId = mCourseDetailParams.getSchoolId();
+                        String classId = mCourseDetailParams.getClassId();
+                        ApplyActivationHelper applyActivationHelper = new ApplyActivationHelper()
+                                .setActivity(activity)
+                                .setClassId(classId)
+                                .setCourseId(courseId)
+                                .setSchoolId(schoolId)
+                                .setMemberId(mCurMemberId)
+                                .setCallBackListener(new ApplyActivationHelper.CallbackListener() {
+                                    @Override
+                                    public void onBack(int result) {
+                                        if (result == 0){
+                                            toJoinCourseDetailsActivity();
+                                        }
+                                    }
+                                });
+                        applyActivationHelper.requestActivationPermission();
+                    }
+                } else {
+                    if (isSelfCourse(courseVo)){
+                        UIUtil.showToastSafe(R.string.join_self_course_tip);
+                    }else {
+                        UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
+                    }
+                }
+            }
         }
     }
 
@@ -1691,7 +1812,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             //从支付界面返回则刷新数据
             initData(true);
             studyPlanFragment.updateData();
-        }else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
+        } else if (requestCode == RESOURCE_PLAY_COMPLETED_REQUEST_CODE) {
             TaskSliderHelper.onPlayListListener.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -1736,11 +1857,23 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
     @Override
     public void otherFragmentVisible() {
         // V5.9底部不显示购买
-        findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+        if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+            textViewJoin.setVisibility(View.VISIBLE);
+            findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+        } else {
+            textViewJoin.setVisibility(View.GONE);
+            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+        }
         // 评论区域隐藏
         mCommentLayout.setVisibility(View.GONE);
         if (!MainApplication.appIsLQMOOC() && !getIntent().getBooleanExtra("canEdit", false)) {
-            findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            if (mCourseDetailParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN) {
+                textViewJoin.setVisibility(View.VISIBLE);
+                findViewById(R.id.bottom_lay).setVisibility(View.GONE);
+            } else {
+                textViewJoin.setVisibility(View.GONE);
+                findViewById(R.id.bottom_lay).setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -1787,7 +1920,7 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         if (EventWrapper.isMatch(event, EventConstant.APPOINT_COURSE_IN_CLASS_EVENT)) {
             // 刷新UI
             courseVo.setInClass(true);
-        }else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
+        } else if (EventWrapper.isMatch(event, EventConstant.GENERATE_PLAY_LIST_EVENT)) {
             resIds = (List<String>) event.getData();
             initData(false);
         }

@@ -74,7 +74,6 @@ public class ValidationUtils {
         final String url = isDebug ? getWhole(ds0) : getWhole(rs0);
 
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 String[] s1 = {"aut", "horizat", "ionmanag", "ement/we", "bapi/lau", "nch", "erRe",

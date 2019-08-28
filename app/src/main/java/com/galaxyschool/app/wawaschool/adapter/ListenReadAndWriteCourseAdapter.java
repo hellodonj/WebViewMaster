@@ -18,6 +18,8 @@ import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
     private HashMap<Integer, View> viewMap = new HashMap<>();
     private int taskType;
     private boolean showCheckType = false;
+    private CallbackListener listener;
 
     public ListenReadAndWriteCourseAdapter(Context context,
                                            List<ResourceInfoTag> list,
@@ -66,7 +69,11 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
         ViewHolder holder;
         if (viewMap.get(position) == null || !viewMap.containsKey(position)) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_add_course_detail,null);
+            if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_add_retell_course_detail, null);
+            } else {
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_add_course_detail, null);
+            }
             holder.courseImageView = (ImageView) convertView.findViewById(R.id.iv_add_course_btn);
             holder.evalTextView = (TextView) convertView.findViewById(R.id.tv_eval_text);
             holder.rightLayout = (LinearLayout) convertView.findViewById(R.id.ll_right_layout);
@@ -78,6 +85,10 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
             holder.radioGroup = (RadioGroup) convertView.findViewById(R.id.radio_group);
             if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_item);
+                //复述课件
+                holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
+                //语音评测
+                holder.multiTypeBtnRB.setText(context.getString(R.string.auto_mark));
                 //完成方式
                 holder.completionTitle.setText(R.string.str_complete_method);
             } else if (taskType == StudyTaskType.TASK_ORDER && showCheckType) {
@@ -98,10 +109,6 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.completionTitle.setText(context.getString(R.string.str_dubbing_type));
             } else {
                 holder.deleteImage = (ImageView) convertView.findViewById(R.id.iv_delete_icon);
-                //复述课件
-                holder.rellTypeBtnRB.setText(context.getString(R.string.retell_course_new));
-                //复述课件+语音评测
-                holder.multiTypeBtnRB.setText(context.getString(R.string.str_task_type_combination));
                 //完成方式
                 holder.completionTitle.setText(R.string.str_complete_method);
             }
@@ -114,6 +121,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
 
         ResourceInfoTag info = getItem(position);
         holder.deleteImage.setOnClickListener(v -> {
+            //删除
+            viewMap.clear();
             deleteListener.onBack(position);
         });
         holder.courseImageView.setOnClickListener(v -> {
@@ -162,39 +171,89 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
                 holder.title.setText(info.getTitle());
                 holder.rightLayout.setVisibility(View.VISIBLE);
                 holder.completeType.setVisibility(View.VISIBLE);
-                holder.radioGroup.setOnCheckedChangeListener((group,checkedId) -> {
-                    if (checkedId == R.id.rb_retell_course){
-                        if (taskType == StudyTaskType.TASK_ORDER){
-                            info.setResPropertyMode(1);
-                        } else if (taskType == StudyTaskType.Q_DUBBING) {
-                            info.setResPropType(2);
-                        } else {
-                            info.setCompletionMode(1);
+                if (holder.radioGroup != null) {
+                    holder.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+                        if (checkedId == R.id.rb_retell_course) {
+                            if (taskType == StudyTaskType.TASK_ORDER) {
+                                info.setResPropertyMode(1);
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                info.setResPropType(2);
+                            } else {
+                                info.setCompletionMode(1);
+                            }
+                        } else if (checkedId == R.id.rb_multi_type) {
+                            if (taskType == StudyTaskType.TASK_ORDER) {
+                                info.setResPropertyMode(2);
+                            } else if (taskType == StudyTaskType.Q_DUBBING) {
+                                info.setResPropType(3);
+                            } else {
+                                info.setCompletionMode(2);
+                            }
                         }
-                    } else if (checkedId == R.id.rb_multi_type){
-                        if (taskType == StudyTaskType.TASK_ORDER){
-                            info.setResPropertyMode(2);
-                        } else if (taskType == StudyTaskType.Q_DUBBING) {
-                            info.setResPropType(3);
-                        } else {
-                            info.setCompletionMode(2);
-                        }
+                        notifyDataSetChanged();
+                    });
+                    if (taskType == StudyTaskType.TASK_ORDER){
+                        holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
+                                R.id.rb_multi_type);
+                    } else if (taskType == StudyTaskType.Q_DUBBING) {
+                        holder.radioGroup.check(info.getResPropType() == 2 ? R.id.rb_retell_course :
+                                R.id.rb_multi_type);
+                    } else {
+                        holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :
+                                R.id.rb_multi_type);
                     }
-                    notifyDataSetChanged();
-                });
-                if (taskType == StudyTaskType.TASK_ORDER){
-                    holder.radioGroup.check(info.getResPropertyMode() == 1 ? R.id.rb_retell_course :
-                            R.id.rb_multi_type);
-                } else if (taskType == StudyTaskType.Q_DUBBING) {
-                    holder.radioGroup.check(info.getResPropType() == 2 ? R.id.rb_retell_course :
-                            R.id.rb_multi_type);
-                } else {
-                    holder.radioGroup.check(info.getCompletionMode() == 1 ? R.id.rb_retell_course :
-                            R.id.rb_multi_type);
+                }
+
+                if (taskType == StudyTaskType.RETELL_WAWA_COURSE){
+                    if (info.getCompletionMode() == 1){
+                        holder.rellTypeBtnRB.setChecked(true);
+                        holder.multiTypeBtnRB.setChecked(false);
+                    } else if (info.getCompletionMode() == 2){
+                        holder.rellTypeBtnRB.setChecked(true);
+                        holder.multiTypeBtnRB.setChecked(true);
+                    } else if (info.getCompletionMode() == 3){
+                        holder.multiTypeBtnRB.setChecked(true);
+                        holder.rellTypeBtnRB.setChecked(false);
+                    }
+                    //复述
+                    holder.rellTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,true));
+                    //语音评测
+                    holder.multiTypeBtnRB.setOnClickListener(v -> analysisCompletionMode(info,false));
                 }
             }
         }
         return convertView;
+    }
+
+    private void analysisCompletionMode(ResourceInfoTag info,boolean isRetell){
+        if (isRetell){
+            if (info.getCompletionMode() == 1){
+                return;
+            }
+            if (info.getCompletionMode() == 2){
+                info.setCompletionMode(3);
+            } else if (info.getCompletionMode() == 3){
+                info.setCompletionMode(2);
+            }
+        } else {
+            if (info.getCompletionMode() == 3){
+                return;
+            }
+            if (info.getCompletionMode() == 1){
+                info.setCompletionMode(2);
+            } else if (info.getCompletionMode() == 2){
+                info.setCompletionMode(1);
+            }
+        }
+        notifyDataSetChanged();
+        //更新下标
+        if (listener != null){
+            listener.onBack(true);
+        }
+    }
+
+    public void setCallListener(CallbackListener listener){
+        this.listener = listener;
     }
 
     /**

@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -66,7 +65,7 @@ import java.util.List;
  */
 public class LessonDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
+    public static final int SUBJECT_SETTING_REQUEST_CODE = 1 << 1;
 
     // 是否是空中课堂老师
     public static final String KEY_EXTRA_ONLINE_TEACHER = "KEY_EXTRA_ONLINE_TEACHER";
@@ -86,6 +85,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     public static String CAN_EDIT = "can_edit";
     public static String STATUS = "status";
     public static String ISCONTAINASSISTANTWORK = "isContainAssistantWork";
+
 
     /**
      * @param activity               启动此界面的activity
@@ -156,6 +156,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
     private String sectionId;
     private String sectionName;
     private String sectionTitle;
+    private CourseVo courseVo;
 
     // 是否是空中课堂老师过来的
     private boolean isOnlineTeacher;
@@ -210,6 +211,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
         if (getIntent().getExtras().containsKey(ACTIVITY_BUNDLE_OBJECT)) {
             mChapterParams = (CourseChapterParams) getIntent().getSerializableExtra(ACTIVITY_BUNDLE_OBJECT);
         }
+        courseVo = (CourseVo) getIntent().getSerializableExtra(CourseVo.class.getSimpleName());
 
         // 判断是否显示BottomLayout
         CourseDetailParams courseParams = mChapterParams.getCourseParams();
@@ -279,7 +281,8 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
 
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
-        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, new DataSource.Callback<SectionDetailsVo>() {
+        //exerciseType 不传或者-1 全部
+        LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role,-1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);
@@ -321,7 +324,7 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
                         int taskType = listVo.getTaskType();
                         String taskName = listVo.getTaskName();
                         mTabLists.add(taskName);
-                        LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType, params);
+                        LessonSourceFragment fragment = LessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, taskType,courseVo.getLibraryType(), params);
                         mTabSourceNavigator.add(fragment);
                         fragments.add(fragment);
                     }
@@ -520,6 +523,11 @@ public class LessonDetailsActivity extends AppCompatActivity implements View.OnC
             UIUtil.showToastSafe(R.string.str_select_tips);
             return 0;
         }
+//        for (int i = 0; i < choiceArray.size(); i++) {
+//            SectionResListVo resListVo = choiceArray.get(i);
+//            resListVo.setCourseId(courseId);
+//            resListVo.setSourceType(TYPE_HOMEWORK);
+//        }
         // 添加到作业库中
         if (EmptyUtil.isNotEmpty(TaskSliderHelper.onWorkCartListener)) {
             // 默认看课件

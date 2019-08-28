@@ -8,14 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_white"
-        android:gravity="center_vertical"
+       android:layout_gravity="center_vertical"
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv_child_title"
+            android:id="@+id/test_flag_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/sx_test_flag"
+            android:textColor="@color/textAccent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_child_title"
+            android:layout_toRightOf="@+id/test_flag_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:textColor="#777777"
             android:textSize="16sp" />
 

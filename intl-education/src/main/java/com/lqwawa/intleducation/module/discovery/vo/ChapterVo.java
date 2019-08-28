@@ -60,9 +60,15 @@ public class ChapterVo extends BaseVo {
     private int totalNum;
     // 完成了多少任务
     private int finishNum;
+
+    //0普通教案，1考试/测试
+    private int examType = -1;
     //记录是否选中
     protected boolean isChoosed;
-
+    //教案类型 1：预习 2:练习 3：复习
+    private int exerciseType;
+    //true 没锁  false锁住了
+    private boolean isUnlock;
 
     public boolean isContainAssistantWork() {
         return containAssistantWork;
@@ -422,5 +428,29 @@ public class ChapterVo extends BaseVo {
 
     public void setChoosed(boolean choosed) {
         isChoosed = choosed;
+    }
+
+    public void setExamType(int examType) {
+        this.examType = examType;
+    }
+
+    public int getExamType() {
+        return examType;
+    }
+
+    public int getExerciseType() {
+        return exerciseType;
+    }
+
+    public void setExerciseType(int exerciseType) {
+        this.exerciseType = exerciseType;
+    }
+
+    public boolean isUnlock() {
+        return isUnlock;
+    }
+
+    public void setUnlock(boolean unlock) {
+        isUnlock = unlock;
     }
 }
