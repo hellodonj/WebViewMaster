@@ -1830,7 +1830,7 @@
     <string name="str_click_change">(Touch to modify)</string>
     <string name="str_pls_input_class_price">Please enter price</string>
     <string name="str_class_price_not_null">Please enter a valid price</string>
-    <string name="str_charge_class_tips">Class not free, price:</string>
+    <string name="str_charge_class_tips">This class is not free, price:</string>
     <string name="str_pay_join_class_tip">Class joined already</string>
     <string name="str_join_success">Joined successfully</string>
     <string name="str_creating">Creating...</string>
