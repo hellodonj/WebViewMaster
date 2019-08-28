@@ -61,7 +61,8 @@
                     android:singleLine="true"
                     android:text="@string/label_work_cart"
                     android:textColor="@color/textLight"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:paddingRight="6dp"/>
 
                 <TextView
                     android:id="@+id/tv_cart_point"
