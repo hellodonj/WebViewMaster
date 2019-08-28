@@ -566,7 +566,8 @@
     <string name="teaching_plan_check_homework_tip">Please correct homework in Online School > Learning Tasks</string>
     <string name="class_implementation_plan">Implementation Plan</string>
     <string name="join_class_by_money">Pay to join %s</string>
-    <string name="label_unlock_tip">Unable to add locked test/exam</string>
+    <string name="label_test_unlock_tip">Unable to add locked test</string>
+    <string name="label_exam_unlock_tip">Unable to add locked exam</string>
     <string name="label_teaching_plan_expire_tip">Please contact teacher</string>
     <string name="input_activation_please">Please enter activation code!</string>
     <string name="label_immediate_comment_tip">Please correct homework in Online School>Learning Tasks</string>

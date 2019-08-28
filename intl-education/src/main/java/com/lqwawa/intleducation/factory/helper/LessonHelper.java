@@ -19,6 +19,7 @@ import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.intleducation.module.discovery.ui.lqcourse.home.LanguageType;
+import com.lqwawa.intleducation.module.learn.vo.ExerciseTypeVo;
 import com.lqwawa.intleducation.module.learn.vo.LqTaskCommitListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
@@ -26,6 +27,7 @@ import com.lqwawa.lqbaselib.net.ErrorCodeUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -334,6 +336,51 @@ public class LessonHelper {
             public void onError(Throwable throwable, boolean b) {
                 if (null != callback) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取三习课时是否包含预习、复习、练习
+     * @param token
+     * @param sectionId
+     * @param callback
+     */
+    public static void requestExerciseTypeListBySectionId (
+            @NonNull String token,
+            @NonNull String sectionId,
+            @NonNull DataSource.Callback<List<ExerciseTypeVo>> callback) {
+        RequestVo requestVo = new RequestVo();
+        if (EmptyUtil.isNotEmpty(token)) {
+            requestVo.addParams("token", token);
+        }
+        requestVo.addParams("sectionId", sectionId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.PostExerciseTypeListBySectionId);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        LogUtil.i(LessonHelper.class, "send request ==== " + params.getUri());
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.i(LessonHelper.class, "request " + params.getUri() + " result :" + result);
+                ResponseVo<List<ExerciseTypeVo>> responseVo = JSON.parseObject(result, new TypeReference<ResponseVo<List<ExerciseTypeVo>>>() {
+                });
+                if (responseVo.isSucceed()) {
+                    if (EmptyUtil.isNotEmpty(callback)) {
+                        callback.onDataLoaded(responseVo.getData());
+                    }
+                } else {
+                    UIUtil.showToastSafe(R.string.net_error_tip);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable, boolean b) {
+                LogUtil.w(LessonHelper.class, "request " + params.getUri() + " failed");
+                if (!EmptyUtil.isEmpty(callback)) {
+                    UIUtil.showToastSafe(R.string.net_error_tip);
                 }
             }
         });

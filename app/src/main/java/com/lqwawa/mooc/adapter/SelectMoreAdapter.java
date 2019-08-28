@@ -107,7 +107,7 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
                         for (int i = 0; i < chapterVos.size(); i++) {
                              if(!chapterVos.get(i).isUnlock()){
                                  gholder.mCbTitleSelect.setChecked(false);
-                                 UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                                 UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_exam_unlock_tip);
                                  return;
                              }
                         }
@@ -116,7 +116,7 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
                         checkInterface.checkGroup(groupPosition, ((CheckBox) v).isChecked());
                     }else {
                         gholder.mCbTitleSelect.setChecked(false);
-                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_exam_unlock_tip);
                     }
                 }
             });
@@ -156,7 +156,7 @@ public class SelectMoreAdapter extends BaseExpandableListAdapter {
                         checkInterface.checkChild(groupPosition, childPosition, ((CheckBox) v).isChecked());
                     }else {
                         cholder.mCbChildSelect.setChecked(false);
-                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_unlock_tip);
+                        UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.label_test_unlock_tip);
                     }
                 }
             });

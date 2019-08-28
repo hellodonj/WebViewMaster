@@ -996,6 +996,9 @@ public final class AppConfig {
         public static final String PostActivateSanxiCourse =
                 ServerBase + "api/courseEx/activateSanxiCourse";
 
+        //获取三习课时是否包含预习、复习、练习
+        public static final String PostExerciseTypeListBySectionId =
+                ServerBase + "api/student/getExerciseTypeListBySectionId";
 
     }
 }
