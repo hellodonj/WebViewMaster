@@ -55,6 +55,7 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.SetupConfigType;
 import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
+import com.lqwawa.intleducation.module.learn.vo.ExerciseTypeVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
@@ -219,6 +220,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private static String[] mTypes = UIUtil.getStringArray(R.array.label_lesson_source_type);
     private ArrayList<SectionResListVo> selectedTask = new ArrayList<>();
     private DialogHelper.LoadingDialog loadingDialog;
+    private List<ExerciseTypeVo> mExerciseTypeVoList = new ArrayList<ExerciseTypeVo>();
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -384,6 +386,28 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         loadingDialog = DialogHelper.getIt(SxLessonDetailsActivity.this).GetLoadingDialog(0);
         // 获取中英文数据
         int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LessonHelper.requestExerciseTypeListBySectionId(token, sectionId, new DataSource.Callback<List<ExerciseTypeVo>>() {
+            @Override
+            public void onDataLoaded(List<ExerciseTypeVo> exerciseTypeList) {
+                SxLessonDetailsActivity.this.mExerciseTypeVoList = exerciseTypeList;
+                if (EmptyUtil.isEmpty(exerciseTypeList)) return;
+                for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
+                    ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
+                    if (exerciseTypeVo.getExerciseType()==1){
+                        mTabLists.add(getResources().getString(R.string.label_sx_preview));
+                    }else if (exerciseTypeVo.getExerciseType()==2){
+                        mTabLists.add(getResources().getString(R.string.label_sx_practice));
+                    }else if (exerciseTypeVo.getExerciseType()==3){
+                        mTabLists.add(getResources().getString(R.string.label_sx_review));
+                    }
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable(int strRes) {
+                UIUtil.showToastSafe(strRes);
+            }
+        });
         LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, -1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -429,13 +453,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mBottomLayout.setVisibility(View.VISIBLE);
                     mBottomLayout1.setVisibility(View.GONE);
                 }
-
-                mTabLists.add(getResources().getString(R.string.label_sx_preview));
-                mTabLists.add(getResources().getString(R.string.label_sx_practice));
-                mTabLists.add(getResources().getString(R.string.label_sx_review));
+                //1 预习 2练习 3复习
                 for (int i = 0; i < mTabLists.size(); i++) {
                     SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
-                            i + 1, courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
+                            mExerciseTypeVoList.get(i).getExerciseType(), courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
                     fragment.setOnItemCheckBoxSelectedChanged(this);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);

@@ -225,7 +225,9 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private void updateUi() {
         refreshCartPoint();
         int invertRole = invertRole(lessonSourceParams == null ? -1 : lessonSourceParams.getRole());
-        LQCourseHelper.getSxExamDetail(lessonSourceParams.getMemberId(), courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
+        LQCourseHelper.getSxExamDetail(languageRes,lessonSourceParams.getMemberId(), courseId, sectionId, courseParams == null ? "" : courseParams.getClassId(), invertRole, this);
     }
 
     private int invertRole(int role) {
