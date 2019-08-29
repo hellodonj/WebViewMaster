@@ -136,6 +136,11 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
     }
 
     @Override
+    public void onPenPointPositionChanged(int deviceType, float x, float y, int presure, byte state, int page) {
+
+    }
+
+    @Override
     public void onOffLineNoteHeadReceived(String json) {
     }
 
@@ -159,6 +164,11 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
     @Override
     public void onPageInfo(int currentPage, int totalPage) {
         
+    }
+
+    @Override
+    public void onWidthAndHeight(int width, int height) {
+
     }
 
     @Override
@@ -202,6 +212,11 @@ public class PenBaseFragmentActivity extends BaseFragmentActivity implements Ser
 
     @Override
     public void onUpdateModuleFinished() {
+
+    }
+
+    @Override
+    public void onUpdateBattery(int battery) {
 
     }
 

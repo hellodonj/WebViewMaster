@@ -137,6 +137,11 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
     }
 
     @Override
+    public void onPenPointPositionChanged(int deviceType, float x, float y, int pressure, byte state, int page) {
+
+    }
+
+    @Override
     public void onOffLineNoteHeadReceived(String json) {
     }
 
@@ -160,6 +165,11 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
     @Override
     public void onPageInfo(int currentPage, int totalPage) {
         
+    }
+
+    @Override
+    public void onWidthAndHeight(int width, int height) {
+
     }
 
     @Override
@@ -203,6 +213,11 @@ public class PenBaseActivity extends BaseActivity implements ServiceConnection, 
 
     @Override
     public void onUpdateModuleFinished() {
+
+    }
+
+    @Override
+    public void onUpdateBattery(int battery) {
 
     }
 
