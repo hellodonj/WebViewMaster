@@ -101,6 +101,11 @@ public class PenServiceCallback extends cn.robotpen.pen.IRemoteRobotServiceCallb
 
     }
 
+    @Override
+    public void onRemotePenPointPositionChanged(int deviceType, float x, float y, int pressure, byte state, int page) throws RemoteException {
+
+    }
+
     public void onRemoteRobotKeyEvent(final int e) throws RemoteException {
         try {
             this.b.post(new Runnable() {
@@ -117,6 +122,11 @@ public class PenServiceCallback extends cn.robotpen.pen.IRemoteRobotServiceCallb
     @Override
     public void onPageInfo(int i, int i1) throws RemoteException {
         
+    }
+
+    @Override
+    public void onWidthAndHeight(int i, int i1) throws RemoteException {
+
     }
 
     @Override
@@ -178,6 +188,11 @@ public class PenServiceCallback extends cn.robotpen.pen.IRemoteRobotServiceCallb
 
     @Override
     public void onRemoteUpdateModuleFinished() throws RemoteException {
+
+    }
+
+    @Override
+    public void onRemoteUpdateBattery(int i) throws RemoteException {
 
     }
 
