@@ -222,7 +222,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
     }
 
     private void updateViewData(Object result) {
-        if (result == null) {
+        if (result == null || getActivity() == null) {
             return;
         }
         if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE) {
@@ -237,7 +237,7 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
     private void updateLearnViewData(StatisticBeanListResult listResult) {
         beanList = listResult.getModel().getData();
-        if (beanList == null || beanList.size() == 0) {
+        if (beanList == null || beanList.size() == 0 || getActivity() == null) {
             return;
         }
         if (isTeacherLook()) {

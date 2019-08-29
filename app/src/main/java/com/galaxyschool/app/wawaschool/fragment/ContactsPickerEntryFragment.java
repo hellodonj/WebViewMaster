@@ -1021,43 +1021,51 @@ public class ContactsPickerEntryFragment extends BaseFragment
                     JSONArray thirdTaskList = new JSONArray();
                     JSONObject thirdObject = null;
                     List<LookResDto> resDtos = parameter.getLookResDtoList();
-                    if (resDtos != null && resDtos.size() > 0 && parameter.getTaskType() != StudyTaskType.ENGLISH_WRITING){
-                        for (int j = 0;j < resDtos.size();j++){
-                            thirdObject = new JSONObject();
-                            LookResDto lookDto = resDtos.get(j);
-                            thirdObject.put("ResTitle",lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
-                            String resUrl = lookDto.getResUrl();
-                            String resId = lookDto.getResId();
-                            String authorId = lookDto.getAuthor();
-                            List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
-                            int taskType = parameter.getTaskType();
-                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
-                                    && splitInfo != null && splitInfo.size() > 0){
-                                resUrl = StudyTaskUtils.getPicResourceData(splitInfo,true,
-                                        false,false);
-                                resId = StudyTaskUtils.getPicResourceData(splitInfo,false,
-                                        false,true);
-                                authorId = StudyTaskUtils.getPicResourceData(splitInfo,false,
-                                        true,false);
+                    if (resDtos != null && resDtos.size() > 0){
+                        if (parameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
+                            if (resDtos.get(0).getCourseId() > 0 && resDtos.get(0).getCourseTaskType() > 0){
+                                secondObject.put("CourseId",resDtos.get(0).getCourseId());
+                                secondObject.put("CourseTaskType",resDtos.get(0).getCourseTaskType());
+                                secondObject.put("ResCourseId", resDtos.get(0).getResCourseId());
                             }
-                            thirdObject.put("ResUrl", resUrl);
-                            thirdObject.put("ResId",resId);
-                            thirdObject.put("Author", authorId == null ? "" : authorId);
-                            //学程馆资源的id
-                            thirdObject.put("ResCourseId",lookDto.getResCourseId());
-                            thirdObject.put("ResPropType", lookDto.getResPropType());
-                            if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
-                                thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
+                        } else {
+                            for (int j = 0; j < resDtos.size(); j++) {
+                                thirdObject = new JSONObject();
+                                LookResDto lookDto = resDtos.get(j);
+                                thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
+                                String resUrl = lookDto.getResUrl();
+                                String resId = lookDto.getResId();
+                                String authorId = lookDto.getAuthor();
+                                List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
+                                int taskType = parameter.getTaskType();
+                                if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                        || taskType == StudyTaskType.TASK_ORDER)
+                                        && splitInfo != null && splitInfo.size() > 0) {
+                                    resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
+                                            false, false);
+                                    resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            false, true);
+                                    authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            true, false);
+                                }
+                                thirdObject.put("ResUrl", resUrl);
+                                thirdObject.put("ResId", resId);
+                                thirdObject.put("Author", authorId == null ? "" : authorId);
+                                //学程馆资源的id
+                                thirdObject.put("ResCourseId", lookDto.getResCourseId());
+                                thirdObject.put("ResPropType", lookDto.getResPropType());
+                                if (taskType == StudyTaskType.RETELL_WAWA_COURSE) {
+                                    thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
+                                }
+                                if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                                    thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                                }
+                                if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0) {
+                                    thirdObject.put("CourseId", lookDto.getCourseId());
+                                    thirdObject.put("CourseTaskType", lookDto.getCourseTaskType());
+                                }
+                                thirdTaskList.put(thirdObject);
                             }
-                            if (!TextUtils.isEmpty(lookDto.getPoint())) {
-                                thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
-                            }
-                            if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
-                                thirdObject.put("CourseId",lookDto.getCourseId());
-                                thirdObject.put("CourseTaskType",lookDto.getCourseTaskType());
-                            }
-                            thirdTaskList.put(thirdObject);
                         }
                     }
                     secondObject.put("ThirdTaskList",thirdTaskList);
@@ -1469,7 +1477,8 @@ public class ContactsPickerEntryFragment extends BaseFragment
                             }
 
                             if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    || taskType == StudyTaskType.TASK_ORDER
+                                    || taskType == StudyTaskType.Q_DUBBING)
                                     && courseData == null){
                                 taskParams.put("ResId", lookResDtos.get(0).getResId());
                                 taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());

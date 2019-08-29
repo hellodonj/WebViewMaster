@@ -535,7 +535,7 @@ public class CheckMarkFragment extends ContactsListFragment {
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (true){
+                            if (isFromMOOC){
                                 return true;
                             }
                             if (isAssistanceModel) {

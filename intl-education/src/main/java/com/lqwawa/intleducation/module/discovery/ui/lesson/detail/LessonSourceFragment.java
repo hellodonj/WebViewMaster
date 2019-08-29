@@ -55,7 +55,7 @@ public class LessonSourceFragment extends IBaseFragment implements LessonSourceN
     public static final String LESSON_RESOURCE_CHOICE_PUBLISH_ACTION = "LESSON_RESOURCE_CHOICE_PUBLISH_ACTION";
 
     // 选择资源支持的最大数
-    private static final int MAX_CHOICE_COUNT = 5;
+    private static final int MAX_CHOICE_COUNT = 10;
 
     private static final String KEY_EXTRA_NEED_FLAG = "KEY_EXTRA_NEED_FLAG";
     private static final String KEY_EXTRA_CAN_READ = "KEY_EXTRA_CAN_READ";

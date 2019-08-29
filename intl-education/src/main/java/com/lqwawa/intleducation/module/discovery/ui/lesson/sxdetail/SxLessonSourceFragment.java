@@ -387,7 +387,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             }
         } else if (realTaskType == CourseSelectItemFragment.KEY_WATCH_COURSE) {
             // 看课本类型
-            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5) {
+            if (taskType == 1 || taskType == 4 || taskType == 2 || taskType == 5 || taskType == 6) {
                 // 看课件 视频课
                 // 新增选择讲解课 听说作业
                 return true;

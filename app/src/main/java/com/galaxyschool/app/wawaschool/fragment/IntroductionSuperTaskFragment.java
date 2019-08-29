@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -457,8 +458,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
                             if (lookStudentTaskFinish || isPick){
                                 if (deleteView != null) {
-                                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
-                                            .getLayoutParams();
+                                    FrameLayout.LayoutParams layoutParams =
+                                            (FrameLayout.LayoutParams) deleteView.getLayoutParams();
                                     layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
                                     layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                                     deleteView.setLayoutParams(layoutParams);
@@ -541,7 +542,12 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             }
                         }
                         if (lookStudentTaskFinish) {
-                            enterStudentFinishedHomeworkListActivity(data);
+                            if (data.getType() == StudyTaskType.ENGLISH_WRITING
+                                    && !data.isStudentDoneTask()){
+                                //英文写作未完成不给进入下个界面
+                            } else {
+                                enterStudentFinishedHomeworkListActivity(data);
+                            }
                         } else if (isPick) {
                             enterListenReadAndWriteDetail(data);
                         } else {
@@ -1328,41 +1334,49 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                     JSONArray thirdTaskList = new JSONArray();
                     org.json.JSONObject thirdObject = null;
                     List<LookResDto> resDtos = parameter.getLookResDtoList();
-                    if (resDtos != null && resDtos.size() > 0 && parameter.getTaskType() != StudyTaskType.ENGLISH_WRITING) {
-                        for (int j = 0; j < resDtos.size(); j++) {
-                            thirdObject = new org.json.JSONObject();
-                            LookResDto lookDto = resDtos.get(j);
-                            thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
-                            String resUrl = lookDto.getResUrl();
-                            String resId = lookDto.getResId();
-                            String authorId = lookDto.getAuthor();
-                            List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
-                            int taskType = parameter.getTaskType();
-                            if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
-                                    && splitInfo != null && splitInfo.size() > 0) {
-                                resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
-                                        false, false);
-                                resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
-                                        false, true);
-                                authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
-                                        true, false);
+                    if (resDtos != null && resDtos.size() > 0) {
+                        if (parameter.getTaskType() == StudyTaskType.ENGLISH_WRITING){
+                            if (resDtos.get(0).getCourseId() > 0 && resDtos.get(0).getCourseTaskType() > 0){
+                                secondObject.put("CourseId",resDtos.get(0).getCourseId());
+                                secondObject.put("CourseTaskType",resDtos.get(0).getCourseTaskType());
+                                secondObject.put("ResCourseId", resDtos.get(0).getResCourseId());
                             }
-                            thirdObject.put("ResUrl", resUrl);
-                            thirdObject.put("ResId", resId);
-                            thirdObject.put("Author", authorId == null ? "" : authorId);
-                            //学程馆资源的id
-                            thirdObject.put("ResCourseId", lookDto.getResCourseId());
-                            thirdObject.put("ResPropType", lookDto.getResPropType());
-                            thirdObject.put("RepeatCourseCompletionMode",lookDto.getCompletionMode());
-                            if (!TextUtils.isEmpty(lookDto.getPoint())) {
-                                thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                        } else {
+                            for (int j = 0; j < resDtos.size(); j++) {
+                                thirdObject = new org.json.JSONObject();
+                                LookResDto lookDto = resDtos.get(j);
+                                thirdObject.put("ResTitle", lookDto.getResTitle() == null ? "" : lookDto.getResTitle());
+                                String resUrl = lookDto.getResUrl();
+                                String resId = lookDto.getResId();
+                                String authorId = lookDto.getAuthor();
+                                List<ResourceInfo> splitInfo = lookDto.getSplitInfoList();
+                                int taskType = parameter.getTaskType();
+                                if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
+                                        || taskType == StudyTaskType.TASK_ORDER)
+                                        && splitInfo != null && splitInfo.size() > 0) {
+                                    resUrl = StudyTaskUtils.getPicResourceData(splitInfo, true,
+                                            false, false);
+                                    resId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            false, true);
+                                    authorId = StudyTaskUtils.getPicResourceData(splitInfo, false,
+                                            true, false);
+                                }
+                                thirdObject.put("ResUrl", resUrl);
+                                thirdObject.put("ResId", resId);
+                                thirdObject.put("Author", authorId == null ? "" : authorId);
+                                //学程馆资源的id
+                                thirdObject.put("ResCourseId", lookDto.getResCourseId());
+                                thirdObject.put("ResPropType", lookDto.getResPropType());
+                                thirdObject.put("RepeatCourseCompletionMode", lookDto.getCompletionMode());
+                                if (!TextUtils.isEmpty(lookDto.getPoint())) {
+                                    thirdObject.put("ScoringRule", StudyTaskUtils.getScoringRule(lookDto.getPoint()));
+                                }
+                                if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0) {
+                                    thirdObject.put("CourseId", lookDto.getCourseId());
+                                    thirdObject.put("CourseTaskType", lookDto.getCourseTaskType());
+                                }
+                                thirdTaskList.put(thirdObject);
                             }
-                            if (lookDto.getCourseId() > 0 && lookDto.getCourseTaskType() > 0){
-                                thirdObject.put("CourseId",lookDto.getCourseId());
-                                thirdObject.put("CourseTaskType",lookDto.getCourseTaskType());
-                            }
-                            thirdTaskList.put(thirdObject);
                         }
                     }
                     secondObject.put("ThirdTaskList", thirdTaskList);
@@ -1581,7 +1595,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                                 taskParams.put("CourseTaskType",lookResDtos.get(0).getCourseTaskType());
                             }
                             if ((taskType == StudyTaskType.RETELL_WAWA_COURSE
-                                    || taskType == StudyTaskType.TASK_ORDER)
+                                    || taskType == StudyTaskType.TASK_ORDER
+                                    || taskType == StudyTaskType.Q_DUBBING)
                                     && courseData == null){
                                 taskParams.put("ResId", lookResDtos.get(0).getResId());
                                 taskParams.put("ResUrl", lookResDtos.get(0).getResUrl());

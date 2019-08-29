@@ -223,7 +223,8 @@
                                 android:drawableRight="@drawable/arrow_down_ico"
                                 android:gravity="center_vertical"
                                 android:hint="@string/pls_input_relationship"
-                                android:padding="10dp"/>
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

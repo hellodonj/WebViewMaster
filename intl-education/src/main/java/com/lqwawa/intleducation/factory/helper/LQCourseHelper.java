@@ -794,8 +794,11 @@ public class LQCourseHelper {
     }
 
 
-    public static void getSxExamDetail(String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
+    public static void getSxExamDetail(@LanguageType.LanguageRes int isZh,@NonNull String token,String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
         RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language",isZh);
+        requestVo.addParams("token",token);
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
         if (!TextUtils.isEmpty(classId)) requestVo.addParams("classId", classId);
@@ -830,8 +833,10 @@ public class LQCourseHelper {
     }
 
 
-    public static void loadSixlLibraryLabelData(String organId, DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
+    public static void loadSixlLibraryLabelData(@LanguageType.LanguageRes int isZh,String organId, DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
         RequestVo requestVo = new RequestVo();
+        // 是否是中文字体,根据参数,后台返回相应语言
+        requestVo.addParams("language", isZh);
         requestVo.addParams("organId", organId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.GetSixLibraryLabelList);
         params.setAsJsonContent(true);

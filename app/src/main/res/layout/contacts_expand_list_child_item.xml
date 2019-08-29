@@ -43,17 +43,18 @@
             android:visibility="gone">
 
             <ImageView
+                android:id="@+id/iv_wawa_icon"
                 android:layout_width="@dimen/separate_20dp"
                 android:layout_height="@dimen/separate_20dp"
                 android:layout_gravity="center"
-                android:src="@drawable/icon_wawa_coin"/>
+                android:src="@drawable/icon_wawa_coin"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_wawa_coin_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text=""
                 android:textColor="@color/red"
                 android:textSize="14sp"/>
         </LinearLayout>

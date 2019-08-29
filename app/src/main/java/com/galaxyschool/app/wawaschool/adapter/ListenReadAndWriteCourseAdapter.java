@@ -18,6 +18,8 @@ import com.galaxyschool.app.wawaschool.common.CallbackListener;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.StudyTaskType;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -119,6 +121,8 @@ public class ListenReadAndWriteCourseAdapter extends BaseAdapter {
 
         ResourceInfoTag info = getItem(position);
         holder.deleteImage.setOnClickListener(v -> {
+            //删除
+            viewMap.clear();
             deleteListener.onBack(position);
         });
         holder.courseImageView.setOnClickListener(v -> {

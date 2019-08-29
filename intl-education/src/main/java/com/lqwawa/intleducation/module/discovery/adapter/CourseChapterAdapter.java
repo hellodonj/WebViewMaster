@@ -349,11 +349,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
                     boolean isOwner = UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
                     int examType = vo.getExamType();
+                    boolean isParent = UserHelper.isParent(String.valueOf(role));
                     // TODO 加判断逻辑 老师看孩子
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType != TYPE_EXAM &&
-                            position == 1 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
-                        holder.lessonAuditionTv.setVisibility(View.VISIBLE);
+                            position == 1 && !vo.isBuyed() && (isParent ||!isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
                         if (!isCourseSelect) {
+                            holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
                         }else {
                             holder.lessonAuditionTv.setVisibility(View.GONE);
@@ -406,10 +407,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             if ((role == UserHelper.MoocRoleType.STUDENT ||
                                     role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                                 //锁住提示
-                                enterExamOrTestDialog();
+                                enterExamOrTestDialog(TYPE_TEST);
                             } else if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                     //解锁
-                                    unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                    unLockDialog(position,TYPE_TEST,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                                 }
                         }
                     });
@@ -574,12 +575,12 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         if(isJoinCourse){ //已经参加
                                             //锁住 提示
                                             if (!chapterVo.isUnlock() && examType == TYPE_EXAM) {
-                                                enterExamOrTestDialog();
+                                                enterExamOrTestDialog(TYPE_TEST);
                                             } else {
                                                 //vo.getExamType() 1是考试或者测试 0,是普通教案，测试是children层级
                                                 //未锁 就进入
                                                 if (examType == TYPE_EXAM) {
-                                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams,null);
                                                 } else if (examType == TYPE_LESSON) {
                                                     //普通教案详情入口
                                                     toLessonDetailsActivity(vo, isFreeUser, true);
@@ -588,7 +589,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         }else {
                                             //试听的进入
                                             if (examType != TYPE_EXAM &&
-                                                    position == 1 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {
+                                                    position == 1 && !vo.isBuyed()&& (isParent || !isOwner || mTeacherVisitor) ) {
                                                 //普通教案详情入口
                                                 toLessonDetailsActivity(vo, isFreeUser, true);
                                             }else {
@@ -600,7 +601,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         ChapterVo chapterVo = list.get(position);
                                         int examType = chapterVo.getExamType();
                                         if (examType == TYPE_EXAM) {
-                                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams);
+                                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_TEST, lessonSourceParams,null);
                                         } else if (examType == TYPE_LESSON) {
                                             //普通教案详情入口
                                             toLessonDetailsActivity(vo, isFreeUser, true);
@@ -629,9 +630,10 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             holder.chapter_flag_iv.setVisibility(View.GONE);
 
             boolean isOwner = UserHelper.checkCourseAuthor(courseVo, isOnlineTeacher);
-            // TODO 加判断逻辑 老师看孩子
+            boolean isParent = UserHelper.isParent(String.valueOf(role));
+            // TODO 加判断逻辑 家长看孩子 老师看孩子
             if (libraryType != OrganLibraryType.TYPE_TEACHING_PLAN &&
-                    position == 0 && !vo.isBuyed() && (!isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
+                    position == 0 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
                 holder.auditionTv.setVisibility(View.VISIBLE);
                 if (!isCourseSelect) {
                     holder.chapterTitleTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
@@ -857,11 +859,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         if ((role == UserHelper.MoocRoleType.STUDENT ||
                                 role == UserHelper.MoocRoleType.PARENT) && !chapterVo.isUnlock()) {
                             //锁住提醒
-                            enterExamOrTestDialog();
+                            enterExamOrTestDialog(TYPE_EXAM);
                         } else {
                             if (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)) {
                                 //解锁
-                                unLockDialog(position,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
+                                unLockDialog(position,TYPE_EXAM,chapterVo.isUnlock(), courseDetailParams.getClassId(), courseId, vo.getId());
                             }
                         }
                     }
@@ -891,15 +893,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             if (isJoinCourse) { //学生或者家长 是否参加对进入有影响
                                 //锁住 提示
                                 if (!chapterVo.isUnlock()) { //锁住提示
-                                    enterExamOrTestDialog();
+                                    enterExamOrTestDialog(TYPE_EXAM);
                                 } else { //没锁直接进入
-                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams,null);
                                 }
                             } else {
                                 if (!isCourseSelect) UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
                             }
                         } else {
-                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams);
+                            ExamsAndTestsActivity.start(activity, courseId, vo.getId(), mTeacherVisitor, vo.getStatus(), libraryType, TYPE_EXAM, lessonSourceParams,null);
                         }
                     } else {
                         boolean hide = !list.get(position).isIsHide();
@@ -938,9 +940,21 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //解锁弹框
-    private void unLockDialog(int position,boolean isUnLock,String classId, String courseId, String chapterId) {
+    private void unLockDialog(int position,int type,boolean isUnLock,String classId, String courseId, String chapterId) {
+        String lockMessage;
+        if (type == TYPE_EXAM) {
+            lockMessage = getString(R.string.label_exam_lock_dialog);
+        } else {
+            lockMessage = getString(R.string.label_test_lock_dialog);
+        }
+        String unLockMessage;
+        if (type == TYPE_EXAM) {
+            unLockMessage = getString(R.string.label_exam_unlock_dialog);
+        } else {
+            unLockMessage = getString(R.string.label_test_unlock_dialog);
+        }
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                activity, null, (isUnLock ? getString(R.string.label_exam_test_lock_dialog) : getString(R.string.label_exam_test_unlock_dialog))
+                activity, null, (isUnLock ? lockMessage : unLockMessage)
                 , getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -999,9 +1013,15 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     }
 
     //被锁提示
-    private void enterExamOrTestDialog() {
+    private void enterExamOrTestDialog(int type) {
+        String message;
+        if (type == TYPE_EXAM) {
+            message = getString(R.string.label_exam_lock_tip);
+        } else {
+            message = getString(R.string.label_test_lock_tip);
+        }
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
-                activity, null, getString(R.string.label_exam_test_lock_tip)
+                activity, null,message
                 , null, null, getString(R.string.confirm),
                 new DialogInterface.OnClickListener() {
                     @Override

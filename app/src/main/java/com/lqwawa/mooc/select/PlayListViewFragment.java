@@ -21,6 +21,7 @@ import com.lqwawa.intleducation.module.discovery.ui.lqcourse.coursedetails.Cours
 import com.lqwawa.intleducation.module.discovery.vo.ChapterVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
+import com.lqwawa.intleducation.module.organcourse.OrganLibraryType;
 import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.mooc.adapter.SelectMoreAdapter;
 import com.lqwawa.mooc.view.CustomExpandableListView;
@@ -236,6 +237,12 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                     if (responseVo.isSucceed()) {
                         dismissLoadingDialog();
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
+                        for (int i = 0; i < playListVo.size(); i++) {
+                            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN){
+                                CourseResourceEntity resourceEntity = playListVo.get(i);
+                                resourceEntity.setFromSXCourse(true);
+                            }
+                        }
                         if (EmptyUtil.isNotEmpty(playListVo) && playListVo.size() > 0) {
                             // 通过EventBus通知
                             EventBus.getDefault().post(new EventWrapper(playListVo, EventConstant.GENERATE_PLAY_LIST_EVENT));

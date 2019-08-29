@@ -1515,6 +1515,10 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
             if (!UserHelper.isLogin()) {
                 LoginHelper.enterLogin(activity);
             } else {
+                if (!isAuthorized && isSchoolEnter) {
+                    UIUtil.showToastSafe(R.string.label_request_authorization_tip);
+                    return;
+                }
                 if (mCourseDetailParams != null && mCourseDetailParams.isClassCourseEnter()) { //班级课程进入 isMyCourse 习课程进入提示“请联系班级老师”
                     if (EmptyUtil.isNotEmpty(mCourseDetailParams)) {
                         String schoolId = mCourseDetailParams.getSchoolId();
@@ -1536,7 +1540,11 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
                         applyActivationHelper.requestActivationPermission();
                     }
                 } else {
-                    UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
+                    if (isSelfCourse(courseVo)){
+                        UIUtil.showToastSafe(R.string.join_self_course_tip);
+                    }else {
+                        UIUtil.showToastSafe(R.string.label_teaching_plan_expire_tip);
+                    }
                 }
             }
         }

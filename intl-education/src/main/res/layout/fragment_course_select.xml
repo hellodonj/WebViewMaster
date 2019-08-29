@@ -71,7 +71,8 @@
             android:textColor="@color/textLight"
             android:textSize="14sp"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:paddingRight="6dp"/>
 
         <TextView
             android:id="@+id/tv_cart_point"

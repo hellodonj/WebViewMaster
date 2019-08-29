@@ -50,12 +50,12 @@ public class DrawableUtil {
         GradientDrawable drawable = new GradientDrawable();
         // 设置矩形
         drawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-        // 内容区域的颜色
-        drawable.setColor(contentColor);
         // 四周描边,描边后四角真正为圆角，不会出现黑色阴影,如果父窗体是可以滑动的,就把父View设置setScrollCache(false)
         drawable.setStroke(strokeWidth, strokeColor);
         // 设置四角都为圆角
         drawable.setCornerRadius(radius);
+		// 内容区域的颜色
+		drawable.setColor(contentColor);
         return drawable;
     }
 

@@ -75,6 +75,7 @@
         android:orientation="horizontal">
 
         <View
+            android:visibility="gone"
             android:id="@+id/left_line"
             android:layout_width="30dp"
             android:layout_height="0.5dp"

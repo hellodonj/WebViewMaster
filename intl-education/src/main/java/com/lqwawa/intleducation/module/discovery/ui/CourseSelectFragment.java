@@ -314,9 +314,9 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                         if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                             if (chapterVo.getExamType() == TYPE_EXAM) {
                                 if (chapterVo.getIsChildren()){ //测试
-                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams,mExtras);
                                 }else { //考试
-                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
+                                    ExamsAndTestsActivity.start(activity, courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams,mExtras);
                                 }
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
@@ -339,10 +339,10 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                             if (chapterVo.getExamType() == TYPE_EXAM) {
                                 if (chapterVo.getIsChildren()){ //测试
                                     ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,courseId,
-                                            chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams);
+                                            chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_TEST,lessonSourceParams,mExtras);
                                 }else { //考试
                                     ExamsAndTestsActivity.start(activity, taskType,multipleChoiceCount,
-                                            courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams);
+                                            courseId, chapterId, params.isTeacherVisitor(), chapterVo.getStatus(), libraryType,TYPE_EXAM,lessonSourceParams,mExtras);
                                 }
                             } else if (chapterVo.getExamType() == TYPE_LESSON){
                                 //普通教案详情入口
