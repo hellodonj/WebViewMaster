@@ -137,7 +137,7 @@ public class EnglishWritingCommentBySentenceFragment extends ContactsExpandListF
         //标题
         commonHeaderTitleTextView = (TextView) findViewById(R.id.contacts_header_title);
         if (commonHeaderTitleTextView != null) {
-            commonHeaderTitleTextView.setText(R.string.comment_by_sentence);
+            commonHeaderTitleTextView.setText(R.string.str_comment_by_sentence);
         }
 
         //显示分数的进度条
