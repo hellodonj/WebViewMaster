@@ -37,7 +37,7 @@ public class RelatedAssistancePresenter extends BasePresenter<RelatedAssistanceC
             @Override
             public void onDataLoaded(List<CourseVo> entity) {
                 final RelatedAssistanceContract.View view = getView();
-                if(!EmptyUtil.isEmpty(view) && !EmptyUtil.isEmpty(entity)){
+                if(!EmptyUtil.isEmpty(view)){
                     if(pageIndex == 0){
                         view.updateSxRelationCourseView(entity);
                     }else{
