@@ -258,7 +258,7 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
             }
         });
         pullToRefresh.setLoadMoreEnable(false);
-
+        int role = UserHelper.MoocRoleType.TEACHER;
         courseChapterAdapter = new CourseChapterAdapter(activity,flagCourseData.getLibraryType(), flagCourseData.getCourseId(), false,
                 new MyBaseAdapter.OnContentChangedListener() {
                     @Override
@@ -267,6 +267,8 @@ public class CourseSelectFragment extends MyBaseFragment implements View.OnClick
                     }
                 });
         courseChapterAdapter.setCourseSelect(true);
+        courseChapterAdapter.setJoinCourse(true);
+        courseChapterAdapter.setSelectRole(role);
         courseChapterAdapter.setCourseVo(flagCourseData);
         courseChapterAdapter.setIsClassCourseEnter(mEnterType == CourseDetailType.COURSE_DETAIL_CLASS_ENTER);
         courseChapterList = new ArrayList<ChapterVo>();

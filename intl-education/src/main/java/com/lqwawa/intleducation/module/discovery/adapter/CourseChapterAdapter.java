@@ -105,6 +105,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     private boolean isClassCourseEnter;
     private boolean isFromScan;
     private String TAG = getClass().getSimpleName();
+    private int selectRole;
 
     public interface OnSelectListener {
         void onSelect(ChapterVo chapterVo);
@@ -652,7 +653,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    if (isClassTeacher() && !mTeacherVisitor) {
+                    if (isClassTeachers() && !mTeacherVisitor) {
                         holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                     } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
@@ -661,7 +662,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
-                    if (isClassTeacher() && !mTeacherVisitor) {
+                    if (isClassTeachers() && !mTeacherVisitor) {
                         holder.mTvChapterState.setVisibility(View.GONE);
                     } else {
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
@@ -673,23 +674,23 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             final boolean isTeacher = isTeacher();
 
-            if (isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())) {
-                // 是老师但不是班级学程的老师
-                holder.mTvChapterState.setVisibility(View.GONE);
-            } else {
-                if (vo.isBuyed() || mTeacherVisitor) {
-                    holder.mTvChapterState.setVisibility(View.VISIBLE);
-                    // 添加班级学程的逻辑
-                    if (isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0) {
-                        // 班级学程的老师没有布置完成
-                        holder.mTvChapterState.setVisibility(View.GONE);
-                    } else {
-                        holder.mTvChapterState.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    holder.mTvChapterState.setVisibility(View.GONE);
-                }
-            }
+//            if (isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())) {
+//                // 是老师但不是班级学程的老师
+//                holder.mTvChapterState.setVisibility(View.GONE);
+//            } else {
+//                if (vo.isBuyed() || mTeacherVisitor) {
+//                    holder.mTvChapterState.setVisibility(View.VISIBLE);
+//                    // 添加班级学程的逻辑
+//                    if (isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0) {
+//                        // 班级学程的老师没有布置完成
+//                        holder.mTvChapterState.setVisibility(View.GONE);
+//                    } else {
+//                        holder.mTvChapterState.setVisibility(View.VISIBLE);
+//                    }
+//                } else {
+//                    holder.mTvChapterState.setVisibility(View.GONE);
+//                }
+//            }
 
 
             holder.chapterNameTv.setText(
@@ -1227,6 +1228,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         this.isClassCourseEnter = isClassCourseEnter;
     }
 
+    public void setSelectRole(int selectRole) {
+        this.selectRole = selectRole;
+    }
+
+
     public void setCourseVo(CourseVo courseVo) {
         this.courseVo = courseVo;
     }
@@ -1368,6 +1374,17 @@ public class CourseChapterAdapter extends MyBaseAdapter {
         CourseDetailParams params = getCourseDetailParams(null, false);
         return params.isClassCourseEnter() && params.isClassTeacher();
     }
+
+    /**
+     * 课程选取界面 是否是班级学程的老师
+     *
+     * @return true 是班级学程的老师,显示状态信息
+     */
+    private boolean isClassTeachers() {
+        CourseDetailParams params = getCourseDetailParams(null, false);
+        return params.isClassCourseEnter() && params.isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER);
+    }
+
 
     /**
      * 处理业务角色判断
