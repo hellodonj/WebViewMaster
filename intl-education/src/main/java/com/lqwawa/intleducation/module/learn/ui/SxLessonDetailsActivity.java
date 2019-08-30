@@ -393,11 +393,11 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 if (EmptyUtil.isEmpty(exerciseTypeList)) return;
                 for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
-                    if (exerciseTypeVo.getExerciseType()==1){
+                    if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
-                    }else if (exerciseTypeVo.getExerciseType()==2){
+                    } else if (exerciseTypeVo.getExerciseType() == 2) {
                         mTabLists.add(getResources().getString(R.string.label_sx_practice));
-                    }else if (exerciseTypeVo.getExerciseType()==3){
+                    } else if (exerciseTypeVo.getExerciseType() == 3) {
                         mTabLists.add(getResources().getString(R.string.label_sx_review));
                     }
                 }
@@ -449,6 +449,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mBottomLayout1.setVisibility(View.VISIBLE);
                 } else {
                     params.setAddMode(true);
+                    mBottomLayout.setActivated(true);
                     mCartContainer.setVisibility(View.GONE);
                     mBottomLayout.setVisibility(View.VISIBLE);
                     mBottomLayout1.setVisibility(View.GONE);
@@ -461,7 +462,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);
                 }
-                if (!fragments.isEmpty())currentSelectedFragment = (SxLessonSourceFragment) fragments.get(0);
+                if (!fragments.isEmpty())
+                    currentSelectedFragment = (SxLessonSourceFragment) fragments.get(0);
             }
 
             mViewPager.setAdapter(new SxLessonSourcePagerAdapter(getSupportFragmentManager(), fragments));
@@ -471,24 +473,22 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
             mTabLayout.setTabMode(TabLayout.MODE_FIXED);
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
-            if (mChapterParams != null && !mChapterParams.isChoiceMode()) {
-                mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        initBottomLayout();
-                    }
+            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    initBottomLayout();
+                }
 
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-                    }
+                }
 
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-                    }
-                });
-            }
+                }
+            });
         }
     }
 
