@@ -654,6 +654,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (vo.getStatus() == 1) {
                     // 已完成
                     if (isClassTeacher() && !mTeacherVisitor) {
+                        holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                     } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
@@ -690,7 +691,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.mTvChapterState.setVisibility(View.GONE);
                 }
             }
-            
+            //班级课程进入【全部布置】显示
             if (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER) {
                 holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                 holder.mTvChapterState.setVisibility(vo.getStatus() == 1 ? View.VISIBLE : View.GONE);
