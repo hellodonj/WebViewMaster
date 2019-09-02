@@ -653,7 +653,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    if (isClassTeachers() && !mTeacherVisitor) {
+                    if ((isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER))  && !mTeacherVisitor) {
                         holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                     } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
@@ -662,7 +662,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
-                    if (isClassTeachers() && !mTeacherVisitor) {
+                    if ((isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER))  && !mTeacherVisitor) {
                         holder.mTvChapterState.setVisibility(View.GONE);
                     } else {
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
@@ -1373,16 +1373,6 @@ public class CourseChapterAdapter extends MyBaseAdapter {
     private boolean isClassTeacher() {
         CourseDetailParams params = getCourseDetailParams(null, false);
         return params.isClassCourseEnter() && params.isClassTeacher();
-    }
-
-    /**
-     * 课程选取界面 是否是班级学程的老师
-     *
-     * @return true 是班级学程的老师,显示状态信息
-     */
-    private boolean isClassTeachers() {
-        CourseDetailParams params = getCourseDetailParams(null, false);
-        return params.isClassCourseEnter() && params.isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER);
     }
 
 

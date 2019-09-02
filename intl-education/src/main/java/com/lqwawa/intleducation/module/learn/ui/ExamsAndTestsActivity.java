@@ -36,6 +36,7 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LQCourseHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
@@ -170,6 +171,7 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         isVideoCourse = courseParams != null && (courseParams.getLibraryType() == OrganLibraryType.TYPE_VIDEO_LIBRARY
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mClassTeacher = (courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
+                (courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_CLASS_ENTER && lessonSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER) ||
                 (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         //主动进入
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false
