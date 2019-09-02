@@ -579,4 +579,5 @@
     <string name="label_exam_lock_dialog">Lock Exam?</string>
     <string name="label_test_lock_dialog">Lock Test?</string>
     <string name="label_activation_code_tip">Please enter activation code</string>
+    <string name="label_empty_teaching_assistant">No textbook</string>
 </resources>

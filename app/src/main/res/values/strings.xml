@@ -1214,6 +1214,7 @@
     <string name="personal_comment">Manual Review</string>
     <string name="composition_requirements">Writing requirements</string>
     <string name="comment_by_sentence">Review sentence \n by sentence</string>
+    <string name="str_comment_by_sentence">Review sentence by sentence</string>
     <string name="commit">Submit</string>
     <string name="pid_num">Paragraph %s</string>
     <string name="category_bracket">[%s]</string>
