@@ -654,6 +654,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (vo.getStatus() == 1) {
                     // 已完成
                     if (isClassTeacher() && !mTeacherVisitor) {
+                        holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
                     } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
