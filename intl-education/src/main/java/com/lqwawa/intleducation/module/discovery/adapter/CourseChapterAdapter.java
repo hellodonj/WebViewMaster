@@ -653,8 +653,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 holder.mTvChapterState.setActivated(vo.getStatus() == 1);
                 if (vo.getStatus() == 1) {
                     // 已完成
-                    if ((isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER))  && !mTeacherVisitor) {
-                        holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
+                    if (isClassTeacher() && !mTeacherVisitor) {
                     } else {
                         holder.mTvChapterState.setText(R.string.label_task_complete);
                     }
@@ -662,7 +661,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     holder.mTvChapterState.setVisibility(View.VISIBLE);
                 } else {
                     holder.mTvChapterState.setText(R.string.label_task_starting);
-                    if ((isClassTeacher() || (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER))  && !mTeacherVisitor) {
+                    if (isClassTeacher() && !mTeacherVisitor) {
                         holder.mTvChapterState.setVisibility(View.GONE);
                     } else {
                         holder.mTvChapterState.setVisibility(View.VISIBLE);
@@ -674,24 +673,28 @@ public class CourseChapterAdapter extends MyBaseAdapter {
 
             final boolean isTeacher = isTeacher();
 
-//            if (isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())) {
-//                // 是老师但不是班级学程的老师
-//                holder.mTvChapterState.setVisibility(View.GONE);
-//            } else {
-//                if (vo.isBuyed() || mTeacherVisitor) {
-//                    holder.mTvChapterState.setVisibility(View.VISIBLE);
-//                    // 添加班级学程的逻辑
-//                    if (isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0) {
-//                        // 班级学程的老师没有布置完成
-//                        holder.mTvChapterState.setVisibility(View.GONE);
-//                    } else {
-//                        holder.mTvChapterState.setVisibility(View.VISIBLE);
-//                    }
-//                } else {
-//                    holder.mTvChapterState.setVisibility(View.GONE);
-//                }
-//            }
-
+            if (isCourseSelect || !isJoinCourse || (isTeacher && !isClassTeacher())) {
+                // 是老师但不是班级学程的老师
+                holder.mTvChapterState.setVisibility(View.GONE);
+            } else {
+                if (vo.isBuyed() || mTeacherVisitor) {
+                    holder.mTvChapterState.setVisibility(View.VISIBLE);
+                    // 添加班级学程的逻辑
+                    if (isClassTeacher() && !mTeacherVisitor && vo.getStatus() == 0) {
+                        // 班级学程的老师没有布置完成
+                        holder.mTvChapterState.setVisibility(View.GONE);
+                    } else {
+                        holder.mTvChapterState.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    holder.mTvChapterState.setVisibility(View.GONE);
+                }
+            }
+            
+            if (isClassCourseEnter && selectRole == UserHelper.MoocRoleType.TEACHER) {
+                holder.mTvChapterState.setText(R.string.label_all_the_arrangement);
+                holder.mTvChapterState.setVisibility(vo.getStatus() == 1 ? View.VISIBLE : View.GONE);
+            }
 
             holder.chapterNameTv.setText(
                     StringUtils.getChapterNumString(activity, vo.getChapterName(),
