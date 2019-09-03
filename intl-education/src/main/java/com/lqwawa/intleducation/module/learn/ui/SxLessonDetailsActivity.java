@@ -20,8 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.AppConfig;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
@@ -302,19 +300,12 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                         || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mTopLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
 
-        isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
-        if (isContainAssistantWork) {
+        //班级老师才有课中实施方案
+        if (courseParams.isClassTeacher()) {
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //助教工作台
-                    String url = AppConfig.ServerUrl.ASSISTANT_DESK + "courseId=" + courseId + "&chapterId=" + sectionId + "&hidefooter=true";
-                    Intent intent = new Intent();
-                    intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.CampusOnlineWebActivity");
-                    intent.putExtra("url", url);
-                    intent.putExtra("isMooc", true);
-                    intent.putExtra("title", getString(R.string.class_implementation_plan));
-                    startActivity(intent);
+                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId);
                 }
             });
         }

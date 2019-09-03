@@ -80,6 +80,7 @@ import com.lqwawa.intleducation.module.user.tool.UserHelper;
 import com.lqwawa.intleducation.module.user.vo.UserInfoVo;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
+import com.lqwawa.mooc.ImplementationPlanActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialHomePageActivity;
 import com.lqwawa.mooc.modle.tutorial.TutorialParams;
 import com.osastudio.common.utils.TimerUtils;
@@ -103,6 +104,7 @@ public class MOOCHelper {
     protected static ProgressDialog progressDialog;
 
     public static void init(UserInfo userInfo) {
+        TaskSliderHelper.onImplementationPlanListener = onImplementationPlanListener;
         TaskSliderHelper.onLearnStatisticListener = onLearnStatisticListener;
         TaskSliderHelper.onPlayListListener = onPlayListListener;
         TaskSliderHelper.onTaskSliderListener = onTaskSliderListener;
@@ -199,6 +201,14 @@ public class MOOCHelper {
         @Override
         public void enterLearnStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull int roleType, @NonNull String studentId) {
             LearningStatisticActivity.start(activity,courseId,courseName,classId,roleType,studentId);
+        }
+    };
+
+    private static TaskSliderHelper.OnImplementationPlanListener onImplementationPlanListener
+            = new TaskSliderHelper.OnImplementationPlanListener() {
+        @Override
+        public void enterImplementationPlanActivity(@NonNull Activity activity, @NonNull String chapterId) {
+            ImplementationPlanActivity.start(activity,chapterId);
         }
     };
 
