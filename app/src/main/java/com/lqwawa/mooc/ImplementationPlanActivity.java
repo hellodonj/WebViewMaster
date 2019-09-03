@@ -11,6 +11,8 @@ import com.galaxyschool.app.wawaschool.BaseFragmentActivity;
 import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment;
 
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CHAPTER_ID;
+
 /**
  * 描述: 课中实施方案
  * 作者|时间: djj on 2019/9/3 0003 上午 10:14
@@ -23,7 +25,7 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
                              String chapterId){
         Intent intent = new Intent(activity,ImplementationPlanActivity.class);
         Bundle args = new Bundle();
-        args.putString("chapterId",chapterId);
+        args.putString(KEY_EXTRA_CHAPTER_ID,chapterId);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
