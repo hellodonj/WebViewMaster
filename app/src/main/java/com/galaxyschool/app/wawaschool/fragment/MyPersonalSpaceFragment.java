@@ -41,7 +41,6 @@ import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.AnimationUtil;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
-import com.galaxyschool.app.wawaschool.common.NotificationHelper;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.SwitchButton;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -97,12 +96,10 @@ import com.oosic.apps.share.SharedResource;
 import com.osastudio.common.utils.TipMsgHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -669,8 +666,7 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 break;
 
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC:
-//                enterSaveStatisticDetail();
-                NotificationHelper.showShareScreenNotification(getActivity(),null,1);
+                enterSaveStatisticDetail();
                 break;
             default:
                 break;

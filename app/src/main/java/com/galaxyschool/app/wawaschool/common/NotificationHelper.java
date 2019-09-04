@@ -51,9 +51,9 @@ public class NotificationHelper {
     public static void showShareScreenNotification(Activity activity,
                                                    ConnectedDevice data,
                                                    int notificationId) {
-//        if(data == null || activity == null) {
-//            return;
-//        }
+        if(data == null || activity == null) {
+            return;
+        }
         String deviceName = getShareScreenDeviceName(data);
         NotificationManager nm = (NotificationManager)activity.getSystemService(
                 Context.NOTIFICATION_SERVICE);
