@@ -1107,7 +1107,7 @@ public class MyCourseDetailsActivity extends MyBaseFragmentActivity
     private void setProgressVisiable(@NonNull CourseVo vo) {
         // 如果身份是该课程的老师,隐藏学习进度
         // TODO 是否未加入课程详情需要传是否是在线课堂的老师,来判断是否显示进度
-        if (UserHelper.checkCourseAuthor(vo, isOnlineTeacher)) {
+        if (canEdit && UserHelper.checkCourseAuthor(vo, isOnlineTeacher)) {
             // 老师身份
             mProgressLayout.setVisibility(View.GONE);
         } else {
