@@ -19,9 +19,9 @@ package com.libs.mediaplay;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
-import android.support.compat.BuildConfig;
 import android.view.OrientationEventListener;
 
+import com.lqwawa.apps.BuildConfig;
 import com.osastudio.common.utils.LogUtils;
 
 

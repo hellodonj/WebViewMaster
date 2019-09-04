@@ -22,16 +22,19 @@
         android:layout_margin="10dp">
         <TextView
             android:id="@+id/title"
-            style="@style/txt_wawa_big_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"/>
+            android:textColor="@color/text_black"
+            android:textSize="14sp"
+            android:text=""/>
         <TextView
-            android:id="@+id/sub_title"
+            android:id="@+id/text"
             style="@style/txt_wawa_normal_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SubTitle"/>
+            android:textSize="12sp"
+            android:textColor="@color/text_normal"
+            android:text=""/>
     </LinearLayout>
 
     <ImageView

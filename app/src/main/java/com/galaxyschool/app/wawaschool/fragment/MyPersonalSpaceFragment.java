@@ -41,6 +41,7 @@ import com.galaxyschool.app.wawaschool.chat.DemoApplication;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.AnimationUtil;
 import com.galaxyschool.app.wawaschool.common.DensityUtils;
+import com.galaxyschool.app.wawaschool.common.NotificationHelper;
 import com.galaxyschool.app.wawaschool.common.ShareUtils;
 import com.galaxyschool.app.wawaschool.common.SwitchButton;
 import com.galaxyschool.app.wawaschool.common.UIUtils;
@@ -668,7 +669,8 @@ public class MyPersonalSpaceFragment extends ContactsListFragment {
                 break;
 
             case ITabEntityTypeInfo.TAB_ENTITY_TYPE_SAVE_STATISTIC:
-                enterSaveStatisticDetail();
+//                enterSaveStatisticDetail();
+                NotificationHelper.showShareScreenNotification(getActivity(),null,1);
                 break;
             default:
                 break;

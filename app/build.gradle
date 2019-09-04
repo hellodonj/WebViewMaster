@@ -45,12 +45,12 @@ static def releaseTime() {
 android {
     useLibrary 'org.apache.http.legacy'
 
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         applicationId "com.galaxyschool.app.wawaschool"
         versionCode 637
         versionName "5.17.0"
