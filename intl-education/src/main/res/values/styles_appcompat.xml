@@ -55,7 +55,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowActionBar">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
     </style>
 
     <!--style里面设置了android:windowIsTranslucent这个属性 所有要继承Animation.Translucent-->
@@ -74,7 +74,7 @@
     <style name="AppTheme.TransStatusBar.Base" parent="AppTheme.Common">
         <!--去除顶部的状态栏-->
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationStyle_translucent</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowFrame">@null</item>
