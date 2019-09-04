@@ -1000,5 +1000,17 @@ public final class AppConfig {
         public static final String PostExerciseTypeListBySectionId =
                 ServerBase + "api/student/getExerciseTypeListBySectionId";
 
+        //查询是否有课中实施方案
+        public static final String postQueryIfExistPlan =
+                ServerBase + "api/coursePlan/qryIfExistPlan";
+
+        //获取课中实施方案
+        public static final String postGetImplementPlan =
+                ServerBase + "api/coursePlan/getImplementPlan";
+
+        //保存课中实施方案
+        public static final String postSaveImplementPlan =
+                ServerBase + "api/coursePlan/saveImplementPlan";
+
     }
 }

@@ -180,6 +180,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String courseId;
     private String sectionName;
     private String sectionId;
+    private String memberId;
     private int status, taskType;
     private CourseVo courseVo;
     // 课程大纲参数
@@ -254,6 +255,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         sectionId = getIntent().getStringExtra(SECTION_ID);
         sectionName = getIntent().getStringExtra(SECTION_NAME);
         sectionTitle = getIntent().getStringExtra(SECTION_TITLE);
+        memberId =  getIntent().getStringExtra("memberId");
 
         topBar.setTitle(sectionTitle);
         topBar.setTitleWide(DensityUtil.dip2px(120));
@@ -305,7 +307,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId);
+                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId,memberId,courseId);
                 }
             });
         }

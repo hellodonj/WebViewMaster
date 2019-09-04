@@ -207,8 +207,8 @@ public class MOOCHelper {
     private static TaskSliderHelper.OnImplementationPlanListener onImplementationPlanListener
             = new TaskSliderHelper.OnImplementationPlanListener() {
         @Override
-        public void enterImplementationPlanActivity(@NonNull Activity activity, @NonNull String chapterId) {
-            ImplementationPlanActivity.start(activity,chapterId);
+        public void enterImplementationPlanActivity(@NonNull Activity activity, @NonNull String chapterId,String memberId,String courseId) {
+            ImplementationPlanActivity.start(activity,chapterId,memberId,courseId);
         }
     };
 

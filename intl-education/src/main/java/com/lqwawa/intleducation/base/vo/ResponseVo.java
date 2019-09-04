@@ -15,6 +15,7 @@ public class ResponseVo<T> implements Serializable {
     private int code;
     private T data;
     private String message;
+    private boolean exist;
 
     public int getCode() {
         return code;
@@ -46,6 +47,14 @@ public class ResponseVo<T> implements Serializable {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public boolean isExist() {
+        return exist;
+    }
+
+    public void setExist(boolean exist) {
+        this.exist = exist;
     }
 
     /**

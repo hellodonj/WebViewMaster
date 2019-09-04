@@ -12,6 +12,8 @@ import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment;
 
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CHAPTER_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_COURSE_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_MEMBER_ID;
 
 /**
  * 描述: 课中实施方案
@@ -22,10 +24,14 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
     private Fragment fragment;
 
     public static void start(Activity activity,
-                             String chapterId){
+                             String chapterId,
+                             String memberId,
+                             String courseId){
         Intent intent = new Intent(activity,ImplementationPlanActivity.class);
         Bundle args = new Bundle();
         args.putString(KEY_EXTRA_CHAPTER_ID,chapterId);
+        args.putString(KEY_EXTRA_MEMBER_ID,memberId);
+        args.putString(KEY_EXTRA_COURSE_ID,courseId);
         intent.putExtras(args);
         activity.startActivity(intent);
     }

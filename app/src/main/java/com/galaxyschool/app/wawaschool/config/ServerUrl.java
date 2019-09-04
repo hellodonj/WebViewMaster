@@ -1166,9 +1166,4 @@ public class ServerUrl {
     public static final String GET_TEACHER_NO_CORRECT_COMMITLIST = BASE_SERVER + "NewApi" +
             "/CourseStudyTaskStatis/GetTeacherNoCorrectCommitList";
 
-    /**
-     * 查询是否有课中实施方案
-     */
-    public static final String POST_IF_EXUST_PLAN = BASE_SERVER + "api/coursePlan/qryIfExistPlan";
-
 }
