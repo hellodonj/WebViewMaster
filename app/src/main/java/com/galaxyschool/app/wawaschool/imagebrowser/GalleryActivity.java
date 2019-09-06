@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import com.galaxyschool.app.wawaschool.common.PrefsManager;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.fragment.resource.ResourceBaseFragment;
+import com.galaxyschool.app.wawaschool.helper.EBanShuHelper;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseAnswerCardParam;
 import com.galaxyschool.app.wawaschool.pojo.ExerciseItem;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
@@ -77,6 +79,15 @@ public class GalleryActivity extends ImageBrowserActivity {
                 mIvMore.setEnabled(true);
             } else {
                 mIvMore.setVisibility(View.INVISIBLE);
+            }
+        }
+        if (!TextUtils.isEmpty(roomId)){
+            //e板书直播回放
+            CardView playBackView = (CardView) findViewById(R.id.cv_play_back);
+            if (playBackView != null){
+                playBackView.setVisibility(View.VISIBLE);
+                playBackView.setOnClickListener(v -> EBanShuHelper.loadEBanShuVideoDetail(this,
+                        roomId,title));
             }
         }
     }
@@ -280,6 +291,25 @@ public class GalleryActivity extends ImageBrowserActivity {
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOLLECT, false);
         intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, false);
         intent.putExtra(ExerciseAnswerCardParam.class.getSimpleName(), cardParam);
+        context.startActivity(intent);
+    }
+
+    public static void newInstance(Context context,
+                                   List<ImageInfo> mediaInfos,
+                                   String roomId,
+                                   String title){
+        Intent intent = new Intent(context, GalleryActivity.class);
+        if (mediaInfos != null && mediaInfos.size() > 0) {
+            intent.putParcelableArrayListExtra(ImageBrowserActivity.EXTRA_IMAGE_INFOS, (ArrayList<? extends Parcelable>) mediaInfos);
+        }
+        intent.putExtra(ImageBrowserActivity.EXTRA_CURRENT_INDEX, 0);
+        intent.putExtra(ImageBrowserActivity.ISPDF, true);
+        intent.putExtra(ImageBrowserActivity.EXTRA_ISSHOWINDEX, false);
+        intent.putExtra(ImageBrowserActivity.KEY_ISHIDEMOREBTN, false);
+        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOLLECT, false);
+        intent.putExtra(ImageBrowserActivity.KEY_ISSHOWCOURSEANDREADING, false);
+        intent.putExtra(ImageBrowserActivity.KEY_ROOM_ID,roomId);
+        intent.putExtra(ImageBrowserActivity.KEY_TITLE,title);
         context.startActivity(intent);
     }
 

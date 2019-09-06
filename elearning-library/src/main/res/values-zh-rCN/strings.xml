@@ -28,7 +28,8 @@
     <string name="to_expand_hint">展开</string>
     <string name="to_shrink_hint">收起</string>
     <string name="pls_select_files">请选择文件！</string>
-
+    <string name="no_content">暂无内容</string>
+    <string name="str_play_back">回放</string>
 
 
 </resources>
