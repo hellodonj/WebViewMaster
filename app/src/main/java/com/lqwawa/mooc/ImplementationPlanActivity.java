@@ -12,6 +12,7 @@ import com.galaxyschool.app.wawaschool.R;
 import com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment;
 
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CHAPTER_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CLASS_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_COURSE_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_MEMBER_ID;
 
@@ -26,12 +27,14 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
     public static void start(Activity activity,
                              String chapterId,
                              String memberId,
-                             String courseId){
+                             String courseId,
+                             String classId){
         Intent intent = new Intent(activity,ImplementationPlanActivity.class);
         Bundle args = new Bundle();
         args.putString(KEY_EXTRA_CHAPTER_ID,chapterId);
         args.putString(KEY_EXTRA_MEMBER_ID,memberId);
         args.putString(KEY_EXTRA_COURSE_ID,courseId);
+        args.putString(KEY_EXTRA_CLASS_ID,classId);
         intent.putExtras(args);
         activity.startActivity(intent);
     }

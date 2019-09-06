@@ -308,7 +308,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId,memberId,courseId);
+                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId,memberId,courseId,courseParams.getClassId());
                 }
             });
         }
