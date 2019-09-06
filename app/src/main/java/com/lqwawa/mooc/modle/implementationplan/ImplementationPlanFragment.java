@@ -44,6 +44,8 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     public static final String KEY_EXTRA_CHAPTER_ID = "KEY_EXTRA_CHAPTER_ID";
     public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
     public static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
+    public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+
     private View mRootView, inflate;
     private TopBar mTopBar;
     private ContainsEmojiEditText mLearningTargetEt, mMainDifficultyEt, mCommonProblemEt;
@@ -55,6 +57,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     private String chapterId;
     private String memberId;
     private String courseId;
+    private String classId;
     private TextView cancel;
     private TextView takePhoto;
     private TextView choosePhoto;
@@ -90,6 +93,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         chapterId = bundle.getString(KEY_EXTRA_CHAPTER_ID);
         memberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
         courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
+        classId = bundle.getString(KEY_EXTRA_CLASS_ID);
     }
 
     //初始化控件
@@ -124,6 +128,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(memberId)) {
             requestVo.addParams("token", memberId);
         }
+        requestVo.addParams("classId",classId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postQueryIfExistPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
@@ -168,6 +173,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(memberId)) {
             requestVo.addParams("token", memberId);
         }
+        requestVo.addParams("classId",classId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postGetImplementPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
@@ -244,6 +250,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(memberId)) {
             requestVo.addParams("token", memberId);
         }
+        requestVo.addParams("classId",classId);
         requestVo.addParams("learningGoal",mLearningTargetEt.getText().toString());
         requestVo.addParams("lgAppendixId","");
         requestVo.addParams("lgAppendixUrl","");
