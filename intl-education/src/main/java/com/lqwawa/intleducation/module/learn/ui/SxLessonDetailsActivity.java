@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -448,6 +449,9 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mBottomLayout1.setVisibility(View.GONE);
                 }
                 //1 预习 2练习 3复习
+                if (mTabLists.size()==1){
+                    mTabLayout.setBackground(new ColorDrawable(UIUtil.getColor(R.color.colorAccent)));
+                }
                 for (int i = 0; i < mTabLists.size(); i++) {
                     SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
                             mExerciseTypeVoList.get(i).getExerciseType(), courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
@@ -464,7 +468,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mTabLayout.setupWithViewPager(mViewPager);
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
             mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
