@@ -441,7 +441,11 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
     private void loadCommonData() {
         Map<String, Object> params = new HashMap<>();
         //必填
-        params.put("CourseId", courseId);
+        if (courseId > 0){
+            params.put("CourseId", courseId);
+        } else {
+            params.put("MemberId",getMemeberId());
+        }
         params.put("ClassId", classId);
         params.put("SearchName", searchEditText.getText().toString().trim());
         params.put("Pager", getPageHelper().getFetchingPagerArgs());
@@ -459,9 +463,14 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
                 updateDataView(result);
             }
         };
-        RequestHelper.sendPostRequest(getActivity(), ServerUrl.GET_TEACHER_NO_CORRECT_COMMITLIST, params, listener);
+        String serverUrl = null;
+        if (courseId > 0){
+            serverUrl = ServerUrl.GET_TEACHER_NO_CORRECT_COMMITLIST;
+        } else {
+            serverUrl = ServerUrl.GET_CLASSTEACHER_NOCORRECT_COMMITLIST;
+        }
+        RequestHelper.sendPostRequest(getActivity(), serverUrl, params, listener);
     }
-
 
     private void updateDataView(CheckMarkResult result) {
         if (getPageHelper().isFetchingPageIndex(result.getModel().getPager())) {

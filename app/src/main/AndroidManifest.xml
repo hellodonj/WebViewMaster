@@ -251,6 +251,10 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity android:name=".DataStatisticActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:screenOrientation="portrait"/>
+
 
         <activity android:name=".StudentMemberListActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"

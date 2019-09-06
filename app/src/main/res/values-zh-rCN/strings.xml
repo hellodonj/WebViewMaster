@@ -1795,4 +1795,17 @@
         激活此课程后提交学习任务。</string>
     <string name="str_un_remark_homework">未批作业</string>
     <string name="str_invite_join_class">邀请您加入《%s》</string>
+    
+    <string name="str_data_statistics">数据统计</string>
+    <string name="str_class_achieve_statistics">班级成绩统计</string>
+    <string name="str_student_achieve_statistics">学生学习统计</string>
+    <string-array name="str_class_grade_array">
+        <item>90–100分</item>
+        <item>80–89分</item>
+        <item>70–79分</item>
+        <item>60–69分</item>
+        <item>低于60分</item>
+    </string-array>
+
+    <string name="str_class_gradle_tips">*成绩按百分制计算，取平均值统计</string>
 </resources>

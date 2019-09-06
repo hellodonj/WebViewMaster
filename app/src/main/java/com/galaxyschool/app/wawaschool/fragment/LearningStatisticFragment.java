@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -48,9 +49,14 @@ public class LearningStatisticFragment extends ContactsListFragment {
     private ScrollView scrollView;
     private PieView pieView;
     private TextView markDetailTextV;
+    private TextView scoreTextV;
     private TextView completeDetailView;
     private RecyclerView recyclerView;
     private RecyclerView studentListRV;
+    private LinearLayout scorelayout;
+    private TextView aviTextV;
+    private TextView maxTextV;
+    private TextView minTextV;
     private StatisticDetailAdapter detailAdapter;
     private StudentListAdapter adapter;
     private String[] itemDataArray = null;
@@ -106,6 +112,8 @@ public class LearningStatisticFragment extends ContactsListFragment {
             } else if (learnType == LearningStatisticActivity.LEARNING_TYPE.HOMEWORK_COMPLETE_RATE) {
                 itemDataArray = getResources().getStringArray(R.array.array_complete_detail);
             }
+        } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            itemDataArray = getResources().getStringArray(R.array.str_class_grade_array);
         }
     }
 
@@ -126,17 +134,31 @@ public class LearningStatisticFragment extends ContactsListFragment {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         pieView = (PieView) findViewById(R.id.pie_view);
         markDetailTextV = (TextView) findViewById(R.id.tv_mark_detail);
+        scoreTextV = (TextView) findViewById(R.id.tv_score);
         completeDetailView = (TextView) findViewById(R.id.tv_complete_detail);
         scrollView = (ScrollView) findViewById(R.id.scroll_view);
         studentListRV = (RecyclerView) findViewById(R.id.rv_student_list);
+        scorelayout = (LinearLayout) findViewById(R.id.ll_score_layout);
+        aviTextV = (TextView) findViewById(R.id.tv_avi);
+        maxTextV = (TextView) findViewById(R.id.tv_max);
+        minTextV = (TextView) findViewById(R.id.tv_min);
         if (isTeacherLook()) {
             scrollView.setVisibility(View.GONE);
             studentListRV.setVisibility(View.VISIBLE);
         }
+        if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE){
+            scoreTextV.setVisibility(View.VISIBLE);
+        } else {
+            scoreTextV.setVisibility(View.GONE);
+        }
     }
 
     private void initColors() {
-        colors = StatisticNetHelper.getColorsList();
+        if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            colors = StatisticNetHelper.getClassColorList();
+        } else {
+            colors = StatisticNetHelper.getColorsList();
+        }
     }
 
     private void loadData() {
@@ -150,6 +172,9 @@ public class LearningStatisticFragment extends ContactsListFragment {
             } else if (learnType == LearningStatisticActivity.LEARNING_TYPE.HOMEWORK_COMPLETE_RATE) {
                 loadCompleteRate();
             }
+        } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            //班级成绩统计
+            loadClassLearningData();
         }
     }
 
@@ -176,6 +201,15 @@ public class LearningStatisticFragment extends ContactsListFragment {
         StatisticNetHelper netHelper = new StatisticNetHelper();
         netHelper.setCallListener(this::updateViewData).getTaskDetailStatistic(courseId, classId,
                 learnType + 1, isTeacherLook() ? "" : studentId);
+    }
+
+    private void loadClassLearningData(){
+        if (beanList != null && beanList.size() > 0){
+            return;
+        }
+        StatisticNetHelper netHelper = new StatisticNetHelper();
+        netHelper.setCallListener(this::updateViewData).GetClassTaskAverageStatis(courseId, classId,
+                learnType + 1);
     }
 
     private void initListData() {
@@ -212,6 +246,20 @@ public class LearningStatisticFragment extends ContactsListFragment {
                         bean.setShowRightArrow(true);
                         bean.setColor(colors.get(3));
                     }
+                } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                    bean.setColor(colors.get(i));
+                    bean.setShowRightArrow(true);
+                    if (i == 0) {
+                        bean.setNumber(taskInfo.getExcellentNum());
+                    } else if (i == 1) {
+                        bean.setNumber(taskInfo.getVeryGoodNum());
+                    } else if (i == 2) {
+                        bean.setNumber(taskInfo.getGoodNum());
+                    } else if (i == 3) {
+                        bean.setNumber(taskInfo.getFairNum());
+                    } else if (i == 4){
+                        bean.setNumber(taskInfo.getFailNum());
+                    }
                 }
                 bean.setStatisticType(statisticType);
                 bean.setTitle(itemDataArray[i]);
@@ -227,6 +275,8 @@ public class LearningStatisticFragment extends ContactsListFragment {
         }
         if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE) {
             updateLearnViewData((StatisticBeanListResult) result);
+        } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE) {
+            updateClassLearnData((StatisticBean) result);
         } else {
             taskInfo = (StatisticBean) result;
             updateChartData();
@@ -252,6 +302,16 @@ public class LearningStatisticFragment extends ContactsListFragment {
                 ((LearningStatisticActivity) getActivity()).updateHomeWorkRecordView(taskInfo);
             }
         }
+    }
+
+    private void updateClassLearnData(StatisticBean result){
+        if (result == null){
+            return;
+        }
+        taskInfo = result;
+        updateChartData();
+        initListData();
+        updateAdapter();
     }
 
     private void updateStudentListAdapter() {
@@ -312,6 +372,10 @@ public class LearningStatisticFragment extends ContactsListFragment {
     private void updateChartData() {
         if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE) {
             markDetailTextV.setText(getString(R.string.str_total_homework_mark, taskInfo.getTotalMarkNum()));
+            String averageText = getString(R.string.average);
+            averageText = averageText + ": " + getString(R.string.str_eval_score,
+                    String.valueOf(taskInfo.getAverageScore()));
+            scoreTextV.setText(averageText);
         } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.COURSE_TYPE) {
             if (learnType == LearningStatisticActivity.LEARNING_TYPE.HOMEWORK_INTRO_RATE) {
                 markDetailTextV.setText(getString(R.string.str_total_res,
@@ -326,11 +390,18 @@ public class LearningStatisticFragment extends ContactsListFragment {
                         taskInfo.getAlreadySetTaskNum(), taskInfo.getClassSize()));
                 completeDetailView.setVisibility(View.VISIBLE);
             }
+        } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            markDetailTextV.setText(getString(R.string.str_class_gradle_tips));
+            scorelayout.setVisibility(View.VISIBLE);
+            aviTextV.setText(String.valueOf(taskInfo.getTotalAverageScore()));
+            maxTextV.setText(String.valueOf(taskInfo.getAverageScoreMax()));
+            minTextV.setText(String.valueOf(taskInfo.getAverageScoreMin()));
         }
 
         //显示图表数据
         ArrayList<PieHelper> pieHelpers = new ArrayList<>();
-        if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE) {
+        if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.LEARNING_TYPE
+                || statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE) {
             int totalNum = taskInfo.getTotalMarkNum();
             if (totalNum > 0) {
                 List<StatisticBean> percentBeans = new ArrayList<>();
@@ -342,18 +413,34 @@ public class LearningStatisticFragment extends ContactsListFragment {
                     perBean.setColor(colors.get(0));
                     percentBeans.add(perBean);
                 }
+                int veryGood =  Math.round((float)taskInfo.getVeryGoodNum() * 100 / totalNum);
+                if (veryGood > 0) {
+                    perBean = new StatisticBean();
+                    perBean.setPercent(veryGood);
+                    perBean.setColor(colors.get(1));
+                    percentBeans.add(perBean);
+                }
+
                 int good =  Math.round((float)taskInfo.getGoodNum() * 100 / totalNum);
                 if (good > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(good);
-                    perBean.setColor(colors.get(1));
+                    if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                        perBean.setColor(colors.get(2));
+                    } else {
+                        perBean.setColor(colors.get(1));
+                    }
                     percentBeans.add(perBean);
                 }
                 int fair =  Math.round((float)taskInfo.getFairNum() * 100 / totalNum);
                 if (fair > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(fair);
-                    perBean.setColor(colors.get(2));
+                    if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                        perBean.setColor(colors.get(3));
+                    } else {
+                        perBean.setColor(colors.get(2));
+                    }
                     percentBeans.add(perBean);
                 }
 
@@ -361,7 +448,11 @@ public class LearningStatisticFragment extends ContactsListFragment {
                 if (fail > 0) {
                     perBean = new StatisticBean();
                     perBean.setPercent(fail);
-                    perBean.setColor(colors.get(3));
+                    if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                        perBean.setColor(colors.get(4));
+                    } else {
+                        perBean.setColor(colors.get(3));
+                    }
                     percentBeans.add(perBean);
                 }
 
@@ -444,6 +535,30 @@ public class LearningStatisticFragment extends ContactsListFragment {
                 //作业完成率
                 enterCompleteDetailActivity(position);
             }
+        } else if (statisticType == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            //查看学生的分数详情
+            String title = itemDataArray[position];
+            List<StatisticBean> dataList = null;
+            if (position == 0){
+                dataList = taskInfo.getExcellentNumStudentList();
+            } else if (position == 1){
+                dataList = taskInfo.getVeryGoodNumStudentList();
+            } else if (position == 2){
+                dataList = taskInfo.getGoodNumStudentList();
+            } else if (position == 3){
+                dataList = taskInfo.getFairNumStudentList();
+            } else if (position == 4){
+                dataList = taskInfo.getFailNumStudentList();
+            }
+            //赋值classId  和 courseId
+            if (dataList != null && dataList.size() > 0){
+                for (int i = 0; i < dataList.size(); i++){
+                    dataList.get(i).setClassId(classId);
+                    dataList.get(i).setCourseId(courseId);
+                }
+            }
+            StudentMemberListActivity.start(getActivity(),dataList,title,
+                    true);
         }
     }
 
@@ -466,8 +581,8 @@ public class LearningStatisticFragment extends ContactsListFragment {
 
     private void enterCompleteDetailActivity(int position) {
         if (position == 1) {
-            StudentMemberListActivity.start(getActivity(), courseId,
-                    StudentMemberListActivity.FROM_TYPE.FROM_COURSE_STATISTIC);
+            StudentMemberListActivity.start(getActivity(),taskInfo.getStudentUnCompleteList(),null,
+                    false);
         }
     }
 }

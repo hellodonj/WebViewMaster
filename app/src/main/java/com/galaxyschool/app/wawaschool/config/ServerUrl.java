@@ -1166,4 +1166,19 @@ public class ServerUrl {
     public static final String GET_TEACHER_NO_CORRECT_COMMITLIST = BASE_SERVER + "NewApi" +
             "/CourseStudyTaskStatis/GetTeacherNoCorrectCommitList";
 
+    /**
+     * 查询是否有课中实施方案
+     */
+    public static final String POST_IF_EXUST_PLAN = BASE_SERVER + "api/coursePlan/qryIfExistPlan";
+
+    /**
+     * 拉取班级老师所有的未批阅的学生提交列表
+     */
+    public static final String GET_CLASSTEACHER_NOCORRECT_COMMITLIST = BASE_SERVER + "NewApi/CourseStudyTaskStatis/GetClassTeacherNoCorrectCommitList";
+
+    /**
+     * 拉取班级平均分成绩统计
+     */
+    public static final String GET_CLASS_TASK_AVERAGE_STATIS = BASE_SERVER + "NewApi" +
+            "/CourseStudyTaskStatis/GetClassTaskAverageStatis";
 }

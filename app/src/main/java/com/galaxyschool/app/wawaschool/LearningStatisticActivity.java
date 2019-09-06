@@ -2,6 +2,7 @@ package com.galaxyschool.app.wawaschool;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.icu.text.UFormat;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -37,13 +38,14 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
 
     /**
      * 课程统计
+     * (修改进入课程统计页面)
      */
     public static void start(Activity activity,
                              int courseId,
                              String courseName,
                              String classId,
                              Bundle bundle){
-        Intent intent = new Intent(activity,LearningStatisticActivity.class);
+        Intent intent = new Intent(activity,DataStatisticActivity.class);
         Bundle args = bundle;
         if (args == null){
             args = new Bundle();
@@ -52,6 +54,44 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
         args.putString(Constants.CLASS_ID,classId);
         args.putInt(Constants.COURSE_ID,courseId);
         args.putString(Constants.COURSE_NAME,courseName);
+        intent.putExtras(args);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 老师查看学生学习统计、班级成绩统计
+     */
+    public static void start(Activity activity,
+                             Bundle args,
+                             boolean isClassStatistic){
+        if (activity == null || args == null){
+            return;
+        }
+        Intent intent = new Intent(activity,LearningStatisticActivity.class);
+        if (isClassStatistic){
+            args.putInt(Constants.STATISTIC_TYPE, STATISTIC_TYPE.CLASS_STATISTIC_TYPE);
+        } else {
+            args.putInt(Constants.STATISTIC_TYPE, STATISTIC_TYPE.LEARNING_TYPE);
+            args.putInt(Constants.ROLE_TYPE, RoleType.ROLE_TYPE_TEACHER);
+        }
+        args.putBoolean(Constants.FROM_DATA_STATISTIC,false);
+        intent.putExtras(args);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 老师打开布置完成率 指定下标的position
+     */
+    public static void start(Activity activity,
+                             int positionIndex,
+                             Bundle args){
+        if (activity == null || args == null){
+            return;
+        }
+        Intent intent = new Intent(activity,LearningStatisticActivity.class);
+        args.putInt(Constants.STATISTIC_TYPE,STATISTIC_TYPE.COURSE_TYPE);
+        args.putInt(Constants.POSITION_INDEX,positionIndex);
+        args.putBoolean(Constants.FROM_DATA_STATISTIC,true);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
@@ -85,6 +125,8 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
         String COURSE_NAME = "course_name";
         String ROLE_TYPE = "role_type";
         String STUDENT_ID = "student_id";
+        String FROM_DATA_STATISTIC = "from_data_statistic";
+        String POSITION_INDEX = "position_index";
     }
 
     public interface LEARNING_TYPE {
@@ -99,6 +141,7 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
     public interface STATISTIC_TYPE {
         int LEARNING_TYPE = 0;//学习统计
         int COURSE_TYPE = 1;//课程统计
+        int CLASS_STATISTIC_TYPE = 2;//班级统计成绩
     }
 
     private LinearLayout rootTablayout;
@@ -118,6 +161,8 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
     private String courseName;
     private int roleType = -1;
     private String studentId;
+    private boolean fromDataStatistic;//是否来自数据统计
+    private int positionIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +183,8 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
             courseName = args.getString(Constants.COURSE_NAME);
             roleType = args.getInt(Constants.ROLE_TYPE,-1);
             studentId = args.getString(Constants.STUDENT_ID);
+            fromDataStatistic = args.getBoolean(Constants.FROM_DATA_STATISTIC,false);
+            positionIndex = args.getInt(Constants.POSITION_INDEX,0);
         }
     }
 
@@ -147,17 +194,35 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
             toolbarTopView.getBackView().setVisibility(View.VISIBLE);
             toolbarTopView.getBackView().setOnClickListener(v -> finish());
             if (statisticType == STATISTIC_TYPE.COURSE_TYPE){
-                toolbarTopView.getTitleView().setText(courseName);
+                if (fromDataStatistic){
+                    String title = null;
+                    if (positionIndex == 0) {
+                        title = getString(R.string.str_homework_intro_rate);
+                    } else if (positionIndex == 1){
+                        title = getString(R.string.str_homework_mark_rate);
+                    } else if (positionIndex == 2){
+                        title = getString(R.string.str_homework_complete_rate);
+                    }
+                    toolbarTopView.getTitleView().setText(title);
+                } else {
+                    toolbarTopView.getTitleView().setText(courseName);
+                }
             } else if (statisticType == STATISTIC_TYPE.LEARNING_TYPE){
                 if (isTeacherLook()) {
                     toolbarTopView.getTitleView().setText(R.string.str_learning_statistic);
                 } else {
                     toolbarTopView.getTitleView().setText(courseName);
                 }
+            } else if (statisticType == STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                //班级成绩统计
+                toolbarTopView.getTitleView().setText(getString(R.string.str_class_achieve_statistics));
             }
         }
         rootTablayout = (LinearLayout) findViewById(R.id.ll_root_tab);
         mTabTl = (TabLayout) findViewById(R.id.tab_layout);
+        if (fromDataStatistic){
+            mTabTl.setVisibility(View.GONE);
+        }
         mContentVp = (ViewPager) findViewById(R.id.vp_content);
         mContentVp.setOffscreenPageLimit(3);
         taskDetailLayout = (LinearLayout) findViewById(R.id.ll_task_detail);
@@ -224,24 +289,48 @@ public class LearningStatisticActivity extends BaseFragmentActivity{
         tabIndicators = new ArrayList<>();
         tabFragments = new ArrayList<>();
 
-        if (statisticType == STATISTIC_TYPE.LEARNING_TYPE){
+        if (statisticType == STATISTIC_TYPE.LEARNING_TYPE
+                || statisticType == STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
             //学习统计
             tabIndicators.add(getString(R.string.str_normal_homework_statistic));
             tabIndicators.add(getString(R.string.str_test_statistic));
             tabIndicators.add(getString(R.string.str_exam_statistic));
         } else if (statisticType == STATISTIC_TYPE.COURSE_TYPE){
             //课程统计
-            tabIndicators.add(getString(R.string.str_homework_intro_rate));
-            tabIndicators.add(getString(R.string.str_homework_mark_rate));
-//            tabIndicators.add(getString(R.string.str_homework_complete_rate));
+            if (fromDataStatistic){
+                 if (positionIndex == 0){
+                     tabIndicators.add(getString(R.string.str_homework_intro_rate));
+                 } else if (positionIndex == 1){
+                     tabIndicators.add(getString(R.string.str_homework_mark_rate));
+                 } else if (positionIndex == 2){
+                     tabIndicators.add(getString(R.string.str_homework_complete_rate));
+                 }
+            } else {
+                tabIndicators.add(getString(R.string.str_homework_intro_rate));
+                tabIndicators.add(getString(R.string.str_homework_mark_rate));
+                tabIndicators.add(getString(R.string.str_homework_complete_rate));
+            }
         }
-        tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
-                LEARNING_TYPE.NORMAL_STATISTIC : LEARNING_TYPE.HOMEWORK_INTRO_RATE)));
-        tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
-                LEARNING_TYPE.TEST_STATISTIC : LEARNING_TYPE.HOMEWORK_MARK_RATE)));
-        if (statisticType == STATISTIC_TYPE.LEARNING_TYPE) {
-            tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(statisticType == STATISTIC_TYPE.LEARNING_TYPE ?
-                    LEARNING_TYPE.EXAM_STATISTIC : LEARNING_TYPE.HOMEWORK_COMPLETE_RATE)));
+
+        if (fromDataStatistic){
+            if (positionIndex == 0){
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_INTRO_RATE)));
+            } else if (positionIndex == 1){
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_MARK_RATE)));
+            } else if (positionIndex == 2){
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_COMPLETE_RATE)));
+            }
+        } else {
+            if (statisticType == STATISTIC_TYPE.LEARNING_TYPE
+                    || statisticType == STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.NORMAL_STATISTIC)));
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.TEST_STATISTIC)));
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.EXAM_STATISTIC)));
+            } else if (statisticType == STATISTIC_TYPE.COURSE_TYPE){
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_INTRO_RATE)));
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_MARK_RATE)));
+                tabFragments.add(LearningStatisticFragment.newInstance(getBundleInfo(LEARNING_TYPE.HOMEWORK_COMPLETE_RATE)));
+            }
         }
         ViewCompat.setElevation(mTabTl, 10);
         mTabTl.setupWithViewPager(mContentVp);
