@@ -79,6 +79,7 @@ public class CommitTask implements Serializable, Parcelable {
     private int sortPositionId;
     private String ClassName;
     private int Type;
+    private int ScoringRule;
 
     /**
      * @return 是否是语音评测类型
@@ -131,6 +132,14 @@ public class CommitTask implements Serializable, Parcelable {
      */
     public boolean isMarkCard(){
         return CommitType == 6;
+    }
+
+    public int getScoringRule() {
+        return ScoringRule;
+    }
+
+    public void setScoringRule(int scoringRule) {
+        ScoringRule = scoringRule;
     }
 
     public String getClassName() {

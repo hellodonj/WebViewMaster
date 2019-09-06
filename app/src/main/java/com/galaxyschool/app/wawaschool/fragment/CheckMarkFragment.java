@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.galaxyschool.app.wawaschool.CheckMarkActivity;
+import com.galaxyschool.app.wawaschool.CommonFragmentActivity;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
@@ -1021,7 +1023,11 @@ public class CheckMarkFragment extends ContactsListFragment {
         if (isFromMOOC || isAnswerTaskOrderQuestion || isAssistanceModel) {
             getActivity().finish();
         } else {
-            popStack();
+            if (getActivity() != null && getActivity() instanceof CommonFragmentActivity){
+                getActivity().finish();
+            } else {
+                popStack();
+            }
         }
     }
 

@@ -400,7 +400,7 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
                             getPageScoreList(commitTask.getAutoEvalContent()),
                             commitTask.getTaskScore(),
                             commitTask.getTaskScoreRemark(),
-                            2,
+                            courseId > 0 ? 2 : commitTask.getScoringRule(),
                             taskCourseOrientation,
                             commitTask.getStudentResUrl(),
                             "",
@@ -433,7 +433,7 @@ public class ReMarkTaskListFragment extends ContactsListFragment {
         task.setType(data.getType());
         task.setTaskCreateId(getMemeberId());
         //mooc都是百分制
-        task.setScoringRule(2);
+        task.setScoringRule(courseId > 0 ? 2 : data.getScoringRule());
         MOOCHelper.enterCheckMarkDetail(getActivity(),data,task,RoleType.ROLE_TYPE_TEACHER,false,
                 false);
     }
