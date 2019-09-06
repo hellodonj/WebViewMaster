@@ -6,7 +6,7 @@ package com.osastudio.apps;
  */
 public class Config {
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	/**
 	 * 使用腾讯bugly更新升级 默认false
 	 */
