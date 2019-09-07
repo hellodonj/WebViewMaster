@@ -1903,4 +1903,5 @@
         <item>低于60分</item>
     </string-array>
     <string name="str_class_gradle_tips">*成绩按百分制计算，取平均值统计</string>
+    <string name="str_pls_remark_content_tip">请先完成主观题的批阅</string>
 </resources>
