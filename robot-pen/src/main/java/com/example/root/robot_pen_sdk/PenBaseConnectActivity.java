@@ -65,7 +65,17 @@ public class PenBaseConnectActivity extends BaseActivity implements ServiceConne
     protected RemoteCallback initPenServiceCallback(){
         return new RemoteCallback(this) {
             @Override
+            public void onRemotePenPointPositionChanged(int deviceType, float x, float y, int pressure, byte state, int page) throws RemoteException {
+
+            }
+
+            @Override
             public void onPageInfo(int i, int i1) throws RemoteException {
+
+            }
+
+            @Override
+            public void onWidthAndHeight(int i, int i1) throws RemoteException {
 
             }
 
@@ -96,6 +106,11 @@ public class PenBaseConnectActivity extends BaseActivity implements ServiceConne
 
             @Override
             public void onRemoteUpdateModuleFinished() throws RemoteException {
+
+            }
+
+            @Override
+            public void onRemoteUpdateBattery(int i) throws RemoteException {
 
             }
 

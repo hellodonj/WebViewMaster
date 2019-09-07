@@ -296,7 +296,11 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                             wawaPayNumView.setText(String.valueOf(data.getPrice()));
                         } else {
                             wawaIconImageView.setVisibility(View.GONE);
-                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
+                            if (data.isClass()){
+                                wawaPayNumView.setText(getString(R.string.label_class_gratis));
+                            } else {
+                                wawaPayNumView.setText("");
+                            }
                         }
                     }
 
@@ -477,7 +481,11 @@ public class SchoolClassListFragment extends ContactsExpandListFragment
                             wawaPayNumView.setText(String.valueOf(data.getPrice()));
                         } else {
                             wawaIconImageView.setVisibility(View.GONE);
-                            wawaPayNumView.setText(getString(R.string.label_class_gratis));
+                            if (data.isClass()) {
+                                wawaPayNumView.setText(getString(R.string.label_class_gratis));
+                            } else {
+                                wawaPayNumView.setText("");
+                            }
                         }
                     }
 

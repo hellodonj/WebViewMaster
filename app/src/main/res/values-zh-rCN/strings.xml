@@ -1127,6 +1127,7 @@
 
     <string name="composition_requirements">作文要求</string>
     <string name="comment_by_sentence">按句\n点评</string>
+    <string name="str_comment_by_sentence">按句点评</string>
     <string name="commit">提交</string>
     <string name="pid_num">第%s段</string>
     <string name="category_bracket">[%s]</string>

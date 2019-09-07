@@ -22,6 +22,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.ReadWeikeHelper;
@@ -125,7 +126,8 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
                 || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
 
         mClassTeacher = (courseParams.isClassCourseEnter() && courseParams.isClassTeacher()) ||
-                (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
+                (courseParams.getCourseEnterType() == CourseDetailType.COURSE_DETAIL_CLASS_ENTER && lessonSourceParams.getRole() == UserHelper.MoocRoleType.TEACHER) ||
+                        (lessonSourceParams.isChoiceMode() && lessonSourceParams.isInitiativeTrigger() && courseParams.isClassCourseEnter());
         taskType = bundle.getInt(KEY_TASK_TYPE, -1);
         mMultipleChoiceCount = bundle.getInt(KEY_EXTRA_MULTIPLE_CHOICE_COUNT);
         //主动进入，并选择true，非主动进入，并选择，false， 非主动进入，并不选择，false

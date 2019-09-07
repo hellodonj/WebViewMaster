@@ -15,6 +15,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import com.alibaba.fastjson.JSON;
 import com.galaxyschool.app.wawaschool.bitmapmanager.ThumbnailManager;
+import com.galaxyschool.app.wawaschool.common.LinNotifyHelper;
 import com.galaxyschool.app.wawaschool.common.LogUtils;
 import com.galaxyschool.app.wawaschool.common.PrefsManager;
 import com.galaxyschool.app.wawaschool.common.SharedPreferencesHelper;
@@ -225,6 +226,7 @@ public class MyApplication extends com.lqwawa.intleducation.MainApplication  {
         PushUtils.init(getApplicationContext());
         String regId = MiPushClient.getRegId(getApplicationContext());
         LogUtils.log("TTT","resId=" + regId);
+        LinNotifyHelper.setNotificationChannel(this);
     }
 
     public static float getXDPI() {

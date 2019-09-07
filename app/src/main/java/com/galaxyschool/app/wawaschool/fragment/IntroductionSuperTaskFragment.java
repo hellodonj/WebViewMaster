@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -457,8 +458,8 @@ public class IntroductionSuperTaskFragment extends ContactsListFragment {
                             View deleteView = view.findViewById(R.id.layout_delete_homework);
                             if (lookStudentTaskFinish || isPick){
                                 if (deleteView != null) {
-                                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) deleteView
-                                            .getLayoutParams();
+                                    FrameLayout.LayoutParams layoutParams =
+                                            (FrameLayout.LayoutParams) deleteView.getLayoutParams();
                                     layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
                                     layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                                     deleteView.setLayoutParams(layoutParams);

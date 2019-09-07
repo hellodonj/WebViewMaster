@@ -4,7 +4,7 @@ apply plugin: 'bugly'
 bugly {
     appId = 'eea1375c3e' // 注册时分配的App ID
     appKey = 'a07b42dc-cb09-4c1f-9de1-289f839b35a9' // 注册时分配的App Key
-    uploadMapping = false
+    uploadMapping = true
 }
 
 dependencies {
@@ -45,15 +45,15 @@ static def releaseTime() {
 android {
     useLibrary 'org.apache.http.legacy'
 
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         applicationId "com.galaxyschool.app.wawaschool"
-        versionCode 633
-        versionName "5.16.28"
+        versionCode 641
+        versionName "5.17.6"
 
         multiDexEnabled true
         ndk {

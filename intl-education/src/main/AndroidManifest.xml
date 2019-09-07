@@ -430,7 +430,7 @@
             android:name="com.libs.yilib.pickimages.PickMediasActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@style/AppTheme.Common"/>
         <activity
             android:name=".module.learn.ui.TaskChapterSelectActivity"
             android:screenOrientation="portrait" /> <!-- 主工程已申明 -->

@@ -6,16 +6,20 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.widget.RemoteViews;
+
 import com.alibaba.fastjson.JSON;
 import com.duowan.mobile.netroid.Listener;
 import com.duowan.mobile.netroid.NetroidError;
 import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.LinNotifyHelper;
 import com.galaxyschool.app.wawaschool.common.TipMsgHelper;
 import com.galaxyschool.app.wawaschool.common.Utils;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
@@ -33,6 +37,7 @@ import com.galaxyschool.app.wawaschool.pojo.weike.ShortCourseInfo;
 import com.galaxyschool.app.wawaschool.slide.SlideManagerHornForPhone;
 import com.lqwawa.client.pojo.MediaType;
 import com.oosic.apps.share.ShareType;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +57,7 @@ public class UploadCourseManager {
     private int mUploadType = 0;
     private Map<String, Thread> mThreadList = new HashMap<String, Thread>();
 
-    public static String oriFilePath="";
+    public static String oriFilePath = "";
     // private Semaphore mUploadSemaphore;
 
     private Handler handler = new Handler();
@@ -164,6 +169,7 @@ public class UploadCourseManager {
         private long mTmpFileSize = 0;
         private Notification notify = null;
         private RemoteViews notifyView = null;
+        private NotificationCompat.Builder builder;
 
         public uploadToHKServer(UploadParameter uploadParameter) {
             mUploadParameter = uploadParameter;
@@ -187,7 +193,7 @@ public class UploadCourseManager {
                     onResult(mSrcPath, false);
                 }
             } else {
-                if(!TextUtils.isEmpty(mSrcPath)) {
+                if (!TextUtils.isEmpty(mSrcPath)) {
                     mThreadList.remove(mSrcPath);
                 }
             }
@@ -236,16 +242,6 @@ public class UploadCourseManager {
 
         private void refreshDownloadPeriod(String key) {
             NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            if (notify == null) {
-                notify = new Notification();
-            }
-            notify.flags |= Notification.FLAG_ONGOING_EVENT;
-            notify.icon = android.R.drawable.stat_sys_upload;
-            notify.tickerText = mUploadTitle;
-            PendingIntent pi = PendingIntent.getActivity(mContext, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
-            notify.contentIntent = pi;
-
             if (notifyView == null) {
                 notifyView = new RemoteViews(mContext.getPackageName(), R.layout.upload_notification);
             }
@@ -254,10 +250,38 @@ public class UploadCourseManager {
             notifyView.setTextViewText(R.id.progress_detail_text, getProgressDetailString(mTmpFileSize, mFileSize));
             notifyView.setProgressBar(R.id.progress_bar, (int) mFileSize, (int) mTmpFileSize, mFileSize == 0);
             notifyView.setImageViewResource(R.id.icon, android.R.drawable.stat_sys_upload);
-            notify.contentView = notifyView;
+            PendingIntent pi = PendingIntent.getActivity(mContext, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 
-            nm.notify(key, R.layout.upload_notification, notify);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (!LinNotifyHelper.openNotificationChannel(mContext, nm, LinNotifyHelper.MESSAGE)) {
+                    return;
+                }
+                if (builder == null) {
+                    builder = new NotificationCompat.Builder(mContext, LinNotifyHelper.MESSAGE);
+                }
+                builder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(),
+                        android.R.drawable.stat_sys_upload))
+                        //设置自动收报机和通知中显示的大图标。
+                        .setSmallIcon(android.R.drawable.stat_sys_upload) // 小图标
+                        .setCustomContentView(notifyView)
+                        .setTicker(mUploadTitle)
+                        .setWhen(System.currentTimeMillis()) // 设置通知发送的时间戳
+                        .setShowWhen(true)//设置是否显示时间戳
+                        .setAutoCancel(true)// 点击通知后通知在通知栏上消失
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setContentIntent(pi); // 设置通知的点击事件
+                nm.notify(key, R.layout.upload_notification, builder.build());
+            } else {
+                if (notify == null) {
+                    notify = new Notification();
+                }
+                notify.flags |= Notification.FLAG_ONGOING_EVENT;
+                notify.icon = android.R.drawable.stat_sys_upload;
+                notify.tickerText = mUploadTitle;
+                notify.contentIntent = pi;
+                notify.contentView = notifyView;
+                nm.notify(key, R.layout.upload_notification, notify);
+            }
         }
 
         private void notifyError(String key) {
@@ -281,19 +305,20 @@ public class UploadCourseManager {
                     .FLAG_UPDATE_CURRENT);
             String title = mContext.getString(R.string.upload_failure);
             String content = mContext.getString(R.string.upload_failed_summary);
-            Notification.Builder builder = new Notification.Builder(mContext)
-                    .setContentTitle(title)
+            NotificationCompat.Builder builder = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                builder = new NotificationCompat.Builder(mContext,LinNotifyHelper.MESSAGE);
+            } else {
+                builder = new NotificationCompat.Builder(mContext);
+            }
+            builder.setContentTitle(title)
                     .setContentText(content)
                     .setContentIntent(pi)
                     .setSmallIcon(android.R.drawable.stat_notify_error)
                     .setTicker(title)
                     .setWhen(System.currentTimeMillis());
-            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                notify = builder.getNotification();
-            } else {
-                notify = builder.build();
-            }
-            if(notify != null) {
+            notify = builder.build();
+            if (notify != null) {
                 notify.flags |= Notification.FLAG_AUTO_CANCEL;
                 nm.notify(key, R.layout.upload_notification, notify);
             }
@@ -320,13 +345,13 @@ public class UploadCourseManager {
                 break;
 
             case ShareType.SHARE_TYPE_PICTUREBOOK:
-                if (uploadParameter != null ) {
+                if (uploadParameter != null) {
                     commitCourseToPictureBook(courseData, uploadParameter);
                 }
                 break;
 
             case ShareType.SHARE_TYPE_PUBLIC_COURSE:
-                if (uploadParameter != null ) {
+                if (uploadParameter != null) {
                     commitCourseToSchoolSpace(courseData, uploadParameter);
                 }
                 break;
@@ -340,7 +365,7 @@ public class UploadCourseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("MemberId", uploadParameter.getMemberId());
         int tempMediaType = MediaType.MICROCOURSE;
-        if(courseData.type == ResType.RES_TYPE_ONEPAGE) {
+        if (courseData.type == ResType.RES_TYPE_ONEPAGE) {
             tempMediaType = MediaType.ONE_PAGE;
         }
         params.put("MType", String.valueOf(tempMediaType));
@@ -373,7 +398,7 @@ public class UploadCourseManager {
         });
     }
 
-    public static void commitCourseToClassSpace(final  Activity activity, CourseData courseData,
+    public static void commitCourseToClassSpace(final Activity activity, CourseData courseData,
                                                 final UploadParameter uploadParameter, final boolean isFinish) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("MemberId", uploadParameter.getMemberId());
@@ -382,7 +407,7 @@ public class UploadCourseManager {
         params.put("ClassId", uploadParameter.getClassId());
         params.put("ActionType", String.valueOf(6));
         params.put("Title", courseData.nickname);
-        final CourseData courseDataTemp=courseData;
+        final CourseData courseDataTemp = courseData;
         RequestHelper.sendPostRequest(activity, ServerUrl.UPLOAD_CLASS_SPACE_URL, params, new Listener<String>() {
             @Override
             public void onSuccess(String json) {
@@ -433,19 +458,19 @@ public class UploadCourseManager {
     private static void upload2OrignalShow(final Activity activity, CourseData courseData,
                                            SubscribeClassInfo classInfo, final boolean isFinish) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("Dept",1);
+        params.put("Dept", 1);
         params.put("JoinType", 1);
         params.put("MemberId", courseData.code);
         params.put("Memo", courseData.description);
         params.put("NickName", courseData.createaccount);
-        params.put("ProductId",courseData.getIdType());
+        params.put("ProductId", courseData.getIdType());
         params.put("RealName", courseData.createname);
         params.put("Thumb", courseData.thumbnailurl);
         params.put("ProductTitle", courseData.nickname);
-        params.put("ResourceUrl",courseData.resourceurl);
+        params.put("ResourceUrl", courseData.resourceurl);
         params.put("ScreenType", courseData.screentype);
-        params.put("FileSize",courseData.size);
-        if(classInfo != null) {
+        params.put("FileSize", courseData.size);
+        if (classInfo != null) {
             params.put("SchoolId", classInfo.getSchoolId());
             params.put("SchoolName", classInfo.getSchoolName());
             params.put("ClassId", classInfo.getClassId());
@@ -459,10 +484,10 @@ public class UploadCourseManager {
                     DataResult result = JSON.parseObject(json, DataResult.class);
                     if (result != null && result.isSuccess()) {
                         TipMsgHelper.ShowLMsg(activity, R.string.upload_file_sucess);
-                        if(isFinish && activity != null) {
-                            if (!TextUtils.isEmpty(oriFilePath)){
-                                Intent intent =new Intent();
-                                intent.putExtra(SlideManagerHornForPhone.SAVE_PATH,oriFilePath);
+                        if (isFinish && activity != null) {
+                            if (!TextUtils.isEmpty(oriFilePath)) {
+                                Intent intent = new Intent();
+                                intent.putExtra(SlideManagerHornForPhone.SAVE_PATH, oriFilePath);
                                 activity.setResult(Activity.RESULT_OK, intent);
                             }
                             activity.finish();
@@ -489,7 +514,7 @@ public class UploadCourseManager {
         params.put("MicroID", courseData.getIdType());
         params.put("Title", courseData.nickname);
         List<String> picBookIds = uploadParameter.getPicBookIds();
-        if(picBookIds != null && picBookIds.size() == 3) {
+        if (picBookIds != null && picBookIds.size() == 3) {
             params.put("AgeGroupIds", picBookIds.get(0));
             params.put("LanguageIds", picBookIds.get(1));
             params.put("TagsIds", picBookIds.get(2));
@@ -533,37 +558,38 @@ public class UploadCourseManager {
             params.put("SchoolMaterialType", uploadParameter.getSchoolMaterialType());
         }
         int resType = courseData.type % ResType.RES_TYPE_BASE;
-        if (resType == ResType.RES_TYPE_STUDY_CARD){
+        if (resType == ResType.RES_TYPE_STUDY_CARD) {
             //任务类型的教辅材料
             params.put("GuidanceCardSendFlag", courseData.guidanceCardSendFlag);
         }
 
         RequestHelper.sendPostRequest(mContext, ServerUrl.UPLOAD_COURSE_BOOK_STORE_URL, params, new
                 RequestHelper.RequestDataResultListener(mContext, DataModelResult.class) {
-            @Override
-            public void onSuccess(String json) {
-                try {
+                    @Override
+                    public void onSuccess(String json) {
+                        try {
 //                    DataModelResult result = JSON.parseObject(json, DataModelResult.class);
-                    super.onSuccess(json);
-                    DataModelResult result = (DataModelResult) getResult();
-                    if (result == null || !result.isSuccess()){
-                        return;
-                    }
-                    TipMsgHelper.ShowLMsg(mContext, R.string.upload_file_sucess);
+                            super.onSuccess(json);
+                            DataModelResult result = (DataModelResult) getResult();
+                            if (result == null || !result.isSuccess()) {
+                                return;
+                            }
+                            TipMsgHelper.ShowLMsg(mContext, R.string.upload_file_sucess);
 //                    if (result != null &&result.isSuccess()) {
 //                        TipMsgHelper.ShowLMsg(mContext, R.string.upload_file_sucess);
 //                    } else {
 //                            TipMsgHelper.ShowLMsg(mContext, R.string.upload_file_failed);
 //                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onError(NetroidError error) {
-                super.onError(error);
-            }
-        });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(NetroidError error) {
+                        super.onError(error);
+                    }
+                });
     }
 
 
