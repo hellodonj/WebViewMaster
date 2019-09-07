@@ -361,8 +361,14 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                             holder.lessonAuditionTv.setVisibility(View.GONE);
                         }
                     } else {
-                        holder.lessonAuditionTv.setVisibility(View.GONE);
-                        holder.lessonNameTv.setMaxWidth(Integer.MAX_VALUE);
+                        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM &&
+                                position == 1 && !vo.isBuyed() && !isCourseSelect && !isJoinCourse){
+                            holder.lessonAuditionTv.setVisibility(View.VISIBLE);
+                            holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
+                        }else {
+                            holder.lessonAuditionTv.setVisibility(View.GONE);
+                            holder.lessonNameTv.setMaxWidth(Integer.MAX_VALUE);
+                        }
                     }
 
                     boolean isTeacher = isTeacher();
@@ -588,6 +594,8 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                                 }
                                             }
                                         } else {
+                                            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM &&
+                                                    position == 1 && !vo.isBuyed() && !isCourseSelect && !isJoinCourse)
                                             //试听的进入
                                             if (examType != TYPE_EXAM &&
                                                     position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {
