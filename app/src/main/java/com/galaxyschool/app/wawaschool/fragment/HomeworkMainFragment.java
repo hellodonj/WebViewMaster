@@ -22,6 +22,7 @@ import com.galaxyschool.app.wawaschool.HandleCheckResourceActivity;
 import com.galaxyschool.app.wawaschool.HomeworkPickerActivity;
 import com.galaxyschool.app.wawaschool.Note.OnlineMediaPaperActivity;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.ReMarkTaskListActivity;
 import com.galaxyschool.app.wawaschool.TodayHomeworkActivity;
 import com.galaxyschool.app.wawaschool.common.ActivityUtils;
 import com.galaxyschool.app.wawaschool.common.ArrangeLearningTasksUtil;
@@ -657,6 +658,10 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             if (isFromReviewStatistic){
                 textView.setVisibility(View.GONE);
             }
+            if (roleType == RoleType.ROLE_TYPE_TEACHER){
+                //显示未批作业
+                textView.setText(getString(R.string.str_un_remark_homework));
+            }
         }
         //布置作业
         textView = (TextView) findViewById(R.id.tv_assign_homework);
@@ -1001,7 +1006,12 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             enterHomeworkPickerActivity();
         } else if (v.getId() == R.id.tv_today_homework) {
             //今日作业
-            enterTodayHomeworkActivity();
+            if (roleType == RoleType.ROLE_TYPE_TEACHER){
+                //未批作业
+                enterUnRemarkActivityDetail();
+            } else {
+                enterTodayHomeworkActivity();
+            }
         } else if (v.getId() == R.id.tv_assign_homework) {
             //布置作业
             int haveFree = Utils.checkStorageSpace(getActivity());
@@ -1073,6 +1083,10 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             intent.putExtra("TaskState", finishStatus);
         }
         startActivityForResult(intent, CampusPatrolPickerFragment.REQUEST_CODE_HOMEWORK_TODAY_TASK);
+    }
+
+    private void enterUnRemarkActivityDetail(){
+        ReMarkTaskListActivity.start(getActivity(),0,classId);
     }
 
     private void switchChild() {

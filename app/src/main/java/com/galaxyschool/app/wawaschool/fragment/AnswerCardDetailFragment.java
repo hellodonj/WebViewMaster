@@ -650,6 +650,11 @@ public class AnswerCardDetailFragment extends ContactsListFragment implements Vi
     }
 
     private void openTeacherReMarkDialog() {
+        if (!isMarkingAllQuestion){
+            //主观题咩有作答完成给于提示
+            TipMsgHelper.ShowMsg(getActivity(),R.string.str_pls_remark_content_tip);
+            return;
+        }
         ExerciseTeacherCommentDialog dialog = new ExerciseTeacherCommentDialog(mContext, result -> {
             commitTeacherMark((String) result);
         });

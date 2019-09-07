@@ -1,6 +1,7 @@
 package com.galaxyschool.app.wawaschool.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * ======================================================
@@ -36,13 +37,43 @@ public class StatisticBean implements Serializable {
     private String StudentCompletedRate;
     private int percent;
     private int [] weights;
-
+    private int AverageScore;//平均分
+    private int StudentNotCompletedNum;
+    private List<StatisticBean> studentUnCompleteList;
+    //班级成绩统计需要的字段
+    private int AverageScoreMax;
+    private int AverageScoreMin;
+    private int TotalAverageScore;
+    private List<StatisticBean> ExcellentNumStudentList;
+    private int VeryGoodNum;
+    private List<StatisticBean> VeryGoodNumStudentList;
+    private List<StatisticBean> GoodNumStudentList;
+    private List<StatisticBean> FairNumStudentList;
+    private List<StatisticBean> FailNumStudentList;
+    private int courseId;
+    private String classId;
     public int getTaskTotalNum() {
         return ExcellentNum + GoodNum + FairNum + FailNum + NoCorrectNum + NotCompletedNum;
     }
 
     public int getTotalMarkNum(){
-        return ExcellentNum + GoodNum + FairNum + FailNum;
+        return ExcellentNum + GoodNum + FairNum + FailNum + VeryGoodNum;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
     public int[] getWeights() {
@@ -51,6 +82,102 @@ public class StatisticBean implements Serializable {
 
     public void setWeights(int[] weights) {
         this.weights = weights;
+    }
+
+    public int getAverageScoreMax() {
+        return AverageScoreMax;
+    }
+
+    public void setAverageScoreMax(int averageScoreMax) {
+        AverageScoreMax = averageScoreMax;
+    }
+
+    public int getAverageScoreMin() {
+        return AverageScoreMin;
+    }
+
+    public void setAverageScoreMin(int averageScoreMin) {
+        AverageScoreMin = averageScoreMin;
+    }
+
+    public int getTotalAverageScore() {
+        return TotalAverageScore;
+    }
+
+    public void setTotalAverageScore(int totalAverageScore) {
+        TotalAverageScore = totalAverageScore;
+    }
+
+    public List<StatisticBean> getExcellentNumStudentList() {
+        return ExcellentNumStudentList;
+    }
+
+    public void setExcellentNumStudentList(List<StatisticBean> excellentNumStudentList) {
+        ExcellentNumStudentList = excellentNumStudentList;
+    }
+
+    public int getVeryGoodNum() {
+        return VeryGoodNum;
+    }
+
+    public void setVeryGoodNum(int veryGoodNum) {
+        VeryGoodNum = veryGoodNum;
+    }
+
+    public List<StatisticBean> getVeryGoodNumStudentList() {
+        return VeryGoodNumStudentList;
+    }
+
+    public void setVeryGoodNumStudentList(List<StatisticBean> veryGoodNumStudentList) {
+        VeryGoodNumStudentList = veryGoodNumStudentList;
+    }
+
+    public List<StatisticBean> getGoodNumStudentList() {
+        return GoodNumStudentList;
+    }
+
+    public void setGoodNumStudentList(List<StatisticBean> goodNumStudentList) {
+        GoodNumStudentList = goodNumStudentList;
+    }
+
+    public List<StatisticBean> getFairNumStudentList() {
+        return FairNumStudentList;
+    }
+
+    public void setFairNumStudentList(List<StatisticBean> fairNumStudentList) {
+        FairNumStudentList = fairNumStudentList;
+    }
+
+    public List<StatisticBean> getFailNumStudentList() {
+        return FailNumStudentList;
+    }
+
+    public void setFailNumStudentList(List<StatisticBean> failNumStudentList) {
+        FailNumStudentList = failNumStudentList;
+    }
+
+    public List<StatisticBean> getStudentUnCompleteList() {
+        return studentUnCompleteList;
+    }
+
+    public void setStudentUnCompleteList(List<StatisticBean> studentUnCompleteList) {
+        this.studentUnCompleteList = studentUnCompleteList;
+    }
+
+    public int getStudentNotCompletedNum() {
+        return StudentNotCompletedNum;
+    }
+
+    public void setStudentNotCompletedNum(int studentNotCompletedNum) {
+        StudentNotCompletedNum = studentNotCompletedNum;
+    }
+
+    public int getAverageScore() {
+        return AverageScore;
+    }
+
+    public void setAverageScore(int averageScore) {
+        AverageScore = averageScore;
     }
 
     public int getPercent() {

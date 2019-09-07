@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,8 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lqwawa.intleducation.AppConfig;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
@@ -182,6 +181,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private String courseId;
     private String sectionName;
     private String sectionId;
+    private String memberId;
     private int status, taskType;
     private CourseVo courseVo;
     // 课程大纲参数
@@ -256,6 +256,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         sectionId = getIntent().getStringExtra(SECTION_ID);
         sectionName = getIntent().getStringExtra(SECTION_NAME);
         sectionTitle = getIntent().getStringExtra(SECTION_TITLE);
+        memberId =  getIntent().getStringExtra("memberId");
 
         topBar.setTitle(sectionTitle);
         topBar.setTitleWide(DensityUtil.dip2px(120));
@@ -302,19 +303,12 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                         || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mTopLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
 
-        isContainAssistantWork = getIntent().getBooleanExtra(ISCONTAINASSISTANTWORK, false);
-        if (isContainAssistantWork) {
+        //班级老师才有课中实施方案
+        if (courseParams.isClassTeacher()) {
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //助教工作台
-                    String url = AppConfig.ServerUrl.ASSISTANT_DESK + "courseId=" + courseId + "&chapterId=" + sectionId + "&hidefooter=true";
-                    Intent intent = new Intent();
-                    intent.setClassName(MainApplication.getInstance().getPackageName(), "com.galaxyschool.app.wawaschool.CampusOnlineWebActivity");
-                    intent.putExtra("url", url);
-                    intent.putExtra("isMooc", true);
-                    intent.putExtra("title", getString(R.string.class_implementation_plan));
-                    startActivity(intent);
+                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId,memberId,courseId,courseParams.getClassId());
                 }
             });
         }
@@ -455,6 +449,9 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mBottomLayout1.setVisibility(View.GONE);
                 }
                 //1 预习 2练习 3复习
+                if (mTabLists.size()==1){
+                    mTabLayout.setBackground(new ColorDrawable(UIUtil.getColor(R.color.colorAccent)));
+                }
                 for (int i = 0; i < mTabLists.size(); i++) {
                     SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
                             mExerciseTypeVoList.get(i).getExerciseType(), courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
@@ -471,7 +468,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mTabLayout.setupWithViewPager(mViewPager);
 
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
             mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override

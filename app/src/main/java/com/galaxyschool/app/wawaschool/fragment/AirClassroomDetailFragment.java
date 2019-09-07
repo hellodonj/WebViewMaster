@@ -53,6 +53,7 @@ import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.helper.CheckLanMp4UrlHelper;
+import com.galaxyschool.app.wawaschool.helper.EBanShuHelper;
 import com.galaxyschool.app.wawaschool.pojo.Emcee;
 import com.galaxyschool.app.wawaschool.pojo.EmceeList;
 import com.galaxyschool.app.wawaschool.pojo.PublishClass;
@@ -1247,55 +1248,10 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
     }
 
     private void enterBlackBoardReplayActivity() {
-        StringBuilder urlBuilder = new StringBuilder("https://api.ebanshu.net/v1/rooms/video/list?room_id=");
-        urlBuilder.append(onlineRes.getRoomId());
-        Map<String, String> params = new HashMap<>();
-        params.put("ebs-app-id", "2");
-        params.put("ebs-app-key", "123456");
-        RequestHelper.getRequest(getActivity(), urlBuilder.toString(), new RequestHelper
-                .RequestListener(getActivity(), ResourceResult.class) {
-            @Override
-            public void onSuccess(String jsonString) {
-                if (TextUtils.isEmpty(jsonString)) {
-                    TipMsgHelper.ShowMsg(getActivity(), R.string.str_blackboard_live_overed);
-                } else {
-                    try {
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonString);
-                        boolean isOk = jsonObject.getBoolean("ok");
-                        if (isOk) {
-                            org.json.JSONObject dataObj = jsonObject.getJSONObject("data");
-                            if (dataObj != null) {
-                                org.json.JSONArray videoList = dataObj.getJSONArray("object_list");
-                                if (videoList != null && videoList.length() > 0) {
-                                    ArrayList<String> videoPaths = new ArrayList<>();
-                                    ArrayList<Integer> videoDurations = new ArrayList<>();
-                                    for (int i = 0, len = videoList.length(); i < len; i++) {
-                                        org.json.JSONObject videoObj = (org.json.JSONObject) videoList.get(i);
-                                        if (videoObj != null) {
-                                            org.json.JSONObject video = videoObj.getJSONObject("video");
-                                            if (video != null) {
-                                                videoPaths.add(video.getString("location_url"));
-                                                double duration = video.getDouble("duration");
-                                                int millisecond = (int) (duration * 1000);
-                                                videoDurations.add(millisecond);
-                                            }
-                                        }
-                                    }
-                                    if (videoDurations.size() > 0 && videoPaths.size() > 0) {
-                                        MultiVideoPlayActivity.start(getActivity(), onlineRes
-                                                .getTitle(), videoPaths, videoDurations);
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                        TipMsgHelper.ShowMsg(getActivity(), R.string.str_blackboard_live_overed);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, params);
+        EBanShuHelper.loadEBanShuImageList(getActivity(),
+                String.valueOf(onlineRes.getRoomId()),
+                onlineRes.getTitle(),
+                AppSettings.getFileUrl(forestCover));
     }
 
     /**

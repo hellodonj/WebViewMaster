@@ -409,6 +409,8 @@ public class StudyTaskUtils {
             scoringRule = 4;
         } else if (TextUtils.equals(point, "300")) {
             scoringRule = 5;
+        } else if (TextUtils.equals(point,"40")){
+            scoringRule = 6;
         }
         return scoringRule;
     }

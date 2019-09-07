@@ -39,5 +39,8 @@
     <color name="com_text_blue_small">#7ED6C2</color>
     <color name="translation">#00000000</color>
     <color name="light_gray">#eeeeee</color>
-
+    <color name="abroad_dialog_item">#ffffff</color>
+    <color name="abroad_dialog_item_press">#dfdfdf</color>
+    <color name="abroad_dialog_textcolor">#222222</color>
+    <color name="abroad_dialog_view_bg">#cccccc</color>
 </resources>

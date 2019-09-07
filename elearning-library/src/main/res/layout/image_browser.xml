@@ -1,71 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@android:color/black"
-    android:orientation="vertical">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@android:color/black"
+             android:orientation="vertical">
 
 
     <com.libs.gallery.ExtendedViewPager
-        android:layout_gravity="center"
         android:id="@+id/gallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
     </com.libs.gallery.ExtendedViewPager>
 
+    <LinearLayout
+        android:id="@+id/layout_place_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#bec5d1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_ebanshu_default"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
     <RelativeLayout
-        android:orientation="horizontal"
-        android:background="#8000"
         android:id="@+id/image_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:background="#8000"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/close_btn"
             android:layout_width="60dp"
             android:layout_height="match_parent"
+            android:background="@drawable/nav_blank_ico"
             android:scaleType="centerInside"
-            android:src="@drawable/nav_backarrow_ico"
-            android:background="@drawable/nav_blank_ico" />
+            android:src="@drawable/nav_backarrow_ico"/>
+
         <ImageView
-            android:layout_alignParentRight="true"
-            android:padding="5dp"
-            android:layout_marginRight="8dp"
             android:id="@+id/iv_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:padding="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/menu_icon_more" />
+            android:src="@drawable/menu_icon_more"/>
 
         <TextView
             android:id="@+id/image_toolbar_title"
-            tools:text="热让发safhaf发发汗减肥法家发包方啊evhwere j vw wj v  jfw 方法"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:maxLength="50"
-            android:layout_toRightOf="@id/close_btn"
-            android:layout_toLeftOf="@+id/iv_more"
-            android:textColor="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:layout_toRightOf="@id/close_btn"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLength="50"
+            android:maxLines="2"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            tools:text="热让发safhaf发发汗减肥法家发包方啊evhwere j vw wj v  jfw 方法"/>
 
     </RelativeLayout>
 
     <TextView
-        android:padding="3dp"
+        android:id="@+id/image_toolbar_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="#8000"
-        android:id="@+id/image_toolbar_num"
-        android:visibility="gone"
-        android:textSize="20sp"
-        tools:text="3/8"
         android:gravity="center"
+        android:padding="3dp"
         android:textColor="#ffffff"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textSize="20sp"
+        android:visibility="gone"
+        tools:text=""/>
 
+    <!--增加回放的标识-->
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_play_back"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="20dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/default_scv_selected_color"
+        app:cardCornerRadius="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/str_play_back"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+    </android.support.v7.widget.CardView>
 </FrameLayout>

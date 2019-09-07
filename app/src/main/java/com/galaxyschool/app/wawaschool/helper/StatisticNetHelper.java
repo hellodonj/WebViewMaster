@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.CallbackListener;
@@ -13,9 +13,9 @@ import com.galaxyschool.app.wawaschool.config.ServerUrl;
 import com.galaxyschool.app.wawaschool.pojo.StatisticBean;
 import com.galaxyschool.app.wawaschool.pojo.StatisticBeanListResult;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.ModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +50,16 @@ public class StatisticNetHelper {
         colors.add(Color.parseColor("#7f7f7f"));
         //未完成
         colors.add(Color.parseColor("#cdcdcd"));
+        return colors;
+    }
+
+    public static List<Integer> getClassColorList(){
+        List<Integer> colors = new ArrayList<>();
+        colors.add(Color.parseColor("#76c905"));
+        colors.add(Color.parseColor("#38c2e0"));
+        colors.add(Color.parseColor("#ffe827"));
+        colors.add(Color.parseColor("#ff9f22"));
+        colors.add(Color.parseColor("#ff3b0d"));
         return colors;
     }
 
@@ -246,17 +256,28 @@ public class StatisticNetHelper {
                             JSONObject object = JSON.parseObject(jsonString);
                             int code = object.getIntValue("ErrorCode");
                             if (code == 0) {
-                                JSONObject modelObj = object.getJSONObject("Model");
-                                //成功
-                                if (modelObj != null){
-                                    StatisticBean bean = new StatisticBean();
-                                    bean.setTotalNum(modelObj.getIntValue("NeedCompleteNum"));
-                                    bean.setImportantNum(modelObj.getIntValue("CompletedNum"));
-                                    bean.setUnImportantNum(modelObj.getIntValue("NotCompletedNum"));
-                                    bean.setClassSize(modelObj.getIntValue("ClassSize"));
-                                    bean.setAlreadySetTaskNum(modelObj.getIntValue("AlreadySetTaskNum"));
-                                    if (callbackListener != null) {
-                                        callbackListener.onBack(bean);
+                                JSONObject obj = object.getJSONObject("Model");
+                                if (obj != null) {
+                                    //成功
+                                    JSONObject modelObj = obj.getJSONObject("Data");
+                                    if (modelObj != null) {
+                                        StatisticBean bean = new StatisticBean();
+                                        bean.setTotalNum(modelObj.getIntValue("NeedCompleteNum"));
+                                        bean.setImportantNum(modelObj.getIntValue("CompletedNum"));
+                                        bean.setUnImportantNum(modelObj.getIntValue("NotCompletedNum"));
+                                        bean.setClassSize(modelObj.getIntValue("ClassSize"));
+                                        bean.setAlreadySetTaskNum(modelObj.getIntValue("AlreadySetTaskNum"));
+                                        JSONArray jsonArray = modelObj.getJSONArray(
+                                                "StudentUnCompleteList");
+                                        if (jsonArray != null && jsonArray.size() > 0){
+                                            List<StatisticBean> list =
+                                                    JSONObject.parseArray(jsonArray.toString(),
+                                                    StatisticBean.class);
+                                            bean.setStudentUnCompleteList(list);
+                                        }
+                                        if (callbackListener != null) {
+                                            callbackListener.onBack(bean);
+                                        }
                                     }
                                 }
                             }
@@ -298,5 +319,47 @@ public class StatisticNetHelper {
                 };
         listener.setShowLoading(true);
         RequestHelper.sendPostRequest(context, ServerUrl.GET_TASK_DETAIL_STATIS_BASE_URL, params, listener);
+    }
+
+    /**
+     * 拉取班级成绩统计
+     */
+    public void GetClassTaskAverageStatis(int courseId,
+                                       String classId,
+                                       int courseTaskType) {
+        if (TextUtils.isEmpty(classId)) {
+            return;
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("CourseId", courseId);
+        params.put("ClassId", classId);
+        params.put("CourseTaskType",courseTaskType);
+        RequestHelper.RequestModelResultListener listener =
+                new RequestHelper.RequestModelResultListener<ModelResult>(context,
+                        ModelResult.class) {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        super.onSuccess(jsonString);
+                        if (!TextUtils.isEmpty(jsonString)) {
+                            JSONObject object = JSON.parseObject(jsonString);
+                            int code = object.getIntValue("ErrorCode");
+                            if (code == 0) {
+                                JSONObject obj = object.getJSONObject("Model");
+                                if (obj != null) {
+                                    //成功
+                                    JSONObject modelObj = obj.getJSONObject("Data");
+                                    if (modelObj != null) {
+                                        StatisticBean bean = JSONObject.parseObject(modelObj.toJSONString(), StatisticBean.class);
+                                        if (callbackListener != null) {
+                                            callbackListener.onBack(bean);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+        listener.setShowLoading(true);
+        RequestHelper.sendPostRequest(context, ServerUrl.GET_CLASS_TASK_AVERAGE_STATIS, params, listener);
     }
 }

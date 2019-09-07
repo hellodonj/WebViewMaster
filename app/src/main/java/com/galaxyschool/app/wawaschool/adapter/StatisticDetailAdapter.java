@@ -24,10 +24,15 @@ public class StatisticDetailAdapter extends BaseQuickAdapter<StatisticBean, Base
     @Override
     protected void convert(BaseViewHolder helper, StatisticBean item) {
         helper.setText(R.id.tv_score_range,item.getTitle());
-        helper.setText(R.id.tv_num,mContext.getString(R.string.str_task_num,item.getNumber()));
         if (item.getStatisticType() == LearningStatisticActivity.STATISTIC_TYPE.COURSE_TYPE){
             helper.getView(R.id.iv_arrow_icon).setVisibility(item.isShowRightArrow() ?
                     View.VISIBLE : View.INVISIBLE);
+            helper.setText(R.id.tv_num,mContext.getString(R.string.str_task_num,item.getNumber()));
+        } else if (item.getStatisticType() == LearningStatisticActivity.STATISTIC_TYPE.CLASS_STATISTIC_TYPE){
+            helper.getView(R.id.iv_arrow_icon).setVisibility(View.VISIBLE);
+            helper.setText(R.id.tv_num,item.getNumber() + mContext.getString(R.string.str_people));
+        } else {
+            helper.setText(R.id.tv_num,mContext.getString(R.string.str_task_num,item.getNumber()));
         }
         DrawPointView pointView = helper.getView(R.id.spot_view);
         pointView.setPointColor(item.getColor());

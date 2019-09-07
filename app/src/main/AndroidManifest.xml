@@ -254,6 +254,10 @@
                   android:screenOrientation="portrait"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <activity android:name=".DataStatisticActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:screenOrientation="portrait"/>
+
 
         <activity android:name=".StudentMemberListActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
@@ -1162,6 +1166,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name="com.lqwawa.mooc.ImplementationPlanActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
 
         <service
             android:name="com.letvcloud.cmf.MediaService"

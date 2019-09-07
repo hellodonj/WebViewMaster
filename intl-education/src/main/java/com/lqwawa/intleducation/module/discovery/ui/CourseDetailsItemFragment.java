@@ -76,7 +76,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
     // 没有评论显示的空布局
     private View mNoCommentTip;
     private LinearLayout mBottomLayout;
-    // 学习统计,课程统计
+    // 学习统计,课程统计  改为 数据统计
     private Button mBtnStatisticalLearning, mBtnCourseStatistics;
 
     // 课程公告的集合以及Adapter
@@ -500,6 +500,7 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
                 courseParams.isClassTeacher()
                 && !mTeacherVisitor) {
             mBottomLayout.setVisibility(View.VISIBLE);
+            mBtnStatisticalLearning.setVisibility(View.GONE);
             LQCourseHelper.requestChapterByCourseId(courseParams.getClassId(), courseId, new Callback());
         } else if (courseParams.getLibraryType()== OrganLibraryType.TYPE_TEACHING_PLAN &&  (courseParams.isClassCourseEnter() &&
                 !courseParams.isClassParent() && courseParams.isClassStudent())) {

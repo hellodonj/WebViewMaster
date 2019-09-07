@@ -51,6 +51,7 @@ public class TaskSliderHelper {
     public static OnWorkCartListener onWorkCartListener = null;
     public static OnTutorialMarkingListener onTutorialMarkingListener = null;
     public static OnLearnStatisticListener onLearnStatisticListener = null;
+    public static OnImplementationPlanListener onImplementationPlanListener = null;
 
     public interface OnPlayListListener {
         Object setPlayListInfo(List<CourseResourceEntity> playListVo);
@@ -82,6 +83,13 @@ public class TaskSliderHelper {
                                          @NonNull String classId,
                                          @NonNull int roleType,
                                          @NonNull String studentId);
+    }
+
+    public interface OnImplementationPlanListener{
+
+        void enterImplementationPlanActivity(@NonNull Activity activity,
+                                             @NonNull String chapterId,
+                                             String memberId,String courseId,String classId);
     }
 
     public interface OnTutorialMarkingListener {

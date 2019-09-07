@@ -546,6 +546,15 @@
     <string name="label_exam_unlock_tip">考试未解锁，不可添加</string>
     <string name="label_teaching_plan_expire_tip">请联系班级老师</string>
     <string name="input_activation_please">请输入激活码!</string>
-
     <string name="label_immediate_comment_tip">请前往空中学校-学习任务中完成点评</string>
+
+    <string name="label_reset">重置</string>
+    <string name="label_learning_target">一、学习目标</string>
+    <string name="label_main_difficulty">二、重点难点</string>
+    <string name="label_common_problem">三、常见问题</string>
+    <string name="label_input_text_tip">请输入文本</string>
+    <string name="label_add_attachments">添加附件</string>
+    <string name="abroad_choosephotp">相册</string>
+    <string name="abroad_photo">拍照</string>
+    <string name="abroad_cancel">取消</string>
 </resources>

@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,6 +53,8 @@ public class ImageBrowserActivity extends BaseActivity {
     public static final String KEY_ISSHOWCOURSEANDREADING = "isShowCourseAndReading";
     public static final String KEY_BUNDLE_VALUE_TOO_BIG = "key_bundle_value_too_big";
     public static final String KEY_IS_LOAD_LOCAL_IMAGE = "key_is_load_local_image";
+    public static final String KEY_ROOM_ID = "room_id";
+    public static final String KEY_TITLE = "title";
 
     private ExtendedViewPager mGallery;
 
@@ -63,6 +66,7 @@ public class ImageBrowserActivity extends BaseActivity {
     private TitlebarTimerTask mTimerTask;
     private ImageView mCloseBtn;
     private TextView mImageToolbarNum;
+    private LinearLayout placeHolderLayout;
     private int mIndex;
     private boolean isPDF,//是否为PDF,PPT
             isHideMoreBtn,//是否隐藏更多按钮
@@ -79,7 +83,8 @@ public class ImageBrowserActivity extends BaseActivity {
     private boolean isShowTopBar = true;
     private boolean isBigBundle;
     private boolean isLoadLocalImage;
-
+    protected String title;
+    protected String roomId;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -140,6 +145,8 @@ public class ImageBrowserActivity extends BaseActivity {
         isShowCourseAndReading = getIntent().getBooleanExtra(KEY_ISSHOWCOURSEANDREADING, false);
         isBigBundle = getIntent().getBooleanExtra(KEY_BUNDLE_VALUE_TOO_BIG, false);
         isLoadLocalImage = getIntent().getBooleanExtra(KEY_IS_LOAD_LOCAL_IMAGE, false);
+        roomId = getIntent().getStringExtra(KEY_ROOM_ID);
+        title = getIntent().getStringExtra(KEY_TITLE);
         if (isBigBundle) {
             List<ImageInfo> info = getPreferencesData();
             if (info != null && info.size() > 0) {
@@ -152,6 +159,19 @@ public class ImageBrowserActivity extends BaseActivity {
     }
 
     private void showTitlebar() {
+        if (TextUtils.isEmpty(roomId)) {
+            changeTopBarStatus();
+        } else {
+            if (mImgsInfo == null || mImgsInfo.size() == 0){
+                mTopbar.setBackgroundColor(getResources().getColor(R.color.uvv_black));
+                mTopbar.setVisibility(View.VISIBLE);
+            } else {
+                changeTopBarStatus();
+            }
+        }
+    }
+
+    private void changeTopBarStatus(){
         if (isShowTopBar) {
             mTopbar.animate().alpha(1).y(0).setDuration(250);
         } else {
@@ -199,19 +219,24 @@ public class ImageBrowserActivity extends BaseActivity {
     private void initView() {
         mCloseBtn = (ImageView) findViewById(R.id.close_btn);
         mTitle = (TextView) findViewById(R.id.image_toolbar_title);
-        String title = mImgsInfo.get(mIndex).getTitle();
-
-        mTitle.setText(Utils.removeFileNameSuffix(title));
+        if (mImgsInfo != null && mImgsInfo.size() > 0){
+            String title = mImgsInfo.get(mIndex).getTitle();
+            mTitle.setText(Utils.removeFileNameSuffix(title));
+        } else if (!TextUtils.isEmpty(roomId)){
+            mTitle.setText(title);
+        }
         mTopbar = (RelativeLayout) findViewById(R.id.image_toolbar);
         mGallery = (ExtendedViewPager) findViewById(R.id.gallery);
         mImageToolbarNum = (TextView) findViewById(R.id.image_toolbar_num);
-        if (isPDF || isShowIndex) {
-            String str = (mIndex + 1) + "/" + mImgsInfo.size();
-            mImageToolbarNum.setVisibility(View.VISIBLE);
-            mImageToolbarNum.setText(str);
+        placeHolderLayout = (LinearLayout) findViewById(R.id.layout_place_holder);
+        if (mImgsInfo != null && mImgsInfo.size() > 0){
+            if (isPDF || isShowIndex) {
+                String str = (mIndex + 1) + "/" + mImgsInfo.size();
+                mImageToolbarNum.setVisibility(View.VISIBLE);
+                mImageToolbarNum.setText(str);
+            }
         }
         mIvMore = (ImageView) findViewById(R.id.iv_more);
-
         mIvMore.setVisibility(isHideMoreBtn ? View.INVISIBLE : View.VISIBLE);
         mIvMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,39 +261,45 @@ public class ImageBrowserActivity extends BaseActivity {
 //                .resetViewBeforeLoading(true)
 //                .decodingOptions(decodeOptions)
 //                .build();
-        mGallery.setAdapter(new TouchImageAdapter());
-        mGallery.setCurrentItem(mIndex);
-        mGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if (mImgsInfo != null && mImgsInfo.size() > 0) {
+            mGallery.setAdapter(new TouchImageAdapter());
+            mGallery.setCurrentItem(mIndex);
+            mGallery.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mIndex = position;
-                if (position < mImgsInfo.size()) {
-                    cancelTimerOfTitlebar();
-                    String title = mImgsInfo.get(position).getTitle();
-                    mTitle.setText(Utils.removeFileNameSuffix(title));
-                    String str = (position + 1) + "/" + mImgsInfo.size();
-
-                    if (isPDF || isShowIndex) {
-                        mImageToolbarNum.setText(str);
-                    }
-                    restartTimerOfTitlebar();
-                    isShowTopBar = true;
-                    showTitlebar();
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageSelected(int position) {
+                    mIndex = position;
+                    if (mImgsInfo != null) {
+                        if (position < mImgsInfo.size()) {
+                            cancelTimerOfTitlebar();
+                            String title = mImgsInfo.get(position).getTitle();
+                            mTitle.setText(Utils.removeFileNameSuffix(title));
+                            String str = (position + 1) + "/" + mImgsInfo.size();
 
-            }
-        });
+                            if (isPDF || isShowIndex) {
+                                mImageToolbarNum.setText(str);
+                            }
+                            restartTimerOfTitlebar();
+                            isShowTopBar = true;
+                            showTitlebar();
+                        }
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        } else {
+            mGallery.setVisibility(View.GONE);
+            placeHolderLayout.setVisibility(View.VISIBLE);
+        }
         showTitlebar();
-
         param = new LQImageLoader.DIOptBuiderParam();
         param.mDefaultIcon = R.drawable.default_photo;
         param.mHighQuality = true;
@@ -359,7 +390,6 @@ public class ImageBrowserActivity extends BaseActivity {
     protected ImageInfo getNewResourceInfoTag() {
         ImageInfo newResourceInfoTag;
         newResourceInfoTag = mImgsInfo.get(mIndex);
-
         if (newResourceInfoTag == null) {
             newResourceInfoTag = new ImageInfo();
             newResourceInfoTag.setTitle(mImgsInfo.get(0).getTitle());
@@ -437,6 +467,9 @@ public class ImageBrowserActivity extends BaseActivity {
 
         @Override
         public int getCount() {
+            if (mImgsInfo == null){
+                return 0;
+            }
             return mImgsInfo.size();
         }
 
@@ -466,7 +499,6 @@ public class ImageBrowserActivity extends BaseActivity {
                 LQImageLoader.displayImage(resourceUrl, img, param);
 //                ImageLoader.getInstance().displayImage(resourceUrl, img, options);
             }
-
             container.addView(img);
             return img;
         }

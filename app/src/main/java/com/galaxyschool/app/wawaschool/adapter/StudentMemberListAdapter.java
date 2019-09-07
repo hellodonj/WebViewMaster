@@ -3,6 +3,8 @@ package com.galaxyschool.app.wawaschool.adapter;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
+import android.view.View;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.galaxyschool.app.wawaschool.MyApplication;
@@ -15,9 +17,10 @@ import java.util.List;
 public class StudentMemberListAdapter extends BaseQuickAdapter<StatisticBean, BaseViewHolder> {
 
     private OnItemClick onItemClick;
-
-    public StudentMemberListAdapter(@Nullable List<StatisticBean> data) {
+    private boolean fromClassStatistic;
+    public StudentMemberListAdapter(@Nullable List<StatisticBean> data,boolean fromClassStatistic) {
         super(R.layout.item_student_member_list,data);
+        this.fromClassStatistic = fromClassStatistic;
     }
 
     @Override
@@ -26,7 +29,13 @@ public class StudentMemberListAdapter extends BaseQuickAdapter<StatisticBean, Ba
         MyApplication.getThumbnailManager((Activity) mContext).
                 displayUserIconWithDefault(AppSettings.getFileUrl(item.getHeadPicUrl()),
                         helper.getView(R.id.iv_icon),R.drawable.default_user_icon);
-        helper.setText(R.id.tv_num,mContext.getString(R.string.str_task_num,item.getNumber()));
+        if (fromClassStatistic){
+            helper.getView(R.id.iv_arrow_icon).setVisibility(View.VISIBLE);
+            helper.setText(R.id.tv_num,mContext.getString(R.string.str_eval_score,
+                    String.valueOf(item.getAverageScore())));
+        } else {
+            helper.setText(R.id.tv_num, mContext.getString(R.string.str_task_num, item.getStudentNotCompletedNum()));
+        }
         helper.getView(R.id.ll_root_layout).setOnClickListener(v -> {
             if (onItemClick != null){
                 onItemClick.onItemClick(helper.getLayoutPosition());
