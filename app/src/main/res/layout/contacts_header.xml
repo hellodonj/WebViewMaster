@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contacts_header_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="#ffffffff">
+              android:id="@+id/contacts_header_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#ffffffff"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,21 +16,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/nav_blank_ico"
             android:scaleType="centerInside"
-            android:src="@drawable/sel_nav_backarrow"
-            android:background="@drawable/nav_blank_ico" />
+            android:src="@drawable/sel_nav_backarrow"/>
+
         <TextView
             android:id="@+id/school_more_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/toggle_school_bg"
             android:gravity="center"
             android:paddingLeft="12dp"
-            android:paddingRight="12dp"
             android:paddingTop="5dp"
-            android:layout_marginLeft="20dp"
+            android:paddingRight="12dp"
             android:paddingBottom="5dp"
             android:text="@string/toggle_school"
             android:textColor="#ffffffff"
@@ -46,12 +47,12 @@
 
             <TextView
                 android:id="@+id/contacts_header_right_btn"
-                android:layout_width="90dp"
-                android:layout_gravity="right|center_vertical"
-                android:maxLines="2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
                 android:background="@drawable/nav_blank_ico"
                 android:gravity="center"
+                android:maxLines="2"
                 android:textColor="@color/text_green"
                 android:textSize="14sp"
                 android:visibility="invisible"/>
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/nav_blank_ico"
+                android:src="@drawable/selector_icon_navi_more"
                 android:visibility="visible"/>
         </FrameLayout>
 
@@ -77,37 +78,41 @@
             android:ellipsize="middle"
             android:gravity="center"
             android:maxLines="2"/>
+
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="2dp"
+            android:gravity="center"
+            android:orientation="vertical"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:id="@+id/linearLayout">
+            android:visibility="gone">
+
             <com.galaxyschool.app.wawaschool.views.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/reporter_icon"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                app:border_color="#ffff"
-                android:src="@drawable/default_user_icon"/>
+                android:src="@drawable/default_user_icon"
+                app:border_color="#ffff"/>
+
             <TextView
                 android:id="@+id/reporter_id"
                 style="@style/txt_wawa_normal_white"
-                android:textColor="@color/text_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="2dp"
-                android:text="@string/reporter_permission"/>
+                android:gravity="center"
+                android:text="@string/reporter_permission"
+                android:textColor="@color/text_black"/>
         </LinearLayout>
     </RelativeLayout>
 
-    <View style="@style/line_gray"
-        android:id="@+id/divider_line"/>
+    <View
+        android:id="@+id/divider_line"
+        style="@style/line_gray"/>
 
 </LinearLayout>
