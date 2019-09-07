@@ -1248,7 +1248,10 @@ public class AirClassroomDetailFragment extends ContactsListFragment implements
     }
 
     private void enterBlackBoardReplayActivity() {
-        EBanShuHelper.loadEBanShuImageList(getActivity(),String.valueOf(onlineRes.getRoomId()),onlineRes.getTitle());
+        EBanShuHelper.loadEBanShuImageList(getActivity(),
+                String.valueOf(onlineRes.getRoomId()),
+                onlineRes.getTitle(),
+                AppSettings.getFileUrl(forestCover));
     }
 
     /**

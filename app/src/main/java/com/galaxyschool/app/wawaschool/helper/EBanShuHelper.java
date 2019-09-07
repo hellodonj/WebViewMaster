@@ -77,7 +77,8 @@ public class EBanShuHelper {
 
     public static void loadEBanShuImageList(Activity activity,
                                             String roomId,
-                                            String title) {
+                                            String title,
+                                            String defaultThumbnail) {
         StringBuilder urlBuilder = new StringBuilder("https://api.ebanshu.net/v1/rooms/frame/list/?room_id=");
         urlBuilder.append(roomId);
         Map<String, String> params = new HashMap<>();
@@ -122,6 +123,12 @@ public class EBanShuHelper {
                             }
                         }
                     }
+                }
+                if (infos.size() == 0 && !TextUtils.isEmpty(defaultThumbnail)){
+                    ImageInfo info = new ImageInfo();
+                    info.setResourceUrl(defaultThumbnail);
+                    info.setTitle(title);
+                    infos.add(info);
                 }
                 GalleryActivity.newInstance(activity, infos, roomId, title);
             }

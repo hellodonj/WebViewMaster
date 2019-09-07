@@ -15,5 +15,5 @@ public class Config {
 	 * 上传bugly异常 默认false
 	 *
 	 */
-	public static final boolean UPLOAD_BUGLY_EXCEPTION = true;
+	public static final boolean UPLOAD_BUGLY_EXCEPTION = false;
 }
