@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,11 +19,10 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 import com.lqwawa.apps.R;
 import com.osastudio.common.utils.FileProviderHelper;
 import com.osastudio.common.utils.TipMsgHelper;
@@ -258,7 +258,12 @@ public abstract class UpdateService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intent != null ? intent : new Intent(), PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+        NotificationCompat.Builder builder = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            builder = new NotificationCompat.Builder(getApplicationContext(),"message");
+        } else {
+            builder = new NotificationCompat.Builder(getApplicationContext());
+        }
         Notification notification = builder
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.notification_small_icon)
