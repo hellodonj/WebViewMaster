@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/selector_icon_navi_more"
+                android:src="@drawable/nav_blank_ico"
                 android:visibility="visible"/>
         </FrameLayout>
 
