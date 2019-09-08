@@ -51,4 +51,12 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
         ft.addToBackStack(null);
         ft.commit();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

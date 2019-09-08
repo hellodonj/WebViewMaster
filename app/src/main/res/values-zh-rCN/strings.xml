@@ -1808,4 +1808,5 @@
     </string-array>
 
     <string name="str_class_gradle_tips">*成绩按百分制计算，取平均值统计</string>
+    <string name="str_no_edit_content">  还没有填写内容，确定退出？</string>
 </resources>

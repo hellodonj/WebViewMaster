@@ -164,7 +164,7 @@ public class WatchWawaCourseResourceSplicingUtils {
      * @param mediaInfo
      * @return
      */
-    private static ResourceInfoTag getResourceInfoTagByMediaInfo(MediaInfo mediaInfo,
+    public static ResourceInfoTag getResourceInfoTagByMediaInfo(MediaInfo mediaInfo,
                                                                  int mediaType){
         if (mediaInfo == null){
             return null;

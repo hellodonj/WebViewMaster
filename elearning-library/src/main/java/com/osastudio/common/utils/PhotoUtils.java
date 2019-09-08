@@ -31,6 +31,7 @@ public class PhotoUtils {
     public static final int REQUEST_CODE_TAKE_PHOTO = 1;
     public static final int REQUEST_CODE_FETCH_PHOTO = 2;
     public static final int REQUEST_CODE_ZOOM_PHOTO = 3;
+    public static final int REQUEST_CODE_CHOOSE_PHOTOS = 4;
 
     /**
      * @param activity    当前activity

@@ -2,9 +2,11 @@ package com.lqwawa.mooc.modle.implementationplan;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,28 +14,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.R;
+import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceSplicingUtils;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
+import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
+import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
+import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
+import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
+import com.galaxyschool.app.wawaschool.views.ContactsMessageDialog;
 import com.lqwawa.apps.views.ContainsEmojiEditText;
+import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
+import com.lqwawa.mooc.common.GuidanceResourceType;
+import com.lqwawa.mooc.common.GuidanceTaskUtils;
 import com.lqwawa.mooc.factory.data.entity.ImplementationPlanEntity;
 
 import org.xutils.common.Callback;
 import org.xutils.common.util.DensityUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 描述: 课中实施方案
@@ -46,14 +62,28 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     public static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
 
+    public static final int LEARNING_TARGET_TYPE = 1;
+    public static final int MAIN_DIFFICULT_TYPE = 2;
+    public static final int COMMON_PROBLEM_TYPE = 3;
+
     private View mRootView, inflate;
     private TopBar mTopBar;
     private ContainsEmojiEditText mLearningTargetEt, mMainDifficultyEt, mCommonProblemEt;
     private RelativeLayout mRlAttachmentsImg1, mRlAttachmentsImg2, mRlAttachmentsImg3;
     private ImageView mAddImg1, mAddImg2, mAddImg3;
     private ImageView mDeleteImg1, mDeleteImg2, mDeleteImg3;
-    private FrameLayout mResetContainer,mConfirmContainer;
+    private Button mBtnReset, mBtnConfirm, mBtnEdit;
+    private TextView mTvAccessories1,mTvAccessories2,mTvAccessories3;
+    private List<ResourceInfoTag> resourceInfoTagList1 = new ArrayList<>();
+    private List<ResourceInfoTag> resourceInfoTagList2 = new ArrayList<>();
+    private List<ResourceInfoTag> resourceInfoTagList3 = new ArrayList<>();
+    private SelectPictureListAdapter mPictureListAdapter1;
+    private SelectPictureListAdapter mPictureListAdapter2;
+    private SelectPictureListAdapter mPictureListAdapter3;
+    private RecyclerView  mRecyclerView1;
+    private LinearLayout mBottomLayout, mBottomLayout1;
 
+    private String mLearningTargetText, mMainDifficultyText, mCommonProblemText;
     private String chapterId;
     private String memberId;
     private String courseId;
@@ -62,14 +92,12 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     private TextView takePhoto;
     private TextView choosePhoto;
     private Dialog dialog;
-    private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
-    private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
-    private static final int PHOTO_REQUEST_CUT = 3;// 结果
-
+    private int accessoriesaType;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        GuidanceTaskUtils.getInstance().onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -103,24 +131,81 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetEt = (ContainsEmojiEditText) findViewById(R.id.learning_target_content);
         mMainDifficultyEt = (ContainsEmojiEditText) findViewById(R.id.main_difficulty_content);
         mCommonProblemEt = (ContainsEmojiEditText) findViewById(R.id.common_problem_content);
-        mAddImg1 = (ImageView) findViewById(R.id.attachments_add_1);
-        mAddImg2 = (ImageView) findViewById(R.id.attachments_add_2);
-        mAddImg3 = (ImageView) findViewById(R.id.attachments_add_3);
-        mAddImg1.setOnClickListener(this);
-        mAddImg2.setOnClickListener(this);
-        mAddImg3.setOnClickListener(this);
-        mResetContainer = (FrameLayout) findViewById(R.id.reset_container);
-        mConfirmContainer= (FrameLayout) findViewById(R.id.confirm_container);
-        mResetContainer.setOnClickListener(this);
-        mConfirmContainer.setOnClickListener(this);
+        mBtnReset = (Button) findViewById(R.id.btn_reset);
+        mBtnConfirm = (Button) findViewById(R.id.btn_confirm);
+        mBtnEdit = (Button) findViewById(R.id.btn_edit);
+        mBtnReset.setOnClickListener(this);
+        mBtnConfirm.setOnClickListener(this);
+        mBtnEdit.setOnClickListener(this);
+        mTvAccessories1 = (TextView) findViewById(R.id.tv_accessories_1);
+        mTvAccessories2 = (TextView) findViewById(R.id.tv_accessories_2);
+        mTvAccessories3 = (TextView) findViewById(R.id.tv_accessories_3);
+        mRecyclerView1 = (RecyclerView) findViewById(R.id.recycler_view_1);
+        mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
+        mBottomLayout1 = (LinearLayout) findViewById(R.id.bottom_layout_1);
+
     }
 
     private void initData() {
         mTopBar.setTitle(getString(R.string.class_implementation_plan));
         mTopBar.setTitleWide(DensityUtil.dip2px(120));
 
+        mRecyclerView1.setLayoutManager( new GridLayoutManager(getActivity(),5));
+        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(),resourceInfoTagList1);
+        mRecyclerView1.setAdapter(mPictureListAdapter1);
+        mPictureListAdapter1.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                accessoriesaType = LEARNING_TARGET_TYPE;
+                choosePhotoDialog();
+            }
+        });
+
+//        LinearLayout layoutAddAccessories1 =(LinearLayout) findViewById(R.id.layout_add_accessories_1);
+//        layoutAddAccessories1.setVisibility(View.VISIBLE);
+//        View addAccessoriesLayout1 = getActivity().getLayoutInflater().inflate(R.layout
+//                .layout_add_accessories, layoutAddAccessories1, false);
+//        TextView titleTextView = (TextView) addAccessoriesLayout1.findViewById(R.id.tv_title);
+//        titleTextView.setText(getString(R.string.label_add_attachments));
+//        mGridView1 = (GridView) addAccessoriesLayout1.findViewById(R.id.common_grid_view);
+//        mGridView1.setNumColumns(5);
+//        mGridView1.setVerticalSpacing(10);
+//        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(),resourceInfoTagList1,
+//                result -> {
+//                    //删除
+//                    int position = (int) result;
+//                    resourceInfoTagList1.remove(position);
+//                    addAccessoriesAddButton();
+//                    mPictureListAdapter1.notifyDataSetChanged();
+//                    updateGridViewHeight();
+//                    updateEvalCourseViewData();
+//                },
+//                result -> {
+//
+//                });
+//        mPictureListAdapter1.setCallListener(result -> {
+//            //添加图片
+//        });
+//        mGridView1.setAdapter(mPictureListAdapter1);
+//        LinearLayout layoutAddAccessories2 =(LinearLayout) findViewById(R.id.layout_add_accessories_2);
+//        layoutAddAccessories2.setVisibility(View.VISIBLE);
+//        View addAccessoriesLayout2 = getActivity().getLayoutInflater().inflate(R.layout
+//                .layout_add_accessories, layoutAddAccessories2, false);
+//        mGridView2 = (GridView) addAccessoriesLayout2.findViewById(R.id.common_grid_view);
+//        mGridView2.setNumColumns(5);
+//        mGridView2.setVerticalSpacing(10);
+//        LinearLayout layoutAddAccessories3 =(LinearLayout) findViewById(R.id.layout_add_accessories_3);
+//        layoutAddAccessories3.setVisibility(View.VISIBLE);
+//        View addAccessoriesLayout3 = getActivity().getLayoutInflater().inflate(R.layout
+//                .layout_add_accessories, layoutAddAccessories3, false);
+//        mGridView3 = (GridView) addAccessoriesLayout3.findViewById(R.id.common_grid_view);
+//        mGridView3.setNumColumns(5);
+//        mGridView3.setVerticalSpacing(10);
+
         queryIfExistPlan();
     }
+
+
 
     private void queryIfExistPlan() {
         RequestVo requestVo = new RequestVo();
@@ -143,9 +228,6 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                     //创建过
                     if (results.isExist()) {
                         getImplementPlan();
-                    } else {
-                        ImplementationPlanEntity planEntity = new ImplementationPlanEntity();
-                        configPlanData(planEntity);
                     }
                 }
             }
@@ -208,13 +290,83 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     }
 
     private void configPlanData(ImplementationPlanEntity planEntity) {
-        if (EmptyUtil.isNotEmpty(planEntity)) {
+        if (EmptyUtil.isNotEmpty(planEntity) && planEntity.getLearningGoal() != null) {
             mLearningTargetEt.setText(planEntity.getLearningGoal());
+            mLearningTargetEt.setBackground(null);
+            mLearningTargetEt.setFocusableInTouchMode(false);
+            mLearningTargetEt.setEnabled(false);
             mMainDifficultyEt.setText(planEntity.getDifficultPoint());
+            mMainDifficultyEt.setBackground(null);
+            mMainDifficultyEt.setFocusableInTouchMode(false);
+            mMainDifficultyEt.setEnabled(false);
             mCommonProblemEt.setText(planEntity.getCommonProblem());
+            mCommonProblemEt.setBackground(null);
+            mCommonProblemEt.setFocusableInTouchMode(false);
+            mCommonProblemEt.setEnabled(false);
+            mBottomLayout.setVisibility(View.GONE);
+            mBottomLayout1.setVisibility(View.VISIBLE);
+        } else {
+            mBottomLayout.setVisibility(View.VISIBLE);
+            mBottomLayout1.setVisibility(View.GONE);
         }
+
         String lgAppendixId = planEntity.getLgAppendixId();
         String lgAppendixUrl = planEntity.getLgAppendixUrl();
+        String dpAppendixId = planEntity.getDpAppendixId();
+        String dpAppendixUrl = planEntity.getDpAppendixUrl();
+        String cpAppendixId = planEntity.getCpAppendixId();
+        String cpAppendixUrl = planEntity.getCpAppendixUrl();
+
+        if (lgAppendixUrl != null) {
+            mTvAccessories1.setText(getString(R.string.label_attachments));
+        }
+        if (dpAppendixUrl != null) {
+            mTvAccessories2.setText(getString(R.string.label_attachments));
+        }
+        if (cpAppendixUrl != null) {
+            mTvAccessories3.setText(getString(R.string.label_attachments));
+        }
+        ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
+        ResourceInfoTag lgInfoTag = new ResourceInfoTag();
+        String[] lgTempId = lgAppendixId.split(",");
+        String[] lgTempUrl = lgAppendixUrl.split(",");
+        for (int i = 0; i < lgTempId.length; i++) {
+            lgInfoTag.setResId(lgTempId[i]);
+            lgInfoTag.setImgPath(lgTempUrl[i]);
+            lgInfoTag.setResourcePath(lgTempUrl[i]);
+            lgResourceInfoTags.add(lgInfoTag);
+        }
+
+        this.resourceInfoTagList1.addAll(lgResourceInfoTags);
+        mRecyclerView1.setAdapter(mPictureListAdapter1);
+
+//        ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
+//        ResourceInfoTag dpInfoTag = new ResourceInfoTag();
+//        String[] dpTempId = dpAppendixId.split(",");
+//        String[] dpTempUrl = dpAppendixUrl.split(",");
+//        for (int i = 0; i < dpTempId.length; i++) {
+//            dpInfoTag.setResId(dpTempId[i]);
+//            dpInfoTag.setImgPath(dpTempUrl[i]);
+//            dpInfoTag.setResourcePath(dpTempUrl[i]);
+//            dpResourceInfoTags.add(dpInfoTag);
+//        }
+//
+//        this.resourceInfoTagList2.addAll(dpResourceInfoTags);
+//        mRecyclerView2.setAdapter(mPictureListAdapter2);
+//
+//        ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
+//        ResourceInfoTag cpInfoTag = new ResourceInfoTag();
+//        String[] cpTempId = cpAppendixId.split(",");
+//        String[] cpTempUrl = cpAppendixUrl.split(",");
+//        for (int i = 0; i < cpTempId.length; i++) {
+//            cpInfoTag.setResId(cpTempId[i]);
+//            cpInfoTag.setImgPath(cpTempUrl[i]);
+//            cpInfoTag.setResourcePath(cpTempUrl[i]);
+//            cpResourceInfoTags.add(cpInfoTag);
+//        }
+//
+//        this.resourceInfoTagList3.addAll(cpResourceInfoTags);
+//        mRecyclerView3.setAdapter(mPictureListAdapter3);
 
     }
 
@@ -223,27 +375,153 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     public void onClick(View v) {
         super.onClick(v);
         int id = v.getId();
-        if (id == R.id.attachments_add_1) {
-            choosePhotoDialog();
-        } else if (id == R.id.attachments_add_2) {
-            choosePhotoDialog();
-        } else if (id == R.id.attachments_add_3) {
-            choosePhotoDialog();
-        } else if (id == R.id.abroad_choosephoto) {
-            pickAlbum();
+        if (id == R.id.abroad_choosephoto) {
+            doGuidanceTypeWork(GuidanceResourceType.PHOTO);
+            dialog.dismiss();
         } else if (id == R.id.abroad_takephoto) {
-            takePhotos();
+            doGuidanceTypeWork(GuidanceResourceType.TAKE_CAMERA);
+            dialog.dismiss();
         } else if (id == R.id.abroad_choose_cancel) {
             dialog.dismiss();
-        } else if (id == R.id.reset_container) {
-             resetPlanData();
-        } else if (id == R.id.confirm_container) {
-             confirmPlanData();
+        } else if (id == R.id.btn_reset) {
+            resetPlanData();
+        } else if (id == R.id.btn_confirm) {
+            getEditContent();
+            if (mLearningTargetText.equals("") && mMainDifficultyText.equals("") && mCommonProblemText.equals("")) {
+                confirmPlanDialog();
+            }else {
+                confirmPlanData();
+            }
+        } else if (id == R.id.btn_edit) {
+            //编辑界面
+//            EditImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
         }
+    }
+
+    private void confirmPlanDialog() {
+        ContactsMessageDialog messageDialog = new ContactsMessageDialog(getActivity(), null,
+                getString(R.string.str_no_edit_content), getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                confirmPlanData();
+            }
+        });
+        messageDialog.show();
+
+
+    }
+
+    private void doGuidanceTypeWork(int guidanceType) {
+        GuidanceTaskUtils.getInstance()
+                .setContext(getActivity())
+                .setFromStudyTaskIntro(true)
+                .setCallBackListener(result -> updateListData((List<MediaData>) result))
+                .doGuidanceTypeWork(guidanceType);
+    }
+
+    private void updateListData(List<MediaData> datas) {
+        ArrayList<ResourceInfoTag> resourceInfoTags = new ArrayList<>();
+        for (int i = 0; i < datas.size(); i++) {
+            MediaData mediaData = datas.get(i);
+            MediaInfo mediaInfo = new MediaInfo();
+            mediaInfo.setResourceUrl(mediaData.resourceurl);
+            mediaInfo.setTitle(mediaData.originname);
+            mediaInfo.setAuthor(mediaData.createname);
+            mediaInfo.setThumbnail(mediaData.resourceurl);
+            mediaInfo.setResourceType(mediaData.type);
+            mediaInfo.setPath(mediaData.resourceurl);
+            mediaInfo.setMediaType(mediaData.type);
+            mediaInfo.setMicroId(String.valueOf(mediaData.id));
+            mediaInfo.setAuthorId(mediaData.createid);
+            ResourceInfoTag infoTag = WatchWawaCourseResourceSplicingUtils.getResourceInfoTagByMediaInfo(mediaInfo, mediaData.type);
+            //增加分页
+            if (mediaData.type == MaterialResourceType.PICTURE) {
+                List<ResourceInfo> splitInfo = new ArrayList<>();
+                ResourceInfo newResourceInfo = new ResourceInfo();
+                newResourceInfo.setAuthorId(mediaInfo.getAuthorId());
+                newResourceInfo.setTitle(mediaInfo.getTitle());
+                newResourceInfo.setImgPath(mediaInfo.getThumbnail());
+                newResourceInfo.setResourcePath(mediaInfo.getResourceUrl());
+                newResourceInfo.setResId(infoTag.getResId());
+                newResourceInfo.setResourceType(mediaInfo.getResourceType());
+                splitInfo.add(newResourceInfo);
+                infoTag.setSplitInfoList(splitInfo);
+            }
+            resourceInfoTags.add(infoTag);
+        }
+        if (resourceInfoTags.size() > 0) {
+            if (accessoriesaType == LEARNING_TARGET_TYPE) {
+                this.resourceInfoTagList1.addAll(resourceInfoTags);
+                if (mPictureListAdapter1 != null) {
+                    mPictureListAdapter1.update(this.resourceInfoTagList1);
+                }
+            } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
+                this.resourceInfoTagList2.addAll(resourceInfoTags);
+                if (mPictureListAdapter2 != null) {
+                    mPictureListAdapter2.update(this.resourceInfoTagList2);
+                }
+            } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
+                this.resourceInfoTagList3.addAll(resourceInfoTags);
+                if (mPictureListAdapter3 != null) {
+                    mPictureListAdapter3.update(this.resourceInfoTagList3);
+                }
+            }
+        }
+    }
+
+    private void getEditContent() {
+        mLearningTargetText = mLearningTargetEt.getText().toString().trim();
+        mMainDifficultyText = mMainDifficultyEt.getText().toString().trim();
+        mCommonProblemText = mCommonProblemEt.getText().toString().trim();
     }
 
     //确认
     private void confirmPlanData() {
+        String lgAppendixId = null;
+        String lgAppendixUrl = null;
+        for (int i = 0; i < resourceInfoTagList1.size(); i++) {
+            ResourceInfoTag data = resourceInfoTagList1.get(i);
+            if (i == 0) {
+                lgAppendixId = data.getResId();
+                lgAppendixUrl = data.getResourcePath();
+            } else {
+                lgAppendixId = lgAppendixId + "," + data.getResId();
+                lgAppendixUrl = lgAppendixUrl + "," + data.getResourcePath();
+            }
+        }
+
+        String dpAppendixId = null;
+        String dpAppendixUrl = null;
+        for (int i = 0; i < resourceInfoTagList2.size(); i++) {
+            ResourceInfoTag data = resourceInfoTagList2.get(i);
+            if (i == 0) {
+                dpAppendixId = data.getResId();
+                dpAppendixUrl = data.getResourcePath();
+            } else {
+                dpAppendixId = dpAppendixId + "," + data.getResId();
+                dpAppendixUrl = dpAppendixUrl + "," + data.getResourcePath();
+            }
+        }
+
+        String cpAppendixId = null;
+        String cpAppendixUrl = null;
+        for (int i = 0; i < resourceInfoTagList3.size(); i++) {
+            ResourceInfoTag data = resourceInfoTagList3.get(i);
+            if (i == 0) {
+                cpAppendixId = data.getResId();
+                cpAppendixUrl = data.getResourcePath();
+            } else {
+                cpAppendixId = cpAppendixId + "," + data.getResId();
+                cpAppendixUrl = cpAppendixUrl + "," + data.getResourcePath();
+            }
+        }
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("chapterId", chapterId);
         requestVo.addParams("courseId",courseId);
@@ -251,13 +529,13 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             requestVo.addParams("token", memberId);
         }
         requestVo.addParams("classId",classId);
-        requestVo.addParams("learningGoal",mLearningTargetEt.getText().toString());
+        requestVo.addParams("learningGoal",mLearningTargetText);
         requestVo.addParams("lgAppendixId","");
         requestVo.addParams("lgAppendixUrl","");
-        requestVo.addParams("difficultPoint",mMainDifficultyEt.getText().toString());
+        requestVo.addParams("difficultPoint",mMainDifficultyText);
         requestVo.addParams("dpAppendixId","");
         requestVo.addParams("dpAppendixUrl","");
-        requestVo.addParams("commonProblem",mCommonProblemEt.getText().toString());
+        requestVo.addParams("commonProblem",mCommonProblemText);
         requestVo.addParams("cpAppendixId","");
         requestVo.addParams("cpAppendixUrl","");
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postSaveImplementPlan);
@@ -271,7 +549,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
-
+                    getActivity().finish();
                 }
             }
 
@@ -297,6 +575,17 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetEt.setText("");
         mMainDifficultyEt.setText("");
         mCommonProblemEt.setText("");
+        if (mPictureListAdapter1 != null) {
+            mPictureListAdapter1.removeAll(this.resourceInfoTagList1);
+        }
+
+        if (mPictureListAdapter2 != null) {
+            mPictureListAdapter2.removeAll(this.resourceInfoTagList2);
+        }
+
+        if (mPictureListAdapter3 != null) {
+            mPictureListAdapter3.removeAll(this.resourceInfoTagList3);
+        }
     }
 
     //选择照片方式弹框
@@ -322,19 +611,6 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             }
         }
         dialog.show();
-    }
-
-    //拍照
-    private void takePhotos() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
-    }
-
-    //相册
-    private void pickAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
     }
 
 }

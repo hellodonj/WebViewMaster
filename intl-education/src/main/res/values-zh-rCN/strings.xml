@@ -553,8 +553,10 @@
     <string name="label_main_difficulty">二、重点难点</string>
     <string name="label_common_problem">三、常见问题</string>
     <string name="label_input_text_tip">请输入文本</string>
-    <string name="label_add_attachments">添加附件</string>
+    <string name="label_add_attachments">添加附件：</string>
+    <string name="label_attachments">附件：</string>
     <string name="abroad_choosephotp">相册</string>
     <string name="abroad_photo">拍照</string>
     <string name="abroad_cancel">取消</string>
+    <string name="edit">编辑</string>
 </resources>

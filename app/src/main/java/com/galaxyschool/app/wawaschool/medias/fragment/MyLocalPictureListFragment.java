@@ -43,9 +43,6 @@ import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
 import com.galaxyschool.app.wawaschool.fragment.SelectedReadingDetailFragment;
 import com.galaxyschool.app.wawaschool.fragment.library.AdapterViewHelper;
 import com.galaxyschool.app.wawaschool.fragment.library.ViewHolder;
-import com.lqwawa.lqbaselib.net.ThisStringRequest;
-import com.lqwawa.lqbaselib.net.library.DataModelResult;
-import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResType;
 import com.galaxyschool.app.wawaschool.pojo.ResourceTitle;
@@ -65,6 +62,9 @@ import com.libs.yilib.pickimages.PickMediasFragment;
 import com.libs.yilib.pickimages.ScanLocalMediaController;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.lqbaselib.net.ThisStringRequest;
+import com.lqwawa.lqbaselib.net.library.DataModelResult;
+import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.tools.FileZipHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.oosic.apps.iemaker.base.BaseUtils;
@@ -76,6 +76,7 @@ import com.osastudio.common.utils.LQImageLoader;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -118,9 +119,12 @@ public class MyLocalPictureListFragment extends ContactsListFragment
     //区分来源于添加直播详情的材料
     private boolean isFromOnline;
     private int  onlineId;
+    private boolean fromImplementtationPlan;
     public interface Contants{
         String from_onine="from_online";
         String online_id="online_id";
+        String FROM_IMPLEMENTTATION_PLAN = "from_implementation_plan";
+        String PICK_PICTURE_COUNT = "pick_picture_count";
     }
     Handler mHandler = new Handler() {
         @Override
@@ -189,6 +193,10 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             if (isFromOnline){
                 onlineId=getArguments().getInt(Contants.online_id);
             }
+            fromImplementtationPlan = getArguments().getBoolean(Contants.FROM_IMPLEMENTTATION_PLAN,false);
+            if (fromImplementtationPlan){
+                maxCount = getArguments().getInt(Contants.PICK_PICTURE_COUNT);
+            }
         }
         ImageView imageView = ((ImageView) findViewById(R.id.contacts_header_left_btn));
         if(imageView != null) {
@@ -206,7 +214,7 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             }else {
                 textView.setVisibility(View.INVISIBLE);
             }
-            if (isFromOnline){
+            if (isFromOnline || fromImplementtationPlan){
                 textView.setText(getString(R.string.confirm));
             }else {
                 textView.setText(getString(R.string.take_photo));
@@ -503,7 +511,7 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             selectAllBtn.setVisibility(View.VISIBLE);
             bottomSegLine0.setVisibility(View.VISIBLE);
         }
-        if (isFromOnline){
+        if (isFromOnline || fromImplementtationPlan){
             bottomLayout.setVisibility(View.GONE);
         }
     }
@@ -631,7 +639,9 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             if (isFromOnline){
                 //上传当前选中的课件
                 upload();
-            }else {
+            }else if (fromImplementtationPlan) {
+                backSelectPictureInfo();
+            }else  {
                 //拍照
                 cameraImage();
             }
@@ -694,6 +704,19 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             super.onClick(v);
         }
     }
+
+    private void backSelectPictureInfo() {
+        List<MediaInfo> mediaInfos = getSelectedData();
+        if (mediaInfos == null || mediaInfos.size() == 0) {
+            TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_select_files);
+            return;
+        }
+        Intent intent = new Intent();
+        intent.putExtra("mediaInfos", (Serializable) mediaInfos);
+        getActivity().setResult(Activity.RESULT_OK,intent);
+        finish();
+    }
+
 
     private void upload() {
         List<MediaInfo> mediaInfos = getSelectedData();

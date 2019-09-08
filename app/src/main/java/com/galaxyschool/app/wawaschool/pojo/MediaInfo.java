@@ -3,6 +3,7 @@ package com.galaxyschool.app.wawaschool.pojo;
 import android.text.TextUtils;
 import com.galaxyschool.app.wawaschool.db.dto.MediaDTO;
 import com.galaxyschool.app.wawaschool.pojo.weike.LocalCourseInfo;
+import com.lqwawa.intleducation.base.vo.BaseVo;
 import com.oosic.apps.share.SharedResource;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by wangchao on 12/26/15.
  */
-public class MediaInfo {
+public class MediaInfo extends BaseVo {
     String id;
     String title;
     String subTitle;

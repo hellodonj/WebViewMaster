@@ -32,4 +32,13 @@ public class MediaData implements Serializable{
         builder.append(type);
         return builder.toString();
     }
+
+    public CourseData toCourseData(){
+        CourseData courseData = new CourseData();
+        courseData.id = id;
+        courseData.type = type;
+        courseData.resourceurl = resourceurl;
+        courseData.nickname = createname;
+        return courseData;
+    }
 }

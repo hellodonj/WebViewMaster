@@ -17,10 +17,9 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_layout"
             android:layout_alignParentTop="true"
             android:layout_marginTop="-13dp"
-            android:layout_marginBottom="13dp">
+            android:layout_marginBottom="45dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                         android:layout_marginRight="10dp"
                         android:text="@string/label_learning_target"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <com.lqwawa.apps.views.ContainsEmojiEditText
                         android:id="@+id/learning_target_content"
@@ -65,49 +64,65 @@
 
 
                         <TextView
+                            android:id="@+id/tv_accessories_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="18sp" />
 
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                        <RelativeLayout
-                            android:id="@+id/rl_attachments_img_1"
-                            android:layout_width="87dp"
-                            android:layout_height="70dp"
-                            android:visibility="visible">
+                        <!--<LinearLayout-->
+                            <!--android:id="@+id/layout_add_accessories_1"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="10dp"-->
+                            <!--android:orientation="vertical"-->
+                            <!--android:visibility="gone" />-->
+                        <!--<RelativeLayout-->
+                            <!--android:id="@+id/rl_attachments_img_1"-->
+                            <!--android:layout_width="87dp"-->
+                            <!--android:layout_height="70dp"-->
+                            <!--android:visibility="visible">-->
 
-                            <LinearLayout
-                                android:layout_width="65dp"
-                                android:layout_height="65dp"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/background_rectangle"
-                                android:orientation="horizontal">
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="65dp"-->
+                                <!--android:layout_height="65dp"-->
+                                <!--android:layout_alignParentBottom="true"-->
+                                <!--android:background="@drawable/background_rectangle"-->
+                                <!--android:orientation="horizontal">-->
 
-                                <ImageView
-                                    android:id="@+id/attachments_add_1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="1dp"
-                                    android:background="@color/bg_gray"
-                                    android:scaleType="centerInside"
-                                    android:src="@drawable/add_course_icon" />
-                            </LinearLayout>
+                                <!--<ImageView-->
+                                    <!--android:id="@+id/attachments_add_1"-->
+                                    <!--android:layout_width="match_parent"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_margin="1dp"-->
+                                    <!--android:background="@color/bg_gray"-->
+                                    <!--android:scaleType="centerInside"-->
+                                    <!--android:src="@drawable/add_course_icon" />-->
+                            <!--</LinearLayout>-->
 
-                            <ImageView
-                                android:id="@+id/delete_iv_1"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="-15dp"
-                                android:src="@drawable/picture_delete_recorder_btn"
-                                android:visibility="gone" />
+                            <!--<ImageView-->
+                                <!--android:id="@+id/delete_iv_1"-->
+                                <!--android:layout_width="40dp"-->
+                                <!--android:layout_height="40dp"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:layout_marginTop="-15dp"-->
+                                <!--android:src="@drawable/picture_delete_recorder_btn"-->
+                                <!--android:visibility="gone" />-->
 
-                        </RelativeLayout>
+                        <!--</RelativeLayout>-->
                     </LinearLayout>
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="@color/gray1"/>
                 <!--================================重点难点====================================-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,7 +137,7 @@
                         android:layout_marginRight="10dp"
                         android:text="@string/label_main_difficulty"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <com.lqwawa.apps.views.ContainsEmojiEditText
                         android:id="@+id/main_difficulty_content"
@@ -146,11 +161,12 @@
 
 
                         <TextView
+                            android:id="@+id/tv_accessories_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="18sp" />
 
 
                         <RelativeLayout
@@ -189,6 +205,11 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="@color/gray1"/>
+
                 <!--================================常见问题====================================-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -203,7 +224,7 @@
                         android:layout_marginRight="10dp"
                         android:text="@string/label_common_problem"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <com.lqwawa.apps.views.ContainsEmojiEditText
                         android:id="@+id/common_problem_content"
@@ -227,11 +248,12 @@
 
 
                         <TextView
+                            android:id="@+id/tv_accessories_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="18sp" />
 
 
                         <RelativeLayout
@@ -341,12 +363,20 @@
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:weightSum="2">
 
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:visibility="gone" />
 
             <FrameLayout
                 android:id="@+id/edit_container"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
@@ -359,7 +389,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/btn_accent_radius_19"
                     android:gravity="center"
-                    android:text="@string/label_confirm"
+                    android:text="@string/edit"
                     android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
                     android:textColor="@color/textLight"
                     android:textSize="16sp" />
