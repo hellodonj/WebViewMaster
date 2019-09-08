@@ -22,7 +22,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.os.AsyncTaskCompat;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -1571,48 +1570,69 @@ public class MessageAdapter extends BaseAdapter {
 	 * load image into image view
 	 *
 	 */
-	private void showImageView(final String thumbernailPath,final ImageView iv, final String
-			localFullSizePath,final EMMessage message) {
+	private void showImageView(final String thumbernailPath,
+							   final ImageView iv,
+							   final String localFullSizePath,
+							   final EMMessage message) {
 		// first check if the thumbnail image already loaded into cache
 		Bitmap bitmap = ImageCache.getInstance().get(thumbernailPath);
 		if (bitmap != null) {
 			// thumbnail image is already loaded, reuse the drawable
 			iv.setImageBitmap(bitmap);
 		} else {
-			AsyncTaskCompat.executeParallel(new AsyncTask<Object, Void, Bitmap>() {
-
-				@Override
-				protected Bitmap doInBackground(Object... args) {
-					File file = new File(thumbernailPath);
-					EMImageMessageBody imgBody =	((EMImageMessageBody)message.getBody());
-					if (file.exists()) {
-						return ImageUtils.decodeScaleImage(thumbernailPath, 160, 160);
-					} else if (new File(imgBody.thumbnailLocalPath()).exists()) {
-						return ImageUtils.decodeScaleImage( imgBody.thumbnailLocalPath(), 160, 160);
-					}
-					else {
-						if (message.direct() == EMMessage.Direct.SEND) {
-							if (localFullSizePath != null && new File(localFullSizePath).exists()) {
-								return ImageUtils.decodeScaleImage(localFullSizePath, 160, 160);
-							} else {
-								return null;
-							}
-						} else {
-							return null;
-						}
-					}
-				}
-
-				protected void onPostExecute(Bitmap image) {
-					if (image != null) {
-						iv.setImageBitmap(image);
-						ImageCache.getInstance().put(thumbernailPath, image);
-					}
-				}
-			});
+			DownLoadImageTask imageTask = new DownLoadImageTask(thumbernailPath,
+					localFullSizePath,
+					iv,
+					message);
+			imageTask.execute();
 		}
 	}
 
+	static class DownLoadImageTask extends AsyncTask<String, Void, Bitmap> {
+		private String thumbernailPath;
+		private String localFullSizePath;
+		private ImageView iv;
+		private EMMessage message;
+
+		public DownLoadImageTask(String thumbernailPath,
+								 String localFullSizePath,
+								 ImageView iv,
+								 EMMessage message) {
+			this.thumbernailPath = thumbernailPath;
+			this.localFullSizePath = localFullSizePath;
+			this.iv = iv;
+			this.message = message;
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			File file = new File(thumbernailPath);
+			EMImageMessageBody imgBody = ((EMImageMessageBody)message.getBody());
+			if (file.exists()) {
+				return ImageUtils.decodeScaleImage(thumbernailPath, 160, 160);
+			} else if (new File(imgBody.thumbnailLocalPath()).exists()) {
+				return ImageUtils.decodeScaleImage( imgBody.thumbnailLocalPath(), 160, 160);
+			}
+			else {
+				if (message.direct() == EMMessage.Direct.SEND) {
+					if (localFullSizePath != null && new File(localFullSizePath).exists()) {
+						return ImageUtils.decodeScaleImage(localFullSizePath, 160, 160);
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		}
+
+		protected void onPostExecute(Bitmap image) {
+			if (image != null) {
+				iv.setImageBitmap(image);
+				ImageCache.getInstance().put(thumbernailPath, image);
+			}
+		}
+	}
 
 
 	/**

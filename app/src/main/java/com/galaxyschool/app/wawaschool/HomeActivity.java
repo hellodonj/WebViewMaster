@@ -99,6 +99,7 @@ public class HomeActivity extends BaseCompatActivity
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CALL_PHONE
     };
@@ -160,6 +161,7 @@ public class HomeActivity extends BaseCompatActivity
             hashMap.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
             hashMap.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
             hashMap.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            hashMap.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
             hashMap.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
             // 去除不需要的权限
 //            hashMap.put(Manifest.permission.BODY_SENSORS, PackageManager.PERMISSION_GRANTED);
@@ -254,6 +256,7 @@ public class HomeActivity extends BaseCompatActivity
                             && hashMap.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
                             && hashMap.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
                             && hashMap.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && hashMap.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                             && hashMap.get(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                         ((MyApplication) getApplication()).setMyUUID(HomeActivity.this);
                         if (!Config.UPDATE_FOR_BUGLY) {
