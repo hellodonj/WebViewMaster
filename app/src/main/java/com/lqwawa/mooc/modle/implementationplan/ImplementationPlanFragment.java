@@ -298,14 +298,17 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     private void configPlanData(ImplementationPlanEntity planEntity) {
         if (EmptyUtil.isNotEmpty(planEntity) && planEntity.getLearningGoal() != null) {
             mLearningTargetEt.setText(planEntity.getLearningGoal());
+            mLearningTargetEt.setHint("");
             mLearningTargetEt.setBackground(null);
             mLearningTargetEt.setFocusableInTouchMode(false);
             mLearningTargetEt.setEnabled(false);
             mMainDifficultyEt.setText(planEntity.getDifficultPoint());
+            mMainDifficultyEt.setHint("");
             mMainDifficultyEt.setBackground(null);
             mMainDifficultyEt.setFocusableInTouchMode(false);
             mMainDifficultyEt.setEnabled(false);
             mCommonProblemEt.setText(planEntity.getCommonProblem());
+            mCommonProblemEt.setHint("");
             mCommonProblemEt.setBackground(null);
             mCommonProblemEt.setFocusableInTouchMode(false);
             mCommonProblemEt.setEnabled(false);
@@ -341,7 +344,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
         ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
         if (!lgAppendixId.equals("null")) {
-            if (lgAppendixId.indexOf(",") != -1) {
+            if (lgAppendixId.contains(",")) {
                 String[] lgTempId = lgAppendixId.split(",");
                 String[] lgTempUrl = lgAppendixUrl.split(",");
                 for (int i = 0; i < lgTempId.length; i++) {
@@ -378,7 +381,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
 
         ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
         if (!dpAppendixId.equals("null")) {
-            if (dpAppendixId.indexOf(",") != -1) {
+            if (dpAppendixId.contains(",")) {
                 String[] dpTempId = dpAppendixId.split(",");
                 String[] dpTempUrl = dpAppendixUrl.split(",");
                 for (int i = 0; i < dpTempId.length; i++) {
@@ -414,8 +417,8 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         });
 
         ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
-        if (!dpAppendixId.equals("null")) {
-            if (cpAppendixId.indexOf(",") != -1) {
+        if (!cpAppendixId.equals("null")) {
+            if (cpAppendixId.contains(",")) {
                 String[] cpTempId = cpAppendixId.split(",");
                 String[] cpTempUrl = cpAppendixUrl.split(",");
                 for (int i = 0; i < cpTempId.length; i++) {
@@ -541,7 +544,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             if (accessoriesaType == LEARNING_TARGET_TYPE) {
                 if (resourceInfoTags.size() + resourceInfoTagList1.size() > 10) {
                     int count = 10 - resourceInfoTagList1.size();
-                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    TipsHelper.showToast(getActivity(), String.format(UIUtil.getString(R.string.str_max_select_picture_limit), count));
                     return;
                 }
                 this.resourceInfoTagList1.addAll(resourceInfoTags);
@@ -549,13 +552,21 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                     mPictureListAdapter1.update(this.resourceInfoTagList1);
                 }
             } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
-                selectLimitCount(resourceInfoTags,resourceInfoTagList2);
+                if (resourceInfoTags.size() + resourceInfoTagList2.size() > 10) {
+                    int count = 10 - resourceInfoTagList2.size();
+                    TipsHelper.showToast(getActivity(), String.format(UIUtil.getString(R.string.str_max_select_picture_limit), count));
+                    return;
+                }
                 this.resourceInfoTagList2.addAll(resourceInfoTags);
                 if (mPictureListAdapter2 != null) {
                     mPictureListAdapter2.update(this.resourceInfoTagList2);
                 }
             } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
-                selectLimitCount(resourceInfoTags,resourceInfoTagList3);
+                if (resourceInfoTags.size() + resourceInfoTagList3.size() > 10) {
+                    int count = 10 - resourceInfoTagList3.size();
+                    TipsHelper.showToast(getActivity(), String.format(UIUtil.getString(R.string.str_max_select_picture_limit), count));
+                    return;
+                }
                 this.resourceInfoTagList3.addAll(resourceInfoTags);
                 if (mPictureListAdapter3 != null) {
                     mPictureListAdapter3.update(this.resourceInfoTagList3);
@@ -568,14 +579,6 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetText = mLearningTargetEt.getText().toString().trim();
         mMainDifficultyText = mMainDifficultyEt.getText().toString().trim();
         mCommonProblemText = mCommonProblemEt.getText().toString().trim();
-    }
-
-    private void selectLimitCount(ArrayList<ResourceInfoTag> selectData,List<ResourceInfoTag> previousData){
-        if (selectData.size() + previousData.size() > 10) {
-            int count = 10 - previousData.size();
-            TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
-            return;
-        }
     }
 
     //确认
@@ -626,14 +629,14 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
         requestVo.addParams("classId", classId);
         requestVo.addParams("learningGoal", mLearningTargetText);
-        requestVo.addParams("lgAppendixId", "");
-        requestVo.addParams("lgAppendixUrl", "");
+        requestVo.addParams("lgAppendixId", lgAppendixId);
+        requestVo.addParams("lgAppendixUrl", lgAppendixUrl);
         requestVo.addParams("difficultPoint", mMainDifficultyText);
-        requestVo.addParams("dpAppendixId", "");
-        requestVo.addParams("dpAppendixUrl", "");
+        requestVo.addParams("dpAppendixId", dpAppendixId);
+        requestVo.addParams("dpAppendixUrl", dpAppendixUrl);
         requestVo.addParams("commonProblem", mCommonProblemText);
-        requestVo.addParams("cpAppendixId", "");
-        requestVo.addParams("cpAppendixUrl", "");
+        requestVo.addParams("cpAppendixId", cpAppendixId);
+        requestVo.addParams("cpAppendixUrl", cpAppendixUrl);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postSaveImplementPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
