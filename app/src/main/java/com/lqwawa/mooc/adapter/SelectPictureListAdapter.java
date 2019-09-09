@@ -12,9 +12,10 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
-import com.lqwawa.intleducation.common.utils.EmptyUtil;
 
 import java.util.List;
+
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.EDIT_MODE;
 
 /**
  * 描述: 选取图片list的adapter
@@ -24,11 +25,14 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
 
     private Context context;
     private List<ResourceInfoTag> list;
+    private int mode;
 
     public SelectPictureListAdapter(Context context,
-                                    List<ResourceInfoTag> list) {
+                                    List<ResourceInfoTag> list,
+                                    int selectMode) {
         this.context = context;
         this.list = list;
+        this.mode = selectMode;
     }
 
 
@@ -43,13 +47,18 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
         holder.deleteImageView.setVisibility(View.GONE);
         //在list.size<9时，最后一个默认显示“加号”图片
         if (position == list.size()) {
-            holder.iconImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.iconImageView.setImageResource(R.drawable.add_course_icon);
+            if (mode == EDIT_MODE){
+                holder.iconImageView.setVisibility(View.GONE);
+            }else {
+                holder.iconImageView.setVisibility(View.VISIBLE);
+                holder.iconImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                holder.iconImageView.setImageResource(R.drawable.add_course_icon);
+            }
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mOnItemClickListener.onItemClick(holder.itemView, position);
+                        mOnItemClickListener.onAddItemClick(holder.itemView, position);
                     }
                 });
             }
@@ -57,25 +66,31 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
             if (list != null && list.size() > 0) {
                 ResourceInfoTag infoTag = list.get(position);
                 if (infoTag != null) {
-                    if (EmptyUtil.isEmpty(infoTag.getTitle())){
-                        if (position == list.size()){
-                            holder.deleteImageView.setVisibility(View.GONE);
-                            holder.iconImageView.setVisibility(View.GONE);
-                        }
-                    }
                     holder.iconImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     MyApplication.getThumbnailManager((Activity) context).displayImageWithDefault(StudyTaskUtils.getResourceThumbnail(infoTag.getImgPath()),
                             holder.iconImageView, R.drawable.default_cover);
                     //非最后一张显示删除角标
                     if (position < list.size()) {
                         //图片删除角标
-                        holder.deleteImageView.setVisibility(View.VISIBLE);
+                        if (mode == EDIT_MODE){
+                            holder.deleteImageView.setVisibility(View.GONE);
+                        }else {
+                            holder.deleteImageView.setVisibility(View.VISIBLE);
+                        }
                         holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 //从数据源list中移除
                                 list.remove(position);
                                 notifyDataSetChanged();
+                            }
+                        });
+                    }
+                    if (mOnItemClickListener != null) {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mOnItemClickListener.onItemClick(holder.itemView, position);
                             }
                         });
                     }
@@ -134,6 +149,7 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
      * 定义接口回调
      */
     public interface OnItemClickListener {
+        void onAddItemClick(View view, int position);
         void onItemClick(View view, int position);
     }
 
