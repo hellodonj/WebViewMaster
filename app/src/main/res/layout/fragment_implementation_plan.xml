@@ -168,40 +168,44 @@
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
 
-                        <RelativeLayout
-                            android:id="@+id/rl_attachments_img_2"
-                            android:layout_width="87dp"
-                            android:layout_height="70dp"
-                            android:visibility="visible">
+                        <!--<RelativeLayout-->
+                            <!--android:id="@+id/rl_attachments_img_2"-->
+                            <!--android:layout_width="87dp"-->
+                            <!--android:layout_height="70dp"-->
+                            <!--android:visibility="visible">-->
 
-                            <LinearLayout
-                                android:layout_width="65dp"
-                                android:layout_height="65dp"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/background_rectangle"
-                                android:orientation="horizontal">
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="65dp"-->
+                                <!--android:layout_height="65dp"-->
+                                <!--android:layout_alignParentBottom="true"-->
+                                <!--android:background="@drawable/background_rectangle"-->
+                                <!--android:orientation="horizontal">-->
 
-                                <ImageView
-                                    android:id="@+id/attachments_add_2"
-                                    android:layout_width="65dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="1dp"
-                                    android:background="@color/bg_gray"
-                                    android:scaleType="centerInside"
-                                    android:src="@drawable/add_course_icon" />
-                            </LinearLayout>
+                                <!--<ImageView-->
+                                    <!--android:id="@+id/attachments_add_2"-->
+                                    <!--android:layout_width="65dp"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_margin="1dp"-->
+                                    <!--android:background="@color/bg_gray"-->
+                                    <!--android:scaleType="centerInside"-->
+                                    <!--android:src="@drawable/add_course_icon" />-->
+                            <!--</LinearLayout>-->
 
-                            <ImageView
-                                android:id="@+id/delete_iv_2"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="-15dp"
-                                android:src="@drawable/picture_delete_recorder_btn"
-                                android:visibility="gone" />
+                            <!--<ImageView-->
+                                <!--android:id="@+id/delete_iv_2"-->
+                                <!--android:layout_width="40dp"-->
+                                <!--android:layout_height="40dp"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:layout_marginTop="-15dp"-->
+                                <!--android:src="@drawable/picture_delete_recorder_btn"-->
+                                <!--android:visibility="gone" />-->
 
-                        </RelativeLayout>
+                        <!--</RelativeLayout>-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -255,40 +259,43 @@
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <!--<RelativeLayout-->
+                            <!--android:id="@+id/rl_attachments_img_3"-->
+                            <!--android:layout_width="87dp"-->
+                            <!--android:layout_height="70dp"-->
+                            <!--android:visibility="visible">-->
 
-                        <RelativeLayout
-                            android:id="@+id/rl_attachments_img_3"
-                            android:layout_width="87dp"
-                            android:layout_height="70dp"
-                            android:visibility="visible">
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="65dp"-->
+                                <!--android:layout_height="65dp"-->
+                                <!--android:layout_alignParentBottom="true"-->
+                                <!--android:background="@drawable/background_rectangle"-->
+                                <!--android:orientation="horizontal">-->
 
-                            <LinearLayout
-                                android:layout_width="65dp"
-                                android:layout_height="65dp"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/background_rectangle"
-                                android:orientation="horizontal">
+                                <!--<ImageView-->
+                                    <!--android:id="@+id/attachments_add_3"-->
+                                    <!--android:layout_width="match_parent"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:layout_margin="1dp"-->
+                                    <!--android:background="@color/bg_gray"-->
+                                    <!--android:scaleType="centerInside"-->
+                                    <!--android:src="@drawable/add_course_icon" />-->
+                            <!--</LinearLayout>-->
 
-                                <ImageView
-                                    android:id="@+id/attachments_add_3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="1dp"
-                                    android:background="@color/bg_gray"
-                                    android:scaleType="centerInside"
-                                    android:src="@drawable/add_course_icon" />
-                            </LinearLayout>
+                            <!--<ImageView-->
+                                <!--android:id="@+id/delete_iv_3"-->
+                                <!--android:layout_width="40dp"-->
+                                <!--android:layout_height="40dp"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:layout_marginTop="-15dp"-->
+                                <!--android:src="@drawable/picture_delete_recorder_btn"-->
+                                <!--android:visibility="gone" />-->
 
-                            <ImageView
-                                android:id="@+id/delete_iv_3"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginTop="-15dp"
-                                android:src="@drawable/picture_delete_recorder_btn"
-                                android:visibility="gone" />
-
-                        </RelativeLayout>
+                        <!--</RelativeLayout>-->
                     </LinearLayout>
                 </LinearLayout>
 

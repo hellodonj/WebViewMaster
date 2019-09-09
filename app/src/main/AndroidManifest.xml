@@ -1173,6 +1173,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Common" />
 
+        <activity
+            android:name="com.lqwawa.mooc.EditImplementationPlanActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Common" />
+
         <service
             android:name="com.letvcloud.cmf.MediaService"
             android:process=":cmf" />

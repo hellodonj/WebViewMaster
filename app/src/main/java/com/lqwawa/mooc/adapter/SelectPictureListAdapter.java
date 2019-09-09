@@ -12,6 +12,7 @@ import com.galaxyschool.app.wawaschool.MyApplication;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.StudyTaskUtils;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
+import com.lqwawa.intleducation.common.utils.EmptyUtil;
 
 import java.util.List;
 
@@ -56,6 +57,12 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
             if (list != null && list.size() > 0) {
                 ResourceInfoTag infoTag = list.get(position);
                 if (infoTag != null) {
+                    if (EmptyUtil.isEmpty(infoTag.getTitle())){
+                        if (position == list.size()){
+                            holder.deleteImageView.setVisibility(View.GONE);
+                            holder.iconImageView.setVisibility(View.GONE);
+                        }
+                    }
                     holder.iconImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     MyApplication.getThumbnailManager((Activity) context).displayImageWithDefault(StudyTaskUtils.getResourceThumbnail(infoTag.getImgPath()),
                             holder.iconImageView, R.drawable.default_cover);
@@ -79,7 +86,7 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
 
     @Override
     public int getItemCount() {
-        //含有9张图片，直接展示，不需要“加号”图片
+        //含有10张图片，直接展示，不需要“加号”图片
         if (list.size() == 10) {
             return 10;
         }
