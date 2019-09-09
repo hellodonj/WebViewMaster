@@ -534,7 +534,7 @@
     <string name="deselect_all">取消全选</string>
     <string name="str_class_price_not_null">请输入有效的班级价格</string>
     <string name="label_sx_preview">预习</string>
-    <string name="label_sx_practice">练习</string>
+    <string name="label_sx_practice">课中练习</string>
     <string name="label_sx_review">复习</string>
     <string name="join_immediately">立即参加</string>
     <string name="label_join_teaching_plan_tip">请先参加教案！</string>

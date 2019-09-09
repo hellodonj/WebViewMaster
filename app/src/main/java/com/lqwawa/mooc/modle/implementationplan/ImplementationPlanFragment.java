@@ -23,6 +23,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceSplicingUtils;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
+import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
@@ -83,8 +84,8 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     private LinearLayout mBottomLayout, mBottomLayout1;
 
     private String mLearningTargetText, mMainDifficultyText, mCommonProblemText;
-    private String chapterId,memberId,courseId,classId;
-    private TextView choosePhoto,takePhoto,cancel;
+    private String chapterId, memberId, courseId, classId;
+    private TextView choosePhoto, takePhoto, cancel;
     private Dialog dialog;
     private int accessoriesaType;
     private int selectMode = 1;
@@ -538,16 +539,23 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
         if (resourceInfoTags.size() > 0) {
             if (accessoriesaType == LEARNING_TARGET_TYPE) {
+                if (resourceInfoTags.size() + resourceInfoTagList1.size() > 10) {
+                    int count = 10 - resourceInfoTagList1.size();
+                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    return;
+                }
                 this.resourceInfoTagList1.addAll(resourceInfoTags);
                 if (mPictureListAdapter1 != null) {
                     mPictureListAdapter1.update(this.resourceInfoTagList1);
                 }
             } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
+                selectLimitCount(resourceInfoTags,resourceInfoTagList2);
                 this.resourceInfoTagList2.addAll(resourceInfoTags);
                 if (mPictureListAdapter2 != null) {
                     mPictureListAdapter2.update(this.resourceInfoTagList2);
                 }
             } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
+                selectLimitCount(resourceInfoTags,resourceInfoTagList3);
                 this.resourceInfoTagList3.addAll(resourceInfoTags);
                 if (mPictureListAdapter3 != null) {
                     mPictureListAdapter3.update(this.resourceInfoTagList3);
@@ -560,6 +568,14 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetText = mLearningTargetEt.getText().toString().trim();
         mMainDifficultyText = mMainDifficultyEt.getText().toString().trim();
         mCommonProblemText = mCommonProblemEt.getText().toString().trim();
+    }
+
+    private void selectLimitCount(ArrayList<ResourceInfoTag> selectData,List<ResourceInfoTag> previousData){
+        if (selectData.size() + previousData.size() > 10) {
+            int count = 10 - previousData.size();
+            TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+            return;
+        }
     }
 
     //确认
