@@ -33,6 +33,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.mooc.ViewPagerImageActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -71,10 +72,10 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     private SelectPictureListAdapter mPictureListAdapter2;
     private SelectPictureListAdapter mPictureListAdapter3;
     private FrameLayout mResetContainer;
-    private Button  mBtnConfirm, mBtnEdit;
+    private Button mBtnConfirm, mBtnEdit;
     private String mLearningTargetText, mMainDifficultyText, mCommonProblemText;
-    private TextView mTvAccessories1,mTvAccessories2,mTvAccessories3;
-    private RecyclerView  mRecyclerView1,mRecyclerView2,mRecyclerView3;
+    private TextView mTvAccessories1, mTvAccessories2, mTvAccessories3;
+    private RecyclerView mRecyclerView1, mRecyclerView2, mRecyclerView3;
 
     private String chapterId;
     private String memberId;
@@ -85,6 +86,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     private TextView choosePhoto;
     private Dialog dialog;
     private int accessoriesaType;
+    private int selectMode = 1;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -139,36 +141,54 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     private void initData() {
         mTopBar.setTitle(getString(R.string.class_implementation_plan));
         mTopBar.setTitleWide(DensityUtil.dip2px(120));
-        mRecyclerView1.setLayoutManager( new GridLayoutManager(getActivity(),5));
-        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(),resourceInfoTagList1);
+        mRecyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList1, selectMode);
         mRecyclerView1.setAdapter(mPictureListAdapter1);
         mPictureListAdapter1.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onAddItemClick(View view, int position) {
                 accessoriesaType = LEARNING_TARGET_TYPE;
                 choosePhotoDialog();
             }
-        });
 
-        mRecyclerView2.setLayoutManager( new GridLayoutManager(getActivity(),5));
-        mPictureListAdapter2 = new SelectPictureListAdapter(getActivity(),resourceInfoTagList2);
-        mRecyclerView2.setAdapter(mPictureListAdapter2);
-        mPictureListAdapter2.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                accessoriesaType = MAIN_DIFFICULT_TYPE;
-                choosePhotoDialog();
+                accessoriesaType = LEARNING_TARGET_TYPE;
+                toImageActivity(resourceInfoTagList1, position);
             }
         });
 
-        mRecyclerView3.setLayoutManager( new GridLayoutManager(getActivity(),5));
-        mPictureListAdapter3 = new SelectPictureListAdapter(getActivity(),resourceInfoTagList3);
+        mRecyclerView2.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mPictureListAdapter2 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList2, selectMode);
+        mRecyclerView2.setAdapter(mPictureListAdapter2);
+        mPictureListAdapter2.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+            @Override
+            public void onAddItemClick(View view, int position) {
+                accessoriesaType = MAIN_DIFFICULT_TYPE;
+                choosePhotoDialog();
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                accessoriesaType = MAIN_DIFFICULT_TYPE;
+                toImageActivity(resourceInfoTagList2, position);
+            }
+        });
+
+        mRecyclerView3.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mPictureListAdapter3 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList3, selectMode);
         mRecyclerView3.setAdapter(mPictureListAdapter3);
         mPictureListAdapter3.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onAddItemClick(View view, int position) {
                 accessoriesaType = COMMON_PROBLEM_TYPE;
                 choosePhotoDialog();
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                accessoriesaType = COMMON_PROBLEM_TYPE;
+                toImageActivity(resourceInfoTagList3, position);
             }
         });
 
@@ -181,7 +201,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         if (!TextUtils.isEmpty(memberId)) {
             requestVo.addParams("token", memberId);
         }
-        requestVo.addParams("classId",classId);
+        requestVo.addParams("classId", classId);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postQueryIfExistPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
@@ -282,49 +302,84 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             mTvAccessories3.setText(getString(R.string.label_attachments));
         }
         ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
-        ResourceInfoTag lgInfoTag = new ResourceInfoTag();
-        String[] lgTempId = lgAppendixId.split(",");
-        String[] lgTempUrl = lgAppendixUrl.split(",");
-        for (int i = 0; i < lgTempId.length; i++) {
-            lgInfoTag.setResId(lgTempId[i]);
-            lgInfoTag.setImgPath(lgTempUrl[i]);
-            lgInfoTag.setResourcePath(lgTempUrl[i]);
-            lgResourceInfoTags.add(lgInfoTag);
+        if (!lgAppendixId.equals("null")) {
+            if (lgAppendixId.indexOf(",") != -1) {
+                String[] lgTempId = lgAppendixId.split(",");
+                String[] lgTempUrl = lgAppendixUrl.split(",");
+                for (int i = 0; i < lgTempId.length; i++) {
+                    ResourceInfoTag lgInfoTag = new ResourceInfoTag();
+                    lgInfoTag.setResId(lgTempId[i]);
+                    lgInfoTag.setImgPath(lgTempUrl[i]);
+                    lgInfoTag.setResourcePath(lgTempUrl[i]);
+                    lgResourceInfoTags.add(lgInfoTag);
+                }
+            } else {
+                ResourceInfoTag lgInfoTag = new ResourceInfoTag();
+                lgInfoTag.setResId(lgAppendixId);
+                lgInfoTag.setImgPath(lgAppendixUrl);
+                lgInfoTag.setResourcePath(lgAppendixUrl);
+                lgResourceInfoTags.add(lgInfoTag);
+            }
         }
-
         this.resourceInfoTagList1.addAll(lgResourceInfoTags);
         mRecyclerView1.setAdapter(mPictureListAdapter1);
 
         ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
-        ResourceInfoTag dpInfoTag = new ResourceInfoTag();
-        String[] dpTempId = dpAppendixId.split(",");
-        String[] dpTempUrl = dpAppendixUrl.split(",");
-        for (int i = 0; i < dpTempId.length; i++) {
-            dpInfoTag.setResId(dpTempId[i]);
-            dpInfoTag.setImgPath(dpTempUrl[i]);
-            dpInfoTag.setResourcePath(dpTempUrl[i]);
-            dpResourceInfoTags.add(dpInfoTag);
+        if (!dpAppendixId.equals("null")) {
+            if (dpAppendixId.indexOf(",") != -1) {
+                String[] dpTempId = dpAppendixId.split(",");
+                String[] dpTempUrl = dpAppendixUrl.split(",");
+                for (int i = 0; i < dpTempId.length; i++) {
+                    ResourceInfoTag dpInfoTag = new ResourceInfoTag();
+                    dpInfoTag.setResId(dpTempId[i]);
+                    dpInfoTag.setImgPath(dpTempUrl[i]);
+                    dpInfoTag.setResourcePath(dpTempUrl[i]);
+                    dpResourceInfoTags.add(dpInfoTag);
+                }
+            } else {
+                ResourceInfoTag dpInfoTag = new ResourceInfoTag();
+                dpInfoTag.setResId(dpAppendixId);
+                dpInfoTag.setImgPath(dpAppendixUrl);
+                dpInfoTag.setResourcePath(dpAppendixUrl);
+                dpResourceInfoTags.add(dpInfoTag);
+            }
         }
 
         this.resourceInfoTagList2.addAll(dpResourceInfoTags);
         mRecyclerView2.setAdapter(mPictureListAdapter2);
 
         ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
-        ResourceInfoTag cpInfoTag = new ResourceInfoTag();
-        String[] cpTempId = cpAppendixId.split(",");
-        String[] cpTempUrl = cpAppendixUrl.split(",");
-        for (int i = 0; i < cpTempId.length; i++) {
-            cpInfoTag.setResId(cpTempId[i]);
-            cpInfoTag.setImgPath(cpTempUrl[i]);
-            cpInfoTag.setResourcePath(cpTempUrl[i]);
-            cpResourceInfoTags.add(cpInfoTag);
+        if (!cpAppendixId.equals("null")) {
+            if (cpAppendixId.indexOf(",") != -1) {
+                String[] cpTempId = cpAppendixId.split(",");
+                String[] cpTempUrl = cpAppendixUrl.split(",");
+                for (int i = 0; i < cpTempId.length; i++) {
+                    ResourceInfoTag cpInfoTag = new ResourceInfoTag();
+                    cpInfoTag.setResId(cpTempId[i]);
+                    cpInfoTag.setImgPath(cpTempUrl[i]);
+                    cpInfoTag.setResourcePath(cpTempUrl[i]);
+                    cpResourceInfoTags.add(cpInfoTag);
+                }
+            } else {
+                ResourceInfoTag cpInfoTag = new ResourceInfoTag();
+                cpInfoTag.setResId(cpAppendixId);
+                cpInfoTag.setImgPath(cpAppendixUrl);
+                cpInfoTag.setResourcePath(cpAppendixUrl);
+                cpResourceInfoTags.add(cpInfoTag);
+            }
         }
 
         this.resourceInfoTagList3.addAll(cpResourceInfoTags);
         mRecyclerView3.setAdapter(mPictureListAdapter3);
-
     }
 
+    private void toImageActivity(List<ResourceInfoTag> resourceInfoTagList, int position) {
+        ArrayList<String> lgList = new ArrayList<>();
+        for (int i = 0; i < resourceInfoTagList.size(); i++) {
+            lgList.add(resourceInfoTagList.get(i).getImgPath());
+        }
+        ViewPagerImageActivity.start(getActivity(), lgList, position);
+    }
 
     @Override
     public void onClick(View v) {

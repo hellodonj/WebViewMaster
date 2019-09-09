@@ -431,7 +431,7 @@ public class GuidanceTaskUtils {
         }
     }
 
-    private void takePhoto() {
+    private void  takePhoto() {
         deleteFiles();
         String urlFolder = Utils.ICON_FOLDER;
         String url = urlFolder + Utils.ZOOM_ICON_NAME;

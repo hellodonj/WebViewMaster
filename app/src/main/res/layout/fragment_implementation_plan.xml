@@ -58,6 +58,7 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/layout_add_accessories_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -155,6 +156,7 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/layout_add_accessories_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -246,6 +248,7 @@
                         android:textSize="16sp" />
 
                     <LinearLayout
+                        android:id="@+id/layout_add_accessories_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
