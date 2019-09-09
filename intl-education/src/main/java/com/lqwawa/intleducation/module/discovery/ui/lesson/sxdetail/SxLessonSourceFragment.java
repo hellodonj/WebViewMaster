@@ -55,7 +55,7 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
     private static final String KEY_LIBRARY_TYPE = "KEY_LIBRARY_TYPE";
     private static final String KEY_TASK_TYPE = "KEY_TASK_TYPE";
     private static final String KEY_EXTRA_MULTIPLE_CHOICE_COUNT = "KEY_EXTRA_MULTIPLE_CHOICE_COUNT";
-    private static final int TYPE_HOMEWORK = 0;
+    private int sourceType;
     //1：预习 2:练习 3：复习   不传或者-1 全部
     private String courseId;
     private String sectionId;
@@ -241,12 +241,20 @@ public class SxLessonSourceFragment extends IBaseFragment implements SxLessonSou
             if (!isInitiativeTrigger && isChoiceMode) {
                 dataList = getDataList(taskListVO, dataList);
             }
+            //处理课中练习统计问题
+            if (exerciseType == 1){
+                sourceType =0;
+            }else if (exerciseType == 2){
+                sourceType = 3;
+            }else if (exerciseType == 3){
+                sourceType = 0;
+            }
             for (SectionResListVo datum : dataList) {
                 datum.setTaskType(taskListVO.getTaskType());
                 datum.setTaskName(taskListVO.getTaskName());
                 datum.setChapterId(datum.getId());
                 datum.setCourseId(courseId);
-                datum.setSourceType(TYPE_HOMEWORK);
+                datum.setSourceType(sourceType);
                 TreeNode treeNode1 = new TreeNode(datum);
                 treeNode1.setExtras(extrasVo);
                 treeNode1.setLevel(1);
