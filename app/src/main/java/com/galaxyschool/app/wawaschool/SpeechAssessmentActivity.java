@@ -626,7 +626,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             if (isOnlinePlay) {
                 finish();
             } else {
-                commitPageTask(true, "");
+                sendSpeechAssessmentTask(true);
             }
         } else if (viewId == R.id.contacts_header_right_btn) {
             if (isRecordingAudio()) {
@@ -634,7 +634,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             }
             resetAudioPlayer();
             //发送
-            sendSpeechAssessmentTask();
+            sendSpeechAssessmentTask(false);
         } else if (viewId == R.id.ll_left) {
             //点击显示文本
             changeMessageShow(true);
@@ -665,10 +665,11 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
         headTitleTextV.setText(getString(R.string.n_finish, finishPer));
     }
 
-    private void sendSpeechAssessmentTask() {
+    private void sendSpeechAssessmentTask(boolean isBack) {
         if (assessmentData != null && assessmentData.size() > 0) {
             boolean isFinishAllPageTask = true;
             StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder scoreBuilder = new StringBuilder();
             for (int i = 0, len = assessmentData.size(); i < len; i++) {
                 if (TextUtils.isEmpty(assessmentData.get(i).getEval_result())) {
                     isFinishAllPageTask = false;
@@ -678,41 +679,69 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
                     } else {
                         stringBuilder.append("，").append(i + 1);
                     }
+                } else if (assessmentData.get(i).getEval_score() < 60){
+                    isFinishAllPageTask = false;
+                    if (scoreBuilder.length() == 0){
+                        scoreBuilder.append(i + 1);
+                    } else {
+                        scoreBuilder.append("，").append(i + 1);
+                    }
                 }
             }
-            if (isFinishAllPageTask) {
+
+            String titleContent = getString(R.string.str_continue_eval) + "？";
+            String pageNoSpeech = null;
+            String unFinishPage = null;
+            if (!TextUtils.isEmpty(scoreBuilder.toString())){
+                String detail = null;
+                if (scoreRule == 1){
+                    detail = "C-";
+                } else {
+                    detail = getString(R.string.str_eval_score,"60");
+                }
+                pageNoSpeech = getString(R.string.str_page_score_fail,scoreBuilder.toString(), detail);
+            }
+            if (!TextUtils.isEmpty(stringBuilder)){
+                unFinishPage = getString(R.string.str_page_no_speech,stringBuilder.toString());
+            }
+            if (isFinishAllPageTask){
+                titleContent = getString(R.string.str_speech_commit);
+            } else if (!TextUtils.isEmpty(pageNoSpeech) && !TextUtils.isEmpty(unFinishPage)){
+                titleContent = unFinishPage + "，" + pageNoSpeech + "." + titleContent;
+            } else if (!TextUtils.isEmpty(pageNoSpeech)){
+                titleContent = pageNoSpeech + "," + titleContent;
+            } else if (!TextUtils.isEmpty(unFinishPage)){
+                titleContent = unFinishPage + "," + titleContent;
+            }
+            if (isFinishAllPageTask && !isBack){
                 commitAllPageTask();
             } else {
-                commitPageTask(false, stringBuilder.toString());
+                commitPageTask(titleContent,isFinishAllPageTask);
             }
         }
     }
 
-    private void commitPageTask(final boolean isBack, String unFinishPosition) {
-        String messageContent = getString(R.string.str_back_show_evaluation_tip);
-        if (!isBack) {
-            messageContent = getString(R.string.str_commit_evaluation_unfinish_tip, unFinishPosition);
-        }
+    private void commitPageTask(String messageContent,
+                                boolean isFinishAll) {
         ContactsMessageDialog messageDialog = new ContactsMessageDialog(
                 SpeechAssessmentActivity.this, null,
                 messageContent,
-                isBack ? getString(R.string.discard_save) : getString(R.string.str_continue_eval),
+                isFinishAll ? getString(R.string.commit) : getString(R.string.str_continue_eval),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        if (isBack) {
-                            //返回键时back
-                            finish();
+                        if (isFinishAll){
+                           commitAllPageTask();
                         }
                     }
                 },
-                getString(R.string.commit),
+                getString(R.string.discard_save),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        commitAllPageTask();
+                        finish();
                     }
                 });
         messageDialog.show();
@@ -726,7 +755,7 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             if (isRecordingAudio()) {
                 return;
             }
-            commitPageTask(true, null);
+            sendSpeechAssessmentTask(true);
         }
     }
 
