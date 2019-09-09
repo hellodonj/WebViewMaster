@@ -404,6 +404,9 @@ public class WatchWawaCourseResourceSplicingUtils {
             } else if (vo.getSourceType() == 2){
                 //测试
                 tag.setCourseTaskType(2);
+            } else if (vo.getSourceType() == 3){
+                //练习
+                tag.setCourseTaskType(4);
             }
         }
         if (TextUtils.equals("1", tag.getResProperties())) {
