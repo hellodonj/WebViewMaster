@@ -500,7 +500,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
-                    ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
+                    getActivity().finish();
                 }
             }
 

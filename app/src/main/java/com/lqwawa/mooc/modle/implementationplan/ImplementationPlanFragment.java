@@ -433,21 +433,6 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         this.resourceInfoTagList1.addAll(lgResourceInfoTags);
         mRecyclerView1.setAdapter(mPictureListAdapter1);
 
-//        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList1, selectMode);
-//        mRecyclerView1.setAdapter(mPictureListAdapter1);
-//        mPictureListAdapter1.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onAddItemClick(View view, int position) {
-//
-//            }
-//
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                accessoriesaType = LEARNING_TARGET_TYPE;
-//                toImageActivity(resourceInfoTagList1, position);
-//            }
-//        });
-
         ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
         if (!TextUtils.isEmpty(dpAppendixId)) {
             if (dpAppendixId.contains(",")) {
@@ -470,20 +455,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
 
         this.resourceInfoTagList2.addAll(dpResourceInfoTags);
-//        mPictureListAdapter2 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList2, selectMode);
         mRecyclerView2.setAdapter(mPictureListAdapter2);
-//        mPictureListAdapter2.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onAddItemClick(View view, int position) {
-//
-//            }
-//
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                accessoriesaType = MAIN_DIFFICULT_TYPE;
-//                toImageActivity(resourceInfoTagList2, position);
-//            }
-//        });
 
         ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
         if (!TextUtils.isEmpty(cpAppendixId)) {
@@ -507,20 +479,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
 
         this.resourceInfoTagList3.addAll(cpResourceInfoTags);
-//        mPictureListAdapter3 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList3, selectMode);
         mRecyclerView3.setAdapter(mPictureListAdapter3);
-//        mPictureListAdapter3.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onAddItemClick(View view, int position) {
-//
-//            }
-//
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                accessoriesaType = COMMON_PROBLEM_TYPE;
-//                toImageActivity(resourceInfoTagList3, position);
-//            }
-//        });
 
         ArrayList<ResourceInfoTag> sResourceInfoTags = new ArrayList<>();
         if (!TextUtils.isEmpty(sAppendixId)) {
@@ -544,20 +503,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         }
 
         this.resourceInfoTagList4.addAll(sResourceInfoTags);
-//        mPictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, selectMode);
         mRecyclerView4.setAdapter(mPictureListAdapter4);
-//        mPictureListAdapter4.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onAddItemClick(View view, int position) {
-//
-//            }
-//
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                accessoriesaType = STEP_TYPE;
-//                toImageActivity(resourceInfoTagList4, position);
-//            }
-//        });
 
     }
 
