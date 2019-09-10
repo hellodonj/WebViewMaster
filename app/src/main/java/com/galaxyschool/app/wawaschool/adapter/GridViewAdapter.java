@@ -55,7 +55,7 @@ public class GridViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_tab_entity_gridview, parent, false);
+            convertView = inflater.inflate(R.layout.item_school_entity_gridview, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tv = (TextView) convertView.findViewById(R.id.title);
             viewHolder.iv = (ImageView) convertView.findViewById(R.id.icon_head);
