@@ -102,6 +102,9 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
     @Override
     public int getItemCount() {
         //含有10张图片，直接展示，不需要“加号”图片
+        if (mode == EDIT_MODE){
+            return list.size();
+        }
         if (list.size() == 10) {
             return 10;
         }

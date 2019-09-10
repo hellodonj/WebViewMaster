@@ -36,7 +36,6 @@ public class EditImplementationPlanActivity extends BaseFragmentActivity {
         args.putString(KEY_EXTRA_CLASS_ID,classId);
         intent.putExtras(args);
         activity.startActivity(intent);
-        activity.finish();
     }
 
     @Override
@@ -48,7 +47,6 @@ public class EditImplementationPlanActivity extends BaseFragmentActivity {
         fragment.setArguments(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.activity_body, fragment, fragment.getClass().getSimpleName());
-        ft.addToBackStack(null);
         ft.commit();
     }
 

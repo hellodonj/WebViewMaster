@@ -48,7 +48,6 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
         fragment.setArguments(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.activity_body, fragment, fragment.getClass().getSimpleName());
-        ft.addToBackStack(null);
         ft.commit();
     }
 
