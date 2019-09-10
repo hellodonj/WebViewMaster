@@ -551,7 +551,8 @@
     <string name="label_reset">重置</string>
     <string name="label_learning_target">一、学习目标</string>
     <string name="label_main_difficulty">二、重点难点</string>
-    <string name="label_common_problem">三、常见问题</string>
+    <string name="label_step">三、步骤</string>
+    <string name="label_common_problem">四、常见问题</string>
     <string name="label_input_text_tip">请输入文本</string>
     <string name="label_add_attachments">添加附件：</string>
     <string name="label_attachments">附件：</string>

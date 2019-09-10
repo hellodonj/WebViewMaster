@@ -145,6 +145,66 @@
                     android:layout_height="6dp"
                     android:background="@color/gray1" />
 
+                <!--======================================步骤==============================-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/label_step"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <com.lqwawa.apps.views.ContainsEmojiEditText
+                        android:id="@+id/step_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/topic_input_gray_bg"
+                        android:gravity="top"
+                        android:hint="@string/label_input_text_tip"
+                        android:maxLength="500"
+                        android:minHeight="115dp"
+                        android:padding="5dp"
+                        android:textColor="@color/gray"
+                        android:textColorHint="@color/gray"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_add_accessories_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/tv_accessories_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_add_attachments"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:background="@color/gray1" />
+
                 <!--================================常见问题====================================-->
                 <LinearLayout
                     android:layout_width="match_parent"

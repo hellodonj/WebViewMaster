@@ -13,6 +13,9 @@ public class ImplementationPlanEntity extends BaseVo {
      * "cpAppendixId": "",
      * "learningGoal": "学习目标",
      * "commonProblem": "常见问题"
+     * step : 步骤
+     * stepId;
+     * stepUrl;
      */
     private String learningGoal;
     private String lgAppendixUrl;
@@ -20,6 +23,9 @@ public class ImplementationPlanEntity extends BaseVo {
     private String difficultPoint;
     private String dpAppendixUrl;
     private String dpAppendixId;
+    private String step;
+    private String stepId;
+    private String stepUrl;
     private String commonProblem;
     private String cpAppendixUrl;
     private String cpAppendixId;
@@ -70,6 +76,30 @@ public class ImplementationPlanEntity extends BaseVo {
 
     public void setDpAppendixId(String dpAppendixId) {
         this.dpAppendixId = dpAppendixId;
+    }
+
+    public String getStep() {
+        return step;
+    }
+
+    public void setStep(String step) {
+        this.step = step;
+    }
+
+    public String getStepId() {
+        return stepId;
+    }
+
+    public void setStepId(String stepId) {
+        this.stepId = stepId;
+    }
+
+    public String getStepUrl() {
+        return stepUrl;
+    }
+
+    public void setStepUrl(String stepUrl) {
+        this.stepUrl = stepUrl;
     }
 
     public String getCommonProblem() {

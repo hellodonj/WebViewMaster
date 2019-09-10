@@ -21,11 +21,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceSplicingUtils;
+import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
+import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
+import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
 import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 import com.galaxyschool.app.wawaschool.pojo.weike.MediaData;
+import com.libs.gallery.ImageInfo;
 import com.lqwawa.apps.views.ContainsEmojiEditText;
 import com.lqwawa.client.pojo.ResourceInfo;
 import com.lqwawa.intleducation.AppConfig;
@@ -33,7 +37,6 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.mooc.ViewPagerImageActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -61,32 +64,31 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     public static final int LEARNING_TARGET_TYPE = 1;
     public static final int MAIN_DIFFICULT_TYPE = 2;
     public static final int COMMON_PROBLEM_TYPE = 3;
+    public static final int STEP_TYPE = 4;
 
     private View mRootView, inflate;
     private TopBar mTopBar;
-    private ContainsEmojiEditText mLearningTargetEt, mMainDifficultyEt, mCommonProblemEt;
+    private ContainsEmojiEditText mLearningTargetEt, mMainDifficultyEt, mStepEt, mCommonProblemEt;
     private List<ResourceInfoTag> resourceInfoTagList1 = new ArrayList<>();
     private List<ResourceInfoTag> resourceInfoTagList2 = new ArrayList<>();
     private List<ResourceInfoTag> resourceInfoTagList3 = new ArrayList<>();
+    private List<ResourceInfoTag> resourceInfoTagList4 = new ArrayList<>();
     private SelectPictureListAdapter mPictureListAdapter1;
     private SelectPictureListAdapter mPictureListAdapter2;
     private SelectPictureListAdapter mPictureListAdapter3;
+    private SelectPictureListAdapter mPictureListAdapter4;
     private FrameLayout mResetContainer;
     private Button mBtnConfirm, mBtnEdit;
-    private String mLearningTargetText, mMainDifficultyText, mCommonProblemText;
-    private TextView mTvAccessories1, mTvAccessories2, mTvAccessories3;
-    private RecyclerView mRecyclerView1, mRecyclerView2, mRecyclerView3;
+    private String mLearningTargetText, mMainDifficultyText, mStepText, mCommonProblemText;
+    private TextView mTvAccessories1, mTvAccessories2, mTvAccessories3, mTvAccessories4;
+    private RecyclerView mRecyclerView1, mRecyclerView2, mRecyclerView3, mRecyclerView4;
 
-    private String chapterId;
-    private String memberId;
-    private String courseId;
-    private String classId;
-    private TextView cancel;
-    private TextView takePhoto;
-    private TextView choosePhoto;
+    private String chapterId,memberId,courseId,classId;
+    private TextView choosePhoto,takePhoto,cancel;
     private Dialog dialog;
     private int accessoriesaType;
     private int selectMode = 1;
+    private String lgAppendixId, lgAppendixUrl,dpAppendixId,dpAppendixUrl;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -124,6 +126,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mTopBar.setBack(true);
         mLearningTargetEt = (ContainsEmojiEditText) findViewById(R.id.learning_target_content);
         mMainDifficultyEt = (ContainsEmojiEditText) findViewById(R.id.main_difficulty_content);
+        mStepEt = (ContainsEmojiEditText) findViewById(R.id.step_content);
         mCommonProblemEt = (ContainsEmojiEditText) findViewById(R.id.common_problem_content);
         mResetContainer = (FrameLayout) findViewById(R.id.reset_container);
         mBtnConfirm = (Button) findViewById(R.id.btn_confirm);
@@ -133,9 +136,11 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mTvAccessories1 = (TextView) findViewById(R.id.tv_accessories_1);
         mTvAccessories2 = (TextView) findViewById(R.id.tv_accessories_2);
         mTvAccessories3 = (TextView) findViewById(R.id.tv_accessories_3);
+        mTvAccessories4 = (TextView) findViewById(R.id.tv_accessories_4);
         mRecyclerView1 = (RecyclerView) findViewById(R.id.recycler_view_1);
         mRecyclerView2 = (RecyclerView) findViewById(R.id.recycler_view_2);
         mRecyclerView3 = (RecyclerView) findViewById(R.id.recycler_view_3);
+        mRecyclerView4 = (RecyclerView) findViewById(R.id.recycler_view_4);
     }
 
     private void initData() {
@@ -192,6 +197,22 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             }
         });
 
+        mRecyclerView4.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mPictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, selectMode);
+        mRecyclerView4.setAdapter(mPictureListAdapter4);
+        mPictureListAdapter4.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+            @Override
+            public void onAddItemClick(View view, int position) {
+                accessoriesaType = STEP_TYPE;
+                choosePhotoDialog();
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                accessoriesaType = STEP_TYPE;
+                toImageActivity(resourceInfoTagList4, position);
+            }
+        });
         queryIfExistPlan();
     }
 
@@ -284,6 +305,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetEt.setText(planEntity.getLearningGoal());
         mMainDifficultyEt.setText(planEntity.getDifficultPoint());
         mCommonProblemEt.setText(planEntity.getCommonProblem());
+        mStepEt.setText(planEntity.getCommonProblem());
 
         String lgAppendixId = planEntity.getLgAppendixId();
         String lgAppendixUrl = planEntity.getLgAppendixUrl();
@@ -291,18 +313,20 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         String dpAppendixUrl = planEntity.getDpAppendixUrl();
         String cpAppendixId = planEntity.getCpAppendixId();
         String cpAppendixUrl = planEntity.getCpAppendixUrl();
+        String sAppendixId = planEntity.getStepId();
+        String sAppendixUrl = planEntity.getStepUrl();
 
-        if (lgAppendixUrl != null) {
-            mTvAccessories1.setText(getString(R.string.label_attachments));
-        }
-        if (dpAppendixUrl != null) {
-            mTvAccessories2.setText(getString(R.string.label_attachments));
-        }
-        if (cpAppendixUrl != null) {
-            mTvAccessories3.setText(getString(R.string.label_attachments));
-        }
+//        if (lgAppendixUrl != null) {
+//            mTvAccessories1.setText(getString(R.string.label_attachments));
+//        }
+//        if (dpAppendixUrl != null) {
+//            mTvAccessories2.setText(getString(R.string.label_attachments));
+//        }
+//        if (cpAppendixUrl != null) {
+//            mTvAccessories3.setText(getString(R.string.label_attachments));
+//        }
         ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
-        if (!lgAppendixId.equals("null")) {
+        if (!TextUtils.isEmpty(lgAppendixId)) {
             if (lgAppendixId.indexOf(",") != -1) {
                 String[] lgTempId = lgAppendixId.split(",");
                 String[] lgTempUrl = lgAppendixUrl.split(",");
@@ -325,7 +349,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mRecyclerView1.setAdapter(mPictureListAdapter1);
 
         ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
-        if (!dpAppendixId.equals("null")) {
+        if (!TextUtils.isEmpty(dpAppendixId)) {
             if (dpAppendixId.indexOf(",") != -1) {
                 String[] dpTempId = dpAppendixId.split(",");
                 String[] dpTempUrl = dpAppendixUrl.split(",");
@@ -349,7 +373,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mRecyclerView2.setAdapter(mPictureListAdapter2);
 
         ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
-        if (!cpAppendixId.equals("null")) {
+        if (!TextUtils.isEmpty(cpAppendixId)) {
             if (cpAppendixId.indexOf(",") != -1) {
                 String[] cpTempId = cpAppendixId.split(",");
                 String[] cpTempUrl = cpAppendixUrl.split(",");
@@ -371,14 +395,51 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
 
         this.resourceInfoTagList3.addAll(cpResourceInfoTags);
         mRecyclerView3.setAdapter(mPictureListAdapter3);
+
+        ArrayList<ResourceInfoTag> sResourceInfoTags = new ArrayList<>();
+        if (!TextUtils.isEmpty(sAppendixId)) {
+            if (sAppendixId.contains(",")) {
+                String[] sTempId = sAppendixId.split(",");
+                String[] sTempUrl = sAppendixUrl.split(",");
+                for (int i = 0; i < sTempId.length; i++) {
+                    ResourceInfoTag sInfoTag = new ResourceInfoTag();
+                    sInfoTag.setResId(sTempId[i]);
+                    sInfoTag.setImgPath(sTempUrl[i]);
+                    sInfoTag.setResourcePath(sTempUrl[i]);
+                    sResourceInfoTags.add(sInfoTag);
+                }
+            } else {
+                ResourceInfoTag sInfoTag = new ResourceInfoTag();
+                sInfoTag.setResId(sAppendixId);
+                sInfoTag.setImgPath(sAppendixUrl);
+                sInfoTag.setResourcePath(sAppendixUrl);
+                sResourceInfoTags.add(sInfoTag);
+            }
+        }
+
+        this.resourceInfoTagList4.addAll(sResourceInfoTags);
+        mPictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, selectMode);
+        mRecyclerView4.setAdapter(mPictureListAdapter4);
+
     }
 
     private void toImageActivity(List<ResourceInfoTag> resourceInfoTagList, int position) {
-        ArrayList<String> lgList = new ArrayList<>();
-        for (int i = 0; i < resourceInfoTagList.size(); i++) {
-            lgList.add(resourceInfoTagList.get(i).getImgPath());
+        ArrayList<ImageInfo> imageItemInfos = new ArrayList<>();
+        if (resourceInfoTagList != null && resourceInfoTagList.size() > 0) {
+            for (int i = 0; i < resourceInfoTagList.size(); i++) {
+                ResourceInfoTag infoTag = resourceInfoTagList.get(i);
+                ImageInfo newResourceInfo = new ImageInfo();
+                newResourceInfo.setTitle(infoTag.getTitle());
+                newResourceInfo.setResourceUrl(AppSettings.getFileUrl(infoTag.getResourcePath()));
+                newResourceInfo.setResourceId(infoTag.getResId());
+                newResourceInfo.setResourceType(infoTag.getType());
+                newResourceInfo.setAuthorId(infoTag.getAuthorId());
+                imageItemInfos.add(newResourceInfo);
+            }
         }
-        ViewPagerImageActivity.start(getActivity(), lgList, position);
+        if (imageItemInfos != null && imageItemInfos.size() > 0) {
+            GalleryActivity.newInstance(getActivity(), imageItemInfos, true, 0, false, false, false);
+        }
     }
 
     @Override
@@ -401,8 +462,8 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
 
     //确认
     private void confirmPlanData() {
-        String lgAppendixId = null;
-        String lgAppendixUrl = null;
+        String lgAppendixId = "";
+        String lgAppendixUrl = "";
         for (int i = 0; i < resourceInfoTagList1.size(); i++) {
             ResourceInfoTag data = resourceInfoTagList1.get(i);
             if (i == 0) {
@@ -414,8 +475,8 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             }
         }
 
-        String dpAppendixId = null;
-        String dpAppendixUrl = null;
+        String dpAppendixId = "";
+        String dpAppendixUrl = "";
         for (int i = 0; i < resourceInfoTagList2.size(); i++) {
             ResourceInfoTag data = resourceInfoTagList2.get(i);
             if (i == 0) {
@@ -427,8 +488,8 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             }
         }
 
-        String cpAppendixId = null;
-        String cpAppendixUrl = null;
+        String cpAppendixId = "";
+        String cpAppendixUrl = "";
         for (int i = 0; i < resourceInfoTagList3.size(); i++) {
             ResourceInfoTag data = resourceInfoTagList3.get(i);
             if (i == 0) {
@@ -437,6 +498,19 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             } else {
                 cpAppendixId = cpAppendixId + "," + data.getResId();
                 cpAppendixUrl = cpAppendixUrl + "," + data.getResourcePath();
+            }
+        }
+
+        String sAppendixId = "";
+        String sAppendixUrl = "";
+        for (int i = 0; i < resourceInfoTagList4.size(); i++) {
+            ResourceInfoTag data = resourceInfoTagList4.get(i);
+            if (i == 0) {
+                sAppendixId = data.getResId();
+                sAppendixUrl = data.getResourcePath();
+            } else {
+                sAppendixId = sAppendixId + "," + data.getResId();
+                sAppendixUrl = sAppendixUrl + "," + data.getResourcePath();
             }
         }
 
@@ -456,6 +530,9 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         requestVo.addParams("commonProblem", mCommonProblemText);
         requestVo.addParams("cpAppendixId", cpAppendixId);
         requestVo.addParams("cpAppendixUrl", cpAppendixUrl);
+        requestVo.addParams("step", mStepText);
+        requestVo.addParams("stepId", sAppendixId);
+        requestVo.addParams("stepUrl", sAppendixUrl);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postSaveImplementPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
@@ -553,19 +630,44 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         }
         if (resourceInfoTags.size() > 0) {
             if (accessoriesaType == LEARNING_TARGET_TYPE) {
+                if (resourceInfoTags.size() + resourceInfoTagList1.size() > 10) {
+                    int count = 10 - resourceInfoTagList1.size();
+                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    return;
+                }
                 this.resourceInfoTagList1.addAll(resourceInfoTags);
                 if (mPictureListAdapter1 != null) {
                     mPictureListAdapter1.update(this.resourceInfoTagList1);
                 }
             } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
+                if (resourceInfoTags.size() + resourceInfoTagList2.size() > 10) {
+                    int count = 10 - resourceInfoTagList2.size();
+                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    return;
+                }
                 this.resourceInfoTagList2.addAll(resourceInfoTags);
                 if (mPictureListAdapter2 != null) {
                     mPictureListAdapter2.update(this.resourceInfoTagList2);
                 }
             } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
+                if (resourceInfoTags.size() + resourceInfoTagList3.size() > 10) {
+                    int count = 10 - resourceInfoTagList3.size();
+                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    return;
+                }
                 this.resourceInfoTagList3.addAll(resourceInfoTags);
                 if (mPictureListAdapter3 != null) {
                     mPictureListAdapter3.update(this.resourceInfoTagList3);
+                }
+            }else if (accessoriesaType == STEP_TYPE) {
+                if (resourceInfoTags.size() + resourceInfoTagList4.size() > 10) {
+                    int count = 10 - resourceInfoTagList4.size();
+                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
+                    return;
+                }
+                this.resourceInfoTagList4.addAll(resourceInfoTags);
+                if (mPictureListAdapter4 != null) {
+                    mPictureListAdapter4.update(this.resourceInfoTagList4);
                 }
             }
         }
@@ -575,5 +677,6 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         mLearningTargetText = mLearningTargetEt.getText().toString().trim();
         mMainDifficultyText = mMainDifficultyEt.getText().toString().trim();
         mCommonProblemText = mCommonProblemEt.getText().toString().trim();
+        mStepText = mStepEt.getText().toString().trim();
     }
 }
