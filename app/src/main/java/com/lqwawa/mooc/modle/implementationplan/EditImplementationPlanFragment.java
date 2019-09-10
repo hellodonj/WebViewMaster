@@ -37,6 +37,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.mooc.ImplementationPlanActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -146,6 +147,167 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     private void initData() {
         mTopBar.setTitle(getString(R.string.class_implementation_plan));
         mTopBar.setTitleWide(DensityUtil.dip2px(120));
+        mTopBar.setLeftFunctionImage1(R.drawable.ic_back_green, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
+            }
+        });
+        getImplementPlan();
+    }
+
+    //获取课中实施方案
+    private void getImplementPlan() {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("chapterId", chapterId);
+        if (!TextUtils.isEmpty(memberId)) {
+            requestVo.addParams("token", memberId);
+        }
+        requestVo.addParams("classId", classId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.postGetImplementPlan);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ResponseVo<ImplementationPlanEntity> results = JSON.parseObject(result,
+                        new TypeReference<ResponseVo<ImplementationPlanEntity>>() {
+                        });
+                if (results.isSucceed()) {
+                    ImplementationPlanEntity planEntity = results.getData();
+                    configPlanData(planEntity);
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.net_error_tip);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void configPlanData(ImplementationPlanEntity planEntity) {
+        mResetContainer.setVisibility(View.GONE);
+        mLearningTargetEt.setText(planEntity.getLearningGoal());
+        mMainDifficultyEt.setText(planEntity.getDifficultPoint());
+        mCommonProblemEt.setText(planEntity.getCommonProblem());
+        mStepEt.setText(planEntity.getCommonProblem());
+
+        String lgAppendixId = planEntity.getLgAppendixId();
+        String lgAppendixUrl = planEntity.getLgAppendixUrl();
+        String dpAppendixId = planEntity.getDpAppendixId();
+        String dpAppendixUrl = planEntity.getDpAppendixUrl();
+        String cpAppendixId = planEntity.getCpAppendixId();
+        String cpAppendixUrl = planEntity.getCpAppendixUrl();
+        String sAppendixId = planEntity.getStepId();
+        String sAppendixUrl = planEntity.getStepUrl();
+
+        ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
+        if (!TextUtils.isEmpty(lgAppendixId)) {
+            if (lgAppendixId.indexOf(",") != -1) {
+                String[] lgTempId = lgAppendixId.split(",");
+                String[] lgTempUrl = lgAppendixUrl.split(",");
+                for (int i = 0; i < lgTempId.length; i++) {
+                    ResourceInfoTag lgInfoTag = new ResourceInfoTag();
+                    lgInfoTag.setResId(lgTempId[i]);
+                    lgInfoTag.setImgPath(lgTempUrl[i]);
+                    lgInfoTag.setResourcePath(lgTempUrl[i]);
+                    lgResourceInfoTags.add(lgInfoTag);
+                }
+            } else {
+                ResourceInfoTag lgInfoTag = new ResourceInfoTag();
+                lgInfoTag.setResId(lgAppendixId);
+                lgInfoTag.setImgPath(lgAppendixUrl);
+                lgInfoTag.setResourcePath(lgAppendixUrl);
+                lgResourceInfoTags.add(lgInfoTag);
+            }
+        }
+        this.resourceInfoTagList1.addAll(lgResourceInfoTags);
+//        mRecyclerView1.setAdapter(mPictureListAdapter1);
+
+        ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
+        if (!TextUtils.isEmpty(dpAppendixId)) {
+            if (dpAppendixId.indexOf(",") != -1) {
+                String[] dpTempId = dpAppendixId.split(",");
+                String[] dpTempUrl = dpAppendixUrl.split(",");
+                for (int i = 0; i < dpTempId.length; i++) {
+                    ResourceInfoTag dpInfoTag = new ResourceInfoTag();
+                    dpInfoTag.setResId(dpTempId[i]);
+                    dpInfoTag.setImgPath(dpTempUrl[i]);
+                    dpInfoTag.setResourcePath(dpTempUrl[i]);
+                    dpResourceInfoTags.add(dpInfoTag);
+                }
+            } else {
+                ResourceInfoTag dpInfoTag = new ResourceInfoTag();
+                dpInfoTag.setResId(dpAppendixId);
+                dpInfoTag.setImgPath(dpAppendixUrl);
+                dpInfoTag.setResourcePath(dpAppendixUrl);
+                dpResourceInfoTags.add(dpInfoTag);
+            }
+        }
+
+        this.resourceInfoTagList2.addAll(dpResourceInfoTags);
+//        mRecyclerView2.setAdapter(mPictureListAdapter2);
+
+        ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
+        if (!TextUtils.isEmpty(cpAppendixId)) {
+            if (cpAppendixId.indexOf(",") != -1) {
+                String[] cpTempId = cpAppendixId.split(",");
+                String[] cpTempUrl = cpAppendixUrl.split(",");
+                for (int i = 0; i < cpTempId.length; i++) {
+                    ResourceInfoTag cpInfoTag = new ResourceInfoTag();
+                    cpInfoTag.setResId(cpTempId[i]);
+                    cpInfoTag.setImgPath(cpTempUrl[i]);
+                    cpInfoTag.setResourcePath(cpTempUrl[i]);
+                    cpResourceInfoTags.add(cpInfoTag);
+                }
+            } else {
+                ResourceInfoTag cpInfoTag = new ResourceInfoTag();
+                cpInfoTag.setResId(cpAppendixId);
+                cpInfoTag.setImgPath(cpAppendixUrl);
+                cpInfoTag.setResourcePath(cpAppendixUrl);
+                cpResourceInfoTags.add(cpInfoTag);
+            }
+        }
+
+        this.resourceInfoTagList3.addAll(cpResourceInfoTags);
+//        mRecyclerView3.setAdapter(mPictureListAdapter3);
+
+        ArrayList<ResourceInfoTag> sResourceInfoTags = new ArrayList<>();
+        if (!TextUtils.isEmpty(sAppendixId)) {
+            if (sAppendixId.contains(",")) {
+                String[] sTempId = sAppendixId.split(",");
+                String[] sTempUrl = sAppendixUrl.split(",");
+                for (int i = 0; i < sTempId.length; i++) {
+                    ResourceInfoTag sInfoTag = new ResourceInfoTag();
+                    sInfoTag.setResId(sTempId[i]);
+                    sInfoTag.setImgPath(sTempUrl[i]);
+                    sInfoTag.setResourcePath(sTempUrl[i]);
+                    sResourceInfoTags.add(sInfoTag);
+                }
+            } else {
+                ResourceInfoTag sInfoTag = new ResourceInfoTag();
+                sInfoTag.setResId(sAppendixId);
+                sInfoTag.setImgPath(sAppendixUrl);
+                sInfoTag.setResourcePath(sAppendixUrl);
+                sResourceInfoTags.add(sInfoTag);
+            }
+        }
+
+        this.resourceInfoTagList4.addAll(sResourceInfoTags);
+//        mRecyclerView4.setAdapter(mPictureListAdapter4);
+
         mRecyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList1, selectMode);
         mRecyclerView1.setAdapter(mPictureListAdapter1);
@@ -213,213 +375,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
                 toImageActivity(resourceInfoTagList4, position);
             }
         });
-        queryIfExistPlan();
-    }
 
-    private void queryIfExistPlan() {
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("chapterId", chapterId);
-        if (!TextUtils.isEmpty(memberId)) {
-            requestVo.addParams("token", memberId);
-        }
-        requestVo.addParams("classId", classId);
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.postQueryIfExistPlan);
-        params.setAsJsonContent(true);
-        params.setBodyContent(requestVo.getParams());
-        params.setConnectTimeout(10000);
-        x.http().post(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                ResponseVo<String> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<String>>() {
-                        });
-                if (results.getCode() == 0) {
-                    //创建过
-                    if (results.isExist()) {
-                        getImplementPlan();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.net_error_tip);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
-
-
-    //获取课中实施方案
-    private void getImplementPlan() {
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("chapterId", chapterId);
-        if (!TextUtils.isEmpty(memberId)) {
-            requestVo.addParams("token", memberId);
-        }
-        requestVo.addParams("classId", classId);
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.postGetImplementPlan);
-        params.setAsJsonContent(true);
-        params.setBodyContent(requestVo.getParams());
-        params.setConnectTimeout(10000);
-        x.http().post(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                ResponseVo<ImplementationPlanEntity> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<ImplementationPlanEntity>>() {
-                        });
-                if (results.isSucceed()) {
-                    ImplementationPlanEntity planEntity = results.getData();
-                    configPlanData(planEntity);
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.net_error_tip);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
-
-    private void configPlanData(ImplementationPlanEntity planEntity) {
-        mResetContainer.setVisibility(View.GONE);
-        mLearningTargetEt.setText(planEntity.getLearningGoal());
-        mMainDifficultyEt.setText(planEntity.getDifficultPoint());
-        mCommonProblemEt.setText(planEntity.getCommonProblem());
-        mStepEt.setText(planEntity.getCommonProblem());
-
-        String lgAppendixId = planEntity.getLgAppendixId();
-        String lgAppendixUrl = planEntity.getLgAppendixUrl();
-        String dpAppendixId = planEntity.getDpAppendixId();
-        String dpAppendixUrl = planEntity.getDpAppendixUrl();
-        String cpAppendixId = planEntity.getCpAppendixId();
-        String cpAppendixUrl = planEntity.getCpAppendixUrl();
-        String sAppendixId = planEntity.getStepId();
-        String sAppendixUrl = planEntity.getStepUrl();
-
-//        if (lgAppendixUrl != null) {
-//            mTvAccessories1.setText(getString(R.string.label_attachments));
-//        }
-//        if (dpAppendixUrl != null) {
-//            mTvAccessories2.setText(getString(R.string.label_attachments));
-//        }
-//        if (cpAppendixUrl != null) {
-//            mTvAccessories3.setText(getString(R.string.label_attachments));
-//        }
-        ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(lgAppendixId)) {
-            if (lgAppendixId.indexOf(",") != -1) {
-                String[] lgTempId = lgAppendixId.split(",");
-                String[] lgTempUrl = lgAppendixUrl.split(",");
-                for (int i = 0; i < lgTempId.length; i++) {
-                    ResourceInfoTag lgInfoTag = new ResourceInfoTag();
-                    lgInfoTag.setResId(lgTempId[i]);
-                    lgInfoTag.setImgPath(lgTempUrl[i]);
-                    lgInfoTag.setResourcePath(lgTempUrl[i]);
-                    lgResourceInfoTags.add(lgInfoTag);
-                }
-            } else {
-                ResourceInfoTag lgInfoTag = new ResourceInfoTag();
-                lgInfoTag.setResId(lgAppendixId);
-                lgInfoTag.setImgPath(lgAppendixUrl);
-                lgInfoTag.setResourcePath(lgAppendixUrl);
-                lgResourceInfoTags.add(lgInfoTag);
-            }
-        }
-        this.resourceInfoTagList1.addAll(lgResourceInfoTags);
-        mRecyclerView1.setAdapter(mPictureListAdapter1);
-
-        ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(dpAppendixId)) {
-            if (dpAppendixId.indexOf(",") != -1) {
-                String[] dpTempId = dpAppendixId.split(",");
-                String[] dpTempUrl = dpAppendixUrl.split(",");
-                for (int i = 0; i < dpTempId.length; i++) {
-                    ResourceInfoTag dpInfoTag = new ResourceInfoTag();
-                    dpInfoTag.setResId(dpTempId[i]);
-                    dpInfoTag.setImgPath(dpTempUrl[i]);
-                    dpInfoTag.setResourcePath(dpTempUrl[i]);
-                    dpResourceInfoTags.add(dpInfoTag);
-                }
-            } else {
-                ResourceInfoTag dpInfoTag = new ResourceInfoTag();
-                dpInfoTag.setResId(dpAppendixId);
-                dpInfoTag.setImgPath(dpAppendixUrl);
-                dpInfoTag.setResourcePath(dpAppendixUrl);
-                dpResourceInfoTags.add(dpInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList2.addAll(dpResourceInfoTags);
-        mRecyclerView2.setAdapter(mPictureListAdapter2);
-
-        ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(cpAppendixId)) {
-            if (cpAppendixId.indexOf(",") != -1) {
-                String[] cpTempId = cpAppendixId.split(",");
-                String[] cpTempUrl = cpAppendixUrl.split(",");
-                for (int i = 0; i < cpTempId.length; i++) {
-                    ResourceInfoTag cpInfoTag = new ResourceInfoTag();
-                    cpInfoTag.setResId(cpTempId[i]);
-                    cpInfoTag.setImgPath(cpTempUrl[i]);
-                    cpInfoTag.setResourcePath(cpTempUrl[i]);
-                    cpResourceInfoTags.add(cpInfoTag);
-                }
-            } else {
-                ResourceInfoTag cpInfoTag = new ResourceInfoTag();
-                cpInfoTag.setResId(cpAppendixId);
-                cpInfoTag.setImgPath(cpAppendixUrl);
-                cpInfoTag.setResourcePath(cpAppendixUrl);
-                cpResourceInfoTags.add(cpInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList3.addAll(cpResourceInfoTags);
-        mRecyclerView3.setAdapter(mPictureListAdapter3);
-
-        ArrayList<ResourceInfoTag> sResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(sAppendixId)) {
-            if (sAppendixId.contains(",")) {
-                String[] sTempId = sAppendixId.split(",");
-                String[] sTempUrl = sAppendixUrl.split(",");
-                for (int i = 0; i < sTempId.length; i++) {
-                    ResourceInfoTag sInfoTag = new ResourceInfoTag();
-                    sInfoTag.setResId(sTempId[i]);
-                    sInfoTag.setImgPath(sTempUrl[i]);
-                    sInfoTag.setResourcePath(sTempUrl[i]);
-                    sResourceInfoTags.add(sInfoTag);
-                }
-            } else {
-                ResourceInfoTag sInfoTag = new ResourceInfoTag();
-                sInfoTag.setResId(sAppendixId);
-                sInfoTag.setImgPath(sAppendixUrl);
-                sInfoTag.setResourcePath(sAppendixUrl);
-                sResourceInfoTags.add(sInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList4.addAll(sResourceInfoTags);
-        mPictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, selectMode);
-        mRecyclerView4.setAdapter(mPictureListAdapter4);
 
     }
 
@@ -544,7 +500,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
-                    getActivity().finish();
+                    ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
                 }
             }
 

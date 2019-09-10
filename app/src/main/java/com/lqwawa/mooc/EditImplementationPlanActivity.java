@@ -36,7 +36,6 @@ public class EditImplementationPlanActivity extends BaseFragmentActivity {
         args.putString(KEY_EXTRA_CLASS_ID,classId);
         intent.putExtras(args);
         activity.startActivity(intent);
-        activity.finish();
     }
 
     @Override

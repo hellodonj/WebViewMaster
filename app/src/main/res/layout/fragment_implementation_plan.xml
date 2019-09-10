@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="-13dp"
-            android:layout_marginBottom="45dp">
+            android:layout_marginBottom="55dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +36,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/label_learning_target"
                         android:textColor="@color/black"
@@ -51,8 +50,7 @@
                         android:background="@drawable/topic_input_gray_bg"
                         android:gravity="top"
                         android:hint="@string/label_input_text_tip"
-                        android:maxLength="500"
-                        android:minHeight="115dp"
+                        android:minLines="5"
                         android:padding="5dp"
                         android:textColor="@color/gray"
                         android:textColorHint="@color/gray"
@@ -95,7 +93,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/label_main_difficulty"
                         android:textColor="@color/black"
@@ -110,8 +107,7 @@
                         android:background="@drawable/topic_input_gray_bg"
                         android:gravity="top"
                         android:hint="@string/label_input_text_tip"
-                        android:maxLength="500"
-                        android:minHeight="115dp"
+                        android:minLines="5"
                         android:padding="5dp"
                         android:textColor="@color/gray"
                         android:textColorHint="@color/gray"
@@ -155,7 +151,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/label_step"
                         android:textColor="@color/black"
@@ -170,8 +165,7 @@
                         android:background="@drawable/topic_input_gray_bg"
                         android:gravity="top"
                         android:hint="@string/label_input_text_tip"
-                        android:maxLength="500"
-                        android:minHeight="115dp"
+                        android:minLines="5"
                         android:padding="5dp"
                         android:textColor="@color/gray"
                         android:textColorHint="@color/gray"
@@ -215,7 +209,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:text="@string/label_common_problem"
                         android:textColor="@color/black"
@@ -230,8 +223,7 @@
                         android:background="@drawable/topic_input_gray_bg"
                         android:gravity="top"
                         android:hint="@string/label_input_text_tip"
-                        android:maxLength="500"
-                        android:minHeight="115dp"
+                        android:minLines="5"
                         android:padding="5dp"
                         android:textColor="@color/gray"
                         android:textColorHint="@color/gray"
