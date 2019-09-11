@@ -1,6 +1,5 @@
 package com.lqwawa.intleducation.module.learn.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.utils.DisplayUtil;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
@@ -35,7 +35,6 @@ import com.lqwawa.intleducation.common.ui.treeview.TreeView;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
-import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -207,6 +206,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
     private TextView mTvPoint;
     private Button mBtnAction;
     private LinearLayout mTopLayout;
+    private LinearLayout mTaskLayout;
+    private CourseEmptyView mEmptyPlanView;
 
     private boolean needFlag;
     private boolean canRead, isContainAssistantWork;
@@ -247,6 +248,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
         mTvPoint = (TextView) findViewById(R.id.tv_point);
         mBtnAction = (Button) findViewById(R.id.btn_action);
         mTopLayout = (LinearLayout) findViewById(R.id.lesson_top_layout);
+        mTaskLayout = (LinearLayout) findViewById(R.id.layout_task);
+        mEmptyPlanView = findViewById(R.id.empty_plan_layout);
 
         int color = UIUtil.getColor(R.color.colorPink);
         int radius = DisplayUtil.dip2px(UIUtil.getContext(), 16);
@@ -385,7 +388,15 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             @Override
             public void onDataLoaded(List<ExerciseTypeVo> exerciseTypeList) {
                 SxLessonDetailsActivity.this.mExerciseTypeVoList = exerciseTypeList;
-                if (EmptyUtil.isEmpty(exerciseTypeList)) return;
+                if (EmptyUtil.isEmpty(exerciseTypeList)) {
+                    return;
+                } else if (exerciseTypeList.size() == 1 && (exerciseTypeList.get(0).getExerciseType() == 2)
+                        && (mChapterParams.getRole() != UserHelper.MoocRoleType.TEACHER)) {
+                    mTaskLayout.setVisibility(View.GONE);
+                    mEmptyPlanView.setVisibility(View.VISIBLE);
+                    return;
+                }
+
                 for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
                     if (exerciseTypeVo.getExerciseType() == 1) {

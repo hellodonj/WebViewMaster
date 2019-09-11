@@ -587,4 +587,5 @@
     <string name="label_test_lock_dialog">确定锁定该测试吗？</string>
     <string name="label_activation_code_tip">请输入激活码激活</string>
     <string name="label_empty_teaching_assistant">暂无关联教辅</string>
+    <string name="label_plan_empty_content">暂无预习、复习内容</string>
 </resources>
