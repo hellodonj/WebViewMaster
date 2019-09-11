@@ -389,8 +389,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
                     if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
-                    } else if (exerciseTypeVo.getExerciseType() == 2 && courseParams.isClassTeacher()) {
-                        mTabLists.add(getResources().getString(R.string.label_sx_practice));
+                    } else if (exerciseTypeVo.getExerciseType() == 2) {
+                        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER){
+                            mTabLists.add(getResources().getString(R.string.label_sx_practice));
+                        }
                     } else if (exerciseTypeVo.getExerciseType() == 3) {
                         mTabLists.add(getResources().getString(R.string.label_sx_review));
                     }
