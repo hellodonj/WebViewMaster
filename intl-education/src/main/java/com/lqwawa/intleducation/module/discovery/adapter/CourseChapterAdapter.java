@@ -387,6 +387,11 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                         }
                     }
 
+                    //--5.18
+                    if ((vo.getFinishNum() == 0) && (vo.getTotalNum() == 0)) {
+                        holder.mTvLessonState.setVisibility(View.GONE);
+                    }
+
                     if (vo.getFlag() > 0) {
                         holder.lessonNameTv.setTextColor(activity.getResources().getColor(R.color.textGray));
                         holder.lessonNameTv.setCompoundDrawables(null, null, drawableFlagHere, null);
