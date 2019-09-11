@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.widget.ImageView;
-
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -14,7 +13,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import java.util.Collection;
 
@@ -192,9 +190,7 @@ public class LQImageLoader {
 		// 缓存的文件数量
 		// .discCache(new UnlimitedDiscCache(cacheDir))//自定义缓存路径
 		.defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-		.imageDownloader(
-				new BaseImageDownloader(context, 5 * 1000, 30 * 1000))
-				// .writeDebugLogs() // Remove for release app
+		.imageDownloader(new AuthImageDownloader(context, 5 * 1000, 30 * 1000))
 				.build();
 		return config;
 	}
