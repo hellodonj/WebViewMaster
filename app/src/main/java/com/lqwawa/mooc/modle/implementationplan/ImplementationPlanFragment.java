@@ -535,6 +535,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         } else if (id == R.id.btn_edit) {
             //编辑界面
             EditImplementationPlanActivity.start(getActivity(), chapterId, memberId, courseId, classId);
+            getActivity().finish();
         }
     }
 

@@ -37,6 +37,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.mooc.ImplementationPlanActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -493,6 +494,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
+                    ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
                     getActivity().finish();
                 }
             }
