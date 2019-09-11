@@ -41,9 +41,9 @@ public class StatisticBean implements Serializable {
     private int StudentNotCompletedNum;
     private List<StatisticBean> studentUnCompleteList;
     //班级成绩统计需要的字段
-    private int AverageScoreMax;
-    private int AverageScoreMin;
-    private int TotalAverageScore;
+    private double AverageScoreMax;
+    private double AverageScoreMin;
+    private double TotalAverageScore;
     private List<StatisticBean> ExcellentNumStudentList;
     private int VeryGoodNum;
     private List<StatisticBean> VeryGoodNumStudentList;
@@ -84,36 +84,36 @@ public class StatisticBean implements Serializable {
         this.weights = weights;
     }
 
-    public int getAverageScoreMax() {
-        return AverageScoreMax;
-    }
-
-    public void setAverageScoreMax(int averageScoreMax) {
-        AverageScoreMax = averageScoreMax;
-    }
-
-    public int getAverageScoreMin() {
-        return AverageScoreMin;
-    }
-
-    public void setAverageScoreMin(int averageScoreMin) {
-        AverageScoreMin = averageScoreMin;
-    }
-
-    public int getTotalAverageScore() {
-        return TotalAverageScore;
-    }
-
-    public void setTotalAverageScore(int totalAverageScore) {
-        TotalAverageScore = totalAverageScore;
-    }
-
     public List<StatisticBean> getExcellentNumStudentList() {
         return ExcellentNumStudentList;
     }
 
     public void setExcellentNumStudentList(List<StatisticBean> excellentNumStudentList) {
         ExcellentNumStudentList = excellentNumStudentList;
+    }
+
+    public double getAverageScoreMax() {
+        return AverageScoreMax;
+    }
+
+    public void setAverageScoreMax(double averageScoreMax) {
+        AverageScoreMax = averageScoreMax;
+    }
+
+    public double getAverageScoreMin() {
+        return AverageScoreMin;
+    }
+
+    public void setAverageScoreMin(double averageScoreMin) {
+        AverageScoreMin = averageScoreMin;
+    }
+
+    public double getTotalAverageScore() {
+        return TotalAverageScore;
+    }
+
+    public void setTotalAverageScore(double totalAverageScore) {
+        TotalAverageScore = totalAverageScore;
     }
 
     public int getVeryGoodNum() {
