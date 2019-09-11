@@ -37,7 +37,6 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.mooc.ImplementationPlanActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -147,12 +146,6 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
     private void initData() {
         mTopBar.setTitle(getString(R.string.class_implementation_plan));
         mTopBar.setTitleWide(DensityUtil.dip2px(120));
-        mTopBar.setLeftFunctionImage1(R.drawable.ic_back_green, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
-            }
-        });
         getImplementPlan();
     }
 
