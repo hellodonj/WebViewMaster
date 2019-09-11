@@ -37,7 +37,7 @@ public class StatisticBean implements Serializable {
     private String StudentCompletedRate;
     private int percent;
     private int [] weights;
-    private int AverageScore;//平均分
+    private double AverageScore;//平均分
     private int StudentNotCompletedNum;
     private List<StatisticBean> studentUnCompleteList;
     //班级成绩统计需要的字段
@@ -172,11 +172,11 @@ public class StatisticBean implements Serializable {
         StudentNotCompletedNum = studentNotCompletedNum;
     }
 
-    public int getAverageScore() {
+    public double getAverageScore() {
         return AverageScore;
     }
 
-    public void setAverageScore(int averageScore) {
+    public void setAverageScore(double averageScore) {
         AverageScore = averageScore;
     }
 
