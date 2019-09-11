@@ -410,7 +410,7 @@ public class GuidanceTaskUtils {
 //        shareUtils.share(((Activity) mContext).getWindow().getDecorView(), shareInfo);
 //    }
 
-    public void doGuidanceTypeWork(int guidanceType) {
+    public void doGuidanceTypeWork(int guidanceType,int selectCount) {
         switch (guidanceType) {
             case GuidanceResourceType.TAKE_CAMERA:
                 //交图片（拍照）
@@ -418,7 +418,7 @@ public class GuidanceTaskUtils {
                 break;
             case GuidanceResourceType.PHOTO:
                 //交图片（相册）
-                takeSystemPicture();
+                takeSystemPicture(selectCount);
                 break;
             case GuidanceResourceType.VIDEO:
                 //交视频
@@ -443,11 +443,12 @@ public class GuidanceTaskUtils {
         PhotoUtils.startTakePhoto((Activity) mContext, file, PhotoUtils.REQUEST_CODE_TAKE_PHOTO);
     }
 
-    private void takeSystemPicture() {
+    private void takeSystemPicture(int selectCount) {
         Intent intent = new Intent(mContext, MyLocalPictureListActivity.class);
         intent.putExtra(CampusPatrolUtils.Constants.EXTRA_MEDIA_NAME,
                 mContext.getString(R.string.start_image));
         intent.putExtra(CampusPatrolUtils.Constants.EXTRA_IS_PICK, true);
+        intent.putExtra(MyLocalPictureListFragment.Contants.SELECT_PICTURE_COUNT,selectCount);
         intent.putExtra(MyLocalPictureListFragment.Contants.PICK_PICTURE_COUNT, fromStudyTaskIntro ? 10 : 1);
         intent.putExtra(MyLocalPictureListFragment.Contants.FROM_IMPLEMENTTATION_PLAN, true);
         ((Activity) mContext).startActivityForResult(intent, PhotoUtils.REQUEST_CODE_CHOOSE_PHOTOS);

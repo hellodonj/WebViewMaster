@@ -23,7 +23,6 @@ import com.galaxyschool.app.wawaschool.R;
 import com.galaxyschool.app.wawaschool.common.WatchWawaCourseResourceSplicingUtils;
 import com.galaxyschool.app.wawaschool.config.AppSettings;
 import com.galaxyschool.app.wawaschool.fragment.ContactsListFragment;
-import com.galaxyschool.app.wawaschool.fragment.library.TipsHelper;
 import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.galaxyschool.app.wawaschool.pojo.MaterialResourceType;
 import com.galaxyschool.app.wawaschool.pojo.MediaInfo;
@@ -37,6 +36,7 @@ import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
 import com.lqwawa.intleducation.common.utils.UIUtil;
+import com.lqwawa.mooc.ImplementationPlanActivity;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
@@ -387,7 +387,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
             }
         }
         if (imageItemInfos != null && imageItemInfos.size() > 0) {
-            GalleryActivity.newInstance(getActivity(), imageItemInfos, true, 0, false, false, false);
+            GalleryActivity.newInstance(getActivity(), imageItemInfos, true, position, false, false, false);
         }
     }
 
@@ -396,10 +396,18 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         super.onClick(v);
         int id = v.getId();
         if (id == R.id.abroad_choosephoto) {
-            doGuidanceTypeWork(GuidanceResourceType.PHOTO);
+            if (accessoriesaType == LEARNING_TARGET_TYPE) {
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList1.size());
+            }else if (accessoriesaType == MAIN_DIFFICULT_TYPE){
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList2.size());
+            }else if (accessoriesaType == COMMON_PROBLEM_TYPE){
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList3.size());
+            }else if (accessoriesaType == STEP_TYPE){
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList4.size());
+            }
             dialog.dismiss();
         } else if (id == R.id.abroad_takephoto) {
-            doGuidanceTypeWork(GuidanceResourceType.TAKE_CAMERA);
+            doGuidanceTypeWork(GuidanceResourceType.TAKE_CAMERA,0);
             dialog.dismiss();
         } else if (id == R.id.abroad_choose_cancel) {
             dialog.dismiss();
@@ -493,6 +501,7 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
+                    ImplementationPlanActivity.start(getActivity(),chapterId,memberId,courseId,classId);
                     getActivity().finish();
                 }
             }
@@ -539,12 +548,12 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         dialog.show();
     }
 
-    private void doGuidanceTypeWork(int guidanceType) {
+    private void doGuidanceTypeWork(int guidanceType,int selectCount) {
         GuidanceTaskUtils.getInstance()
                 .setContext(getActivity())
                 .setFromStudyTaskIntro(true)
                 .setCallBackListener(result -> updateListData((List<MediaData>) result))
-                .doGuidanceTypeWork(guidanceType);
+                .doGuidanceTypeWork(guidanceType,selectCount);
     }
 
     private void updateListData(List<MediaData> datas) {
@@ -579,41 +588,21 @@ public class EditImplementationPlanFragment extends ContactsListFragment {
         }
         if (resourceInfoTags.size() > 0) {
             if (accessoriesaType == LEARNING_TARGET_TYPE) {
-                if (resourceInfoTags.size() + resourceInfoTagList1.size() > 10) {
-                    int count = 10 - resourceInfoTagList1.size();
-                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
-                    return;
-                }
                 this.resourceInfoTagList1.addAll(resourceInfoTags);
                 if (mPictureListAdapter1 != null) {
                     mPictureListAdapter1.update(this.resourceInfoTagList1);
                 }
             } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
-                if (resourceInfoTags.size() + resourceInfoTagList2.size() > 10) {
-                    int count = 10 - resourceInfoTagList2.size();
-                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
-                    return;
-                }
                 this.resourceInfoTagList2.addAll(resourceInfoTags);
                 if (mPictureListAdapter2 != null) {
                     mPictureListAdapter2.update(this.resourceInfoTagList2);
                 }
             } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
-                if (resourceInfoTags.size() + resourceInfoTagList3.size() > 10) {
-                    int count = 10 - resourceInfoTagList3.size();
-                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
-                    return;
-                }
                 this.resourceInfoTagList3.addAll(resourceInfoTags);
                 if (mPictureListAdapter3 != null) {
                     mPictureListAdapter3.update(this.resourceInfoTagList3);
                 }
             }else if (accessoriesaType == STEP_TYPE) {
-                if (resourceInfoTags.size() + resourceInfoTagList4.size() > 10) {
-                    int count = 10 - resourceInfoTagList4.size();
-                    TipsHelper.showToast(getActivity(),String.format(UIUtil.getString(R.string.str_max_select_picture_limit),count));
-                    return;
-                }
                 this.resourceInfoTagList4.addAll(resourceInfoTags);
                 if (mPictureListAdapter4 != null) {
                     mPictureListAdapter4.update(this.resourceInfoTagList4);

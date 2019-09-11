@@ -35,6 +35,7 @@ import com.lqwawa.intleducation.common.ui.treeview.TreeView;
 import com.lqwawa.intleducation.common.utils.DrawableUtil;
 import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.RefreshUtil;
+import com.lqwawa.intleducation.common.utils.StringUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.intleducation.common.utils.Utils;
 import com.lqwawa.intleducation.factory.data.DataSource;
@@ -389,8 +390,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
                     if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
-                    } else if (exerciseTypeVo.getExerciseType() == 2 && courseParams.isClassTeacher()) {
-                        mTabLists.add(getResources().getString(R.string.label_sx_practice));
+                    } else if (exerciseTypeVo.getExerciseType() == 2) {
+                        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER){
+                            mTabLists.add(getResources().getString(R.string.label_sx_practice));
+                        }
                     } else if (exerciseTypeVo.getExerciseType() == 3) {
                         mTabLists.add(getResources().getString(R.string.label_sx_review));
                     }
@@ -453,8 +456,16 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mTabLayout.setBackground(new ColorDrawable(UIUtil.getColor(R.color.colorAccent)));
                 }
                 for (int i = 0; i < mTabLists.size(); i++) {
+                    int exerciseType = 0;
+                    if (getResources().getString(R.string.label_sx_preview).equals(mTabLists.get(i))){
+                        exerciseType =1;
+                    }else  if (getResources().getString(R.string.label_sx_practice).equals(mTabLists.get(i))){
+                        exerciseType =2;
+                    }else  if (getResources().getString(R.string.label_sx_review).equals(mTabLists.get(i))){
+                        exerciseType =3;
+                    }
                     SxLessonSourceFragment fragment = SxLessonSourceFragment.newInstance(needFlag, canEdit, canRead, isOnlineTeacher, courseId, sectionId, status,
-                            mExerciseTypeVoList.get(i).getExerciseType(), courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
+                            exerciseType, courseVo.getLibraryType(), taskType, mMultipleChoiceCount, params);
                     fragment.setOnItemCheckBoxSelectedChanged(this);
                     mTabSourceNavigator.add(fragment);
                     fragments.add(fragment);

@@ -352,23 +352,22 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     int examType = vo.getExamType();
                     boolean isParent = UserHelper.isParent(String.valueOf(role));
                     // TODO 加判断逻辑 老师看孩子
-                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType != TYPE_EXAM &&
+                    if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN &&
                             position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
                         if (!isCourseSelect) {
+                            if (examType == TYPE_EXAM){
+                                holder.lockTestIv.setVisibility(View.VISIBLE);
+                            }else {
+                                holder.lockTestIv.setVisibility(View.GONE);
+                            }
                             holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
                         } else {
                             holder.lessonAuditionTv.setVisibility(View.GONE);
                         }
                     } else {
-                        if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM &&
-                                position == 1 && !vo.isBuyed() && !isCourseSelect && !isJoinCourse){
-                            holder.lessonAuditionTv.setVisibility(View.VISIBLE);
-                            holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
-                        }else {
                             holder.lessonAuditionTv.setVisibility(View.GONE);
                             holder.lessonNameTv.setMaxWidth(Integer.MAX_VALUE);
-                        }
                     }
 
                     boolean isTeacher = isTeacher();
@@ -594,13 +593,17 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                                 }
                                             }
                                         } else {
-                                            if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN && examType == TYPE_EXAM &&
-                                                    position == 1 && !vo.isBuyed() && !isCourseSelect && !isJoinCourse)
                                             //试听的进入
-                                            if (examType != TYPE_EXAM &&
-                                                    position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {
-                                                //普通教案详情入口
-                                                toLessonDetailsActivity(vo, isFreeUser, true);
+                                            if (position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {
+                                                if (examType == TYPE_EXAM ){
+                                                    if (chapterVo.isUnlock()){
+                                                        toLessonDetailsActivity(vo, isFreeUser, true);
+                                                    }else {
+                                                        enterExamOrTestDialog(TYPE_TEST);
+                                                    }
+                                                }else {
+                                                    toLessonDetailsActivity(vo, isFreeUser, true);
+                                                }
                                             } else {
                                                 UIUtil.showToastSafe(R.string.label_join_teaching_plan_tip);
                                             }
