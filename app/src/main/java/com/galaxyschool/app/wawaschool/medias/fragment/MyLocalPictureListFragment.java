@@ -62,6 +62,7 @@ import com.libs.yilib.pickimages.PickMediasFragment;
 import com.libs.yilib.pickimages.ScanLocalMediaController;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.ResourceInfo;
+import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -120,11 +121,13 @@ public class MyLocalPictureListFragment extends ContactsListFragment
     private boolean isFromOnline;
     private int  onlineId;
     private boolean fromImplementtationPlan;
+    private int selectCount;
     public interface Contants{
         String from_onine="from_online";
         String online_id="online_id";
         String FROM_IMPLEMENTTATION_PLAN = "from_implementation_plan";
         String PICK_PICTURE_COUNT = "pick_picture_count";
+        String SELECT_PICTURE_COUNT = "select_picture_count";
     }
     Handler mHandler = new Handler() {
         @Override
@@ -194,6 +197,7 @@ public class MyLocalPictureListFragment extends ContactsListFragment
                 onlineId=getArguments().getInt(Contants.online_id);
             }
             fromImplementtationPlan = getArguments().getBoolean(Contants.FROM_IMPLEMENTTATION_PLAN,false);
+            selectCount = getArguments().getInt(Contants.SELECT_PICTURE_COUNT);
             if (fromImplementtationPlan){
                 maxCount = getArguments().getInt(Contants.PICK_PICTURE_COUNT);
             }
@@ -709,6 +713,11 @@ public class MyLocalPictureListFragment extends ContactsListFragment
         List<MediaInfo> mediaInfos = getSelectedData();
         if (mediaInfos == null || mediaInfos.size() == 0) {
             TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_select_files);
+            return;
+        }
+        if (selectCount + mediaInfos.size() > 10) {
+            int count = 10 - selectCount;
+            TipMsgHelper.ShowLMsg(getActivity(), String.format(UIUtil.getString(R.string.str_max_select_picture_limit), count));
             return;
         }
         Intent intent = new Intent();
