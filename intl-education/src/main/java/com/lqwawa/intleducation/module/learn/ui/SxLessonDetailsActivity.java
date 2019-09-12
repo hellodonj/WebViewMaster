@@ -316,10 +316,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             });
         }
 
-        // 刷新数目
-        refreshCartPoint();
-        getData();
-
         //被动进入选择,并且是选择模式
         if (mChapterParams != null && mChapterParams.isChoiceMode() &&
                 !mChapterParams.isInitiativeTrigger()) {
@@ -360,6 +356,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 finish();
             });
         }
+
+        // 刷新数目
+        refreshCartPoint();
+        getData();
     }
 
     @Override
@@ -371,7 +371,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
 
     //初始化数据
     private void getData() {
-        CourseDetailParams courseParams = mChapterParams.getCourseParams();
         String token = mChapterParams.getMemberId();
         int role = 2;
         if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
