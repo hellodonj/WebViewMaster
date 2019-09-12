@@ -15,8 +15,6 @@ import com.galaxyschool.app.wawaschool.pojo.ResourceInfoTag;
 
 import java.util.List;
 
-import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.EDIT_MODE;
-
 /**
  * 描述: 选取图片list的adapter
  * 作者|时间: djj on 2019/9/4 0004 上午 11:40
@@ -25,14 +23,19 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
 
     private Context context;
     private List<ResourceInfoTag> list;
-    private int mode;
+    private boolean isEditMode;
 
     public SelectPictureListAdapter(Context context,
                                     List<ResourceInfoTag> list,
-                                    int selectMode) {
+                                    boolean isEditMode) {
         this.context = context;
         this.list = list;
-        this.mode = selectMode;
+        this.isEditMode = isEditMode;
+    }
+
+    public void  setEditMode(boolean isEditMode) {
+       this.isEditMode = isEditMode;
+       notifyDataSetChanged();
     }
 
 
@@ -47,7 +50,7 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
         holder.deleteImageView.setVisibility(View.GONE);
         //在list.size<9时，最后一个默认显示“加号”图片
         if (position == list.size()) {
-            if (mode == EDIT_MODE){
+            if (!isEditMode){
                 holder.iconImageView.setVisibility(View.GONE);
             }else {
                 holder.iconImageView.setVisibility(View.VISIBLE);
@@ -72,7 +75,7 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
                     //非最后一张显示删除角标
                     if (position < list.size()) {
                         //图片删除角标
-                        if (mode == EDIT_MODE){
+                        if (!isEditMode){
                             holder.deleteImageView.setVisibility(View.GONE);
                         }else {
                             holder.deleteImageView.setVisibility(View.VISIBLE);
@@ -102,7 +105,7 @@ public class SelectPictureListAdapter extends RecyclerView.Adapter<SelectPicture
     @Override
     public int getItemCount() {
         //含有10张图片，直接展示，不需要“加号”图片
-        if (mode == EDIT_MODE){
+        if (!isEditMode){
             return list.size();
         }
         if (list.size() == 10) {

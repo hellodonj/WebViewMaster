@@ -41,6 +41,7 @@ import com.lqwawa.intleducation.factory.data.DataSource;
 import com.lqwawa.intleducation.factory.data.entity.LQCourseConfigEntity;
 import com.lqwawa.intleducation.factory.event.EventConstant;
 import com.lqwawa.intleducation.factory.event.EventWrapper;
+import com.lqwawa.intleducation.factory.helper.CourseHelper;
 import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
@@ -311,7 +312,21 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TaskSliderHelper.onImplementationPlanListener.enterImplementationPlanActivity(SxLessonDetailsActivity.this, sectionId,memberId,courseId,courseParams.getClassId());
+                    CourseHelper.queryIfExistPlan(memberId, sectionId, courseId,
+                            new DataSource.Callback<Boolean>() {
+                        @Override
+                        public void onDataNotAvailable(int strRes) {
+
+                        }
+
+                        @Override
+                        public void onDataLoaded(Boolean result) {
+                            TaskSliderHelper.onImplementationPlanListener.
+                                    enterImplementationPlanActivity(SxLessonDetailsActivity.this,
+                                            sectionId,memberId,courseId,courseParams.getClassId(),
+                                            !result);
+                        }
+                    });
                 }
             });
         }

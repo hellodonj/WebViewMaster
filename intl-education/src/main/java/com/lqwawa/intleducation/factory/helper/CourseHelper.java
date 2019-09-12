@@ -3,6 +3,7 @@ package com.lqwawa.intleducation.factory.helper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -23,6 +24,7 @@ import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
+import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
@@ -823,6 +825,32 @@ public class CourseHelper {
             public void onError(Throwable throwable, boolean b) {
                 if (EmptyUtil.isNotEmpty(callback)) {
                     callback.onDataNotAvailable(R.string.net_error_tip);
+                }
+            }
+        });
+    }
+
+    public static void queryIfExistPlan(
+            @NonNull String memberId,
+            @NonNull String chapterId,
+            @NonNull String classId,
+            @NonNull DataSource.Callback<Boolean> callback) {
+        RequestVo requestVo = new RequestVo();
+        requestVo.addParams("token", memberId);
+        requestVo.addParams("chapterId", chapterId);
+        requestVo.addParams("classId", classId);
+        RequestParams params = new RequestParams(AppConfig.ServerUrl.postQueryIfExistPlan);
+        params.setAsJsonContent(true);
+        params.setBodyContent(requestVo.getParams());
+        params.setConnectTimeout(10000);
+        x.http().post(params, new StringCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ResponseVo<String> results = JSON.parseObject(result,
+                        new TypeReference<ResponseVo<String>>() {
+                        });
+                if (results != null && results.getCode() == 0) {
+                    callback.onDataLoaded(results.isExist());
                 }
             }
         });

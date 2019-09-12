@@ -89,7 +89,8 @@ public class TaskSliderHelper {
 
         void enterImplementationPlanActivity(@NonNull Activity activity,
                                              @NonNull String chapterId,
-                                             String memberId,String courseId,String classId);
+                                             String memberId,String courseId,String classId,
+                                             boolean isEditMode);
     }
 
     public interface OnTutorialMarkingListener {

@@ -10,16 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="-13dp"
-            android:layout_marginBottom="55dp">
+            android:layout_weight="1.0"
+            android:layout_height="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -252,113 +251,64 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/com_line_gray" />
 
         <LinearLayout
             android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
             android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
             android:weightSum="2">
 
-            <FrameLayout
-                android:id="@+id/reset_container"
+            <Button
+                android:id="@+id/btn_reset"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:padding="8dp">
-
-                <Button
-                    android:id="@+id/btn_reset"
-                    android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_accent_radius_19"
-                    android:gravity="center"
-                    android:text="@string/label_reset"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
-                    android:textColor="@color/textLight"
-                    android:textSize="16sp" />
-
-            </FrameLayout>
-
-
-            <FrameLayout
-                android:id="@+id/confirm_container"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:padding="8dp">
-
-                <Button
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_accent_radius_19"
-                    android:gravity="center"
-                    android:text="@string/label_confirm"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
-                    android:textColor="@color/textLight"
-                    android:textSize="16sp" />
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottom_layout_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2">
-
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:padding="8dp"
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/label_reset"
+                android:textColor="@color/textLight"
+                android:layout_margin="10dp"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
-            <FrameLayout
-                android:id="@+id/edit_container"
+            <Button
+                android:id="@+id/btn_confirm"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:padding="8dp">
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/label_confirm"
+                android:textColor="@color/textLight"
+                android:layout_margin="10dp"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_accent_radius_19"
-                    android:gravity="center"
-                    android:text="@string/edit"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
-                    android:textColor="@color/textLight"
-                    android:textSize="16sp" />
-
-            </FrameLayout>
-
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_accent_radius_19"
+                android:gravity="center"
+                android:text="@string/edit"
+                android:textColor="@color/textLight"
+                android:layout_margin="10dp"
+                android:textSize="16sp"
+                android:visibility="gone" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

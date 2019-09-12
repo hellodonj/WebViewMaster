@@ -14,7 +14,9 @@ import com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CHAPTER_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CLASS_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_COURSE_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_IS_EDIT_MODE;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_MEMBER_ID;
+
 
 /**
  * 描述: 课中实施方案
@@ -28,13 +30,15 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
                              String chapterId,
                              String memberId,
                              String courseId,
-                             String classId){
-        Intent intent = new Intent(activity,ImplementationPlanActivity.class);
+                             String classId,
+                             boolean isEditMode) {
+        Intent intent = new Intent(activity, ImplementationPlanActivity.class);
         Bundle args = new Bundle();
-        args.putString(KEY_EXTRA_CHAPTER_ID,chapterId);
-        args.putString(KEY_EXTRA_MEMBER_ID,memberId);
-        args.putString(KEY_EXTRA_COURSE_ID,courseId);
-        args.putString(KEY_EXTRA_CLASS_ID,classId);
+        args.putString(KEY_EXTRA_CHAPTER_ID, chapterId);
+        args.putString(KEY_EXTRA_MEMBER_ID, memberId);
+        args.putString(KEY_EXTRA_COURSE_ID, courseId);
+        args.putString(KEY_EXTRA_CLASS_ID, classId);
+        args.putBoolean(KEY_EXTRA_IS_EDIT_MODE, isEditMode);
         intent.putExtras(args);
         activity.startActivity(intent);
     }
@@ -57,5 +61,17 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragment instanceof ImplementationPlanFragment) {
+            ImplementationPlanFragment implementationPlanFragment = (ImplementationPlanFragment) fragment;
+            if (implementationPlanFragment.isVisible()) {
+                implementationPlanFragment.onBackPress();
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 }

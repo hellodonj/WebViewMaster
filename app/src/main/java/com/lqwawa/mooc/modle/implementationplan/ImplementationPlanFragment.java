@@ -4,6 +4,7 @@ package com.lqwawa.mooc.modle.implementationplan;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,16 +38,14 @@ import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
 import com.lqwawa.intleducation.base.widgets.TopBar;
-import com.lqwawa.intleducation.common.utils.EmptyUtil;
 import com.lqwawa.intleducation.common.utils.UIUtil;
-import com.lqwawa.mooc.EditImplementationPlanActivity;
+import com.lqwawa.intleducation.factory.data.StringCallback;
 import com.lqwawa.mooc.adapter.SelectPictureListAdapter;
 import com.lqwawa.mooc.common.GuidanceResourceType;
 import com.lqwawa.mooc.common.GuidanceTaskUtils;
 import com.lqwawa.mooc.factory.data.entity.ImplementationPlanEntity;
 
 import org.xutils.common.Callback;
-import org.xutils.common.util.DensityUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -63,36 +62,33 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
     public static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+    public static final String KEY_EXTRA_IS_EDIT_MODE = "KEY_EXTRA_IS_EDIT_MODE";
 
     public static final int LEARNING_TARGET_TYPE = 1;
     public static final int MAIN_DIFFICULT_TYPE = 2;
     public static final int COMMON_PROBLEM_TYPE = 3;
     public static final int STEP_TYPE = 4;
-    public static final int EDIT_MODE = 2;
 
-    private View mRootView, inflate;
-    private TopBar mTopBar;
-    private ContainsEmojiEditText mLearningTargetEt, mMainDifficultyEt, mCommonProblemEt, mStepEt;
-    private Button mBtnReset, mBtnConfirm, mBtnEdit;
-    private LinearLayout mAddAccessories1, mAddAccessories2, mAddAccessories3, mAddAccessories4;
-    private TextView mTvAccessories1, mTvAccessories2, mTvAccessories3, mTvAccessories4;
+    private ContainsEmojiEditText learningTargetEt, mainDifficultyEt, commonProblemEt, stepEt;
+    private LinearLayout addAccessories1, addAccessories2, addAccessories3, addAccessories4;
+    private TextView tvAccessories1, tvAccessories2, tvAccessories3, tvAccessories4;
+    private RecyclerView recyclerView1, recyclerView2, recyclerView3, recyclerView4;
+    private Button resetBtn, confirmBtn, editBtn;
+    private SelectPictureListAdapter pictureListAdapter1, pictureListAdapter2,
+            pictureListAdapter3, pictureListAdapter4;
+
     private List<ResourceInfoTag> resourceInfoTagList1 = new ArrayList<>();
     private List<ResourceInfoTag> resourceInfoTagList2 = new ArrayList<>();
     private List<ResourceInfoTag> resourceInfoTagList3 = new ArrayList<>();
     private List<ResourceInfoTag> resourceInfoTagList4 = new ArrayList<>();
-    private SelectPictureListAdapter mPictureListAdapter1;
-    private SelectPictureListAdapter mPictureListAdapter2;
-    private SelectPictureListAdapter mPictureListAdapter3;
-    private SelectPictureListAdapter mPictureListAdapter4;
-    private RecyclerView mRecyclerView1, mRecyclerView2, mRecyclerView3, mRecyclerView4;
-    private LinearLayout mBottomLayout, mBottomLayout1;
 
-    private String mLearningTargetText, mMainDifficultyText, mCommonProblemText, mStepText;
+    private String learningTargetText, mainDifficultyText, commonProblemText, stepText;
     private String chapterId, memberId, courseId, classId;
-    private TextView choosePhoto, takePhoto, cancel;
     private Dialog dialog;
-    private int accessoriesaType;
-    private int selectMode = 1;
+    private int accessoriesType;
+    private ImplementationPlanEntity planEntity;
+    private boolean isEditMode = false;
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -102,8 +98,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_implementation_plan, container, false);
-        return mRootView;
+        return inflater.inflate(R.layout.fragment_implementation_plan, container, false);
     }
 
 
@@ -115,49 +110,112 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         initData();
     }
 
-    //界面之间的值
     private void getIntent() {
-        Bundle bundle = getArguments();
-        chapterId = bundle.getString(KEY_EXTRA_CHAPTER_ID);
-        memberId = bundle.getString(KEY_EXTRA_MEMBER_ID);
-        courseId = bundle.getString(KEY_EXTRA_COURSE_ID);
-        classId = bundle.getString(KEY_EXTRA_CLASS_ID);
+        if (getArguments() != null) {
+            chapterId = getArguments().getString(KEY_EXTRA_CHAPTER_ID);
+            memberId = getArguments().getString(KEY_EXTRA_MEMBER_ID);
+            courseId = getArguments().getString(KEY_EXTRA_COURSE_ID);
+            classId = getArguments().getString(KEY_EXTRA_CLASS_ID);
+            isEditMode = getArguments().getBoolean(KEY_EXTRA_IS_EDIT_MODE);
+        }
     }
 
     //初始化控件
     private void initViews() {
-        mTopBar = (TopBar) findViewById(R.id.top_bar);
-        mTopBar.setBack(true);
-        mLearningTargetEt = (ContainsEmojiEditText) findViewById(R.id.learning_target_content);
-        mMainDifficultyEt = (ContainsEmojiEditText) findViewById(R.id.main_difficulty_content);
-        mCommonProblemEt = (ContainsEmojiEditText) findViewById(R.id.common_problem_content);
-        mStepEt = (ContainsEmojiEditText) findViewById(R.id.step_content);
-        mBtnReset = (Button) findViewById(R.id.btn_reset);
-        mBtnConfirm = (Button) findViewById(R.id.btn_confirm);
-        mBtnEdit = (Button) findViewById(R.id.btn_edit);
-        mBtnReset.setOnClickListener(this);
-        mBtnConfirm.setOnClickListener(this);
-        mBtnEdit.setOnClickListener(this);
-        mAddAccessories1 = (LinearLayout) findViewById(R.id.layout_add_accessories_1);
-        mAddAccessories2 = (LinearLayout) findViewById(R.id.layout_add_accessories_2);
-        mAddAccessories3 = (LinearLayout) findViewById(R.id.layout_add_accessories_3);
-        mAddAccessories4 = (LinearLayout) findViewById(R.id.layout_add_accessories_4);
-        mTvAccessories1 = (TextView) findViewById(R.id.tv_accessories_1);
-        mTvAccessories2 = (TextView) findViewById(R.id.tv_accessories_2);
-        mTvAccessories3 = (TextView) findViewById(R.id.tv_accessories_3);
-        mTvAccessories4 = (TextView) findViewById(R.id.tv_accessories_4);
-        mRecyclerView1 = (RecyclerView) findViewById(R.id.recycler_view_1);
-        mRecyclerView2 = (RecyclerView) findViewById(R.id.recycler_view_2);
-        mRecyclerView3 = (RecyclerView) findViewById(R.id.recycler_view_3);
-        mRecyclerView4 = (RecyclerView) findViewById(R.id.recycler_view_4);
-        mBottomLayout = (LinearLayout) findViewById(R.id.bottom_layout);
-        mBottomLayout1 = (LinearLayout) findViewById(R.id.bottom_layout_1);
+        TopBar topBar = (TopBar) findViewById(R.id.top_bar);
+        topBar.setLeftFunctionImage1(R.drawable.ic_back_green, v -> {
+            if (!isEditMode) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            } else {
+                if (planEntity != null) {
+                    isEditMode = false;
+                    switchMode();
+                } else {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }
+            }
+        });
+        topBar.setTitle(getString(R.string.class_implementation_plan));
+
+        learningTargetEt = (ContainsEmojiEditText) findViewById(R.id.learning_target_content);
+        mainDifficultyEt = (ContainsEmojiEditText) findViewById(R.id.main_difficulty_content);
+        commonProblemEt = (ContainsEmojiEditText) findViewById(R.id.common_problem_content);
+        stepEt = (ContainsEmojiEditText) findViewById(R.id.step_content);
+
+        addAccessories1 = (LinearLayout) findViewById(R.id.layout_add_accessories_1);
+        addAccessories2 = (LinearLayout) findViewById(R.id.layout_add_accessories_2);
+        addAccessories3 = (LinearLayout) findViewById(R.id.layout_add_accessories_3);
+        addAccessories4 = (LinearLayout) findViewById(R.id.layout_add_accessories_4);
+
+        tvAccessories1 = (TextView) findViewById(R.id.tv_accessories_1);
+        tvAccessories2 = (TextView) findViewById(R.id.tv_accessories_2);
+        tvAccessories3 = (TextView) findViewById(R.id.tv_accessories_3);
+        tvAccessories4 = (TextView) findViewById(R.id.tv_accessories_4);
+
+        recyclerView1 = (RecyclerView) findViewById(R.id.recycler_view_1);
+        recyclerView2 = (RecyclerView) findViewById(R.id.recycler_view_2);
+        recyclerView3 = (RecyclerView) findViewById(R.id.recycler_view_3);
+        recyclerView4 = (RecyclerView) findViewById(R.id.recycler_view_4);
+
+        resetBtn = (Button) findViewById(R.id.btn_reset);
+        confirmBtn = (Button) findViewById(R.id.btn_confirm);
+        editBtn = (Button) findViewById(R.id.btn_edit);
+        resetBtn.setOnClickListener(this);
+        confirmBtn.setOnClickListener(this);
+        editBtn.setOnClickListener(this);
     }
 
     private void initData() {
-        mTopBar.setTitle(getString(R.string.class_implementation_plan));
-        mTopBar.setTitleWide(DensityUtil.dip2px(120));
-        queryIfExistPlan();
+        if (!isEditMode) {
+            getImplementPlan();
+        }
+        configPlanView();
+        switchMode();
+    }
+
+    private void switchMode() {
+        setTargetEditText(learningTargetEt, isEditMode);
+        setTargetEditText(mainDifficultyEt, isEditMode);
+        setTargetEditText(commonProblemEt, isEditMode);
+        setTargetEditText(stepEt, isEditMode);
+
+        if (planEntity != null) {
+            setTargetEditTextContent(planEntity, isEditMode);
+            setAccessoryText(planEntity);
+        }
+
+        pictureListAdapter1.setEditMode(isEditMode);
+        pictureListAdapter2.setEditMode(isEditMode);
+        pictureListAdapter3.setEditMode(isEditMode);
+        pictureListAdapter4.setEditMode(isEditMode);
+        
+        setBottomButtons();
+    }
+
+    private void setTargetEditText(ContainsEmojiEditText editText, boolean isEditMode) {
+        Drawable drawable = getResources().getDrawable(R.drawable.topic_input_gray_bg);
+        editText.setMinLines(isEditMode ? 5 : 1);
+        editText.setBackground(isEditMode ? drawable : null);
+        editText.setFocusableInTouchMode(isEditMode);
+        editText.setEnabled(isEditMode);
+    }
+
+    private void setBottomButtons() {
+        resetBtn.setVisibility(View.GONE);
+        confirmBtn.setVisibility(View.GONE);
+        editBtn.setVisibility(View.GONE);
+        if (isEditMode) {
+            confirmBtn.setVisibility(View.VISIBLE);
+            if (planEntity == null) {
+                resetBtn.setVisibility(View.VISIBLE);
+            }
+        } else {
+            editBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     private void toImageActivity(List<ResourceInfoTag> resourceInfoTagList, int position) {
@@ -174,141 +232,79 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                 imageItemInfos.add(newResourceInfo);
             }
         }
-        if (imageItemInfos != null && imageItemInfos.size() > 0) {
+        if (imageItemInfos.size() > 0) {
             GalleryActivity.newInstance(getActivity(), imageItemInfos, true, position, false, false, false);
         }
 
     }
 
-    private void queryIfExistPlan() {
-        RequestVo requestVo = new RequestVo();
-        requestVo.addParams("chapterId", chapterId);
-        if (!TextUtils.isEmpty(memberId)) {
-            requestVo.addParams("token", memberId);
-        }
-        requestVo.addParams("classId", classId);
-        RequestParams params = new RequestParams(AppConfig.ServerUrl.postQueryIfExistPlan);
-        params.setAsJsonContent(true);
-        params.setBodyContent(requestVo.getParams());
-        params.setConnectTimeout(10000);
-        x.http().post(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                ResponseVo<String> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<String>>() {
-                        });
-                if (results.getCode() == 0) {
-                    //创建过
-                    if (results.isExist()) {
-                        mLearningTargetEt.setMinLines(1);
-                        mLearningTargetEt.setBackground(null);
-                        mLearningTargetEt.setFocusableInTouchMode(false);
-                        mLearningTargetEt.setEnabled(false);
-                        mMainDifficultyEt.setMinLines(1);
-                        mMainDifficultyEt.setBackground(null);
-                        mMainDifficultyEt.setFocusableInTouchMode(false);
-                        mMainDifficultyEt.setEnabled(false);
-                        mStepEt.setMinLines(1);
-                        mStepEt.setBackground(null);
-                        mStepEt.setFocusableInTouchMode(false);
-                        mStepEt.setEnabled(false);
-                        mCommonProblemEt.setMinLines(1);
-                        mCommonProblemEt.setBackground(null);
-                        mCommonProblemEt.setFocusableInTouchMode(false);
-                        mCommonProblemEt.setEnabled(false);
-                        mBottomLayout.setVisibility(View.GONE);
-                        mBottomLayout1.setVisibility(View.VISIBLE);
-                        selectMode = EDIT_MODE;
-                        getImplementPlan();
-                        configPlanView();
-                    }else {
-                        configPlanView();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.net_error_tip);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
 
     private void configPlanView() {
-        mRecyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-        mPictureListAdapter1 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList1, selectMode);
-        mRecyclerView1.setAdapter(mPictureListAdapter1);
-        mPictureListAdapter1.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+        recyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        pictureListAdapter1 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList1,
+                isEditMode);
+        recyclerView1.setAdapter(pictureListAdapter1);
+        pictureListAdapter1.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
             public void onAddItemClick(View view, int position) {
-                accessoriesaType = LEARNING_TARGET_TYPE;
+                accessoriesType = LEARNING_TARGET_TYPE;
                 choosePhotoDialog();
             }
 
             @Override
             public void onItemClick(View view, int position) {
-                accessoriesaType = LEARNING_TARGET_TYPE;
+                accessoriesType = LEARNING_TARGET_TYPE;
                 toImageActivity(resourceInfoTagList1, position);
             }
         });
 
-        mRecyclerView2.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-        mPictureListAdapter2 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList2, selectMode);
-        mRecyclerView2.setAdapter(mPictureListAdapter2);
-        mPictureListAdapter2.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+        recyclerView2.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        pictureListAdapter2 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList2, isEditMode);
+        recyclerView2.setAdapter(pictureListAdapter2);
+        pictureListAdapter2.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
             public void onAddItemClick(View view, int position) {
-                accessoriesaType = MAIN_DIFFICULT_TYPE;
+                accessoriesType = MAIN_DIFFICULT_TYPE;
                 choosePhotoDialog();
             }
 
             @Override
             public void onItemClick(View view, int position) {
-                accessoriesaType = MAIN_DIFFICULT_TYPE;
+                accessoriesType = MAIN_DIFFICULT_TYPE;
                 toImageActivity(resourceInfoTagList2, position);
             }
         });
 
-        mRecyclerView3.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-        mPictureListAdapter3 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList3, selectMode);
-        mRecyclerView3.setAdapter(mPictureListAdapter3);
-        mPictureListAdapter3.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+        recyclerView3.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        pictureListAdapter3 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList3, isEditMode);
+        recyclerView3.setAdapter(pictureListAdapter3);
+        pictureListAdapter3.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
             public void onAddItemClick(View view, int position) {
-                accessoriesaType = COMMON_PROBLEM_TYPE;
+                accessoriesType = COMMON_PROBLEM_TYPE;
                 choosePhotoDialog();
             }
 
             @Override
             public void onItemClick(View view, int position) {
-                accessoriesaType = COMMON_PROBLEM_TYPE;
+                accessoriesType = COMMON_PROBLEM_TYPE;
                 toImageActivity(resourceInfoTagList3, position);
             }
         });
 
-        mRecyclerView4.setLayoutManager(new GridLayoutManager(getActivity(), 5));
-        mPictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, selectMode);
-        mRecyclerView4.setAdapter(mPictureListAdapter4);
-        mPictureListAdapter4.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
+        recyclerView4.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        pictureListAdapter4 = new SelectPictureListAdapter(getActivity(), resourceInfoTagList4, isEditMode);
+        recyclerView4.setAdapter(pictureListAdapter4);
+        pictureListAdapter4.setOnItemClickListener(new SelectPictureListAdapter.OnItemClickListener() {
             @Override
             public void onAddItemClick(View view, int position) {
-                accessoriesaType = STEP_TYPE;
+                accessoriesType = STEP_TYPE;
                 choosePhotoDialog();
             }
 
             @Override
             public void onItemClick(View view, int position) {
-                accessoriesaType = STEP_TYPE;
+                accessoriesType = STEP_TYPE;
                 toImageActivity(resourceInfoTagList4, position);
             }
         });
@@ -333,7 +329,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                         new TypeReference<ResponseVo<ImplementationPlanEntity>>() {
                         });
                 if (results.isSucceed()) {
-                    ImplementationPlanEntity planEntity = results.getData();
+                    planEntity = results.getData();
                     configPlanData(planEntity);
                 }
             }
@@ -355,155 +351,103 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         });
     }
 
+    private void setTargetEditTextContent(ImplementationPlanEntity planEntity, boolean isEditMode) {
+        if (planEntity == null) {
+            return;
+        }
+
+        String placeHolderStr = !isEditMode ? getString(R.string.no_content) : "";
+
+        if (TextUtils.isEmpty(planEntity.getLearningGoal())) {
+            learningTargetEt.setText(placeHolderStr);
+        } else {
+            learningTargetEt.setText(planEntity.getLearningGoal());
+        }
+        if (TextUtils.isEmpty(planEntity.getDifficultPoint())) {
+            mainDifficultyEt.setText(placeHolderStr);
+        } else {
+            mainDifficultyEt.setText(planEntity.getDifficultPoint());
+        }
+        if (TextUtils.isEmpty(planEntity.getStep())) {
+            stepEt.setText(placeHolderStr);
+        } else {
+            stepEt.setText(planEntity.getStep());
+        }
+        if (TextUtils.isEmpty(planEntity.getCommonProblem())) {
+            commonProblemEt.setText(placeHolderStr);
+        } else {
+            commonProblemEt.setText(planEntity.getCommonProblem());
+        }
+    }
+
+    private void setAccessoryText(ImplementationPlanEntity planEntity) {
+        if (planEntity == null) {
+            return;
+        }
+        
+        tvAccessories1.setText(!isEditMode ? R.string.label_attachments :
+                R.string.label_add_attachments);
+        addAccessories1.setVisibility(!TextUtils.isEmpty(planEntity.getLgAppendixUrl()) ?
+                View.VISIBLE : View.GONE);
+
+        tvAccessories2.setText(!isEditMode ? R.string.label_attachments :
+                R.string.label_add_attachments);
+        addAccessories2.setVisibility(!TextUtils.isEmpty(planEntity.getDpAppendixUrl()) ?
+                View.VISIBLE : View.GONE);
+
+        tvAccessories3.setText(!isEditMode ? R.string.label_attachments :
+                R.string.label_add_attachments);
+        addAccessories3.setVisibility(!TextUtils.isEmpty(planEntity.getCpAppendixUrl()) ?
+                View.VISIBLE : View.GONE);
+
+        tvAccessories4.setText(!isEditMode ? R.string.label_attachments :
+                R.string.label_add_attachments);
+        addAccessories4.setVisibility(!TextUtils.isEmpty(planEntity.getStepUrl()) ?
+                View.VISIBLE : View.GONE);
+
+    }
+
     private void configPlanData(ImplementationPlanEntity planEntity) {
-        if (EmptyUtil.isNotEmpty(planEntity) && planEntity.getLearningGoal() != null) {
-            if (TextUtils.isEmpty(planEntity.getLearningGoal())){
-                mLearningTargetEt.setText(getString(R.string.no_content));
-            }else {
-                mLearningTargetEt.setText(planEntity.getLearningGoal());
-            }
-            if (TextUtils.isEmpty(planEntity.getDifficultPoint())){
-                mMainDifficultyEt.setText(getString(R.string.no_content));
-            }else {
-                mMainDifficultyEt.setText(planEntity.getDifficultPoint());
-            }
-            if (TextUtils.isEmpty(planEntity.getStep())){
-                mStepEt.setText(getString(R.string.no_content));
-            }else {
-                mStepEt.setText(planEntity.getStep());
-            }
-            if (TextUtils.isEmpty(planEntity.getCommonProblem())){
-                mCommonProblemEt.setText(getString(R.string.no_content));
-            }else {
-                mCommonProblemEt.setText(planEntity.getCommonProblem());
-            }
-        }
 
-        String lgAppendixId = planEntity.getLgAppendixId();
-        String lgAppendixUrl = planEntity.getLgAppendixUrl();
-        String dpAppendixId = planEntity.getDpAppendixId();
-        String dpAppendixUrl = planEntity.getDpAppendixUrl();
-        String cpAppendixId = planEntity.getCpAppendixId();
-        String cpAppendixUrl = planEntity.getCpAppendixUrl();
-        String sAppendixId = planEntity.getStepId();
-        String sAppendixUrl = planEntity.getStepUrl();
+        setAccessoryText(planEntity);
 
-        if (!TextUtils.isEmpty(lgAppendixUrl)) {
-            mTvAccessories1.setText(getString(R.string.label_attachments));
-        } else {
-            mAddAccessories1.setVisibility(View.GONE);
-        }
-        if (!TextUtils.isEmpty(dpAppendixUrl)) {
-            mTvAccessories2.setText(getString(R.string.label_attachments));
-        } else {
-            mAddAccessories2.setVisibility(View.GONE);
-        }
-        if (!TextUtils.isEmpty(sAppendixUrl)){
-            mTvAccessories4.setText(getString(R.string.label_attachments));
-        }else {
-            mAddAccessories4.setVisibility(View.GONE);
-        }
-        if (!TextUtils.isEmpty(cpAppendixUrl)) {
-            mTvAccessories3.setText(getString(R.string.label_attachments));
-        } else {
-            mAddAccessories3.setVisibility(View.GONE);
-        }
+        setTargetEditTextContent(planEntity, isEditMode);
+
+        ArrayList<ResourceInfoTag> lgResourceInfoTags =
+                getResourceInfoTags(planEntity.getLgAppendixId(), planEntity.getLgAppendixUrl());
+        this.resourceInfoTagList1.addAll(lgResourceInfoTags);
+        pictureListAdapter1.notifyDataSetChanged();
+
+        ArrayList<ResourceInfoTag> dpResourceInfoTags =
+                getResourceInfoTags(planEntity.getDpAppendixId(), planEntity.getDpAppendixUrl());
+        this.resourceInfoTagList2.addAll(dpResourceInfoTags);
+        pictureListAdapter2.notifyDataSetChanged();
+
+        ArrayList<ResourceInfoTag> cpResourceInfoTags =
+                getResourceInfoTags(planEntity.getCpAppendixId(), planEntity.getCpAppendixUrl());
+        this.resourceInfoTagList3.addAll(cpResourceInfoTags);
+        pictureListAdapter3.notifyDataSetChanged();
+
+        ArrayList<ResourceInfoTag> sResourceInfoTags =
+                getResourceInfoTags(planEntity.getStepId(), planEntity.getStepUrl());
+        this.resourceInfoTagList4.addAll(sResourceInfoTags);
+        pictureListAdapter4.notifyDataSetChanged();
+    }
+
+    private ArrayList<ResourceInfoTag> getResourceInfoTags(String lgAppendixId, String lgAppendixUrl) {
         ArrayList<ResourceInfoTag> lgResourceInfoTags = new ArrayList<>();
         if (!TextUtils.isEmpty(lgAppendixId)) {
-            if (lgAppendixId.contains(",")) {
-                String[] lgTempId = lgAppendixId.split(",");
-                String[] lgTempUrl = lgAppendixUrl.split(",");
-                for (int i = 0; i < lgTempId.length; i++) {
-                    ResourceInfoTag lgInfoTag = new ResourceInfoTag();
-                    lgInfoTag.setResId(lgTempId[i]);
-                    lgInfoTag.setImgPath(lgTempUrl[i]);
-                    lgInfoTag.setResourcePath(lgTempUrl[i]);
-                    lgResourceInfoTags.add(lgInfoTag);
-                }
-            } else {
+            String[] lgTempId = lgAppendixId.split(",");
+            String[] lgTempUrl = lgAppendixUrl.split(",");
+            for (int i = 0; i < lgTempId.length; i++) {
                 ResourceInfoTag lgInfoTag = new ResourceInfoTag();
-                lgInfoTag.setResId(lgAppendixId);
-                lgInfoTag.setImgPath(lgAppendixUrl);
-                lgInfoTag.setResourcePath(lgAppendixUrl);
+                lgInfoTag.setResId(lgTempId[i]);
+                lgInfoTag.setImgPath(lgTempUrl[i]);
+                lgInfoTag.setResourcePath(lgTempUrl[i]);
                 lgResourceInfoTags.add(lgInfoTag);
             }
         }
-
-        this.resourceInfoTagList1.addAll(lgResourceInfoTags);
-        mRecyclerView1.setAdapter(mPictureListAdapter1);
-
-        ArrayList<ResourceInfoTag> dpResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(dpAppendixId)) {
-            if (dpAppendixId.contains(",")) {
-                String[] dpTempId = dpAppendixId.split(",");
-                String[] dpTempUrl = dpAppendixUrl.split(",");
-                for (int i = 0; i < dpTempId.length; i++) {
-                    ResourceInfoTag dpInfoTag = new ResourceInfoTag();
-                    dpInfoTag.setResId(dpTempId[i]);
-                    dpInfoTag.setImgPath(dpTempUrl[i]);
-                    dpInfoTag.setResourcePath(dpTempUrl[i]);
-                    dpResourceInfoTags.add(dpInfoTag);
-                }
-            } else {
-                ResourceInfoTag dpInfoTag = new ResourceInfoTag();
-                dpInfoTag.setResId(dpAppendixId);
-                dpInfoTag.setImgPath(dpAppendixUrl);
-                dpInfoTag.setResourcePath(dpAppendixUrl);
-                dpResourceInfoTags.add(dpInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList2.addAll(dpResourceInfoTags);
-        mRecyclerView2.setAdapter(mPictureListAdapter2);
-
-        ArrayList<ResourceInfoTag> cpResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(cpAppendixId)) {
-            if (cpAppendixId.contains(",")) {
-                String[] cpTempId = cpAppendixId.split(",");
-                String[] cpTempUrl = cpAppendixUrl.split(",");
-                for (int i = 0; i < cpTempId.length; i++) {
-                    ResourceInfoTag cpInfoTag = new ResourceInfoTag();
-                    cpInfoTag.setResId(cpTempId[i]);
-                    cpInfoTag.setImgPath(cpTempUrl[i]);
-                    cpInfoTag.setResourcePath(cpTempUrl[i]);
-                    cpResourceInfoTags.add(cpInfoTag);
-                }
-            } else {
-                ResourceInfoTag cpInfoTag = new ResourceInfoTag();
-                cpInfoTag.setResId(cpAppendixId);
-                cpInfoTag.setImgPath(cpAppendixUrl);
-                cpInfoTag.setResourcePath(cpAppendixUrl);
-                cpResourceInfoTags.add(cpInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList3.addAll(cpResourceInfoTags);
-        mRecyclerView3.setAdapter(mPictureListAdapter3);
-
-        ArrayList<ResourceInfoTag> sResourceInfoTags = new ArrayList<>();
-        if (!TextUtils.isEmpty(sAppendixId)) {
-            if (sAppendixId.contains(",")) {
-                String[] sTempId = sAppendixId.split(",");
-                String[] sTempUrl = sAppendixUrl.split(",");
-                for (int i = 0; i < sTempId.length; i++) {
-                    ResourceInfoTag sInfoTag = new ResourceInfoTag();
-                    sInfoTag.setResId(sTempId[i]);
-                    sInfoTag.setImgPath(sTempUrl[i]);
-                    sInfoTag.setResourcePath(sTempUrl[i]);
-                    sResourceInfoTags.add(sInfoTag);
-                }
-            } else {
-                ResourceInfoTag sInfoTag = new ResourceInfoTag();
-                sInfoTag.setResId(sAppendixId);
-                sInfoTag.setImgPath(sAppendixUrl);
-                sInfoTag.setResourcePath(sAppendixUrl);
-                sResourceInfoTags.add(sInfoTag);
-            }
-        }
-
-        this.resourceInfoTagList4.addAll(sResourceInfoTags);
-        mRecyclerView4.setAdapter(mPictureListAdapter4);
-
+        return lgResourceInfoTags;
     }
 
 
@@ -512,18 +456,18 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         super.onClick(v);
         int id = v.getId();
         if (id == R.id.abroad_choosephoto) {
-            if (accessoriesaType == LEARNING_TARGET_TYPE) {
-                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList1.size());
-            }else if (accessoriesaType == MAIN_DIFFICULT_TYPE){
-                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList2.size());
-            }else if (accessoriesaType == COMMON_PROBLEM_TYPE){
-                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList3.size());
-            }else if (accessoriesaType == STEP_TYPE){
-                doGuidanceTypeWork(GuidanceResourceType.PHOTO,resourceInfoTagList4.size());
+            if (accessoriesType == LEARNING_TARGET_TYPE) {
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO, resourceInfoTagList1.size());
+            } else if (accessoriesType == MAIN_DIFFICULT_TYPE) {
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO, resourceInfoTagList2.size());
+            } else if (accessoriesType == COMMON_PROBLEM_TYPE) {
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO, resourceInfoTagList3.size());
+            } else if (accessoriesType == STEP_TYPE) {
+                doGuidanceTypeWork(GuidanceResourceType.PHOTO, resourceInfoTagList4.size());
             }
             dialog.dismiss();
         } else if (id == R.id.abroad_takephoto) {
-            doGuidanceTypeWork(GuidanceResourceType.TAKE_CAMERA,0);
+            doGuidanceTypeWork(GuidanceResourceType.TAKE_CAMERA, 0);
             dialog.dismiss();
         } else if (id == R.id.abroad_choose_cancel) {
             dialog.dismiss();
@@ -531,18 +475,22 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             resetPlanData();
         } else if (id == R.id.btn_confirm) {
             getEditContent();
-            if (TextUtils.isEmpty(mLearningTargetText) && TextUtils.isEmpty(mMainDifficultyText) &&
-                    TextUtils.isEmpty(mCommonProblemText) && TextUtils.isEmpty(mStepText) &&
+            boolean isAllEmpty = TextUtils.isEmpty(learningTargetText) && TextUtils.isEmpty(mainDifficultyText) &&
+                    TextUtils.isEmpty(commonProblemText) && TextUtils.isEmpty(stepText) &&
                     resourceInfoTagList1.isEmpty() && resourceInfoTagList2.isEmpty() &&
-                    resourceInfoTagList3.isEmpty() && resourceInfoTagList4.isEmpty()) {
-                confirmPlanDialog();
+                    resourceInfoTagList3.isEmpty() && resourceInfoTagList4.isEmpty();
+            if (isAllEmpty) {
+                if (planEntity == null) {
+                    confirmPlanDialog();
+                } else {
+                    confirmPlanData(true);
+                }
             } else {
-                confirmPlanData();
+                confirmPlanData(false);
             }
         } else if (id == R.id.btn_edit) {
-            //编辑界面
-            EditImplementationPlanActivity.start(getActivity(), chapterId, memberId, courseId, classId);
-            getActivity().finish();
+            isEditMode = true;
+            switchMode();
         }
     }
 
@@ -558,18 +506,20 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                getActivity().finish();
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
         messageDialog.show();
     }
 
-    private void doGuidanceTypeWork(int guidanceType,int selectCount) {
+    private void doGuidanceTypeWork(int guidanceType, int selectCount) {
         GuidanceTaskUtils.getInstance()
                 .setContext(getActivity())
                 .setFromStudyTaskIntro(true)
                 .setCallBackListener(result -> updateListData((List<MediaData>) result))
-                .doGuidanceTypeWork(guidanceType,selectCount);
+                .doGuidanceTypeWork(guidanceType, selectCount);
     }
 
     private void updateListData(List<MediaData> datas) {
@@ -603,39 +553,39 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             resourceInfoTags.add(infoTag);
         }
         if (resourceInfoTags.size() > 0) {
-            if (accessoriesaType == LEARNING_TARGET_TYPE) {
+            if (accessoriesType == LEARNING_TARGET_TYPE) {
                 this.resourceInfoTagList1.addAll(resourceInfoTags);
-                if (mPictureListAdapter1 != null) {
-                    mPictureListAdapter1.update(this.resourceInfoTagList1);
+                if (pictureListAdapter1 != null) {
+                    pictureListAdapter1.update(this.resourceInfoTagList1);
                 }
-            } else if (accessoriesaType == MAIN_DIFFICULT_TYPE) {
+            } else if (accessoriesType == MAIN_DIFFICULT_TYPE) {
                 this.resourceInfoTagList2.addAll(resourceInfoTags);
-                if (mPictureListAdapter2 != null) {
-                    mPictureListAdapter2.update(this.resourceInfoTagList2);
+                if (pictureListAdapter2 != null) {
+                    pictureListAdapter2.update(this.resourceInfoTagList2);
                 }
-            } else if (accessoriesaType == COMMON_PROBLEM_TYPE) {
+            } else if (accessoriesType == COMMON_PROBLEM_TYPE) {
                 this.resourceInfoTagList3.addAll(resourceInfoTags);
-                if (mPictureListAdapter3 != null) {
-                    mPictureListAdapter3.update(this.resourceInfoTagList3);
+                if (pictureListAdapter3 != null) {
+                    pictureListAdapter3.update(this.resourceInfoTagList3);
                 }
-            } else if (accessoriesaType == STEP_TYPE) {
+            } else if (accessoriesType == STEP_TYPE) {
                 this.resourceInfoTagList4.addAll(resourceInfoTags);
-                if (mPictureListAdapter4 != null) {
-                    mPictureListAdapter4.update(this.resourceInfoTagList4);
+                if (pictureListAdapter4 != null) {
+                    pictureListAdapter4.update(this.resourceInfoTagList4);
                 }
             }
         }
     }
 
     private void getEditContent() {
-        mLearningTargetText = mLearningTargetEt.getText().toString().trim();
-        mMainDifficultyText = mMainDifficultyEt.getText().toString().trim();
-        mCommonProblemText = mCommonProblemEt.getText().toString().trim();
-        mStepText = mStepEt.getText().toString().trim();
+        learningTargetText = learningTargetEt.getText().toString().trim();
+        mainDifficultyText = mainDifficultyEt.getText().toString().trim();
+        commonProblemText = commonProblemEt.getText().toString().trim();
+        stepText = stepEt.getText().toString().trim();
     }
 
     //确认
-    private void confirmPlanData() {
+    private void confirmPlanData(final boolean isAllEmpty) {
         String lgAppendixId = "";
         String lgAppendixUrl = "";
         for (int i = 0; i < resourceInfoTagList1.size(); i++) {
@@ -687,6 +637,25 @@ public class ImplementationPlanFragment extends ContactsListFragment {
                 sAppendixUrl = sAppendixUrl + "," + data.getResourcePath();
             }
         }
+        
+        if (!isAllEmpty && planEntity != null) {
+            planEntity.setLearningGoal(learningTargetText);
+            planEntity.setLgAppendixId(lgAppendixId);
+            planEntity.setLgAppendixUrl(lgAppendixUrl);
+
+            planEntity.setDifficultPoint(mainDifficultyText);
+            planEntity.setDpAppendixId(dpAppendixId);
+            planEntity.setDpAppendixUrl(dpAppendixUrl);
+
+            planEntity.setCommonProblem(commonProblemText);
+            planEntity.setCpAppendixId(cpAppendixId);
+            planEntity.setCpAppendixUrl(cpAppendixUrl);
+
+            planEntity.setStep(stepText);
+            planEntity.setStepId(sAppendixId);
+            planEntity.setStepUrl(sAppendixUrl);
+        }
+
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("chapterId", chapterId);
         requestVo.addParams("courseId", courseId);
@@ -694,80 +663,73 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             requestVo.addParams("token", memberId);
         }
         requestVo.addParams("classId", classId);
-        requestVo.addParams("learningGoal", mLearningTargetText);
+        requestVo.addParams("learningGoal", learningTargetText);
         requestVo.addParams("lgAppendixId", lgAppendixId);
         requestVo.addParams("lgAppendixUrl", lgAppendixUrl);
-        requestVo.addParams("difficultPoint", mMainDifficultyText);
+        requestVo.addParams("difficultPoint", mainDifficultyText);
         requestVo.addParams("dpAppendixId", dpAppendixId);
         requestVo.addParams("dpAppendixUrl", dpAppendixUrl);
-        requestVo.addParams("commonProblem", mCommonProblemText);
+        requestVo.addParams("commonProblem", commonProblemText);
         requestVo.addParams("cpAppendixId", cpAppendixId);
         requestVo.addParams("cpAppendixUrl", cpAppendixUrl);
-        requestVo.addParams("step", mStepText);
+        requestVo.addParams("step", stepText);
         requestVo.addParams("stepId", sAppendixId);
         requestVo.addParams("stepUrl", sAppendixUrl);
         RequestParams params = new RequestParams(AppConfig.ServerUrl.postSaveImplementPlan);
         params.setAsJsonContent(true);
         params.setBodyContent(requestVo.getParams());
         params.setConnectTimeout(10000);
-        x.http().post(params, new Callback.CommonCallback<String>() {
+        x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 ResponseVo<String> results = JSON.parseObject(result,
                         new TypeReference<ResponseVo<String>>() {
                         });
                 if (results.isSucceed()) {
-                    getActivity().finish();
+                    if (isAllEmpty) {
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    } else {
+                        if (planEntity == null) {
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
+                        } else {
+                            isEditMode = false;
+                            switchMode();
+                        }
+                    }
                 }
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                UIUtil.showToastSafe(com.lqwawa.intleducation.R.string.net_error_tip);
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
             }
         });
     }
 
     //重置
     private void resetPlanData() {
-        mLearningTargetEt.setText("");
-        mMainDifficultyEt.setText("");
-        mCommonProblemEt.setText("");
-        mStepEt.setText("");
-        if (mPictureListAdapter1 != null) {
-            mPictureListAdapter1.removeAll(this.resourceInfoTagList1);
-        }
+        learningTargetEt.setText("");
+        mainDifficultyEt.setText("");
+        commonProblemEt.setText("");
+        stepEt.setText("");
 
-        if (mPictureListAdapter2 != null) {
-            mPictureListAdapter2.removeAll(this.resourceInfoTagList2);
-        }
-
-        if (mPictureListAdapter3 != null) {
-            mPictureListAdapter3.removeAll(this.resourceInfoTagList3);
-        }
-
-        if (mPictureListAdapter4 != null) {
-            mPictureListAdapter4.removeAll(this.resourceInfoTagList4);
-        }
+        resourceInfoTagList1.clear();
+        pictureListAdapter1.notifyDataSetChanged();
+        resourceInfoTagList2.clear();
+        pictureListAdapter2.notifyDataSetChanged();
+        resourceInfoTagList3.clear();
+        pictureListAdapter3.notifyDataSetChanged();
+        resourceInfoTagList4.clear();
+        pictureListAdapter4.notifyDataSetChanged();
     }
 
     //选择照片方式弹框
     public void choosePhotoDialog() {
         dialog = new Dialog(getContext(), R.style.ActionSheetDialogStyle);
-        inflate = LayoutInflater.from(getContext()).inflate(R.layout.view_choosephoto_dialog, null);
-        choosePhoto = (TextView) inflate.findViewById(R.id.abroad_choosephoto);
-        takePhoto = (TextView) inflate.findViewById(R.id.abroad_takephoto);
-        cancel = (TextView) inflate.findViewById(R.id.abroad_choose_cancel);
+        View inflate =
+                LayoutInflater.from(getContext()).inflate(R.layout.view_choosephoto_dialog, null);
+        TextView choosePhoto = (TextView) inflate.findViewById(R.id.abroad_choosephoto);
+        TextView takePhoto = (TextView) inflate.findViewById(R.id.abroad_takephoto);
+        TextView cancel = (TextView) inflate.findViewById(R.id.abroad_choose_cancel);
         choosePhoto.setOnClickListener(this);
         takePhoto.setOnClickListener(this);
         cancel.setOnClickListener(this);
@@ -784,5 +746,22 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             }
         }
         dialog.show();
+    }
+
+    public void onBackPress() {
+        if (!isEditMode) {
+            if (getActivity() != null) {
+                getActivity().finish();
+            }
+        } else {
+            if (planEntity != null) {
+                isEditMode = false;
+                switchMode();
+            } else {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+            }
+        }
     }
 }

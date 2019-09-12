@@ -187,7 +187,7 @@ public class MOOCHelper {
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            ResourcesPlayUtils.getInstance().onActivityResult(requestCode,resultCode,data);
+            ResourcesPlayUtils.getInstance().onActivityResult(requestCode, resultCode, data);
         }
     };
 
@@ -195,20 +195,23 @@ public class MOOCHelper {
             = new TaskSliderHelper.OnLearnStatisticListener() {
         @Override
         public void enterCourseStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull Bundle bundle) {
-            LearningStatisticActivity.start(activity,courseId,courseName,classId,bundle);
+            LearningStatisticActivity.start(activity, courseId, courseName, classId, bundle);
         }
 
         @Override
         public void enterLearnStatisticActivity(@NonNull Activity activity, @NonNull int courseId, @NonNull String courseName, @NonNull String classId, @NonNull int roleType, @NonNull String studentId) {
-            LearningStatisticActivity.start(activity,courseId,courseName,classId,roleType,studentId);
+            LearningStatisticActivity.start(activity, courseId, courseName, classId, roleType, studentId);
         }
     };
 
     private static TaskSliderHelper.OnImplementationPlanListener onImplementationPlanListener
             = new TaskSliderHelper.OnImplementationPlanListener() {
         @Override
-        public void enterImplementationPlanActivity(@NonNull Activity activity, @NonNull String chapterId,String memberId,String courseId,String classId) {
-            ImplementationPlanActivity.start(activity,chapterId,memberId,courseId,classId);
+        public void enterImplementationPlanActivity(@NonNull Activity activity,
+                                                    @NonNull String chapterId, String memberId,
+                                                    String courseId, String classId,
+                                                    boolean isEditMode) {
+            ImplementationPlanActivity.start(activity, chapterId, memberId, courseId, classId, isEditMode);
         }
     };
 
@@ -792,7 +795,7 @@ public class MOOCHelper {
                 }
             }
         });
-        task.checkCanReplaceIPAddress(courseData.id, courseData.type,courseData.size, task);
+        task.checkCanReplaceIPAddress(courseData.id, courseData.type, courseData.size, task);
     }
 
     /**
@@ -920,7 +923,7 @@ public class MOOCHelper {
                                             final StudyTask task,
                                             final int roleType,
                                             boolean isAudition) {
-        enterCheckMarkDetail(activity,data,task,roleType,isAudition,true);
+        enterCheckMarkDetail(activity, data, task, roleType, isAudition, true);
     }
 
     public static void enterCheckMarkDetail(final Activity activity,
@@ -969,7 +972,6 @@ public class MOOCHelper {
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
-
 
 
     /**
