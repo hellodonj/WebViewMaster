@@ -581,4 +581,5 @@
     <string name="label_activation_code_tip">Please enter activation code</string>
     <string name="label_empty_teaching_assistant">No textbook</string>
     <string name="label_plan_empty_content">暂无预习、复习内容</string>
+    <string name="label_data_statistics">数据统计</string>
 </resources>

@@ -343,7 +343,7 @@
     <string name="label_basic_holder_title">国家课程空中课堂</string>
     <string name="label_all_the_arrangement">【全部布置】</string>
     <string name="label_statistical_learning">学习统计</string>
-    <string name="label_course_statistics">数据统计</string>
+    <string name="label_course_statistics">课程统计</string>
     <string name="label_work_cart">作业库</string>
     <string name="label_action_to_cart">添加到作业库</string>
     <string name="label_work_cart_max_count_tip">任务添加不能超过6个!</string>
@@ -588,4 +588,5 @@
     <string name="label_activation_code_tip">请输入激活码激活</string>
     <string name="label_empty_teaching_assistant">暂无关联教辅</string>
     <string name="label_plan_empty_content">暂无预习、复习内容</string>
+    <string name="label_data_statistics">数据统计</string>
 </resources>

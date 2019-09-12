@@ -331,10 +331,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             });
         }
 
-        // 刷新数目
-        refreshCartPoint();
-        getData();
-
         //被动进入选择,并且是选择模式
         if (mChapterParams != null && mChapterParams.isChoiceMode() &&
                 !mChapterParams.isInitiativeTrigger()) {
@@ -375,6 +371,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 finish();
             });
         }
+
+        // 刷新数目
+        refreshCartPoint();
+        getData();
     }
 
     @Override
@@ -386,19 +386,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
 
     //初始化数据
     private void getData() {
-        CourseDetailParams courseParams = mChapterParams.getCourseParams();
         String token = mChapterParams.getMemberId();
-        int role = 2;
-        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
-            role = 1;
-        }
-        String classId = "";
-        if (role == 1 && mChapterParams.getCourseParams().isClassCourseEnter()) {
-            classId = mChapterParams.getCourseParams().getClassId();
-        }
-        loadingDialog = DialogHelper.getIt(SxLessonDetailsActivity.this).GetLoadingDialog(0);
-        // 获取中英文数据
-        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         LessonHelper.requestExerciseTypeListBySectionId(token, sectionId, new DataSource.Callback<List<ExerciseTypeVo>>() {
             @Override
             public void onDataLoaded(List<ExerciseTypeVo> exerciseTypeList) {
@@ -411,7 +399,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     mEmptyPlanView.setVisibility(View.VISIBLE);
                     return;
                 }
-
+                requestChapterTask();
                 for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
                     if (exerciseTypeVo.getExerciseType() == 1) {
@@ -431,6 +419,22 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 UIUtil.showToastSafe(strRes);
             }
         });
+
+    }
+
+    private void requestChapterTask() {
+        String token = mChapterParams.getMemberId();
+        int role = 2;
+        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER) {
+            role = 1;
+        }
+        String classId = "";
+        if (role == 1 && mChapterParams.getCourseParams().isClassCourseEnter()) {
+            classId = mChapterParams.getCourseParams().getClassId();
+        }
+        loadingDialog = DialogHelper.getIt(SxLessonDetailsActivity.this).GetLoadingDialog(0);
+        // 获取中英文数据
+        int languageRes = Utils.isZh(UIUtil.getContext()) ? LanguageType.LANGUAGE_CHINESE : LanguageType.LANGUAGE_OTHER;
         LessonHelper.requestChapterStudyTask(languageRes, token, classId, courseId, sectionId, role, -1, new DataSource.Callback<SectionDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
@@ -576,6 +580,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     }
                 }
                 // 直接添加到作业库
+                mBottomLayout.setActivated(false);
                 confirmResourceCart(false);
             } else {
                 boolean originalActivated = mBottomLayout.isActivated();
