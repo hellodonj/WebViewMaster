@@ -36,13 +36,12 @@ public class AuthImageDownloader extends BaseImageDownloader {
 
     @Override
     protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
-        URL url = null;
-        try {
-            url = new URL(imageUri);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        HttpURLConnection conn = this.createConnection(imageUri, extra);
+
+        for(int redirectCount = 0; conn.getResponseCode() / 100 == 3 && redirectCount < 5; ++redirectCount) {
+            conn = this.createConnection(conn.getHeaderField("Location"), extra);
         }
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        
         conn.setConnectTimeout(connectTimeout);
         conn.setReadTimeout(readTimeout);
 
