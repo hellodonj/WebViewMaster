@@ -565,6 +565,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     }
                 }
                 // 直接添加到作业库
+                mBottomLayout.setActivated(false);
                 confirmResourceCart(false);
             } else {
                 boolean originalActivated = mBottomLayout.isActivated();
