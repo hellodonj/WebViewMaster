@@ -387,22 +387,22 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         
         tvAccessories1.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories1.setVisibility(!TextUtils.isEmpty(planEntity.getLgAppendixUrl()) ?
+        addAccessories1.setVisibility((!TextUtils.isEmpty(planEntity.getLgAppendixUrl()) || isEditMode) ?
                 View.VISIBLE : View.GONE);
 
         tvAccessories2.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories2.setVisibility(!TextUtils.isEmpty(planEntity.getDpAppendixUrl()) ?
+        addAccessories2.setVisibility((!TextUtils.isEmpty(planEntity.getDpAppendixUrl())|| isEditMode) ?
                 View.VISIBLE : View.GONE);
 
         tvAccessories3.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories3.setVisibility(!TextUtils.isEmpty(planEntity.getCpAppendixUrl()) ?
+        addAccessories3.setVisibility((!TextUtils.isEmpty(planEntity.getCpAppendixUrl())|| isEditMode) ?
                 View.VISIBLE : View.GONE);
 
         tvAccessories4.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories4.setVisibility(!TextUtils.isEmpty(planEntity.getStepUrl()) ?
+        addAccessories4.setVisibility((!TextUtils.isEmpty(planEntity.getStepUrl())|| isEditMode) ?
                 View.VISIBLE : View.GONE);
 
     }
