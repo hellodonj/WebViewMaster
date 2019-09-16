@@ -307,30 +307,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                         || (courseParams.getLibraryType() == OrganLibraryType.TYPE_BRAIN_LIBRARY && courseParams.isVideoCourse()));
         mTopLayout.setVisibility(isVideoCourse ? View.GONE : View.VISIBLE);
 
-        //班级老师才有课中实施方案
-        if (courseParams.isClassTeacher()) {
-            topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CourseHelper.queryIfExistPlan(memberId, sectionId, courseParams.getClassId(),
-                            new DataSource.Callback<Boolean>() {
-                        @Override
-                        public void onDataNotAvailable(int strRes) {
-
-                        }
-
-                        @Override
-                        public void onDataLoaded(Boolean result) {
-                            TaskSliderHelper.onImplementationPlanListener.
-                                    enterImplementationPlanActivity(SxLessonDetailsActivity.this,
-                                            sectionId,memberId,courseId,courseParams.getClassId(),
-                                            !result);
-                        }
-                    });
-                }
-            });
-        }
-
         //被动进入选择,并且是选择模式
         if (mChapterParams != null && mChapterParams.isChoiceMode() &&
                 !mChapterParams.isInitiativeTrigger()) {
@@ -391,6 +367,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             @Override
             public void onDataLoaded(List<ExerciseTypeVo> exerciseTypeList) {
                 SxLessonDetailsActivity.this.mExerciseTypeVoList = exerciseTypeList;
+                //班级老师才有课中实施方案
+                CourseDetailParams courseParams = mChapterParams.getCourseParams();
                 if (EmptyUtil.isEmpty(exerciseTypeList)) {
                     return;
                 } else if (exerciseTypeList.size() == 1 && (exerciseTypeList.get(0).getExerciseType() == 2)
@@ -402,6 +380,28 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 requestChapterTask();
                 for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
+                    if (courseParams.isClassTeacher() && exerciseTypeVo.getExerciseType() == 2){
+                        topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CourseHelper.queryIfExistPlan(memberId, sectionId, courseParams.getClassId(),
+                                        new DataSource.Callback<Boolean>() {
+                                            @Override
+                                            public void onDataNotAvailable(int strRes) {
+
+                                            }
+
+                                            @Override
+                                            public void onDataLoaded(Boolean result) {
+                                                TaskSliderHelper.onImplementationPlanListener.
+                                                        enterImplementationPlanActivity(SxLessonDetailsActivity.this,
+                                                                sectionId,memberId,courseId,courseParams.getClassId(),
+                                                                !result);
+                                            }
+                                        });
+                            }
+                        });
+                    }
                     if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
                     } else if (exerciseTypeVo.getExerciseType() == 2) {
