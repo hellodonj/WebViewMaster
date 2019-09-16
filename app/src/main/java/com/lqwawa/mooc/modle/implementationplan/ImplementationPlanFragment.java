@@ -173,20 +173,16 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         if (!isEditMode) {
             getImplementPlan();
         }
+
         configPlanView();
         switchMode();
     }
 
     private void switchMode() {
-        setTargetEditText(learningTargetEt, isEditMode);
-        setTargetEditText(mainDifficultyEt, isEditMode);
-        setTargetEditText(commonProblemEt, isEditMode);
-        setTargetEditText(stepEt, isEditMode);
+        setTargetEditText();
 
-        if (planEntity != null) {
-            setTargetEditTextContent(planEntity, isEditMode);
-            setAccessoryText(planEntity);
-        }
+        setTargetEditTextContent(planEntity, isEditMode);
+        setAccessoryText(planEntity);
 
         pictureListAdapter1.setEditMode(isEditMode);
         pictureListAdapter2.setEditMode(isEditMode);
@@ -194,6 +190,13 @@ public class ImplementationPlanFragment extends ContactsListFragment {
         pictureListAdapter4.setEditMode(isEditMode);
         
         setBottomButtons();
+    }
+
+    private void setTargetEditText() {
+        setTargetEditText(learningTargetEt, isEditMode);
+        setTargetEditText(mainDifficultyEt, isEditMode);
+        setTargetEditText(commonProblemEt, isEditMode);
+        setTargetEditText(stepEt, isEditMode);
     }
 
     private void setTargetEditText(ContainsEmojiEditText editText, boolean isEditMode) {
@@ -352,63 +355,79 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     }
 
     private void setTargetEditTextContent(ImplementationPlanEntity planEntity, boolean isEditMode) {
-        if (planEntity == null) {
-            return;
-        }
 
-        String placeHolderStr = !isEditMode ? getString(R.string.no_content) : "";
+        String placeHolderStr = (!isEditMode && planEntity != null)?
+                getString(R.string.no_content) : "";
+        String hintStr = !isEditMode ? "" : getString(R.string.label_input_text_tip);
+        learningTargetEt.setHint(hintStr);
+        mainDifficultyEt.setHint(hintStr);
+        commonProblemEt.setHint(hintStr);
+        stepEt.setHint(hintStr);
 
-        if (TextUtils.isEmpty(planEntity.getLearningGoal())) {
+        if (planEntity == null || TextUtils.isEmpty(planEntity.getLearningGoal())) {
             learningTargetEt.setText(placeHolderStr);
         } else {
             learningTargetEt.setText(planEntity.getLearningGoal());
         }
-        if (TextUtils.isEmpty(planEntity.getDifficultPoint())) {
+        if (planEntity == null || TextUtils.isEmpty(planEntity.getDifficultPoint())) {
             mainDifficultyEt.setText(placeHolderStr);
         } else {
             mainDifficultyEt.setText(planEntity.getDifficultPoint());
         }
-        if (TextUtils.isEmpty(planEntity.getStep())) {
-            stepEt.setText(placeHolderStr);
-        } else {
-            stepEt.setText(planEntity.getStep());
-        }
-        if (TextUtils.isEmpty(planEntity.getCommonProblem())) {
+
+        if (planEntity == null || TextUtils.isEmpty(planEntity.getCommonProblem())) {
             commonProblemEt.setText(placeHolderStr);
         } else {
             commonProblemEt.setText(planEntity.getCommonProblem());
         }
+        if (planEntity == null || TextUtils.isEmpty(planEntity.getStep())) {
+            stepEt.setText(placeHolderStr);
+        } else {
+            stepEt.setText(planEntity.getStep());
+        }
     }
 
     private void setAccessoryText(ImplementationPlanEntity planEntity) {
-        if (planEntity == null) {
-            return;
-        }
+        tvAccessories1.setVisibility(View.VISIBLE);
+        tvAccessories2.setVisibility(View.VISIBLE);
+        tvAccessories3.setVisibility(View.VISIBLE);
+        tvAccessories4.setVisibility(View.VISIBLE);
         
         tvAccessories1.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories1.setVisibility(!TextUtils.isEmpty(planEntity.getLgAppendixUrl()) ?
-                View.VISIBLE : View.GONE);
+        addAccessories1.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        if (!isEditMode && planEntity != null) {
+            addAccessories1.setVisibility(!TextUtils.isEmpty(planEntity.getLgAppendixUrl()) ?
+                    View.VISIBLE : View.GONE);
+        }
 
         tvAccessories2.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories2.setVisibility(!TextUtils.isEmpty(planEntity.getDpAppendixUrl()) ?
-                View.VISIBLE : View.GONE);
+        addAccessories2.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        if (!isEditMode && planEntity != null) {
+            addAccessories2.setVisibility(!TextUtils.isEmpty(planEntity.getDpAppendixUrl()) ?
+                    View.VISIBLE : View.GONE);
+        }
 
         tvAccessories3.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories3.setVisibility(!TextUtils.isEmpty(planEntity.getCpAppendixUrl()) ?
-                View.VISIBLE : View.GONE);
+        addAccessories3.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        if (!isEditMode && planEntity != null) {
+            addAccessories3.setVisibility(!TextUtils.isEmpty(planEntity.getCpAppendixUrl()) ?
+                    View.VISIBLE : View.GONE);
+        }
 
         tvAccessories4.setText(!isEditMode ? R.string.label_attachments :
                 R.string.label_add_attachments);
-        addAccessories4.setVisibility(!TextUtils.isEmpty(planEntity.getStepUrl()) ?
-                View.VISIBLE : View.GONE);
-
+        addAccessories4.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        if (!isEditMode && planEntity != null) {
+            addAccessories4.setVisibility(!TextUtils.isEmpty(planEntity.getStepUrl()) ?
+                    View.VISIBLE : View.GONE);
+        }
     }
 
     private void configPlanData(ImplementationPlanEntity planEntity) {
-
+        
         setAccessoryText(planEntity);
 
         setTargetEditTextContent(planEntity, isEditMode);

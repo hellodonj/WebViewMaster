@@ -69,13 +69,20 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
+                            android:visibility="gone"
                             android:textSize="16sp" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view_1"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
 
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -126,12 +133,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
+                            android:visibility="gone"
                             android:textSize="16sp" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view_2"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -184,13 +198,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
+                            android:visibility="gone"
                             android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycler_view_4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
-
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -242,13 +262,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_add_attachments"
                             android:textColor="@color/black"
+                            android:visibility="gone"
                             android:textSize="16sp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycler_view_3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
