@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqwawa.intleducation.R;
+import com.lqwawa.intleducation.base.CourseEmptyView;
 import com.lqwawa.intleducation.base.utils.StringUtils;
 import com.lqwawa.intleducation.base.utils.ToastUtil;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -95,6 +96,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
     private int mMultipleChoiceCount;
     private int maxSelect = 1;
     private String sectionId;
+    private LinearLayout mLayoutContent;
+    private CourseEmptyView mEmptyView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +119,8 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
         okBtn = (TextView) findViewById(R.id.ok_btn);
         llSelectAction = (LinearLayout) findViewById(R.id.ll_select_action);
         mTvCartPoint = (TextView) findViewById(R.id.tv_cart_point);
+        mLayoutContent = findViewById(R.id.layout_content);
+        mEmptyView = findViewById(R.id.empty_layout);
         root = TreeNode.root();
         myNodeViewFactory = new MyNodeViewFactory();
         treeView = new TreeView(root, this, myNodeViewFactory);
@@ -189,37 +194,45 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
             mBottomLayout.setVisibility(View.GONE);
             mNewCartContainer.setVisibility(View.GONE);
         }
+
         //被动进入选择,并且是选择模式
         if (!choiceModeAndIntiativeTrigger && lessonSourceParams != null && lessonSourceParams.isChoiceMode()) {
-            topBar.setRightFunctionText1(getString(R.string.ok), v -> {
-                maxSelect = mMultipleChoiceCount;
-                selectedTask.clear();
-                List<TreeNode> selectedNodes = treeView.getSelectedNodes();
-                for (TreeNode selectedNode : selectedNodes) {
-                    Object value = selectedNode.getValue();
-                    if (value instanceof SectionResListVo) {
-                        SectionResListVo vo = (SectionResListVo) value;
-                        selectedTask.add(vo);
+            List<TreeNode> allNodes = treeView.getAllNodes();
+            if (allNodes.size() == 0) {
+                mLayoutContent.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+            }else {
+                topBar.setRightFunctionText1(getString(R.string.ok), v -> {
+                    maxSelect = mMultipleChoiceCount;
+                    selectedTask.clear();
+                    List<TreeNode> selectedNodes = treeView.getSelectedNodes();
+                    for (TreeNode selectedNode : selectedNodes) {
+                        Object value = selectedNode.getValue();
+                        if (value instanceof SectionResListVo) {
+                            SectionResListVo vo = (SectionResListVo) value;
+                            selectedTask.add(vo);
+                        }
                     }
-                }
-                if (selectedTask.size() <= 0) {
-                    ToastUtil.showToast(this, getString(R.string.str_select_tips));
-                    return;
-                } else {
-                    if (selectedTask.size() > mMultipleChoiceCount) {
-                        ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                    if (selectedTask.size() <= 0) {
+                        ToastUtil.showToast(this, getString(R.string.str_select_tips));
                         return;
-                    }
+                    } else {
+                        if (selectedTask.size() > mMultipleChoiceCount) {
+                            ToastUtil.showToast(this, getString(R.string.str_select_count_tips, maxSelect));
+                            return;
+                        }
 
-                }
-                // 学程馆选取资源使用的
-                EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
-                //数据回传
-                setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
-                RefreshUtil.getInstance().clear();
-                if (activity != null) activity.finish();
-                finish();
-            });
+                    }
+                    // 学程馆选取资源使用的
+                    EventBus.getDefault().post(new EventWrapper(selectedTask, EventConstant.COURSE_SELECT_RESOURCE_EVENT));
+                    //数据回传
+                    setResult(Activity.RESULT_OK, intent.putExtra(CourseSelectItemFragment.RESULT_LIST, selectedTask));
+                    RefreshUtil.getInstance().clear();
+                    if (activity != null) activity.finish();
+                    finish();
+                });
+            }
+
         }
         updateUi();
     }
@@ -283,10 +296,16 @@ public class ExamsAndTestsActivity extends AppCompatActivity implements DataSour
 
     @Override
     public void onDataLoaded(ResponseVo<SxExamDetailVo> responseVo) {
-        SxExamDetailVo examDetailVo = responseVo.getData();
-        if (examDetailVo == null) return;
-        topBar.setTitle(examDetailVo.sectionName);
-        formatData(examDetailVo);
+        if (EmptyUtil.isEmpty(responseVo)) {
+            mLayoutContent.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            SxExamDetailVo examDetailVo = responseVo.getData();
+            if (examDetailVo == null) return;
+            topBar.setTitle(examDetailVo.sectionName);
+            formatData(examDetailVo);
+        }
     }
 
     private void formatData(SxExamDetailVo examDetailVo) {
