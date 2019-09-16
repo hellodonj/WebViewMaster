@@ -1907,6 +1907,6 @@
     <string name="str_no_edit_content">  还没有填写内容，确定退出？</string>
     <string name="str_page_no_speech"> 第%s页尚未评测</string>
     <string name="str_page_score_fail">第%1$s页评测未达%2$s</string>
-    <string name="str_speech_commit">已完成所有页面评测且所有页面都达到60分，提交？</string>
+    <string name="str_speech_commit">已完成所有页面评测且所有页面都达到%s，提交？</string>
     <string name="str_max_select_picture_limit">最多可选取%s个图片</string>
 </resources>

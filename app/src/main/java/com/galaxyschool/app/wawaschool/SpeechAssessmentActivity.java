@@ -692,20 +692,20 @@ public class SpeechAssessmentActivity extends BaseFragmentActivity implements Vi
             String titleContent = getString(R.string.str_continue_eval) + "？";
             String pageNoSpeech = null;
             String unFinishPage = null;
+            String detail = null;
+            if (scoreRule == 1){
+                detail = "C-";
+            } else {
+                detail = getString(R.string.str_eval_score,"60");
+            }
             if (!TextUtils.isEmpty(scoreBuilder.toString())){
-                String detail = null;
-                if (scoreRule == 1){
-                    detail = "C-";
-                } else {
-                    detail = getString(R.string.str_eval_score,"60");
-                }
                 pageNoSpeech = getString(R.string.str_page_score_fail,scoreBuilder.toString(), detail);
             }
             if (!TextUtils.isEmpty(stringBuilder)){
                 unFinishPage = getString(R.string.str_page_no_speech,stringBuilder.toString());
             }
             if (isFinishAllPageTask){
-                titleContent = getString(R.string.str_speech_commit);
+                titleContent = getString(R.string.str_speech_commit,detail);
             } else if (!TextUtils.isEmpty(pageNoSpeech) && !TextUtils.isEmpty(unFinishPage)){
                 titleContent = unFinishPage + "，" + pageNoSpeech + "." + titleContent;
             } else if (!TextUtils.isEmpty(pageNoSpeech)){
