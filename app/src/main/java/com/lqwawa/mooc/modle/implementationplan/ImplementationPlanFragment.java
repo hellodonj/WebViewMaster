@@ -424,7 +424,6 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             addAccessories4.setVisibility(!TextUtils.isEmpty(planEntity.getStepUrl()) ?
                     View.VISIBLE : View.GONE);
         }
-
     }
 
     private void configPlanData(ImplementationPlanEntity planEntity) {
