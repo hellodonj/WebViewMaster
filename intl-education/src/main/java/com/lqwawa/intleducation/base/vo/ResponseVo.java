@@ -16,6 +16,7 @@ public class ResponseVo<T> implements Serializable {
     private T data;
     private String message;
     private boolean exist;
+    private boolean isContainStandard;
 
     public int getCode() {
         return code;
@@ -55,6 +56,14 @@ public class ResponseVo<T> implements Serializable {
 
     public void setExist(boolean exist) {
         this.exist = exist;
+    }
+
+    public boolean isContainStandard() {
+        return isContainStandard;
+    }
+
+    public void setContainStandard(boolean containStandard) {
+        isContainStandard = containStandard;
     }
 
     /**

@@ -62,7 +62,6 @@ import com.libs.yilib.pickimages.PickMediasFragment;
 import com.libs.yilib.pickimages.ScanLocalMediaController;
 import com.lqwawa.client.pojo.MediaType;
 import com.lqwawa.client.pojo.ResourceInfo;
-import com.lqwawa.intleducation.common.utils.UIUtil;
 import com.lqwawa.lqbaselib.net.ThisStringRequest;
 import com.lqwawa.lqbaselib.net.library.DataModelResult;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
@@ -199,7 +198,7 @@ public class MyLocalPictureListFragment extends ContactsListFragment
             fromImplementtationPlan = getArguments().getBoolean(Contants.FROM_IMPLEMENTTATION_PLAN,false);
             selectCount = getArguments().getInt(Contants.SELECT_PICTURE_COUNT);
             if (fromImplementtationPlan){
-                maxCount = getArguments().getInt(Contants.PICK_PICTURE_COUNT);
+                maxCount = getArguments().getInt(Contants.PICK_PICTURE_COUNT) - selectCount;
             }
         }
         ImageView imageView = ((ImageView) findViewById(R.id.contacts_header_left_btn));
@@ -713,11 +712,6 @@ public class MyLocalPictureListFragment extends ContactsListFragment
         List<MediaInfo> mediaInfos = getSelectedData();
         if (mediaInfos == null || mediaInfos.size() == 0) {
             TipMsgHelper.ShowLMsg(getActivity(), R.string.pls_select_files);
-            return;
-        }
-        if (selectCount + mediaInfos.size() > 10) {
-            int count = 10 - selectCount;
-            TipMsgHelper.ShowLMsg(getActivity(), String.format(UIUtil.getString(R.string.str_max_select_picture_limit), count));
             return;
         }
         Intent intent = new Intent();

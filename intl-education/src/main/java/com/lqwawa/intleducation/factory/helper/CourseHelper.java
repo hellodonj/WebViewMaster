@@ -846,8 +846,11 @@ public class CourseHelper {
                 ResponseVo<ExistPlanVo> results = JSON.parseObject(result,
                         new TypeReference<ResponseVo<ExistPlanVo>>() {
                         });
+                ExistPlanVo existPlanVo = new ExistPlanVo();
                 if (results != null && results.getCode() == 0) {
-                    callback.onDataLoaded(results.getData());
+                    existPlanVo.setExist(results.isExist());
+                    existPlanVo.setContainStandard(results.isContainStandard());
+                    callback.onDataLoaded(existPlanVo);
                 }
             }
         });
