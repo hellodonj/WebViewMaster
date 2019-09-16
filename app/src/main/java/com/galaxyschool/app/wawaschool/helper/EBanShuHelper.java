@@ -12,6 +12,7 @@ import com.galaxyschool.app.wawaschool.imagebrowser.GalleryActivity;
 import com.libs.gallery.ImageInfo;
 import com.lqwawa.lqbaselib.net.library.RequestHelper;
 import com.lqwawa.lqbaselib.net.library.ResourceResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,68 +73,82 @@ public class EBanShuHelper {
             }
         };
         listener.setShowLoading(true);
-        RequestHelper.getRequest(activity, urlBuilder.toString(),listener, params);
+        RequestHelper.getRequest(activity, urlBuilder.toString(), listener, params);
     }
 
     public static void loadEBanShuImageList(Activity activity,
                                             String roomId,
                                             String title,
                                             String defaultThumbnail) {
-        StringBuilder urlBuilder = new StringBuilder("https://api.ebanshu.net/v1/rooms/frame/list/?room_id=");
+        roomId = "1004687";
+        pollingImageList(activity, roomId, title, defaultThumbnail, 1,null);
+    }
+
+    private static void pollingImageList(Activity activity,
+                                         String roomId,
+                                         String title,
+                                         String defaultThumbnail,
+                                         int pageIndex,
+                                         List<ImageInfo> infos) {
+        if (infos == null){
+            infos = new ArrayList<>();
+        }
+        StringBuilder urlBuilder = new StringBuilder("https://api.ebanshu.net/v1/rooms/frame/image/list/?room_id=");
         urlBuilder.append(roomId);
+        urlBuilder.append("&page_size=").append(100);
+        urlBuilder.append("&page=").append(pageIndex);
         Map<String, String> params = new HashMap<>();
         params.put("ebs-app-id", "2");
         params.put("ebs-app-key", "123456");
-        RequestHelper.RequestListener listener =new RequestHelper
+        List<ImageInfo> finalInfos = infos;
+        RequestHelper.RequestListener listener = new RequestHelper
                 .RequestListener(activity, ResourceResult.class) {
             @Override
             public void onSuccess(String jsonString) {
-                List<ImageInfo> infos = new ArrayList<>();
+                int totalCount = 0;
+                int totalPage = 0;
+                int page = 0;
                 if (!TextUtils.isEmpty(jsonString)) {
                     JSONObject obj = JSONObject.parseObject(jsonString);
                     if (obj != null) {
                         JSONObject dataObj = obj.getJSONObject("data");
                         if (dataObj != null) {
+                            JSONObject metaObj = dataObj.getJSONObject("meta");
+                            if (metaObj != null){
+                                totalCount = metaObj.getIntValue("total_count");
+                                totalPage = metaObj.getIntValue("total_page");
+                                page = metaObj.getIntValue("page");
+                            }
                             JSONArray objectArray = dataObj.getJSONArray("object_list");
                             if (objectArray != null && objectArray.size() > 0) {
                                 for (int i = 0; i < objectArray.size(); i++) {
-                                    JSONArray itemArray = objectArray.getJSONArray(i);
-                                    if (itemArray != null && itemArray.size() > 0) {
-                                        for (int j = 0; j < itemArray.size(); j++) {
-                                            JSONObject detailObj = itemArray.getJSONObject(j);
-                                            if (detailObj != null) {
-                                                int type = detailObj.getIntValue("ty");
-                                                if (type == 4) {
-                                                    //含有图片
-                                                    JSONObject coObj = detailObj.getJSONObject("co");
-                                                    if (coObj != null) {
-                                                        String url = coObj.getString("location");
-                                                        if (!TextUtils.isEmpty(url)) {
-                                                            ImageInfo info = new ImageInfo();
-                                                            info.setResourceUrl(url);
-                                                            info.setTitle(title);
-                                                            infos.add(info);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                    String url = objectArray.getString(i);
+                                    if (!TextUtils.isEmpty(url)) {
+                                        ImageInfo info = new ImageInfo();
+                                        info.setResourceUrl(url);
+                                        info.setTitle(title);
+                                        finalInfos.add(info);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                if (infos.size() == 0 && !TextUtils.isEmpty(defaultThumbnail)){
-                    ImageInfo info = new ImageInfo();
-                    info.setResourceUrl(defaultThumbnail);
-                    info.setTitle(title);
-                    infos.add(info);
+                if (page == totalPage){
+                    //最后一页
+                    if (finalInfos.size() == 0 && !TextUtils.isEmpty(defaultThumbnail)) {
+                        ImageInfo info = new ImageInfo();
+                        info.setResourceUrl(defaultThumbnail);
+                        info.setTitle(title);
+                        finalInfos.add(info);
+                    }
+                    GalleryActivity.newInstance(activity, finalInfos, roomId, title);
+                } else {
+                    pollingImageList(activity, roomId, title, defaultThumbnail, pageIndex + 1,finalInfos);
                 }
-                GalleryActivity.newInstance(activity, infos, roomId, title);
             }
         };
         listener.setShowLoading(true);
-        RequestHelper.getRequest(activity, urlBuilder.toString(),listener , params);
+        RequestHelper.getRequest(activity, urlBuilder.toString(), listener, params);
     }
 }
