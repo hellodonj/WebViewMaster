@@ -3,13 +3,11 @@ package com.lqwawa.intleducation.factory.helper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.lqwawa.intleducation.AppConfig;
 import com.lqwawa.intleducation.Factory;
-import com.lqwawa.intleducation.MainApplication;
 import com.lqwawa.intleducation.R;
 import com.lqwawa.intleducation.base.vo.RequestVo;
 import com.lqwawa.intleducation.base.vo.ResponseVo;
@@ -24,11 +22,10 @@ import com.lqwawa.intleducation.factory.data.entity.course.CourseRouteEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.NotPurchasedChapterEntity;
 import com.lqwawa.intleducation.factory.data.entity.course.TutorialGroupEntity;
 import com.lqwawa.intleducation.factory.data.entity.response.CourseTutorResponseVo;
-import com.lqwawa.intleducation.factory.data.entity.school.SchoolInfoEntity;
 import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorChoiceEntity;
-import com.lqwawa.intleducation.factory.data.entity.tutorial.TutorEntity;
 import com.lqwawa.intleducation.module.discovery.vo.CourseDetailsVo;
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
+import com.lqwawa.intleducation.module.learn.vo.ExistPlanVo;
 import com.lqwawa.intleducation.module.learn.vo.NoticeVo;
 
 import org.xutils.common.Callback;
@@ -834,7 +831,7 @@ public class CourseHelper {
             @NonNull String memberId,
             @NonNull String chapterId,
             @NonNull String classId,
-            @NonNull DataSource.Callback<Boolean> callback) {
+            @NonNull DataSource.Callback<ExistPlanVo> callback) {
         RequestVo requestVo = new RequestVo();
         requestVo.addParams("token", memberId);
         requestVo.addParams("chapterId", chapterId);
@@ -846,11 +843,11 @@ public class CourseHelper {
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                ResponseVo<String> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<String>>() {
+                ResponseVo<ExistPlanVo> results = JSON.parseObject(result,
+                        new TypeReference<ResponseVo<ExistPlanVo>>() {
                         });
                 if (results != null && results.getCode() == 0) {
-                    callback.onDataLoaded(results.isExist());
+                    callback.onDataLoaded(results.getData());
                 }
             }
         });

@@ -56,6 +56,7 @@ import com.lqwawa.intleducation.module.discovery.ui.subject.add.AddSubjectActivi
 import com.lqwawa.intleducation.module.discovery.vo.CourseVo;
 import com.lqwawa.intleducation.module.learn.tool.TaskSliderHelper;
 import com.lqwawa.intleducation.module.learn.vo.ExerciseTypeVo;
+import com.lqwawa.intleducation.module.learn.vo.ExistPlanVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionDetailsVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionResListVo;
 import com.lqwawa.intleducation.module.learn.vo.SectionTaskListVo;
@@ -367,7 +368,6 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             @Override
             public void onDataLoaded(List<ExerciseTypeVo> exerciseTypeList) {
                 SxLessonDetailsActivity.this.mExerciseTypeVoList = exerciseTypeList;
-                //班级老师才有课中实施方案
                 CourseDetailParams courseParams = mChapterParams.getCourseParams();
                 if (EmptyUtil.isEmpty(exerciseTypeList)) {
                     return;
@@ -380,23 +380,24 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 requestChapterTask();
                 for (int i = 0; i < mExerciseTypeVoList.size(); i++) {
                     ExerciseTypeVo exerciseTypeVo = exerciseTypeList.get(i);
+                    //班级老师 有课中练习tab 才有课中实施方案
                     if (courseParams.isClassTeacher() && exerciseTypeVo.getExerciseType() == 2){
                         topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CourseHelper.queryIfExistPlan(memberId, sectionId, courseParams.getClassId(),
-                                        new DataSource.Callback<Boolean>() {
+                                        new DataSource.Callback<ExistPlanVo>() {
                                             @Override
-                                            public void onDataNotAvailable(int strRes) {
-
+                                            public void onDataLoaded(ExistPlanVo existPlanVo) {
+                                                TaskSliderHelper.onImplementationPlanListener.
+                                                        enterImplementationPlanActivity(SxLessonDetailsActivity.this,
+                                                                sectionId,memberId,courseId,courseParams.getClassId(),courseParams.getSchoolId(),
+                                                                !existPlanVo.isExist(),existPlanVo.isContainStandard());
                                             }
 
                                             @Override
-                                            public void onDataLoaded(Boolean result) {
-                                                TaskSliderHelper.onImplementationPlanListener.
-                                                        enterImplementationPlanActivity(SxLessonDetailsActivity.this,
-                                                                sectionId,memberId,courseId,courseParams.getClassId(),
-                                                                !result);
+                                            public void onDataNotAvailable(int strRes) {
+
                                             }
                                         });
                             }
@@ -405,7 +406,8 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
                     } else if (exerciseTypeVo.getExerciseType() == 2) {
-                        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER){
+                        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER ||
+                                courseParams.isClassTeacher()) {
                             mTabLists.add(getResources().getString(R.string.label_sx_practice));
                         }
                     } else if (exerciseTypeVo.getExerciseType() == 3) {

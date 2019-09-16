@@ -14,8 +14,10 @@ import com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CHAPTER_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_CLASS_ID;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_COURSE_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_IS_CONTAIN_STANDARD;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_IS_EDIT_MODE;
 import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_MEMBER_ID;
+import static com.lqwawa.mooc.modle.implementationplan.ImplementationPlanFragment.KEY_EXTRA_SCHOOL_ID;
 
 
 /**
@@ -31,14 +33,18 @@ public class ImplementationPlanActivity extends BaseFragmentActivity {
                              String memberId,
                              String courseId,
                              String classId,
-                             boolean isEditMode) {
+                             String schoolId,
+                             boolean isEditMode,
+                             boolean isContainStandard) {
         Intent intent = new Intent(activity, ImplementationPlanActivity.class);
         Bundle args = new Bundle();
         args.putString(KEY_EXTRA_CHAPTER_ID, chapterId);
         args.putString(KEY_EXTRA_MEMBER_ID, memberId);
         args.putString(KEY_EXTRA_COURSE_ID, courseId);
         args.putString(KEY_EXTRA_CLASS_ID, classId);
+        args.putString(KEY_EXTRA_SCHOOL_ID, schoolId);
         args.putBoolean(KEY_EXTRA_IS_EDIT_MODE, isEditMode);
+        args.putBoolean(KEY_EXTRA_IS_CONTAIN_STANDARD, isContainStandard);
         intent.putExtras(args);
         activity.startActivity(intent);
     }

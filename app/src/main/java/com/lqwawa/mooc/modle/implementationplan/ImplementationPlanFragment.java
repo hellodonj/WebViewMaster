@@ -62,7 +62,9 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     public static final String KEY_EXTRA_MEMBER_ID = "KEY_EXTRA_MEMBER_ID";
     public static final String KEY_EXTRA_COURSE_ID = "KEY_EXTRA_COURSE_ID";
     public static final String KEY_EXTRA_CLASS_ID = "KEY_EXTRA_CLASS_ID";
+    public static final String KEY_EXTRA_SCHOOL_ID = "KEY_EXTRA_SCHOOL_ID";
     public static final String KEY_EXTRA_IS_EDIT_MODE = "KEY_EXTRA_IS_EDIT_MODE";
+    public static final String KEY_EXTRA_IS_CONTAIN_STANDARD = "KEY_EXTRA_IS_CONTAIN_STANDARD";
 
     public static final int LEARNING_TARGET_TYPE = 1;
     public static final int MAIN_DIFFICULT_TYPE = 2;
@@ -83,11 +85,13 @@ public class ImplementationPlanFragment extends ContactsListFragment {
     private List<ResourceInfoTag> resourceInfoTagList4 = new ArrayList<>();
 
     private String learningTargetText, mainDifficultyText, commonProblemText, stepText;
-    private String chapterId, memberId, courseId, classId;
+    private String chapterId, memberId, courseId, classId,schoolId;
     private Dialog dialog;
     private int accessoriesType;
     private ImplementationPlanEntity planEntity;
     private boolean isEditMode = false;
+    //是否存在标准实施方案
+    private boolean isContainStandard;
 
 
     @Override
@@ -116,7 +120,9 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             memberId = getArguments().getString(KEY_EXTRA_MEMBER_ID);
             courseId = getArguments().getString(KEY_EXTRA_COURSE_ID);
             classId = getArguments().getString(KEY_EXTRA_CLASS_ID);
+            schoolId = getArguments().getString(KEY_EXTRA_SCHOOL_ID);
             isEditMode = getArguments().getBoolean(KEY_EXTRA_IS_EDIT_MODE);
+            isContainStandard = getArguments().getBoolean(KEY_EXTRA_IS_CONTAIN_STANDARD);
         }
     }
 
@@ -682,6 +688,7 @@ public class ImplementationPlanFragment extends ContactsListFragment {
             requestVo.addParams("token", memberId);
         }
         requestVo.addParams("classId", classId);
+        requestVo.addParams("schoolId",schoolId);
         requestVo.addParams("learningGoal", learningTargetText);
         requestVo.addParams("lgAppendixId", lgAppendixId);
         requestVo.addParams("lgAppendixUrl", lgAppendixUrl);

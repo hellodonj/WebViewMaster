@@ -209,9 +209,9 @@ public class MOOCHelper {
         @Override
         public void enterImplementationPlanActivity(@NonNull Activity activity,
                                                     @NonNull String chapterId, String memberId,
-                                                    String courseId, String classId,
-                                                    boolean isEditMode) {
-            ImplementationPlanActivity.start(activity, chapterId, memberId, courseId, classId, isEditMode);
+                                                    String courseId, String classId,String schoolId,
+                                                    boolean isEditMode,boolean isContainStandard) {
+            ImplementationPlanActivity.start(activity, chapterId, memberId, courseId, classId,schoolId, isEditMode,isContainStandard);
         }
     };
 
