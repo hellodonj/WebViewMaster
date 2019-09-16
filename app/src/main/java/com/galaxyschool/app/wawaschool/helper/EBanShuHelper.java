@@ -80,7 +80,6 @@ public class EBanShuHelper {
                                             String roomId,
                                             String title,
                                             String defaultThumbnail) {
-        roomId = "1004687";
         pollingImageList(activity, roomId, title, defaultThumbnail, 1,null);
     }
 
