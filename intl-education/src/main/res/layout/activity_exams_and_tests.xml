@@ -10,140 +10,151 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1">-->
-
-
-    <FrameLayout
-        android:layout_weight="1"
-        android:id="@+id/container"
+    <LinearLayout
+        android:id="@+id/layout_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/new_cart_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/ic_work_cart_shadow"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_work_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/label_work_cart"
-            android:textColor="@color/textLight"
-            android:textSize="14sp"
-            android:paddingRight="6dp"/>
-
-        <TextView
-            android:id="@+id/tv_cart_point"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_red_circle_point"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@color/textLight"
-            android:textSize="12sp" />
-
-    </FrameLayout>
-
-
-    <!--</RelativeLayout>-->
-
-    <FrameLayout
-        android:id="@+id/bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/com_bg_light_white">
-
-        <LinearLayout
-            android:id="@+id/ll_select_action"
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:id="@+id/new_cart_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/ic_work_cart_shadow"
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/select_all"
+                android:id="@+id/tv_work_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_accent_radius_19"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="end"
                 android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="8dp"
-                android:text="@string/select_all"
-                android:textColor="@color/com_bg_white"
-                android:textSize="14sp" />
-
-
-            <TextView
-                android:id="@+id/cancel_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/btn_accent_radius_19"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:paddingTop="8dp"
-                android:text="@string/label_cancel"
-                android:textColor="@color/com_bg_white"
+                android:paddingRight="6dp"
+                android:singleLine="true"
+                android:text="@string/label_work_cart"
+                android:textColor="@color/textLight"
                 android:textSize="14sp" />
 
             <TextView
-                android:layout_marginLeft="15dp"
-                android:id="@+id/ok_btn"
+                android:id="@+id/tv_cart_point"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_red_circle_point"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/textLight"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/com_bg_light_white">
+
+            <LinearLayout
+                android:id="@+id/ll_select_action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/select_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_accent_radius_19"
+                    android:gravity="center"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/select_all"
+                    android:textColor="@color/com_bg_white"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/btn_accent_radius_19"
+                    android:gravity="center"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/label_cancel"
+                    android:textColor="@color/com_bg_white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/ok_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/btn_accent_radius_19"
+                    android:gravity="center"
+                    android:paddingLeft="30dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/label_confirm_authorization"
+                    android:textColor="@color/com_bg_white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_to_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@drawable/btn_accent_radius_19"
                 android:gravity="center"
-                android:paddingBottom="8dp"
                 android:paddingLeft="30dp"
-                android:paddingRight="30dp"
                 android:paddingTop="8dp"
-                android:text="@string/label_confirm_authorization"
+                android:paddingRight="30dp"
+                android:paddingBottom="8dp"
+                android:text="@string/label_action_to_cart"
                 android:textColor="@color/com_bg_white"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
-        </LinearLayout>
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/add_to_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/btn_accent_radius_19"
-            android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="8dp"
-            android:text="@string/label_action_to_cart"
-            android:textColor="@color/com_bg_white"
-            android:textSize="16sp" />
+    </LinearLayout>
 
-    </FrameLayout>
+    <com.lqwawa.intleducation.base.CourseEmptyView
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:empty_text_remind="@string/label_empty_content"
+        app:empty_text_remind_visible="true"
+        app:empty_text_loading="@string/label_course_empty_info_2"
+        app:empty_text_loading_visible="false"
+        app:empty_icon_drawable="@drawable/ic_course_empty"
+        app:call_show="true"
+        android:visibility="gone"/>
 
 </LinearLayout>
