@@ -312,7 +312,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             topBar.setRightFunctionText1(getString(R.string.class_implementation_plan), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CourseHelper.queryIfExistPlan(memberId, sectionId, courseId,
+                    CourseHelper.queryIfExistPlan(memberId, sectionId, courseParams.getClassId(),
                             new DataSource.Callback<Boolean>() {
                         @Override
                         public void onDataNotAvailable(int strRes) {
