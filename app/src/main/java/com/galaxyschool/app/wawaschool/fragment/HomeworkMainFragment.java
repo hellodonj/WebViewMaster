@@ -146,6 +146,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
     private boolean isApplicationStart = true;
     private boolean isFromReviewStatistic;//来自点评统计
     private ReviewInfo reviewInfo;
+    private boolean isTeacher;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -589,6 +590,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             if (reviewInfo != null){
                 isFromReviewStatistic = true;
             }
+            isTeacher = getArguments().getBoolean(Constants.EXTRA_IS_TEACHER,false);
         }
         //左侧返回按钮
         ImageView imageView = (ImageView) findViewById(R.id.header_left_btn);
@@ -658,7 +660,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             if (isFromReviewStatistic){
                 textView.setVisibility(View.GONE);
             }
-            if (roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (isTeacher){
                 //显示未批作业
                 textView.setText(getString(R.string.str_un_remark_homework));
             }
@@ -672,6 +674,10 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             } else if (roleType == RoleType.ROLE_TYPE_TEACHER && !isHistory) {
                 flAssignHomework.setVisibility(View.VISIBLE);
                 textView.setText(R.string.assign_task_line);
+            } else if (roleType == RoleType.ROLE_TYPE_PARENT && isTeacher){
+                //家长+老师身份
+                flAssignHomework.setVisibility(View.VISIBLE);
+                textView.setText(R.string.today_assignment);
             } else {
                 if (roleType == RoleType.ROLE_TYPE_STUDENT && !isOnlineSchoolClass) {
                     flAssignHomework.setVisibility(View.VISIBLE);
@@ -1006,7 +1012,7 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             enterHomeworkPickerActivity();
         } else if (v.getId() == R.id.tv_today_homework) {
             //今日作业
-            if (roleType == RoleType.ROLE_TYPE_TEACHER){
+            if (isTeacher){
                 //未批作业
                 enterUnRemarkActivityDetail();
             } else {
@@ -1016,7 +1022,9 @@ public class HomeworkMainFragment extends ContactsListFragment implements
             //布置作业
             int haveFree = Utils.checkStorageSpace(getActivity());
             if (haveFree == 0) {
-                if (roleType == RoleType.ROLE_TYPE_STUDENT) {
+                if (roleType == RoleType.ROLE_TYPE_PARENT && isTeacher){
+                    enterTodayHomeworkActivity();
+                } else if (roleType == RoleType.ROLE_TYPE_STUDENT) {
                     enterScanTask();
                 } else {
                     showTaskTypeDialog();
