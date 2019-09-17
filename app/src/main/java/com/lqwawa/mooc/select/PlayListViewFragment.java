@@ -229,13 +229,14 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
             LQwawaHelper.requestResourceListByChapterIds(jsonString, new DataSource.Callback<ResponseVo>() {
                 @Override
                 public void onDataNotAvailable(int strRes) {
+                    dismissLoadingDialog();
                     UIUtil.showToastSafe(strRes);
                 }
 
                 @Override
                 public void onDataLoaded(ResponseVo responseVo) {
+                    dismissLoadingDialog();
                     if (responseVo.isSucceed()) {
-                        dismissLoadingDialog();
                         playListVo = (List<CourseResourceEntity>) responseVo.getData();
                         for (int i = 0; i < playListVo.size(); i++) {
                             if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN){
@@ -250,6 +251,8 @@ public class PlayListViewFragment extends AdapterFragment implements SelectMoreA
                         } else {
                             ToastUtil.showToast(getActivity(), R.string.label_play_tip);
                         }
+                    }else {
+                        ToastUtil.showToast(getActivity(),responseVo.getMessage());
                     }
                 }
             });

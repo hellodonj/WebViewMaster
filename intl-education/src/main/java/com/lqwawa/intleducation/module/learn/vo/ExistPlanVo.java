@@ -8,6 +8,7 @@ public class ExistPlanVo extends BaseVo {
     private int code;
     private boolean exist;
     private boolean containStandard;
+    private String message;
 
     public int getCode() {
         return code;
@@ -31,5 +32,13 @@ public class ExistPlanVo extends BaseVo {
 
     public void setContainStandard(boolean containStandard) {
         this.containStandard = containStandard;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

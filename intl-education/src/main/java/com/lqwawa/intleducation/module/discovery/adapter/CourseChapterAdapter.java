@@ -355,11 +355,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN &&
                             position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
                         if (!isCourseSelect) {
-                            if (examType == TYPE_EXAM && isClassCourseEnter){
-                                holder.lockTestIv.setVisibility(View.VISIBLE);
-                            }else {
-                                holder.lockTestIv.setVisibility(View.GONE);
-                            }
+                            holder.lockTestIv.setVisibility(View.GONE);
                             holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
                         } else {
@@ -600,7 +596,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                                         } else {
                                             //试听的进入
                                             if (position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {
-                                                if (examType == TYPE_EXAM && isClassCourseEnter){
+                                                if (examType == TYPE_EXAM && courseDetailParams.isClassCourseEnter()){
                                                     if (chapterVo.isUnlock()){
                                                         toLessonDetailsActivity(vo, isFreeUser, true);
                                                     }else {

@@ -15,8 +15,6 @@ public class ResponseVo<T> implements Serializable {
     private int code;
     private T data;
     private String message;
-    private boolean exist;
-    private boolean isContainStandard;
 
     public int getCode() {
         return code;
@@ -50,21 +48,6 @@ public class ResponseVo<T> implements Serializable {
         this.total = total;
     }
 
-    public boolean isExist() {
-        return exist;
-    }
-
-    public void setExist(boolean exist) {
-        this.exist = exist;
-    }
-
-    public boolean isContainStandard() {
-        return isContainStandard;
-    }
-
-    public void setContainStandard(boolean containStandard) {
-        isContainStandard = containStandard;
-    }
 
     /**
      * 网络请求是否成功
