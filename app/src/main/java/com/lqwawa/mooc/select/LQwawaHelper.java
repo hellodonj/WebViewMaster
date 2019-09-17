@@ -87,19 +87,13 @@ public class LQwawaHelper {
                 LogUtil.i(LQwawaHelper.class, "request " + params.getUri() + " result :" + str);
                 ResponseVo vo = JSON.parseObject(str, new TypeReference<ResponseVo<List<CourseResourceEntity>>>() {
                 });
-                if (vo.isSucceed()) {
-                    if (EmptyUtil.isNotEmpty(callback)) {
-                        callback.onDataLoaded(vo);
-                    }
+                if (EmptyUtil.isNotEmpty(callback)) {
+                    callback.onDataLoaded(vo);
                 }
             }
 
             @Override
             public void onError(Throwable throwable, boolean b) {
-                LogUtil.w(LQwawaHelper.class, "request " + params.getUri() + " failed");
-                if (!EmptyUtil.isEmpty(callback)) {
-                    callback.onDataNotAvailable(com.lqwawa.intleducation.R.string.net_error_tip);
-                }
             }
         });
     }

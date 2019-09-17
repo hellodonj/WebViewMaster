@@ -827,6 +827,13 @@ public class CourseHelper {
         });
     }
 
+    /**
+     * 查询是否有课中实施方案
+     * @param memberId
+     * @param chapterId
+     * @param classId
+     * @param callback
+     */
     public static void queryIfExistPlan(
             @NonNull String memberId,
             @NonNull String chapterId,
@@ -843,13 +850,8 @@ public class CourseHelper {
         x.http().post(params, new StringCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                ResponseVo<ExistPlanVo> results = JSON.parseObject(result,
-                        new TypeReference<ResponseVo<ExistPlanVo>>() {
-                        });
-                ExistPlanVo existPlanVo = new ExistPlanVo();
-                if (results != null && results.getCode() == 0) {
-                    existPlanVo.setExist(results.isExist());
-                    existPlanVo.setContainStandard(results.isContainStandard());
+                ExistPlanVo existPlanVo = JSON.parseObject(result,ExistPlanVo.class);
+                if (EmptyUtil.isNotEmpty(existPlanVo)) {
                     callback.onDataLoaded(existPlanVo);
                 }
             }
