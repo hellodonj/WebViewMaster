@@ -46,6 +46,7 @@ import com.lqwawa.intleducation.factory.helper.LQConfigHelper;
 import com.lqwawa.intleducation.factory.helper.LessonHelper;
 import com.lqwawa.intleducation.module.discovery.ui.CourseSelectItemFragment;
 import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailParams;
+import com.lqwawa.intleducation.module.discovery.ui.coursedetail.CourseDetailType;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.detail.LessonSourceParams;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.SxLessonSourceFragment;
 import com.lqwawa.intleducation.module.discovery.ui.lesson.sxdetail.SxLessonSourceNavigator;
@@ -406,8 +407,10 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                     if (exerciseTypeVo.getExerciseType() == 1) {
                         mTabLists.add(getResources().getString(R.string.label_sx_preview));
                     } else if (exerciseTypeVo.getExerciseType() == 2) {
-                        if (mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER ||
-                                courseParams.isClassTeacher()) {
+                        //入口我的授课 并且老师身份  班级课程进入 并且是老师身份
+                        if (((mChapterParams.getRole() == UserHelper.MoocRoleType.TEACHER) &&
+                                (courseParams.getCourseEnterType(false) == CourseDetailType.COURSE_DETAIL_GIVE_INSTRUCTION_ENTER)) ||
+                        (courseParams.isClassTeacher() && courseParams.isClassCourseEnter())) {
                             mTabLists.add(getResources().getString(R.string.label_sx_practice));
                         }
                     } else if (exerciseTypeVo.getExerciseType() == 3) {
