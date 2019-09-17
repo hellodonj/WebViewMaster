@@ -516,22 +516,42 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mViewPager.addOnPageChangeListener(mSelectedAdapter);
 
             textViewLessonIntroduction.setText(sectionDetailsVo.getIntroduction());
-            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    initBottomLayout();
-                }
+            if (mChapterParams.isChoiceMode() && mChapterParams.isInitiativeTrigger()) {
+                mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        initBottomLayout1();
+                    }
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
 
-                }
+                    }
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
 
-                }
-            });
+                    }
+                });
+            }else {
+                mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        initBottomLayout();
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+            }
+
         }
     }
 
@@ -586,6 +606,7 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
                 }
                 // 直接添加到作业库
                 mBottomLayout.setActivated(false);
+                initBottomLayout1();
                 confirmResourceCart(false);
             } else {
                 boolean originalActivated = mBottomLayout.isActivated();
@@ -937,6 +958,19 @@ public class SxLessonDetailsActivity extends AppCompatActivity implements View.O
             mBottomLayout.setVisibility(View.GONE);
         }
     }
+    /**
+     * 重新初始化底部布局
+     */
+    private void initBottomLayout1() {
+            mBtnCart.setVisibility(View.GONE);
+            mSelectAll.setText(getString(R.string.select_all));
+            mBtnAction.setText(getString(R.string.label_confirm_authorization));
+            mTvPoint.setVisibility(View.GONE);
+
+            mBottomLayout1.setVisibility(View.GONE);
+            mBottomLayout.setVisibility(View.VISIBLE);
+    }
+
 
     private String TAG = getClass().getSimpleName();
     /**
