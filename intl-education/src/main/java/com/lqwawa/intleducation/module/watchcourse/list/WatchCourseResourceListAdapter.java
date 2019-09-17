@@ -67,7 +67,7 @@ public class WatchCourseResourceListAdapter extends RecyclerAdapter<String> {
         protected void onBind(String courseId) {
             // 发生网络请求
             String token = UserHelper.getUserId();
-            LQCourseHelper.requestCourseDetailByCourseId(token, courseId, null, 1, 0, 0, new DataSource.Callback<CourseDetailsVo>() {
+            LQCourseHelper.requestCourseDetailByCourseId(token, courseId, null, null,1, 0, 0, new DataSource.Callback<CourseDetailsVo>() {
                 @Override
                 public void onDataNotAvailable(int strRes) {
                     UIUtil.showToastSafe(strRes);

@@ -599,6 +599,7 @@ public class LQCourseHelper {
     public static void requestCourseDetailByCourseId(@NonNull String token,
                                                      @NonNull String id,
                                                      @Nullable String schoolIds,
+                                                     String classId,
                                                      int dataType,
                                                      int pageIndex, int pageSize,
                                                      @NonNull DataSource.Callback<CourseDetailsVo> callback) {
@@ -609,6 +610,7 @@ public class LQCourseHelper {
         if (EmptyUtil.isNotEmpty(schoolIds))
             requestVo.addParams("schoolId", schoolIds);
         requestVo.addParams("dataType", dataType);
+        requestVo.addParams("classId", classId);
         if (dataType == CourseDetailItemParams.COURSE_DETAIL_ITEM_COURSE_COMMENT) {
             requestVo.addParams("pageIndex", pageIndex);
             requestVo.addParams("pageSize", pageSize);
@@ -794,11 +796,11 @@ public class LQCourseHelper {
     }
 
 
-    public static void getSxExamDetail(@LanguageType.LanguageRes int isZh,@NonNull String token,String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
+    public static void getSxExamDetail(@LanguageType.LanguageRes int isZh, @NonNull String token, String courseId, String sectionId, String classId, int role, DataSource.Callback<ResponseVo<SxExamDetailVo>> callback) {
         RequestVo requestVo = new RequestVo();
         // 是否是中文字体,根据参数,后台返回相应语言
-        requestVo.addParams("language",isZh);
-        requestVo.addParams("token",token);
+        requestVo.addParams("language", isZh);
+        requestVo.addParams("token", token);
         requestVo.addParams("courseId", courseId);
         requestVo.addParams("sectionId", sectionId);
         if (!TextUtils.isEmpty(classId)) requestVo.addParams("classId", classId);
@@ -833,7 +835,7 @@ public class LQCourseHelper {
     }
 
 
-    public static void loadSixlLibraryLabelData(@LanguageType.LanguageRes int isZh,String organId, DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
+    public static void loadSixlLibraryLabelData(@LanguageType.LanguageRes int isZh, String organId, DataSource.Callback<ResponseVo<List<LQCourseConfigEntity>>> callback) {
         RequestVo requestVo = new RequestVo();
         // 是否是中文字体,根据参数,后台返回相应语言
         requestVo.addParams("language", isZh);

@@ -1010,8 +1010,8 @@ public class CourseDetailsActivity extends MyBaseFragmentActivity
         } else if (UserHelper.isLogin() && mCanEdit) {
             schoolIds = UserHelper.getUserInfo().getSchoolIds();
         }
-
-        LQCourseHelper.requestCourseDetailByCourseId(token, courseId, schoolIds, dataType, 0, AppConfig.PAGE_SIZE, new DataSource.Callback<CourseDetailsVo>() {
+        String classId = mCourseDetailParams.getClassId();
+        LQCourseHelper.requestCourseDetailByCourseId(token, courseId, schoolIds,classId, dataType, 0, AppConfig.PAGE_SIZE, new DataSource.Callback<CourseDetailsVo>() {
             @Override
             public void onDataNotAvailable(int strRes) {
                 UIUtil.showToastSafe(strRes);

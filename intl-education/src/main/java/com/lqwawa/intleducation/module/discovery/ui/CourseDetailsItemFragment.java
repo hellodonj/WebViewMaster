@@ -470,9 +470,11 @@ public class CourseDetailsItemFragment extends MyBaseFragment implements View.On
         } else {
             pageIndex++;
         }
+        CourseDetailParams mCourseDetailParams = mDetailItemParams.getCourseParams();
+        String classId = mCourseDetailParams.getClassId();
         LQCourseHelper.requestCourseDetailByCourseId(
                 token,
-                courseId, null,
+                courseId, null,classId,
                 mDetailItemParams.getDataType(),
                 pageIndex, AppConfig.PAGE_SIZE,
                 new Callback());
