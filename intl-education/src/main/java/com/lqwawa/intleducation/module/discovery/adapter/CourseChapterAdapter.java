@@ -190,13 +190,18 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                 if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
                     int examType = list.get(position).getExamType();
                     boolean isUnLock = list.get(position).isUnlock();
-                    boolean isHideLock = courseDetailParams != null && (courseDetailParams.isClassCourseEnter() ||
-                            courseDetailParams.isMyCourse()) &&
-                            isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
-                            role == UserHelper.MoocRoleType.PARENT ||
-                            (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
-                            || courseDetailParams.isClassParent());
-                    holder.lockTestIv.setVisibility(isHideLock ? View.VISIBLE : View.GONE);
+                    boolean isShowLock = isJoinCourse && examType == TYPE_EXAM && courseDetailParams != null &&
+                            ((courseDetailParams.isMyCourse() && (role == UserHelper.MoocRoleType.STUDENT ||
+                                    role == UserHelper.MoocRoleType.PARENT ||
+                                    (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
+                                    || courseDetailParams.isClassParent())) ||
+                                    (courseDetailParams.isClassCourseEnter() && (courseDetailParams.isClassTeacher() ||
+                                            courseDetailParams.isClassStudent())));
+//                    boolean isHideLock = courseDetailParams != null && (courseDetailParams.isClassCourseEnter() ||
+//                            courseDetailParams.isMyCourse()) &&
+//                            isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
+//                            (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo)));
+                    holder.lockTestIv.setVisibility(isShowLock ? View.VISIBLE : View.GONE);
                     holder.lockTestIv.setImageDrawable(isUnLock ? activity.getResources()
                             .getDrawable(R.drawable.unlock) : activity.getResources()
                             .getDrawable(R.drawable.lock));
@@ -355,7 +360,7 @@ public class CourseChapterAdapter extends MyBaseAdapter {
                     if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN &&
                             position == 1 && !vo.isBuyed() && (isParent || !isOwner || mTeacherVisitor)) {// 三习教案不显示 发现页面 第一张 显示试听字样
                         if (!isCourseSelect) {
-                            holder.lockTestIv.setVisibility(View.GONE);
+                                holder.lockTestIv.setVisibility(View.GONE);
                             holder.lessonAuditionTv.setVisibility(View.VISIBLE);
                             holder.lessonNameTv.setMaxWidth(DisplayUtil.dip2px(UIUtil.getContext(), 200));
                         } else {
@@ -850,13 +855,20 @@ public class CourseChapterAdapter extends MyBaseAdapter {
             int examType = list.get(position).getExamType();
             boolean isUnLock = list.get(position).isUnlock();
             if (libraryType == OrganLibraryType.TYPE_TEACHING_PLAN) {
-                boolean isHideLock = courseDetailParams != null && (courseDetailParams.isClassCourseEnter() ||
-                        courseDetailParams.isMyCourse()) &&
-                        isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
-                        role == UserHelper.MoocRoleType.PARENT ||
-                        (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
-                        || courseDetailParams.isClassParent());
-                holder.lockExamIv.setVisibility(isHideLock ? View.VISIBLE : View.GONE);
+                boolean isShowLock = isJoinCourse && examType == TYPE_EXAM && courseDetailParams != null &&
+                        ((courseDetailParams.isMyCourse() && (role == UserHelper.MoocRoleType.STUDENT ||
+                                role == UserHelper.MoocRoleType.PARENT ||
+                                (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
+                                || courseDetailParams.isClassParent())) ||
+                                (courseDetailParams.isClassCourseEnter() && (courseDetailParams.isClassTeacher() ||
+                                        courseDetailParams.isClassStudent())));
+//                boolean isHideLock = courseDetailParams != null && (courseDetailParams.isClassCourseEnter() ||
+//                        courseDetailParams.isMyCourse()) &&
+//                        isJoinCourse && examType == TYPE_EXAM && (role == UserHelper.MoocRoleType.STUDENT ||
+//                        role == UserHelper.MoocRoleType.PARENT ||
+//                        (role == UserHelper.MoocRoleType.TEACHER && UserHelper.isCourseTeacher(courseVo))
+//                        || courseDetailParams.isClassParent());
+                holder.lockExamIv.setVisibility(isShowLock ? View.VISIBLE : View.GONE);
                 holder.lockExamIv.setImageDrawable(isUnLock ? activity.getResources()
                         .getDrawable(R.drawable.unlock) : activity.getResources()
                         .getDrawable(R.drawable.lock));
