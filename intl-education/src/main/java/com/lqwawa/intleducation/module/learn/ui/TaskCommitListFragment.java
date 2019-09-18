@@ -252,8 +252,13 @@ public class TaskCommitListFragment extends MyBaseFragment implements View.OnCli
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // 长按删除功能
+                CourseDetailParams courseParams = mCommitParams.getCourseParams();
                 int handleRole = mCommitParams.getHandleRole();
                 String curMemberId = mCommitParams.getMemberId();
+                //教案的不允许删除
+                if (courseParams.getLibraryType() == OrganLibraryType.TYPE_TEACHING_PLAN){
+                    return true;
+                }
                 if (handleRole == UserHelper.MoocRoleType.EDITOR ||
                         handleRole == UserHelper.MoocRoleType.TEACHER ||
                         TextUtils.equals(sectionResListVo.getCreateId(), curMemberId)) {
